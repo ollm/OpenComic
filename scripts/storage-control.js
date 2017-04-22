@@ -11,7 +11,7 @@ var storageDefault = {
 		sortInvertIndex: false,
 		sortInvert: false,
 		readingView: 'slide',
-		readingViewSpeed: 1,
+		readingViewSpeed: 0.3,
 		readingViewAdjust: 'contain',
 		readingMargin: {
 			top: 16,
@@ -21,7 +21,8 @@ var storageDefault = {
 		},
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,
-		readingMagnifyingGlassSize: 200
+		readingMagnifyingGlassSize: 200,
+		readingDelayComicSkip: 3
 	},
 	comics: [{
 		name: 'Name',
