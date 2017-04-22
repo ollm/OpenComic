@@ -1,0 +1,20 @@
+<div class="content-view-module">
+	{{#each comics}}
+	<div id="v-id{{index}}"{{#unless folder}} class="sha-{{sha}}"{{/unless}} onclick="{{#if folder}}dom.loadIndexPage(true, '{{path}}', false, false, '{{mainPath}}'){{else}}dom.openComic(true, '{{path}}', '{{mainPath}}');{{/if}}">
+		{{#if folder}}
+		<div class="v-folder item-image">
+			{{#each images}}
+			<div class="fi-sha-{{sha}} folder-images" style="background-image: url({{encodeURI path}})"></div>
+			{{/each}}
+		</div>
+		{{else}}
+		<div class="v-img">
+			<img class="item-image" src="{{encodeURI thumbnail}}">
+		</div>
+		{{/if}}
+		<div class="v-text">{{name}}</div>
+	</div>
+	{{else}}
+	<div class="content-empty">{{#if comicsIndex}}{{language.comics.emptyIndex}}{{else}}{{language.comics.emptyFolder}}{{/if}}</div>
+	{{/each}}
+</div>

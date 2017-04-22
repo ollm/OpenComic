@@ -1,0 +1,10 @@
+{{#each comics}}
+<div class="reading-left r-l-i{{index}}"{{#unless folder}} onclick="reading.goToIndex({{index}})"{{/unless}}>
+	<div class="reading-number">{{index}}</div>
+	{{#if folder}}
+	carpeta
+	{{else}}
+	<img class="reading-images ri-sha-{{sha}}" src="{{encodeURI thumbnail}}">
+	{{/if}}
+</div>
+{{/each}}

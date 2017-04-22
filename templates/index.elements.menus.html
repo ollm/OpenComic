@@ -1,0 +1,33 @@
+<div class="menu" id="index-sort">
+	<div class="menu-simple" style="width: 256px;">
+		<div class="menu-simple-element sort-name" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort-v.name}}</div>
+		<div class="menu-simple-element sort-numeric" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort-v.number}}</div>
+		<div class="menu-simple-element sort-name-numeric" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort-v.name-number}}</div>
+		{{#if comicsIndex}}
+		<div class="menu-simple-element sort-last-add" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort-v.last-add}}</div>
+		<div class="menu-simple-element sort-last-reading" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort-v.last-reading}}</div>
+		{{else}}
+		<div class="menu-simple-text">
+			{{language.global.sort-v.folders-first}}
+			<div class="switch{{#if config.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)"></div>
+		</div>
+		{{/if}}
+		<div class="menu-simple-text">
+			{{language.global.sort-v.invert}}
+			<div class="switch{{#if comicsIndex}}{{#if config.sortInvertIndex}} a{{/if}}{{else}}{{#if config.sortInvert}} a{{/if}}{{/if}}" on="dom.changeSort(2, true, {{comicsIndexVar}})" off="dom.changeSort(2, false, {{comicsIndexVar}})"></div>
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#index-sort', '.bar-right-buttons .button-sort');"></div>
+</div>
+
+<div class="menu" id="index-view">
+	<div class="menu-simple" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
+		<div class="menu-simple-element view-module" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view-v.module}}</div>
+		<div class="menu-simple-element view-list" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view-v.list}}</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');"></div>
+</div>
+<script type="text/javascript">
+	dom.selectElement('.sort-{{#if comicsIndex}}{{config.sortIndex}}{{else}}{{config.sort}}{{/if}}');
+	dom.selectElement('.view-{{#if comicsIndex}}{{config.viewIndex}}{{else}}{{config.view}}{{/if}}');	
+</script>

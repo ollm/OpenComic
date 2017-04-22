@@ -1,0 +1,20 @@
+<div class="menu" id="reading-magnifying-glass">
+	<div class="menu-simple" style="width: 256px;">
+		<div class="menu-simple-text">
+			{{language.global.magnifying-glass-v.activate}}
+			<div class="switch{{#if config.readingMagnifyingGlass}} a{{/if}}" on="reading.activeMagnifyingGlass(true)" off="reading.activeMagnifyingGlass(false)"></div>
+		</div>
+
+		<div class="simple-slider">
+			<div class="simple-slider-text">{{language.global.magnifying-glass-v.zoom}}<div><span>{{config.readingMagnifyingGlassZoom}}</span>x</div></div>
+			<input class="range" type="range" max="6" min="1.5" step="0.1" value="{{config.readingMagnifyingGlassZoom}}" onrange="reading.changeMagnifyingGlass(1, \{{value}}, \{{toEnd}})">
+		</div>
+
+		<div class="simple-slider">
+			<div class="simple-slider-text">{{language.global.magnifying-glass-v.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
+			<input class="range" type="range" max="500" min="100" step="2" value="{{config.readingMagnifyingGlassSize}}" onrange="reading.changeMagnifyingGlass(2, \{{value}}, \{{toEnd}})">
+		</div>
+
+	</div>
+	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass');"></div>
+</div>

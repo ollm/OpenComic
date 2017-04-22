@@ -1,0 +1,16 @@
+{
+	"appName":	"OpenComic",
+	"global": {
+		"comics":	"Comics",
+		"collection":	"Collection",
+		"sort":	"Sort",
+		"sort-v":	{
+			"name":	"Name",
+			"last-add": "Last added",
+			"last-reading":	"Last reading"
+		},
+		"view":	"View",
+		"language":	"Language",
+		"theme":	"Theme"
+	}
+}

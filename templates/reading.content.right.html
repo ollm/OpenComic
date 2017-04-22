@@ -1,0 +1,46 @@
+<div style="position: relative; overflow: hidden;">
+	<div class="reading-skip">
+		<div class="reading-skip-top"></div>
+		<div class="reading-skip-bottom"></div>
+		<div class="reading-skip-left"></div>
+		<div class="reading-skip-right"></div>
+	</div>
+	<div class="reading-body" style="display: none;">
+		<div>
+			{{#each comics}}
+			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
+				{{#if folder}}
+				<div class="r-folder" onclick="dom.openComic(true, '{{fristImage}}', '{{mainPath}}')">
+					<div>
+						<div class="r-folder-img icon-folder"></div>	
+						<div class="r-folder-name">{{name}}</div>
+					</div>	
+				</div>
+				{{else}}
+				<img src="{{encodeURI path}}" index="{{index}}">
+				{{/if}}
+			</div>
+			{{/each}}
+		</div>
+	</div>
+</div>
+<div class="reading-lens">
+	<div>
+		<div>
+			{{#each comics}}
+			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
+				{{#if folder}}
+				<div class="r-folder" onclick="dom.openComic(true, '{{fristImage}}', '{{mainPath}}')">
+					<div>
+						<div class="r-folder-img icon-folder"></div>	
+						<div class="r-folder-name">{{name}}</div>
+					</div>	
+				</div>
+				{{else}}
+				<img src="{{encodeURI path}}" index="{{index}}">
+				{{/if}}
+			</div>
+			{{/each}}
+		</div>
+	</div>
+</div>

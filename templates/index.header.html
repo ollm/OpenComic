@@ -1,0 +1,21 @@
+<div class="bar-back button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControl(1)"></div>
+<div class="bar-title">
+	{{#if headerTitlePath}}
+		{{#each headerTitlePath}}
+			<span class="bar-title-a" onclick="dom.loadIndexPage(true, '{{path}}', false, false, '{{mainPath}}')">{{name}}</span>
+			{{#unless last}} / {{/unless}}
+		{{/each}}
+	{{else}}
+		{{#if headerTitle}}
+			{{headerTitle}}
+		{{else}}
+			{{language.global.comics}}
+		{{/if}}
+	{{/if}}
+</div>
+<div class="bar-right-buttons">
+	<div>
+		<div class="button button1 button-sort hover-text" hover-text="{{language.global.sort}}" onclick="events.activeMenu('#index-sort', '.bar-right-buttons .button-sort', 'right');"></div>
+		<div class="button button1 button-view {{#if comicsIndex}}{{config.viewIndex}}{{else}}{{config.view}}{{/if}} hover-text" hover-text="{{language.global.view}}" onclick="events.activeMenu('#index-view', '.bar-right-buttons .button-view', 'right');"></div>
+	</div>
+</div>

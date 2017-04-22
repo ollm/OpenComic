@@ -1,0 +1,36 @@
+{
+	"appName":	"OpenComic",
+	"global": {
+		"comics":	"Cómics",
+		"collection":	"Colección",
+		"sort":	"Ordenar",
+		"sort-v":	{
+			"name":	"Nombre",
+			"number": "Numerico",
+			"name-number": "Nombre / Numerico",
+			"last-add": "Último agregado",
+			"last-reading":	"Última lectura",
+			"folders-first":	"Carpetas primero",
+			"invert":	"Invertir"
+		},
+		"view":	"Vista",
+		"view-v":	{
+			"module":	"Cuadricula",
+			"list": "Lista"
+		},
+		"back":	"Atrás",
+		"add":	"Añadir",
+		"language":	"Idioma",
+		"theme":	"Tema",
+		"magnifying-glass":	"Lupa",
+		"magnifying-glass-v":	{
+			"activate": "Activar lupa",
+			"zoom": "Aumentos",
+			"size": "Tamaño"
+		}
+	},
+	"comics": {
+		"emptyIndex": "No hay ningún cómic en esta colección.",
+		"emptyFolder": "No hay ningún archivo compatible en esta carpeta."
+	}
+}
