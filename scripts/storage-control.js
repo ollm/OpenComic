@@ -48,6 +48,7 @@ var storageDefault = {
 },
 storageJson = {};
 
+
 function updateStorageArrayMD(data, defaultObj)
 {
 	var newData = [];
