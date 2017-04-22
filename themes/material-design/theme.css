@@ -1275,14 +1275,15 @@ body
 
 .reading-body .r-folder .r-folder-name, .reading-lens .r-folder .r-folder-name
 {
-	font-size: 20px;
-	height: 20px;
-	line-height: 20px;
+	font-size: 40px;
+	height: 40px;
+	line-height: 40px;
 	padding: 0px 16px;
 	text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     word-wrap: normal;
+    margin-top: -10px;
 }
 
 .reading-lens
