@@ -2,6 +2,9 @@
   "name": "OpenComic",
   "version": "0.1.0",
   "main": "main.js",
+  "scripts": {
+   "start": "main.js",
+  },
   "description": "Comic book reader",
   "license": "GPL-3.0",
   "dependencies": {
