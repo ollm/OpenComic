@@ -1,3 +1,14 @@
+## Installation and Starting
+__Requirements__: Git, Node, and NPM
+
+```shell
+git clone https://github.com/ollm/OpenComic.git
+cd OpenComic
+npm install
+npm start
+```
+## Pepper & Carrot
+
 This application contains as example the webcomic [Pepper&Carrot](https://www.peppercarrot.com) by David Revoy
 licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
