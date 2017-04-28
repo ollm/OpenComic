@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
-   "start": "main.js"
+   "start": "electron ."
   },
   "description": "Comic book reader",
   "license": "GPL-3.0",
@@ -17,6 +17,9 @@
     "mime": "^1.3.4",
     "sha1": "^1.1.1",
     "sha256": "^0.2.0"
+  },
+  "devDependencies": {
+    "electron": "^1.6",
   },
   "repository": {
     "type": "git",
