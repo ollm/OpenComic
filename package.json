@@ -19,7 +19,7 @@
     "sha256": "^0.2.0"
   },
   "devDependencies": {
-    "electron": "^1.6",
+    "electron": "^1.6"
   },
   "repository": {
     "type": "git",
