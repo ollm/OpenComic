@@ -205,11 +205,9 @@ function showNextComic(mode, animation)
 					'transform': 'translate(-100px, 0px)',
 				});
 
-				var readingBody = template.contentRight('.reading-body > div');
-
 				var scale = ((contentWidth - 100) / contentWidth);
 
-				readingBody.css({
+				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transition': ((animation) ? transition : 0)+'s',
 					'transform': 'scale('+scale+') translate(-'+(((contentWidth * (contentNum - 1))))+'px, 0px)',
 				});
@@ -240,9 +238,7 @@ function showNextComic(mode, animation)
 				'transform': 'translate(0px, 0px)',
 			});
 
-			var readingBody = template.contentRight('.reading-body > div');
-
-			readingBody.css({
+			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'scale(1) translate(-'+(contentWidth * (contentNum - 1))+'px, 0px)',
 			});
@@ -285,11 +281,9 @@ function showPreviousComic(mode, animation)
 					'transform': 'translate(100px, 0px)',
 				});
 
-				var readingBody = template.contentRight('.reading-body > div');
-
 				var scale = ((contentWidth - 100) / contentWidth);
 
-				readingBody.css({
+				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transition': ((animation) ? transition : 0)+'s',
 					'transform': 'scale('+scale+') translate('+(100 / scale)+'px, 0px)',
 				});
@@ -323,9 +317,7 @@ function showPreviousComic(mode, animation)
 				'transform': 'translate(0px, 0px)',
 			});
 
-			var readingBody = template.contentRight('.reading-body > div');
-
-			readingBody.css({
+			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'scale(1) translate(-0px, 0px)',
 			});

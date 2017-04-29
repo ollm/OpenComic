@@ -1337,6 +1337,11 @@ body
 	transform-origin: center top;
 }
 
+.reading-lens > div > div
+{
+	transform-origin: left;
+}
+
 .reading-skip > div
 {
 	background-color: #fff;
