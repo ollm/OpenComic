@@ -19,6 +19,10 @@
 			"list": "Lista"
 		},
 		"back":	"Atrás",
+		"first-page":	"Primera página",
+		"previous":	"Anterior",
+		"next":	"Siguiente",
+		"last-page":	"Última página",
 		"add":	"Añadir",
 		"language":	"Idioma",
 		"theme":	"Tema",
