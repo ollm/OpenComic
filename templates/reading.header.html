@@ -15,5 +15,11 @@
 <div class="bar-right-buttons">
 	<div>
 		<div class="button button1 button-magnifying-glass hover-text" hover-text="{{language.global.magnifying-glass}}" onclick="events.activeMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass', 'right');"></div>
+		<div class="bar-buttons-separator"></div>
+		<div class="button button2 button-last-page hover-text" hover-text="{{language.global.last-page}}" onclick="reading.goEnd();"></div>
+		<div class="button button2 button-next hover-text" hover-text="{{language.global.next}}" onclick="reading.goNext();"></div>
+		<div class="button button2 button-previous hover-text" hover-text="{{language.global.previous}}" onclick="reading.goPrevious();"></div>
+		<div class="button button2 button-first-page hover-text" hover-text="{{language.global.first-page}}" onclick="reading.goStart();"></div>
+
 	</div>
 </div>

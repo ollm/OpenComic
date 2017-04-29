@@ -30,6 +30,7 @@ var storageDefault = {
 		lastReading: 0,
 		added: 0,
 		compressed: false,
+		bookmark: false,
 		folder: true,
 	},
 	{
@@ -38,6 +39,7 @@ var storageDefault = {
 		lastReading: 0,
 		added: 0,
 		compressed: false,
+		bookmark: false,
 		folder: true,
 	}],
 	cache: {wildcard: {

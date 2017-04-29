@@ -545,6 +545,14 @@ body
 	border-top: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
+.bar-buttons-separator
+{
+	float: right;
+	height: 48px;
+	border-left: 0.5px solid rgba(0, 0, 0, 0.1);
+	margin: 0px 12px;
+}
+
 /*icons*/
 
 .icon-24
@@ -1188,6 +1196,25 @@ body
 	background-image: url('./icons/ic_search_black_24px.svg'); 
 }
 
+.button-first-page
+{
+	background-image: url('./icons/ic_first_page_black_24px.svg'); 
+}
+
+.button-previous
+{
+	background-image: url('./icons/ic_chevron_left_black_24px.svg'); 
+}
+
+.button-next
+{
+	background-image: url('./icons/ic_chevron_right_black_24px.svg'); 
+}
+
+.button-last-page
+{
+	background-image: url('./icons/ic_last_page_black_24px.svg'); 
+}
 
 /*Reading - Start*/
 

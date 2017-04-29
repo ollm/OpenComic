@@ -172,22 +172,22 @@ function goNext()
 		showNextComic(1, true);
 }
 
-function goPrevius()
+function goPrevious()
 {
-	var previusIndex = currentIndex - 1;
+	var previousIndex = currentIndex - 1;
 
 	if(currentIndex > contentNum)
 		showNextComic(2, true);
-	else if(previusIndex > 0)
-		goToIndex(previusIndex, true)
-	else if(previusIndex == 0 && dom.previousComic())
+	else if(previousIndex > 0)
+		goToIndex(previousIndex, true)
+	else if(previousIndex == 0 && dom.previousComic())
 		showPreviousComic(1, true);
 }
 
 function goStart()
 {
 	var nextIndex = currentIndex + 1;
-	var previusIndex = currentIndex - 1;
+	var previousIndex = currentIndex - 1;
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
@@ -200,7 +200,7 @@ function goStart()
 function goEnd()
 {
 	var nextIndex = currentIndex + 1;
-	var previusIndex = currentIndex - 1;
+	var previousIndex = currentIndex - 1;
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
@@ -512,7 +512,7 @@ function read(path, index = 1)
 		{
 			if(e.keyCode == 37)
 			{
-				goPrevius();
+				goPrevious();
 			}
 			else if(e.keyCode == 38 && config.readingView != 'scroll')
 			{
@@ -694,6 +694,10 @@ module.exports = {
 	imagesNumLoad: imagesNumLoad,
 	imagesData: imagesData,
 	goToIndex: goToIndex,
+	goStart: goStart,
+	goPrevious: goPrevious,
+	goNext: goNext,
+	goEnd: goEnd,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	magnifyingGlassControl: magnifyingGlassControl,
