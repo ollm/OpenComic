@@ -1238,12 +1238,20 @@ body
 	overflow-x: hidden;
 }
 
-.reading-body > div
+.reading-body.slide > div
 {
 	width: 100%;
 	height: 100%;
 	position: relative;
-	transform-origin: left;
+	transform-origin: left center;
+}
+
+.reading-body.scroll > div
+{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	transform-origin: center top;
 }
 
 .reading-body .r-img
@@ -1337,9 +1345,14 @@ body
 	transform-origin: center top;
 }
 
-.reading-lens > div > div
+.reading-lens.slide > div > div
 {
-	transform-origin: left;
+	transform-origin: left center;
+}
+
+.reading-lens.scroll > div > div
+{
+	transform-origin: center top;
 }
 
 .reading-skip > div

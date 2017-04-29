@@ -21,7 +21,7 @@
 			</svg>
 		</div>
 	</div>
-	<div class="reading-body" style="display: none;">
+	<div class="reading-body {{config.readingView}}" style="display: none;">
 		<div>
 			{{#each comics}}
 			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 </div>
-<div class="reading-lens">
+<div class="reading-lens {{config.readingView}}">
 	<div>
 		<div>
 			{{#each comics}}

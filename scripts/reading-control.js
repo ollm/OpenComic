@@ -5,7 +5,6 @@ function disposeImages(data)
 {
 	data = typeof data === 'undefined' ? false : data;
 
-
 	var content = template.contentRight().children('div');
 	var contentWidth = template.contentRight().width() - (config.readingMargin.left + config.readingMargin.right + (data && typeof data.marginLeft !== 'undefined' ? data.marginLeft : 0));
 	var contentHeight = content.height() - (config.readingMargin.bottom + config.readingMargin.top + (data && typeof data.marginTop !== 'undefined' ? data.marginTop : 0));
@@ -13,6 +12,7 @@ function disposeImages(data)
 
 	if(config.readingViewAdjust == 'contain')
 	{
+
 		for(index in imagesData)
 		{
 			var image = imagesData[index];
@@ -23,7 +23,8 @@ function disposeImages(data)
 					'height': contentHeight+'px',
 					'width': (contentHeight * image.aspectRatio)+'px',
 					'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + config.readingMargin.left)+'px',
-					'margin-top': config.readingMargin.top+'px'
+					'margin-top': config.readingMargin.top+'px',
+					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? config.readingMargin.bottom : 0)+'px'
 				});
 			}
 			else
@@ -31,12 +32,42 @@ function disposeImages(data)
 				template.contentRight('.r-img-i'+index+' img').css({
 					'height': (contentWidth / image.aspectRatio)+'px',
 					'width': contentWidth+'px',
-					'margin-top': ((contentHeight - contentWidth / image.aspectRatio) / 2 + config.readingMargin.top)+'px',
-					'margin-left': config.readingMargin.left+'px'
+					'margin-top': ((config.readingView == 'scroll') ? config.readingMargin.top : ((contentHeight - contentWidth / image.aspectRatio) / 2 + config.readingMargin.top))+'px',
+					'margin-left': config.readingMargin.left+'px',
+					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? config.readingMargin.bottom : 0)+'px'
 				});
 			}
 		}
 	}
+	else if(config.readingViewAdjust == 'width' && config.readingView == 'scroll')
+	{
+		for(index in imagesData)
+		{
+			var image = imagesData[index];
+
+			template.contentRight('.r-img-i'+index+' img').css({
+				'height': (contentWidth / image.aspectRatio)+'px',
+				'width': contentWidth+'px',
+				'margin-top': config.readingMargin.top+'px',
+				'margin-left': config.readingMargin.left+'px',
+				'margin-bottom': ((index == imagesNum) ? config.readingMargin.bottom : 0)+'px'
+			});
+		}
+	}
+	/*else if(config.readingViewAdjust == 'height')
+	{
+		for(index in imagesData)
+		{
+			var image = imagesData[index];
+
+			template.contentRight('.r-img-i'+index+' img').css({
+				'height': contentHeight+'px',
+				'width': (contentHeight * image.aspectRatio)+'px',
+				'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + config.readingMargin.left)+'px',
+				'margin-top': config.readingMargin.top+'px'
+			});
+		}
+	}*/
 }
 
 function calculateView()
@@ -209,7 +240,7 @@ function showNextComic(mode, animation)
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transition': ((animation) ? transition : 0)+'s',
-					'transform': 'scale('+scale+') translate(-'+(((contentWidth * (contentNum - 1))))+'px, 0px)',
+					'transform': 'scale('+scale+') translate(-'+(contentWidth * (contentNum - 1))+'px, 0px)',
 				});
 			}
 			else if(config.readingView == 'scroll')
@@ -219,6 +250,13 @@ function showNextComic(mode, animation)
 				skip.css({
 					'transition': transition+'s',
 					'transform': 'translate(0px, -100px)',
+				});
+
+				var scale = ((contentHeight - 100) / contentHeight);
+
+				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transition': ((animation) ? transition : 0)+'s',
+					'transform': 'scale('+scale+') translate(0px, '+(((template.contentRight('.reading-body').height() - (template.contentRight('.reading-body').height() * scale)) * (1 / scale)) - 100)+'px)',
 				});
 			}
 
@@ -248,6 +286,11 @@ function showNextComic(mode, animation)
 			var skip = template.contentRight('.reading-skip-bottom').css({
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'translate(0px, 0px)',
+			});
+
+			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				'transition': config.readingViewSpeed+'s',
+				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
 
@@ -297,6 +340,13 @@ function showPreviousComic(mode, animation)
 					'transition': transition+'s',
 					'transform': 'translate(0px, 100px)',
 				});
+
+				var scale = ((contentHeight - 100) / contentHeight);
+
+				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transition': ((animation) ? transition : 0)+'s',
+					'transform': 'scale('+scale+') translate(0px, '+(100 / scale)+'px)',
+				});
 			}
 
 			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(1).queue(function(next){$(this).addClass('a');next();});
@@ -319,7 +369,7 @@ function showPreviousComic(mode, animation)
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 				'transition': config.readingViewSpeed+'s',
-				'transform': 'scale(1) translate(-0px, 0px)',
+				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
 		else if(config.readingView == 'scroll')
@@ -329,6 +379,11 @@ function showPreviousComic(mode, animation)
 			skip.css({
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'translate(0px, 0px)',
+			});
+
+			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				'transition': config.readingViewSpeed+'s',
+				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
 
@@ -459,7 +514,7 @@ function read(path, index = 1)
 			{
 				goPrevius();
 			}
-			else if(e.keyCode == 38)
+			else if(e.keyCode == 38 && config.readingView != 'scroll')
 			{
 				goStart();
 			}
@@ -467,7 +522,7 @@ function read(path, index = 1)
 			{
 				goNext();
 			}
-			else if(e.keyCode == 40)
+			else if(e.keyCode == 40 && config.readingView != 'scroll')
 			{
 				goEnd();
 			}
