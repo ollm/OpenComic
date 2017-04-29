@@ -436,6 +436,8 @@ function previousComic(path, mainPath)
 	{
 		var files = sortFiles(returnFiles(searchPath));
 
+		console.log(files);
+
 		var skipPath = false;
 
 		if(files)
@@ -446,7 +448,7 @@ function previousComic(path, mainPath)
 
 				if(skipPath && files[i].folder)
 				{
-					var image = folderImages(filePath, 1, 1);
+					var image = folderImages(filePath, 1, 2);
 
 					if(image)
 						return image;
@@ -780,6 +782,8 @@ function openComic(animation, path, mainPath)
 		skipNextComic = nextComic(path, mainPath);
 		skipPreviousComic = previousComic(path, mainPath);
 
+		console.log(skipPreviousComic);
+
 		if(indexPathControlA.length > 0 && indexPathControlA[indexPathControlA.length - 1] != '')
 			indexPathControlA.push({path: '', mainPath: mainPath});
 
@@ -945,4 +949,5 @@ module.exports = {
 	openComic: openComic,
 	nextComic: skipNextComicF,
 	previousComic: skipPreviousComicF,
+	indexMainPathA: function(){return indexMainPathA},
 };

@@ -301,6 +301,17 @@
 	}
 }
 
+@keyframes skip-comic-load
+{
+	0%
+	{
+		stroke-dasharray: 187;
+	}
+	100%
+	{
+		stroke-dasharray: 376;
+	}
+}
 
 
 /*CSS*/
@@ -498,6 +509,7 @@ body
 {
 	overflow: auto;
 	height: 100%;
+	width: 100%;
 }
 
 .bar-right-buttons
@@ -1231,6 +1243,7 @@ body
 	width: 100%;
 	height: 100%;
 	position: relative;
+	transform-origin: left;
 }
 
 .reading-body .r-img
@@ -1362,6 +1375,59 @@ body
 	width: 120px;
 	top: -20px;
 	right: -120px;
+}
+
+.reading-skip .reading-skip-top svg
+{
+	margin-left: -30px;
+	margin-top: -20px;
+}
+
+.reading-skip .reading-skip-bottom svg
+{
+	margin-left: -30px;
+	margin-top: -40px;
+}
+
+.reading-skip .reading-skip-left svg
+{
+	margin-left: -20px;
+	margin-top: -30px;
+}
+
+.reading-skip .reading-skip-right svg
+{
+	margin-left: -40px;
+	margin-top: -30px;
+}
+
+.reading-skip svg
+{
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+.reading-skip circle
+{
+	fill: none;
+	stroke-width: 6;
+	stroke: #da4336;
+	stroke-dashoffset: 187;
+	stroke-dasharray: 187;
+	transform: rotate(-90deg);
+	transform-origin: center;
+}
+
+.reading-skip circle.a
+{
+	animation-name: skip-comic-load;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	animation-timing-function: linear;
 }
 
 /*Scroll*/

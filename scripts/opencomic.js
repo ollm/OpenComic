@@ -71,6 +71,23 @@ storage.start(function(){
 
 /*Global functions*/
 
+function htmlEntities(str)
+{
+	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function escapeQuotes(str, mode)
+{
+	mode = typeof mode === 'undefined' ? false : mode;
+
+	if(mode === 'simples')
+		return String(str).replace(/'/g, '\\\'');
+	else if(mode === 'doubles')
+		return String(str).replace(/"/g, '\\\"');
+	else
+		return String(str).replace(/'/g, '\\\'').replace(/"/g, '\\\"');
+}
+
 function readFileApp(file)
 {
 	return fs.readFileSync(__dirname + file, 'utf8');
@@ -179,6 +196,12 @@ hb.registerHelper('isEmpty', function(obj) {
 hb.registerHelper('encodeURI', function(string) {
 
 	return encodeURI(string);
+
+});
+
+hb.registerHelper('htmlEntities', function(string) {
+
+	return htmlEntities(string);
 
 });
 

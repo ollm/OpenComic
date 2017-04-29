@@ -5,8 +5,9 @@ function disposeImages(data)
 {
 	data = typeof data === 'undefined' ? false : data;
 
+
 	var content = template.contentRight().children('div');
-	var contentWidth = content.width() - (config.readingMargin.left + config.readingMargin.right + (data && typeof data.marginLeft !== 'undefined' ? data.marginLeft : 0));
+	var contentWidth = template.contentRight().width() - (config.readingMargin.left + config.readingMargin.right + (data && typeof data.marginLeft !== 'undefined' ? data.marginLeft : 0));
 	var contentHeight = content.height() - (config.readingMargin.bottom + config.readingMargin.top + (data && typeof data.marginTop !== 'undefined' ? data.marginTop : 0));
 	var aspectRatio = contentWidth / contentHeight;
 
@@ -40,8 +41,8 @@ function disposeImages(data)
 
 function calculateView()
 {
-	var content = $('.content-right .a').not('.to-remove').children('div');
-	var contentWidth = content.width();
+	var content = template.contentRight().children('div');
+	var contentWidth = template.contentRight().width();
 
 	if(config.readingView == 'slide')
 	{
@@ -88,26 +89,26 @@ function goToIndex(index, animation)
 {
 	animation = typeof animation === 'undefined' ? true : animation;
 
-	var content = $('.content-right .a').not('.to-remove').children('div');
+	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
 	var contentHeight = content.height();
 
 	if(config.readingView == 'slide')
 	{
-		$('.reading-body > div, .reading-lens > div > div').css({
+		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'transition': ((animation) ? config.readingViewSpeed : 0)+'s',
 			'transform': 'translate(-'+(contentWidth * (index - 1))+'px, 0)',
 		});
 	}
 	else if(config.readingView == 'scroll')
 	{
-		$('.reading-body > div, .reading-lens > div > div').scrollTop((contentHeight * (index - 1)));
+		template.contentRight('.reading-body > div, .reading-lens > div > div').scrollTop((contentHeight * (index - 1)));
 	}
 
-	var leftScroll = $('.r-l-i'+index).parent();
-	var leftImg = $('.r-l-i'+index);
+	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
+	var leftImg = template.contentLeft('.r-l-i'+index);
 
-	$('.reading-left').removeClass('s');
+	template.contentLeft('.reading-left').removeClass('s');
 	leftImg.addClass('s');
 
 	var scrollTop = (((leftImg.offset().top + leftScroll.scrollTop()) - leftScroll.offset().top) + (leftImg.outerHeight() / 2)) - (leftScroll.height() / 2);
@@ -133,11 +134,11 @@ function goNext()
 	var nextIndex = currentIndex + 1;
 
 	if(currentIndex < 1)
-		showPreviousComic(2);
-	if(nextIndex <= contentNum)
+		showPreviousComic(2, true);
+	else if(nextIndex <= contentNum)
 		goToIndex(nextIndex, true)
 	else if(nextIndex - 1 == contentNum && dom.nextComic())
-		showNextComic(1);
+		showNextComic(1, true);
 }
 
 function goPrevius()
@@ -145,98 +146,173 @@ function goPrevius()
 	var previusIndex = currentIndex - 1;
 
 	if(currentIndex > contentNum)
-		showNextComic(2);
+		showNextComic(2, true);
 	else if(previusIndex > 0)
 		goToIndex(previusIndex, true)
 	else if(previusIndex == 0 && dom.previousComic())
-		showPreviousComic(1);
+		showPreviousComic(1, true);
 }
 
 function goStart()
 {
+	var nextIndex = currentIndex + 1;
+	var previusIndex = currentIndex - 1;
+
+	if(currentIndex < 1)
+		showPreviousComic(2, true);
+	else if(currentIndex > contentNum)
+		showNextComic(2, true);
+
 	goToIndex(1, true)
 }
 
 function goEnd()
 {
+	var nextIndex = currentIndex + 1;
+	var previusIndex = currentIndex - 1;
+
+	if(currentIndex < 1)
+		showPreviousComic(2, true);
+	else if(currentIndex > contentNum)
+		showNextComic(2, true);
+
 	goToIndex(contentNum, true)
 }
 
-function showNextComic(mode)
+var showComicSkip;
+
+function showNextComic(mode, animation)
 {
+	animation = typeof animation === 'undefined' ? true : animation;
+	var content = template.contentRight().children('div');
+	var contentWidth = content.width();
+	var contentHeight = content.height();
+
+	clearTimeout(showComicSkip);
+
 	if(mode == 1)
 	{
-		if(config.readingView == 'slide')
+		var transition = config.readingViewSpeed < config.readingDelayComicSkip ? config.readingViewSpeed : config.readingDelayComicSkip;
+
+		if(transition != 0)
 		{
-			var skip = template.contentRight('.reading-skip-right');
+			if(config.readingView == 'slide')
+			{
+				var skip = template.contentRight('.reading-skip-right');
 
-			skip.css({
-				'transition': config.readingViewSpeed+'s',
-				'transform': 'translate(-100px, 0px)',
-			});
+				skip.css({
+					'transition': transition+'s',
+					'transform': 'translate(-100px, 0px)',
+				});
+
+				var readingBody = template.contentRight('.reading-body > div');
+
+				var scale = ((contentWidth - 100) / contentWidth);
+
+				readingBody.css({
+					'transition': ((animation) ? transition : 0)+'s',
+					'transform': 'scale('+scale+') translate(-'+(((contentWidth * (contentNum - 1))))+'px, 0px)',
+				});
+			}
+			else if(config.readingView == 'scroll')
+			{
+				var skip = template.contentRight('.reading-skip-bottom');
+
+				skip.css({
+					'transition': transition+'s',
+					'transform': 'translate(0px, -100px)',
+				});
+			}
+
+			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(1).queue(function(next){$(this).addClass('a');next();});
 		}
-		else if(config.readingView == 'scroll')
-		{
-			var skip = template.contentRight('.reading-skip-bottom');
 
-			skip.css({
-				'transition': config.readingViewSpeed+'s',
-				'transform': 'translate(0px, -100px)',
-			});
-		}
+		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.nextComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
 
-		currentIndex++;
+		currentIndex = contentNum + 1;
 	}
 	else
 	{
 		if(config.readingView == 'slide')
 		{
-			var skip = template.contentRight('.reading-skip-right');
-
-			skip.css({
+			var skip = template.contentRight('.reading-skip-right').css({
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'translate(0px, 0px)',
+			});
+
+			var readingBody = template.contentRight('.reading-body > div');
+
+			readingBody.css({
+				'transition': config.readingViewSpeed+'s',
+				'transform': 'scale(1) translate(-'+(contentWidth * (contentNum - 1))+'px, 0px)',
 			});
 		}
 		else if(config.readingView == 'scroll')
 		{
-			var skip = template.contentRight('.reading-skip-bottom');
-
-			skip.css({
+			var skip = template.contentRight('.reading-skip-bottom').css({
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'translate(0px, 0px)',
 			});
 		}
 
-		currentIndex--;
+		currentIndex = contentNum;
 	}
 }
 
 
-function showPreviousComic(mode)
+function showPreviousComic(mode, animation)
 {
+	animation = typeof animation === 'undefined' ? true : animation;
+	var content = template.contentRight().children('div');
+	var contentWidth = content.width();
+	var contentHeight = content.height();
+
+	clearTimeout(showComicSkip);
+
 	if(mode == 1)
 	{
-		if(config.readingView == 'slide')
+
+		var transition = config.readingViewSpeed < config.readingDelayComicSkip ? config.readingViewSpeed : config.readingDelayComicSkip;
+
+		if(transition != 0)
 		{
-			var skip = template.contentRight('.reading-skip-left');
+			if(config.readingView == 'slide')
+			{
+				var skip = template.contentRight('.reading-skip-left');
 
-			skip.css({
-				'transition': config.readingViewSpeed+'s',
-				'transform': 'translate(100px, 0px)',
-			});
+				skip.css({
+					'transition': transition+'s',
+					'transform': 'translate(100px, 0px)',
+				});
+
+				var readingBody = template.contentRight('.reading-body > div');
+
+				var scale = ((contentWidth - 100) / contentWidth);
+
+				readingBody.css({
+					'transition': ((animation) ? transition : 0)+'s',
+					'transform': 'scale('+scale+') translate('+(100 / scale)+'px, 0px)',
+				});
+
+			}
+			else if(config.readingView == 'scroll')
+			{
+				var skip = template.contentRight('.reading-skip-top');
+
+				skip.css({
+					'transition': transition+'s',
+					'transform': 'translate(0px, 100px)',
+				});
+			}
+
+			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(1).queue(function(next){$(this).addClass('a');next();});
 		}
-		else if(config.readingView == 'scroll')
-		{
-			var skip = template.contentRight('.reading-skip-top');
 
-			skip.css({
-				'transition': config.readingViewSpeed+'s',
-				'transform': 'translate(0px, 100px)',
-			});
-		}
+		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.previousComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
 
-		currentIndex--;
+		//dom.openComic(true, dom.previousComic(), dom.indexMainPathA());
+
+		currentIndex = 0;
 	}
 	else
 	{
@@ -248,6 +324,13 @@ function showPreviousComic(mode)
 				'transition': config.readingViewSpeed+'s',
 				'transform': 'translate(0px, 0px)',
 			});
+
+			var readingBody = template.contentRight('.reading-body > div');
+
+			readingBody.css({
+				'transition': config.readingViewSpeed+'s',
+				'transform': 'scale(1) translate(-0px, 0px)',
+			});
 		}
 		else if(config.readingView == 'scroll')
 		{
@@ -259,7 +342,7 @@ function showPreviousComic(mode)
 			});
 		}
 
-		currentIndex++;
+		currentIndex = 1;
 	}
 }
 
@@ -416,10 +499,10 @@ function read(path, index = 1)
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
 
-			var rbHeight = $('.reading-body').height();
-			var rbWidth = $('.reading-body').width();
-			var rbOffsetTop = $('.reading-body').offset().top;
-			var rbOffsetLeft = $('.reading-body').offset().left;
+			var rbHeight = template.contentRight('.reading-body').height();
+			var rbWidth = template.contentRight('.reading-body').width();
+			var rbOffsetTop = template.contentRight('.reading-body').offset().top;
+			var rbOffsetLeft = template.contentRight('.reading-body').offset().left;
 
 			if(x > rbOffsetLeft && y > rbOffsetTop && x < (rbWidth + rbOffsetLeft) && y < (rbHeight + rbOffsetTop))
 			{
@@ -456,10 +539,10 @@ function read(path, index = 1)
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
 
-			var rbHeight = $('.reading-body').height();
-			var rbWidth = $('.reading-body').width();
-			var rbOffsetTop = $('.reading-body').offset().top;
-			var rbOffsetLeft = $('.reading-body').offset().left;
+			var rbHeight = template.contentRight('.reading-body').height();
+			var rbWidth = template.contentRight('.reading-body').width();
+			var rbOffsetTop = template.contentRight('.reading-body').offset().top;
+			var rbOffsetLeft = template.contentRight('.reading-body').offset().left;
 
 			if(!(x > rbOffsetLeft && y > rbOffsetTop && x < (rbWidth + rbOffsetLeft) && y < (rbHeight + rbOffsetTop)))
 			{
@@ -488,10 +571,10 @@ function read(path, index = 1)
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
 
-			var rbHeight = $('.reading-body').height();
-			var rbWidth = $('.reading-body').width();
-			var rbOffsetTop = $('.reading-body').offset().top;
-			var rbOffsetLeft = $('.reading-body').offset().left;
+			var rbHeight = template.contentRight('.reading-body').height();
+			var rbWidth = template.contentRight('.reading-body').width();
+			var rbOffsetTop = template.contentRight('.reading-body').offset().top;
+			var rbOffsetLeft = template.contentRight('.reading-body').offset().left;
 
 			if(x > rbOffsetLeft && y > rbOffsetTop && x < (rbWidth + rbOffsetLeft) && y < (rbHeight + rbOffsetTop))
 			{
@@ -511,8 +594,8 @@ function read(path, index = 1)
 		}
 	})
 
-	imagesNum = $('.reading-body img').length;
-	contentNum = $('.reading-body .r-img').length;
+	imagesNum = template.contentRight('.reading-body img').length;
+	contentNum = template.contentRight('.reading-body .r-img').length;
 
 	$('.reading-body img').each(function() {
 
@@ -529,7 +612,7 @@ function read(path, index = 1)
 			if(imagesNumLoad == imagesNum)
 			{
 				console.log('show');
-				$('.reading-body').css('display', 'block');
+				template.contentRight('.reading-body').css('display', 'block');
 				disposeImages();
 				calculateView();
 			}
@@ -548,7 +631,13 @@ $(window).on('resize', function(){
 	{
 		disposeImages();
 		calculateView();
-		goToIndex(currentIndex, false);
+
+		if(currentIndex < 1)
+			showPreviousComic(1, false);
+		else if(currentIndex > contentNum)
+			showNextComic(1, false);
+		else
+			goToIndex(currentIndex, false);
 	}
 })
 
@@ -564,4 +653,5 @@ module.exports = {
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
+	currentIndex: function(){return currentIndex},
 };
