@@ -96,7 +96,6 @@ function changeContentRight(html, animation, keepScroll)
 	contentRightZindex++;
 
 	contentRight = $('.content-right > div').not('.to-remove');
-	console.log(contentRight);
 }
 
 function loadContentRight(template, animation, keepScroll)

@@ -19,7 +19,7 @@ function disposeImages(data)
 
 			if(aspectRatio > image.aspectRatio)
 			{
-				$('.r-img-i'+index+' img').css({
+				template.contentRight('.r-img-i'+index+' img').css({
 					'height': contentHeight+'px',
 					'width': (contentHeight * image.aspectRatio)+'px',
 					'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + config.readingMargin.left)+'px',
@@ -28,7 +28,7 @@ function disposeImages(data)
 			}
 			else
 			{
-				$('.r-img-i'+index+' img').css({
+				template.contentRight('.r-img-i'+index+' img').css({
 					'height': (contentWidth / image.aspectRatio)+'px',
 					'width': contentWidth+'px',
 					'margin-top': ((contentHeight - contentWidth / image.aspectRatio) / 2 + config.readingMargin.top)+'px',
@@ -46,12 +46,12 @@ function calculateView()
 
 	if(config.readingView == 'slide')
 	{
-		$('.reading-body > div, .reading-lens > div > div').css({
+		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'width': (contentWidth * contentNum)+'px',
 			'height': content.height(),
 		});
 
-		$('.r-img').css({
+		template.contentRight('.r-img').css({
 			'width': contentWidth+'px',
 			'height': content.height(),
 			'float': 'left',
@@ -69,7 +69,7 @@ function calculateView()
 	}
 	else if(config.readingView == 'scroll')
 	{
-		$('.reading-body > div, .reading-lens > div > div').css({
+		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'width': '100%',
 		});
 
@@ -77,7 +77,7 @@ function calculateView()
 		{
 			var image = imagesData[index];
 
-			$('.r-img-i'+index).css({
+			template.contentRight('.r-img-i'+index).css({
 				'width': contentWidth+'px',
 				'float': 'none',
 			});
@@ -310,8 +310,6 @@ function showPreviousComic(mode, animation)
 
 		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.previousComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
 
-		//dom.openComic(true, dom.previousComic(), dom.indexMainPathA());
-
 		currentIndex = 0;
 	}
 	else
@@ -362,7 +360,7 @@ function activeMagnifyingGlass(active)
 function changeMagnifyingGlass(mode, value, save)
 {
 
-	var readingBody = $('.reading-body');
+	var readingBody = template.contentRight('.reading-body');
 
 	var width = readingBody.width(),
 		height = readingBody.height(),
@@ -424,17 +422,17 @@ function magnifyingGlassControl(mode, e, lensData)
 		var top = (y - lensHeightM);
 		var left = (x - (lensWidth / 2));
 
-		var topLens = y - $('.reading-body').offset().top - (lensHeightM / zoom);
-		var leftLens = x - $('.reading-body').offset().left - lensWidthM;
+		var topLens = y - template.contentRight('.reading-body').offset().top - (lensHeightM / zoom);
+		var leftLens = x - template.contentRight('.reading-body').offset().left - lensWidthM;
 
-		$('.reading-lens').css({
+		template.contentRight('.reading-lens').css({
 			'top': top+'px',
 			'left': left+'px',
 			'width': lensWidth+'px',
 			'height': lensHeight+'px'
 		}).removeClass('d').addClass('a');
 
-		$('.reading-lens > div').css({
+		template.contentRight('.reading-lens > div').css({
 			'transform': ' scale('+zoom+') translate(' + (-(leftLens)) + 'px, ' + (-(topLens)) + 'px)'
 		});
 
@@ -443,7 +441,7 @@ function magnifyingGlassControl(mode, e, lensData)
 	}
 	else
 	{
-		$('.reading-lens').removeClass('a').addClass('d');
+		template.contentRight('.reading-lens').removeClass('a').addClass('d');
 		magnifyingGlassView = false;
 	}
 
@@ -493,7 +491,7 @@ function read(path, index = 1)
 		}
 	})
 
-	$(/*window*/'.reading-body, .reading-lens').on('mousemove', function(e){
+	template.contentRight(/*window*/'.reading-body, .reading-lens').on('mousemove', function(e){
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
@@ -515,7 +513,7 @@ function read(path, index = 1)
 		}
 	})
 
-	$('.reading-body').on('mouseout', function(e){
+	template.contentRight('.reading-body').on('mouseout', function(e){
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['body'] = true;
@@ -524,7 +522,7 @@ function read(path, index = 1)
 		}
 	})
 
-	$('.reading-body').on('mouseenter', function(e){
+	template.contentRight('.reading-body').on('mouseenter', function(e){
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['body'] = false;
@@ -551,14 +549,14 @@ function read(path, index = 1)
 		}
 	})
 
-	$('.reading-lens').on('mouseenter', function(e){
+	template.contentRight('.reading-lens').on('mouseenter', function(e){
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['lens'] = false;
 		}
 	})
 
-	$('.reading-lens').on('touchmove', function(e){
+	template.contentRight('.reading-lens').on('touchmove', function(e){
 		if(onReading && config.readingMagnifyingGlass)
 		{
 			magnifyingGlassControl(1, e);
@@ -597,7 +595,7 @@ function read(path, index = 1)
 	imagesNum = template.contentRight('.reading-body img').length;
 	contentNum = template.contentRight('.reading-body .r-img').length;
 
-	$('.reading-body img').each(function() {
+	template.contentRight('.reading-body img').each(function() {
 
 		var index = parseInt($(this).attr('index'));
 
