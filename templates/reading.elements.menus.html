@@ -15,6 +15,16 @@
 			<input class="range" type="range" max="500" min="100" step="2" value="{{config.readingMagnifyingGlassSize}}" onrange="reading.changeMagnifyingGlass(2, \{{value}}, \{{toEnd}})">
 		</div>
 
+		<div class="simple-slider">
+			<div class="simple-slider-text">{{language.global.magnifying-glass-v.ratio}}<div><span>{{config.readingMagnifyingGlassRatio}}</span>:1</div></div>
+			<input class="range" type="range" max="2" min="0.5" step="0.01" value="{{config.readingMagnifyingGlassRatio}}" onrange="reading.changeMagnifyingGlass(3, \{{value}}, \{{toEnd}})">
+		</div>
+
+		<div class="simple-slider">
+			<div class="simple-slider-text">{{language.global.magnifying-glass-v.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
+			<input class="range" type="range" max="250" min="0" step="1" value="{{config.readingMagnifyingGlassRadius}}" onrange="reading.changeMagnifyingGlass(4, \{{value}}, \{{toEnd}})">
+		</div>
+
 	</div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass');"></div>
 </div>

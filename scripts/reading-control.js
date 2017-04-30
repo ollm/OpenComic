@@ -423,11 +423,23 @@ function changeMagnifyingGlass(mode, value, save)
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassZoom', value);
 	}
-	else
+	else if(mode == 2)
 	{
 		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {size: value});
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassSize', value);
+	}
+	else if(mode == 3)
+	{
+		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {ratio: value});
+
+		if(save) storage.updateVar('config', 'readingMagnifyingGlassRatio', value);
+	}
+	else if(mode == 4)
+	{
+		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {radius: value});
+
+		if(save) storage.updateVar('config', 'readingMagnifyingGlassRadius', value);
 	}
 }
 
@@ -447,15 +459,20 @@ function magnifyingGlassControl(mode, e, lensData)
 	if(mode == 1)
 	{
 
+		if(lensData && typeof lensData.ratio != 'undefined')
+			var ratio = 1 / lensData.ratio;
+		else
+			var ratio = 1 / config.readingMagnifyingGlassRatio;
+
 		if(lensData && typeof lensData.size != 'undefined')
 		{
 			var lensWidth = lensData.size;
-			var lensHeight = parseInt(lensData.size * 0.8);
+			var lensHeight = parseInt(lensData.size * ratio);
 		}
 		else
 		{
 			var lensWidth = config.readingMagnifyingGlassSize;
-			var lensHeight = parseInt(config.readingMagnifyingGlassSize * 0.8);
+			var lensHeight = parseInt(config.readingMagnifyingGlassSize * ratio);
 		}
 
 		if(lensData && typeof lensData.zoom != 'undefined')
@@ -476,7 +493,8 @@ function magnifyingGlassControl(mode, e, lensData)
 			'top': top+'px',
 			'left': left+'px',
 			'width': lensWidth+'px',
-			'height': lensHeight+'px'
+			'height': lensHeight+'px',
+			'border-radius': ((lensData && typeof lensData.radius != 'undefined') ? lensData.radius : config.readingMagnifyingGlassRadius)+'px'
 		}).removeClass('d').addClass('a');
 
 		template.contentRight('.reading-lens > div').css({

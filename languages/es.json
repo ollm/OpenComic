@@ -30,7 +30,9 @@
 		"magnifying-glass-v":	{
 			"activate": "Activar lupa",
 			"zoom": "Aumentos",
-			"size": "Tamaño"
+			"size": "Tamaño",
+			"ratio": "Proporción",
+			"radius": "Radio"
 		}
 	},
 	"comics": {
