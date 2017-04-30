@@ -1196,6 +1196,11 @@ body
 	background-image: url('./icons/ic_search_black_24px.svg'); 
 }
 
+.button-previous-comic
+{
+	background-image: url('./icons/ic_skip_previous_black_24px.svg'); 
+}
+
 .button-first-page
 {
 	background-image: url('./icons/ic_first_page_black_24px.svg'); 
@@ -1214,6 +1219,11 @@ body
 .button-last-page
 {
 	background-image: url('./icons/ic_last_page_black_24px.svg'); 
+}
+
+.button-next-comic
+{
+	background-image: url('./icons/ic_skip_next_black_24px.svg'); 
 }
 
 /*Reading - Start*/
