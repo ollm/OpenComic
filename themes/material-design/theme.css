@@ -1275,20 +1275,11 @@ body
 	overflow-x: hidden;
 }
 
-.reading-body.slide > div
+.reading-body > div
 {
 	width: 100%;
 	height: 100%;
 	position: relative;
-	transform-origin: left center;
-}
-
-.reading-body.scroll > div
-{
-	width: 100%;
-	height: 100%;
-	position: relative;
-	transform-origin: center top;
 }
 
 .reading-body .r-img
@@ -1375,21 +1366,6 @@ body
 	animation-name: show-out;
 	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
-}
-
-.reading-lens > div
-{
-	transform-origin: center top;
-}
-
-.reading-lens.slide > div > div
-{
-	transform-origin: left center;
-}
-
-.reading-lens.scroll > div > div
-{
-	transform-origin: center top;
 }
 
 .reading-skip > div

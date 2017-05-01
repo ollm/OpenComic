@@ -239,7 +239,9 @@ function showNextComic(mode, animation)
 				var scale = ((contentWidth - 100) / contentWidth);
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transform-origin': '0px center',
 					'transition': ((animation) ? transition : 0)+'s',
+					'transition-property': 'transform',
 					'transform': 'scale('+scale+') translate(-'+(contentWidth * (contentNum - 1))+'px, 0px)',
 				});
 			}
@@ -255,12 +257,14 @@ function showNextComic(mode, animation)
 				var scale = ((contentHeight - 100) / contentHeight);
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transform-origin': 'center '+(template.contentRight('.reading-body').height() - contentHeight)+'px',
 					'transition': ((animation) ? transition : 0)+'s',
-					'transform': 'scale('+scale+') translate(0px, '+(((template.contentRight('.reading-body').height() - (template.contentRight('.reading-body').height() * scale)) * (1 / scale)) - 100)+'px)',
+					'transition-property': 'transform',
+					'transform': 'scale('+scale+')',
 				});
 			}
 
-			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(1).queue(function(next){$(this).addClass('a');next();});
+			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
 		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.nextComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
@@ -327,8 +331,10 @@ function showPreviousComic(mode, animation)
 				var scale = ((contentWidth - 100) / contentWidth);
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transform-origin': contentWidth+'px center',
 					'transition': ((animation) ? transition : 0)+'s',
-					'transform': 'scale('+scale+') translate('+(100 / scale)+'px, 0px)',
+					'transition-property': 'transform',
+					'transform': 'scale('+scale+')',
 				});
 
 			}
@@ -344,12 +350,14 @@ function showPreviousComic(mode, animation)
 				var scale = ((contentHeight - 100) / contentHeight);
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transform-origin': 'center '+contentHeight+'px',
 					'transition': ((animation) ? transition : 0)+'s',
-					'transform': 'scale('+scale+') translate(0px, '+(100 / scale)+'px)',
+					'transition-property': 'transform',
+					'transform': 'scale('+scale+')',
 				});
 			}
 
-			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(1).queue(function(next){$(this).addClass('a');next();});
+			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
 		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.previousComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
