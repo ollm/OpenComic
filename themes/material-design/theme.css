@@ -1351,7 +1351,10 @@ body
 	z-index: 3;
 }
 
-
+.reading-lens > div
+{
+	transform-origin: center top;
+}
 
 .reading-lens.a
 {

@@ -1,6 +1,9 @@
+var changes = 1;
+
 var storageDefault = {
 	config: {
 		appVersion: package.version,
+		changes: changes,
 		language: 'es',
 		theme: 'material-design',
 		foldersFirst: true,
@@ -177,11 +180,15 @@ function start(callback)
 			}
 			else
 			{
-				if(config.appVersion != package.version)
+				if(config.appVersion != package.version || config.changes != changes)
 				{
 					newData = updateStorageMD(data[key], storageDefault[key]);
 
-					if(key == 'config') newData.appVersion = package.version; 
+					if(key == 'config')
+					{
+						newData.appVersion = package.version;
+						newData.changes = changes;
+					}
 
 					ejs.set(key, newData);
 
