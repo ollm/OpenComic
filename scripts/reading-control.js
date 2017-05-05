@@ -87,16 +87,6 @@ function calculateView()
 			'height': content.height(),
 			'float': 'left',
 		});
-
-		/*for(index in imagesData)
-		{
-			var image = imagesData[index];
-
-			$('.r-img-i'+index).css({
-				'width': contentWidth+'px',
-				'float': 'left',
-			});
-		}*/
 	}
 	else if(config.readingView == 'scroll')
 	{
@@ -116,28 +106,176 @@ function calculateView()
 	}
 }
 
-function goToIndex(index, animation)
+var previousScrollTop = 0; previousContentHeight = 0;
+
+function stayInLine()
+{
+	if(config.readingView == 'slide')
+	{
+		if(currentIndex < 1)
+			showPreviousComic(1, false);
+		else if(currentIndex > contentNum)
+			showNextComic(1, false);
+		else
+			goToIndex(currentIndex, false);
+	}
+	else if(config.readingView == 'scroll')
+	{
+		var leftScroll = template.contentLeft('.r-l-i'+currentIndex).parent();
+		var leftImg = template.contentLeft('.r-l-i'+currentIndex);
+
+		var scrollTop = (((leftImg.offset().top + leftScroll.scrollTop()) - leftScroll.offset().top) + (leftImg.outerHeight() / 2)) - (leftScroll.height() / 2);
+
+		if(scrollTop > 0 && scrollTop < (leftScroll[0].scrollHeight - leftScroll.height()))
+		{
+			leftScroll.stop(true).animate({scrollTop: scrollTop+'px'}, 0);
+		}
+		else if(scrollTop > 0)
+		{
+			leftScroll.stop(true).animate({scrollTop: (leftScroll[0].scrollHeight - leftScroll.height())+'px'}, 0);
+		}
+		else
+		{
+			leftScroll.stop(true).animate({scrollTop: 0+'px'}, 0);
+		}
+
+		var scrollTop = template.contentRight().children('div').scrollTop();
+		var contentHeight = template.contentRight().children('div').children('div').height();
+
+		var newScrollTop = (previousScrollTop * (1 - (previousContentHeight / contentHeight))) + previousScrollTop
+
+		template.contentRight().children('div').scrollTop(newScrollTop);
+
+	}
+}
+
+var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
+
+function goToIndex(index, animation, nextPrevious, end)
 {
 	animation = typeof animation === 'undefined' ? true : animation;
+	nextPrevious = typeof nextPrevious === 'undefined' ? false : nextPrevious;
+	end = typeof end === 'undefined' ? false : end;
+	center = typeof center === 'undefined' ? false : center;
 
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
 	var contentHeight = content.height();
 
+	var updateCurrentIndex = true;
+
+	var eIndex = index;
+
+	var pageVisibilityIndex = 0;
+
+	var imgHeight = false;
+
+	if(((nextPrevious && currentPageStart) || !nextPrevious) && config.readingViewAdjust == 'width')
+	{
+		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+
+		if(imgHeight > contentHeight)
+		{
+			var pageVisibility = Math.floor(imgHeight / contentHeight)
+
+			maxPageVisibility = pageVisibility;
+
+			if(readingDirection)
+				currentPageVisibility = 0;
+			else
+				currentPageVisibility = pageVisibility;
+		}
+		else
+		{
+			currentPageVisibility = 0;
+		}
+
+		currentPageStart = false;
+
+	}
+	else if(nextPrevious && !currentPageStart && config.readingViewAdjust == 'width' && !center)
+	{
+		eIndex = currentIndex;
+
+		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+
+		if(readingDirection)
+			currentPageVisibility++;
+		else
+			currentPageVisibility--;
+
+		pageVisibilityIndex = currentPageVisibility;
+
+		var pageVisibility = Math.floor(imgHeight / contentHeight);
+
+		maxPageVisibility = pageVisibility;
+
+		if(!((readingDirection && currentPageVisibility > pageVisibility) || (!readingDirection && currentPageVisibility < 0)))
+		{
+			updateCurrentIndex = false;
+		}
+		else
+		{
+			eIndex = index;
+
+			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+
+			if(imgHeight > contentHeight)
+			{
+				pageVisibility = Math.floor(imgHeight / contentHeight)
+
+				if(readingDirection)
+					currentPageVisibility = 0;
+				else
+					currentPageVisibility = pageVisibility;
+			}
+			else
+			{
+				currentPageVisibility = 0;
+			}
+			pageVisibilityIndex = currentPageVisibility;
+			currentPageStart = false;
+		}
+	}
+	else
+	{
+		currentPageStart = true;
+	}
+
 	if(config.readingView == 'slide')
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'transition': ((animation) ? config.readingViewSpeed : 0)+'s',
-			'transform': 'translate(-'+(contentWidth * (index - 1))+'px, 0)',
+			'transform': 'translate(-'+(contentWidth * (eIndex - 1))+'px, 0)',
 		});
 	}
 	else if(config.readingView == 'scroll')
 	{
-		template.contentRight('.reading-body > div, .reading-lens > div > div').scrollTop((contentHeight * (index - 1)));
+		var scrollTop = ((template.contentRight('.r-img-i'+eIndex).offset().top - config.readingMargin.top) - content.offset().top) + content.scrollTop();
+
+		scrollSum = 0;
+
+		if(config.readingViewAdjust == 'width' && pageVisibilityIndex !== false)
+		{
+			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+
+			if(imgHeight > contentHeight)
+			{
+				var pageVisibility = Math.floor(imgHeight / contentHeight);
+
+				maxPageVisibility = pageVisibility;
+
+				var contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
+
+				scrollSum = ((contentHeight - contentHeightRes) - contentHeight / pageVisibility) * pageVisibilityIndex;
+			}		
+		}
+
+		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
 	}
 
-	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
-	var leftImg = template.contentLeft('.r-l-i'+index);
+	var leftScroll = template.contentLeft('.r-l-i'+eIndex).parent();
+	var leftImg = template.contentLeft('.r-l-i'+eIndex);
 
 	template.contentLeft('.reading-left').removeClass('s');
 	leftImg.addClass('s');
@@ -146,28 +284,33 @@ function goToIndex(index, animation)
 
 	if(scrollTop > 0 && scrollTop < (leftScroll[0].scrollHeight - leftScroll.height()))
 	{
-		leftScroll.scrollTop(scrollTop);
+		leftScroll.stop(true).animate({scrollTop: scrollTop+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
 	}
 	else if(scrollTop > 0)
 	{
-		leftScroll.scrollTop((leftScroll[0].scrollHeight - leftScroll.height()));
+		leftScroll.stop(true).animate({scrollTop: (leftScroll[0].scrollHeight - leftScroll.height())+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
 	}
 	else
 	{
-		leftScroll.scrollTop(0);
+		leftScroll.stop(true).animate({scrollTop: 0+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
 	}
 
-	currentIndex = index;
+	if(updateCurrentIndex)
+		currentIndex = index;
+
+	previousReadingDirection = readingDirection;
 }
 
 function goNext()
 {
 	var nextIndex = currentIndex + 1;
 
+	readingDirection = true;
+
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= contentNum)
-		goToIndex(nextIndex, true)
+	else if(nextIndex <= contentNum || config.readingViewAdjust == 'width' && currentPageVisibility < maxPageVisibility)
+		goToIndex(nextIndex, true, true)
 	else if(nextIndex - 1 == contentNum && dom.nextComic())
 		showNextComic(1, true);
 }
@@ -176,10 +319,12 @@ function goPrevious()
 {
 	var previousIndex = currentIndex - 1;
 
+	readingDirection = false;
+
 	if(currentIndex > contentNum)
 		showNextComic(2, true);
-	else if(previousIndex > 0)
-		goToIndex(previousIndex, true)
+	else if(previousIndex > 0 || config.readingViewAdjust == 'width' && currentPageVisibility > 0)
+		goToIndex(previousIndex, true, true)
 	else if(previousIndex == 0 && dom.previousComic())
 		showPreviousComic(1, true);
 }
@@ -194,7 +339,9 @@ function goStart()
 	else if(currentIndex > contentNum)
 		showNextComic(2, true);
 
-	goToIndex(1, true)
+	readingDirection = true;
+
+	goToIndex(1, true);
 }
 
 function goEnd()
@@ -207,7 +354,9 @@ function goEnd()
 	else if(currentIndex > contentNum)
 		showNextComic(2, true);
 
-	goToIndex(contentNum, true)
+	readingDirection = false;
+
+	goToIndex(contentNum, true, false, true);
 }
 
 var showComicSkip;
@@ -527,9 +676,10 @@ function read(path, index = 1)
 
 	images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
 
-	$(window).off('keydown touchstart mouseout click');
+	$(window).off('keydown touchstart mouseout click resize');
 	$('.reading-body, .reading-lens').off('mousemove');
 	$('.reading-body').off('mouseout mouseenter touchmove');
+	$('.content-right > div > div').off('scroll');
 
 	onReading = true;
 
@@ -665,6 +815,24 @@ function read(path, index = 1)
 		}
 	})
 
+	$(window).on('resize', function(){
+		if(onReading)
+		{
+			disposeImages();
+			calculateView();
+			stayInLine();
+		}
+
+		previousContentHeight = template.contentRight().children('div').children('div').height();
+	})
+
+	template.contentRight().children('div').on('scroll', function(e){
+		
+		//console.log($(this).scrollTop());
+		previousScrollTop = $(this).scrollTop();
+
+	})
+
 	imagesNum = template.contentRight('.reading-body img').length;
 	contentNum = template.contentRight('.reading-body .r-img').length;
 
@@ -686,6 +854,11 @@ function read(path, index = 1)
 				template.contentRight('.reading-body').css('display', 'block');
 				disposeImages();
 				calculateView();
+				if(config.readingView == 'scroll')
+				{
+					goToIndex(currentIndex, false);
+					previousContentHeight = template.contentRight().children('div').children('div').height();
+				}
 			}
 
 		}
@@ -695,23 +868,6 @@ function read(path, index = 1)
 
 }
 
-$(window).off('resize');
-
-$(window).on('resize', function(){
-	if(onReading)
-	{
-		disposeImages();
-		calculateView();
-
-		if(currentIndex < 1)
-			showPreviousComic(1, false);
-		else if(currentIndex > contentNum)
-			showNextComic(1, false);
-		else
-			goToIndex(currentIndex, false);
-	}
-})
-
 module.exports = {
 	read: read,
 	images: images,
@@ -719,7 +875,7 @@ module.exports = {
 	contentNum: contentNum,
 	imagesNumLoad: imagesNumLoad,
 	imagesData: imagesData,
-	goToIndex: goToIndex,
+	goToIndex: function(v1, v2, v3){readingDirection = true; goToIndex(v1, v2, v3)},
 	goStart: goStart,
 	goPrevious: goPrevious,
 	goNext: goNext,

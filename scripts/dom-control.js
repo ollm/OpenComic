@@ -912,7 +912,7 @@ function openComic(animation, path, mainPath)
 			
 			events.events();
 
-			reading.read(path);
+			reading.read(path, indexStart);
 			reading.goToIndex(indexStart, false);
 
 		});
