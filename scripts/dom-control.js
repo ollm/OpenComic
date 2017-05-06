@@ -753,10 +753,11 @@ function selectElement(element)
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
-function openComic(animation, path, mainPath)
+function openComic(animation, path, mainPath, end)
 {
 	animation = typeof animation === 'undefined' ? true : animation;
 	mainPath = typeof mainPath === 'undefined' ? true : mainPath;
+	end = typeof end === 'undefined' ? false : end;
 
 	var startImage;
 	var imagePath = path;
@@ -912,8 +913,8 @@ function openComic(animation, path, mainPath)
 			
 			events.events();
 
-			reading.read(path, indexStart);
-			reading.goToIndex(indexStart, false);
+			reading.read(path, indexStart, end);
+			reading.goToIndex(indexStart, false, end, end);
 
 		});
 	}

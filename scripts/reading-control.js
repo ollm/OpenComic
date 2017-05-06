@@ -179,7 +179,6 @@ function goToIndex(index, animation, nextPrevious, end)
 	animation = typeof animation === 'undefined' ? true : animation;
 	nextPrevious = typeof nextPrevious === 'undefined' ? false : nextPrevious;
 	end = typeof end === 'undefined' ? false : end;
-	center = typeof center === 'undefined' ? false : center;
 
 	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
 	var animationDurationMS = animationDurationS * 1000;
@@ -196,7 +195,7 @@ function goToIndex(index, animation, nextPrevious, end)
 
 	var imgHeight = false;
 
-	if(((nextPrevious && currentPageStart) || !nextPrevious) && config.readingViewAdjust == 'width')
+	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjust == 'width')
 	{
 		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
 
@@ -206,7 +205,7 @@ function goToIndex(index, animation, nextPrevious, end)
 
 			maxPageVisibility = pageVisibility;
 
-			if(readingDirection)
+			if(readingDirection && !end)
 				currentPageVisibility = 0;
 			else
 				currentPageVisibility = pageVisibility;
@@ -216,10 +215,12 @@ function goToIndex(index, animation, nextPrevious, end)
 			currentPageVisibility = 0;
 		}
 
+		pageVisibilityIndex = currentPageVisibility;
+
 		currentPageStart = false;
 
 	}
-	else if(nextPrevious && !currentPageStart && config.readingViewAdjust == 'width' && !center)
+	else if(nextPrevious && !currentPageStart && config.readingViewAdjust == 'width')
 	{
 		eIndex = currentIndex;
 
@@ -365,7 +366,7 @@ function goEnd()
 
 	readingDirection = false;
 
-	goToIndex(contentNum, true, false, true);
+	goToIndex(contentNum, true, true, true);
 }
 
 var showComicSkip;
@@ -518,7 +519,7 @@ function showPreviousComic(mode, animation)
 			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
-		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.previousComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
+		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.previousComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -690,10 +691,12 @@ function disableOnScroll(mode)
 
 var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false;
 
-function read(path, index = 1)
+function read(path, index = 1, end)
 {
-
+	end = typeof end === 'undefined' ? false : end;
 	images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
+
+	goToIndexCL(index, false);
 
 	$(window).off('keydown touchstart mouseout click resize');
 	$('.reading-body, .reading-lens').off('mousemove');
@@ -917,7 +920,7 @@ function read(path, index = 1)
 				calculateView();
 				if(config.readingView == 'scroll')
 				{
-					goToIndex(currentIndex, false);
+					goToIndex(currentIndex, false, end, end);
 					previousContentHeight = template.contentRight().children('div').children('div').height();
 				}
 			}
@@ -936,7 +939,7 @@ module.exports = {
 	contentNum: contentNum,
 	imagesNumLoad: imagesNumLoad,
 	imagesData: imagesData,
-	goToIndex: function(v1, v2, v3){readingDirection = true; goToIndex(v1, v2, v3)},
+	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
 	goStart: goStart,
 	goPrevious: goPrevious,
 	goNext: goNext,
