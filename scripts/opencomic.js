@@ -71,6 +71,14 @@ storage.start(function(){
 
 /*Global functions*/
 
+function mousePosition(e, mode)
+{
+	if(mode == 'x')
+		return e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
+	else
+		return e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+}
+
 function htmlEntities(str)
 {
 	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

@@ -1,5 +1,5 @@
 
-var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1;
+var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {};
 
 function disposeImages(data)
 {
@@ -68,6 +68,15 @@ function disposeImages(data)
 			});
 		}
 	}*/
+
+	if(config.readingView == 'scroll')
+	{
+		template.contentRight('.reading-body .r-img').each(function(index){
+
+			imagesPosition[index+1] = $(this).position().top + ($(this).height() / 2);
+
+		});
+	}
 }
 
 function calculateView()
@@ -110,7 +119,7 @@ var previousScrollTop = 0; previousContentHeight = 0;
 
 function stayInLine()
 {
-	if(config.readingView == 'slide')
+	if(config.readingView == 'slide' || (config.readingView == 'scroll' && config.readingViewAdjust == 'contain'))
 	{
 		if(currentIndex < 1)
 			showPreviousComic(1, false);
@@ -121,31 +130,45 @@ function stayInLine()
 	}
 	else if(config.readingView == 'scroll')
 	{
-		var leftScroll = template.contentLeft('.r-l-i'+currentIndex).parent();
-		var leftImg = template.contentLeft('.r-l-i'+currentIndex);
-
-		var scrollTop = (((leftImg.offset().top + leftScroll.scrollTop()) - leftScroll.offset().top) + (leftImg.outerHeight() / 2)) - (leftScroll.height() / 2);
-
-		if(scrollTop > 0 && scrollTop < (leftScroll[0].scrollHeight - leftScroll.height()))
-		{
-			leftScroll.stop(true).animate({scrollTop: scrollTop+'px'}, 0);
-		}
-		else if(scrollTop > 0)
-		{
-			leftScroll.stop(true).animate({scrollTop: (leftScroll[0].scrollHeight - leftScroll.height())+'px'}, 0);
-		}
-		else
-		{
-			leftScroll.stop(true).animate({scrollTop: 0+'px'}, 0);
-		}
+		goToIndexCL(currentIndex, false);
 
 		var scrollTop = template.contentRight().children('div').scrollTop();
 		var contentHeight = template.contentRight().children('div').children('div').height();
 
 		var newScrollTop = (previousScrollTop * (1 - (previousContentHeight / contentHeight))) + previousScrollTop
 
+		disableOnScroll(1);
+
 		template.contentRight().children('div').scrollTop(newScrollTop);
 
+	}
+}
+
+function goToIndexCL(index, animation)
+{
+	animation = typeof animation === 'undefined' ? true : animation;
+
+	var animationDurationMS = ((animation) ? config.readingViewSpeed : 0) * 1000;
+
+	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
+	var leftImg = template.contentLeft('.r-l-i'+index);
+
+	template.contentLeft('.reading-left').removeClass('s');
+	leftImg.addClass('s');
+
+	var scrollTop = (((leftImg.offset().top + leftScroll.scrollTop()) - leftScroll.offset().top) + (leftImg.outerHeight() / 2)) - (leftScroll.height() / 2);
+
+	if(scrollTop > 0 && scrollTop < (leftScroll[0].scrollHeight - leftScroll.height()))
+	{
+		leftScroll.stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+	}
+	else if(scrollTop > 0)
+	{
+		leftScroll.stop(true).animate({scrollTop: (leftScroll[0].scrollHeight - leftScroll.height())+'px'}, animationDurationMS);
+	}
+	else
+	{
+		leftScroll.stop(true).animate({scrollTop: 0+'px'}, animationDurationMS);
 	}
 }
 
@@ -157,6 +180,9 @@ function goToIndex(index, animation, nextPrevious, end)
 	nextPrevious = typeof nextPrevious === 'undefined' ? false : nextPrevious;
 	end = typeof end === 'undefined' ? false : end;
 	center = typeof center === 'undefined' ? false : center;
+
+	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
+	var animationDurationMS = animationDurationS * 1000;
 
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
@@ -245,7 +271,7 @@ function goToIndex(index, animation, nextPrevious, end)
 	if(config.readingView == 'slide')
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-			'transition': ((animation) ? config.readingViewSpeed : 0)+'s',
+			'transition': animationDurationS+'s',
 			'transform': 'translate(-'+(contentWidth * (eIndex - 1))+'px, 0)',
 		});
 	}
@@ -271,29 +297,12 @@ function goToIndex(index, animation, nextPrevious, end)
 			}		
 		}
 
-		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
+		disableOnScroll(1)
+
+		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
-	var leftScroll = template.contentLeft('.r-l-i'+eIndex).parent();
-	var leftImg = template.contentLeft('.r-l-i'+eIndex);
-
-	template.contentLeft('.reading-left').removeClass('s');
-	leftImg.addClass('s');
-
-	var scrollTop = (((leftImg.offset().top + leftScroll.scrollTop()) - leftScroll.offset().top) + (leftImg.outerHeight() / 2)) - (leftScroll.height() / 2);
-
-	if(scrollTop > 0 && scrollTop < (leftScroll[0].scrollHeight - leftScroll.height()))
-	{
-		leftScroll.stop(true).animate({scrollTop: scrollTop+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
-	}
-	else if(scrollTop > 0)
-	{
-		leftScroll.stop(true).animate({scrollTop: (leftScroll[0].scrollHeight - leftScroll.height())+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
-	}
-	else
-	{
-		leftScroll.stop(true).animate({scrollTop: 0+'px'}, ((animation) ? config.readingViewSpeed : 0) * 1000);
-	}
+	goToIndexCL(eIndex, animation);
 
 	if(updateCurrentIndex)
 		currentIndex = index;
@@ -309,8 +318,8 @@ function goNext()
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= contentNum || config.readingViewAdjust == 'width' && currentPageVisibility < maxPageVisibility)
-		goToIndex(nextIndex, true, true)
+	else if(nextIndex <= contentNum || (config.readingViewAdjust == 'width' && currentPageVisibility < maxPageVisibility))
+		goToIndex(nextIndex, true, true);
 	else if(nextIndex - 1 == contentNum && dom.nextComic())
 		showNextComic(1, true);
 }
@@ -323,7 +332,7 @@ function goPrevious()
 
 	if(currentIndex > contentNum)
 		showNextComic(2, true);
-	else if(previousIndex > 0 || config.readingViewAdjust == 'width' && currentPageVisibility > 0)
+	else if(previousIndex > 0 || (config.readingViewAdjust == 'width' && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
 	else if(previousIndex == 0 && dom.previousComic())
 		showPreviousComic(1, true);
@@ -669,7 +678,17 @@ function magnifyingGlassControl(mode, e, lensData)
 
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false};
+var activeOnScroll = true;
+
+function disableOnScroll(mode)
+{
+	if(mode == 1)
+		activeOnScroll = false;
+	else
+		activeOnScroll = true;
+}
+
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false;
 
 function read(path, index = 1)
 {
@@ -708,6 +727,10 @@ function read(path, index = 1)
 	$(window).on('touchstart', function(e){
 		if(onReading && config.readingMagnifyingGlass)
 		{
+			touchStart = e;
+
+			magnifyingGlassOffset = template.contentRight('.reading-lens').offset();
+
 			clearTimeout(touchTimeout);
 			readingTouchEvent = true;
 			touchTimeout = setTimeout('readingTouchEvent = false;', 500);
@@ -782,7 +805,18 @@ function read(path, index = 1)
 	template.contentRight('.reading-lens').on('touchmove', function(e){
 		if(onReading && config.readingMagnifyingGlass)
 		{
-			magnifyingGlassControl(1, e);
+
+			let x = mousePosition(touchStart, 'x'), y = mousePosition(touchStart, 'y');
+
+			let readingLens = template.contentRight('.reading-lens');
+
+			let xLess = x - (magnifyingGlassOffset.left + (readingLens.width() / 2));
+			let yLess = y - (magnifyingGlassOffset.top + (readingLens.height() / 2));
+
+			let pageX = e.originalEvent.touches[0].pageX - xLess;
+			let pageY = e.originalEvent.touches[0].pageY - yLess;
+
+			magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}});
 		}
 	})
 
@@ -824,14 +858,41 @@ function read(path, index = 1)
 		}
 
 		previousContentHeight = template.contentRight().children('div').children('div').height();
-	})
+	});
+
+	$(window).on('mousewheel touchstart keydown', function(e)
+	{
+		if(e.type != 'keydown' || (e.type == 'keydown' && (e.keyCode == 38 || e.keyCode == 40)))
+			disableOnScroll(2);
+	});
 
 	template.contentRight().children('div').on('scroll', function(e){
-		
-		//console.log($(this).scrollTop());
-		previousScrollTop = $(this).scrollTop();
 
-	})
+		if(activeOnScroll && config.readingView == 'scroll')
+		{
+			previousScrollTop = $(this).scrollTop();
+			let contentHeight = template.contentRight().children('div').height(), contentPosition = (previousScrollTop + (contentHeight / 2));
+
+			let selIndex = false, selPosition = false;
+
+			for(index in imagesPosition)
+			{
+				if(!selIndex || Math.abs(contentPosition - imagesPosition[index]) < selPosition)
+				{
+					selIndex = index;
+					selPosition = Math.abs(contentPosition - imagesPosition[index]);
+				}
+			}
+
+			if(currentIndex != selIndex)
+			{
+				goToIndexCL(selIndex, true);
+
+				currentIndex = parseInt(selIndex);
+			}
+		}
+
+	});
 
 	imagesNum = template.contentRight('.reading-body img').length;
 	contentNum = template.contentRight('.reading-body .r-img').length;
@@ -884,5 +945,6 @@ module.exports = {
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
+	disableOnScroll: disableOnScroll,
 	currentIndex: function(){return currentIndex},
 };
