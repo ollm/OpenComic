@@ -6,7 +6,7 @@
 		"sort":	"Sort",
 		"sort-v":	{
 			"name":	"Name",
-			"number": "Last added",
+			"number": "Number",
 			"name-number": "Name / Number",
 			"last-add": "Last add",
 			"last-reading":	"Last reading",
