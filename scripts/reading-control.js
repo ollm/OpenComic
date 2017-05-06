@@ -701,7 +701,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(false, currentIndex);
+		read(readingCurrentPath, currentIndex);
 	}
 	else if(mode == 2)
 	{
@@ -715,16 +715,43 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(false, currentIndex);
+		read(readingCurrentPath, currentIndex);
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false;
+function createBookmark()
+{
+	if(currentIndex <= contentNum && currentIndex > 0 && !template.contentRight('.r-img-i'+currentIndex).hasClass('floder'))
+	{
+
+		var path = p.normalize(images[currentIndex].src);
+		var sha = sha1(path);
+
+		if(typeof readingCurrentBoockmarks[sha1] != 'undefined')
+		{
+			delete readingCurrentBoockmarks[sha1];
+		}
+		else
+		{
+			readingCurrentBoockmarks[sha1] = true;
+		}
+
+		storage.updateVar('bookmarks', readingCurrentSha, readingCurrentBoockmarks);
+	}
+}
+
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false,  readingCurrentSha = false, readingCurrentBoockmarks = {};
 
 function read(path, index = 1, end)
 {
 	end = typeof end === 'undefined' ? false : end;
 	images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
+
+	readingCurrentPath = path;
+	readingCurrentSha = sha1(p.dirname(path));
+
+	if(typeof storage.get('bookmarks') != 'undefined' && typeof storage.get('bookmarks')[readingCurrentSha] != 'undefined')
+		readingCurrentBoockmarks = storage.get('bookmarks')[readingCurrentSha];
 
 	goToIndexCL(index, false);
 
@@ -980,5 +1007,6 @@ module.exports = {
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
 	disableOnScroll: disableOnScroll,
+	createBookmark: createBookmark,
 	currentIndex: function(){return currentIndex},
 };

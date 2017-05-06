@@ -1,4 +1,4 @@
-var changes = 3;
+var changes = 5;
 
 var storageDefault = {
 	config: {
@@ -41,13 +41,15 @@ var storageDefault = {
 	},
 	{
 		name: 'Pepper & Carrot',
-		path: appDir+'/Pepper & Carrot',
+		path: p.join(appDir, 'Pepper & Carrot'),
 		lastReading: 0,
 		added: 0,
 		compressed: false,
 		bookmark: false,
 		folder: true,
 	}],
+	bookmarks: {wildcard: {}
+	},
 	cache: {wildcard: {
 			lastAccess: 0,
 			size: 0,

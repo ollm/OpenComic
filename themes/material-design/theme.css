@@ -1254,6 +1254,20 @@ body
 	background-image: url('./icons/ic_tune_black_24px.svg'); 
 }
 
+.button-collections-bookmark
+{
+	background-image: url('./icons/ic_collections_bookmark_black_24px.svg'); 
+}
+
+.button-bookmark
+{
+	background-image: url('./icons/ic_bookmark_black_24px.svg'); 
+}
+
+.button-bookmark-border
+{
+	background-image: url('./icons/ic_bookmark_border_black_24px.svg'); 
+}
 
 /*Reading - Start*/
 
