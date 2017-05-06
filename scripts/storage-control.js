@@ -1,4 +1,4 @@
-var changes = 1;
+var changes = 3;
 
 var storageDefault = {
 	config: {
@@ -15,8 +15,9 @@ var storageDefault = {
 		sortInvert: false,
 		readingView: 'slide',
 		readingViewSpeed: 0.3,
-		readingViewAdjust: 'contain',
+		readingViewAdjustToWidth: false,
 		readingMargin: {
+			margin: 16,
 			top: 16,
 			bottom: 16,
 			left: 16,

@@ -1,16 +1,21 @@
 
 var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {};
 
-function disposeImages(data)
+function disposeImages(data, margin)
 {
 	data = typeof data === 'undefined' ? false : data;
 
+	if(data && typeof data.margin !== 'undefined')
+		var margin = data.margin;
+	else
+		var margin = config.readingMargin.margin;
+
 	var content = template.contentRight().children('div');
-	var contentWidth = template.contentRight().width() - (config.readingMargin.left + config.readingMargin.right + (data && typeof data.marginLeft !== 'undefined' ? data.marginLeft : 0));
-	var contentHeight = content.height() - (config.readingMargin.bottom + config.readingMargin.top + (data && typeof data.marginTop !== 'undefined' ? data.marginTop : 0));
+	var contentWidth = template.contentRight().width() - (margin + margin);
+	var contentHeight = content.height() - (margin + margin);
 	var aspectRatio = contentWidth / contentHeight;
 
-	if(config.readingViewAdjust == 'contain')
+	if(!config.readingViewAdjustToWidth)
 	{
 
 		for(index in imagesData)
@@ -22,9 +27,9 @@ function disposeImages(data)
 				template.contentRight('.r-img-i'+index+' img').css({
 					'height': contentHeight+'px',
 					'width': (contentHeight * image.aspectRatio)+'px',
-					'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + config.readingMargin.left)+'px',
-					'margin-top': config.readingMargin.top+'px',
-					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? config.readingMargin.bottom : 0)+'px'
+					'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + margin)+'px',
+					'margin-top': margin+'px',
+					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
 				});
 			}
 			else
@@ -32,14 +37,14 @@ function disposeImages(data)
 				template.contentRight('.r-img-i'+index+' img').css({
 					'height': (contentWidth / image.aspectRatio)+'px',
 					'width': contentWidth+'px',
-					'margin-top': ((config.readingView == 'scroll') ? config.readingMargin.top : ((contentHeight - contentWidth / image.aspectRatio) / 2 + config.readingMargin.top))+'px',
-					'margin-left': config.readingMargin.left+'px',
-					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? config.readingMargin.bottom : 0)+'px'
+					'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / image.aspectRatio) / 2 + margin))+'px',
+					'margin-left': margin+'px',
+					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
 				});
 			}
 		}
 	}
-	else if(config.readingViewAdjust == 'width' && config.readingView == 'scroll')
+	else if(config.readingViewAdjustToWidth && config.readingView == 'scroll')
 	{
 		for(index in imagesData)
 		{
@@ -48,26 +53,12 @@ function disposeImages(data)
 			template.contentRight('.r-img-i'+index+' img').css({
 				'height': (contentWidth / image.aspectRatio)+'px',
 				'width': contentWidth+'px',
-				'margin-top': config.readingMargin.top+'px',
-				'margin-left': config.readingMargin.left+'px',
-				'margin-bottom': ((index == imagesNum) ? config.readingMargin.bottom : 0)+'px'
+				'margin-top': margin+'px',
+				'margin-left': margin+'px',
+				'margin-bottom': ((index == imagesNum) ? margin : 0)+'px'
 			});
 		}
 	}
-	/*else if(config.readingViewAdjust == 'height')
-	{
-		for(index in imagesData)
-		{
-			var image = imagesData[index];
-
-			template.contentRight('.r-img-i'+index+' img').css({
-				'height': contentHeight+'px',
-				'width': (contentHeight * image.aspectRatio)+'px',
-				'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + config.readingMargin.left)+'px',
-				'margin-top': config.readingMargin.top+'px'
-			});
-		}
-	}*/
 
 	if(config.readingView == 'scroll')
 	{
@@ -119,7 +110,7 @@ var previousScrollTop = 0; previousContentHeight = 0;
 
 function stayInLine()
 {
-	if(config.readingView == 'slide' || (config.readingView == 'scroll' && config.readingViewAdjust == 'contain'))
+	if(config.readingView == 'slide' || (config.readingView == 'scroll' && !config.readingViewAdjustToWidth))
 	{
 		if(currentIndex < 1)
 			showPreviousComic(1, false);
@@ -195,9 +186,9 @@ function goToIndex(index, animation, nextPrevious, end)
 
 	var imgHeight = false;
 
-	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjust == 'width')
+	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjustToWidth)
 	{
-		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
 
 		if(imgHeight > contentHeight)
 		{
@@ -220,11 +211,11 @@ function goToIndex(index, animation, nextPrevious, end)
 		currentPageStart = false;
 
 	}
-	else if(nextPrevious && !currentPageStart && config.readingViewAdjust == 'width')
+	else if(nextPrevious && !currentPageStart && config.readingViewAdjustToWidth)
 	{
 		eIndex = currentIndex;
 
-		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -245,7 +236,7 @@ function goToIndex(index, animation, nextPrevious, end)
 		{
 			eIndex = index;
 
-			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
 
 			if(imgHeight > contentHeight)
 			{
@@ -278,13 +269,13 @@ function goToIndex(index, animation, nextPrevious, end)
 	}
 	else if(config.readingView == 'scroll')
 	{
-		var scrollTop = ((template.contentRight('.r-img-i'+eIndex).offset().top - config.readingMargin.top) - content.offset().top) + content.scrollTop();
+		var scrollTop = ((template.contentRight('.r-img-i'+eIndex).offset().top - config.readingMargin.margin) - content.offset().top) + content.scrollTop();
 
 		scrollSum = 0;
 
-		if(config.readingViewAdjust == 'width' && pageVisibilityIndex !== false)
+		if(config.readingViewAdjustToWidth && pageVisibilityIndex !== false)
 		{
-			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.top + config.readingMargin.bottom;
+			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
 
 			if(imgHeight > contentHeight)
 			{
@@ -319,7 +310,7 @@ function goNext()
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= contentNum || (config.readingViewAdjust == 'width' && currentPageVisibility < maxPageVisibility))
+	else if(nextIndex <= contentNum || (config.readingViewAdjustToWidth && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
 	else if(nextIndex - 1 == contentNum && dom.nextComic())
 		showNextComic(1, true);
@@ -333,7 +324,7 @@ function goPrevious()
 
 	if(currentIndex > contentNum)
 		showNextComic(2, true);
-	else if(previousIndex > 0 || (config.readingViewAdjust == 'width' && currentPageVisibility > 0))
+	else if(previousIndex > 0 || (config.readingViewAdjustToWidth && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
 	else if(previousIndex == 0 && dom.previousComic())
 		showPreviousComic(1, true);
@@ -689,6 +680,45 @@ function disableOnScroll(mode)
 		activeOnScroll = true;
 }
 
+function changePagesView(mode, value, save)
+{
+	if(mode == 1)
+	{
+		storage.updateVar('config', 'readingView', value);
+
+		dom.selectElement('.pages-'+value);	
+
+		if(value == 'slide' && config.readingViewAdjustToWidth)
+		{
+			storage.updateVar('config', 'readingViewAdjustToWidth', false);
+			template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
+		}
+
+		if(value == 'slide')
+			template.globalElement('.reading-ajust-to-width').addClass('disable-pointer');
+		else
+			template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
+
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(false, currentIndex);
+	}
+	else if(mode == 2)
+	{
+		disposeImages({margin: value})
+
+		if(save) storage.updateVar('config', 'readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
+	}
+	else if(mode == 3)
+	{
+		storage.updateVar('config', 'readingViewAdjustToWidth', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(false, currentIndex);
+	}
+}
+
 var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false;
 
 function read(path, index = 1, end)
@@ -918,9 +948,9 @@ function read(path, index = 1, end)
 				template.contentRight('.reading-body').css('display', 'block');
 				disposeImages();
 				calculateView();
+				goToIndex(currentIndex, false, end, end);
 				if(config.readingView == 'scroll')
 				{
-					goToIndex(currentIndex, false, end, end);
 					previousContentHeight = template.contentRight().children('div').children('div').height();
 				}
 			}
@@ -946,6 +976,7 @@ module.exports = {
 	goEnd: goEnd,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
+	changePagesView: changePagesView,
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
 	disableOnScroll: disableOnScroll,

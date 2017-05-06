@@ -195,6 +195,26 @@ function callbackString(callback)
 
 /*Handlebars helpers*/
 
+hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
+
+	var operators = {
+		'==':	function(l,r) { return l == r; },
+		'===':	function(l,r) { return l === r; },
+		'!=':	function(l,r) { return l != r; },
+		'<':	function(l,r) { return l < r; },
+		'>':	function(l,r) { return l > r; },
+		'<=':	function(l,r) { return l <= r; },
+		'>=':	function(l,r) { return l >= r; },
+		'typeof':	function(l,r) { return typeof l == r; }
+	}
+
+	var result = operators[operator](lvalue,rvalue);
+
+	if(result)
+		return options.fn(this);
+
+});
+
 hb.registerHelper('isEmpty', function(obj) {
 
 	return isEmpty(obj);

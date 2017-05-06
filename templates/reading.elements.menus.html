@@ -1,30 +1,54 @@
 <div class="menu" id="reading-magnifying-glass">
 	<div class="menu-simple" style="width: 256px;">
 		<div class="menu-simple-text">
-			{{language.global.magnifying-glass-v.activate}}
+			{{language.reading.magnifying-glass-v.activate}}
 			<div class="switch{{#if config.readingMagnifyingGlass}} a{{/if}}" on="reading.activeMagnifyingGlass(true)" off="reading.activeMagnifyingGlass(false)"></div>
 		</div>
 
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.global.magnifying-glass-v.zoom}}<div><span>{{config.readingMagnifyingGlassZoom}}</span>x</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.zoom}}<div><span>{{config.readingMagnifyingGlassZoom}}</span>x</div></div>
 			<input class="range" type="range" max="6" min="1.5" step="0.1" value="{{config.readingMagnifyingGlassZoom}}" onrange="reading.changeMagnifyingGlass(1, \{{value}}, \{{toEnd}})">
 		</div>
 
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.global.magnifying-glass-v.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
 			<input class="range" type="range" max="500" min="100" step="2" value="{{config.readingMagnifyingGlassSize}}" onrange="reading.changeMagnifyingGlass(2, \{{value}}, \{{toEnd}})">
 		</div>
 
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.global.magnifying-glass-v.ratio}}<div><span>{{config.readingMagnifyingGlassRatio}}</span>:1</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.ratio}}<div><span>{{config.readingMagnifyingGlassRatio}}</span>:1</div></div>
 			<input class="range" type="range" max="2" min="0.5" step="0.01" value="{{config.readingMagnifyingGlassRatio}}" onrange="reading.changeMagnifyingGlass(3, \{{value}}, \{{toEnd}})">
 		</div>
 
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.global.magnifying-glass-v.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
 			<input class="range" type="range" max="250" min="0" step="1" value="{{config.readingMagnifyingGlassRadius}}" onrange="reading.changeMagnifyingGlass(4, \{{value}}, \{{toEnd}})">
 		</div>
 
 	</div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass');"></div>
 </div>
+<div class="menu" id="reading-pages">
+	<div class="menu-simple" style="width: 256px;">
+
+		<div class="menu-simple-element pages-slide" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages-v.slide}}</div>
+		<div class="menu-simple-element pages-scroll" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages-v.scroll}}</div>
+
+		<div class="menu-simple-separator"></div>
+
+		<div class="menu-simple-text reading-ajust-to-width{{#compare config.readingView '==' 'slide'}} disable-pointer{{/compare}}">
+			{{language.reading.pages-v.adjust-to-width}}
+			<div class="switch{{#if config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)"></div>
+		</div>
+
+		<div class="simple-slider">
+			<div class="simple-slider-text">{{language.reading.pages-v.margin}}<div><span>{{config.readingMargin.margin}}</span>px</div></div>
+			<input class="range" type="range" max="100" min="0" step="1" value="{{config.readingMargin.margin}}" onrange="reading.changePagesView(2, \{{value}}, \{{toEnd}})">
+		</div>
+
+	</div>
+	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-pages');"></div>
+</div>
+<script type="text/javascript">
+	dom.selectElement('.pages-{{config.readingView}}');	
+</script>

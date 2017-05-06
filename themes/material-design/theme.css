@@ -329,6 +329,13 @@ body
 	overflow: hidden;
 }
 
+.disable-pointer
+{
+	opacity: 0.5;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
 .bar-header
 {
 	height: 48px;
@@ -551,6 +558,12 @@ body
 	height: 48px;
 	border-left: 0.5px solid rgba(0, 0, 0, 0.1);
 	margin: 0px 12px;
+}
+
+.menu-simple-separator
+{
+	border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+	margin: 12px 0;
 }
 
 /*icons*/
@@ -1225,6 +1238,22 @@ body
 {
 	background-image: url('./icons/ic_skip_next_black_24px.svg'); 
 }
+
+.button-pages
+{
+	background-image: url('./icons/ic_pages_black_24px.svg'); 
+}
+
+.button-style
+{
+	background-image: url('./icons/ic_style_black_24px.svg'); 
+}
+
+.button-tune
+{
+	background-image: url('./icons/ic_tune_black_24px.svg'); 
+}
+
 
 /*Reading - Start*/
 

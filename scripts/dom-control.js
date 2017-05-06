@@ -365,25 +365,28 @@ function sortFiles(files)
 
 function returnFiles(path)
 {
-	var files = fs.readdirSync(path);
-
-	var filteredFiles = [];
-
-	if(files)
+	if(fs.existsSync(path))
 	{
-		for(var i = 0; i < files.length; i++)
+		var files = fs.readdirSync(path);
+
+		var filteredFiles = [];
+
+		if(files)
 		{
-			var filePath = path+'/'+files[i];
+			for(var i = 0; i < files.length; i++)
+			{
+				var filePath = path+'/'+files[i];
 
-			if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
-				filteredFiles.push({name: files[i], path: filePath, folder: false});
-			else if(fs.statSync(filePath).isDirectory())
-				filteredFiles.push({name: files[i], path: filePath, folder: true});
+				if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
+					filteredFiles.push({name: files[i], path: filePath, folder: false});
+				else if(fs.statSync(filePath).isDirectory())
+					filteredFiles.push({name: files[i], path: filePath, folder: true});
 
+			}
+
+			if(filteredFiles.length > 0)
+				return filteredFiles;
 		}
-
-		if(filteredFiles.length > 0)
-			return filteredFiles;
 	}
 }
 
@@ -914,7 +917,6 @@ function openComic(animation, path, mainPath, end)
 			events.events();
 
 			reading.read(path, indexStart, end);
-			reading.goToIndex(indexStart, false, end, end);
 
 		});
 	}

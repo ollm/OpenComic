@@ -48,7 +48,7 @@ function loadTemplateFunction(file, functionVar)
 
 //Control template
 
-var contentLeft = false, contentRight = false, barHeader = false;
+var contentLeft = false, contentRight = false, barHeader = false, globalElement = false;
 
 var contentLeftZindex = 1;
 
@@ -126,6 +126,7 @@ function loadHeader(template, animation)
 function changeGlobalElement(html, element)
 {
 	$('.global-elements .'+element).html(html);
+	globalElement = $('.global-elements').not('.to-remove');
 }
 
 function loadGlobalElement(template, element)
@@ -157,6 +158,14 @@ function selectBarHeader(query)
 		return barHeader;
 }
 
+function selectGlobalElement(query)
+{
+	if(typeof query !== 'undefined')
+		return globalElement.find(query);
+	else
+		return globalElement;
+}
+
 module.exports = {
 	load: loadTemplate,
 	loadInFunction: loadTemplateFunction,
@@ -171,6 +180,7 @@ module.exports = {
 	contentLeft: selectContentLeft,
 	contentRight: selectContentRight,
 	barHeader: selectBarHeader,
+	globalElement: selectGlobalElement,
 	loadGlobalElement: loadGlobalElement,
 	registerPartial: registerPartial,
 };
