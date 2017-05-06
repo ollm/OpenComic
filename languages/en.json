@@ -6,11 +6,47 @@
 		"sort":	"Sort",
 		"sort-v":	{
 			"name":	"Name",
-			"last-add": "Last added",
-			"last-reading":	"Last reading"
+			"number": "Last added",
+			"name-number": "Name / Number",
+			"last-add": "Last add",
+			"last-reading":	"Last reading",
+			"folders-first":	"Folders first",
+			"invert":	"Invert"
 		},
 		"view":	"View",
+		"view-v":	{
+			"module":	"Grid",
+			"list": "List"
+		},
+		"back":	"Back",
+		"add":	"Add",
 		"language":	"Language",
 		"theme":	"Theme"
+	},
+	"comics": {
+		"emptyIndex": "There are no comics in this collection.",
+		"emptyFolder": "There is no compatible file in this folder."
+	},
+	"reading": {
+		"first-page":	"First page",
+		"previous":	"Previous",
+		"next":	"Next",
+		"last-page":	"Last page",
+
+		"pages":	"Pages",
+		"pages-v":	{
+			"slide":	"Slide",
+			"scroll":	"Scroll down",
+			"adjust-to-width":	"Adjust to width",
+			"margin":	"Margin"
+		},
+		"magnifying-glass":	"Magnifying glass",
+		"magnifying-glass-v":	{
+			"activate": "Activate",
+			"zoom": "Zoom",
+			"size": "Size",
+			"ratio": "Ratio",
+			"radius": "Radius"
+		}
 	}
 }
