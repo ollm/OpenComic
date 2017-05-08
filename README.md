@@ -2,6 +2,10 @@
 
 This software is under development.
 
+## ScreenShot
+
+![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYlckNFTkF6QmdVbE0 "Screenshot")
+
 ## Installation and Starting
 __Requirements__: Git, Node, and NPM
 
