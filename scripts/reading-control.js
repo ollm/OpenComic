@@ -1,9 +1,8 @@
 
 var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {};
 
-function disposeImages(data, margin)
+function disposeImages(data = false)
 {
-	data = typeof data === 'undefined' ? false : data;
 
 	if(data && typeof data.margin !== 'undefined')
 		var margin = data.margin;
@@ -135,10 +134,8 @@ function stayInLine()
 	}
 }
 
-function goToIndexCL(index, animation)
+function goToIndexCL(index, animation = true)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-
 	var animationDurationMS = ((animation) ? config.readingViewSpeed : 0) * 1000;
 
 	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
@@ -165,12 +162,8 @@ function goToIndexCL(index, animation)
 
 var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
 
-function goToIndex(index, animation, nextPrevious, end)
+function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-	nextPrevious = typeof nextPrevious === 'undefined' ? false : nextPrevious;
-	end = typeof end === 'undefined' ? false : end;
-
 	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
 	var animationDurationMS = animationDurationS * 1000;
 
@@ -362,9 +355,8 @@ function goEnd()
 
 var showComicSkip;
 
-function showNextComic(mode, animation)
+function showNextComic(mode, animation = true)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
 	var contentHeight = content.height();
@@ -453,9 +445,8 @@ function showNextComic(mode, animation)
 }
 
 
-function showPreviousComic(mode, animation)
+function showPreviousComic(mode, animation = true)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
 	var contentHeight = content.height();
@@ -603,12 +594,10 @@ function changeMagnifyingGlass(mode, value, save)
 
 var magnifyingGlassView = false;
 
-function magnifyingGlassControl(mode, e, lensData)
+function magnifyingGlassControl(mode, e = false, lensData = false)
 {
 
-	if(typeof lensData == 'undefined') lensData = false;
-
-	if(typeof e != 'undefined')
+	if(e)
 	{
 		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
@@ -742,9 +731,8 @@ function createBookmark()
 
 var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false,  readingCurrentSha = false, readingCurrentBoockmarks = {};
 
-function read(path, index = 1, end)
+function read(path, index = 1, end = false)
 {
-	end = typeof end === 'undefined' ? false : end;
 	images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
 
 	readingCurrentPath = path;

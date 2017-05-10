@@ -84,10 +84,8 @@ function htmlEntities(str)
 	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function escapeQuotes(str, mode)
+function escapeQuotes(str, mode = false)
 {
-	mode = typeof mode === 'undefined' ? false : mode;
-
 	if(mode === 'simples')
 		return String(str).replace(/'/g, '\\\'');
 	else if(mode === 'doubles')

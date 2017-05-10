@@ -55,18 +55,20 @@ function cleanQueue()
 
 var data = false;
 
-function returnCacheImage(file, sha, callback)
+function returnCacheImage(file, sha, callback = false)
 {
 
 	if(!data) data = storage.get('cache');
 
-	if(typeof callback == 'undefined')
+	if(!callback)
 	{
 		callback = sha;
 		sha = sha1(file);
 	}
 	
 	var size = Math.round(window.devicePixelRatio * 150);
+
+	console.log(window.devicePixelRatio);
 
 	var imgCache = data[sha];
 

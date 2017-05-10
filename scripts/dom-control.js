@@ -1,10 +1,9 @@
 
 /*Page - Index*/
 
-function orderBy(a, b, mode, key)
+function orderBy(a, b, mode, key = false)
 {
-
-	if(typeof key != 'undefined')
+	if(key)
 	{
 		var aValue = a[key].toLowerCase();
 		var bValue = b[key].toLowerCase();
@@ -82,14 +81,8 @@ var indexPathControlA = [];
 
 var indexPathA = false, indexMainPathA = false;
 
-function loadIndexPage(animation, path, content, keepScroll, mainPath)
+function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-	path = typeof path === 'undefined' ? false : path;
-	content = typeof content === 'undefined' ? false : content;
-	keepScroll = typeof keepScroll === 'undefined' ? false : keepScroll;
-	mainPath = typeof mainPath === 'undefined' ? false : mainPath;
-
 	onReading = false;
 
 	if(!path)
@@ -468,9 +461,9 @@ function previousComic(path, mainPath)
 	return false;
 }
 
-function folderImages(path, num, mode)
+function folderImages(path, num, mode = false)
 {
-	if(typeof mode == 'undefined')
+	if(!mode)
 	{
 		var dirs = [];
 
@@ -615,10 +608,8 @@ function indexPathControl(mode)
 
 /*Page - Languages*/
 
-function loadLanguagesPage(animation)
+function loadLanguagesPage(animation = true)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-
 	onReading = false;
 
 	if(typeof handlebarsContext.languagesList == 'undefined')
@@ -756,12 +747,8 @@ function selectElement(element)
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
-function openComic(animation, path, mainPath, end)
+function openComic(animation = true, path = true, mainPath = true, end = false)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-	mainPath = typeof mainPath === 'undefined' ? true : mainPath;
-	end = typeof end === 'undefined' ? false : end;
-
 	var startImage;
 	var imagePath = path;
 	var indexStart = 1;

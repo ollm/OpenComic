@@ -52,10 +52,8 @@ var contentLeft = false, contentRight = false, barHeader = false, globalElement 
 
 var contentLeftZindex = 1;
 
-function changeContentLeft(html, animation)
+function changeContentLeft(html, animation = true)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-
 	$('.content-left > div.to-remove').remove();
 	$('.content-left > div').addClass('to-remove');
 	$('.content-left').append('<div '+(animation ? 'class="a"' : '')+'style="z-index: ' + contentLeftZindex + ';"><div>'+html+'</div></div>');
@@ -71,11 +69,8 @@ function loadContentLeft(template, animation)
 
 var contentRightZindex = 1;
 
-function changeContentRight(html, animation, keepScroll)
+function changeContentRight(html, animation = true, keepScroll = false)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-	keepScroll = typeof keepScroll === 'undefined' ? false : keepScroll;
-
 	$('.content-right > div.to-remove').remove();
 	$('.content-right > div').addClass('to-remove');
 
@@ -106,10 +101,8 @@ function loadContentRight(template, animation, keepScroll)
 
 var headerZindex = 1;
 
-function changeHeader(html, animation)
+function changeHeader(html, animation = true)
 {
-	animation = typeof animation === 'undefined' ? true : animation;
-
 	$('.bar-header > div.to-remove').remove();
 	$('.bar-header > div').addClass('to-remove');
 	$('.bar-header').append('<div '+(animation ? 'class="a"' : '')+'style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
