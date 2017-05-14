@@ -1,4 +1,4 @@
-var changes = 5;
+var changes = 6;
 
 var storageDefault = {
 	config: {
@@ -48,7 +48,10 @@ var storageDefault = {
 		bookmark: false,
 		folder: true,
 	}],
-	bookmarks: {wildcard: {}
+	bookmarks: {
+		wildcard: [{
+			path: 'Path',
+		}]
 	},
 	cache: {wildcard: {
 			lastAccess: 0,
@@ -139,6 +142,10 @@ function updateStorageMD(data, defaultObj)
 
 function updateVar(key, keyVar, value)
 {
+
+	if(typeof storageJson[key] === 'undefined')
+		storageJson[key] = {};
+
 	storageJson[key][keyVar] = value;
 
 	ejs.set(key, storageJson[key]);
@@ -158,7 +165,7 @@ function push(key, item)
 	ejs.set(key, storageJson[key]);
 }
 
-var storageKeys = ['config', 'comics', 'cache'];
+var storageKeys = ['config', 'comics', 'cache', 'bookmarks'];
 
 function start(callback)
 {

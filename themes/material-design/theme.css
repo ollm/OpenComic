@@ -1269,6 +1269,18 @@ body
 	background-image: url('./icons/ic_bookmark_border_black_24px.svg'); 
 }
 
+.button-bookmark-red
+{
+	background-image: url('./icons/ic_bookmark_red_24px.svg');
+	opacity: 1 !important;
+}
+
+.button-bookmark-border-red
+{
+	background-image: url('./icons/ic_bookmark_border_red_24px.svg'); 
+	opacity: 1 !important;
+}
+
 /*Reading - Start*/
 
 .reading-left

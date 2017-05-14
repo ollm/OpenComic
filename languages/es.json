@@ -47,6 +47,9 @@
 			"size": "Tamaño",
 			"ratio": "Proporción",
 			"radius": "Radio"
-		}
+		},
+		"view-bookmarks": "Ver marcadores",
+		"add-bookmark": "Añadir marcador",
+		"remove-bookmark": "Eliminar marcador"
 	}
 }
