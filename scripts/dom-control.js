@@ -933,5 +933,6 @@ module.exports = {
 	openComic: openComic,
 	nextComic: skipNextComicF,
 	previousComic: skipPreviousComicF,
+	orderBy: orderBy,
 	indexMainPathA: function(){return indexMainPathA},
 };

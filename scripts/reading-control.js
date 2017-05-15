@@ -292,7 +292,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	if(updateCurrentIndex)
 		currentIndex = index;
 
-	isBookmark(p.normalize(images[eIndex].src))
+	isBookmark(p.normalize(images[eIndex].path))
 
 	previousReadingDirection = readingDirection;
 }
@@ -734,7 +734,7 @@ function createAndDeleteBookmark()
 {
 	if(currentIndex <= contentNum && currentIndex > 0 && !template.contentRight('.r-img-i'+currentIndex).hasClass('folder'))
 	{
-		var path = p.normalize(images[currentIndex].src);
+		var path = p.normalize(images[currentIndex].path);
 
 		if(typeof readingCurrentBookmarks !== 'undefined')
 		{
@@ -761,11 +761,42 @@ function createAndDeleteBookmark()
 	}
 }
 
+function loadBookmarks()
+{
+	readingCurrentPathURI = encodeURI(readingCurrentPath);
+
+	var bookmarks = [];
+
+	for(key in readingCurrentBookmarks)
+	{
+		if(p.dirname(readingCurrentBookmarks[key]) === readingCurrentPathURI)
+		{
+			bookmarks.push({
+				name: decodeURI(p.basename(readingCurrentBookmarks[key]).replace(/\.[^\.]*$/, '')),
+				index: imagesPath[readingCurrentBookmarks[key]],
+			});
+		}
+	}
+
+	bookmarks.sort(function (a, b) {
+
+		if (parseInt(a['index']) > parseInt(b['index'])) return 1;
+
+		if (parseInt(a['index']) < parseInt(b['index'])) return -1;
+
+		return 0;
+	});
+
+	handlebarsContext.bookmarks = bookmarks;
+
+	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
+}
+
 var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined;
 
 function read(path, index = 1, end = false)
 {
-	images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
+	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
 
 	readingCurrentPath = path;
 
@@ -1003,6 +1034,9 @@ function read(path, index = 1, end = false)
 
 		}
 		images[index].src = $(this).attr('src');
+		images[index].path = $(this).attr('path');
+		imagesPath[$(this).attr('path')] = index;
+
 
 	});
 
@@ -1028,4 +1062,5 @@ module.exports = {
 	disableOnScroll: disableOnScroll,
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
+	loadBookmarks: loadBookmarks,
 };

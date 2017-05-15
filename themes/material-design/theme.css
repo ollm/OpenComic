@@ -1520,6 +1520,22 @@ body
 	animation-timing-function: linear;
 }
 
+.reading-bookmark
+{
+	padding: 0px 24px;
+	color: #777;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+.reading-bookmark > span
+{
+	padding-right: 6px;
+	color: #333;
+}
+
 /*Scroll*/
 
 

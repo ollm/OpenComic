@@ -71,6 +71,11 @@ storage.start(function(){
 
 /*Global functions*/
 
+function pregQuote(str, delimiter = false)
+{
+	return (str + '').replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\' + (delimiter || '') + '-]', 'g'), '\\$&');
+}
+
 function mousePosition(e, mode)
 {
 	if(mode == 'x')
