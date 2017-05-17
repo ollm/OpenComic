@@ -55,6 +55,7 @@
 		},
 		"view-bookmarks": "Ver marcadores",
 		"add-bookmark": "Añadir marcador",
-		"remove-bookmark": "Eliminar marcador"
+		"remove-bookmark": "Eliminar marcador",
+		"empty-bookmarks": "No hay ningún marcador"
 	}
 }
