@@ -230,6 +230,21 @@ hb.registerHelper('encodeURI', function(string) {
 
 });
 
+hb.registerHelper('normalizeNumber', function(value, decimals) {
+
+	value = String(value);
+
+	var num_v = String(value).replace(/.*?(\.|$)/, '').length;
+
+	var num_d = decimals.replace(/.*?(\.|$)/, '').length;
+
+	if(num_d != 0)
+		value = value+(value.match(/\./) ? '' : '.')+('0'.repeat(num_d - num_v));
+
+	return value;
+
+});
+
 hb.registerHelper('htmlEntities', function(string) {
 
 	return htmlEntities(string);

@@ -38,7 +38,8 @@
 			"slide":	"Deslizar",
 			"scroll":	"Desplazarse hacia abajo",
 			"adjust-to-width":	"Ajustar a lo ancho",
-			"margin":	"Margen"
+			"margin":	"Margen",
+			"animation-speed":	"Velocidad de la animación"
 		},
 		"magnifying-glass":	"Lupa",
 		"magnifying-glass-v":	{

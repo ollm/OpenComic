@@ -153,18 +153,20 @@ function eventRange()
 
 		var onrange = $(this).attr('onrange');
 
-		var value = $(this).val();
+		var value_txt = value = $(this).val();
 
-		var decimals = $(this).attr('step');
+		var step = $(this).attr('step');
 
-		if(typeof decimals != 'undefined')
+		if(typeof step != 'undefined')
 		{
-			var decimals = decimals.replace(/^.*(\.|$)/, '').length;
 
-			if(decimals != 0 && value.replace(/^[^\.]\.?/, '').length != decimals)
-			{
-				value = value+((value.replace(/^[^\.]\.?/, '').length == 0) ? '.' : '')+('0'.repeat(decimals - value.replace(/^[^\.]\.?/, '').length));
-			}
+			var num_v = value_txt.replace(/.*?(\.|$)/, '').length;
+
+			var num_s = step.replace(/.*?(\.|$)/, '').length;
+
+			if(num_s != 0)
+				value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
+
 		}
 
 		var callback = hb.compile(onrange)({
@@ -174,7 +176,7 @@ function eventRange()
 
 		callbackString(callback);
 
-		$(this).siblings('.simple-slider-text').find('span').html(value);
+		$(this).siblings('.simple-slider-text').find('span').html(value_txt);
 	});
 }
 
