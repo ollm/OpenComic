@@ -29,10 +29,37 @@
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass');"></div>
 </div>
 <div class="menu" id="reading-pages">
-	<div class="menu-simple" style="width: 288px;">
+	<div class="menu-simple" style="width: 300px;">
 
 		<div class="menu-simple-element pages-slide" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages-v.slide}}</div>
 		<div class="menu-simple-element pages-scroll" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages-v.scroll}}</div>
+
+		<div class="menu-simple-separator"></div>
+
+		<div class="menu-simple-text reading-double-page">
+			{{language.reading.pages-v.double-page}}
+			<div class="switch{{#if config.readingDoublePage}} a{{/if}}" on="//reading.changePagesView(3, true, false)" off="//reading.changePagesView(3, false, false)"></div>
+		</div>
+
+		<div class="menu-simple-text reading-do-not-apply-to-horizontals disable-pointer">
+			{{language.reading.pages-v.do-not-apply-to-horizontals}}
+			<div class="switch{{#if config.readingDoNotApplyToHorizontals}} a{{/if}}" on="//reading.changePagesView(3, true, false)" off="//reading.changePagesView(3, false, false)"></div>
+		</div>
+
+		<div class="menu-simple-text reading-auto-blank-page disable-pointer">
+			{{language.reading.pages-v.auto-blank-page}}
+			<div class="switch{{#if config.readingAutoBlankPage}} a{{/if}}" on="//reading.changePagesView(3, true, false)" off="//reading.changePagesView(3, false, false)"></div>
+		</div>
+
+
+
+
+
+
+
+
+
+
 
 		<div class="menu-simple-separator"></div>
 

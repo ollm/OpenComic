@@ -1,4 +1,4 @@
-var changes = 6;
+var changes = 9;
 
 var storageDefault = {
 	config: {
@@ -28,7 +28,10 @@ var storageDefault = {
 		readingMagnifyingGlassSize: 200,
 		readingMagnifyingGlassRatio: 1.25,
 		readingMagnifyingGlassRadius: 2,
-		readingDelayComicSkip: 1
+		readingDelayComicSkip: 1,
+		readingDoublePage: false,
+		readingDoNotApplyToHorizontals: true,
+		readingAutoBlankPage: true
 	},
 	comics: [{
 		name: 'Name',
@@ -49,9 +52,7 @@ var storageDefault = {
 		folder: true,
 	}],
 	bookmarks: {
-		wildcard: [{
-			path: 'Path',
-		}]
+		wildcard: ['Path']
 	},
 	cache: {wildcard: {
 			lastAccess: 0,

@@ -39,6 +39,9 @@
 			"scroll":	"Desplazarse hacia abajo",
 			"adjust-to-width":	"Ajustar a lo ancho",
 			"margin":	"Margen",
+			"double-page":	"Doble página",
+			"do-not-apply-to-horizontals": "No aplicar a las horizontales",
+			"auto-blank-page": "Página en blanco automática",
 			"reading-delay-skip":	"Retraso al cambiar de cómic",
 			"animation-speed":	"Velocidad de la animación"
 		},
