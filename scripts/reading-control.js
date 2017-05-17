@@ -708,48 +708,13 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, currentIndex);
 	}
-}
-
-function changePagesView(mode, value, save)
-{
-	if(mode == 1)
-	{
-		storage.updateVar('config', 'readingView', value);
-
-		dom.selectElement('.pages-'+value);	
-
-		if(value == 'slide' && config.readingViewAdjustToWidth)
-		{
-			storage.updateVar('config', 'readingViewAdjustToWidth', false);
-			template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
-		}
-
-		if(value == 'slide')
-			template.globalElement('.reading-ajust-to-width').addClass('disable-pointer');
-		else
-			template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
-
-		template.loadContentRight('reading.content.right.html', true);
-
-		read(readingCurrentPath, currentIndex);
-	}
-	else if(mode == 2)
-	{
-		disposeImages({margin: value})
-
-		if(save) storage.updateVar('config', 'readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
-	}
-	else if(mode == 3)
-	{
-		storage.updateVar('config', 'readingViewAdjustToWidth', value);
-
-		template.loadContentRight('reading.content.right.html', true);
-
-		read(readingCurrentPath, currentIndex);
-	}
 	else if(mode == 4)
 	{
 		if(save) storage.updateVar('config', 'readingViewSpeed', value);
+	}
+	else if(mode == 5)
+	{
+		if(save) storage.updateVar('config', 'readingDelayComicSkip', value);
 	}
 }
 

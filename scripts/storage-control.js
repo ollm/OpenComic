@@ -28,7 +28,7 @@ var storageDefault = {
 		readingMagnifyingGlassSize: 200,
 		readingMagnifyingGlassRatio: 1.25,
 		readingMagnifyingGlassRadius: 2,
-		readingDelayComicSkip: 3
+		readingDelayComicSkip: 1
 	},
 	comics: [{
 		name: 'Name',
