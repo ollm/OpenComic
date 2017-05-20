@@ -22,7 +22,7 @@ var config = false;
 var onReading = false;
 var readingTouchEvent = false;
 
-var appDir = __dirname.replace(/\/scripts$/, '');
+var appDir = p.dirname(__dirname);
 
 var package = $.parseJSON(readFileApp('/package.json'));
 
@@ -101,7 +101,7 @@ function escapeQuotes(str, mode = false)
 
 function readFileApp(file)
 {
-	return fs.readFileSync(__dirname + file, 'utf8');
+	return fs.readFileSync(p.join(__dirname, file), 'utf8');
 }
 
 function readFile(file)
@@ -158,6 +158,11 @@ function loadLanguage(lan)
 		loadLanguageMD(handlebarsContext.language, data);
 	}
 
+}
+
+function backSlash(string)
+{
+	return string.replace(/\\+/g, '\\\\');
 }
 
 function isEmpty(obj)

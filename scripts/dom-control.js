@@ -85,6 +85,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 {
 	onReading = false;
 
+	if(mainPath) mainPath = backSlash(mainPath);
+
 	if(!path)
 	{
 		var sort = config.sortIndex;
@@ -133,6 +135,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(key in comics)
 			{
+				comics[key].path = backSlash(comics[key].path);
+
 				var images = folderImages(comics[key].path, 4);
 
 				for(var i = 0; i < images.length; i++)
@@ -209,7 +213,9 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 				for(var i = 0; i < files.length; i++)
 				{
 					var fileName = files[i];
-					var filePath = path+'/'+fileName;
+					var filePath = backSlash(p.join(path, fileName));
+
+					console.log(p.normalize(filePath));
 
 					if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
 					{
@@ -368,7 +374,7 @@ function returnFiles(path)
 		{
 			for(var i = 0; i < files.length; i++)
 			{
-				var filePath = path+'/'+files[i];
+				var filePath = p.join(path, files[i]);
 
 				if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
 					filteredFiles.push({name: files[i], path: filePath, folder: false});

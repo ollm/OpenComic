@@ -8,13 +8,18 @@ function processTheImageQueue()
 	var img = queuedImages[0];
 	var sha = img.sha;
 
-	gm(img.file).resize(img.size, null).noProfile().write(appDir+'/cache/'+sha+'.jpg', function(){
+	console.log(p.join(appDir, 'cache', sha+'.jpg'));
+	console.log(img.file);
+
+	gm(img.file).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+
+		if(error) console.log(error);
 
 		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
 
 		data[sha].size = img.size;
 
-		img.callback({cache: true, path: appDir+'/cache/'+sha+'.jpg?size='+img.size, sha: sha});
+		img.callback({cache: true, path: backSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
 
 		queuedImages.splice(0, 1);
 
@@ -72,10 +77,12 @@ function returnCacheImage(file, sha, callback = false)
 
 	var imgCache = data[sha];
 
-	var path = appDir+'/cache/'+sha+'.jpg?size='+size;
+	var path = p.join(appDir, 'cache', sha+'.jpg?size='+size);
 
-	if(typeof imgCache == 'undefined' || !fs.existsSync(appDir+'/cache/'+sha+'.jpg'))
+	if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(appDir, 'cache', sha+'.jpg')))
 	{
+		console.log(123);
+
 		addImageToQueue(file, size, sha, callback);
 
 		return {cache: false, path: /*path*/'', sha: sha};
