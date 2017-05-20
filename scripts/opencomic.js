@@ -22,7 +22,7 @@ var config = false;
 var onReading = false;
 var readingTouchEvent = false;
 
-var appDir = p.dirname(__dirname);
+var appDir = __dirname;
 
 var package = $.parseJSON(readFileApp('/package.json'));
 
