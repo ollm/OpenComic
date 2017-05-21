@@ -85,8 +85,6 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 {
 	onReading = false;
 
-	if(mainPath) mainPath = backSlash(mainPath);
-
 	if(!path)
 	{
 		var sort = config.sortIndex;
@@ -135,8 +133,6 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(key in comics)
 			{
-				comics[key].path = backSlash(comics[key].path);
-
 				var images = folderImages(comics[key].path, 4);
 
 				for(var i = 0; i < images.length; i++)
@@ -213,9 +209,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 				for(var i = 0; i < files.length; i++)
 				{
 					var fileName = files[i];
-					var filePath = backSlash(p.join(path, fileName));
-
-					console.log(p.normalize(filePath));
+					var filePath = p.join(path, fileName);
 
 					if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
 					{
@@ -297,7 +291,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 function headerPath(path, mainPath)
 {
-	var mainPathR = mainPath.replace(/\/[^\/]*$/, '/');
+
+	var mainPathR = p.dirname(mainPath) + p.sep;
 
 	files = path.replace(mainPathR, '').split(p.sep);
 
@@ -657,7 +652,6 @@ function floatingActionButton(active, callback)
 {
 	if(active)
 	{
-
 		$('.floating-action-button').removeClass('disable').attr('onclick', callback);
 	}
 	else
@@ -762,7 +756,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 	if(compatibleMime.indexOf(mime.lookup(path)) != -1)
 	{
 		startImage = path;
-		path = path.replace(/\/[^\/]*$/, '');
+		path = p.dirname(path);
 	}
 	else if(fs.statSync(path).isDirectory())
 	{
@@ -820,7 +814,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 				for(var i = 0; i < files.length; i++)
 				{
 					var fileName = files[i];
-					var filePath = path+'/'+fileName;
+					var filePath = p.join(path, fileName);
 
 					if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
 					{

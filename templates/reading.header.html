@@ -2,7 +2,7 @@
 <div class="bar-title">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
-			<span class="bar-title-a" onclick="dom.loadIndexPage(true, '{{path}}', false, false, '{{mainPath}}')">{{name}}</span>
+			<span class="bar-title-a" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')">{{name}}</span>
 			{{#unless last}} / {{/unless}}
 		{{/each}}
 	{{else}}

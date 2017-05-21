@@ -89,6 +89,11 @@ function htmlEntities(str)
 	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function htmlQuote(str)
+{
+	return String(str).replace(/"/g, '&quot;');
+}
+
 function escapeQuotes(str, mode = false)
 {
 	if(mode === 'simples')
@@ -160,15 +165,25 @@ function loadLanguage(lan)
 
 }
 
-function backSlash(string)
+function escapeBackSlash(string)
 {
 	return string.replace(/\\+/g, '\\\\');
+}
+
+function invertBackslash(string)
+{
+	return string.replace(/\\+/g, '/');
+}
+
+function toUnixPath(string)
+{
+	return string.replace(/\\+/g, '/').trim().replace(/^c\:/ig, '/');
 }
 
 function isEmpty(obj)
 {
 	if (obj == null) return true;
-	if (obj.length > 0)    return false;
+	if (obj.length > 0)	return false;
 	if (obj.length === 0)  return true;
 	if (typeof obj !== "object") return true;
 
@@ -203,6 +218,31 @@ function callbackString(callback)
 
 /*Handlebars helpers*/
 
+hb.registerHelper('chain', function() {
+
+	var helpers = [], value;
+
+	$.each(arguments, function (i, arg) {
+
+		if(hb.helpers[arg])
+		{
+			helpers.push(hb.helpers[arg]);
+		}
+		else
+		{
+			value = arg;
+
+			$.each(helpers, function (j, helper) {
+				value = helper(value, arguments[i + 1]);
+			});
+
+			return false;
+		}
+	});
+
+	return value;
+});
+
 hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
 
 	var operators = {
@@ -220,6 +260,42 @@ hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
 
 	if(result)
 		return options.fn(this);
+
+});
+
+hb.registerHelper('escapeQuotes', function(string) {
+
+	return escapeQuotes(string);
+
+});
+
+hb.registerHelper('escapeQuotesSimples', function(string) {
+
+	return escapeQuotes(string, 'simples');
+
+});
+
+hb.registerHelper('escapeQuotesDoubles', function(string) {
+
+	return escapeQuotes(string, 'doubles');
+
+});
+
+hb.registerHelper('escapeBackSlash', function(string) {
+
+	return escapeBackSlash(string);
+
+});
+
+hb.registerHelper('toUnixPath', function(string) {
+
+	return toUnixPath(string);
+
+});
+
+hb.registerHelper('invertBackslash', function(string) {
+
+	return invertBackslash(string);
 
 });
 
@@ -253,6 +329,12 @@ hb.registerHelper('normalizeNumber', function(value, decimals) {
 hb.registerHelper('htmlEntities', function(string) {
 
 	return htmlEntities(string);
+
+});
+
+hb.registerHelper('htmlQuote', function(string) {
+
+	return htmlQuote(string);
 
 });
 

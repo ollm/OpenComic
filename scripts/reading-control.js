@@ -411,7 +411,7 @@ function showNextComic(mode, animation = true)
 			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
-		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.nextComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'");', config.readingDelayComicSkip * 1000);
+		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
 
 		currentIndex = contentNum + 1;
 	}
@@ -503,7 +503,7 @@ function showPreviousComic(mode, animation = true)
 			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
-		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(dom.previousComic(), 'doubles')+'", "'+escapeQuotes(dom.indexMainPathA(), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
+		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -771,13 +771,15 @@ function createAndDeleteBookmark()
 
 function loadBookmarks()
 {
-	readingCurrentPathURI = encodeURI(readingCurrentPath);
 
 	var bookmarks = [];
 
 	for(key in readingCurrentBookmarks)
 	{
-		if(p.dirname(readingCurrentBookmarks[key]) === readingCurrentPathURI)
+		console.log(p.dirname(readingCurrentBookmarks[key]));
+		console.log(readingCurrentPath);
+
+		if(p.dirname(readingCurrentBookmarks[key]) === readingCurrentPath)
 		{
 			bookmarks.push({
 				name: decodeURI(p.basename(readingCurrentBookmarks[key]).replace(/\.[^\.]*$/, '')),
