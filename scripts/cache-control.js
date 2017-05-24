@@ -1,22 +1,21 @@
-var queuedImages = [], processingTheImageQueue = false;
+var queuedImages = [], processingTheImageQueue = false, gm = false;
 
 function processTheImageQueue()
 {
-
-	if(typeof gm == 'undefined') var gm = require('gm').subClass({imageMagick: true});;
+	if(!gm) var gm = require('gm').subClass({imageMagick: true});;
 
 	var img = queuedImages[0];
 	var sha = img.sha;
 
-	gm(img.file).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+	gm(encodeURIComponent(img.file)).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
 
-		//if(error) console.log(error);
+		if(error) console.log(error);
 
 		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
 
 		data[sha].size = img.size;
 
-		img.callback({cache: true, path: p.join(appDir, 'cache', sha+'.jpg?size='+img.size), sha: sha});
+		img.callback({cache: true, path: escapeBackSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
 
 		queuedImages.splice(0, 1);
 
@@ -89,11 +88,11 @@ function returnCacheImage(file, sha, callback = false)
 		{
 			addImageToQueue(file, size, sha, callback);
 
-			return {cache: true, path: path, sha: sha};
+			return {cache: true, path: escapeBackSlash(path), sha: sha};
 		}
 		else
 		{
-			return {cache: true, path: path, sha: sha};
+			return {cache: true, path: escapeBackSlash(path), sha: sha};
 		}
 	}
 }
