@@ -8,7 +8,7 @@ This software is under development.
 ![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYldFpNZjFkZmlubWc "Screenshot")
 
 ## Installation and Starting
-__Requirements__: Git, Node, and NPM
+__Requirements__: Git, Node, NPM and ImageMagick
 
 ```shell
 git clone https://github.com/ollm/OpenComic.git
