@@ -7,7 +7,7 @@ function processTheImageQueue()
 	var img = queuedImages[0];
 	var sha = img.sha;
 
-	gm(encodeURIComponent(img.file)).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+	gm(img.file).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
 
 		if(error) console.log(error);
 
