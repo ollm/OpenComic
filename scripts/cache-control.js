@@ -1,37 +1,75 @@
-var queuedImages = [], processingTheImageQueue = false, gm = false;
+var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im';
 
 function processTheImageQueue()
 {
-	if(!gm) var gm = require('gm').subClass({imageMagick: true});;
+	if(!imageLibrary) sharp = require('sharp');
 
 	var img = queuedImages[0];
 	var sha = img.sha;
 
-	gm(img.file).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+	sharp(img.file).resize(img.size, null).background('white').quality(95).toFile(p.join(appDir, 'cache', sha+'.jpg'), function(error) {
 
-		if(error) console.log(error);
-
-		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
-
-		data[sha].size = img.size;
-
-		img.callback({cache: true, path: escapeBackSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
-
-		queuedImages.splice(0, 1);
-
-		if(queuedImages.length > 0)
+		if(error)
 		{
-			process.nextTick(function() {
-				processTheImageQueue();
+			imageLibrary(img.file).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+
+				if(error && imagUse !== 'gm')
+				{
+					imageLibrary = require('gm').subClass({imageMagick: false});
+					imageUse = 'gm';
+				}
+				else
+				{
+					if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
+
+					if(error) 1;
+
+					data[sha].size = img.size;
+
+					img.callback({cache: true, path: escapeBackSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
+
+					queuedImages.splice(0, 1);
+
+					if(queuedImages.length > 0)
+					{
+						process.nextTick(function() {
+							processTheImageQueue();
+						});
+					}
+					else
+					{
+						processingTheImageQueue = false;
+
+						storage.set('cache', data);
+					}
+				}
 			});
 		}
 		else
 		{
-			processingTheImageQueue = false;
+			if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
 
-			storage.set('cache', data);
+			if(error) 1;
+
+			data[sha].size = img.size;
+
+			img.callback({cache: true, path: escapeBackSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
+
+			queuedImages.splice(0, 1);
+
+			if(queuedImages.length > 0)
+			{
+				process.nextTick(function() {
+					processTheImageQueue();
+				});
+			}
+			else
+			{
+				processingTheImageQueue = false;
+
+				storage.set('cache', data);
+			}
 		}
-
 	});
 }
 
