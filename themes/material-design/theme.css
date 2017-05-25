@@ -1281,6 +1281,21 @@ body
 	opacity: 1 !important;
 }
 
+.button-book-open
+{
+	background-image: url('./icons/ic_book_open_24px.svg'); 
+}
+
+.button-book-open-variant
+{
+	background-image: url('./icons/ic_book_open_variant_24px.svg'); 
+}
+
+.button-book-open-page-variant
+{
+	background-image: url('./icons/ic_book_open_page_variant_24px.svg'); 
+}
+
 /*Reading - Start*/
 
 .reading-left
