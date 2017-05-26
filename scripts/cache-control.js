@@ -1,8 +1,8 @@
-var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im';
+var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im', sharp = false;
 
 function processTheImageQueue()
 {
-	if(!imageLibrary) sharp = require('sharp');
+	if(!sharp) sharp = require('sharp');
 
 	var img = queuedImages[0];
 	var sha = img.sha;
@@ -11,7 +11,9 @@ function processTheImageQueue()
 
 		if(error)
 		{
-			imageLibrary(img.file).resize(img.size, null).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+			if(!imageLibrary) imageLibrary = require('gm').subClass({imageMagick: true});
+
+			imageLibrary(img.file).resize(img.size, null).quality(95).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
 
 				if(error && imagUse !== 'gm')
 				{
@@ -21,8 +23,6 @@ function processTheImageQueue()
 				else
 				{
 					if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
-
-					if(error) 1;
 
 					data[sha].size = img.size;
 
@@ -48,8 +48,6 @@ function processTheImageQueue()
 		else
 		{
 			if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
-
-			if(error) 1;
 
 			data[sha].size = img.size;
 
