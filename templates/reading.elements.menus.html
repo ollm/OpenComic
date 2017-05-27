@@ -30,15 +30,11 @@
 		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-double-page">
 			{{language.reading.pages-v.double-page}}
-			<div class="switch{{#if config.readingDoublePage}} a{{/if}}" on="//reading.changePagesView(3, true, false)" off="//reading.changePagesView(3, false, false)"></div>
+			<div class="switch{{#if config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)"></div>
 		</div>
 		<div class="menu-simple-text reading-do-not-apply-to-horizontals disable-pointer">
 			{{language.reading.pages-v.do-not-apply-to-horizontals}}
 			<div class="switch{{#if config.readingDoNotApplyToHorizontals}} a{{/if}}" on="//reading.changePagesView(3, true, false)" off="//reading.changePagesView(3, false, false)"></div>
-		</div>
-		<div class="menu-simple-text reading-auto-blank-page disable-pointer">
-			{{language.reading.pages-v.auto-blank-page}}
-			<div class="switch{{#if config.readingAutoBlankPage}} a{{/if}}" on="//reading.changePagesView(3, true, false)" off="//reading.changePagesView(3, false, false)"></div>
 		</div>
 		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-ajust-to-width{{#compare config.readingView '==' 'slide'}} disable-pointer{{/compare}}">

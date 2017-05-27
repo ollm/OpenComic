@@ -1,8 +1,147 @@
 
-var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {};
+var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, indexNum = 0, imagesDistribution = [];
+
+function blankPage(index)
+{
+	var key = 0;
+
+	for(let i = index; i < contentNum; i++)
+	{
+		if(typeof imagesData[i] !== 'undefined')
+		{
+			if(config.readingDoublePage && config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
+			{
+				return key % 2;
+			}
+			else
+			{
+				key++;
+			}
+		}
+		else
+		{
+			key++;
+		}
+	}
+}
+
+function calculateImagesDistribution()
+{
+
+	imagesDistribution = [];
+	indexNum = 0;
+
+	if(config.readingDoublePage)
+	{
+		var data = [];
+
+		start = true;
+
+		for(let i = 1; i < (contentNum + 1); i++)
+		{
+
+			if(typeof imagesData[i] !== 'undefined')
+			{
+
+				if(config.readingDoublePage && config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
+				{
+					data.push({index: i, folder: false, blank: false, width: 1});
+					imagesData[i].position = indexNum; 
+					imagesDistribution.push(data);
+					indexNum++;
+					data = [];
+					start = true;
+				}
+				else
+				{
+					if(config.readingDoNotApplyToHorizontals && start && blankPage(i))
+						data.push({index: false, folder: false, blank: true, width: 2});
+
+					data.push({index: i, folder: false, blank: false, width: 2});
+					imagesData[i].position = indexNum; 
+					start = false;
+				}
+			}
+			else
+			{
+				if(config.readingDoNotApplyToHorizontals && start && blankPage(i))
+					data.push({index: false, folder: false, blank: true, width: 2});
+
+				data.push({index: i, folder: true, blank: false, width: 2});
+				start = false;
+			}
+
+			if(data.length > 1)
+			{
+				imagesDistribution.push(data);
+				data = [];
+				indexNum++;
+			}
+		}
+
+		if(data.length > 0)
+		{
+			imagesDistribution.push(data);
+			indexNum++;
+		}
+	}
+	else
+	{
+		for(i = 1; i < (contentNum + 1); i++)
+		{
+			if(typeof imagesData[i] !== 'undefined')
+			{
+				imagesDistribution.push([{index: i, folder: false, blank: false, width: 1}]);
+				imagesData[i].position = indexNum;
+				indexNum++;
+			}
+			else
+			{
+				imagesDistribution.push([{index: i, folder: true, blank: false, width: 1}]);
+				imagesData[i].position = indexNum;
+				indexNum++;
+			}
+		}
+	}
+
+	console.log(imagesDistribution);
+}
+
+function addImagesDistribution()
+{
+
+	previous = false;
+
+	for(key1 in imagesDistribution)
+	{
+		for(key2 in imagesDistribution[key1])
+		{
+			image = imagesDistribution[key1][key2];
+
+			if(image.blank)
+			{
+				if($('.image-position'+key1+'-'+key2).length == 0)
+				{
+					if(previous)
+						previous.after('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
+					else
+						$('.reading-body > div, .reading-lens > div > div').prepend('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
+				}
+			}
+			else
+			{
+				previous = $('.r-img-i'+image.index);
+				previous.addClass('image-position'+key1+'-'+key2);
+			}
+		}
+	}
+}
 
 function disposeImages(data = false)
 {
+
+	calculateImagesDistribution();
+	addImagesDistribution();
 
 	if(data && typeof data.margin !== 'undefined')
 		var margin = data.margin;
@@ -10,23 +149,96 @@ function disposeImages(data = false)
 		var margin = config.readingMargin.margin;
 
 	var content = template.contentRight().children('div');
-	var contentWidth = template.contentRight().width() - (margin + margin);
 	var contentHeight = content.height() - (margin + margin);
-	var aspectRatio = contentWidth / contentHeight;
+
+	//Width 1
+	var contentWidth1 = template.contentRight().width() - (margin + margin);
+	var aspectRatio1 = contentWidth1 / contentHeight;
+
+	//Width 2
+	var contentWidth2 = (template.contentRight().width() / 2) - (margin + (margin / 2));
+	var aspectRatio2 = contentWidth2 / contentHeight;
+
 
 	if(!config.readingViewAdjustToWidth)
 	{
 
+		for(key1 in imagesDistribution)
+		{
+			for(key2 in imagesDistribution[key1])
+			{
+				image = imagesDistribution[key1][key2];
+
+				if(!image.folder)
+				{
+					if(image.blank)
+						imageData = imagesData[imagesDistribution[key1][1].index];
+					else
+						imageData = imagesData[image.index];
+
+
+					if(image.width == 1)
+						aspectRatio = aspectRatio1;
+					else
+						aspectRatio = aspectRatio2;
+
+
+					if(image.width == 1)
+						contentWidth = contentWidth1;
+					else
+						contentWidth = contentWidth2;
+
+
+					if(aspectRatio > imageData.aspectRatio)
+					{
+						if(image.width == 2 && key2 == 1)
+							var marginLeft = margin / 2;
+						else if(image.width == 2)
+							var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) + margin);
+						else
+							var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) / 2 + margin);
+
+						template.contentRight('.image-position'+key1+'-'+key2+' img').css({
+							'height': contentHeight+'px',
+							'width': (contentHeight * imageData.aspectRatio)+'px',
+							'margin-left': marginLeft+'px',
+							'margin-top': margin+'px',
+							'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
+						});
+					}
+					else
+					{
+						template.contentRight('.image-position'+key1+'-'+key2+' img').css({
+							'height': (contentWidth / imageData.aspectRatio)+'px',
+							'width': contentWidth+'px',
+							'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / imageData.aspectRatio) / 2 + margin))+'px',
+							'margin-left': ((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + 'px',
+							'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
+						});
+					}
+				}
+			}
+		}
+
+/*
 		for(index in imagesData)
 		{
 			var image = imagesData[index];
 
 			if(aspectRatio > image.aspectRatio)
 			{
+
+				if(config.readingDoublePage && index % 2 == 0)
+					var marginLeft = margin / 2;
+				else if(config.readingDoublePage && index % 2 == 1)
+					var marginLeft = ((contentWidth - contentHeight * image.aspectRatio) + margin);
+				else
+					var marginLeft = ((contentWidth - contentHeight * image.aspectRatio) / 2 + margin);
+
 				template.contentRight('.r-img-i'+index+' img').css({
 					'height': contentHeight+'px',
 					'width': (contentHeight * image.aspectRatio)+'px',
-					'margin-left': ((contentWidth - contentHeight * image.aspectRatio) / 2 + margin)+'px',
+					'margin-left': marginLeft+'px',
 					'margin-top': margin+'px',
 					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
 				});
@@ -37,15 +249,15 @@ function disposeImages(data = false)
 					'height': (contentWidth / image.aspectRatio)+'px',
 					'width': contentWidth+'px',
 					'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / image.aspectRatio) / 2 + margin))+'px',
-					'margin-left': margin+'px',
+					'margin-left': ((config.readingDoublePage && index % 2 == 0) ? (margin / 2) : margin) + 'px',
 					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
 				});
 			}
-		}
+		}*/
 	}
 	else if(config.readingViewAdjustToWidth && config.readingView == 'scroll')
 	{
-		for(index in imagesData)
+		/*for(index in imagesData)
 		{
 			var image = imagesData[index];
 
@@ -56,7 +268,7 @@ function disposeImages(data = false)
 				'margin-left': margin+'px',
 				'margin-bottom': ((index == imagesNum) ? margin : 0)+'px'
 			});
-		}
+		}*/
 	}
 
 	if(config.readingView == 'scroll')
@@ -81,11 +293,10 @@ function calculateView()
 			'height': content.height(),
 		});
 
-		template.contentRight('.r-img').css({
-			'width': contentWidth+'px',
-			'height': content.height(),
-			'float': 'left',
-		});
+		float = 'left';
+		height = content.height()+'px';
+		contentWidth1 = contentWidth+'px';
+		contentWidth2 = (contentWidth / 2)+'px';
 	}
 	else if(config.readingView == 'scroll')
 	{
@@ -93,13 +304,27 @@ function calculateView()
 			'width': '100%',
 		});
 
-		for(index in imagesData)
-		{
-			var image = imagesData[index];
+		float = 'none';
+		height = 'initial';
+		contentWidth1 = '100%';
+		contentWidth2 = '50%';
+	}
 
-			template.contentRight('.r-img-i'+index).css({
-				'width': contentWidth+'px',
-				'float': 'none',
+	for(key1 in imagesDistribution)
+	{
+		for(key2 in imagesDistribution[key1])
+		{
+			image = imagesDistribution[key1][key2];
+
+			if(image.width == 1)
+				contentWidth = contentWidth1;
+			else
+				contentWidth = contentWidth2;
+
+			template.contentRight('.image-position'+key1+'-'+key2).css({
+				'width': contentWidth,
+				'height': height,
+				'float': 'left',
 			});
 		}
 	}
@@ -164,6 +389,7 @@ var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, r
 
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
+
 	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
 	var animationDurationMS = animationDurationS * 1000;
 
@@ -299,6 +525,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 function goNext()
 {
+
 	var nextIndex = currentIndex + 1;
 
 	readingDirection = true;
@@ -327,9 +554,6 @@ function goPrevious()
 
 function goStart()
 {
-	var nextIndex = currentIndex + 1;
-	var previousIndex = currentIndex - 1;
-
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
 	else if(currentIndex > contentNum)
@@ -342,9 +566,6 @@ function goStart()
 
 function goEnd()
 {
-	var nextIndex = currentIndex + 1;
-	var previousIndex = currentIndex - 1;
-
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
 	else if(currentIndex > contentNum)
@@ -716,6 +937,15 @@ function changePagesView(mode, value, save)
 	{
 		if(save) storage.updateVar('config', 'readingDelayComicSkip', value);
 	}
+	else if(mode == 6)
+	{
+		storage.updateVar('config', 'readingDoublePage', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(readingCurrentPath, currentIndex);
+	}
+
 }
 
 function activeBookmark(mode)

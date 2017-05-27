@@ -549,20 +549,20 @@ body
 
 .separator-1
 {
-	border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .bar-buttons-separator
 {
 	float: right;
 	height: 48px;
-	border-left: 0.5px solid rgba(0, 0, 0, 0.1);
+	border-left: 1px solid rgba(0, 0, 0, 0.1);
 	margin: 0px 12px;
 }
 
 .menu-simple-separator
 {
-	border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 	margin: 12px 0;
 }
 
@@ -846,7 +846,7 @@ body
 	transition: 0.2s;
 	cursor: pointer;
 	background-color: #fff;
-	border-bottom: 0.5px solid #e6e6e6;
+	border-bottom: 1px solid #e6e6e6;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -1064,7 +1064,7 @@ body
 	background-size: 100%;
 	background-position: 50%;
 	border-radius: 2px;
-	/*border: 0.5px solid rgba(0, 0, 0, 0.1);*/
+	/*border: 1px solid rgba(0, 0, 0, 0.1);*/
 	box-sizing: border-box;
 	float: left;
 	background-repeat: no-repeat;
@@ -1306,7 +1306,7 @@ body
 	cursor: pointer;
 	position: relative;
 	transition: 0.2s;
-	border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .reading-left:hover, .reading-left.s

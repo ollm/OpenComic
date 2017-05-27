@@ -30,8 +30,7 @@ var storageDefault = {
 		readingMagnifyingGlassRadius: 2,
 		readingDelayComicSkip: 1,
 		readingDoublePage: false,
-		readingDoNotApplyToHorizontals: true,
-		readingAutoBlankPage: true
+		readingDoNotApplyToHorizontals: true
 	},
 	comics: [{
 		name: 'Name',
