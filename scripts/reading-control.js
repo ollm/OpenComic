@@ -45,6 +45,15 @@ function calculateImagesDistribution()
 
 				if(config.readingDoublePage && config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
 				{
+
+					if(data.length > 0)
+					{
+						data.push({index: false, folder: false, blank: true, width: 2});
+						imagesDistribution.push(data);
+						data = [];
+						indexNum++;
+					}
+
 					data.push({index: i, folder: false, blank: false, width: 1});
 					imagesData[i].position = indexNum; 
 					imagesDistribution.push(data);
@@ -64,11 +73,8 @@ function calculateImagesDistribution()
 			}
 			else
 			{
-				if(config.readingDoNotApplyToHorizontals && start && blankPage(i))
-					data.push({index: false, folder: false, blank: true, width: 2});
-
 				data.push({index: i, folder: true, blank: false, width: 2});
-				start = false;
+				start = true;
 			}
 
 			if(data.length > 1)
@@ -159,116 +165,61 @@ function disposeImages(data = false)
 	var contentWidth2 = (template.contentRight().width() / 2) - (margin + (margin / 2));
 	var aspectRatio2 = contentWidth2 / contentHeight;
 
-
-	if(!config.readingViewAdjustToWidth)
+	for(key1 in imagesDistribution)
 	{
-
-		for(key1 in imagesDistribution)
+		for(key2 in imagesDistribution[key1])
 		{
-			for(key2 in imagesDistribution[key1])
+			image = imagesDistribution[key1][key2];
+
+			if(!image.folder)
 			{
-				image = imagesDistribution[key1][key2];
+				if(image.blank)
+					imageData = imagesData[imagesDistribution[key1][(key2 == 0) ? 1 : 0].index];
+				else
+					imageData = imagesData[image.index];
 
-				if(!image.folder)
+
+				if(image.width == 1)
+					aspectRatio = aspectRatio1;
+				else
+					aspectRatio = aspectRatio2;
+
+
+				if(image.width == 1)
+					contentWidth = contentWidth1;
+				else
+					contentWidth = contentWidth2;
+
+
+				if(aspectRatio > imageData.aspectRatio && !config.readingViewAdjustToWidth)
 				{
-					if(image.blank)
-						imageData = imagesData[imagesDistribution[key1][1].index];
+					if(image.width == 2 && key2 == 1)
+						var marginLeft = margin / 2;
+					else if(image.width == 2)
+						var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) + margin);
 					else
-						imageData = imagesData[image.index];
+						var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) / 2 + margin);
 
-
-					if(image.width == 1)
-						aspectRatio = aspectRatio1;
-					else
-						aspectRatio = aspectRatio2;
-
-
-					if(image.width == 1)
-						contentWidth = contentWidth1;
-					else
-						contentWidth = contentWidth2;
-
-
-					if(aspectRatio > imageData.aspectRatio)
-					{
-						if(image.width == 2 && key2 == 1)
-							var marginLeft = margin / 2;
-						else if(image.width == 2)
-							var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) + margin);
-						else
-							var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) / 2 + margin);
-
-						template.contentRight('.image-position'+key1+'-'+key2+' img').css({
-							'height': contentHeight+'px',
-							'width': (contentHeight * imageData.aspectRatio)+'px',
-							'margin-left': marginLeft+'px',
-							'margin-top': margin+'px',
-							'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
-						});
-					}
-					else
-					{
-						template.contentRight('.image-position'+key1+'-'+key2+' img').css({
-							'height': (contentWidth / imageData.aspectRatio)+'px',
-							'width': contentWidth+'px',
-							'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / imageData.aspectRatio) / 2 + margin))+'px',
-							'margin-left': ((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + 'px',
-							'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
-						});
-					}
+					template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
+						'height': contentHeight+'px',
+						'width': (contentHeight * imageData.aspectRatio)+'px',
+						'margin-left': marginLeft+'px',
+						'margin-top': margin+'px',
+						'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px'
+					});
+				}
+				else
+				{
+					template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
+						'height': (contentWidth / imageData.aspectRatio)+'px',
+						'width': contentWidth+'px',
+						'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / imageData.aspectRatio) / 2 + margin))+'px',
+						'margin-left': ((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + 'px',
+						'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px'
+					});
 				}
 			}
 		}
-
-/*
-		for(index in imagesData)
-		{
-			var image = imagesData[index];
-
-			if(aspectRatio > image.aspectRatio)
-			{
-
-				if(config.readingDoublePage && index % 2 == 0)
-					var marginLeft = margin / 2;
-				else if(config.readingDoublePage && index % 2 == 1)
-					var marginLeft = ((contentWidth - contentHeight * image.aspectRatio) + margin);
-				else
-					var marginLeft = ((contentWidth - contentHeight * image.aspectRatio) / 2 + margin);
-
-				template.contentRight('.r-img-i'+index+' img').css({
-					'height': contentHeight+'px',
-					'width': (contentHeight * image.aspectRatio)+'px',
-					'margin-left': marginLeft+'px',
-					'margin-top': margin+'px',
-					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
-				});
-			}
-			else
-			{
-				template.contentRight('.r-img-i'+index+' img').css({
-					'height': (contentWidth / image.aspectRatio)+'px',
-					'width': contentWidth+'px',
-					'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / image.aspectRatio) / 2 + margin))+'px',
-					'margin-left': ((config.readingDoublePage && index % 2 == 0) ? (margin / 2) : margin) + 'px',
-					'margin-bottom': ((config.readingView == 'scroll' && index == imagesNum) ? margin : 0)+'px'
-				});
-			}
-		}*/
-	}
-	else if(config.readingViewAdjustToWidth && config.readingView == 'scroll')
-	{
-		/*for(index in imagesData)
-		{
-			var image = imagesData[index];
-
-			template.contentRight('.r-img-i'+index+' img').css({
-				'height': (contentWidth / image.aspectRatio)+'px',
-				'width': contentWidth+'px',
-				'margin-top': margin+'px',
-				'margin-left': margin+'px',
-				'margin-bottom': ((index == imagesNum) ? margin : 0)+'px'
-			});
-		}*/
 	}
 
 	if(config.readingView == 'scroll')
@@ -289,7 +240,7 @@ function calculateView()
 	if(config.readingView == 'slide')
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-			'width': (contentWidth * contentNum)+'px',
+			'width': (contentWidth * indexNum)+'px',
 			'height': content.height(),
 		});
 
@@ -323,7 +274,7 @@ function calculateView()
 
 			template.contentRight('.image-position'+key1+'-'+key2).css({
 				'width': contentWidth,
-				'height': height,
+				'height': (config.readingView == 'scroll' && image.folder) ? (content.height() - config.readingMargin.margin) +'px' : height,
 				'float': 'left',
 			});
 		}
@@ -405,9 +356,32 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var imgHeight = false;
 
+	//image = imagesPosition[eIndex-1][0];
+
+	if(config.readingDoublePage)
+	{
+		imageHeight1 = template.contentRight('.image-position'+(eIndex-1)+'-0').height();
+		imageHeight2 = template.contentRight('.image-position'+(eIndex-1)+'-1').height();
+
+		if(imageHeight1 !== undefined && imageHeight1 >= imageHeight2)
+		{
+			image = template.contentRight('.image-position'+(eIndex-1)+'-0');
+		}
+		else
+		{
+			image = template.contentRight('.image-position'+(eIndex-1)+'-1');
+		}
+	}
+	else
+	{
+		image = template.contentRight('.image-position'+(eIndex-1)+'-0');
+	}
+
+	console.log(image);
+
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjustToWidth)
 	{
-		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
+		imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
 
 		if(imgHeight > contentHeight)
 		{
@@ -434,7 +408,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	{
 		eIndex = currentIndex;
 
-		imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
+		imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -455,7 +429,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		{
 			eIndex = index;
 
-			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
+			imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
 
 			if(imgHeight > contentHeight)
 			{
@@ -488,13 +462,13 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}
 	else if(config.readingView == 'scroll')
 	{
-		var scrollTop = ((template.contentRight('.r-img-i'+eIndex).offset().top - config.readingMargin.margin) - content.offset().top) + content.scrollTop();
+		var scrollTop = ((image.offset().top - config.readingMargin.margin) - content.offset().top) + content.scrollTop();
 
 		scrollSum = 0;
 
 		if(config.readingViewAdjustToWidth && pageVisibilityIndex !== false)
 		{
-			imgHeight = template.contentRight('.r-img-i'+eIndex).height() + config.readingMargin.margin + config.readingMargin.margin;
+			imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
 
 			if(imgHeight > contentHeight)
 			{
@@ -513,12 +487,20 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
-	goToIndexCL(eIndex, animation);
+	goToIndexCL(imagesDistribution[eIndex-1][0].index, animation);
 
 	if(updateCurrentIndex)
 		currentIndex = index;
 
-	isBookmark(p.normalize(images[eIndex].path))
+	if(config.readingDoublePage)
+	{
+		if(!isBookmark(p.normalize(images[imagesDistribution[eIndex-1][0].index].path)) && typeof imagesDistribution[eIndex-1][1] !== 'undefined')
+			isBookmark(p.normalize(images[imagesDistribution[eIndex-1][1].index].path));
+	}
+	else
+	{
+		isBookmark(p.normalize(images[imagesDistribution[eIndex-1][0].index].path))
+	}
 
 	previousReadingDirection = readingDirection;
 }
@@ -532,9 +514,9 @@ function goNext()
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= contentNum || (config.readingViewAdjustToWidth && currentPageVisibility < maxPageVisibility))
+	else if(nextIndex <= indexNum || (config.readingViewAdjustToWidth && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
-	else if(nextIndex - 1 == contentNum && dom.nextComic())
+	else if(nextIndex - 1 == indexNum && dom.nextComic())
 		showNextComic(1, true);
 }
 
@@ -544,7 +526,7 @@ function goPrevious()
 
 	readingDirection = false;
 
-	if(currentIndex > contentNum)
+	if(currentIndex > indexNum)
 		showNextComic(2, true);
 	else if(previousIndex > 0 || (config.readingViewAdjustToWidth && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
@@ -556,7 +538,7 @@ function goStart()
 {
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(currentIndex > contentNum)
+	else if(currentIndex > indexNum)
 		showNextComic(2, true);
 
 	readingDirection = true;
@@ -568,12 +550,12 @@ function goEnd()
 {
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(currentIndex > contentNum)
+	else if(currentIndex > indexNum)
 		showNextComic(2, true);
 
 	readingDirection = false;
 
-	goToIndex(contentNum, true, true, true);
+	goToIndex(indexNum, true, true, true);
 }
 
 var showComicSkip;
@@ -607,7 +589,7 @@ function showNextComic(mode, animation = true)
 					'transform-origin': '0px center',
 					'transition': ((animation) ? transition : 0)+'s',
 					'transition-property': 'transform',
-					'transform': 'scale('+scale+') translate(-'+(contentWidth * (contentNum - 1))+'px, 0px)',
+					'transform': 'scale('+scale+') translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 				});
 			}
 			else if(config.readingView == 'scroll')
@@ -634,7 +616,7 @@ function showNextComic(mode, animation = true)
 
 		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
 
-		currentIndex = contentNum + 1;
+		currentIndex = indexNum + 1;
 	}
 	else
 	{
@@ -647,7 +629,7 @@ function showNextComic(mode, animation = true)
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 				'transition': config.readingViewSpeed+'s',
-				'transform': 'scale(1) translate(-'+(contentWidth * (contentNum - 1))+'px, 0px)',
+				'transform': 'scale(1) translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 			});
 		}
 		else if(config.readingView == 'scroll')
@@ -663,7 +645,7 @@ function showNextComic(mode, animation = true)
 			});
 		}
 
-		currentIndex = contentNum;
+		currentIndex = indexNum;
 	}
 }
 
@@ -939,13 +921,26 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 6)
 	{
+
+		if(value == 1)
+			$('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
+		else
+			$('.reading-do-not-apply-to-horizontals').addClass('disable-pointer');
+
 		storage.updateVar('config', 'readingDoublePage', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, currentIndex);
 	}
+	else if(mode == 7)
+	{
+		storage.updateVar('config', 'readingDoNotApplyToHorizontals', value);
 
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(readingCurrentPath, currentIndex);
+	}
 }
 
 function activeBookmark(mode)
@@ -963,9 +958,15 @@ function activeBookmark(mode)
 function isBookmark(path)
 {
 	if($.inArray(path, readingCurrentBookmarks) !== -1)
+	{
 		activeBookmark(1);
+		return true;
+	}
 	else
+	{
 		activeBookmark(2);
+		return false;
+	}
 }
 
 function createAndDeleteBookmark()
@@ -1265,6 +1266,9 @@ function read(path, index = 1, end = false)
 				template.contentRight('.reading-body').css('display', 'block');
 				disposeImages();
 				calculateView();
+
+				currentIndex = imagesData[currentIndex].position + 1;
+
 				goToIndex(currentIndex, false, end, end);
 				if(config.readingView == 'scroll')
 				{
