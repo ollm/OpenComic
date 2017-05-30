@@ -38,7 +38,12 @@
 			"slide":	"Slide",
 			"scroll":	"Scroll down",
 			"adjust-to-width":	"Adjust to width",
-			"margin":	"Margin"
+			"margin":	"Margin",
+			"double-page":	"Double page",
+			"do-not-apply-to-horizontals": "Do not apply to horizontals",
+			"auto-blank-page": "Auto blank page",
+			"reading-delay-skip":	"Delay in changing comics",
+			"animation-speed":	"Animation speed"
 		},
 		"magnifying-glass":	"Magnifying glass",
 		"magnifying-glass-v":	{
@@ -47,6 +52,10 @@
 			"size": "Size",
 			"ratio": "Ratio",
 			"radius": "Radius"
-		}
+		},
+		"view-bookmarks": "View bookmarks",
+		"add-bookmark": "add bookmark",
+		"remove-bookmark": "Remove bookmark",
+		"empty-bookmarks": "No bookmarks"
 	}
 }
