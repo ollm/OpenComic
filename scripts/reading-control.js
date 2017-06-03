@@ -98,7 +98,7 @@ function calculateImagesDistribution()
 	}
 	else
 	{
-		for(i = 1; i < (contentNum + 1); i++)
+		for(let i = 1; i < (contentNum + 1); i++)
 		{
 			if(typeof imagesData[i] !== 'undefined')
 			{
@@ -109,7 +109,6 @@ function calculateImagesDistribution()
 			else
 			{
 				imagesDistribution.push([{index: i, folder: true, blank: false, width: 1}]);
-				imagesData[i].position = indexNum;
 				indexNum++;
 			}
 		}
@@ -919,6 +918,18 @@ function disableOnScroll(mode)
 
 function changePagesView(mode, value, save)
 {
+
+	imageIndex = false;
+
+	eachImagesDistribution((currentIndex - 1), ['image'], function(image){
+
+		if(!imageIndex)
+			imageIndex = image.index;
+
+	});
+
+	if(!imageIndex) imageIndex = currentIndex;
+
 	if(mode == 1)
 	{
 		storage.updateVar('config', 'readingView', value);
@@ -938,7 +949,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, currentIndex);
+		read(readingCurrentPath, imageIndex);
 	}
 	else if(mode == 2)
 	{
@@ -952,7 +963,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, currentIndex);
+		read(readingCurrentPath, imageIndex);
 	}
 	else if(mode == 4)
 	{
@@ -973,7 +984,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, currentIndex);
+		read(readingCurrentPath, imageIndex);
 	}
 	else if(mode == 7)
 	{
@@ -981,7 +992,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, currentIndex);
+		read(readingCurrentPath, imageIndex);
 	}
 }
 
@@ -1342,12 +1353,12 @@ function read(path, index = 1, end = false)
 				}
 			}
 
-			if(currentIndex != (selIndex + 1))
+			if(currentIndex != (parseInt(selIndex) + 1))
 			{
 
 				isBookmarkTrue = false;
 
-				eachImagesDistribution(selIndex, ['image', 'folder'], function(image){
+				eachImagesDistribution(selIndex, ['image'], function(image){
 
 					if(!isBookmarkTrue && isBookmark(p.normalize(images[image.index].path)))
 						isBookmarkTrue = true;
