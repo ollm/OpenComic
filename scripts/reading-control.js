@@ -5,22 +5,26 @@ function blankPage(index)
 {
 	var key = 0;
 
-	for(let i = index; i < contentNum; i++)
+	if(config.readingDoublePage && config.readingDoNotApplyToHorizontals)
 	{
-		if(typeof imagesData[i] !== 'undefined')
+		for(let i = index; i < (contentNum + 1); i++)
 		{
-			if(config.readingDoublePage && config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
+			if(typeof imagesData[i] !== 'undefined')
 			{
-				return key % 2;
+
+				if(imagesData[i].aspectRatio > 1)
+				{
+					return key % 2;
+				}
+				else
+				{
+					key++;
+				}
 			}
 			else
 			{
 				key++;
 			}
-		}
-		else
-		{
-			key++;
 		}
 	}
 }
@@ -63,6 +67,7 @@ function calculateImagesDistribution()
 				}
 				else
 				{
+
 					if(config.readingDoNotApplyToHorizontals && start && blankPage(i))
 						data.push({index: false, folder: false, blank: true, width: 2});
 
@@ -109,8 +114,6 @@ function calculateImagesDistribution()
 			}
 		}
 	}
-
-	console.log(imagesDistribution);
 }
 
 function addImagesDistribution()
@@ -126,17 +129,17 @@ function addImagesDistribution()
 
 			if(image.blank)
 			{
-				if($('.image-position'+key1+'-'+key2).length == 0)
+				if(template.contentRight('.image-position'+key1+'-'+key2).length == 0)
 				{
 					if(previous)
 						previous.after('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
 					else
-						$('.reading-body > div, .reading-lens > div > div').prepend('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
+						template.contentRight('.reading-body > div, .reading-lens > div > div').prepend('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
 				}
 			}
 			else
 			{
-				previous = $('.r-img-i'+image.index);
+				previous = template.contentRight('.r-img-i'+image.index);
 				previous.addClass('image-position'+key1+'-'+key2);
 			}
 		}
@@ -346,6 +349,30 @@ function goToImage(imageIndex)
 	}
 }
 
+function returnLargerImage(index)
+{
+	if(config.readingDoublePage)
+	{
+		imageHeight0 = template.contentRight('.image-position'+(index)+'-0').height();
+		imageHeight1 = template.contentRight('.image-position'+(index)+'-1').height();
+
+		if(imageHeight1 === undefined || imageHeight0 >= imageHeight1)
+		{
+			image = template.contentRight('.image-position'+(index)+'-0');
+		}
+		else
+		{
+			image = template.contentRight('.image-position'+(index)+'-1');
+		}
+	}
+	else
+	{
+		image = template.contentRight('.image-position'+(index)+'-0');
+	}
+
+	return image;
+}
+
 var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
 
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
@@ -366,28 +393,12 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var imgHeight = false;
 
-	if(config.readingDoublePage)
-	{
-		imageHeight0 = template.contentRight('.image-position'+(eIndex-1)+'-0').height();
-		imageHeight1 = template.contentRight('.image-position'+(eIndex-1)+'-1').height();
-
-		if(imageHeight1 === undefined || imageHeight0 >= imageHeight1)
-		{
-			image = template.contentRight('.image-position'+(eIndex-1)+'-0');
-		}
-		else
-		{
-			image = template.contentRight('.image-position'+(eIndex-1)+'-1');
-		}
-	}
-	else
-	{
-		image = template.contentRight('.image-position'+(eIndex-1)+'-0');
-	}
-
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjustToWidth)
 	{
-		imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
+
+		image = returnLargerImage(eIndex-1);
+
+		imgHeight = image.height() + config.readingMargin.margin;
 
 		if(imgHeight > contentHeight)
 		{
@@ -414,7 +425,9 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	{
 		eIndex = currentIndex;
 
-		imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
+		image = returnLargerImage(eIndex-1);
+
+		imgHeight = image.height() + config.readingMargin.margin;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -435,7 +448,9 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		{
 			eIndex = index;
 
-			imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
+			image = returnLargerImage(eIndex-1);
+
+			imgHeight = image.height() + config.readingMargin.margin;
 
 			if(imgHeight > contentHeight)
 			{
@@ -450,6 +465,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 			{
 				currentPageVisibility = 0;
 			}
+
 			pageVisibilityIndex = currentPageVisibility;
 			currentPageStart = false;
 		}
@@ -468,13 +484,16 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}
 	else if(config.readingView == 'scroll')
 	{
+
+		image = returnLargerImage(eIndex-1);
+
 		var scrollTop = (image.offset().top - content.offset().top) + content.scrollTop();
 
 		scrollSum = 0;
 
 		if(config.readingViewAdjustToWidth && pageVisibilityIndex !== false)
 		{
-			imgHeight = image.height() + config.readingMargin.margin + config.readingMargin.margin;
+			imgHeight = image.height() + config.readingMargin.margin;
 
 			if(imgHeight > contentHeight)
 			{
@@ -493,22 +512,28 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
-	goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
+	eachImagesDistribution((eIndex - 1), ['image', 'folder'], function(image){
+
+		goToImageCL(image.index, animation);
+
+	}, true);
+
+	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
 
 	if(updateCurrentIndex)
 		currentIndex = index;
 
-	if(config.readingDoublePage)
-	{
-		if(!isBookmark(p.normalize(images[imagesDistribution[eIndex-1][0].index].path)) && typeof imagesDistribution[eIndex-1][1] !== 'undefined' && !imagesDistribution[eIndex-1][1].blank)
-			isBookmark(p.normalize(images[imagesDistribution[eIndex-1][1].index].path));
-	}
-	else
-	{
-		isBookmark(p.normalize(images[imagesDistribution[eIndex-1][0].index].path))
-	}
+	isBookmarkTrue = false;
+
+	eachImagesDistribution((eIndex - 1), ['image', 'folder'], function(image){
+
+		if(!isBookmarkTrue && isBookmark(p.normalize(images[image.index].path)))
+			isBookmarkTrue = true;
+
+	});
 
 	previousReadingDirection = readingDirection;
+
 }
 
 function goNext()
@@ -982,7 +1007,7 @@ function createAndDeleteBookmark(index = false)
 	{
 		let imageBookmark = false;
 
-		eachImagesDistribution(currentIndex - 1, ['image'], function(image){
+		eachImagesDistribution((currentIndex - 1), ['image'], function(image){
 
 			if(!imageIndex)
 				imageIndex = image.index;
@@ -1065,7 +1090,7 @@ function loadBookmarks()
 	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
-function eachImagesDistribution(index, contains, callback, notFound = false)
+function eachImagesDistribution(index, contains, callback, first = false, notFound = false)
 {
 	img = false;
 	if(contains && contains.indexOf('image') !== -1)
@@ -1086,6 +1111,9 @@ function eachImagesDistribution(index, contains, callback, notFound = false)
 		{
 			if(!contains || (img && !imagesDistribution[index][key].folder && !imagesDistribution[index][key].blank) || (folder && imagesDistribution[index][key].folder) || (blank && imagesDistribution[index][key].blank))
 				callback(imagesDistribution[index][key]);
+
+			if(first)
+				break each;
 		}
 	}
 	else if(notFound)
@@ -1298,6 +1326,16 @@ function read(path, index = 1, end = false)
 
 			if(currentIndex != selIndex)
 			{
+
+				isBookmarkTrue = false;
+
+				eachImagesDistribution((selIndex - 1), ['image', 'folder'], function(image){
+
+					if(!isBookmarkTrue && isBookmark(p.normalize(images[image.index].path)))
+						isBookmarkTrue = true;
+
+				});
+
 				imageIndex = false;
 
 				eachImagesDistribution((selIndex - 1), ['image', 'folder'], function(image){
