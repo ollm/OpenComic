@@ -142,8 +142,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 					images[i] = cache.returnCacheImage(images[i], sha, function(data){
 						if($('img.fi-sha-'+data.sha).length > 0)
 							$('img.fi-sha-'+data.sha).attr('src', data.path);
-						else if($('img.fi-sha-'+data.sha+' img').length > 0)
-							$('fi-sha-'+data.sha+' img').attr('src', data.path);
+						else if($('.fi-sha-'+data.sha+' img').length > 0)
+							$('.fi-sha-'+data.sha+' img').attr('src', data.path);
 						else
 							$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
 					});
@@ -251,8 +251,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
 								if($('img.fi-sha-'+data.sha).length > 0)
 									$('img.fi-sha-'+data.sha).attr('src', data.path);
-								else if($('img.fi-sha-'+data.sha+' img').length > 0)
-									$('fi-sha-'+data.sha+' img').attr('src', data.path);
+								else if($('.fi-sha-'+data.sha+' img').length > 0)
+									$('.fi-sha-'+data.sha+' img').attr('src', data.path);
 								else
 									$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
 							});

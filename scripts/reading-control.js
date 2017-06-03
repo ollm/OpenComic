@@ -192,6 +192,9 @@ function disposeImages(data = false)
 				else
 					contentWidth = contentWidth2;
 
+				if(typeof imageData === 'undefined')
+					imageData =  {aspectRatio: aspectRatio};
+
 
 				if(aspectRatio > imageData.aspectRatio && !config.readingViewAdjustToWidth)
 				{
