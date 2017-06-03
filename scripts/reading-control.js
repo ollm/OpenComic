@@ -224,15 +224,6 @@ function disposeImages(data = false)
 			}
 		}
 	}
-
-	if(config.readingView == 'scroll')
-	{
-		template.contentRight('.reading-body .r-img').each(function(index){
-
-			imagesPosition[index+1] = $(this).position().top + ($(this).height() / 2);
-
-		});
-	}
 }
 
 function calculateView()
@@ -284,6 +275,23 @@ function calculateView()
 				'height': (config.readingView == 'scroll' && image.folder) ? (content.height() - config.readingMargin.margin) +'px' : height,
 				'float': 'left',
 			});
+		}
+	}
+
+	if(config.readingView == 'scroll')
+	{
+		imagesPosition = [];
+
+		for(key1 in imagesDistribution)
+		{
+			if(typeof imagesPosition[key1] === 'undefined') imagesPosition[key1] = [];
+
+			for(key2 in imagesDistribution[key1])
+			{
+				image = template.contentRight('.image-position'+key1+'-'+key2);
+
+				imagesPosition[key1][key2] = image.position().top + (image.height() / 2);
+			}
 		}
 	}
 }
@@ -1317,25 +1325,29 @@ function read(path, index = 1, end = false)
 		if(activeOnScroll && config.readingView == 'scroll')
 		{
 			previousScrollTop = $(this).scrollTop();
-			let contentHeight = template.contentRight().children('div').height(), contentPosition = (previousScrollTop + (contentHeight / 2));
+			let contentHeight = template.contentRight().children('div').height();
+			let contentPosition = (previousScrollTop + (contentHeight / 2));
 
 			let selIndex = false, selPosition = false;
 
-			for(index in imagesPosition)
+			for(key1 in imagesPosition)
 			{
-				if(!selIndex || Math.abs(contentPosition - imagesPosition[index]) < selPosition)
+				for(key2 in imagesPosition[key1])
 				{
-					selIndex = index;
-					selPosition = Math.abs(contentPosition - imagesPosition[index]);
+					if(!selIndex || Math.abs(contentPosition - imagesPosition[key1][key2]) < selPosition)
+					{
+						selIndex = key1;
+						selPosition = Math.abs(contentPosition - imagesPosition[key1][key2]);
+					}
 				}
 			}
 
-			if(currentIndex != selIndex)
+			if(currentIndex != (selIndex + 1))
 			{
 
 				isBookmarkTrue = false;
 
-				eachImagesDistribution((selIndex - 1), ['image', 'folder'], function(image){
+				eachImagesDistribution(selIndex, ['image', 'folder'], function(image){
 
 					if(!isBookmarkTrue && isBookmark(p.normalize(images[image.index].path)))
 						isBookmarkTrue = true;
@@ -1344,7 +1356,7 @@ function read(path, index = 1, end = false)
 
 				imageIndex = false;
 
-				eachImagesDistribution((selIndex - 1), ['image', 'folder'], function(image){
+				eachImagesDistribution(selIndex, ['image', 'folder'], function(image){
 					if(!imageIndex)
 						imageIndex = image.index
 				});
@@ -1352,7 +1364,7 @@ function read(path, index = 1, end = false)
 				if(imageIndex)
 					goToImageCL(imageIndex, true);
 
-				currentIndex = parseInt(selIndex);
+				currentIndex = parseInt(selIndex) + 1;
 			}
 		}
 
