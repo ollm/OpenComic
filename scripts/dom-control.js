@@ -287,6 +287,12 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	{
 		readingActive = false;
 	}
+
+	justifyViewModule();
+
+	$(window).off('resize').on('resize', function(){
+		justifyViewModule();
+	});
 }
 
 function headerPath(path, mainPath)
@@ -743,6 +749,38 @@ function selectElement(element)
 {
 	$(element).parent().children().removeClass('s');
 	$(element).addClass('s');
+}
+
+function justifyViewModule()
+{
+	if(config.viewIndex == 'module')
+	{
+		contentWidth = template.contentRight().width();
+
+		contentPerLine = Math.floor((contentWidth - 16) / (150 + 16));
+
+		marginLeft = ((contentWidth - 16) - (contentPerLine * (150 + 16))) / (contentPerLine - 1);
+
+		if(contentPerLine > 0)
+		{
+			console.log(contentPerLine);
+
+			template.contentRight('.content-view-module > div').each(function(index){
+
+				if(contentPerLine == 1)
+					$(this).css('margin-left', ((contentWidth / 2) - (150 / 2))+'px');
+				else if(index % contentPerLine == 0)
+					$(this).css('margin-left', '16px');
+				else
+					$(this).css('margin-left', (marginLeft + 16)+'px');
+
+			});
+		}
+		else
+		{
+			template.contentRight('.content-view-module > div').css('margin-left', '16px');
+		}
+	}
 }
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
