@@ -254,8 +254,12 @@ function calculateView()
 	}
 	else if(config.readingView == 'scroll')
 	{
-		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+		template.contentRight('.reading-body > div').css({
 			'width': '100%',
+		});
+
+		template.contentRight('.reading-lens > div > div').css({
+			'width': ($('.content-right').width())+'px',
 		});
 
 		float = 'none';
