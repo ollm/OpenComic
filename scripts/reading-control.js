@@ -1140,6 +1140,8 @@ function read(path, index = 1, end = false)
 	$('.reading-body').off('mouseout mouseenter touchmove');
 	$('.content-right > div > div').off('scroll');
 
+	events.eventHover();
+
 	onReading = true;
 
 	$(window).on('keydown', function(e){

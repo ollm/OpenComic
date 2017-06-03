@@ -25,7 +25,7 @@ function eventButton()
 		buttonPulsed = false;
 	});
 
-	$('.button').on('mouseout', function () {
+	$('.button').on('mouseout', function(){
 		if(buttonPulsed)
 		{
 			buttonCancel = true;
@@ -58,7 +58,7 @@ function eventButton()
 		buttonPulsed = false;
 	});
 
-	$('.floating-action-button').on('mouseout', function () {
+	$('.floating-action-button').on('mouseout', function(){
 		if(buttonPulsed)
 		{
 			buttonCancel = true;
@@ -75,8 +75,7 @@ var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive;
 function eventHover()
 {
 
-
-	$('.hover-text').on('mouseenter', function () {
+	$('.hover-text').on('mouseenter', function(){
 
 		eventHoverTimeoutActive = true;
 
@@ -86,13 +85,11 @@ function eventHover()
 
 	});
 
-	$('.hover-text').on('mouseout', function () {
-
+	$('.hover-text').on('mouseout', function(){
 
 		eventHoverTimeoutActive = false;
 
 		eventHoverActiveTemporal = false;
-
 
 		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
 		$('.global-elements .hover.a').removeClass('a').addClass('d');
@@ -100,13 +97,11 @@ function eventHover()
 
 	});
 
-	$(window).on('mouseout', function () {
-
+	$(window).on('mouseout', function(){
 
 		eventHoverTimeoutActive = false;
 
 		eventHoverActiveTemporal = false;
-
 
 		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
 		$('.global-elements .hover.a').removeClass('a').addClass('d');
@@ -130,7 +125,7 @@ function eventHover()
 function eventSwitch()
 {
 
-	$('.switch').on('click', function () {
+	$('.switch').on('click', function(){
 
 		if($(this).hasClass('a'))
 		{
