@@ -763,8 +763,6 @@ function justifyViewModule()
 
 		if(contentPerLine > 0)
 		{
-			console.log(contentPerLine);
-
 			template.contentRight('.content-view-module > div').each(function(index){
 
 				if(contentPerLine == 1)

@@ -1027,6 +1027,7 @@ body
 	height: 225px;
 	cursor: pointer;
 	line-height: 225px;
+	text-align: center;
 }
 
 .content-view-module .v-img > img
