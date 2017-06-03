@@ -4,7 +4,9 @@
 		{{#if folder}}
 		<div class="v-folder item-image">
 			{{#each images}}
-			<div class="fi-sha-{{sha}} folder-images" style="background-image: url({{encodeURI path}})"></div>
+			<div class="fi-sha-{{sha}} folder-images">
+				<img src="{{encodeURI path}}">
+			</div>
 			{{/each}}
 		</div>
 		{{else}}

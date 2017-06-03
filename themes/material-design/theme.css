@@ -1069,6 +1069,21 @@ body
 	box-sizing: border-box;
 	float: left;
 	background-repeat: no-repeat;
+	line-height: 97px;
+}
+
+.content-view-module .folder-images > img
+{
+	max-width: 60px;
+	max-height: 97px;
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 2px;
+	background-color: #fff;
+	overflow: hidden;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: 50%;
 }
 
 /*Controls*/
