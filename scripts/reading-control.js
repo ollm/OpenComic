@@ -296,7 +296,7 @@ function stayInLine()
 	}
 	else if(config.readingView == 'scroll')
 	{
-		goToIndexCL(currentIndex, false);
+		goToImageCL(currentIndex, false);
 
 		var scrollTop = template.contentRight().children('div').scrollTop();
 		var contentHeight = template.contentRight().children('div').children('div').height();
@@ -310,7 +310,7 @@ function stayInLine()
 	}
 }
 
-function goToIndexCL(index, animation = true)
+function goToImageCL(index, animation = true)
 {
 	var animationDurationMS = ((animation) ? config.readingViewSpeed : 0) * 1000;
 
@@ -336,6 +336,16 @@ function goToIndexCL(index, animation = true)
 	}
 }
 
+function goToImage(imageIndex)
+{
+	if(typeof imagesData[imageIndex] !== 'undefined')
+	{
+		readingDirection = true; 
+		goToIndex(imagesData[imageIndex].position + 1);
+		goToImageCL(imageIndex, true)
+	}
+}
+
 var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
 
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
@@ -356,14 +366,12 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var imgHeight = false;
 
-	//image = imagesPosition[eIndex-1][0];
-
 	if(config.readingDoublePage)
 	{
-		imageHeight1 = template.contentRight('.image-position'+(eIndex-1)+'-0').height();
-		imageHeight2 = template.contentRight('.image-position'+(eIndex-1)+'-1').height();
+		imageHeight0 = template.contentRight('.image-position'+(eIndex-1)+'-0').height();
+		imageHeight1 = template.contentRight('.image-position'+(eIndex-1)+'-1').height();
 
-		if(imageHeight1 !== undefined && imageHeight1 >= imageHeight2)
+		if(imageHeight1 === undefined || imageHeight0 >= imageHeight1)
 		{
 			image = template.contentRight('.image-position'+(eIndex-1)+'-0');
 		}
@@ -376,8 +384,6 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	{
 		image = template.contentRight('.image-position'+(eIndex-1)+'-0');
 	}
-
-	console.log(image);
 
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjustToWidth)
 	{
@@ -462,7 +468,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}
 	else if(config.readingView == 'scroll')
 	{
-		var scrollTop = ((image.offset().top - config.readingMargin.margin) - content.offset().top) + content.scrollTop();
+		var scrollTop = (image.offset().top - content.offset().top) + content.scrollTop();
 
 		scrollSum = 0;
 
@@ -487,14 +493,14 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
-	goToIndexCL(imagesDistribution[eIndex-1][0].index, animation);
+	goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
 
 	if(updateCurrentIndex)
 		currentIndex = index;
 
 	if(config.readingDoublePage)
 	{
-		if(!isBookmark(p.normalize(images[imagesDistribution[eIndex-1][0].index].path)) && typeof imagesDistribution[eIndex-1][1] !== 'undefined')
+		if(!isBookmark(p.normalize(images[imagesDistribution[eIndex-1][0].index].path)) && typeof imagesDistribution[eIndex-1][1] !== 'undefined' && !imagesDistribution[eIndex-1][1].blank)
 			isBookmark(p.normalize(images[imagesDistribution[eIndex-1][1].index].path));
 	}
 	else
@@ -921,7 +927,6 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 6)
 	{
-
 		if(value == 1)
 			$('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
 		else
@@ -969,11 +974,42 @@ function isBookmark(path)
 	}
 }
 
-function createAndDeleteBookmark()
+function createAndDeleteBookmark(index = false)
 {
-	if(currentIndex <= contentNum && currentIndex > 0 && !template.contentRight('.r-img-i'+currentIndex).hasClass('folder'))
+	let imageIndex = false;
+
+	if(!index)
 	{
-		var path = p.normalize(images[currentIndex].path);
+		let imageBookmark = false;
+
+		eachImagesDistribution(currentIndex - 1, ['image'], function(image){
+
+			if(!imageIndex)
+				imageIndex = image.index;
+
+
+			if(isBookmark(p.normalize(images[image.index].path)))
+			{
+				if(imageBookmark)
+				{
+					createAndDeleteBookmark(image.index);
+				}
+				else
+				{
+					imageBookmark = true;
+					imageIndex = image.index;
+				}	
+			}
+		});
+	}
+	else
+	{
+		imageIndex = index;
+	}
+
+	if(currentIndex <= contentNum && currentIndex > 0 && imageIndex)
+	{
+		var path = p.normalize(images[imageIndex].path);
 
 		if(typeof readingCurrentBookmarks !== 'undefined')
 		{
@@ -1002,14 +1038,10 @@ function createAndDeleteBookmark()
 
 function loadBookmarks()
 {
-
 	var bookmarks = [];
 
 	for(key in readingCurrentBookmarks)
 	{
-		console.log(p.dirname(readingCurrentBookmarks[key]));
-		console.log(readingCurrentPath);
-
 		if(p.dirname(readingCurrentBookmarks[key]) === readingCurrentPath)
 		{
 			bookmarks.push({
@@ -1033,6 +1065,35 @@ function loadBookmarks()
 	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
+function eachImagesDistribution(index, contains, callback, notFound = false)
+{
+	img = false;
+	if(contains && contains.indexOf('image') !== -1)
+		img = true;
+
+	folder = false;
+	if(contains && contains.indexOf('folder') !== -1)
+		folder = true;
+
+	blank = false;
+	if(contains && contains.indexOf('blank') !== -1)
+		blank = true;
+
+	if(typeof imagesDistribution[index] !== 'undefined')
+	{
+		each:
+		for(key in imagesDistribution[index])
+		{
+			if(!contains || (img && !imagesDistribution[index][key].folder && !imagesDistribution[index][key].blank) || (folder && imagesDistribution[index][key].folder) || (blank && imagesDistribution[index][key].blank))
+				callback(imagesDistribution[index][key]);
+		}
+	}
+	else if(notFound)
+	{
+		notFound();
+	}
+}
+
 var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined;
 
 function read(path, index = 1, end = false)
@@ -1044,7 +1105,7 @@ function read(path, index = 1, end = false)
 	if(typeof storage.get('bookmarks') !== 'undefined' && typeof storage.get('bookmarks')[dom.indexMainPathA()] !== 'undefined')
 		readingCurrentBookmarks = storage.get('bookmarks')[dom.indexMainPathA()];
 
-	goToIndexCL(index, false);
+	goToImageCL(index, false);
 
 	$(window).off('keydown touchstart mouseout click resize');
 	$('.reading-body, .reading-lens').off('mousemove');
@@ -1237,7 +1298,15 @@ function read(path, index = 1, end = false)
 
 			if(currentIndex != selIndex)
 			{
-				goToIndexCL(selIndex, true);
+				imageIndex = false;
+
+				eachImagesDistribution((selIndex - 1), ['image', 'folder'], function(image){
+					if(!imageIndex)
+						imageIndex = image.index
+				});
+
+				if(imageIndex)
+					goToImageCL(imageIndex, true);
 
 				currentIndex = parseInt(selIndex);
 			}
@@ -1293,6 +1362,7 @@ module.exports = {
 	contentNum: contentNum,
 	imagesNumLoad: imagesNumLoad,
 	imagesData: function(){return imagesData},
+	goToImage: goToImage,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
 	goStart: goStart,
 	goPrevious: goPrevious,

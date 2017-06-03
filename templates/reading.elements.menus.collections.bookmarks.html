@@ -1,7 +1,7 @@
 
 {{#each bookmarks}}
 
-	<div class="reading-bookmark menu-simple-element" onclick="reading.goToIndex({{index}})">
+	<div class="reading-bookmark menu-simple-element" onclick="reading.goToImage({{index}}); events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
 		<span>{{index}}</span>
 		{{name}}
 	</div>
