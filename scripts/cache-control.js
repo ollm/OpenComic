@@ -133,7 +133,22 @@ function returnCacheImage(file, sha, callback = false)
 	}
 }
 
+function writeFile(name, content)
+{
+	fs.writeFile(p.join(appDir, 'cache', name), content); 
+}
+
+function readFile(name)
+{
+	if(fs.existsSync(p.join(appDir, 'cache', name)))
+		return fs.readFileSync(p.join(appDir, 'cache', name), 'utf8');
+	else
+		return false;
+}
+
 module.exports = {
 	returnCacheImage: returnCacheImage,
 	cleanQueue: cleanQueue,
+	writeFile: writeFile,
+	readFile: readFile,
 };

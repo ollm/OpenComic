@@ -5,6 +5,7 @@
 const electron = require('electron'),
 	fs = require('fs'),
 	hb = require('handlebars'),
+	os = require('os'),
 	ejs = require('electron-json-storage'),
 	mime = require('mime'),
 	sha1 = require('sha1'),
@@ -27,17 +28,41 @@ var appDir = __dirname;
 var package = $.parseJSON(readFileApp('/package.json'));
 
 var compatibleMime = [
-		'image/jpeg',
-		'image/pjpeg',
-		'image/png',
-		'image/gif'
-	];
+	'image/jpeg',
+	'image/pjpeg',
+	'image/png',
+	'image/apng',
+	'image/gif'
+];
+
+var compressedMime = {
+	'all': [
+		'application/zip',
+		'application/x-cbz',
+	],
+	'zip': [
+		'application/zip',
+		'application/x-cbz',
+	],
+};
+
+var compressedExtensions = {
+	'all': [
+		'zip',
+		'cbz',
+	],
+	'zip': [
+		'zip',
+		'cbz',
+	],
+};
 
 var compatibleExtensions = [
 	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
 	/*png*/'png', 'x-png',
-	/*gif*/'gif', 
-	/*compressed*/'zip', 'rar', 'cbz', 'cbr'];
+	/*gif*/'gif',
+	/*compressed*///'zip', 'rar', 'cbz', 'cbr'
+];
 
 //console.time('Require time 2');
 
@@ -46,8 +71,17 @@ const storage = require('./scripts/storage-control.js'),
 	template = require('./scripts/template-control.js'),
 	dom = require('./scripts/dom-control.js'),
 	events = require('./scripts/events-control.js'),
-	canvas = require('./scripts/canvas-control.js'),
+	file = require('./scripts/file-control.js'),
+	fileCompressed = require('./scripts/file-compressed-control.js'),
 	reading = require('./scripts/reading-control.js');
+
+tempFolder = p.join(os.tmpdir(), 'OpenComic');
+
+fileCompressed.returnFiles('/home/jordi/Documentos/OC/compressed/Episodiosdd 2.zip', false, true, function(files){
+
+	console.log(files);
+
+});
 
 //console.timeEnd('Require time 2');
 
@@ -70,6 +104,16 @@ storage.start(function(){
 });
 
 /*Global functions*/
+
+function inArray(string, array)
+{
+	return (array.indexOf(string) != -1) ? true : false;
+}
+
+function fileExtension(path)
+{
+	return p.extname(path).replace(/^\./, '').toLowerCase();
+}
 
 function pregQuote(str, delimiter = false)
 {
@@ -116,7 +160,7 @@ function readFile(file)
 
 function existsFileApp(file)
 {
-	fs.existsSync(__dirname + file)
+	fs.existsSync(p.join(__dirname, file))
 }
 
 function existsFile(file)

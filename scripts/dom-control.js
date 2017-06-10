@@ -216,7 +216,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 					var fileName = files[i];
 					var filePath = p.join(path, fileName);
 
-					if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
+					if(inArray(mime.lookup(filePath), compatibleMime))
 					{
 						var sha = sha1(filePath);
 
@@ -239,6 +239,35 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 							thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 							folder: false,
 						});
+					}
+					else if(inArray(fileExtension(filePath), compressedExtensions.all))
+					{
+						console.log('compressed');
+
+						/*var images = folderImages(filePath, 4);
+
+						for(var i2 = 0; i2 < images.length; i2++)
+						{
+							var sha = sha1(images[i2]);
+
+							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
+								if($('img.fi-sha-'+data.sha).length > 0)
+									$('img.fi-sha-'+data.sha).attr('src', data.path);
+								else if($('.fi-sha-'+data.sha+' img').length > 0)
+									$('.fi-sha-'+data.sha+' img').attr('src', data.path);
+								else
+									$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+							});
+						}*/
+
+						comics.push({
+							name: fileName,
+							path: filePath,
+							mainPath: mainPath,
+							images: images,
+							folder: true,
+						});
+
 					}
 					else if(fs.statSync(filePath).isDirectory())
 					{
@@ -323,84 +352,13 @@ function headerPath(path, mainPath)
 	handlebarsContext.headerTitlePath = path;
 }
 
-function sortFiles(files)
-{
-	if(files)
-	{
-		var sort = config.sort;
-		var sortInvert = config.sortInvert;
-		var foldersFirst = config.foldersFirst;
-
-		if(sort == 'name')
-		{
-			var order = 'simple';
-			var key = 'name';
-		}
-		else if(sort == 'numeric')
-		{
-			var order = 'numeric';
-			var key = 'name';
-		}
-		else if(sort == 'name-numeric')
-		{
-			var order = 'simple-numeric';
-			var key = 'name';
-		}
-		else if(sort == 'last-add')
-		{
-			var order = 'simple';
-			var key = 'added';
-		}
-		else
-		{
-			var order = 'simple';
-			var key = 'lastReading';
-		}
-
-		files.sort(function (a, b) {
-			if(foldersFirst && a.folder && !b.folder) return -1; 
-			if(foldersFirst && b.folder && !a.folder) return 1; 
-			return (sortInvert) ? -(orderBy(a, b, order, 'name')) : orderBy(a, b, order, 'name');
-		});
-
-		return files;
-	}
-}
-
-function returnFiles(path)
-{
-	if(fs.existsSync(path))
-	{
-		var files = fs.readdirSync(path);
-
-		var filteredFiles = [];
-
-		if(files)
-		{
-			for(var i = 0; i < files.length; i++)
-			{
-				var filePath = p.join(path, files[i]);
-
-				if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
-					filteredFiles.push({name: files[i], path: filePath, folder: false});
-				else if(fs.statSync(filePath).isDirectory())
-					filteredFiles.push({name: files[i], path: filePath, folder: true});
-
-			}
-
-			if(filteredFiles.length > 0)
-				return filteredFiles;
-		}
-	}
-}
-
 function nextComic(path, mainPath)
 {
 	var searchPath = p.dirname(path);
 
 	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
 	{
-		var files = sortFiles(returnFiles(searchPath));
+		var files = file.sort(file.returnFirst(searchPath));
 
 		var skipPath = false;
 
@@ -416,6 +374,10 @@ function nextComic(path, mainPath)
 
 					if(image)
 						return image;
+				}
+				else if(skipPath && files[i].compressed)
+				{
+					console.log('compressed');
 				}
 				else if(skipPath)
 				{
@@ -439,7 +401,7 @@ function previousComic(path, mainPath)
 
 	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
 	{
-		var files = sortFiles(returnFiles(searchPath));
+		var files = file.sort(file.returnFirst(searchPath));
 
 		var skipPath = false;
 
@@ -455,6 +417,10 @@ function previousComic(path, mainPath)
 
 					if(image)
 						return image;
+				}
+				else if(skipPath && files[i].compressed)
+				{
+					console.log('compressed');
 				}
 				else if(skipPath)
 				{
@@ -478,7 +444,7 @@ function folderImages(path, num, mode = false)
 	{
 		var dirs = [];
 
-		var files = sortFiles(returnFiles(path));
+		var files = file.sort(file.returnFirst(path));
 
 		if(files)
 		{
@@ -491,6 +457,10 @@ function folderImages(path, num, mode = false)
 					filePath = folderImages(filePath, 1, 1);
 
 					if(filePath) dirs.push(filePath);
+				}
+				else if(files[i].compressed)
+				{
+					console.log('compressed');
 				}
 				else
 				{
@@ -505,7 +475,7 @@ function folderImages(path, num, mode = false)
 	}
 	else
 	{
-		var files = sortFiles(returnFiles(path));
+		var files = file.sort(file.returnFirst(path));
 
 		if(files)
 		{
@@ -520,6 +490,10 @@ function folderImages(path, num, mode = false)
 						filePath = folderImages(filePath, 1, 1);
 
 						if(filePath) return filePath;
+					}
+					else if(files[i].compressed)
+					{
+						console.log('compressed');
 					}
 					else
 					{
@@ -538,6 +512,10 @@ function folderImages(path, num, mode = false)
 						filePath = folderImages(filePath, 1, 1);
 
 						if(filePath) return filePath;
+					}
+					else if(files[i].compressed)
+					{
+						console.log('compressed');
 					}
 					else
 					{
