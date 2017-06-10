@@ -1,4 +1,34 @@
 
+function realPath(path, index = 0)
+{
+	segments = path.split(p.sep);
+
+	newPath = '/';
+
+	numSegments = segments.length + index;
+
+	for(let i in segments)
+	{
+		newPath = p.join(newPath, segments[i]);
+
+		if(i < numSegments)
+		{
+			extension = fileExtension(newPath);
+
+			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
+			{
+				sha = sha1(p.normalize(newPath));
+
+				newPath = p.join(tempFolder, sha);
+			}
+		}
+	}
+
+	console.log(newPath);
+
+	return newPath;
+}
+
 function filtered(path, files)
 {
 	filtered = [];
@@ -11,11 +41,10 @@ function filtered(path, files)
 
 			if(inArray(mime.lookup(filePath), compatibleMime))
 				filtered.push({name: files[i], path: filePath, folder: false, compressed: false});
-			else if(inArray(fileExtension(filePath), compressedExtensions.all))
-				filtered.push({name: files[i], path: filePath, folder: false, compressed: true});
 			else if(fs.statSync(filePath).isDirectory())
 				filtered.push({name: files[i], path: filePath, folder: true, compressed: false});
-
+			else if(inArray(fileExtension(filePath), compressedExtensions.all))
+				filtered.push({name: files[i], path: filePath, folder: false, compressed: true});
 		}
 
 		if(filtered.length > 0)
@@ -49,10 +78,10 @@ function returnAll(path)
 
 				if(inArray(mime.lookup(filePath), compatibleMime))
 					returnFiles.push({name: files[i], path: filePath, folder: false, compressed: false});
-				else if(inArray(fileExtension(filePath), compressedExtensions.all))
-					filtered.push({name: files[i], path: filePath, folder: false, compressed: true, files: []});
 				else if(fs.statSync(filePath).isDirectory())
 					returnFiles.push({name: files[i], path: filePath, folder: true, compressed: false, files: returnAll(filePath)});
+				else if(inArray(fileExtension(filePath), compressedExtensions.all))
+					filtered.push({name: files[i], path: filePath, folder: false, compressed: true, files: []});
 
 			}
 		}
@@ -123,4 +152,5 @@ module.exports = {
 	returnAll: returnAll,
 	allToFirst: allToFirst,
 	sort: sort,
+	realPath: realPath,
 };

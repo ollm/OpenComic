@@ -81,6 +81,161 @@ var indexPathControlA = [];
 
 var indexPathA = false, indexMainPathA = false;
 
+function loadFilesIndexPage(animation, path, keepScroll, mainPath)
+{
+
+	if(!path)
+	{
+		var sort = config.sortIndex;
+		var sortInvert = config.sortInvertIndex;
+		var foldersFirst = config.foldersFirstIndex;
+	}
+	else
+	{
+		var sort = config.sort;
+		var sortInvert = config.sortInvert;
+		var foldersFirst = config.foldersFirst;
+	}
+
+	if(sort == 'name')
+	{
+		var order = 'simple';
+		var key = 'name';
+	}
+	else if(sort == 'numeric')
+	{
+		var order = 'numeric';
+		var key = 'name';
+	}
+	else if(sort == 'name-numeric')
+	{
+		var order = 'simple-numeric';
+		var key = 'name';
+	}
+	else if(sort == 'last-add')
+	{
+		var order = 'simple';
+		var key = 'added';
+	}
+	else
+	{
+		var order = 'simple';
+		var key = 'lastReading';
+	}
+
+	fs.readdir(file.realPath(path), function(error, files){
+
+		comics = [];
+
+		if(files)
+		{
+			for(var i = 0; i < files.length; i++)
+			{
+				var fileName = files[i];
+				var filePath = p.join(path, fileName);
+
+				console.log(filePath);
+
+				if(inArray(mime.lookup(file.realPath(filePath, -1)), compatibleMime))
+				{
+					var sha = sha1(filePath);
+
+					var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
+						if($('.sha-'+data.sha+' img').length > 0)
+						{
+							$('.sha-'+data.sha+' img').attr('src', data.path);
+						}
+						else
+						{
+							$('.sha-'+data.sha+' .item-image').css('background-image', 'url('+data.path+')');
+						}
+					});
+
+					comics.push({
+						sha: sha,
+						name: fileName.replace(/\.[^\.]*$/, ''),
+						path: filePath,
+						mainPath: mainPath,
+						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+						folder: false,
+					});
+				}
+				else if(fs.statSync(file.realPath(filePath, -1)).isDirectory())
+				{
+					var images = folderImages(filePath, 4);
+
+					for(var i2 = 0; i2 < images.length; i2++)
+					{
+						var sha = sha1(images[i2]);
+
+						images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
+							if($('img.fi-sha-'+data.sha).length > 0)
+								$('img.fi-sha-'+data.sha).attr('src', data.path);
+							else if($('.fi-sha-'+data.sha+' img').length > 0)
+								$('.fi-sha-'+data.sha+' img').attr('src', data.path);
+							else
+								$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+						});
+					}
+
+					comics.push({
+						name: fileName,
+						path: filePath,
+						mainPath: mainPath,
+						images: images,
+						folder: true,
+					});
+				}
+				else if(inArray(fileExtension(filePath), compressedExtensions.all))
+				{
+					console.log('compressed');
+
+					/*var images = folderImages(filePath, 4);
+
+					for(var i2 = 0; i2 < images.length; i2++)
+					{
+						var sha = sha1(images[i2]);
+
+						images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
+							if($('img.fi-sha-'+data.sha).length > 0)
+								$('img.fi-sha-'+data.sha).attr('src', data.path);
+							else if($('.fi-sha-'+data.sha+' img').length > 0)
+								$('.fi-sha-'+data.sha+' img').attr('src', data.path);
+							else
+								$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+						});
+					}*/
+
+					comics.push({
+						name: fileName,
+						path: filePath,
+						mainPath: mainPath,
+						images: images,
+						folder: true,
+					});
+
+				}
+			}
+		}
+
+		if(!isEmpty(comics))
+		{
+			comics.sort(function (a, b) {
+				if(foldersFirst && a.folder && !b.folder) return -1; 
+				if(foldersFirst && b.folder && !a.folder) return 1; 
+				return (sortInvert) ? -(orderBy(a, b, order, key)) : orderBy(a, b, order, key);
+			});
+		}
+
+		handlebarsContext.comics = comics;
+
+		template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
+		events.events();
+		justifyViewModule();
+
+	});
+}
+
 function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
 {
 	onReading = false;
@@ -180,7 +335,9 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	}
 	else
 	{
+
 		indexPathA = path;
+
 		indexMainPathA = mainPath;
 		if(indexPathControlA.length == 0 || (indexPathControlA[indexPathControlA.length - 1].path != path))
 		{
@@ -205,115 +362,19 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		cache.cleanQueue();
 
-		fs.readdir(path, function(error, files){
+		if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
+		{
+			fileCompressed.returnFiles(path, false, false, function(files){
 
-			comics = [];
+				loadFilesIndexPage(animation, path, keepScroll, mainPath);
 
-			if(files)
-			{
-				for(var i = 0; i < files.length; i++)
-				{
-					var fileName = files[i];
-					var filePath = p.join(path, fileName);
+			});
+		}
+		else
+		{
+			loadFilesIndexPage(animation, path, keepScroll, mainPath);
+		}
 
-					if(inArray(mime.lookup(filePath), compatibleMime))
-					{
-						var sha = sha1(filePath);
-
-						var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
-							if($('.sha-'+data.sha+' img').length > 0)
-							{
-								$('.sha-'+data.sha+' img').attr('src', data.path);
-							}
-							else
-							{
-								$('.sha-'+data.sha+' .item-image').css('background-image', 'url('+data.path+')');
-							}
-						});
-
-						comics.push({
-							sha: sha,
-							name: fileName.replace(/\.[^\.]*$/, ''),
-							path: filePath,
-							mainPath: mainPath,
-							thumbnail: (thumbnail.cache) ? thumbnail.path : '',
-							folder: false,
-						});
-					}
-					else if(inArray(fileExtension(filePath), compressedExtensions.all))
-					{
-						console.log('compressed');
-
-						/*var images = folderImages(filePath, 4);
-
-						for(var i2 = 0; i2 < images.length; i2++)
-						{
-							var sha = sha1(images[i2]);
-
-							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
-								if($('img.fi-sha-'+data.sha).length > 0)
-									$('img.fi-sha-'+data.sha).attr('src', data.path);
-								else if($('.fi-sha-'+data.sha+' img').length > 0)
-									$('.fi-sha-'+data.sha+' img').attr('src', data.path);
-								else
-									$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
-							});
-						}*/
-
-						comics.push({
-							name: fileName,
-							path: filePath,
-							mainPath: mainPath,
-							images: images,
-							folder: true,
-						});
-
-					}
-					else if(fs.statSync(filePath).isDirectory())
-					{
-						var images = folderImages(filePath, 4);
-
-						for(var i2 = 0; i2 < images.length; i2++)
-						{
-							var sha = sha1(images[i2]);
-
-							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
-								if($('img.fi-sha-'+data.sha).length > 0)
-									$('img.fi-sha-'+data.sha).attr('src', data.path);
-								else if($('.fi-sha-'+data.sha+' img').length > 0)
-									$('.fi-sha-'+data.sha+' img').attr('src', data.path);
-								else
-									$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
-							});
-						}
-
-						comics.push({
-							name: fileName,
-							path: filePath,
-							mainPath: mainPath,
-							images: images,
-							folder: true,
-						});
-					}
-				}
-			}
-
-			if(!isEmpty(comics))
-			{
-				comics.sort(function (a, b) {
-					if(foldersFirst && a.folder && !b.folder) return -1; 
-					if(foldersFirst && b.folder && !a.folder) return 1; 
-					return (sortInvert) ? -(orderBy(a, b, order, key)) : orderBy(a, b, order, key);
-				});
-			}
-
-			handlebarsContext.comics = comics;
-
-			template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
-			events.events();
-			justifyViewModule();
-
-		});
 	}
 
 	if(readingActive)
