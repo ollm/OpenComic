@@ -134,9 +134,9 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				var fileName = files[i];
 				var filePath = p.join(path, fileName);
 
-				console.log(filePath);
+				realPath = file.realPath(filePath, -1);
 
-				if(inArray(mime.lookup(file.realPath(filePath, -1)), compatibleMime))
+				if(inArray(mime.lookup(realPath), compatibleMime))
 				{
 					var sha = sha1(filePath);
 
@@ -160,7 +160,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 						folder: false,
 					});
 				}
-				else if(fs.statSync(file.realPath(filePath, -1)).isDirectory())
+				else if(fs.statSync(realPath).isDirectory())
 				{
 					var images = folderImages(filePath, 4);
 
@@ -188,7 +188,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				}
 				else if(inArray(fileExtension(filePath), compressedExtensions.all))
 				{
-					console.log('compressed');
+					//console.log('compressed');
 
 					/*var images = folderImages(filePath, 4);
 
@@ -438,7 +438,7 @@ function nextComic(path, mainPath)
 				}
 				else if(skipPath && files[i].compressed)
 				{
-					console.log('compressed');
+					//console.log('compressed');
 				}
 				else if(skipPath)
 				{
@@ -481,7 +481,7 @@ function previousComic(path, mainPath)
 				}
 				else if(skipPath && files[i].compressed)
 				{
-					console.log('compressed');
+					//console.log('compressed');
 				}
 				else if(skipPath)
 				{
@@ -521,7 +521,7 @@ function folderImages(path, num, mode = false)
 				}
 				else if(files[i].compressed)
 				{
-					console.log('compressed');
+					//console.log('compressed');
 				}
 				else
 				{
@@ -554,7 +554,7 @@ function folderImages(path, num, mode = false)
 					}
 					else if(files[i].compressed)
 					{
-						console.log('compressed');
+						//console.log('compressed');
 					}
 					else
 					{
@@ -576,7 +576,7 @@ function folderImages(path, num, mode = false)
 					}
 					else if(files[i].compressed)
 					{
-						console.log('compressed');
+						//console.log('compressed');
 					}
 					else
 					{

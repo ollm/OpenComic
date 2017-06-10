@@ -7,15 +7,17 @@ function processTheImageQueue()
 	var img = queuedImages[0];
 	var sha = img.sha;
 
-	sharp(img.file).resize(img.size, null).background('white').quality(95).toFile(p.join(appDir, 'cache', sha+'.jpg'), function(error) {
+	realPath = file.realPath(img.file);
+
+	sharp(realPath).resize(img.size, null).background('white').quality(95).toFile(p.join(appDir, 'cache', sha+'.jpg'), function(error) {
 
 		if(error)
 		{
 			if(!imageLibrary) imageLibrary = require('gm').subClass({imageMagick: true});
 
-			imageLibrary(img.file).resize(img.size, null).quality(95).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+			imageLibrary(realPath).resize(img.size, null).quality(95).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
 
-				if(error && imagUse !== 'gm')
+				if(error && imageUse !== 'gm')
 				{
 					imageLibrary = require('gm').subClass({imageMagick: false});
 					imageUse = 'gm';
