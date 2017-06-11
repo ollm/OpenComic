@@ -3,11 +3,11 @@ function realPath(path, index = 0)
 {
 	segments = path.split(p.sep);
 
-	newPath = '/';
+	newPath = (segments.length > 0) ? segments[0] : '';
 
 	numSegments = segments.length + index;
 
-	for(let i in segments)
+	for(let i = 1; i < segments.length; i++)
 	{
 		newPath = p.join(newPath, segments[i]);
 
@@ -23,8 +23,6 @@ function realPath(path, index = 0)
 			}
 		}
 	}
-
-	console.log(newPath);
 
 	return newPath;
 }

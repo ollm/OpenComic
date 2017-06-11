@@ -77,12 +77,6 @@ const storage = require('./scripts/storage-control.js'),
 
 tempFolder = p.join(os.tmpdir(), 'OpenComic');
 
-fileCompressed.returnFiles('/home/jordi/Documentos/OC/compressed/Episodiosdd 2.zip', false, true, function(files){
-
-	console.log(files);
-
-});
-
 //console.timeEnd('Require time 2');
 
 storage.start(function(){

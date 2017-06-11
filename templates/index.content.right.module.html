@@ -5,13 +5,13 @@
 		<div class="v-folder item-image">
 			{{#each images}}
 			<div class="fi-sha-{{sha}} folder-images">
-				<img src="{{encodeURI path}}">
+				<img src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
 			</div>
 			{{/each}}
 		</div>
 		{{else}}
 		<div class="v-img">
-			<img class="item-image" src="{{encodeURI thumbnail}}">
+			<img class="item-image" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}">
 		</div>
 		{{/if}}
 		<div class="v-text">{{name}}</div>

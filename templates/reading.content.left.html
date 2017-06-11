@@ -4,7 +4,7 @@
 	{{#if folder}}
 	carpeta
 	{{else}}
-	<img class="reading-images ri-sha-{{sha}}" src="{{encodeURI thumbnail}}">
+	<img class="reading-images ri-sha-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}">
 	{{/if}}
 </div>
 {{/each}}
