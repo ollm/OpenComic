@@ -61,7 +61,7 @@ var compatibleExtensions = [
 	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
 	/*png*/'png', 'x-png',
 	/*gif*/'gif',
-	/*compressed*///'zip', 'rar', 'cbz', 'cbr'
+	/*compressed*/'zip', 'cbz'
 ];
 
 //console.time('Require time 2');
@@ -405,23 +405,23 @@ function addComic()
 
 			if(fs.statSync(filePath).isDirectory())
 			{
-				var name = filePath.replace(/^.*\//, '');
+				var name = p.basename(filePath);
 				var path = filePath;
 				var compressed = false;
 			}
 			else
 			{
-				if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
+				if(inArray(mime.lookup(filePath), compatibleMime))
 				{
-					filePath = filePath.replace(/\/[^\/]*$/, '');
+					filePath = p.dirname(filePath);
 
-					var name = filePath.replace(/^.*\//, '');
+					var name = p.basename(filePath);
 					var path = filePath;
 					var compressed = false;
 				}
 				else
 				{
-					var name = filePath.replace(/\.[^\.]*$/, '').replace(/^.*\//, '');
+					var name = p.basename(filePath).replace(/\.[^\.]*$/, '');
 					var path = filePath;
 					var compressed = true;
 				}
