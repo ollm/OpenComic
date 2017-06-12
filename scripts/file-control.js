@@ -3,7 +3,7 @@ function realPath(path, index = 0)
 {
 	segments = path.split(p.sep);
 
-	newPath = (segments.length > 0) ? segments[0] : '';
+	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
 	numSegments = segments.length + index;
 
