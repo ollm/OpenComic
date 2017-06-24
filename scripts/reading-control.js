@@ -1,6 +1,7 @@
 
 var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, indexNum = 0, imagesDistribution = [];
 
+//Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
 {
 	var key = 0;
@@ -29,6 +30,7 @@ function blankPage(index)
 	}
 }
 
+//Calculates the distribution of the images depending on the user's configuration
 function calculateImagesDistribution()
 {
 
@@ -115,6 +117,7 @@ function calculateImagesDistribution()
 	}
 }
 
+//Adds the distribution of the images
 function addImagesDistribution()
 {
 
@@ -145,6 +148,7 @@ function addImagesDistribution()
 	}
 }
 
+//Calculates the size and position of the images
 function disposeImages(data = false)
 {
 
@@ -227,6 +231,7 @@ function disposeImages(data = false)
 		}
 	}
 }
+
 
 function calculateView()
 {
@@ -327,6 +332,7 @@ function stayInLine()
 	}
 }
 
+//Go to a specific comic image (Left menu)
 function goToImageCL(index, animation = true)
 {
 	var animationDurationMS = ((animation) ? config.readingViewSpeed : 0) * 1000;
@@ -353,6 +359,7 @@ function goToImageCL(index, animation = true)
 	}
 }
 
+//Go to a specific comic image
 function goToImage(imageIndex)
 {
 	if(typeof imagesData[imageIndex] !== 'undefined')
@@ -363,6 +370,7 @@ function goToImage(imageIndex)
 	}
 }
 
+//Returns the highest image
 function returnLargerImage(index)
 {
 	if(config.readingDoublePage)
@@ -389,6 +397,7 @@ function returnLargerImage(index)
 
 var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
 
+//Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
 
@@ -550,6 +559,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 }
 
+//Go to the next comic page
 function goNext()
 {
 
@@ -565,6 +575,7 @@ function goNext()
 		showNextComic(1, true);
 }
 
+//Go to the previous comic page
 function goPrevious()
 {
 	var previousIndex = currentIndex - 1;
@@ -579,6 +590,7 @@ function goPrevious()
 		showPreviousComic(1, true);
 }
 
+//Go to the start of the comic
 function goStart()
 {
 	if(currentIndex < 1)
@@ -591,6 +603,7 @@ function goStart()
 	goToIndex(1, true);
 }
 
+//Go to the end of the comic
 function goEnd()
 {
 	if(currentIndex < 1)
@@ -605,6 +618,7 @@ function goEnd()
 
 var showComicSkip;
 
+//Begins to show the next comic
 function showNextComic(mode, animation = true)
 {
 	var content = template.contentRight().children('div');
@@ -694,7 +708,7 @@ function showNextComic(mode, animation = true)
 	}
 }
 
-
+//Begins to show the previous comic
 function showPreviousComic(mode, animation = true)
 {
 	var content = template.contentRight().children('div');
@@ -790,6 +804,7 @@ function showPreviousComic(mode, animation = true)
 	}
 }
 
+//Turn the magnifying glass on and off
 function activeMagnifyingGlass(active)
 {
 	if(active)
@@ -803,6 +818,7 @@ function activeMagnifyingGlass(active)
 	}
 }
 
+//Magnifying glass settings
 function changeMagnifyingGlass(mode, value, save)
 {
 
@@ -816,25 +832,25 @@ function changeMagnifyingGlass(mode, value, save)
 	var pageY = (height / 2) + offset.top;
 
 
-	if(mode == 1)
+	if(mode == 1) //Set the zoom
 	{
 		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {zoom: value});
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassZoom', value);
 	}
-	else if(mode == 2)
+	else if(mode == 2) //Set the size
 	{
 		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {size: value});
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassSize', value);
 	}
-	else if(mode == 3)
+	else if(mode == 3) //Set the ratio
 	{
 		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {ratio: value});
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassRatio', value);
 	}
-	else if(mode == 4)
+	else if(mode == 4) //Set the radius
 	{
 		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {radius: value});
 
@@ -844,6 +860,7 @@ function changeMagnifyingGlass(mode, value, save)
 
 var magnifyingGlassView = false;
 
+//Magnifying glass control
 function magnifyingGlassControl(mode, e = false, lensData = false)
 {
 
@@ -919,6 +936,7 @@ function disableOnScroll(mode)
 		activeOnScroll = true;
 }
 
+//Controls the page view
 function changePagesView(mode, value, save)
 {
 
@@ -933,7 +951,8 @@ function changePagesView(mode, value, save)
 
 	if(!imageIndex) imageIndex = currentIndex;
 
-	if(mode == 1)
+
+	if(mode == 1) //Set the scroll mode
 	{
 		storage.updateVar('config', 'readingView', value);
 
@@ -954,13 +973,13 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
-	else if(mode == 2)
+	else if(mode == 2) //Sets the margin of the pages
 	{
 		disposeImages({margin: value})
 
 		if(save) storage.updateVar('config', 'readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
 	}
-	else if(mode == 3)
+	else if(mode == 3) //Set width adjustment
 	{
 		storage.updateVar('config', 'readingViewAdjustToWidth', value);
 
@@ -968,15 +987,15 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
-	else if(mode == 4)
+	else if(mode == 4) //Set the speed of the animation when changing pages
 	{
 		if(save) storage.updateVar('config', 'readingViewSpeed', value);
 	}
-	else if(mode == 5)
+	else if(mode == 5) //Set the delay when skip from comic
 	{
 		if(save) storage.updateVar('config', 'readingDelayComicSkip', value);
 	}
-	else if(mode == 6)
+	else if(mode == 6) //Set the reading to double page
 	{
 		if(value == 1)
 			$('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
@@ -989,7 +1008,7 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
-	else if(mode == 7)
+	else if(mode == 7) //Disables double-page reading in horizontal images
 	{
 		storage.updateVar('config', 'readingDoNotApplyToHorizontals', value);
 
@@ -999,6 +1018,7 @@ function changePagesView(mode, value, save)
 	}
 }
 
+//Change the bookmark icon
 function activeBookmark(mode)
 {
 	if(mode == 1)
@@ -1011,6 +1031,7 @@ function activeBookmark(mode)
 	}
 }
 
+//Check if a path is a marker
 function isBookmark(path)
 {
 	if($.inArray(path, readingCurrentBookmarks) !== -1)
@@ -1025,6 +1046,7 @@ function isBookmark(path)
 	}
 }
 
+//Create and delete bookmarks
 function createAndDeleteBookmark(index = false)
 {
 	let imageIndex = false;
@@ -1087,6 +1109,7 @@ function createAndDeleteBookmark(index = false)
 	}
 }
 
+//Load the bookmarks in the current directory
 function loadBookmarks()
 {
 	var bookmarks = [];
@@ -1116,6 +1139,7 @@ function loadBookmarks()
 	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
+//Returns an image depending on the type (Image, folder, blank)
 function eachImagesDistribution(index, contains, callback, first = false, notFound = false)
 {
 	img = false;
@@ -1150,6 +1174,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 
 var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined;
 
+//It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
 {
 	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
