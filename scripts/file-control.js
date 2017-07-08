@@ -52,6 +52,8 @@ function filtered(path, files)
 
 function returnFirst(path)
 {
+	path = file.realPath(path);
+
 	if(fs.existsSync(path))
 	{
 		var files = fs.readdirSync(path);

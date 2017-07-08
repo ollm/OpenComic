@@ -1,4 +1,4 @@
-var unzip = false, compressedFiles = {};
+var unzip = false, unrar = false, un7z = false, compressedFiles = {};
 
 function returnFiles(path, all, fromCache, callback)
 {
@@ -53,6 +53,54 @@ function returnFiles(path, all, fromCache, callback)
 				})
 			);
 		}
+		else if(inArray(fileExtension(path), compressedExtensions.rar))
+		{
+			if(!unrar) unrar = require('node-unrar');
+
+			console.log('unrar');
+			 
+			var rar = new unrar(path);
+			 			 
+			rar.extract(p.join(tempFolder, sha), null, function (err) {
+
+				console.log(err);
+
+				files = file.returnAll(p.join(tempFolder, sha));
+
+				if(!json || json.mtime != mtime)
+					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
+
+				compressedFiles[sha] = files;
+
+				callback((all) ? files : file.allToFirst(files));
+
+			});
+
+		}
+		else if(inArray(fileExtension(path), compressedExtensions['7z']))
+		{
+			console.log(12345678);
+
+			if(!un7z) un7z = require('node-7z');
+
+			var myTask = new un7z();
+			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/}).progress(function (files){}).then(function () {
+
+				files = file.returnAll(p.join(tempFolder, sha));
+
+				if(!json || json.mtime != mtime)
+					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
+
+				compressedFiles[sha] = files;
+
+				callback((all) ? files : file.allToFirst(files));
+
+			});
+
+		}
+
+		console.log(compressedExtensions['7z']);
+
 		return true;
 	}
 }

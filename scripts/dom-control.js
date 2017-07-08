@@ -369,6 +369,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		cache.cleanQueue();
 
+		console.log(fileExtension(path));
+
 		if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
 		{
 			fileCompressed.returnFiles(path, false, false, function(files){
@@ -849,7 +851,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		path = path;
 	}
 
-	if(fs.existsSync(path))
+	if(fs.existsSync(file.realPath(path)))
 	{
 
 		skipNextComic = nextComic(path, mainPath);
@@ -890,7 +892,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			var key = 'lastReading';
 		}
 
-		fs.readdir(path, function(error, files){
+		fs.readdir(file.realPath(path), function(error, files){
 
 			comics = [];
 
@@ -920,6 +922,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 						comics.push({
 							sha: sha,
 							name: fileName.replace(/\.[^\.]*$/, ''),
+							image: file.realPath(filePath),
 							path: filePath,
 							mainPath: mainPath,
 							thumbnail: (thumbnail.cache) ? thumbnail.path : '',

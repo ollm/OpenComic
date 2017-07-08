@@ -39,10 +39,16 @@ var compressedMime = {
 	'all': [
 		'application/zip',
 		'application/x-cbz',
+		'application/rar',
+		'application/x-cbr',
 	],
 	'zip': [
 		'application/zip',
 		'application/x-cbz',
+	],
+	'rar': [
+		'application/rar',
+		'application/x-cbr',
 	],
 };
 
@@ -50,10 +56,22 @@ var compressedExtensions = {
 	'all': [
 		'zip',
 		'cbz',
+		'rar',
+		'cbr',
+		'7z',
+		'cb7',
 	],
 	'zip': [
 		'zip',
 		'cbz',
+	],
+	'rar': [
+		'rar',
+		'cbr',
+	],
+	'7z': [
+		'7z',
+		'cb7',
 	],
 };
 
@@ -61,7 +79,7 @@ var compatibleExtensions = [
 	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
 	/*png*/'png', 'x-png',
 	/*gif*/'gif',
-	/*compressed*/'zip', 'cbz'
+	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7',
 ];
 
 //console.time('Require time 2');

@@ -33,7 +33,7 @@
 					</div>	
 				</div>
 				{{else}}
-				<img src="{{chain 'invertBackslash' 'encodeURI' path}}" path="{{htmlQuote path}}" index="{{index}}">
+				<img src="{{chain 'invertBackslash' 'encodeURI' image}}" path="{{htmlQuote path}}" index="{{index}}">
 				{{/if}}
 			</div>
 			{{/each}}
@@ -53,7 +53,7 @@
 					</div>	
 				</div>
 				{{else}}
-				<img src="{{chain 'invertBackslash' 'encodeURI' path}}" index="{{index}}">
+				<img src="{{chain 'invertBackslash' 'encodeURI' image}}" index="{{index}}">
 				{{/if}}
 			</div>
 			{{/each}}
