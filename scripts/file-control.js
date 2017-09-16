@@ -50,6 +50,71 @@ function filtered(path, files)
 	}
 }
 
+function readdirWD(path, index = 0)
+{
+	segments = path.split(p.sep);
+
+	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+
+	numSegments = segments.length + index;
+
+	files = null;
+
+	compressed = false;
+
+	eachPaths:
+	for(let i = 1; i < segments.length; i++)
+	{
+		newPath = p.join(newPath, segments[i]);
+
+		if(i < numSegments)
+		{
+			extension = fileExtension(newPath);
+
+			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
+			{
+				compressed = true;
+
+				files = fileCompressed.returnFilesWD(newPath, true);
+
+				if(error(files))
+					break eachPaths;
+			}
+			else if(files)
+			{
+				eachFiles:
+				for(let i2 in files)
+				{
+					if(files[i2].name === segments[i])
+					{
+						files = files[i2].files;
+						break eachFiles;
+					}
+				}
+			}
+		}
+	}
+
+	if(!compressed && fs.existsSync(path))
+		files = file.filtered(path, fs.readdirSync(path));
+	else if(compressed && typeof files.files != 'undefined')
+		delete files.files;
+
+	return files;
+}
+
+function pathType(path)
+{
+	if(inArray(mime.lookup(path), compatibleMime))
+		return {folder: false, compressed: false};
+	else if(fs.statSync(path).isDirectory())
+		return {folder: true, compressed: false};
+	else if(inArray(fileExtension(path), compressedExtensions.all))
+		return {folder: false, compressed: true};
+	else
+		return false;
+}
+
 function returnFirst(path)
 {
 	path = file.realPath(path);
@@ -60,6 +125,11 @@ function returnFirst(path)
 
 		return file.filtered(path, files);
 	}
+}
+
+function returnFirstWD(path)
+{
+	return file.readdirWD(path);
 }
 
 function returnAll(path)
@@ -81,7 +151,7 @@ function returnAll(path)
 				else if(fs.statSync(filePath).isDirectory())
 					returnFiles.push({name: files[i], path: filePath, folder: true, compressed: false, files: returnAll(filePath)});
 				else if(inArray(fileExtension(filePath), compressedExtensions.all))
-					filtered.push({name: files[i], path: filePath, folder: false, compressed: true, files: []});
+					returnFiles.push({name: files[i], path: filePath, folder: false, compressed: true, files: []});
 
 			}
 		}
@@ -153,4 +223,7 @@ module.exports = {
 	allToFirst: allToFirst,
 	sort: sort,
 	realPath: realPath,
+	pathType: pathType,
+	readdirWD: readdirWD,
+	returnFirstWD: returnFirstWD,
 };

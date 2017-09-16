@@ -140,7 +140,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				{
 					var sha = sha1(filePath);
 
-					var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
+					var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
 						if($('.sha-'+data.sha+' img').length > 0)
 						{
 							$('.sha-'+data.sha+' img').attr('src', data.path);
@@ -288,14 +288,14 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(key in comics)
 			{
-				if(comics[key].compressed)
+				var images = _folderImages(comics[key].path, 4);
+
+				if(error(images))
 				{
 					var images = [];
 				}
 				else
 				{
-					var images = folderImages(comics[key].path, 4);
-
 					for(var i = 0; i < images.length; i++)
 					{
 						var sha = sha1(images[i]);
@@ -530,7 +530,9 @@ function folderImages(path, num, mode = false)
 				}
 				else if(files[i].compressed)
 				{
-					//console.log('compressed');
+					//filePath = folderImages(filePath, 1, 1);
+
+					//if(filePath) dirs.push(filePath);
 				}
 				else
 				{
@@ -563,7 +565,9 @@ function folderImages(path, num, mode = false)
 					}
 					else if(files[i].compressed)
 					{
-						//console.log('compressed');
+					//	filePath = folderImages(filePath, 1, 1);
+
+						//if(filePath) return filePath;
 					}
 					else
 					{
@@ -585,13 +589,97 @@ function folderImages(path, num, mode = false)
 					}
 					else if(files[i].compressed)
 					{
-						//console.log('compressed');
+						//filePath = folderImages(filePath, 1, 1);
+
+						//if(filePath) return filePath;
 					}
 					else
 					{
 						return filePath;
 					}
 				}
+			}
+		}
+
+		return false;
+	}
+}
+
+function _folderImages(path, num, mode = false)
+{
+	if(!mode)
+	{
+		var dirs = [];
+
+		var files = file.returnFirstWD(path);
+
+		if(error(files))
+			return files;
+
+		if(files)
+		{
+			for(var i = 0; i < files.length; i++)
+			{
+				var filePath = files[i].path;
+
+				if(files[i].folder || files[i].compressed)
+				{
+					filePath = _folderImages(filePath, 1, 1);
+
+					if(error(filePath))
+						return filePath;
+
+					if(filePath) dirs.push(filePath);
+				}
+				else
+				{
+					dirs.push(filePath);
+				}
+
+				if(dirs.length >= num) break;
+			}
+		}
+
+		return dirs;
+	}
+	else
+	{
+		var files = file.returnFirstWD(path);
+
+		if(error(files))
+			return files;
+
+		files = file.sort(files);
+
+		if(files)
+		{
+			if(mode == 2)
+				i = (files.length - 1);
+			else
+				i = 0;
+
+			while((mode == 2 && i >= 0) || (mode != 2 && i < files.length))
+			{
+				var filePath = files[i].path;
+
+				if(files[i].folder || files[i].compressed)
+				{
+					filePath = _folderImages(filePath, 1, 1);
+
+					if(error(filePath))
+						return filePath;
+
+					if(filePath) return filePath;
+				}
+				else
+				{
+					return filePath;
+				}
+
+				if(mode == 2)
+					i--;
+				else
+					i++;
 			}
 		}
 

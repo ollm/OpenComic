@@ -1,5 +1,47 @@
 var unzip = false, unrar = false, un7z = false, compressedFiles = {};
 
+function returnFilesWD(path, all, callback = false)
+{
+	sha = sha1(p.normalize(path));
+
+	cacheFile = 'compressed-files-'+sha+'.json';
+
+	json = cache.readFile(cacheFile);
+	json = JSON.parse(json);
+
+	mtime = Date.parse(fs.statSync(path).mtime);
+
+	if(json)
+	{
+		if(json.mtime == mtime)
+		{
+			compressedFiles[sha] = json.files;
+
+			if(callback)
+				callback((all) ? json.files : file.allToFirst(json.files));
+			else
+				return (all) ? json.files : file.allToFirst(json.files);
+
+			return true;
+		}
+	}
+
+	if(fs.existsSync(p.join(tempFolder, sha)))
+	{
+		files = file.returnAll(p.join(tempFolder, sha));
+		compressedFiles[sha] = files;
+
+		if(callback)
+			callback((all) ? files : file.allToFirst(files));
+		else
+			return (all) ? files : file.allToFirst(files);
+
+		return true;
+	}
+
+	return {error: NOT_POSSIBLE_WITHOUT_DECOMPRESSING}; //If it is not possible to return the files without decompressing
+}
+
 function returnFiles(path, all, fromCache, callback)
 {
 	sha = sha1(p.normalize(path));
@@ -79,8 +121,6 @@ function returnFiles(path, all, fromCache, callback)
 		}
 		else if(inArray(fileExtension(path), compressedExtensions['7z']))
 		{
-			console.log(12345678);
-
 			if(!un7z) un7z = require('node-7z');
 
 			var myTask = new un7z();
@@ -107,4 +147,5 @@ function returnFiles(path, all, fromCache, callback)
 
 module.exports = {
 	returnFiles: returnFiles,
+	returnFilesWD: returnFilesWD,
 };

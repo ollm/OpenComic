@@ -479,3 +479,22 @@ function addComic()
 	});
 
 }
+
+//Cheack errors
+
+function error(value, error = false)
+{
+	if(typeof value.error != 'undefined')
+	{
+		if(error && value.error == error)
+			return true;
+		else if(!error)
+			return true;
+	}
+
+	return false;
+}
+
+//Errors list 
+
+NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
