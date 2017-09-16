@@ -424,7 +424,12 @@ function nextComic(path, mainPath)
 
 	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
 	{
-		var files = file.sort(file.returnFirst(searchPath));
+		var files = file.returnFirstWD(searchPath);
+
+		if(checkError(files))
+			return files;
+
+		files = file.sort(files);
 
 		var skipPath = false;
 
@@ -434,16 +439,12 @@ function nextComic(path, mainPath)
 			{
 				var filePath = files[i].path;
 
-				if(skipPath && files[i].folder)
+				if((skipPath && files[i].folder) || skipPath && files[i].compressed)
 				{
-					var image = folderImages(filePath, 1, 1);
+					var image = folderImagesWD(filePath, 1, 1);
 
-					if(image)
+					if(checkError(image) || image)
 						return image;
-				}
-				else if(skipPath && files[i].compressed)
-				{
-					//console.log('compressed');
 				}
 				else if(skipPath)
 				{
@@ -467,7 +468,12 @@ function previousComic(path, mainPath)
 
 	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
 	{
-		var files = file.sort(file.returnFirst(searchPath));
+		var files = file.returnFirstWD(searchPath);
+
+		if(checkError(files))
+			return files;
+
+		files = file.sort(files);
 
 		var skipPath = false;
 
@@ -477,16 +483,12 @@ function previousComic(path, mainPath)
 			{
 				var filePath = files[i].path;
 
-				if(skipPath && files[i].folder)
+				if((skipPath && files[i].folder) || (skipPath && files[i].compressed))
 				{
-					var image = folderImages(filePath, 1, 2);
+					var image = folderImagesWD(filePath, 1, 2);
 
-					if(image)
+					if(checkError(image) || image)
 						return image;
-				}
-				else if(skipPath && files[i].compressed)
-				{
-					//console.log('compressed');
 				}
 				else if(skipPath)
 				{
@@ -611,6 +613,8 @@ function folderImagesWD(path, num, mode = false)
 
 		if(checkError(files))
 			return files;
+
+		files = file.sort(files);
 
 		if(files)
 		{
@@ -942,6 +946,12 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 
 		skipNextComic = nextComic(path, mainPath);
 		skipPreviousComic = previousComic(path, mainPath);
+
+		if(checkError(skipNextComic))
+			skipNextComic = false;
+
+		if(checkError(skipPreviousComic))
+			skipPreviousComic = false;
 
 		if(indexPathControlA.length > 0 && indexPathControlA[indexPathControlA.length - 1] != '')
 			indexPathControlA.push({path: '', mainPath: mainPath});
