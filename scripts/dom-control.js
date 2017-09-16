@@ -136,6 +136,8 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 				realPath = file.realPath(filePath, -1);
 
+				//console.log(realPath);
+
 				if(inArray(mime.lookup(realPath), compatibleMime))
 				{
 					var sha = sha1(filePath);
@@ -160,22 +162,38 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 						folder: false,
 					});
 				}
-				else if(fs.statSync(realPath).isDirectory())
+				else if(fs.statSync(realPath).isDirectory() || inArray(fileExtension(filePath), compressedExtensions.all))
 				{
-					var images = folderImages(filePath, 4);
+					var images = folderImagesWD(filePath, 4);
 
-					for(var i2 = 0; i2 < images.length; i2++)
+					if(checkError(images))
 					{
-						var sha = sha1(images[i2]);
+						var sha = sha1(filePath);
 
-						images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
-							if($('img.fi-sha-'+data.sha).length > 0)
-								$('img.fi-sha-'+data.sha).attr('src', data.path);
-							else if($('.fi-sha-'+data.sha+' img').length > 0)
-								$('.fi-sha-'+data.sha+' img').attr('src', data.path);
-							else
-								$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
-						});
+						var images = [
+							{cache: false, path: '', sha: sha+'-0'},
+							{cache: false, path: '', sha: sha+'-1'},
+							{cache: false, path: '', sha: sha+'-2'},
+							{cache: false, path: '', sha: sha+'-3'},
+						];
+
+						//Compatibility has to be added to uncompress the file and create the thumbnails
+					}
+					else
+					{
+						for(var i2 = 0; i2 < images.length; i2++)
+						{
+							var sha = sha1(images[i2]);
+
+							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
+								if($('img.fi-sha-'+data.sha).length > 0)
+									$('img.fi-sha-'+data.sha).attr('src', data.path);
+								else if($('.fi-sha-'+data.sha+' img').length > 0)
+									$('.fi-sha-'+data.sha+' img').attr('src', data.path);
+								else
+									$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+							});
+						}
 					}
 
 					comics.push({
@@ -185,35 +203,6 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 						images: images,
 						folder: true,
 					});
-				}
-				else if(inArray(fileExtension(filePath), compressedExtensions.all))
-				{
-					//console.log('compressed');
-
-					/*var images = folderImages(filePath, 4);
-
-					for(var i2 = 0; i2 < images.length; i2++)
-					{
-						var sha = sha1(images[i2]);
-
-						images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
-							if($('img.fi-sha-'+data.sha).length > 0)
-								$('img.fi-sha-'+data.sha).attr('src', data.path);
-							else if($('.fi-sha-'+data.sha+' img').length > 0)
-								$('.fi-sha-'+data.sha+' img').attr('src', data.path);
-							else
-								$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
-						});
-					}*/
-
-					comics.push({
-						name: fileName,
-						path: filePath,
-						mainPath: mainPath,
-						images: images,
-						folder: true,
-					});
-
 				}
 			}
 		}
@@ -288,11 +277,20 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(key in comics)
 			{
-				var images = _folderImages(comics[key].path, 4);
+				var images = folderImagesWD(comics[key].path, 4);
 
-				if(error(images))
+				if(checkError(images))
 				{
-					var images = [];
+					var sha = sha1(comics[key].path);
+
+					var images = [
+						{cache: false, path: '', sha: sha+'-0'},
+						{cache: false, path: '', sha: sha+'-1'},
+						{cache: false, path: '', sha: sha+'-2'},
+						{cache: false, path: '', sha: sha+'-3'},
+					];
+
+					//Compatibility has to be added to uncompress the file and create the thumbnails
 				}
 				else
 				{
@@ -368,8 +366,6 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		}
 
 		cache.cleanQueue();
-
-		console.log(fileExtension(path));
 
 		if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
 		{
@@ -605,7 +601,7 @@ function folderImages(path, num, mode = false)
 	}
 }
 
-function _folderImages(path, num, mode = false)
+function folderImagesWD(path, num, mode = false)
 {
 	if(!mode)
 	{
@@ -613,7 +609,7 @@ function _folderImages(path, num, mode = false)
 
 		var files = file.returnFirstWD(path);
 
-		if(error(files))
+		if(checkError(files))
 			return files;
 
 		if(files)
@@ -624,9 +620,9 @@ function _folderImages(path, num, mode = false)
 
 				if(files[i].folder || files[i].compressed)
 				{
-					filePath = _folderImages(filePath, 1, 1);
+					filePath = folderImagesWD(filePath, 1, 1);
 
-					if(error(filePath))
+					if(checkError(filePath))
 						return filePath;
 
 					if(filePath) dirs.push(filePath);
@@ -646,10 +642,12 @@ function _folderImages(path, num, mode = false)
 	{
 		var files = file.returnFirstWD(path);
 
-		if(error(files))
+		if(checkError(files))
 			return files;
 
 		files = file.sort(files);
+
+		//console.log(files);
 
 		if(files)
 		{
@@ -664,9 +662,9 @@ function _folderImages(path, num, mode = false)
 
 				if(files[i].folder || files[i].compressed)
 				{
-					filePath = _folderImages(filePath, 1, 1);
+					filePath = folderImagesWD(filePath, 1, 1);
 
-					if(error(filePath))
+					if(checkError(filePath))
 						return filePath;
 
 					if(filePath) return filePath;
@@ -1106,6 +1104,7 @@ module.exports = {
 	indexPathControl: indexPathControl,
 	indexPathControlA: indexPathControlA,
 	folderImages: folderImages,
+	folderImagesWD: folderImagesWD,
 	selectElement: selectElement,
 	openComic: openComic,
 	nextComic: skipNextComicF,

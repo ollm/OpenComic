@@ -9,7 +9,7 @@ function returnFilesWD(path, all, callback = false)
 	json = cache.readFile(cacheFile);
 	json = JSON.parse(json);
 
-	mtime = Date.parse(fs.statSync(path).mtime);
+	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
 	if(json)
 	{
@@ -28,7 +28,7 @@ function returnFilesWD(path, all, callback = false)
 
 	if(fs.existsSync(p.join(tempFolder, sha)))
 	{
-		files = file.returnAll(p.join(tempFolder, sha));
+		files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
 		compressedFiles[sha] = files;
 
 		if(callback)
@@ -44,14 +44,16 @@ function returnFilesWD(path, all, callback = false)
 
 function returnFiles(path, all, fromCache, callback)
 {
-	sha = sha1(p.normalize(path));
+	let sha = sha1(p.normalize(path));
 
 	cacheFile = 'compressed-files-'+sha+'.json';
 
 	json = cache.readFile(cacheFile);
 	json = JSON.parse(json);
 
-	mtime = Date.parse(fs.statSync(path).mtime);
+	path = file.realPath(path, 0, false);
+
+	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
 	if(fromCache)
 	{
@@ -68,7 +70,7 @@ function returnFiles(path, all, fromCache, callback)
 
 	if(fs.existsSync(p.join(tempFolder, sha)))
 	{
-		files = file.returnAll(p.join(tempFolder, sha));
+		files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
 		compressedFiles[sha] = files;
 		callback((all) ? files : file.allToFirst(files));
 		return true;
@@ -83,7 +85,7 @@ function returnFiles(path, all, fromCache, callback)
 
 				unzip.Extract({path: p.join(tempFolder, sha)}).on('close', function () {
 
-					files = file.returnAll(p.join(tempFolder, sha));
+					files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
 
 					if(!json || json.mtime != mtime)
 						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
@@ -107,7 +109,7 @@ function returnFiles(path, all, fromCache, callback)
 
 				console.log(err);
 
-				files = file.returnAll(p.join(tempFolder, sha));
+				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
 
 				if(!json || json.mtime != mtime)
 					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
@@ -126,7 +128,7 @@ function returnFiles(path, all, fromCache, callback)
 			var myTask = new un7z();
 			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/}).progress(function (files){}).then(function () {
 
-				files = file.returnAll(p.join(tempFolder, sha));
+				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
 
 				if(!json || json.mtime != mtime)
 					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));

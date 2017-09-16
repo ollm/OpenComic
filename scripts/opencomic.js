@@ -482,9 +482,9 @@ function addComic()
 
 //Cheack errors
 
-function error(value, error = false)
+function checkError(value, error = false)
 {
-	if(typeof value.error != 'undefined')
+	if(value && typeof value.error != 'undefined')
 	{
 		if(error && value.error == error)
 			return true;

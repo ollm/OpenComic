@@ -1,5 +1,35 @@
 
-function realPath(path, index = 0)
+function realPath(path, index = 0, last = true)
+{
+	segments = path.split(p.sep);
+
+	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+	virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+
+	numSegments = segments.length + index;
+
+	for(let i = 1; i < segments.length; i++)
+	{
+		newPath = p.join(newPath, segments[i]);
+		virtualPath = p.join(virtualPath, segments[i]);
+
+		if(i < numSegments)
+		{
+			extension = fileExtension(newPath);
+
+			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory() && (last || i + 1 != segments.length))
+			{
+				sha = sha1(p.normalize(virtualPath));
+
+				newPath = p.join(tempFolder, sha);
+			}
+		}
+	}
+
+	return newPath;
+}
+
+function firstCompressedFile(path, index = 0)
 {
 	segments = path.split(p.sep);
 
@@ -17,9 +47,7 @@ function realPath(path, index = 0)
 
 			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
 			{
-				sha = sha1(p.normalize(newPath));
-
-				newPath = p.join(tempFolder, sha);
+				return newPath;
 			}
 		}
 	}
@@ -52,13 +80,12 @@ function filtered(path, files)
 
 function readdirWD(path, index = 0)
 {
-	segments = path.split(p.sep);
+	let segments = path.split(p.sep);
 
 	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
-	numSegments = segments.length + index;
-
-	files = null;
+	let numSegments = segments.length + index;
+	let files = null;
 
 	compressed = false;
 
@@ -71,13 +98,13 @@ function readdirWD(path, index = 0)
 		{
 			extension = fileExtension(newPath);
 
-			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
+			if(extension && inArray(extension, compressedExtensions.all) && (!fs.existsSync(newPath) || !fs.statSync(newPath).isDirectory()))
 			{
 				compressed = true;
 
 				files = fileCompressed.returnFilesWD(newPath, true);
 
-				if(error(files))
+				if(checkError(files))
 					break eachPaths;
 			}
 			else if(files)
@@ -132,7 +159,7 @@ function returnFirstWD(path)
 	return file.readdirWD(path);
 }
 
-function returnAll(path)
+function returnAll(path, changePath = false)
 {
 	let returnFiles = [];
 
@@ -146,12 +173,17 @@ function returnAll(path)
 			{
 				var filePath = p.join(path, files[i]);
 
+				if(!changePath)
+					retrunPath = filePath;
+				else
+					retrunPath = filePath.replace(new RegExp('^'+pregQuote(changePath.from)), changePath.to);
+
 				if(inArray(mime.lookup(filePath), compatibleMime))
-					returnFiles.push({name: files[i], path: filePath, folder: false, compressed: false});
+					returnFiles.push({name: files[i], path: retrunPath, folder: false, compressed: false});
 				else if(fs.statSync(filePath).isDirectory())
-					returnFiles.push({name: files[i], path: filePath, folder: true, compressed: false, files: returnAll(filePath)});
+					returnFiles.push({name: files[i], path: retrunPath, folder: true, compressed: false, files: returnAll(filePath, changePath)});
 				else if(inArray(fileExtension(filePath), compressedExtensions.all))
-					returnFiles.push({name: files[i], path: filePath, folder: false, compressed: true, files: []});
+					returnFiles.push({name: files[i], path: retrunPath, folder: false, compressed: true, files: []});
 
 			}
 		}
@@ -226,4 +258,5 @@ module.exports = {
 	pathType: pathType,
 	readdirWD: readdirWD,
 	returnFirstWD: returnFirstWD,
+	firstCompressedFile: firstCompressedFile,
 };
