@@ -7,13 +7,15 @@ function returnFilesWD(path, all, callback = false)
 	cacheFile = 'compressed-files-'+sha+'.json';
 
 	json = cache.readFile(cacheFile);
-	json = JSON.parse(json);
+
+	if(json)
+		json = JSON.parse(json);
 
 	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
 	if(json)
 	{
-		if(json.mtime == mtime)
+		if(json.mtime >= mtime)
 		{
 			compressedFiles[sha] = json.files;
 
@@ -49,9 +51,12 @@ function returnFiles(path, all, fromCache, callback)
 	cacheFile = 'compressed-files-'+sha+'.json';
 
 	json = cache.readFile(cacheFile);
-	json = JSON.parse(json);
 
-	path = file.realPath(path, 0, false);
+	if(json)
+		json = JSON.parse(json);
+
+	virtualPath = path;
+	path = file.realPath(path, -1);
 
 	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
@@ -59,7 +64,7 @@ function returnFiles(path, all, fromCache, callback)
 	{
 		if(json)
 		{
-			if(json.mtime == mtime)
+			if(json.mtime >= mtime)
 			{
 				compressedFiles[sha] = json.files;
 				callback((all) ? json.files : file.allToFirst(json.files));
@@ -70,7 +75,7 @@ function returnFiles(path, all, fromCache, callback)
 
 	if(fs.existsSync(p.join(tempFolder, sha)))
 	{
-		files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
+		files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 		compressedFiles[sha] = files;
 		callback((all) ? files : file.allToFirst(files));
 		return true;
@@ -85,7 +90,7 @@ function returnFiles(path, all, fromCache, callback)
 
 				unzip.Extract({path: p.join(tempFolder, sha)}).on('close', function () {
 
-					files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
+					files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 					if(!json || json.mtime != mtime)
 						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
@@ -109,7 +114,7 @@ function returnFiles(path, all, fromCache, callback)
 
 				console.log(err);
 
-				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
+				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 				if(!json || json.mtime != mtime)
 					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
@@ -128,7 +133,7 @@ function returnFiles(path, all, fromCache, callback)
 			var myTask = new un7z();
 			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/}).progress(function (files){}).then(function () {
 
-				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
+				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 				if(!json || json.mtime != mtime)
 					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
@@ -147,7 +152,51 @@ function returnFiles(path, all, fromCache, callback)
 	}
 }
 
+function decompressRecursive(path, callback = false, start = 1, virtualPath = false, newPath = false)
+{
+	segments = path.split(p.sep);
+
+	callbackDR = callback;
+
+	if(virtualPath === false)
+		virtualPath = newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+
+	numSegments = segments.length;
+
+	for(let i = start; i < segments.length; i++)
+	{
+		virtualPath = p.join(virtualPath, segments[i]);
+		newPath = p.join(newPath, segments[i]);
+
+		if(i < numSegments)
+		{
+			extension = fileExtension(virtualPath);
+
+			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
+			{
+				sha = sha1(p.normalize(virtualPath));
+
+				newPath = p.join(tempFolder, sha);
+
+				fileCompressed.returnFiles(virtualPath, false, false, function(files){
+
+					i++;
+
+					fileCompressed.decompressRecursive(path, callbackDR, i, virtualPath, newPath);
+
+				});
+
+				return false;
+			}
+		}
+	}
+
+	if(callbackDR)
+		callbackDR(path);
+}
+
 module.exports = {
 	returnFiles: returnFiles,
 	returnFilesWD: returnFilesWD,
+	decompressRecursive: decompressRecursive,
 };

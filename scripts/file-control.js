@@ -1,10 +1,9 @@
 
-function realPath(path, index = 0, last = true)
+function realPath(path, index = 0)
 {
 	segments = path.split(p.sep);
 
-	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
-	virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+	newPath = virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
 	numSegments = segments.length + index;
 
@@ -17,7 +16,7 @@ function realPath(path, index = 0, last = true)
 		{
 			extension = fileExtension(newPath);
 
-			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory() && (last || i + 1 != segments.length))
+			if(extension && inArray(extension, compressedExtensions.all) && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory())
 			{
 				sha = sha1(p.normalize(virtualPath));
 
@@ -128,6 +127,32 @@ function readdirWD(path, index = 0)
 		delete files.files;
 
 	return files;
+}
+
+function containsCompressed(path, index = 0)
+{
+	segments = path.split(p.sep);
+
+	virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+
+	numSegments = segments.length + index;
+
+	for(let i = 1; i < segments.length; i++)
+	{
+		virtualPath = p.join(virtualPath, segments[i]);
+
+		if(i < numSegments)
+		{
+			extension = fileExtension(virtualPath);
+
+			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(virtualPath).isDirectory())
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 function pathType(path)
@@ -259,4 +284,5 @@ module.exports = {
 	readdirWD: readdirWD,
 	returnFirstWD: returnFirstWD,
 	firstCompressedFile: firstCompressedFile,
+	containsCompressed: containsCompressed,
 };

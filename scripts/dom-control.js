@@ -290,6 +290,27 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 						{cache: false, path: '', sha: sha+'-3'},
 					];
 
+					/*if(file.containsCompressed(comics[key].path))
+					{
+						folderImages(path, 4, function(images){
+
+							for(var i = 0; i < images.length; i++)
+							{
+								var sha = sha1(images[i]);
+
+								(function(i, sha, images){
+									cache.returnCacheImage(images[i], sha, function(data){
+										if($('img.fi-sha-'+data.sha+'-'+i).length > 0)
+											$('img.fi-sha-'+data.sha+'-'+i).attr('src', data.path);
+										else if($('.fi-sha-'+data.sha+'-'+i+' img').length > 0)
+											$('.fi-sha-'+data.sha+'-'+i+' img').attr('src', data.path);
+										else
+											$('.fi-sha-'+data.sha+'-'+i).css('background-image', 'url('+data.path+')');
+									});
+								}(i, sha, images));
+							}
+						});
+					}*/
 					//Compatibility has to be added to uncompress the file and create the thumbnails
 				}
 				else
@@ -367,19 +388,42 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		cache.cleanQueue();
 
-		if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
-		{
-			fileCompressed.returnFiles(path, false, false, function(files){
+		console.log(path);
 
-				loadFilesIndexPage(animation, path, keepScroll, mainPath);
+		if(!fs.existsSync(file.realPath(path, -1)) && file.containsCompressed(path))
+		{
+			fileCompressed.decompressRecursive(path, function(){
+
+				if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
+				{
+					fileCompressed.returnFiles(path, false, false, function(files){
+
+						loadFilesIndexPage(animation, path, keepScroll, mainPath);
+
+					});
+				}
+				else
+				{
+					loadFilesIndexPage(animation, path, keepScroll, mainPath);
+				}
 
 			});
 		}
 		else
 		{
-			loadFilesIndexPage(animation, path, keepScroll, mainPath);
-		}
+			if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
+			{
+				fileCompressed.returnFiles(path, false, false, function(files){
 
+					loadFilesIndexPage(animation, path, keepScroll, mainPath);
+
+				});
+			}
+			else
+			{
+				loadFilesIndexPage(animation, path, keepScroll, mainPath);
+			}
+		}
 	}
 
 	if(readingActive)
@@ -506,101 +550,93 @@ function previousComic(path, mainPath)
 	return false;
 }
 
-function folderImages(path, num, mode = false)
+function folderImages(path, num, callback = false, mode = false, dirs = [], start = 0)
 {
+	/*callbackFI = callback;
+
 	if(!mode)
 	{
-		var dirs = [];
+		(function(dirs, start){
 
-		var files = file.sort(file.returnFirst(path));
+			file.returnFirstD(path, function(files){
 
-		if(files)
-		{
-			for(var i = 0; i < files.length; i++)
-			{
-				var filePath = files[i].path;
-
-				if(files[i].folder)
+				if(files)
 				{
-					filePath = folderImages(filePath, 1, 1);
+					var files = file.sort(files);
 
-					if(filePath) dirs.push(filePath);
+					for(var i = start; i < files.length; i++)
+					{
+						var filePath = files[i].path;
+
+						if(files[i].folder || files[i].compressed)
+						{
+							folderImages(filePath, 1, callbackFI, 1, dirs, i++);
+							break;
+						}
+						else
+						{
+							dirs.push(filePath);
+						}
+
+						if(dirs.length >= num)
+						{
+							callbackFI(dirs);
+							break;
+						}
+					}
 				}
-				else if(files[i].compressed)
-				{
-					//filePath = folderImages(filePath, 1, 1);
+			});
 
-					//if(filePath) dirs.push(filePath);
-				}
-				else
-				{
-					dirs.push(filePath);
-				}
+		})(dirs, start);
 
-				if(dirs.length >= num) break;
-			}
-		}
-
-		return dirs;
 	}
 	else
 	{
-		var files = file.sort(file.returnFirst(path));
+		(function(dirs, start){
 
-		if(files)
-		{
-			if(mode == 2)
-			{
-				for(var i = (files.length - 1); i >= 0; i--)
+			file.returnFirstD(path, function(files){
+
+				if(files)
 				{
-					var filePath = files[i].path;
+					var files = file.sort(files);
 
-					if(files[i].folder)
-					{
-						filePath = folderImages(filePath, 1, 1);
-
-						if(filePath) return filePath;
-					}
-					else if(files[i].compressed)
-					{
-					//	filePath = folderImages(filePath, 1, 1);
-
-						//if(filePath) return filePath;
-					}
+					if(mode == 2)
+						i = (files.length - 1);
 					else
+						i = 0;
+
+					while((mode == 2 && i >= 0) || (mode != 2 && i < files.length))
 					{
-						return filePath;
+						var filePath = files[i].path;
+
+						if(files[i].folder || files[i].compressed)
+						{
+							folderImages(filePath, 1, callbackFI, 1, dirs, i++);
+							break;
+						}
+						else
+						{
+							dirs.push(filePath);
+						}
+
+						if(dirs.length >= num)
+						{
+							callbackFI(dirs);
+							break;
+						}
+
+						if(mode == 2)
+							i--;
+						else
+							i++;
 					}
+
 				}
-			}
-			else
-			{
-				for(var i = 0; i < files.length; i++)
-				{
-					var filePath = files[i].path;
 
-					if(files[i].folder)
-					{
-						filePath = folderImages(filePath, 1, 1);
+			});
 
-						if(filePath) return filePath;
-					}
-					else if(files[i].compressed)
-					{
-						//filePath = folderImages(filePath, 1, 1);
-
-						//if(filePath) return filePath;
-					}
-					else
-					{
-						return filePath;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
+		})(dirs, start);
+	}*/
 }
 
 function folderImagesWD(path, num, mode = false)
@@ -936,10 +972,6 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		startImage = path;
 		path = p.dirname(path);
 	}
-	else if(fs.statSync(path).isDirectory())
-	{
-		path = path;
-	}
 
 	if(fs.existsSync(file.realPath(path)))
 	{
@@ -1027,7 +1059,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 					}
 					else if(fs.statSync(filePath).isDirectory())
 					{
-						var images = folderImages(filePath, 4);
+						var images = folderImagesWD(filePath, 4);
 
 						for(var i2 = 0; i2 < images.length; i2++)
 						{
@@ -1089,6 +1121,14 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			events.events();
 
 			reading.read(path, indexStart, end);
+
+		});
+	}
+	else if(file.containsCompressed(path))
+	{
+		fileCompressed.decompressRecursive(path, function(){
+
+			openComic(animation, path, mainPath, end);
 
 		});
 	}
