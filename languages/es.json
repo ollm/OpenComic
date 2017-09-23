@@ -21,7 +21,8 @@
 		"back":	"Atrás",
 		"add":	"Añadir",
 		"language":	"Idioma",
-		"theme":	"Tema"
+		"theme":	"Tema",
+		"night-mode":	"Modo noche"
 	},
 	"comics": {
 		"emptyIndex": "No hay ningún cómic en esta colección.",

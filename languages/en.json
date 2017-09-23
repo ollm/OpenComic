@@ -21,7 +21,8 @@
 		"back":	"Back",
 		"add":	"Add",
 		"language":	"Language",
-		"theme":	"Theme"
+		"theme":	"Theme",
+		"night-mode":	"Night mode"
 	},
 	"comics": {
 		"emptyIndex": "There are no comics in this collection.",

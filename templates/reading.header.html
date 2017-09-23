@@ -24,6 +24,8 @@
 		<div class="button button2 button-next hover-text" hover-text="{{language.reading.next}}" onclick="reading.goNext();"></div>
 		<div class="button button2 button-previous hover-text" hover-text="{{language.reading.previous}}" onclick="reading.goPrevious();"></div>
 		<div class="button button2 button-first-page hover-text" hover-text="{{language.reading.first-page}}" onclick="reading.goStart();"></div>
+		<div class="bar-buttons-separator"></div>
+		<div class="button button2 button-night-mode-{{#if nightMode}}moon{{else}}sun{{/if}} hover-text" hover-text="{{language.global.night-mode}}" onclick="reading.nightMode();"></div>
 
 	</div>
 </div>

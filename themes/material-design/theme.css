@@ -1312,6 +1312,16 @@ body
 	background-image: url('./icons/ic_book_open_page_variant_24px.svg'); 
 }
 
+.button-night-mode-sun
+{
+	background-image: url('./icons/ic_wb_sunny_border_black_24px.svg'); 
+}
+
+.button-night-mode-moon
+{
+	background-image: url('./icons/ic_moon_border_black_24px_beta4.svg'); 
+}
+
 /*Reading - Start*/
 
 .reading-left
