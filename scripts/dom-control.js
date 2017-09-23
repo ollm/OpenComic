@@ -136,8 +136,6 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 				realPath = file.realPath(filePath, -1);
 
-				//console.log(realPath);
-
 				if(inArray(mime.lookup(realPath), compatibleMime))
 				{
 					var sha = sha1(filePath);
@@ -277,40 +275,49 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(key in comics)
 			{
+
 				var images = folderImagesWD(comics[key].path, 4);
 
 				if(checkError(images))
 				{
-					var sha = sha1(comics[key].path);
+					var folderSha = sha1(comics[key].path);
 
 					var images = [
-						{cache: false, path: '', sha: sha+'-0'},
-						{cache: false, path: '', sha: sha+'-1'},
-						{cache: false, path: '', sha: sha+'-2'},
-						{cache: false, path: '', sha: sha+'-3'},
+						{cache: false, path: '', sha: folderSha+'-0'},
+						{cache: false, path: '', sha: folderSha+'-1'},
+						{cache: false, path: '', sha: folderSha+'-2'},
+						{cache: false, path: '', sha: folderSha+'-3'},
 					];
 
-					/*if(file.containsCompressed(comics[key].path))
+					if(file.containsCompressed(comics[key].path))
 					{
-						folderImages(path, 4, function(images){
+						(function(folderSha){
 
-							for(var i = 0; i < images.length; i++)
-							{
-								var sha = sha1(images[i]);
+							addFolderImagesQueue(comics[key].path, 4, function(images){
 
-								(function(i, sha, images){
-									cache.returnCacheImage(images[i], sha, function(data){
-										if($('img.fi-sha-'+data.sha+'-'+i).length > 0)
-											$('img.fi-sha-'+data.sha+'-'+i).attr('src', data.path);
-										else if($('.fi-sha-'+data.sha+'-'+i+' img').length > 0)
-											$('.fi-sha-'+data.sha+'-'+i+' img').attr('src', data.path);
-										else
-											$('.fi-sha-'+data.sha+'-'+i).css('background-image', 'url('+data.path+')');
-									});
-								}(i, sha, images));
-							}
-						});
-					}*/
+								for(var i = 0; i < images.length; i++)
+								{
+									var sha = sha1(images[i]);
+
+									(function(i, sha, folderSha, images){
+
+										cache.returnCacheImage(images[i], sha, function(data){
+
+											if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
+												$('img.fi-sha-'+folderSha+'-'+i).attr('src', data.path);
+											else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
+												$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', data.path);
+											else
+												$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+data.path+')');
+
+										});
+
+									}(i, sha, folderSha, images));
+								}
+							});
+
+						})(folderSha)
+					}
 					//Compatibility has to be added to uncompress the file and create the thumbnails
 				}
 				else
@@ -388,8 +395,6 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		cache.cleanQueue();
 
-		console.log(path);
-
 		if(!fs.existsSync(file.realPath(path, -1)) && file.containsCompressed(path))
 		{
 			fileCompressed.decompressRecursive(path, function(){
@@ -436,6 +441,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	$(window).off('resize').on('resize', function(){
 		justifyViewModule();
 	});
+
 }
 
 function headerPath(path, mainPath)
@@ -550,97 +556,86 @@ function previousComic(path, mainPath)
 	return false;
 }
 
-function folderImages(path, num, callback = false, mode = false, dirs = [], start = 0)
+var queuedFolderImages = [], processingFolderImagesQueue = false;
+
+function addFolderImagesQueue(path, num, callback = false, processQueue = true)
 {
-	/*callbackFI = callback;
+	queuedFolderImages.push({path: path, num: num, callback: callback});
 
-	if(!mode)
+	if(!processingFolderImagesQueue && processQueue)
 	{
-		(function(dirs, start){
-
-			file.returnFirstD(path, function(files){
-
-				if(files)
-				{
-					var files = file.sort(files);
-
-					for(var i = start; i < files.length; i++)
-					{
-						var filePath = files[i].path;
-
-						if(files[i].folder || files[i].compressed)
-						{
-							folderImages(filePath, 1, callbackFI, 1, dirs, i++);
-							break;
-						}
-						else
-						{
-							dirs.push(filePath);
-						}
-
-						if(dirs.length >= num)
-						{
-							callbackFI(dirs);
-							break;
-						}
-					}
-				}
-			});
-
-		})(dirs, start);
-
+		process.nextTick(function() {
+			processFolderImagesQueue();
+		});
 	}
-	else
+}
+
+function processFolderImagesQueue(force = false)
+{
+
+	if((!processingFolderImagesQueue || force) && typeof queuedFolderImages[0] != 'undefined')
 	{
-		(function(dirs, start){
+		processingFolderImagesQueue = true;
 
-			file.returnFirstD(path, function(files){
+		folderImages(queuedFolderImages[0].path, queuedFolderImages[0].num, function(images){
 
-				if(files)
-				{
-					var files = file.sort(files);
+			if(queuedFolderImages[0].callback)
+				queuedFolderImages[0].callback(images);
 
-					if(mode == 2)
-						i = (files.length - 1);
-					else
-						i = 0;
+			queuedFolderImages.splice(0, 1);
 
-					while((mode == 2 && i >= 0) || (mode != 2 && i < files.length))
-					{
-						var filePath = files[i].path;
+			if(queuedFolderImages.length > 0)
+			{
+				process.nextTick(function() {
+					processFolderImagesQueue(true);
+				});
+			}
+			else
+			{
+				processingFolderImagesQueue = false;
+			}
 
-						if(files[i].folder || files[i].compressed)
-						{
-							folderImages(filePath, 1, callbackFI, 1, dirs, i++);
-							break;
-						}
+		});
+	}
+}
+
+function folderImages(path, num, callback = false)
+{
+
+	(function(path, num, callback){
+
+		process.nextTick(function() {
+
+			images = folderImagesWD(path, num);
+
+			if(checkError(images))
+			{
+				(function(error, path, num, callback){
+
+					fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
+
+						if(!checkError(files))
+							dom.folderImages(path, num, callback);
 						else
-						{
-							dirs.push(filePath);
-						}
+							callback(files);
 
-						if(dirs.length >= num)
-						{
-							callbackFI(dirs);
-							break;
-						}
+					});
 
-						if(mode == 2)
-							i--;
-						else
-							i++;
-					}
+				})(images, path, num, callback)
+			}
+			else
+			{
+				if(callback)
+					callback(images);
+			}
+		});
 
-				}
-
-			});
-
-		})(dirs, start);
-	}*/
+	})(path, num, callback);
 }
 
 function folderImagesWD(path, num, mode = false)
 {
+
 	if(!mode)
 	{
 		var dirs = [];
@@ -680,14 +675,13 @@ function folderImagesWD(path, num, mode = false)
 	}
 	else
 	{
+
 		var files = file.returnFirstWD(path);
 
 		if(checkError(files))
 			return files;
 
 		files = file.sort(files);
-
-		//console.log(files);
 
 		if(files)
 		{

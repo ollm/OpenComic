@@ -104,7 +104,7 @@ function readdirWD(path, index = 0)
 				files = fileCompressed.returnFilesWD(newPath, true);
 
 				if(checkError(files))
-					break eachPaths;
+					return files;
 			}
 			else if(files)
 			{
@@ -123,6 +123,8 @@ function readdirWD(path, index = 0)
 
 	if(!compressed && fs.existsSync(path))
 		files = file.filtered(path, fs.readdirSync(path));
+	else if(compressed && typeof files == 'undefined')
+		files = [];
 	else if(compressed && typeof files.files != 'undefined')
 		delete files.files;
 

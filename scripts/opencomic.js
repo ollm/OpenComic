@@ -252,7 +252,6 @@ function isEmpty(obj)
 	return true;
 }
 
-
 function matchArray(string, array)
 {
 	for(var i = 0; i < array.length; i++)
@@ -498,3 +497,4 @@ function checkError(value, error = false)
 //Errors list 
 
 NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
+ERROR_UNZIPPING_THE_FILE = 2;

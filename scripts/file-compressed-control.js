@@ -41,7 +41,65 @@ function returnFilesWD(path, all, callback = false)
 		return true;
 	}
 
-	return {error: NOT_POSSIBLE_WITHOUT_DECOMPRESSING}; //If it is not possible to return the files without decompressing
+	return {error: NOT_POSSIBLE_WITHOUT_DECOMPRESSING, compressedPath: path}; //If it is not possible to return the files without decompressing
+}
+
+var queuedCompressedFiles = {}, processingCompressedFilesQueue = false;
+
+function addCompressedFilesQueue(path, all, callback = false, processQueue = true)
+{
+	sha = sha1(p.normalize(path));
+
+	if(typeof queuedCompressedFiles[sha] != 'undefined')
+		queuedCompressedFiles[sha].callback.push(callback);
+	else
+		queuedCompressedFiles[sha] = {path: path, all: all, callback: [callback]};
+
+	if(!processingCompressedFilesQueue && processQueue)
+	{
+		process.nextTick(function() {
+			processCompressedFilesQueue();
+		});
+	}
+}
+
+function processCompressedFilesQueue(force = false)
+{
+
+	if((!processingCompressedFilesQueue || force) && !$.isEmptyObject(queuedCompressedFiles))
+	{
+		processingCompressedFilesQueue = true;
+
+		key = Object.keys(queuedCompressedFiles)[0];
+
+		returnFiles(queuedCompressedFiles[key].path, queuedCompressedFiles[key].all, false, function(files){
+
+			key = Object.keys(queuedCompressedFiles)[0];
+
+			if(key)
+			{
+				for(i in queuedCompressedFiles[key].callback)
+				{
+					if(queuedCompressedFiles[key].callback[i])
+						queuedCompressedFiles[key].callback[i](files);
+				}
+
+				delete queuedCompressedFiles[key];
+
+				if(!$.isEmptyObject(queuedCompressedFiles))
+				{
+					process.nextTick(function() {
+						processCompressedFilesQueue(true);
+					});
+				}
+				else
+				{
+					processingCompressedFilesQueue = false;
+				}
+			}
+
+		});
+	}
 }
 
 function returnFiles(path, all, fromCache, callback)
@@ -55,7 +113,7 @@ function returnFiles(path, all, fromCache, callback)
 	if(json)
 		json = JSON.parse(json);
 
-	virtualPath = path;
+	let virtualPath = path;
 	path = file.realPath(path, -1);
 
 	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
@@ -105,14 +163,10 @@ function returnFiles(path, all, fromCache, callback)
 		else if(inArray(fileExtension(path), compressedExtensions.rar))
 		{
 			if(!unrar) unrar = require('node-unrar');
-
-			console.log('unrar');
 			 
 			var rar = new unrar(path);
 			 			 
 			rar.extract(p.join(tempFolder, sha), null, function (err) {
-
-				console.log(err);
 
 				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
@@ -121,7 +175,10 @@ function returnFiles(path, all, fromCache, callback)
 
 				compressedFiles[sha] = files;
 
-				callback((all) ? files : file.allToFirst(files));
+				if(!err)
+					callback((all) ? files : file.allToFirst(files));
+				else
+					callback({error: ERROR_UNZIPPING_THE_FILE});
 
 			});
 
@@ -145,8 +202,6 @@ function returnFiles(path, all, fromCache, callback)
 			});
 
 		}
-
-		console.log(compressedExtensions['7z']);
 
 		return true;
 	}
@@ -198,5 +253,6 @@ function decompressRecursive(path, callback = false, start = 1, virtualPath = fa
 module.exports = {
 	returnFiles: returnFiles,
 	returnFilesWD: returnFilesWD,
+	addCompressedFilesQueue: addCompressedFilesQueue,
 	decompressRecursive: decompressRecursive,
 };
