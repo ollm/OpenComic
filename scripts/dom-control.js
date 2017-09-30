@@ -1129,7 +1129,8 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			template.loadContentLeft('reading.content.left.html', true);
 			template.loadContentRight('reading.content.right.html', true);
 			template.loadHeader('reading.header.html', true);
-			template.loadGlobalElement('reading.elements.menus.html', 'menus');
+			if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
+
 			floatingActionButton(false);
 			
 			events.events();

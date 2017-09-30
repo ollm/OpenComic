@@ -1034,7 +1034,18 @@ function activeBookmark(mode)
 //Check if a path is a marker
 function isBookmark(path)
 {
-	if($.inArray(path, readingCurrentBookmarks) !== -1)
+	let i = false;
+
+	for(let key in readingCurrentBookmarks)
+	{
+		if(readingCurrentBookmarks[key].path === path)
+		{
+			i = key;
+			break;
+		}
+	}
+
+	if(i !== false)
 	{
 		activeBookmark(1);
 		return true;
@@ -1086,22 +1097,31 @@ function createAndDeleteBookmark(index = false)
 
 		if(typeof readingCurrentBookmarks !== 'undefined')
 		{
-			i = readingCurrentBookmarks.indexOf(path);
+			i = false;
 
-			if(i !== -1)
+			for(let key in readingCurrentBookmarks)
+			{
+				if(readingCurrentBookmarks[key].path === path)
+				{
+					i = key;
+					break;
+				}
+			}
+
+			if(i !== false)
 			{
 				readingCurrentBookmarks.splice(i, 1);
 				activeBookmark(2);
 			}
 			else
 			{
-				readingCurrentBookmarks.push(path);
+				readingCurrentBookmarks.push({path: path, index: imagesPath[path]});
 				activeBookmark(1);
 			}
 		}
 		else
 		{
-			readingCurrentBookmarks = [path];
+			readingCurrentBookmarks = [{path: path, index: imagesPath[path]}];
 			activeBookmark(1);
 		}
 
@@ -1112,26 +1132,64 @@ function createAndDeleteBookmark(index = false)
 //Load the bookmarks in the current directory
 function loadBookmarks()
 {
-	var bookmarks = [];
+	var bookmarksPath = {}, mainPath = dom.indexMainPathA();
+
+	console.log(readingCurrentBookmarks);
 
 	for(key in readingCurrentBookmarks)
 	{
-		if(p.dirname(readingCurrentBookmarks[key]) === readingCurrentPath)
+		if(typeof readingCurrentBookmarks[key].path != 'undefined')
 		{
-			bookmarks.push({
-				name: decodeURI(p.basename(readingCurrentBookmarks[key]).replace(/\.[^\.]*$/, '')),
-				index: imagesPath[readingCurrentBookmarks[key]],
+			bookmark = readingCurrentBookmarks[key];
+
+			bookmarkDirname = p.dirname(bookmark.path);
+
+			if(typeof bookmarksPath[bookmarkDirname] === 'undefined') bookmarksPath[bookmarkDirname] = [];
+
+			thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha1(bookmark.path), function(data){
+
+				console.log(data);
+
+			})
+
+			bookmarksPath[bookmarkDirname].push({
+				name: decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, '')),
+				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
+				mainPath: mainPath,
+				thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+				path: bookmark.path,
 			});
 		}
 	}
 
+	var bookmarks = [];
+
+	for(path in bookmarksPath)
+	{
+		bookmarksPath[path].sort(function (a, b) {
+
+			if (parseInt(a['index']) > parseInt(b['index'])) return 1;
+
+			if (parseInt(a['index']) < parseInt(b['index'])) return -1;
+
+			return 0;
+		});
+
+		bookmarks.push({
+			current: (path === readingCurrentPath) ? true : false,
+			path: path,
+			name: p.basename(path),
+			bookmarks: bookmarksPath[path],
+		});
+	}
+
 	bookmarks.sort(function (a, b) {
 
-		if (parseInt(a['index']) > parseInt(b['index'])) return 1;
+		if(a.current) return -1;
 
-		if (parseInt(a['index']) < parseInt(b['index'])) return -1;
+		if(b.current) return 1;
 
-		return 0;
+		return dom.orderBy(a, b, 'simple', 'path');
 	});
 
 	handlebarsContext.bookmarks = bookmarks;
@@ -1183,6 +1241,8 @@ function read(path, index = 1, end = false)
 
 	if(typeof storage.get('bookmarks') !== 'undefined' && typeof storage.get('bookmarks')[dom.indexMainPathA()] !== 'undefined')
 		readingCurrentBookmarks = storage.get('bookmarks')[dom.indexMainPathA()];
+	else
+		readingCurrentBookmarks = undefined;
 
 	goToImageCL(index, false);
 

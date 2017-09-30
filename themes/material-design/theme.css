@@ -999,6 +999,17 @@ body .app
 	background-color: rgba(0, 0, 0, 0.07) !important;
 }
 
+.menu-simple-element-image
+{
+	height: 20px;
+	width: 20px;
+	border-radius: 2px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 6px 8px 0px 0px;
+	float: left;
+}
 
 .menu-simple-text
 {

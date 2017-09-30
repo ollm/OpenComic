@@ -1,4 +1,22 @@
 
+
+{{#each bookmarks}}
+	<div class="reading-bookmark menu-simple-element">
+		<span>{{#if current}}{{../language.reading.current-reading}}: {{/if}}{{name}}</span>
+	</div>
+	{{#each bookmarks}}
+		<div class="reading-bookmark menu-simple-element" onclick="{{#if ../current}}reading.goToImage({{index}});{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
+			<div class="menu-simple-element-image" style="background-image: url({{thumbnail}})"></div>
+			<span>{{index}}</span>
+			{{name}}
+		</div>
+	{{/each}}
+{{else}}
+	<div class="menu-simple-text">{{language.reading.empty-bookmarks}}</div>
+{{/each}}
+
+<!--
+
 {{#each bookmarks}}
 
 	<div class="reading-bookmark menu-simple-element" onclick="reading.goToImage({{index}}); events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
@@ -8,3 +26,5 @@
 {{else}}
 	<div class="menu-simple-text">{{language.reading.empty-bookmarks}}</div>
 {{/each}}
+
+-->

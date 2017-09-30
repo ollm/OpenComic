@@ -57,6 +57,7 @@
 		"view-bookmarks": "Ver marcadores",
 		"add-bookmark": "Añadir marcador",
 		"remove-bookmark": "Eliminar marcador",
-		"empty-bookmarks": "No hay ningún marcador"
+		"empty-bookmarks": "No hay ningún marcador",
+		"current-reading": "Lectura actual"
 	}
 }

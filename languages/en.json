@@ -57,6 +57,7 @@
 		"view-bookmarks": "View bookmarks",
 		"add-bookmark": "add bookmark",
 		"remove-bookmark": "Remove bookmark",
-		"empty-bookmarks": "No bookmarks"
+		"empty-bookmarks": "No bookmarks",
+		"current-reading": "Current reading"
 	}
 }
