@@ -953,6 +953,26 @@ function justifyViewModule()
 	}
 }
 
+//Enable/Disable night mode
+
+function nightMode()
+{
+	if($('.app').hasClass('night-mode'))
+	{
+		$('.app').removeClass('night-mode');
+		$('.button-night-mode-moon').removeClass('button-night-mode-moon').addClass('button-night-mode-sun');
+		handlebarsContext.nightMode = false;
+		storage.updateVar('config', 'nightMode', false);
+	}
+	else
+	{
+		$('.app').addClass('night-mode');
+		$('.button-night-mode-sun').removeClass('button-night-mode-sun').addClass('button-night-mode-moon');
+		handlebarsContext.nightMode = true;
+		storage.updateVar('config', 'nightMode', true);
+	}
+}
+
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 function openComic(animation = true, path = true, mainPath = true, end = false)
@@ -1154,5 +1174,6 @@ module.exports = {
 	nextComic: skipNextComicF,
 	previousComic: skipPreviousComicF,
 	orderBy: orderBy,
+	nightMode: nightMode,
 	indexMainPathA: function(){return indexMainPathA},
 };

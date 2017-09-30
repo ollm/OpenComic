@@ -327,6 +327,12 @@ body
 	-webkit-user-select: none;
 	cursor: default;
 	overflow: hidden;
+	transition: color 0.2s;
+}
+
+body .app
+{
+	transition: color 0.2s;
 }
 
 .disable-pointer
@@ -351,6 +357,7 @@ body
 	background-color: #fff;
 	z-index: 10;
 	overflow: hidden;
+	transition: background-color 0.2s;
 }
 
 .bar-header > div
@@ -363,6 +370,7 @@ body
 	box-sizing: border-box;
 	padding: 0px 50px;
 	background-color: #fff;
+	transition: background-color 0.2s;
 }
 
 .bar-header > div.a
@@ -426,6 +434,7 @@ body
 	background-color: #fff;
 	overflow: hidden;
 	z-index: 1;
+	transition: background-color 0.2s;
 }
 
 .content-left > div
@@ -439,6 +448,7 @@ body
 	width: 100%;
 	background-color: #fff;
 	box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);
+	transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .content-left > div > div
@@ -510,6 +520,7 @@ body
 	margin-top: -50px;
 	width: 100%;
 	background-color: #eee;
+	transition: background-color 0.2s;
 }
 
 .content-right > div > div
@@ -1174,8 +1185,8 @@ body
 {
 	-webkit-appearance: none !important;
 	background: rgba(218, 67, 54, 1);
-	height:12px;
-	width:12px;
+	height: 12px;
+	width: 12px;
 	border-radius: 100px;
 	outline: 0px;
 	transition: 0.2s;
@@ -1327,12 +1338,13 @@ body
 .reading-left
 {
 	width: 176px;
-	border-radius: 2px;
+	/*border-radius: 2px;*/
 	padding: 16px 16px 16px 0px;
 	cursor: pointer;
 	position: relative;
-	transition: 0.2s;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	transition: border 0.2s, background-color 0.2s;
+	/*border-bottom: 1px solid rgba(0, 0, 0, 0.1);*/
+	border-bottom: 1px solid #e6e6e6;
 }
 
 .reading-left:hover, .reading-left.s
@@ -1362,6 +1374,8 @@ body
 	position: absolute;
 	top: 50%;
 	margin-top: -9px;
+	color: #333;
+	transition: 0.2s color;
 }
 
 .reading-body
@@ -1447,6 +1461,7 @@ body
 	overflow: hidden;
 	opacity: 0;
 	z-index: 3;
+	transition: background-color 0.2s;
 }
 
 .reading-lens > div
@@ -1475,6 +1490,7 @@ body
 	position: absolute;
 	z-index: 1;
 	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1), inset 0px 0px 2px 1px rgba(0, 0, 0, 0.1), inset 0px 0px 1px 1px rgba(0, 0, 0, 0.05);
+	transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .reading-skip .reading-skip-top
@@ -1607,4 +1623,264 @@ body
 ::-webkit-scrollbar-thumb:window-inactive
 {
 	background-color: rgba(0, 0, 0, 0.1);
+}
+
+/*Night Theme*/
+
+body .night-mode
+{
+	color: #fff;
+	background-color: #212121;
+}
+
+.night-mode .content-right
+{
+	background-color: #212121;
+}
+
+.night-mode .bar-header, .night-mode .bar-header > div
+{
+	/*background-color: #212121;*/
+	background-color: #303030;
+}
+
+.night-mode .content-right > div
+{
+	/*background-color: #303030;*/
+	background-color: #212121;
+}
+
+.night-mode .reading-lens
+{
+	background-color: #212121;
+}
+
+.night-mode .content-left, .night-mode .content-left > div
+{
+	background-color: #303030;
+}
+
+.night-mode .menu-simple
+{
+	/*background-color: #212121;*/
+	background-color: #303030;
+}
+
+.night-mode .reading-number
+{
+	color: #fff;
+}
+
+.night-mode .reading-skip > div
+{
+	background-color: #303030;
+	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0), inset 0px 0px 2px 1px rgba(0, 0, 0, 0), inset 0px 0px 1px 1px rgba(0, 0, 0, 0);
+}
+
+.night-mode .simple-list
+{
+	background-color: #212121;
+	border-bottom: 1px solid rgb(29, 29, 29);
+}
+
+.night-mode .simple-list:hover
+{
+	background-color: rgb(29, 29, 29);;
+}
+
+.night-mode  .content-view-module .v-folder
+{
+	background-color: #303030;
+}
+
+.night-mode .reading-left
+{
+	border-bottom: 1px solid rgb(42, 42, 42);
+	color: #fff;
+}
+
+.night-mode .content-left > div
+{
+	box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0), inset -1px 0px 1px 0px rgba(0, 0, 0, 0), inset -1px 0px 0px 0px rgba(0, 0, 0, 0);
+}
+
+.night-mode .reading-bookmark
+{
+	color: #ccc;
+}
+
+.night-mode .reading-bookmark > span
+{
+	color: #fff;
+}
+
+.night-mode .hover > div
+{
+	background-color: #444;
+}
+
+/*Controls Night Theme*/
+
+.night-mode .switch
+{
+	background-color: #717171;
+}
+
+.night-mode .switch:before
+{
+	background-color: #bdbdbd;
+}
+
+/*Buttons/Icons Night Theme*/
+
+.night-mode .icon-language
+{
+	background-image: url('./icons/ic_language_white_24px.svg');
+}
+
+.night-mode .icon-theme
+{
+	background-image: url('./icons/ic_palette_white_24px.svg');
+}
+
+.night-mode .icon-comics
+{
+	background-image: url('./icons/ic_comic_white_24px.svg');
+}
+
+.night-mode .icon-folder
+{
+	background-image: url('./icons/ic_folder_white_24px.svg');
+}
+
+.night-mode .bar-back
+{
+	background-image: url('./icons/ic_arrow_back_white_24px.svg');
+}
+
+.night-mode .button, .night-mode .content-left .menu-list > .icon-24, .night-mode .simple-list > .icon-24
+{
+	opacity: 0.85;
+}
+
+.night-mode .bar-back.active
+{
+	opacity: 0.85 !important;
+}
+
+.night-mode .button-view.module
+{
+	background-image: url('./icons/ic_view_module_white_24px.svg');
+}
+
+.night-mode .button-view.list
+{
+	background-image: url('./icons/ic_view_list_white_24px.svg');
+}
+
+.night-mode .button-sort
+{
+	background-image: url('./icons/ic_sort_white_24px.svg'); 
+}
+
+.night-mode .button-magnifying-glass, .button-search
+{
+	background-image: url('./icons/ic_search_white_24px.svg'); 
+}
+
+.night-mode .button-previous-comic
+{
+	background-image: url('./icons/ic_skip_previous_white_24px.svg'); 
+}
+
+.night-mode .button-first-page
+{
+	background-image: url('./icons/ic_first_page_white_24px.svg'); 
+}
+
+.night-mode .button-previous
+{
+	background-image: url('./icons/ic_chevron_left_white_24px.svg'); 
+}
+
+.night-mode .button-next
+{
+	background-image: url('./icons/ic_chevron_right_white_24px.svg'); 
+}
+
+.night-mode .button-last-page
+{
+	background-image: url('./icons/ic_last_page_white_24px.svg'); 
+}
+
+.night-mode .button-next-comic
+{
+	background-image: url('./icons/ic_skip_next_white_24px.svg'); 
+}
+
+.night-mode .button-pages
+{
+	background-image: url('./icons/ic_pages_white_24px.svg'); 
+}
+
+.night-mode .button-style
+{
+	background-image: url('./icons/ic_style_white_24px.svg'); 
+}
+
+.night-mode .button-tune
+{
+	background-image: url('./icons/ic_tune_white_24px.svg'); 
+}
+
+.night-mode .button-collections-bookmark
+{
+	background-image: url('./icons/ic_collections_bookmark_white_24px.svg'); 
+}
+
+.night-mode .button-bookmark
+{
+	background-image: url('./icons/ic_bookmark_white_24px.svg'); 
+}
+
+.night-mode .button-bookmark-border
+{
+	background-image: url('./icons/ic_bookmark_border_white_24px.svg'); 
+}
+
+.night-mode .button-bookmark-red
+{
+	background-image: url('./icons/ic_bookmark_red_24px.svg');
+	opacity: 1 !important;
+}
+
+.night-mode .button-bookmark-border-red
+{
+	background-image: url('./icons/ic_bookmark_border_red_24px.svg'); 
+	opacity: 1 !important;
+}
+
+.night-mode .button-book-open
+{
+	background-image: url('./icons/ic_book_open_white_24px.svg'); 
+}
+
+.night-mode .button-book-open-variant
+{
+	background-image: url('./icons/ic_book_open_variant_white_24px.svg'); 
+}
+
+.night-mode .button-book-open-page-variant
+{
+	background-image: url('./icons/ic_book_open_page_variant_white_24px.svg'); 
+}
+
+.night-mode .button-night-mode-sun
+{
+	background-image: url('./icons/ic_wb_sunny_border_white_24px.svg'); 
+}
+
+.night-mode .button-night-mode-moon
+{
+	background-image: url('./icons/ic_moon_border_white_24px_beta4.svg'); 
 }

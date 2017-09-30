@@ -6,6 +6,7 @@ var storageDefault = {
 		changes: changes,
 		language: 'es',
 		theme: 'material-design',
+		nightMode: false,
 		foldersFirst: true,
 		viewIndex: 'module',
 		view: 'module',

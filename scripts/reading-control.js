@@ -638,7 +638,7 @@ function showNextComic(mode, animation = true)
 				var skip = template.contentRight('.reading-skip-right');
 
 				skip.css({
-					'transition': transition+'s',
+					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
 					'transform': 'translate(-100px, 0px)',
 				});
 
@@ -646,7 +646,7 @@ function showNextComic(mode, animation = true)
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transform-origin': '0px center',
-					'transition': ((animation) ? transition : 0)+'s',
+					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
 					'transform': 'scale('+scale+') translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 				});
@@ -656,7 +656,7 @@ function showNextComic(mode, animation = true)
 				var skip = template.contentRight('.reading-skip-bottom');
 
 				skip.css({
-					'transition': transition+'s',
+					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
 					'transform': 'translate(0px, -100px)',
 				});
 
@@ -664,7 +664,7 @@ function showNextComic(mode, animation = true)
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transform-origin': 'center '+(template.contentRight('.reading-body').height() - contentHeight)+'px',
-					'transition': ((animation) ? transition : 0)+'s',
+					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
 					'transform': 'scale('+scale+')',
 				});
@@ -682,24 +682,24 @@ function showNextComic(mode, animation = true)
 		if(config.readingView == 'slide')
 		{
 			var skip = template.contentRight('.reading-skip-right').css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 			});
 		}
 		else if(config.readingView == 'scroll')
 		{
 			var skip = template.contentRight('.reading-skip-bottom').css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
@@ -729,7 +729,7 @@ function showPreviousComic(mode, animation = true)
 				var skip = template.contentRight('.reading-skip-left');
 
 				skip.css({
-					'transition': transition+'s',
+					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
 					'transform': 'translate(100px, 0px)',
 				});
 
@@ -737,7 +737,7 @@ function showPreviousComic(mode, animation = true)
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transform-origin': contentWidth+'px center',
-					'transition': ((animation) ? transition : 0)+'s',
+					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
 					'transform': 'scale('+scale+')',
 				});
@@ -748,7 +748,7 @@ function showPreviousComic(mode, animation = true)
 				var skip = template.contentRight('.reading-skip-top');
 
 				skip.css({
-					'transition': transition+'s',
+					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
 					'transform': 'translate(0px, 100px)',
 				});
 
@@ -756,7 +756,7 @@ function showPreviousComic(mode, animation = true)
 
 				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 					'transform-origin': 'center '+contentHeight+'px',
-					'transition': ((animation) ? transition : 0)+'s',
+					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
 					'transform': 'scale('+scale+')',
 				});
@@ -776,12 +776,12 @@ function showPreviousComic(mode, animation = true)
 			var skip = template.contentRight('.reading-skip-left');
 
 			skip.css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
@@ -790,12 +790,12 @@ function showPreviousComic(mode, animation = true)
 			var skip = template.contentRight('.reading-skip-top');
 
 			skip.css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': config.readingViewSpeed+'s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
