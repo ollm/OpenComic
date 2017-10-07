@@ -14,6 +14,8 @@ __Requirements__: Git, Node and NPM
 git clone https://github.com/ollm/OpenComic.git
 cd OpenComic
 npm install
+npm install --only=dev
+npm run rebuild
 npm start
 ```
 ## Pepper & Carrot
