@@ -149,7 +149,8 @@ function updateVar(key, keyVar, value)
 
 	storageJson[key][keyVar] = value;
 
-	ejs.set(key, storageJson[key]);
+	ejs.set(key, storageJson[key], function(error){});
+
 }
 
 function update(key, value)
