@@ -157,14 +157,14 @@ function update(key, value)
 {
 	storageJson[key] = value;
 
-	ejs.set(key, storageJson[key]);
+	ejs.set(key, storageJson[key], function(error){});
 }
 
 function push(key, item)
 {
 	storageJson[key].push(item);
 
-	ejs.set(key, storageJson[key]);
+	ejs.set(key, storageJson[key], function(error){});
 }
 
 var storageKeys = ['config', 'comics', 'cache', 'bookmarks'];
@@ -186,7 +186,7 @@ function start(callback)
 			{
 				var storageNew = updateStorageMD(false, storageDefault[key]);
 
-				ejs.set(key, storageNew);
+				ejs.set(key, storageNew, function(error){});
 
 				storageJson[key] = storageNew;
 			}
@@ -196,13 +196,21 @@ function start(callback)
 				{
 					newData = updateStorageMD(data[key], storageDefault[key]);
 
+					console.log(key);
+					console.log(newData);
+
 					if(key == 'config')
 					{
 						newData.appVersion = package.version;
 						newData.changes = changes;
 					}
 
-					ejs.set(key, newData);
+					console.log(key);
+					console.log(newData);
+
+					ejs.set(key, newData, function(error){});
+
+					console.log('testststststststts');
 
 					storageJson[key] = newData;
 				}
