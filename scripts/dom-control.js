@@ -166,14 +166,65 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 					if(checkError(images))
 					{
-						var sha = sha1(filePath);
+						/*var sha = sha1(filePath);
 
 						var images = [
 							{cache: false, path: '', sha: sha+'-0'},
 							{cache: false, path: '', sha: sha+'-1'},
 							{cache: false, path: '', sha: sha+'-2'},
 							{cache: false, path: '', sha: sha+'-3'},
+						];*/
+
+						console.log('Test: '+filePath);
+
+						var folderSha = sha1(filePath);
+
+						var images = [
+							{cache: false, path: '', sha: folderSha+'-0'},
+							{cache: false, path: '', sha: folderSha+'-1'},
+							{cache: false, path: '', sha: folderSha+'-2'},
+							{cache: false, path: '', sha: folderSha+'-3'},
 						];
+
+						if(file.containsCompressed(filePath))
+						{
+							(function(folderSha){
+
+								addFolderImagesQueue(filePath, 4, function(images){
+
+									for(var i = 0; i < images.length; i++)
+									{
+										var sha = sha1(images[i]);
+
+										(function(i, sha, folderSha, images){
+
+											image = cache.returnCacheImage(images[i], sha, function(data){
+
+												if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
+													$('img.fi-sha-'+folderSha+'-'+i).attr('src', data.path);
+												else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
+													$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', data.path);
+												else
+													$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+data.path+')');
+
+											});
+
+											if(image.cache)
+											{
+												if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
+													$('img.fi-sha-'+folderSha+'-'+i).attr('src', image.path);
+												else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
+													$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', image.path);
+												else
+													$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+image.path+')');
+											}
+
+										}(i, sha, folderSha, images));
+									}
+								});
+
+							})(folderSha)
+						}
 
 						//Compatibility has to be added to uncompress the file and create the thumbnails
 					}
@@ -301,7 +352,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 									(function(i, sha, folderSha, images){
 
-										cache.returnCacheImage(images[i], sha, function(data){
+										image = cache.returnCacheImage(images[i], sha, function(data){
 
 											if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
 												$('img.fi-sha-'+folderSha+'-'+i).attr('src', data.path);
@@ -311,6 +362,16 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 												$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+data.path+')');
 
 										});
+
+										if(image.cache)
+										{
+											if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
+												$('img.fi-sha-'+folderSha+'-'+i).attr('src', image.path);
+											else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
+												$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', image.path);
+											else
+												$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+image.path+')');
+										}
 
 									}(i, sha, folderSha, images));
 								}

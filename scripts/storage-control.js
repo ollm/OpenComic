@@ -196,21 +196,13 @@ function start(callback)
 				{
 					newData = updateStorageMD(data[key], storageDefault[key]);
 
-					console.log(key);
-					console.log(newData);
-
 					if(key == 'config')
 					{
 						newData.appVersion = package.version;
 						newData.changes = changes;
 					}
 
-					console.log(key);
-					console.log(newData);
-
 					ejs.set(key, newData, function(error){});
-
-					console.log('testststststststts');
 
 					storageJson[key] = newData;
 				}
