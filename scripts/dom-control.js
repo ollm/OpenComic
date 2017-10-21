@@ -77,6 +77,14 @@ function orderBy(a, b, mode, key = false)
 	}
 }
 
+function addImageToDom(querySelector, path)
+{
+	if($('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).length > 0)
+		$('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).attr('src', path).addClass('a');
+	else
+		$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css('background-image', 'url('+path+')').addClass('a');
+}
+
 var indexPathControlA = [];
 
 var indexPathA = false, indexMainPathA = false;
@@ -141,14 +149,9 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 					var sha = sha1(filePath);
 
 					var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
-						if($('.sha-'+data.sha+' img').length > 0)
-						{
-							$('.sha-'+data.sha+' img').attr('src', data.path);
-						}
-						else
-						{
-							$('.sha-'+data.sha+' .item-image').css('background-image', 'url('+data.path+')');
-						}
+
+						addImageToDom(data.sha, data.path);
+
 					});
 
 					comics.push({
@@ -200,24 +203,12 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 											image = cache.returnCacheImage(images[i], sha, function(data){
 
-												if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
-													$('img.fi-sha-'+folderSha+'-'+i).attr('src', data.path);
-												else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
-													$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', data.path);
-												else
-													$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+data.path+')');
+												addImageToDom(folderSha+'-'+i, data.path);
 
 											});
 
 											if(image.cache)
-											{
-												if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
-													$('img.fi-sha-'+folderSha+'-'+i).attr('src', image.path);
-												else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
-													$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', image.path);
-												else
-													$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+image.path+')');
-											}
+												addImageToDom(folderSha+'-'+i, image.path);
 
 										}(i, sha, folderSha, images));
 									}
@@ -235,12 +226,9 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 							var sha = sha1(images[i2]);
 
 							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
-								if($('img.fi-sha-'+data.sha).length > 0)
-									$('img.fi-sha-'+data.sha).attr('src', data.path);
-								else if($('.fi-sha-'+data.sha+' img').length > 0)
-									$('.fi-sha-'+data.sha+' img').attr('src', data.path);
-								else
-									$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+
+								addImageToDom(data.sha, data.path);
+
 							});
 						}
 					}
@@ -354,24 +342,12 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 										image = cache.returnCacheImage(images[i], sha, function(data){
 
-											if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
-												$('img.fi-sha-'+folderSha+'-'+i).attr('src', data.path);
-											else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
-												$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', data.path);
-											else
-												$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+data.path+')');
+											addImageToDom(folderSha, data.path);
 
 										});
 
 										if(image.cache)
-										{
-											if($('img.fi-sha-'+folderSha+'-'+i).length > 0)
-												$('img.fi-sha-'+folderSha+'-'+i).attr('src', image.path);
-											else if($('.fi-sha-'+folderSha+'-'+i+' img').length > 0)
-												$('.fi-sha-'+folderSha+'-'+i+' img').attr('src', image.path);
-											else
-												$('.fi-sha-'+folderSha+'-'+i).css('background-image', 'url('+image.path+')');
-										}
+											addImageToDom(folderSha, image.path);
 
 									}(i, sha, folderSha, images));
 								}
@@ -388,12 +364,9 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 						var sha = sha1(images[i]);
 
 						images[i] = cache.returnCacheImage(images[i], sha, function(data){
-							if($('img.fi-sha-'+data.sha).length > 0)
-								$('img.fi-sha-'+data.sha).attr('src', data.path);
-							else if($('.fi-sha-'+data.sha+' img').length > 0)
-								$('.fi-sha-'+data.sha+' img').attr('src', data.path);
-							else
-								$('.fi-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+
+							addImageToDom(data.sha, data.path);
+
 						});
 					}
 				}
@@ -1112,14 +1085,9 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 						var sha = sha1(filePath);
 
 						var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
-							if($('img.ri-sha-'+data.sha).length > 0)
-							{
-								$('img.ri-sha-'+data.sha).attr('src', data.path);
-							}
-							else
-							{
-								$('.ri-sha-'+data.sha+' .item-image').css('background-image', 'url('+data.path+')');
-							}
+
+							addImageToDom(data.sha, data.path);
+
 						});
 
 						comics.push({

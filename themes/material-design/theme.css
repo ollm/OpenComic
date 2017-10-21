@@ -1067,6 +1067,13 @@ body .app
 	background-position: 50%;
 }
 
+.content-view-module .v-img > img.a
+{
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
 .content-view-module .v-text
 {
 	height: 48px;
@@ -1106,6 +1113,13 @@ body .app
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
+}
+
+.content-view-module .folder-images > img.a
+{
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
 }
 
 /*Controls*/
