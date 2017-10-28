@@ -556,13 +556,11 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	});
 
 	previousReadingDirection = readingDirection;
-
 }
 
 //Go to the next comic page
 function goNext()
 {
-
 	var nextIndex = currentIndex + 1;
 
 	readingDirection = true;
@@ -571,7 +569,7 @@ function goNext()
 		showPreviousComic(2, true);
 	else if(nextIndex <= indexNum || (config.readingViewAdjustToWidth && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
-	else if(nextIndex - 1 == indexNum && dom.nextComic())
+	else if(currentIndex == indexNum && dom.nextComic())
 		showNextComic(1, true);
 }
 
@@ -593,27 +591,31 @@ function goPrevious()
 //Go to the start of the comic
 function goStart()
 {
-	if(currentIndex < 1)
-		showPreviousComic(2, true);
-	else if(currentIndex > indexNum)
-		showNextComic(2, true);
+	if(currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic()))
+	{
+		goPrevious();
+	}
+	else
+	{
+		readingDirection = true;
 
-	readingDirection = true;
-
-	goToIndex(1, true);
+		goToIndex(1, true);
+	}
 }
 
 //Go to the end of the comic
 function goEnd()
 {
-	if(currentIndex < 1)
-		showPreviousComic(2, true);
-	else if(currentIndex > indexNum)
-		showNextComic(2, true);
+	if(currentIndex < 1 || (currentIndex == indexNum && dom.nextComic()))
+	{
+		goNext();
+	}
+	else
+	{
+		readingDirection = false;
 
-	readingDirection = false;
-
-	goToIndex(indexNum, true, true, true);
+		goToIndex(indexNum, true, true, true);
+	}
 }
 
 var showComicSkip;
