@@ -24,7 +24,7 @@
     "unzip2": "^0.2.5"
   },
   "devDependencies": {
-    "electron": "^1.7.6",
+    "electron": "^1.7.11",
     "electron-rebuild": "^1.5.11"
   },
   "repository": {
