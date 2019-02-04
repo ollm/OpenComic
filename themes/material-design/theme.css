@@ -1160,7 +1160,7 @@ body .app
 .switch.a:before
 {
 	transform: translate(22px, 0px);
-	background-color: rgba(218, 67, 54, 1);
+	background-color: rgba(218, 67, 54, 1) !important;
 }
 
 .simple-slider
