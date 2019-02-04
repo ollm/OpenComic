@@ -52,9 +52,22 @@ var storageDefault = {
 		folder: true,
 	}],
 	bookmarks: {
-		wildcard: ['Path']
+		wildcard: [{
+			index: 0,
+			path: 'Path',
+		}]
 	},
-	cache: {wildcard: {
+	readingProgress: {
+		wildcard: [{
+			path: 'Path',
+			lastReading: 0,
+			progress: {
+				wildcard: 0,
+			},
+		}]
+	},
+	cache: {
+		wildcard: {
 			lastAccess: 0,
 			size: 0,
 		}
@@ -167,7 +180,7 @@ function push(key, item)
 	ejs.set(key, storageJson[key], function(error){});
 }
 
-var storageKeys = ['config', 'comics', 'cache', 'bookmarks'];
+var storageKeys = ['config', 'comics', 'cache', 'bookmarks', 'readingProgress'];
 
 function start(callback)
 {

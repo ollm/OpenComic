@@ -151,7 +151,7 @@ function returnFiles(path, all, fromCache, callback)
 					files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 					if(!json || json.mtime != mtime)
-						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
+						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
 
 					compressedFiles[sha] = files;
 
@@ -171,7 +171,7 @@ function returnFiles(path, all, fromCache, callback)
 				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 				if(!json || json.mtime != mtime)
-					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
+					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
 
 				compressedFiles[sha] = files;
 
@@ -193,7 +193,7 @@ function returnFiles(path, all, fromCache, callback)
 				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 				if(!json || json.mtime != mtime)
-					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}));
+					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
 
 				compressedFiles[sha] = files;
 

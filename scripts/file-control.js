@@ -64,7 +64,7 @@ function filtered(path, files)
 		{
 			var filePath = p.join(path, files[i]);
 
-			if(inArray(mime.lookup(filePath), compatibleMime))
+			if(inArray(mime.getType(filePath), compatibleMime))
 				filtered.push({name: files[i], path: filePath, folder: false, compressed: false});
 			else if(fs.statSync(filePath).isDirectory())
 				filtered.push({name: files[i], path: filePath, folder: true, compressed: false});
@@ -159,7 +159,7 @@ function containsCompressed(path, index = 0)
 
 function pathType(path)
 {
-	if(inArray(mime.lookup(path), compatibleMime))
+	if(inArray(mime.getType(path), compatibleMime))
 		return {folder: false, compressed: false};
 	else if(fs.statSync(path).isDirectory())
 		return {folder: true, compressed: false};
@@ -205,7 +205,7 @@ function returnAll(path, changePath = false)
 				else
 					retrunPath = filePath.replace(new RegExp('^'+pregQuote(changePath.from)), changePath.to);
 
-				if(inArray(mime.lookup(filePath), compatibleMime))
+				if(inArray(mime.getType(filePath), compatibleMime))
 					returnFiles.push({name: files[i], path: retrunPath, folder: false, compressed: false});
 				else if(fs.statSync(filePath).isDirectory())
 					returnFiles.push({name: files[i], path: retrunPath, folder: true, compressed: false, files: returnAll(filePath, changePath)});

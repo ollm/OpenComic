@@ -77,6 +77,63 @@ function orderBy(a, b, mode, key = false)
 	}
 }
 
+
+//Get reading progres of path
+function getReadingProgress(path, callback)
+{
+	path = p.normalize(path);
+
+	readingProgress = storage.getKey('readingProgress');
+
+	for(rpPath in readingProgress)
+	{
+		data = readingProgress[rpPath];
+
+		if(typeof data.progress[path] !== 'undefined')		
+			return data;
+	}
+
+	return false;
+}
+
+function calcReadingProgress(path, mainPath, callback)
+{
+	(function(path, mainPath, callback){
+
+		process.nextTick(function() {
+
+			progress = calcReadingProgressWD(path, mainPath, callback);
+
+			if(checkError(progress))
+			{
+				(function(error, path, mainPath, callback){
+
+					fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
+
+						if(!checkError(files))
+							dom.calcReadingProgress(path, mainPath, callback);
+						else
+							callback(files);
+
+					});
+
+				})(progress, path, mainPath, callback)
+			}
+			else
+			{
+				if(callback)
+					callback(progress);
+			}
+		});
+
+	})(path, mainPath, callback);
+}
+
+function calcReadingProgressWD()
+{
+
+}
+
 function addImageToDom(querySelector, path)
 {
 	if($('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).length > 0)
@@ -144,7 +201,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 				realPath = file.realPath(filePath, -1);
 
-				if(inArray(mime.lookup(realPath), compatibleMime))
+				if(inArray(mime.getType(realPath), compatibleMime))
 				{
 					var sha = sha1(filePath);
 
@@ -307,14 +364,25 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 	if(!path)
 	{
-		var comics = storage.get('comics');
+		var comicsStorage = storage.get('comics');
+		var comics = [];
 
-		if(!isEmpty(comics))
+		if(!isEmpty(comicsStorage))
 		{
+			for(key in comicsStorage)
+			{
+				if(fs.existsSync(comicsStorage[key].path))
+				{
+					comics.push(comicsStorage[key]);
+				}
+				else
+				{
+					console.log(comicsStorage[key]);
+				}
+			}
 
 			for(key in comics)
 			{
-
 				var images = folderImagesWD(comics[key].path, 4);
 
 				if(checkError(images))
@@ -1015,7 +1083,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 	var imagePath = path;
 	var indexStart = 1;
 
-	if(compatibleMime.indexOf(mime.lookup(path)) != -1)
+	if(compatibleMime.indexOf(mime.getType(path)) != -1)
 	{
 		startImage = path;
 		path = p.dirname(path);
@@ -1080,7 +1148,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 					var fileName = files[i];
 					var filePath = p.join(path, fileName);
 
-					if(compatibleMime.indexOf(mime.lookup(filePath)) != -1)
+					if(compatibleMime.indexOf(mime.getType(filePath)) != -1)
 					{
 						var sha = sha1(filePath);
 
@@ -1205,5 +1273,7 @@ module.exports = {
 	previousComic: skipPreviousComicF,
 	orderBy: orderBy,
 	nightMode: nightMode,
+	calcReadingProgress: calcReadingProgress,
+	calcReadingProgressWD: calcReadingProgressWD,
 	indexMainPathA: function(){return indexMainPathA},
 };

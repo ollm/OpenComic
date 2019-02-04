@@ -9,7 +9,7 @@ function processTheImageQueue()
 
 	realPath = file.realPath(img.file);
 
-	sharp(realPath).resize(img.size, null).background('white').quality(95).toFile(p.join(appDir, 'cache', sha+'.jpg'), function(error) {
+	sharp(realPath).jpeg({quality: 95}).resize({width: img.size, background: 'white'}).toFile(p.join(appDir, 'cache', sha+'.jpg'), function(error) {
 
 		if(error)
 		{
@@ -137,7 +137,7 @@ function returnCacheImage(file, sha, callback = false)
 
 function writeFile(name, content)
 {
-	fs.writeFile(p.join(appDir, 'cache', name), content); 
+	fs.writeFile(p.join(appDir, 'cache', name), content, function(){}); 
 }
 
 function readFile(name)
