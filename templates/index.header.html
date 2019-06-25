@@ -1,4 +1,4 @@
-<div class="bar-back button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControl(1)"></div>
+<div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControl(1)">arrow_back</div>
 <div class="bar-title">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
@@ -15,7 +15,15 @@
 </div>
 <div class="bar-right-buttons">
 	<div>
-		<div class="button button1 button-sort hover-text" hover-text="{{language.global.sort}}" onclick="events.activeMenu('#index-sort', '.bar-right-buttons .button-sort', 'right');"></div>
-		<div class="button button1 button-view {{#if comicsIndex}}{{config.viewIndex}}{{else}}{{config.view}}{{/if}} hover-text" hover-text="{{language.global.view}}" onclick="events.activeMenu('#index-view', '.bar-right-buttons .button-view', 'right');"></div>
+		<div class="material-icon button button1 button-sort hover-text" hover-text="{{language.global.sort}}" onclick="events.activeMenu('#index-sort', '.bar-right-buttons .button-sort', 'right');">sort</div>
+		<div class="material-icon button button1 button-view hover-text" hover-text="{{language.global.view}}" onclick="events.activeMenu('#index-view', '.bar-right-buttons .button-view', 'right');">
+			{{#if comicsIndex}}
+				{{#compare config.viewIndex '==' 'module'}}view_module{{/compare}}
+				{{#compare config.viewIndex '==' 'list'}}view_list{{/compare}}
+			{{else}}
+				{{#compare config.view '==' 'module'}}view_module{{/compare}}
+				{{#compare config.view '==' 'list'}}view_list{{/compare}}
+			{{/if}}
+		</div>
 	</div>
 </div>

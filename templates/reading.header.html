@@ -1,4 +1,4 @@
-<div class="bar-back button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControl(1)"></div>
+<div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControl(1)">arrow_back</div>
 <div class="bar-title">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
@@ -14,18 +14,18 @@
 	{{/if}}</div>
 <div class="bar-right-buttons reading-header">
 	<div>
-		<div class="button button1 button-magnifying-glass hover-text" hover-text="{{language.reading.magnifying-glass}}" onclick="events.activeMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass', 'right');"></div>
-		<div class="button button1 button-book-open-page-variant hover-text" hover-text="{{language.reading.pages}}" onclick="events.activeMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant', 'right');"></div>
+		<div class="material-icon button button1 button-magnifying-glass hover-text" hover-text="{{language.reading.magnifying-glass}}" onclick="events.activeMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass', 'right');">search</div>
+		<div class="material-icon-extras button button1 button-book-open-page-variant hover-text" hover-text="{{language.reading.pages}}" onclick="events.activeMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant', 'right');">page_variant</div>
 		<div class="bar-buttons-separator"></div>
-		<div class="button button1 button-collections-bookmark hover-text" hover-text="{{language.reading.view-bookmarks}}" onclick="reading.loadBookmarks();events.activeMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark', 'right');"></div>
-		<div class="button button2 button-bookmark-border hover-text" hover-text="{{language.reading.add-bookmark}}" onclick="reading.createAndDeleteBookmark();"></div>
+		<div class="material-icon button button1 button-collections-bookmark hover-text" hover-text="{{language.reading.view-bookmarks}}" onclick="reading.loadBookmarks();events.activeMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark', 'right');">collections_bookmark</div>
+		<div class="material-icon button button2 button-bookmark hover-text" hover-text="{{language.reading.add-bookmark}}" onclick="reading.createAndDeleteBookmark();">bookmark_border</div>
 		<div class="bar-buttons-separator"></div>
-		<div class="button button2 button-last-page hover-text" hover-text="{{language.reading.last-page}}" onclick="reading.goEnd();"></div>
-		<div class="button button2 button-next hover-text" hover-text="{{language.reading.next}}" onclick="reading.goNext();"></div>
-		<div class="button button2 button-previous hover-text" hover-text="{{language.reading.previous}}" onclick="reading.goPrevious();"></div>
-		<div class="button button2 button-first-page hover-text" hover-text="{{language.reading.first-page}}" onclick="reading.goStart();"></div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.reading.last-page}}" onclick="reading.goEnd();">last_page</div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.reading.next}}" onclick="reading.goNext();">navigate_next</div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.reading.previous}}" onclick="reading.goPrevious();">navigate_before</div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.reading.first-page}}" onclick="reading.goStart();">first_page</div>
 		<div class="bar-buttons-separator"></div>
-		<div class="button button2 button-night-mode-{{#if config.nightMode}}moon{{else}}sun{{/if}} hover-text" hover-text="{{language.global.night-mode}}" onclick="dom.nightMode();"></div>
+		<div class="material-icon-extras button button2 button-night-mode hover-text" hover-text="{{language.global.night-mode}}" onclick="dom.nightMode();">{{#if config.nightMode}}moon{{else}}sun{{/if}}</div>
 
 	</div>
 </div>

@@ -1,6 +1,7 @@
 /*Fonts*/
 
 @import url('../../fonts/roboto.css');
+@import url('../../fonts/material_icons.css');
 
 /*Animations*/
 
@@ -275,13 +276,13 @@
 {
 	0%
 	{
-		opacity: 0 !important;
+		opacity: 0;
 		margin-left: -50px;
 
 	}
 	100%
 	{
-		opacity: 0.5 !important;
+		opacity: 1;
 		margin-left: 0px;
 	}
 }
@@ -290,13 +291,13 @@
 {
 	0%
 	{
-		opacity: 0.5 !important;
+		opacity: 1;
 		margin-left: 0px;
 
 	}
 	100%
 	{
-		opacity: 0 !important;
+		opacity: 0;
 		margin-left: -50px;
 	}
 }
@@ -390,7 +391,6 @@ body .app
 .bar-back
 {
 	opacity: 0;
-	background-image: url('./icons/ic_arrow_back_black_24px.svg');
 	margin-left: -50px;
 	float: left;
 	cursor: default !important;
@@ -407,7 +407,7 @@ body .app
 
 .bar-back.active
 {
-	opacity: 0.5 !important;
+	opacity: 1 !important;
 	margin-left: 0px;
 	cursor: pointer !important;
 }
@@ -486,7 +486,6 @@ body .app
 {
 	float: left;
 	margin: 12px 16px 12px 0px;
-	opacity: 0.5;
 }
 
 
@@ -587,26 +586,6 @@ body .app
 	background-repeat: no-repeat;
 }
 
-.icon-language
-{
-	background-image: url('./icons/ic_language_black_24px.svg');
-}
-
-.icon-theme
-{
-	background-image: url('./icons/ic_palette_black_24px.svg');
-}
-
-.icon-comics
-{
-	background-image: url('./icons/ic_comic_black_24px.svg');
-}
-
-.icon-folder
-{
-	background-image: url('./icons/ic_folder_black_24px.svg');
-}
-
 /*Buttons*/
 
 .floating-action-button
@@ -618,15 +597,17 @@ body .app
 	bottom: 24px;
 	right: 24px;
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-	background-image: url(./icons/ic_add_white_24px.svg);
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: 8px;
 	background-color: #da4336;
+	color: #fff;
 	cursor: pointer;
 	overflow: hidden;
 	transition: 0.2s;
 	z-index: 2;
+	box-sizing: border-box;
+	padding: 6px;
 }
 
 .floating-action-button.disable
@@ -644,7 +625,8 @@ body .app
 	transform: scale(0);
 	background-color: rgba(255, 255, 255, 0.2);
 	border-radius: 50%;
-	margin: 2px;
+	margin: -4px;
+	position: absolute;
 }
 
 .floating-action-button.a:before
@@ -670,7 +652,6 @@ body .app
 
 .button
 {
-	opacity: 0.5;
 	height: 48px;
 	width: 48px;
 	background-size: 24px;
@@ -678,11 +659,18 @@ body .app
 	background-repeat: no-repeat;
 	transition: 0.2s;
 	cursor: pointer;
+	box-sizing: border-box;
+	padding: 12px;
 }
 
 .button:hover
 {
-	opacity: 0.6;
+	color: #666666;
+}
+
+.night-mode .button:hover
+{
+	color: #cccccc;
 }
 
 .button:before
@@ -700,7 +688,6 @@ body .app
 	position: absolute;
 	top: 0px;
 	left: 0px;
-
 }
 
 /*Button 1*/
@@ -895,7 +882,6 @@ body .app
 {
 	float: left;
 	margin: 12px 16px 12px 0px;
-	opacity: 0.5;
 }
 
 /*Menus*/
@@ -1237,127 +1223,6 @@ body .app
 	transform: scale(1);
 }
 
-/*Buttons*/
-
-.button-view.module
-{
-	background-image: url('./icons/ic_view_module_black_24px.svg');
-	transition: 0.2s;
-}
-
-.button-view.list
-{
-	background-image: url('./icons/ic_view_list_black_24px.svg');
-	transition: 0.2s;
-}
-
-.button-sort
-{
-	background-image: url('./icons/ic_sort_black_24px.svg'); 
-}
-
-.button-magnifying-glass, .button-search
-{
-	background-image: url('./icons/ic_search_black_24px.svg'); 
-}
-
-.button-previous-comic
-{
-	background-image: url('./icons/ic_skip_previous_black_24px.svg'); 
-}
-
-.button-first-page
-{
-	background-image: url('./icons/ic_first_page_black_24px.svg'); 
-}
-
-.button-previous
-{
-	background-image: url('./icons/ic_chevron_left_black_24px.svg'); 
-}
-
-.button-next
-{
-	background-image: url('./icons/ic_chevron_right_black_24px.svg'); 
-}
-
-.button-last-page
-{
-	background-image: url('./icons/ic_last_page_black_24px.svg'); 
-}
-
-.button-next-comic
-{
-	background-image: url('./icons/ic_skip_next_black_24px.svg'); 
-}
-
-.button-pages
-{
-	background-image: url('./icons/ic_pages_black_24px.svg'); 
-}
-
-.button-style
-{
-	background-image: url('./icons/ic_style_black_24px.svg'); 
-}
-
-.button-tune
-{
-	background-image: url('./icons/ic_tune_black_24px.svg'); 
-}
-
-.button-collections-bookmark
-{
-	background-image: url('./icons/ic_collections_bookmark_black_24px.svg'); 
-}
-
-.button-bookmark
-{
-	background-image: url('./icons/ic_bookmark_black_24px.svg'); 
-}
-
-.button-bookmark-border
-{
-	background-image: url('./icons/ic_bookmark_border_black_24px.svg'); 
-}
-
-.button-bookmark-red
-{
-	background-image: url('./icons/ic_bookmark_red_24px.svg');
-	opacity: 1 !important;
-}
-
-.button-bookmark-border-red
-{
-	background-image: url('./icons/ic_bookmark_border_red_24px.svg'); 
-	opacity: 1 !important;
-}
-
-.button-book-open
-{
-	background-image: url('./icons/ic_book_open_24px.svg'); 
-}
-
-.button-book-open-variant
-{
-	background-image: url('./icons/ic_book_open_variant_24px.svg'); 
-}
-
-.button-book-open-page-variant
-{
-	background-image: url('./icons/ic_book_open_page_variant_24px.svg'); 
-}
-
-.button-night-mode-sun
-{
-	background-image: url('./icons/ic_wb_sunny_border_black_24px.svg'); 
-}
-
-.button-night-mode-moon
-{
-	background-image: url('./icons/ic_moon_border_black_24px_beta4.svg'); 
-}
-
 /*Reading - Start*/
 
 .reading-left
@@ -1454,7 +1319,7 @@ body .app
 	width: 96px;
 	background-repeat: no-repeat;
 	background-size: 96px;
-	opacity: 0.5;
+	font-size: 96px;
 	height: 96px;
 	display: inline-block;
 }
@@ -1754,158 +1619,4 @@ body .night-mode
 .night-mode .switch:before
 {
 	background-color: #bdbdbd;
-}
-
-/*Buttons/Icons Night Theme*/
-
-.night-mode .icon-language
-{
-	background-image: url('./icons/ic_language_white_24px.svg');
-}
-
-.night-mode .icon-theme
-{
-	background-image: url('./icons/ic_palette_white_24px.svg');
-}
-
-.night-mode .icon-comics
-{
-	background-image: url('./icons/ic_comic_white_24px.svg');
-}
-
-.night-mode .icon-folder
-{
-	background-image: url('./icons/ic_folder_white_24px.svg');
-}
-
-.night-mode .bar-back
-{
-	background-image: url('./icons/ic_arrow_back_white_24px.svg');
-}
-
-.night-mode .button, .night-mode .content-left .menu-list > .icon-24, .night-mode .simple-list > .icon-24
-{
-	opacity: 0.85;
-}
-
-.night-mode .bar-back.active
-{
-	opacity: 0.85 !important;
-}
-
-.night-mode .button-view.module
-{
-	background-image: url('./icons/ic_view_module_white_24px.svg');
-}
-
-.night-mode .button-view.list
-{
-	background-image: url('./icons/ic_view_list_white_24px.svg');
-}
-
-.night-mode .button-sort
-{
-	background-image: url('./icons/ic_sort_white_24px.svg'); 
-}
-
-.night-mode .button-magnifying-glass, .button-search
-{
-	background-image: url('./icons/ic_search_white_24px.svg'); 
-}
-
-.night-mode .button-previous-comic
-{
-	background-image: url('./icons/ic_skip_previous_white_24px.svg'); 
-}
-
-.night-mode .button-first-page
-{
-	background-image: url('./icons/ic_first_page_white_24px.svg'); 
-}
-
-.night-mode .button-previous
-{
-	background-image: url('./icons/ic_chevron_left_white_24px.svg'); 
-}
-
-.night-mode .button-next
-{
-	background-image: url('./icons/ic_chevron_right_white_24px.svg'); 
-}
-
-.night-mode .button-last-page
-{
-	background-image: url('./icons/ic_last_page_white_24px.svg'); 
-}
-
-.night-mode .button-next-comic
-{
-	background-image: url('./icons/ic_skip_next_white_24px.svg'); 
-}
-
-.night-mode .button-pages
-{
-	background-image: url('./icons/ic_pages_white_24px.svg'); 
-}
-
-.night-mode .button-style
-{
-	background-image: url('./icons/ic_style_white_24px.svg'); 
-}
-
-.night-mode .button-tune
-{
-	background-image: url('./icons/ic_tune_white_24px.svg'); 
-}
-
-.night-mode .button-collections-bookmark
-{
-	background-image: url('./icons/ic_collections_bookmark_white_24px.svg'); 
-}
-
-.night-mode .button-bookmark
-{
-	background-image: url('./icons/ic_bookmark_white_24px.svg'); 
-}
-
-.night-mode .button-bookmark-border
-{
-	background-image: url('./icons/ic_bookmark_border_white_24px.svg'); 
-}
-
-.night-mode .button-bookmark-red
-{
-	background-image: url('./icons/ic_bookmark_red_24px.svg');
-	opacity: 1 !important;
-}
-
-.night-mode .button-bookmark-border-red
-{
-	background-image: url('./icons/ic_bookmark_border_red_24px.svg'); 
-	opacity: 1 !important;
-}
-
-.night-mode .button-book-open
-{
-	background-image: url('./icons/ic_book_open_white_24px.svg'); 
-}
-
-.night-mode .button-book-open-variant
-{
-	background-image: url('./icons/ic_book_open_variant_white_24px.svg'); 
-}
-
-.night-mode .button-book-open-page-variant
-{
-	background-image: url('./icons/ic_book_open_page_variant_white_24px.svg'); 
-}
-
-.night-mode .button-night-mode-sun
-{
-	background-image: url('./icons/ic_wb_sunny_border_white_24px.svg'); 
-}
-
-.night-mode .button-night-mode-moon
-{
-	background-image: url('./icons/ic_moon_border_white_24px_beta4.svg'); 
 }

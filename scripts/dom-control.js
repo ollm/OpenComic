@@ -942,12 +942,19 @@ function floatingActionButton(active, callback)
 
 function changeView(mode, index)
 {
+	var icon = '';
+
+	if(mode == 'module')
+		icon = 'view_module';
+	else
+		icon = 'sort';
+
 	if(index)
 	{
 		if(mode != config.viewIndex)
 		{
 			storage.updateVar('config', 'viewIndex', mode);
-			$('.button-view').removeClass('module list').addClass(mode);
+			//$('.button-view').html(icon);
 			selectElement('.view-'+mode);
 			loadIndexPage(true, false, true, true);
 		}
@@ -957,7 +964,7 @@ function changeView(mode, index)
 		if(mode != config.view)
 		{
 			storage.updateVar('config', 'view', mode);
-			$('.button-view').removeClass('module list').addClass(mode);
+			//$('.button-view').html(icon);
 			selectElement('.view-'+mode);
 			loadIndexPage(true, indexPathA, true, true, indexMainPathA);
 		}
@@ -1062,14 +1069,14 @@ function nightMode()
 	if($('.app').hasClass('night-mode'))
 	{
 		$('.app').removeClass('night-mode');
-		$('.button-night-mode-moon').removeClass('button-night-mode-moon').addClass('button-night-mode-sun');
+		$('.button-night-mode').html('sun');
 		handlebarsContext.nightMode = false;
 		storage.updateVar('config', 'nightMode', false);
 	}
 	else
 	{
 		$('.app').addClass('night-mode');
-		$('.button-night-mode-sun').removeClass('button-night-mode-sun').addClass('button-night-mode-moon');
+		$('.button-night-mode').html('moon');
 		handlebarsContext.nightMode = true;
 		storage.updateVar('config', 'nightMode', true);
 	}

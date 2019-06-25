@@ -1025,11 +1025,11 @@ function activeBookmark(mode)
 {
 	if(mode == 1)
 	{
-		template.barHeader('.button-bookmark-border').removeClass('button-bookmark-border').addClass('button-bookmark').attr('hover-text', language.reading['remove-bookmark']);
+		template.barHeader('.button-bookmark').html('bookmark').attr('hover-text', language.reading['remove-bookmark']);
 	}
 	else
 	{
-		template.barHeader('.button-bookmark').removeClass('button-bookmark').addClass('button-bookmark-border').attr('hover-text', language.reading['add-bookmark']);
+		template.barHeader('.button-bookmark').html('bookmark_border').attr('hover-text', language.reading['add-bookmark']);
 	}
 }
 
