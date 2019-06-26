@@ -1,5 +1,5 @@
 
-var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, indexNum = 0, imagesDistribution = [];
+var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [];
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -72,6 +72,7 @@ function calculateImagesDistribution()
 			else
 			{
 				data.push({index: i, folder: true, blank: false, width: 2});
+				foldersPosition[i] = indexNum;
 			}
 
 			if(data.length > 1)
@@ -358,6 +359,17 @@ function goToImage(imageIndex)
 		readingDirection = true; 
 		goToIndex(imagesData[imageIndex].position + 1);
 		goToImageCL(imageIndex, true)
+	}
+}
+
+//Go to a specific comic folder
+function goToFolder(folderIndex)
+{
+	if(typeof foldersPosition[folderIndex] !== 'undefined')
+	{
+		readingDirection = true; 
+		goToIndex(foldersPosition[folderIndex] + 1);
+		goToImageCL(folderIndex, true)
 	}
 }
 
@@ -1275,7 +1287,7 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
 {
-	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index;
+	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {};
 
 	readingCurrentPath = path;
 
@@ -1558,6 +1570,7 @@ module.exports = {
 	imagesNumLoad: imagesNumLoad,
 	imagesData: function(){return imagesData},
 	goToImage: goToImage,
+	goToFolder: goToFolder,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
 	goStart: goStart,
 	goPrevious: goPrevious,

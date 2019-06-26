@@ -1290,6 +1290,15 @@ body .app
 	background-color: rgba(0, 0, 0, 0.07);
 }
 
+.reading-left i
+{
+	text-align: center;
+	margin-left: 96px;
+	width: 80px;
+	font-size: 24px;
+	display: block;
+}
+
 .reading-images
 {
 	width: 80px;

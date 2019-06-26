@@ -1,8 +1,8 @@
 {{#each comics}}
-<div class="reading-left r-l-i{{index}}"{{#unless folder}} onclick="reading.goToImage({{index}})"{{/unless}}>
+<div class="reading-left r-l-i{{index}}" onclick="{{#unless folder}}reading.goToImage({{index}}){{else}}reading.goToFolder({{index}}){{/unless}}">
 	<div class="reading-number">{{index}}</div>
 	{{#if folder}}
-	carpeta
+	<i class="material-icon">folder</i>
 	{{else}}
 	<img class="reading-images ri-sha-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}">
 	{{/if}}
