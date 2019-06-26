@@ -488,7 +488,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		{
 			template.loadContentLeft('index.content.left.html', animation);
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
-			floatingActionButton(true, 'addComic();');
+			floatingActionButton(true, 'dom.addComicButtons();');
 		}
 
 		events.events();
@@ -967,17 +967,84 @@ function changeLanguage(lan)
 	storage.updateVar('config', 'language', lan);
 }
 
+var addComicButtonsST = false, addComicButtonsActive = false;
 
+function addComicButtons(show = true, first = true)
+{
+	clearTimeout(addComicButtonsST);
+
+	if(show)
+	{
+		var more = false, have = false;
+
+		$($('.floating-action-button-min').get().reverse()).each(function(){
+
+			if(!$(this).hasClass('s'))
+			{
+				if(!have)
+					$(this).removeClass('h').addClass('s');
+				else
+					more = true;
+
+				have = true;
+			}
+
+		});
+
+		if(more)
+			addComicButtonsST = setTimeout(function(){addComicButtons(true, false)}, 50);
+
+		if(first)
+		{
+			floatingActionButton(true, 'dom.addComicButtons(false);');
+			$('.floating-action-button-add > div').css('transform', 'rotate(135deg)');
+		}
+
+		addComicButtonsActive = true;
+	}
+	else
+	{
+		var more = false, have = false;
+
+		$('.floating-action-button-min').each(function(){
+
+			if(!$(this).hasClass('h'))
+			{
+				if(!have)
+					$(this).removeClass('s').addClass('h');
+				else
+					more = true;
+
+				have = true;
+			}
+
+		});
+
+		if(more)
+			addComicButtonsST = setTimeout(function(){addComicButtons(false, false)}, 50);
+
+		if(first)
+		{
+			floatingActionButton(true, 'dom.addComicButtons();');
+			$('.floating-action-button-add > div').css('transform', '');
+		}
+
+		addComicButtonsActive = false;
+	}
+}
 
 function floatingActionButton(active, callback)
 {
 	if(active)
 	{
-		$('.floating-action-button').removeClass('disable').attr('onclick', callback);
+		$('.floating-action-button-add').removeClass('disable').attr('onclick', callback);
 	}
 	else
 	{
-		$('.floating-action-button').addClass('disable');
+		if(addComicButtonsActive)
+			addComicButtons(false);
+
+		$('.floating-action-button-add').addClass('disable');
 	}
 }
 
@@ -1344,6 +1411,7 @@ module.exports = {
 	previousComic: skipPreviousComicF,
 	orderBy: orderBy,
 	nightMode: nightMode,
+	addComicButtons: addComicButtons,
 	comicContextMenu: comicContextMenu,
 	removeComic: removeComic,
 	calcReadingProgress: calcReadingProgress,

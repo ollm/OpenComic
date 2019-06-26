@@ -418,7 +418,7 @@ function addComic(folders = false)
 	var remote = electron.remote;
 	var dialog = remote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: compatibleExtensions}]}, function (files) {
+	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
 
 		var added = false;
 

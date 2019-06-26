@@ -315,6 +315,37 @@
 	}
 }
 
+@keyframes show-action-button-min
+{
+	0%
+	{
+		transform: scale(0.5);
+		opacity: 0;
+		visibility: visible;
+	}
+	100%
+	{
+		transform: scale(1);
+		opacity: 1;
+		visibility: visible;
+	}
+}
+
+@keyframes hide-action-button-min
+{
+	0%
+	{
+		transform: scale(1);
+		opacity: 1;
+		visibility: visible;
+	}
+	100%
+	{
+		transform: scale(0.5);
+		opacity: 0;
+		visibility: hidden;
+	}
+}
 
 /*CSS*/
 
@@ -602,7 +633,6 @@ body .app
 	background-repeat: no-repeat;
 	background-position: 8px;
 	background-color: #da4336;
-	color: #fff;
 	cursor: pointer;
 	overflow: hidden;
 	transition: 0.2s;
@@ -649,6 +679,44 @@ body .app
 	animation-name: zoom-out, show-out;
 	animation-duration: 0.2s, 0.2s;
 	animation-fill-mode: forwards, forwards;
+}
+
+.floating-action-button > div
+{
+	color: #fff;
+	transition: 0.2s;
+}
+
+.floating-action-button-min
+{
+	background-color: #fff;
+	visibility: hidden;
+	transform: scale(0.6);
+	opacity: 0;
+}
+
+.floating-action-button-min.s
+{
+	animation-name: show-action-button-min;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.floating-action-button-min.h
+{
+	animation-name: hide-action-button-min;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.floating-action-button-min:before
+{
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.floating-action-button-min > div
+{
+	color: #808080;
 }
 
 .button

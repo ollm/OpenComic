@@ -9,7 +9,15 @@
 		<div class="menus">
 
 		</div>
-		<div class="material-icon floating-action-button hover-text" hover-text="{{language.global.add}}">add</div>
+		<div class="material-icon floating-action-button floating-action-button-min hover-text" style="bottom: 128px;" onclick="dom.addComicButtons(false); addComic(false);" hover-text="{{language.global.addFile}}">
+			<div class="material-icon ">note_add</div>
+		</div>
+		<div class="floating-action-button floating-action-button-min hover-text" style="bottom: 76px;" onclick="dom.addComicButtons(false); addComic(true);" hover-text="{{language.global.addFolder}}">
+			<div class="material-icon ">create_new_folder</div>
+		</div>
+		<div class="floating-action-button floating-action-button-add hover-text" hover-text="{{language.global.add}}">
+			<div class="material-icon">add</div>
+		</div>
 	</div>
 	<div class="content-left">
 
