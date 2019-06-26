@@ -12,7 +12,6 @@ function blankPage(index)
 		{
 			if(typeof imagesData[i] !== 'undefined')
 			{
-
 				if(imagesData[i].aspectRatio > 1)
 				{
 					return key % 2;
@@ -41,17 +40,12 @@ function calculateImagesDistribution()
 	{
 		var data = [];
 
-		start = true;
-
 		for(let i = 1; i < (contentNum + 1); i++)
 		{
-
 			if(typeof imagesData[i] !== 'undefined')
 			{
-
 				if(config.readingDoublePage && config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
 				{
-
 					if(data.length > 0)
 					{
 						data.push({index: false, folder: false, blank: true, width: 2});
@@ -65,23 +59,19 @@ function calculateImagesDistribution()
 					imagesDistribution.push(data);
 					indexNum++;
 					data = [];
-					start = true;
 				}
 				else
 				{
-
-					if(config.readingDoNotApplyToHorizontals && start && blankPage(i))
+					if(config.readingDoNotApplyToHorizontals && data.length == 0 && blankPage(i))
 						data.push({index: false, folder: false, blank: true, width: 2});
 
 					data.push({index: i, folder: false, blank: false, width: 2});
 					imagesData[i].position = indexNum; 
-					start = false;
 				}
 			}
 			else
 			{
 				data.push({index: i, folder: true, blank: false, width: 2});
-				start = true;
 			}
 
 			if(data.length > 1)
@@ -90,6 +80,7 @@ function calculateImagesDistribution()
 				data = [];
 				indexNum++;
 			}
+
 		}
 
 		if(data.length > 0)
@@ -418,7 +409,6 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjustToWidth)
 	{
-
 		image = returnLargerImage(eIndex-1);
 
 		imgHeight = image.height() + config.readingMargin.margin;
@@ -442,7 +432,6 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		pageVisibilityIndex = currentPageVisibility;
 
 		currentPageStart = false;
-
 	}
 	else if(nextPrevious && !currentPageStart && config.readingViewAdjustToWidth)
 	{
@@ -507,7 +496,6 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}
 	else if(config.readingView == 'scroll')
 	{
-
 		image = returnLargerImage(eIndex-1);
 
 		var scrollTop = (image.offset().top - content.offset().top) + content.scrollTop();
@@ -539,7 +527,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		goToImageCL(image.index, animation);
 
-	}, true);
+	}, false, false, true);
 
 	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
 
@@ -1168,8 +1156,6 @@ function saveReadingProgress(path = false)
 		}
 	}
 
-	console.log(comic);
-
 	if(comic && path)
 	{
 		comic.readingProgress.path = path;
@@ -1184,8 +1170,6 @@ function saveReadingProgress(path = false)
 function loadBookmarks()
 {
 	var bookmarksPath = {}, mainPath = dom.indexMainPathA();
-
-	console.log(readingCurrentBookmarks);
 
 	for(key in readingCurrentBookmarks)
 	{
@@ -1249,7 +1233,7 @@ function loadBookmarks()
 }
 
 //Returns an image depending on the type (Image, folder, blank)
-function eachImagesDistribution(index, contains, callback, first = false, notFound = false)
+function eachImagesDistribution(index, contains, callback, first = false, notFound = false, onlyFirstMeet = false)
 {
 	img = false;
 	if(contains && contains.indexOf('image') !== -1)
@@ -1268,8 +1252,13 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 		each:
 		for(key in imagesDistribution[index])
 		{
-			if(!contains || (img && !imagesDistribution[index][key].folder && !imagesDistribution[index][key].blank) || (folder && imagesDistribution[index][key].folder) || (blank && imagesDistribution[index][key].blank))
+			if(!contains || (img && !imagesDistribution[index][key].folder && !imagesDistribution[index][key].blank) || (folder && imagesDistribution[index][key].folder) || (blank && imagesDistribution[index][key].blank))	
+			{
 				callback(imagesDistribution[index][key]);
+
+				if(onlyFirstMeet)
+					break each;
+			}
 
 			if(first)
 				break each;
@@ -1585,4 +1574,5 @@ module.exports = {
 	currentIndex: function(){return currentIndex},
 	loadBookmarks: loadBookmarks,
 	onReading: function(){return onReading},
+	imagesDistribution: function(){return imagesDistribution},
 };

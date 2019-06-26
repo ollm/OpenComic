@@ -1124,9 +1124,9 @@ body .app
 	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1), inset 0px 0px 2px 1px rgba(0, 0, 0, 0.1), inset 0px 0px 1px 1px rgba(0, 0, 0, 0.05);
 	position: absolute;
 	width: 100%;
-	padding: 0px 10px;
+	padding: 10px 10px 0px 10px;
 	left: -10px;
-	top: 0px;
+	top: -10px;
 	cursor: pointer;
 }
 
@@ -1152,6 +1152,8 @@ body .app
 	white-space: nowrap;
 	word-wrap: normal;
 	color: #fff;
+	display: block;
+	padding-right: 16px;
 }
 
 /*Controls*/

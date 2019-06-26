@@ -207,8 +207,6 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				{
 					var sha = sha1(filePath);
 
-					console.log(filePath, realPath);
-
 					var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
 
 						addImageToDom(data.sha, data.path);
@@ -230,17 +228,6 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 					if(checkError(images))
 					{
-						/*var sha = sha1(filePath);
-
-						var images = [
-							{cache: false, path: '', sha: sha+'-0'},
-							{cache: false, path: '', sha: sha+'-1'},
-							{cache: false, path: '', sha: sha+'-2'},
-							{cache: false, path: '', sha: sha+'-3'},
-						];*/
-
-						console.log('Test: '+filePath);
-
 						var folderSha = sha1(filePath);
 
 						var images = [
