@@ -2,6 +2,7 @@
 
 @import url('../../fonts/roboto.css');
 @import url('../../fonts/material_icons.css');
+@import url('./elevation.css');
 
 /*Animations*/
 
@@ -821,7 +822,7 @@ body .app
 	margin-top: 14px;
 	margin-bottom: 14px;
 	display: inline-block;
-	border-radius: 2px;
+	border-radius: 4px;
 	background-color: #808080;
 	line-height: 22px;
 	font-size: 10px;
@@ -860,7 +861,7 @@ body .app
 {
 	width: 32px;
 	height: 32px;
-	border-radius: 2px;
+	border-radius: 4px;
 	float: left;
 	margin: 8px 12px 8px -4px;
 	float: left;
@@ -911,11 +912,11 @@ body .app
 {
 	position: fixed;
 	background-color: #fff;
-	border-radius: 2px;
+	border-radius: 4px;
 	overflow: hidden;
 	opacity: 0;
 	z-index: 12;
-	box-shadow: 0 0px 3px 1px rgba(0,0,0,0.14), 0 2px 3px rgba(0,0,0,0.14);
+	/*box-shadow: 0 0px 3px 1px rgba(0,0,0,0.14), 0 2px 3px rgba(0,0,0,0.14);*/
 	display: none;
 	padding: 12px 0px;
 	font-size: 15px;
@@ -989,7 +990,7 @@ body .app
 {
 	height: 20px;
 	width: 20px;
-	border-radius: 2px;
+	border-radius: 4px;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -1019,7 +1020,7 @@ body .app
 {
 	width: 150px;
 	height: 225px;
-	border-radius: 2px;
+	border-radius: 4px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: #fff;
 	overflow: hidden;
@@ -1044,7 +1045,7 @@ body .app
 	max-height: 225px;
 	display: inline-block;
 	vertical-align: middle;
-	border-radius: 2px;
+	border-radius: 4px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: #fff;
 	overflow: hidden;
@@ -1079,7 +1080,7 @@ body .app
 	margin: 10px 0px 0px 10px;
 	background-size: 100%;
 	background-position: 50%;
-	border-radius: 2px;
+	border-radius: 4px;
 	/*border: 1px solid rgba(0, 0, 0, 0.1);*/
 	box-sizing: border-box;
 	float: left;
@@ -1093,7 +1094,7 @@ body .app
 	max-height: 97px;
 	display: inline-block;
 	vertical-align: middle;
-	border-radius: 2px;
+	border-radius: 4px;
 	background-color: #fff;
 	overflow: hidden;
 	background-size: 100%;
@@ -1228,7 +1229,7 @@ body .app
 .reading-left
 {
 	width: 176px;
-	/*border-radius: 2px;*/
+	/*border-radius: 4px;*/
 	padding: 16px 16px 16px 0px;
 	cursor: pointer;
 	position: relative;
@@ -1245,7 +1246,7 @@ body .app
 .reading-images
 {
 	width: 80px;
-	border-radius: 2px;
+	border-radius: 4px;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
@@ -1341,7 +1342,7 @@ body .app
 {
 	position: fixed;
 	/* display: none; */
-	border-radius: 2px;
+	border-radius: 4px;
 	box-shadow: 0 2px 5px rgba(0,0,0, 0.26);
 	width: 200px;
 	height: 160px;

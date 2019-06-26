@@ -1,5 +1,5 @@
 <div class="menu" id="index-sort">
-	<div class="menu-simple" style="width: 256px;">
+	<div class="menu-simple elevation8" style="width: 256px;">
 		<div class="menu-simple-element sort-name" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort-v.name}}</div>
 		<div class="menu-simple-element sort-numeric" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort-v.number}}</div>
 		<div class="menu-simple-element sort-name-numeric" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort-v.name-number}}</div>
@@ -21,7 +21,7 @@
 </div>
 
 <div class="menu" id="index-view">
-	<div class="menu-simple" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
+	<div class="menu-simple elevation8" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
 		<div class="menu-simple-element view-module" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view-v.module}}</div>
 		<div class="menu-simple-element view-list" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view-v.list}}</div>
 	</div>
