@@ -27,6 +27,17 @@
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');"></div>
 </div>
+
+<div class="menu" id="index-context-menu">
+	<div class="menu-simple elevation8" style="width: 164px;" onclick="events.desactiveMenu('#index-context-menu');">
+		<div class="menu-simple-element context-menu-remove">
+			<i class="menu-simple-element-image material-icon">delete</i>
+			{{language.global.contextMenu.remove}}
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#index-context-menu');" oncontextmenu="events.desactiveMenu('#index-context-menu');"></div>
+</div>
+
 <script type="text/javascript">
 	dom.selectElement('.sort-{{#if comicsIndex}}{{config.sortIndex}}{{else}}{{config.sort}}{{/if}}');
 	dom.selectElement('.view-{{#if comicsIndex}}{{config.viewIndex}}{{else}}{{config.view}}{{/if}}');	

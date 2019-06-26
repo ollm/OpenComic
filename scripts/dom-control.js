@@ -1123,6 +1123,29 @@ function nightMode()
 	}
 }
 
+// Show the comic contet menu
+function comicContextMenu(path)
+{	
+	$('#index-context-menu .context-menu-remove').attr('onclick', 'dom.removeComic(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+	events.activeContextMenu('#index-context-menu');
+}
+
+// Remove the comic from OpenComic
+function removeComic(path, confirm = false)
+{
+	var _comics = [], comics = storage.get('comics');
+
+	for(let i in comics)
+	{
+		if(comics[i].path != path)
+			_comics.push(comics[i]);
+	}
+
+	storage.update('comics', _comics);
+
+	dom.loadIndexPage(true, false, true, true);
+}
+
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 function openComic(animation = true, path = true, mainPath = true, end = false)
@@ -1321,6 +1344,8 @@ module.exports = {
 	previousComic: skipPreviousComicF,
 	orderBy: orderBy,
 	nightMode: nightMode,
+	comicContextMenu: comicContextMenu,
+	removeComic: removeComic,
 	calcReadingProgress: calcReadingProgress,
 	calcReadingProgressWD: calcReadingProgressWD,
 	indexMainPathA: function(){return indexMainPathA},

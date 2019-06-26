@@ -988,13 +988,13 @@ body .app
 
 .menu-simple-element-image
 {
-	height: 20px;
-	width: 20px;
+	height: 24px;
+	width: 24px;
 	border-radius: 4px;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	margin: 6px 8px 0px 0px;
+	margin: 4px 6px 0px 0px;
 	float: left;
 }
 

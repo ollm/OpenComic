@@ -15,8 +15,11 @@
 		},
 		"view":	"View",
 		"view-v":	{
-			"module":	"Grid",
+			"module": "Grid",
 			"list": "List"
+		},
+		"contextMenu": {
+			"remove": "Remove"
 		},
 		"back":	"Back",
 		"add":	"Add",

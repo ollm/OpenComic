@@ -8,7 +8,7 @@
 {{/if}}
 <div class="content-view-module">
 	{{#each comics}}
-	<div id="v-id{{index}}"{{#unless folder}} class="sha-{{sha}}"{{/unless}} onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}">
+	<div id="v-id{{index}}"{{#unless folder}} class="sha-{{sha}}"{{/unless}} onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
 		{{#if folder}}
 		<div class="v-folder item-image">
 			{{#each images}}

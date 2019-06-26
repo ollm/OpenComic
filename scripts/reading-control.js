@@ -1553,6 +1553,29 @@ function read(path, index = 1, end = false)
 			}
 
 		}
+		images[index].onerror = function() {
+
+			imagesData[this.index] = {width: 0, height: 0, aspectRatio: 0};
+
+			imagesNumLoad++;
+
+			if(imagesNumLoad == imagesNum)
+			{
+				console.log('show');
+				template.contentRight('.reading-body').css('display', 'block');
+				disposeImages();
+				calculateView();
+
+				currentIndex = imagesData[currentIndex].position + 1;
+
+				goToIndex(currentIndex, false, end, end);
+				if(config.readingView == 'scroll')
+				{
+					previousContentHeight = template.contentRight().children('div').children('div').height();
+				}
+			}
+
+		}
 		images[index].src = $(this).attr('src');
 		images[index].path = $(this).attr('path');
 		imagesPath[$(this).attr('path')] = index;

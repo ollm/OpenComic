@@ -70,7 +70,7 @@ function eventButton()
 
 }
 
-var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive;
+var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive, currentPageX, currentPageY;
 
 function eventHover()
 {
@@ -109,14 +109,12 @@ function eventHover()
 
 	});
 
-	$(window).on('mousemove', function (){
+	$(window).on('mousemove', function (e){
 
 		clearTimeout(eventHoverTimeout);
 
 		if(eventHoverTimeoutActive)
-		{
 			eventHoverTimeout = setTimeout('events.showHoverText()', 300);
-		}
 
 	});
 
@@ -267,6 +265,37 @@ function activeMenu(query, query2, pos, pos2)
 	}
 }
 
+
+function activeContextMenu(query)
+{
+	var menu = $(query);
+
+	menu.children().removeClass('d').addClass('a');
+	var menuSimple = menu.find('.menu-simple');
+
+	var rect = menuSimple.get(0).getBoundingClientRect();
+
+	if(currentPageX + rect.width + 16 < $(window).width())
+		var pos = 'left';
+	else
+		var pos = 'right';
+
+	if(currentPageY + rect.height + 16 < $(window).height())
+		var pos2 = 'top';
+	else
+		var pos2 = 'bottom';
+
+	if(pos == 'left')
+		menuSimple.css({'right': '', 'left': (currentPageX + 4)+'px'});
+	else
+		menuSimple.css({'left': '', 'right': (($(window).width() - currentPageX) + 4)+'px'});
+
+	if(pos2 == 'top')
+		menuSimple.css({'bottom': '', 'top': (currentPageY + 4)+'px'});
+	else
+		menuSimple.css({'top': '', 'bottom': (($(window).height() - currentPageY) + 4)+'px'});
+}
+
 function desactiveMenu(query, query2)
 {
 	var menu = $(query);
@@ -276,6 +305,12 @@ function desactiveMenu(query, query2)
 	$(query2+'.p, '+query2+'.c, '+query2+'.a').removeClass('p c a').addClass('d');
 }
 
+$(window).on('mousemove touchstart touchmove', function (e){
+
+	currentPageX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+	currentPageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
+
+});
 
 module.exports = {
 	eventButton: eventButton,
@@ -283,5 +318,6 @@ module.exports = {
 	events: events,
 	showHoverText: showHoverText,
 	activeMenu: activeMenu,
+	activeContextMenu: activeContextMenu,
 	desactiveMenu: desactiveMenu
 };

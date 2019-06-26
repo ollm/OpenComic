@@ -77,7 +77,7 @@ var compressedExtensions = {
 
 var compatibleExtensions = [
 	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
-	/*png*/'png', 'x-png',
+	/*png*/'png', 'x-png', 'apng',
 	/*gif*/'gif',
 	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7',
 ];
@@ -408,17 +408,23 @@ hb.registerHelper('configIsTrue', function(key, value) {
 
 /*Tests functions*/
 
-function addComic()
+function addComic(folders = false)
 {
+	if(folders)
+		properties = ['openDirectory', 'multiSelections'];
+	else
+		properties = ['openFile', 'multiSelections'];
 
 	var remote = electron.remote;
 	var dialog = remote.dialog;
 
-	dialog.showOpenDialog({properties: ['openFile'], filters: [{name: language.global.comics, extensions: compatibleExtensions}]}, function (file) {
+	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: compatibleExtensions}]}, function (files) {
 
-		if(file)
+		var added = false;
+
+		for(let i in files)
 		{
-			filePath = file[0];
+			filePath = files[i];
 
 			if(fs.statSync(filePath).isDirectory())
 			{
@@ -473,19 +479,16 @@ function addComic()
 					},
 				});
 
-				dom.loadIndexPage(true);
-
+				added = true;
 			}
 
 		}
 
+		if(added)
+			dom.loadIndexPage(true);
+
 	});
 
-}
-
-function saveReadingProgress()
-{
-	reading.saveReadingProgress();
 }
 
 //Cheack errors

@@ -17,10 +17,38 @@ function processTheImageQueue()
 
 			imageLibrary(realPath).resize(img.size, null).quality(95).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
 
-				if(error && imageUse !== 'gm')
+				if(error)
 				{
-					imageLibrary = require('gm').subClass({imageMagick: false});
-					imageUse = 'gm';
+					if(imageUse !== 'gm')
+					{
+						imageLibrary = require('gm').subClass({imageMagick: false});
+						imageUse = 'gm';
+
+						process.nextTick(function() {
+							processTheImageQueue();
+						});
+					}
+					else
+					{
+						imageLibrary = require('gm').subClass({imageMagick: true});
+						imageUse = 'im';
+
+						queuedImages.splice(0, 1);
+
+						if(queuedImages.length > 0)
+						{
+							process.nextTick(function() {
+								processTheImageQueue();
+							});
+						}
+						else
+						{
+							processingTheImageQueue = false;
+
+							storage.set('cache', data);
+						}
+					}
+
 				}
 				else
 				{
@@ -153,4 +181,6 @@ module.exports = {
 	cleanQueue: cleanQueue,
 	writeFile: writeFile,
 	readFile: readFile,
+	queuedImages: function(){return queuedImages},
+	processingTheImageQueue: function(){return processingTheImageQueue},
 };

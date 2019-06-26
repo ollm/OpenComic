@@ -18,6 +18,9 @@
 			"module":	"Cuadricula",
 			"list": "Lista"
 		},
+		"contextMenu": {
+			"remove": "Retirar"
+		},
 		"back":	"Atrás",
 		"add":	"Añadir",
 		"language":	"Idioma",
