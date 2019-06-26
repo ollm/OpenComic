@@ -25,6 +25,7 @@
 		"night-mode":	"Night mode"
 	},
 	"comics": {
+		"continueReading": "Continue reading",
 		"emptyIndex": "There are no comics in this collection.",
 		"emptyFolder": "There is no compatible file in this folder."
 	},
@@ -55,7 +56,7 @@
 			"radius": "Radius"
 		},
 		"view-bookmarks": "View bookmarks",
-		"add-bookmark": "add bookmark",
+		"add-bookmark": "Add bookmark",
 		"remove-bookmark": "Remove bookmark",
 		"empty-bookmarks": "No bookmarks",
 		"current-reading": "Current reading"

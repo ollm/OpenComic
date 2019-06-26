@@ -1109,6 +1109,51 @@ body .app
 	animation-fill-mode: forwards;
 }
 
+/* Continue reading */
+
+.continue-reading
+{
+	height: 49px;
+	position: relative;
+}
+
+.continue-reading > div
+{
+	background-color: #da4336;
+	height: 49px;
+	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1), inset 0px 0px 2px 1px rgba(0, 0, 0, 0.1), inset 0px 0px 1px 1px rgba(0, 0, 0, 0.05);
+	position: absolute;
+	width: 100%;
+	padding: 0px 10px;
+	left: -10px;
+	top: 0px;
+	cursor: pointer;
+}
+
+.continue-reading > div > div
+{
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	float: left;
+	margin: 8px 12px 8px 12px;
+	float: left;
+	background-size: cover;
+	background-position: 50%;
+	background-color: rgba(0, 0, 0, 0.1);
+	transition: 0.3s;
+}
+
+.continue-reading > div > span
+{
+	line-height: 48px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	color: #fff;
+}
+
 /*Controls*/
 
 .switch

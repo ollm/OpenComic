@@ -1,3 +1,11 @@
+{{#if comicsReadingProgress}}
+<div class="continue-reading" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
+	<div>
+		<div class="continue-reading-img sha-{{sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
+		<span>{{language.comics.continueReading}}: {{comicsReadingProgress.pathText}}</span>
+	</div>
+</div>
+{{/if}}
 <div class="content-view-list">
 	{{#each comics}}
 	<div id="v-id{{index}}" class="simple-list{{#unless folder}} sha-{{sha}}{{/unless}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{escapeBackSlash path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}">

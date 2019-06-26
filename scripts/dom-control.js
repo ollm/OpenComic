@@ -140,6 +140,8 @@ function addImageToDom(querySelector, path)
 		$('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).attr('src', path).addClass('a');
 	else
 		$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css('background-image', 'url('+path+')').addClass('a');
+
+	$('.continue-reading-sha-'+querySelector).css('background-image', 'url('+path+')').addClass('a');
 }
 
 var indexPathControlA = [];
@@ -204,6 +206,8 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				if(inArray(mime.getType(realPath), compatibleMime))
 				{
 					var sha = sha1(filePath);
+
+					console.log(filePath, realPath);
 
 					var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
 
@@ -311,6 +315,40 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		}
 
 		handlebarsContext.comics = comics;
+
+		// Comic reading progress
+		var comic = false, _comics = storage.get('comics');
+
+		for(let i in _comics)
+		{
+			if(_comics[i].path == mainPath)
+			{
+				comic = _comics[i];
+				break;
+			}
+		}
+
+		if(comic.readingProgress.lastReading > 0)
+		{
+			var sha = sha1(comic.readingProgress.path);
+
+			realPath = file.realPath(comic.readingProgress.path, -1);
+
+			var thumbnail = cache.returnCacheImage(realPath, sha, function(data){
+
+				addImageToDom(data.sha, data.path);
+
+			});
+
+			comic.readingProgress.thumbnail =  (thumbnail.cache) ? thumbnail.path : '',
+			comic.readingProgress.mainPath = mainPath;	
+			comic.readingProgress.pathText = returnTextPath(comic.readingProgress.path, mainPath);	
+			handlebarsContext.comicsReadingProgress = comic.readingProgress;
+		}
+		else
+		{
+			handlebarsContext.comicsReadingProgress = false;
+		}
 
 		template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 		events.events();
@@ -451,6 +489,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		handlebarsContext.comics = comics;
 		handlebarsContext.comicsIndex = true;
 		handlebarsContext.comicsIndexVar = 'true';
+		handlebarsContext.comicsReadingProgress = false;
 
 		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
 
@@ -546,9 +585,24 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 }
 
+function returnTextPath(path, mainPath)
+{
+	var mainPathR = p.dirname(mainPath) + p.sep;
+
+	files = path.replace(mainPathR, '').split(p.sep);
+
+	var path = [];
+
+	for(index in files)
+	{
+		path.push(files[index]);
+	}
+
+	return path.join(' / '); 
+}
+
 function headerPath(path, mainPath)
 {
-
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
 	files = path.replace(mainPathR, '').split(p.sep);

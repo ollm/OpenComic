@@ -1,4 +1,4 @@
-var changes = 10;
+var changes = 12;
 
 var storageDefault = {
 	config: {
@@ -36,20 +36,28 @@ var storageDefault = {
 	comics: [{
 		name: 'Name',
 		path: 'Files path',
-		lastReading: 0,
 		added: 0,
 		compressed: false,
 		bookmark: false,
 		folder: true,
+		readingProgress: {
+			path: 'Path',
+			lastReading: 0,
+			progress: 0,
+		},
 	},
 	{
 		name: 'Pepper & Carrot',
 		path: p.join(appDir, 'Pepper & Carrot'),
-		lastReading: 0,
 		added: 0,
 		compressed: false,
 		bookmark: false,
 		folder: true,
+		readingProgress: {
+			path: '',
+			lastReading: 0,
+			progress: 0,
+		},
 	}],
 	bookmarks: {
 		wildcard: [{
@@ -82,7 +90,7 @@ function updateStorageArrayMD(data, defaultObj)
 
 	if(!isEmpty(data))
 	{
-		for(index in defaultObj)
+		for(let index in data)
 		{
 			newData[index] = updateStorageMD(data[index], defaultObj[0]);
 		}
@@ -191,9 +199,9 @@ function start(callback)
 			var config = data.config;
 		}
 
-		for(let key in storageKeys)
+		for(let i in storageKeys)
 		{
-			key = storageKeys[key];
+			key = storageKeys[i];
 
 			if(typeof data[key] == 'undefined')
 			{
@@ -208,6 +216,12 @@ function start(callback)
 				if(config.appVersion != package.version || config.changes != changes)
 				{
 					newData = updateStorageMD(data[key], storageDefault[key]);
+
+					if(key == 'comics')
+					{
+						console.log(data[key]);
+						console.log(newData);
+					}
 
 					if(key == 'config')
 					{
@@ -251,5 +265,6 @@ module.exports = {
 	set: update,
 	update: update,
 	push: push,
-	storageJson: storageJson
+	storageJson: storageJson,
+	updateStorageMD: updateStorageMD,
 };

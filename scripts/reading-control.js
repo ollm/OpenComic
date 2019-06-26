@@ -550,7 +550,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	eachImagesDistribution((eIndex - 1), ['image', 'folder'], function(image){
 
-		if(!isBookmarkTrue && isBookmark(p.normalize(images[image.index].path)))
+		if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
 			isBookmarkTrue = true;
 
 	});
@@ -1131,6 +1131,55 @@ function createAndDeleteBookmark(index = false)
 	}
 }
 
+//Save current reading progress
+function saveReadingProgress(path = false)
+{
+	if(!onReading)
+		return;
+
+	var mainPath = dom.indexMainPathA();
+
+	if(!path)
+	{
+		let imageIndex = false;
+
+		eachImagesDistribution((currentIndex - 1), ['image'], function(image){
+
+			if(!imageIndex)
+				imageIndex = image.index;
+
+		});
+
+		if(imageIndex === false)
+			imageIndex = Object.keys(images)[0];
+
+		path = p.normalize(images[imageIndex].path);
+	}
+
+	var comic = false, comicIndex = 0, comics = storage.get('comics');
+
+	for(let i in comics)
+	{
+		if(comics[i].path == mainPath)
+		{
+			comic = comics[i];
+			comicIndex = i;
+			break;
+		}
+	}
+
+	console.log(comic);
+
+	if(comic && path)
+	{
+		comic.readingProgress.path = path;
+		comic.readingProgress.lastReading = +new Date();
+		comic.readingProgress.progress = 0;
+
+		storage.updateVar('comics', comicIndex, comic);
+	}
+}
+
 //Load the bookmarks in the current directory
 function loadBookmarks()
 {
@@ -1450,7 +1499,7 @@ function read(path, index = 1, end = false)
 
 				eachImagesDistribution(selIndex, ['image'], function(image){
 
-					if(!isBookmarkTrue && isBookmark(p.normalize(images[image.index].path)))
+					if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
 						isBookmarkTrue = true;
 
 				});
@@ -1531,7 +1580,9 @@ module.exports = {
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
 	disableOnScroll: disableOnScroll,
+	saveReadingProgress: saveReadingProgress,
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
 	loadBookmarks: loadBookmarks,
+	onReading: function(){return onReading},
 };

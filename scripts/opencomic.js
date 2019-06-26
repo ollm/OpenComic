@@ -428,7 +428,7 @@ function addComic()
 			}
 			else
 			{
-				if(inArray(mime.lookup(filePath), compatibleMime))
+				if(inArray(mime.getType(filePath), compatibleMime))
 				{
 					filePath = p.dirname(filePath);
 
@@ -463,10 +463,14 @@ function addComic()
 				storage.push('comics', {
 					name: name,
 					path: path,
-					lastRead: 0,
 					added: time(),
 					compressed: compressed,
 					folder: true,
+					readingProgress: {
+						path: 'Path',
+						lastReading: 0,
+						progress: 0,
+					},
 				});
 
 				dom.loadIndexPage(true);
@@ -477,6 +481,11 @@ function addComic()
 
 	});
 
+}
+
+function saveReadingProgress()
+{
+	reading.saveReadingProgress();
 }
 
 //Cheack errors

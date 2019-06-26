@@ -5,7 +5,7 @@ const windowStateKeeper = require('electron-window-state');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-var win;
+var win, appClosing;
 
 function createWindow () {
 	// Create the browser window.
@@ -35,6 +35,23 @@ function createWindow () {
 
 	// Open the DevTools.
  	// win.webContents.openDevTools()
+
+	win.on('close',	function(event) {
+
+		if(!appClosing)
+		{
+			appClosing = true;
+				
+			win.webContents.executeJavaScript('reading.saveReadingProgress();', false, function(){
+
+				win.close();
+
+			});
+
+			event.preventDefault();
+		}
+
+	});
 
 	// Emitted when the window is closed.
 	win.on('closed',	function() {

@@ -25,6 +25,7 @@
 		"night-mode":	"Modo noche"
 	},
 	"comics": {
+		"continueReading": "Continuar leyendo",
 		"emptyIndex": "No hay ningún cómic en esta colección.",
 		"emptyFolder": "No hay ningún archivo compatible en esta carpeta."
 	},
