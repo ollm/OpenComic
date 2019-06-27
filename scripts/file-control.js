@@ -1,11 +1,13 @@
 
 function realPath(path, index = 0)
 {
-	segments = path.split(p.sep);
+	let segments = path.split(p.sep);
 
-	newPath = virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+	var virtualPath;
 
-	numSegments = segments.length + index;
+	var newPath = virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+
+	let numSegments = segments.length + index;
 
 	for(let i = 1; i < segments.length; i++)
 	{
@@ -14,11 +16,11 @@ function realPath(path, index = 0)
 
 		if(i < numSegments)
 		{
-			extension = fileExtension(newPath);
+			var extension = fileExtension(newPath);
 
 			if(extension && inArray(extension, compressedExtensions.all) && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory())
 			{
-				sha = sha1(p.normalize(virtualPath));
+				var sha = sha1(p.normalize(virtualPath));
 
 				newPath = p.join(tempFolder, sha);
 			}
@@ -30,11 +32,11 @@ function realPath(path, index = 0)
 
 function firstCompressedFile(path, index = 0)
 {
-	segments = path.split(p.sep);
+	let segments = path.split(p.sep);
 
-	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+	var newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
-	numSegments = segments.length + index;
+	let numSegments = segments.length + index;
 
 	for(let i = 1; i < segments.length; i++)
 	{
@@ -42,7 +44,7 @@ function firstCompressedFile(path, index = 0)
 
 		if(i < numSegments)
 		{
-			extension = fileExtension(newPath);
+			var extension = fileExtension(newPath);
 
 			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
 			{
@@ -56,7 +58,7 @@ function firstCompressedFile(path, index = 0)
 
 function filtered(path, files)
 {
-	filtered = [];
+	var filtered = [];
 
 	if(files)
 	{
@@ -81,12 +83,12 @@ function readdirWD(path, index = 0)
 {
 	let segments = path.split(p.sep);
 
-	newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+	var newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
 	let numSegments = segments.length + index;
 	let files = null;
 
-	compressed = false;
+	var compressed = false;
 
 	eachPaths:
 	for(let i = 1; i < segments.length; i++)
@@ -95,7 +97,7 @@ function readdirWD(path, index = 0)
 
 		if(i < numSegments)
 		{
-			extension = fileExtension(newPath);
+			var extension = fileExtension(newPath);
 
 			if(extension && inArray(extension, compressedExtensions.all) && (!fs.existsSync(newPath) || !fs.statSync(newPath).isDirectory()))
 			{
@@ -133,11 +135,11 @@ function readdirWD(path, index = 0)
 
 function containsCompressed(path, index = 0)
 {
-	segments = path.split(p.sep);
+	let segments = path.split(p.sep);
 
-	virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
+	var virtualPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
-	numSegments = segments.length + index;
+	let numSegments = segments.length + index;
 
 	for(let i = 1; i < segments.length; i++)
 	{
@@ -145,7 +147,7 @@ function containsCompressed(path, index = 0)
 
 		if(i < numSegments)
 		{
-			extension = fileExtension(virtualPath);
+			var extension = fileExtension(virtualPath);
 
 			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(virtualPath).isDirectory())
 			{
@@ -171,7 +173,7 @@ function pathType(path)
 
 function returnFirst(path)
 {
-	path = file.realPath(path);
+	var path = file.realPath(path);
 
 	if(fs.existsSync(path))
 	{
@@ -201,9 +203,9 @@ function returnAll(path, changePath = false)
 				var filePath = p.join(path, files[i]);
 
 				if(!changePath)
-					retrunPath = filePath;
+					var retrunPath = filePath;
 				else
-					retrunPath = filePath.replace(new RegExp('^'+pregQuote(changePath.from)), changePath.to);
+					var retrunPath = filePath.replace(new RegExp('^'+pregQuote(changePath.from)), changePath.to);
 
 				if(inArray(mime.getType(filePath), compatibleMime))
 					returnFiles.push({name: files[i], path: retrunPath, folder: false, compressed: false});
@@ -221,7 +223,7 @@ function returnAll(path, changePath = false)
 
 function allToFirst(files)
 {
-	returnFiles = [];
+	var returnFiles = [];
 
 	for(let i in files)
 	{

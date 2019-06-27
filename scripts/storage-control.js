@@ -2,7 +2,7 @@ var changes = 12;
 
 var storageDefault = {
 	config: {
-		appVersion: package.version,
+		appVersion: _package.version,
 		changes: changes,
 		language: 'es',
 		theme: 'material-design',
@@ -201,7 +201,7 @@ function start(callback)
 
 		for(let i in storageKeys)
 		{
-			key = storageKeys[i];
+			var key = storageKeys[i];
 
 			if(typeof data[key] == 'undefined')
 			{
@@ -213,7 +213,7 @@ function start(callback)
 			}
 			else
 			{
-				if(config.appVersion != package.version || config.changes != changes)
+				if(config.appVersion != _package.version || config.changes != changes)
 				{
 					newData = updateStorageMD(data[key], storageDefault[key]);
 
@@ -225,7 +225,7 @@ function start(callback)
 
 					if(key == 'config')
 					{
-						newData.appVersion = package.version;
+						newData.appVersion = _package.version;
 						newData.changes = changes;
 					}
 

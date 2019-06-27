@@ -2,16 +2,16 @@ var unzip = false, unrar = false, un7z = false, compressedFiles = {};
 
 function returnFilesWD(path, all, callback = false)
 {
-	sha = sha1(p.normalize(path));
+	var sha = sha1(p.normalize(path));
 
-	cacheFile = 'compressed-files-'+sha+'.json';
+	var cacheFile = 'compressed-files-'+sha+'.json';
 
-	json = cache.readFile(cacheFile);
+	var json = cache.readFile(cacheFile);
 
 	if(json)
 		json = JSON.parse(json);
 
-	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
 	if(json)
 	{
@@ -30,7 +30,7 @@ function returnFilesWD(path, all, callback = false)
 
 	if(fs.existsSync(p.join(tempFolder, sha)))
 	{
-		files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
+		var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: path});
 		compressedFiles[sha] = files;
 
 		if(callback)
@@ -48,7 +48,7 @@ var queuedCompressedFiles = {}, processingCompressedFilesQueue = false;
 
 function addCompressedFilesQueue(path, all, callback = false, processQueue = true)
 {
-	sha = sha1(p.normalize(path));
+	var sha = sha1(p.normalize(path));
 
 	if(typeof queuedCompressedFiles[sha] != 'undefined')
 		queuedCompressedFiles[sha].callback.push(callback);
@@ -68,17 +68,17 @@ function processCompressedFilesQueue(force = false)
 
 	if((!processingCompressedFilesQueue || force) && !$.isEmptyObject(queuedCompressedFiles))
 	{
-		processingCompressedFilesQueue = true;
+		var processingCompressedFilesQueue = true;
 
-		key = Object.keys(queuedCompressedFiles)[0];
+		var key = Object.keys(queuedCompressedFiles)[0];
 
 		returnFiles(queuedCompressedFiles[key].path, queuedCompressedFiles[key].all, false, function(files){
 
-			key = Object.keys(queuedCompressedFiles)[0];
+			var key = Object.keys(queuedCompressedFiles)[0];
 
 			if(key)
 			{
-				for(i in queuedCompressedFiles[key].callback)
+				for(let i in queuedCompressedFiles[key].callback)
 				{
 					if(queuedCompressedFiles[key].callback[i])
 						queuedCompressedFiles[key].callback[i](files);
@@ -106,9 +106,9 @@ function returnFiles(path, all, fromCache, callback)
 {
 	let sha = sha1(p.normalize(path));
 
-	cacheFile = 'compressed-files-'+sha+'.json';
+	var cacheFile = 'compressed-files-'+sha+'.json';
 
-	json = cache.readFile(cacheFile);
+	var json = cache.readFile(cacheFile);
 
 	if(json)
 		json = JSON.parse(json);
@@ -116,7 +116,7 @@ function returnFiles(path, all, fromCache, callback)
 	let virtualPath = path;
 	path = file.realPath(path, -1);
 
-	mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
 	if(fromCache)
 	{
@@ -133,7 +133,7 @@ function returnFiles(path, all, fromCache, callback)
 
 	if(fs.existsSync(p.join(tempFolder, sha)))
 	{
-		files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+		var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 		compressedFiles[sha] = files;
 		callback((all) ? files : file.allToFirst(files));
 		return true;
@@ -148,7 +148,7 @@ function returnFiles(path, all, fromCache, callback)
 
 				unzip.Extract({path: p.join(tempFolder, sha)}).on('close', function () {
 
-					files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+					var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 					if(!json || json.mtime != mtime)
 						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
@@ -168,7 +168,7 @@ function returnFiles(path, all, fromCache, callback)
 			 			 
 			rar.extract(p.join(tempFolder, sha), null, function (err) {
 
-				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 				if(!json || json.mtime != mtime)
 					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
@@ -190,7 +190,7 @@ function returnFiles(path, all, fromCache, callback)
 			var myTask = new un7z();
 			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/}).progress(function (files){}).then(function () {
 
-				files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 				if(!json || json.mtime != mtime)
 					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
@@ -209,14 +209,14 @@ function returnFiles(path, all, fromCache, callback)
 
 function decompressRecursive(path, callback = false, start = 1, virtualPath = false, newPath = false)
 {
-	segments = path.split(p.sep);
+	let segments = path.split(p.sep);
 
-	callbackDR = callback;
+	var callbackDR = callback;
 
 	if(virtualPath === false)
 		virtualPath = newPath = (segments.length > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
-	numSegments = segments.length;
+	let numSegments = segments.length;
 
 	for(let i = start; i < segments.length; i++)
 	{
@@ -225,11 +225,11 @@ function decompressRecursive(path, callback = false, start = 1, virtualPath = fa
 
 		if(i < numSegments)
 		{
-			extension = fileExtension(virtualPath);
+			var extension = fileExtension(virtualPath);
 
 			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
 			{
-				sha = sha1(p.normalize(virtualPath));
+				var sha = sha1(p.normalize(virtualPath));
 
 				newPath = p.join(tempFolder, sha);
 

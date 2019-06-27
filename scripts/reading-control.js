@@ -1,5 +1,5 @@
 
-var images = {}, imagesData = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [];
+var images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [];
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -32,7 +32,6 @@ function blankPage(index)
 //Calculates the distribution of the images depending on the user's configuration
 function calculateImagesDistribution()
 {
-
 	imagesDistribution = [];
 	indexNum = 0;
 
@@ -112,14 +111,13 @@ function calculateImagesDistribution()
 //Adds the distribution of the images
 function addImagesDistribution()
 {
+	var previous = false;
 
-	previous = false;
-
-	for(key1 in imagesDistribution)
+	for(var key1 in imagesDistribution)
 	{
-		for(key2 in imagesDistribution[key1])
+		for(var key2 in imagesDistribution[key1])
 		{
-			image = imagesDistribution[key1][key2];
+			var image = imagesDistribution[key1][key2];
 
 			if(image.blank)
 			{
@@ -163,30 +161,30 @@ function disposeImages(data = false)
 	var contentWidth2 = (template.contentRight().width() / 2) - (margin + (margin / 2));
 	var aspectRatio2 = contentWidth2 / contentHeight;
 
-	for(key1 in imagesDistribution)
+	for(let key1 in imagesDistribution)
 	{
-		for(key2 in imagesDistribution[key1])
+		for(let key2 in imagesDistribution[key1])
 		{
-			image = imagesDistribution[key1][key2];
+			var image = imagesDistribution[key1][key2];
 
 			if(!image.folder)
 			{
 				if(image.blank)
-					imageData = imagesData[imagesDistribution[key1][(key2 == 0) ? 1 : 0].index];
+					var imageData = imagesData[imagesDistribution[key1][(key2 == 0) ? 1 : 0].index];
 				else
-					imageData = imagesData[image.index];
+					var imageData = imagesData[image.index];
 
 
 				if(image.width == 1)
-					aspectRatio = aspectRatio1;
+					var aspectRatio = aspectRatio1;
 				else
-					aspectRatio = aspectRatio2;
+					var aspectRatio = aspectRatio2;
 
 
 				if(image.width == 1)
-					contentWidth = contentWidth1;
+					var contentWidth = contentWidth1;
 				else
-					contentWidth = contentWidth2;
+					var contentWidth = contentWidth2;
 
 				if(typeof imageData === 'undefined')
 					imageData =  {aspectRatio: aspectRatio};
@@ -230,6 +228,8 @@ function calculateView()
 	var content = template.contentRight().children('div');
 	var contentWidth = template.contentRight().width();
 
+	var float, height, contentWidth1, contentWidth2;
+
 	if(config.readingView == 'slide')
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
@@ -258,16 +258,16 @@ function calculateView()
 		contentWidth2 = '50%';
 	}
 
-	for(key1 in imagesDistribution)
+	for(let key1 in imagesDistribution)
 	{
-		for(key2 in imagesDistribution[key1])
+		for(let key2 in imagesDistribution[key1])
 		{
-			image = imagesDistribution[key1][key2];
+			var image = imagesDistribution[key1][key2];
 
 			if(image.width == 1)
-				contentWidth = contentWidth1;
+				var contentWidth = contentWidth1;
 			else
-				contentWidth = contentWidth2;
+				var contentWidth = contentWidth2;
 
 			template.contentRight('.image-position'+key1+'-'+key2).css({
 				'width': contentWidth,
@@ -281,13 +281,13 @@ function calculateView()
 	{
 		imagesPosition = [];
 
-		for(key1 in imagesDistribution)
+		for(var key1 in imagesDistribution)
 		{
 			if(typeof imagesPosition[key1] === 'undefined') imagesPosition[key1] = [];
 
-			for(key2 in imagesDistribution[key1])
+			for(var key2 in imagesDistribution[key1])
 			{
-				image = template.contentRight('.image-position'+key1+'-'+key2);
+				var image = template.contentRight('.image-position'+key1+'-'+key2);
 
 				imagesPosition[key1][key2] = image.position().top + (image.height() / 2);
 			}
@@ -295,7 +295,7 @@ function calculateView()
 	}
 }
 
-var previousScrollTop = 0; previousContentHeight = 0;
+var previousScrollTop = 0, previousContentHeight = 0;
 
 function stayInLine()
 {
@@ -378,27 +378,27 @@ function returnLargerImage(index)
 {
 	if(config.readingDoublePage)
 	{
-		imageHeight0 = template.contentRight('.image-position'+(index)+'-0').height();
-		imageHeight1 = template.contentRight('.image-position'+(index)+'-1').height();
+		var imageHeight0 = template.contentRight('.image-position'+(index)+'-0').height();
+		var imageHeight1 = template.contentRight('.image-position'+(index)+'-1').height();
 
 		if(imageHeight1 === undefined || imageHeight0 >= imageHeight1)
 		{
-			image = template.contentRight('.image-position'+(index)+'-0');
+			var image = template.contentRight('.image-position'+(index)+'-0');
 		}
 		else
 		{
-			image = template.contentRight('.image-position'+(index)+'-1');
+			var image = template.contentRight('.image-position'+(index)+'-1');
 		}
 	}
 	else
 	{
-		image = template.contentRight('.image-position'+(index)+'-0');
+		var image = template.contentRight('.image-position'+(index)+'-0');
 	}
 
 	return image;
 }
 
-var currentPageVisibility = 0, maxPageVisibility = 0; currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
+var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
 
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
@@ -508,11 +508,11 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}
 	else if(config.readingView == 'scroll')
 	{
-		image = returnLargerImage(eIndex-1);
+		var image = returnLargerImage(eIndex-1);
 
 		var scrollTop = (image.offset().top - content.offset().top) + content.scrollTop();
 
-		scrollSum = 0;
+		var scrollSum = 0;
 
 		if(config.readingViewAdjustToWidth && pageVisibilityIndex !== false)
 		{
@@ -546,7 +546,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	if(updateCurrentIndex)
 		currentIndex = index;
 
-	isBookmarkTrue = false;
+	var isBookmarkTrue = false;
 
 	eachImagesDistribution((eIndex - 1), ['image', 'folder'], function(image){
 
@@ -824,14 +824,18 @@ function activeMagnifyingGlass(active)
 function changeMagnifyingGlass(mode, value, save)
 {
 
-	var readingBody = template.contentRight('.reading-body');
+	var contentRight = template.contentRight();
 
-	var width = readingBody.width(),
-		height = readingBody.height(),
-		offset = readingBody.offset();
+	var paddingTop = parseInt(contentRight.css('padding-top'), 10);
+	if(!paddingTop) paddingTop = 0;
+
+
+	var width = contentRight.width(),
+		height = contentRight.height(),
+		offset = contentRight.offset();
 
 	var pageX = (width / 2) + offset.left;
-	var pageY = (height / 2) + offset.top;
+	var pageY = (height / 2) + offset.top + paddingTop;
 
 
 	if(mode == 1) //Set the zoom
@@ -942,7 +946,7 @@ function disableOnScroll(mode)
 function changePagesView(mode, value, save)
 {
 
-	imageIndex = false;
+	var imageIndex = false;
 
 	eachImagesDistribution((currentIndex - 1), ['image'], function(image){
 
@@ -952,7 +956,6 @@ function changePagesView(mode, value, save)
 	});
 
 	if(!imageIndex) imageIndex = currentIndex;
-
 
 	if(mode == 1) //Set the scroll mode
 	{
@@ -1099,7 +1102,7 @@ function createAndDeleteBookmark(index = false)
 
 		if(typeof readingCurrentBookmarks !== 'undefined')
 		{
-			i = false;
+			let i = false;
 
 			for(let key in readingCurrentBookmarks)
 			{
@@ -1183,17 +1186,17 @@ function loadBookmarks()
 {
 	var bookmarksPath = {}, mainPath = dom.indexMainPathA();
 
-	for(key in readingCurrentBookmarks)
+	for(let key in readingCurrentBookmarks)
 	{
 		if(typeof readingCurrentBookmarks[key].path != 'undefined')
 		{
-			bookmark = readingCurrentBookmarks[key];
+			var bookmark = readingCurrentBookmarks[key];
 
-			bookmarkDirname = p.dirname(bookmark.path);
+			var bookmarkDirname = p.dirname(bookmark.path);
 
 			if(typeof bookmarksPath[bookmarkDirname] === 'undefined') bookmarksPath[bookmarkDirname] = [];
 
-			thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha1(bookmark.path), function(data){
+			var thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha1(bookmark.path), function(data){
 
 				console.log(data);
 
@@ -1211,7 +1214,7 @@ function loadBookmarks()
 
 	var bookmarks = [];
 
-	for(path in bookmarksPath)
+	for(let path in bookmarksPath)
 	{
 		bookmarksPath[path].sort(function (a, b) {
 
@@ -1247,22 +1250,22 @@ function loadBookmarks()
 //Returns an image depending on the type (Image, folder, blank)
 function eachImagesDistribution(index, contains, callback, first = false, notFound = false, onlyFirstMeet = false)
 {
-	img = false;
+	var img = false;
 	if(contains && contains.indexOf('image') !== -1)
 		img = true;
 
-	folder = false;
+	var folder = false;
 	if(contains && contains.indexOf('folder') !== -1)
 		folder = true;
 
-	blank = false;
+	var blank = false;
 	if(contains && contains.indexOf('blank') !== -1)
 		blank = true;
 
 	if(typeof imagesDistribution[index] !== 'undefined')
 	{
 		each:
-		for(key in imagesDistribution[index])
+		for(let key in imagesDistribution[index])
 		{
 			if(!contains || (img && !imagesDistribution[index][key].folder && !imagesDistribution[index][key].blank) || (folder && imagesDistribution[index][key].folder) || (blank && imagesDistribution[index][key].blank))	
 			{
@@ -1455,6 +1458,7 @@ function read(path, index = 1, end = false)
 	})
 
 	$(window).on('resize', function(){
+
 		if(onReading)
 		{
 			disposeImages();
@@ -1481,9 +1485,9 @@ function read(path, index = 1, end = false)
 
 			let selIndex = false, selPosition = false;
 
-			for(key1 in imagesPosition)
+			for(let key1 in imagesPosition)
 			{
-				for(key2 in imagesPosition[key1])
+				for(let key2 in imagesPosition[key1])
 				{
 					if(!selIndex || Math.abs(contentPosition - imagesPosition[key1][key2]) < selPosition)
 					{
@@ -1495,8 +1499,7 @@ function read(path, index = 1, end = false)
 
 			if(currentIndex != (parseInt(selIndex) + 1))
 			{
-
-				isBookmarkTrue = false;
+				var isBookmarkTrue = false;
 
 				eachImagesDistribution(selIndex, ['image'], function(image){
 
@@ -1505,11 +1508,13 @@ function read(path, index = 1, end = false)
 
 				});
 
-				imageIndex = false;
+				var imageIndex = false;
 
 				eachImagesDistribution(selIndex, ['image', 'folder'], function(image){
+
 					if(!imageIndex)
 						imageIndex = image.index
+
 				});
 
 				if(imageIndex)

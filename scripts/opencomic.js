@@ -25,7 +25,7 @@ var readingTouchEvent = false;
 
 var appDir = __dirname;
 
-var package = $.parseJSON(readFileApp('/package.json'));
+var _package = $.parseJSON(readFileApp('/package.json'));
 
 var compatibleMime = [
 	'image/jpeg',
@@ -93,7 +93,7 @@ const storage = require('./scripts/storage-control.js'),
 	fileCompressed = require('./scripts/file-compressed-control.js'),
 	reading = require('./scripts/reading-control.js');
 
-tempFolder = p.join(os.tmpdir(), 'OpenComic');
+var tempFolder = p.join(os.tmpdir(), 'OpenComic');
 
 //console.timeEnd('Require time 2');
 
@@ -182,7 +182,7 @@ function existsFile(file)
 
 function loadLanguageMD(hbc, obj)
 {
-	for(key in obj)
+	for(var key in obj)
 	{
 		if(typeof obj[key] == 'object')
 		{
@@ -411,9 +411,9 @@ hb.registerHelper('configIsTrue', function(key, value) {
 function addComic(folders = false)
 {
 	if(folders)
-		properties = ['openDirectory', 'multiSelections'];
+		var properties = ['openDirectory', 'multiSelections'];
 	else
-		properties = ['openFile', 'multiSelections'];
+		var properties = ['openFile', 'multiSelections'];
 
 	var remote = electron.remote;
 	var dialog = remote.dialog;
@@ -424,7 +424,7 @@ function addComic(folders = false)
 
 		for(let i in files)
 		{
-			filePath = files[i];
+			var filePath = files[i];
 
 			if(fs.statSync(filePath).isDirectory())
 			{
@@ -454,7 +454,7 @@ function addComic(folders = false)
 
 			var exists = false;
 
-			for(key in comics)
+			for(var key in comics)
 			{
 				if(comics[key].path == path)
 				{
@@ -508,5 +508,5 @@ function checkError(value, error = false)
 
 //Errors list 
 
-NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
-ERROR_UNZIPPING_THE_FILE = 2;
+const NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
+const ERROR_UNZIPPING_THE_FILE = 2;

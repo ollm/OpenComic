@@ -70,7 +70,7 @@ function eventButton()
 
 }
 
-var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive, currentPageX, currentPageY;
+var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive, eventHoverActiveTemporal, currentPageX, currentPageY;
 
 function eventHover()
 {
@@ -146,6 +146,7 @@ function eventRange()
 
 		var onrange = $(this).attr('onrange');
 
+		var value;
 		var value_txt = value = $(this).val();
 
 		var step = $(this).attr('step');

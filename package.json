@@ -4,12 +4,16 @@
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
-    "rebuild": "electron-rebuild -f -w sharp"
+    "rebuild": "electron-rebuild -f -w sharp",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "description": "Comic book reader",
   "license": "GPL-3.0",
   "dependencies": {
+    "electron-compile": "^6.4.4",
     "electron-json-storage": "^4.1.6",
+    "electron-squirrel-startup": "^1.0.0",
     "electron-window-state": "^5.0.3",
     "fs": "0.0.1-security",
     "gm": "^1.23.1",
@@ -24,11 +28,47 @@
     "unzip2": "^0.2.5"
   },
   "devDependencies": {
-    "electron": "^3.1.3",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "electron-forge": "^5.2.4",
+    "electron-prebuilt-compile": "4.0.0",
     "electron-rebuild": "^1.8.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ollm/OpenComic.git"
+  },
+  "config": {
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {
+        "packageManager": "npm"
+      },
+      "electronWinstallerConfig": {
+        "name": "OpenComic"
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": "",
+        "name": "OpenComic"
+      }
+    }
   }
 }

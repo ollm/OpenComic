@@ -1,9 +1,14 @@
 
 /*Page - Index*/
 
-function orderBy(a, b, mode, key = false)
+function orderBy(a, b, mode, key = false, key2 = false)
 {
-	if(key)
+	if(key2)
+	{
+		var aValue = a[key][key2].toLowerCase();
+		var bValue = b[key][key2].toLowerCase();
+	}
+	else if(key)
 	{
 		var aValue = a[key].toLowerCase();
 		var bValue = b[key].toLowerCase();
@@ -83,11 +88,11 @@ function getReadingProgress(path, callback)
 {
 	path = p.normalize(path);
 
-	readingProgress = storage.getKey('readingProgress');
+	var readingProgress = storage.getKey('readingProgress');
 
-	for(rpPath in readingProgress)
+	for(let rpPath in readingProgress)
 	{
-		data = readingProgress[rpPath];
+		var data = readingProgress[rpPath];
 
 		if(typeof data.progress[path] !== 'undefined')		
 			return data;
@@ -102,7 +107,7 @@ function calcReadingProgress(path, mainPath, callback)
 
 		process.nextTick(function() {
 
-			progress = calcReadingProgressWD(path, mainPath, callback);
+			var progress = calcReadingProgressWD(path, mainPath, callback);
 
 			if(checkError(progress))
 			{
@@ -164,6 +169,8 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		var foldersFirst = config.foldersFirst;
 	}
 
+	var key2 = false;
+
 	if(sort == 'name')
 	{
 		var order = 'simple';
@@ -187,12 +194,13 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 	else
 	{
 		var order = 'simple';
-		var key = 'lastReading';
+		var key = 'readingProgress';
+		var key2 = 'lastReading';
 	}
 
 	fs.readdir(file.realPath(path), function(error, files){
 
-		comics = [];
+		var comics = [];
 
 		if(files)
 		{
@@ -201,7 +209,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				var fileName = files[i];
 				var filePath = p.join(path, fileName);
 
-				realPath = file.realPath(filePath, -1);
+				var realPath = file.realPath(filePath, -1);
 
 				if(inArray(mime.getType(realPath), compatibleMime))
 				{
@@ -297,7 +305,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 			comics.sort(function (a, b) {
 				if(foldersFirst && a.folder && !b.folder) return -1; 
 				if(foldersFirst && b.folder && !a.folder) return 1; 
-				return (sortInvert) ? -(orderBy(a, b, order, key)) : orderBy(a, b, order, key);
+				return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
 			});
 		}
 
@@ -319,7 +327,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		{
 			var sha = sha1(comic.readingProgress.path);
 
-			realPath = file.realPath(comic.readingProgress.path, -1);
+			var realPath = file.realPath(comic.readingProgress.path, -1);
 
 			var thumbnail = cache.returnCacheImage(realPath, sha, function(data){
 
@@ -361,6 +369,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		var foldersFirst = config.foldersFirst;
 	}
 
+	var key2 = false;
+
 	if(sort == 'name')
 	{
 		var order = 'simple';
@@ -384,7 +394,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	else
 	{
 		var order = 'simple';
-		var key = 'lastReading';
+		var key = 'readingProgress';
+		var key2 = 'lastReading';
 	}
 
 	if(!path)
@@ -394,7 +405,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		if(!isEmpty(comicsStorage))
 		{
-			for(key in comicsStorage)
+			for(let key in comicsStorage)
 			{
 				if(fs.existsSync(comicsStorage[key].path))
 				{
@@ -406,7 +417,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 				}
 			}
 
-			for(key in comics)
+			for(let key in comics)
 			{
 				var images = folderImagesWD(comics[key].path, 4);
 
@@ -497,13 +508,15 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	else
 	{
 
-		indexPathA = path;
+		var indexPathA = path;
 
 		indexMainPathA = mainPath;
+
 		if(indexPathControlA.length == 0 || (indexPathControlA[indexPathControlA.length - 1].path != path))
 		{
 			indexPathControlA.push({path: path, mainPath: mainPath});
 		}
+
 		indexPathControl(2);
 		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsIndexVar = 'false';
@@ -517,6 +530,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 			{
 				template.loadContentLeft('index.content.left.html', animation);
 			}
+
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
 			floatingActionButton(false);
 		}
@@ -576,11 +590,11 @@ function returnTextPath(path, mainPath)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
-	files = path.replace(mainPathR, '').split(p.sep);
+	var files = path.replace(mainPathR, '').split(p.sep);
 
 	var path = [];
 
-	for(index in files)
+	for(let index in files)
 	{
 		path.push(files[index]);
 	}
@@ -592,13 +606,13 @@ function headerPath(path, mainPath)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
-	files = path.replace(mainPathR, '').split(p.sep);
+	var files = path.replace(mainPathR, '').split(p.sep);
 
 	var path = [];
 
 	var pathJoin = mainPathR;
 
-	for(index in files)
+	for(let index in files)
 	{
 		pathJoin = p.join(pathJoin, files[index]);
 
@@ -749,7 +763,7 @@ function folderImages(path, num, callback = false)
 
 		process.nextTick(function() {
 
-			images = folderImagesWD(path, num);
+			var images = folderImagesWD(path, num);
 
 			if(checkError(images))
 			{
@@ -940,7 +954,7 @@ function loadLanguagesPage(animation = true)
 
 		handlebarsContext.languagesList = new Array();
 
-		for(code in languagesList)
+		for(let code in languagesList)
 		{
 			if(typeof languagesList[code].active != 'undefined' && languagesList[code].active)
 			{
@@ -1144,11 +1158,11 @@ function justifyViewModule()
 {
 	if(config.viewIndex == 'module')
 	{
-		contentWidth = template.contentRight().width();
+		var contentWidth = template.contentRight().width();
 
-		contentPerLine = Math.floor((contentWidth - 16) / (150 + 16));
+		var contentPerLine = Math.floor((contentWidth - 16) / (150 + 16));
 
-		marginLeft = ((contentWidth - 16) - (contentPerLine * (150 + 16))) / (contentPerLine - 1);
+		var marginLeft = ((contentWidth - 16) - (contentPerLine * (150 + 16))) / (contentPerLine - 1);
 
 		if(contentPerLine > 0)
 		{
@@ -1248,6 +1262,8 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		var sortInvert = config.sortInvert;
 		var foldersFirst = config.foldersFirst;
 
+		var key2 = false;
+
 		if(sort == 'name')
 		{
 			var order = 'simple';
@@ -1271,12 +1287,13 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		else
 		{
 			var order = 'simple';
-			var key = 'lastReading';
+			var key = 'readingProgress';
+			var key2 = 'lastReading';
 		}
 
 		fs.readdir(file.realPath(path), function(error, files){
 
-			comics = [];
+			var comics = [];
 
 			if(files)
 			{
@@ -1343,10 +1360,10 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 				comics.sort(function (a, b) {
 					if(foldersFirst && a.folder && !b.folder) return -1; 
 					if(foldersFirst && b.folder && !a.folder) return 1; 
-					return (sortInvert) ? -(orderBy(a, b, order, key)) : orderBy(a, b, order, key);
+					return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
 				});
 
-				for(key in comics)
+				for(let key in comics)
 				{
 					comics[key].index = parseInt(key) + 1;
 					if(comics[key].path == imagePath)
