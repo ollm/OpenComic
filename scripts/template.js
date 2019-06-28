@@ -6,14 +6,14 @@ function loadTemplate(file)
 {
 	if(typeof templatesCache[file] === 'undefined')
 	{
-		if(existsFileApp('/themes/'+config.theme+'/templates/'+file))
+		if(existsFileApp('./themes/'+config.theme+'/templates/'+file))
 		{
-			templatesCache[file] = hb.compile(readFileApp('/themes/'+config.theme+'/templates/'+file));
+			templatesCache[file] = hb.compile(readFileApp('./themes/'+config.theme+'/templates/'+file));
 			return templatesCache[file](handlebarsContext);
 		}
 		else
 		{
-			templatesCache[file] = hb.compile(readFileApp('/templates/'+file));
+			templatesCache[file] = hb.compile(readFileApp('./templates/'+file));
 			return templatesCache[file](handlebarsContext);	
 		}
 	}
@@ -25,13 +25,13 @@ function loadTemplate(file)
 
 function registerPartial(name, file)
 {
-	if(existsFileApp('/themes/'+config.theme+'/templates/'+file))
+	if(existsFileApp('./themes/'+config.theme+'/templates/'+file))
 	{
-		hb.registerPartial(name, readFileApp('/themes/'+config.theme+'/templates/'+file));
+		hb.registerPartial(name, readFileApp('./themes/'+config.theme+'/templates/'+file));
 	}
 	else
 	{
-		hb.registerPartial(name, readFileApp('/templates/'+file));
+		hb.registerPartial(name, readFileApp('./templates/'+file));
 	}
 }
 

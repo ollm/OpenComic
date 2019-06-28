@@ -1183,6 +1183,7 @@ body .app
 {
 	height: 49px;
 	position: relative;
+	overflow: hidden;
 }
 
 .continue-reading > div

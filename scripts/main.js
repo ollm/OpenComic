@@ -1,7 +1,24 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, Menu} = require('electron');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
+const {addBypassChecker} = require('electron-compile');
+
+var compatibleExtensions = [
+	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
+	/*png*/'png', 'x-png', 'apng',
+	/*gif*/'gif',
+	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7',
+];
+
+var compatibleExtensionsRegex = new RegExp('\\.'+compatibleExtensions.join('|\\.'));
+
+addBypassChecker(function(filePath) {
+
+	return (filePath.indexOf(app.getAppPath()) === -1 && compatibleExtensionsRegex.test(filePath));
+
+});
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -28,10 +45,10 @@ function createWindow () {
 
 	// and load the index.html of the app.
 	win.loadURL(url.format({
-		pathname: path.join(__dirname, 'index.html'),
+		pathname: path.join(__dirname, '../templates/index.html'),
 		protocol: 'file:',
 		slashes: true
-	}))
+	}));
 
 	// Open the DevTools.
  	// win.webContents.openDevTools()
@@ -63,7 +80,9 @@ function createWindow () {
 	});
 
 	win.once('ready-to-show', () => {
+		
 		win.show();
+
 	})
 
 	mainWindowState.manage(win);
@@ -98,3 +117,19 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+// Menu
+const menuTemplate = [
+	{
+		label: 'Debugg',
+		submenu: [
+			{role: 'reload'},
+			{role: 'forcereload'},
+			{role: 'toggledevtools'},
+		]
+	}
+];
+
+const menu = Menu.buildFromTemplate(menuTemplate)
+Menu.setApplicationMenu(menu)

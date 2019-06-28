@@ -257,7 +257,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 										(function(i, sha, folderSha, images){
 
-											image = cache.returnCacheImage(images[i], sha, function(data){
+											var image = cache.returnCacheImage(images[i], sha, function(data){
 
 												addImageToDom(folderSha+'-'+i, data.path);
 
@@ -413,7 +413,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 				}
 				else
 				{
-					console.log(comicsStorage[key]);
+					//console.log(comicsStorage[key]);
 				}
 			}
 
@@ -444,7 +444,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 									(function(i, sha, folderSha, images){
 
-										image = cache.returnCacheImage(images[i], sha, function(data){
+										var image = cache.returnCacheImage(images[i], sha, function(data){
 
 											addImageToDom(folderSha, data.path);
 

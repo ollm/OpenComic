@@ -1,14 +1,20 @@
 {
   "name": "OpenComic",
   "version": "0.1.0",
-  "main": "main.js",
+  "main": "scripts/main.js",
   "scripts": {
-    "start": "electron main.js",
+    "start": "electron scripts/main.js",
     "rebuild": "electron-rebuild -f -w sharp",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "make-deb": "electron-forge make --platform linux --targets deb",
+    "make-rpm": "electron-forge make --platform linux --targets rpm",
+    "make-flatpak": "electron-forge make --platform linux --targets flatpak",
+    "make-snap": "electron-forge make --platform linux --targets snap",
+    "make-zip": "electron-forge make --targets zip",
+    "make-squirrel": "electron-forge make --platform win32 --targets squirrel"
   },
-  "description": "Comic book reader",
+  "description": "Comic and manga reader",
   "license": "GPL-3.0",
   "dependencies": {
     "electron-compile": "^6.4.4",
@@ -17,8 +23,8 @@
     "electron-window-state": "^5.0.3",
     "fs": "0.0.1-security",
     "gm": "^1.23.1",
-    "handlebars": "^4.0.12",
-    "jquery": "^3.3.1",
+    "handlebars": "^4.1.2",
+    "jquery": "^3.4.1",
     "mime": "^2.4.0",
     "node-7z": "^1.0.1",
     "node-unrar": "^0.1.5",
@@ -50,20 +56,60 @@
         ],
         "linux": [
           "deb",
-          "rpm"
+          "rpm",
+          "flatpak",
+          "snap"
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "npm"
+        "buildVersion": 1,
+        "appCategoryType": "public.app-category.graphics-design",
+        "packageManager": "npm",
+        "ignore": [
+        ]
       },
       "electronWinstallerConfig": {
-        "name": "OpenComic"
+        "name": "OpenComic",
+        "description": "Comic and manga reader"
       },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
+      "electronInstallerDebian": {
+        "name": "opencomic",
+        "productName": "OpenComic",
+        "genericName": "Comic Reader",
+        "description": "Comic and manga reader",
+        "maintainer": "ollm",
+        "homepage": "https://github.com/ollm/OpenComic",
+        "section": "graphics",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "electronInstallerFlatpak": {
+        "productName": "OpenComic",
+        "genericName": "Comic Reader",
+        "description": "Comic and manga reader",
+        "categories": [
+          "Graphics"
+        ]
+      },
+      "electronInstallerSnap": {
+        "name": "opencomic",
+        "description": "Comic and manga reader",
+        "executableName": "OpenComic"
+      },
+      "electronInstallerRedhat": {
+        "name": "opencomic",
+        "productName": "OpenComic",
+        "genericName": "Comic Reader",
+        "description": "Comic and manga reader",
+        "homepage": "https://github.com/ollm/OpenComic",
+        "categories": [
+          "Graphics"
+        ]
+      },
       "github_repository": {
-        "owner": "",
-        "name": ""
+        "owner": "ollm",
+        "name": "OpenComic"
       },
       "windowsStoreConfig": {
         "packageName": "",

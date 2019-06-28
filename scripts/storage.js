@@ -215,13 +215,7 @@ function start(callback)
 			{
 				if(config.appVersion != _package.version || config.changes != changes)
 				{
-					newData = updateStorageMD(data[key], storageDefault[key]);
-
-					if(key == 'comics')
-					{
-						console.log(data[key]);
-						console.log(newData);
-					}
+					var newData = updateStorageMD(data[key], storageDefault[key]);
 
 					if(key == 'config')
 					{

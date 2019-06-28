@@ -1,6 +1,13 @@
 //console.time('Starting time');
 
 //console.time('Require time 1');
+/*
+window.onerror = function(msg, url, linenumber) {
+
+    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+    return true;
+
+}*/
 
 const electron = require('electron'),
 	fs = require('fs'),
@@ -12,7 +19,6 @@ const electron = require('electron'),
 	p = require('path'),
 	$ = require('jquery');
 
-
 //console.timeEnd('Require time 1');
 
 var testVar = 'test';
@@ -23,9 +29,9 @@ var config = false;
 var onReading = false;
 var readingTouchEvent = false;
 
-var appDir = __dirname;
+var appDir = p.join(__dirname, '../');
 
-var _package = $.parseJSON(readFileApp('/package.json'));
+var _package = $.parseJSON(readFileApp('package.json'));
 
 var compatibleMime = [
 	'image/jpeg',
@@ -75,6 +81,7 @@ var compressedExtensions = {
 	],
 };
 
+// Update also in main.js
 var compatibleExtensions = [
 	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
 	/*png*/'png', 'x-png', 'apng',
@@ -84,14 +91,14 @@ var compatibleExtensions = [
 
 //console.time('Require time 2');
 
-const storage = require('./scripts/storage-control.js'),
-	cache = require('./scripts/cache-control.js'),
-	template = require('./scripts/template-control.js'),
-	dom = require('./scripts/dom-control.js'),
-	events = require('./scripts/events-control.js'),
-	file = require('./scripts/file-control.js'),
-	fileCompressed = require('./scripts/file-compressed-control.js'),
-	reading = require('./scripts/reading-control.js');
+const storage = require(p.join(appDir, 'scripts/storage.js')),
+	cache = require(p.join(appDir, 'scripts/cache.js')),
+	template = require(p.join(appDir, 'scripts/template.js')),
+	dom = require(p.join(appDir, 'scripts/dom.js')),
+	events = require(p.join(appDir, 'scripts/events.js')),
+	file = require(p.join(appDir, 'scripts/file.js')),
+	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
+	reading = require(p.join(appDir, 'scripts/reading.js'));
 
 var tempFolder = p.join(os.tmpdir(), 'OpenComic');
 
@@ -162,7 +169,7 @@ function escapeQuotes(str, mode = false)
 
 function readFileApp(file)
 {
-	return fs.readFileSync(p.join(__dirname, file), 'utf8');
+	return fs.readFileSync(p.join(appDir, file), 'utf8');
 }
 
 function readFile(file)
@@ -172,7 +179,7 @@ function readFile(file)
 
 function existsFileApp(file)
 {
-	fs.existsSync(p.join(__dirname, file))
+	fs.existsSync(p.join(appDir, file))
 }
 
 function existsFile(file)
@@ -205,14 +212,14 @@ function loadLanguage(lan)
 
 	var lan = lan || false;
 
-	var data = readFileApp('/languages/es.json');
+	var data = readFileApp('./languages/es.json');
 
 	language = $.parseJSON(data);
 	handlebarsContext.language = language;
 
 	if(lan)
 	{
-		data = readFileApp('/languages/'+lan+'.json');
+		data = readFileApp('./languages/'+lan+'.json');
 
 		data = $.parseJSON(data);
 
@@ -375,7 +382,7 @@ hb.registerHelper('normalizeNumber', function(value, decimals) {
 	var num_d = decimals.replace(/.*?(\.|$)/, '').length;
 
 	if(num_d != 0)
-		value = value+(value.match(/\./) ? '' : '.')+('0'.repeat(num_d - num_v));
+		value = value+(/\./.test(value) ? '' : '.')+('0'.repeat(num_d - num_v));
 
 	return value;
 

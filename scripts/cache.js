@@ -1,5 +1,9 @@
 var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im', sharp = false;
 
+var cacheFolder = p.join(electron.remote.app.getPath('cache'), 'opencomic');
+
+if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
+
 function processTheImageQueue()
 {
 	if(!sharp) sharp = require('sharp');
@@ -7,15 +11,16 @@ function processTheImageQueue()
 	var img = queuedImages[0];
 	var sha = img.sha;
 
-	realPath = file.realPath(img.file);
+	var realPath = file.realPath(img.file);
 
-	sharp(realPath).jpeg({quality: 95}).resize({width: img.size, background: 'white'}).toFile(p.join(appDir, 'cache', sha+'.jpg'), function(error) {
 
+	sharp(realPath).jpeg({quality: 95}).resize({width: img.size, background: 'white'}).toFile(p.join(cacheFolder, sha+'.jpg'), function(error) {
+	
 		if(error)
 		{
 			if(!imageLibrary) imageLibrary = require('gm').subClass({imageMagick: true});
 
-			imageLibrary(realPath).resize(img.size, null).quality(95).noProfile().write(p.join(appDir, 'cache', sha+'.jpg'), function(error){
+			imageLibrary(realPath).resize(img.size, null).quality(95).noProfile().write(p.join(cacheFolder, sha+'.jpg'), function(error){
 
 				if(error)
 				{
@@ -56,7 +61,7 @@ function processTheImageQueue()
 
 					data[sha].size = img.size;
 
-					img.callback({cache: true, path: escapeBackSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
+					img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha});
 
 					queuedImages.splice(0, 1);
 
@@ -81,7 +86,7 @@ function processTheImageQueue()
 
 			data[sha].size = img.size;
 
-			img.callback({cache: true, path: escapeBackSlash(p.join(appDir, 'cache', sha+'.jpg?size='+img.size)), sha: sha});
+			img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha});
 
 			queuedImages.splice(0, 1);
 
@@ -137,9 +142,9 @@ function returnCacheImage(file, sha, callback = false)
 
 	var imgCache = data[sha];
 
-	var path = p.join(appDir, 'cache', sha+'.jpg?size='+size);
+	var path = p.join(cacheFolder, sha+'.jpg?size='+size);
 
-	if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(appDir, 'cache', sha+'.jpg')))
+	if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(cacheFolder, sha+'.jpg')))
 	{
 		addImageToQueue(file, size, sha, callback);
 
@@ -147,7 +152,6 @@ function returnCacheImage(file, sha, callback = false)
 	}
 	else
 	{
-
 		data[sha].lastAccess = time();
 
 		if(imgCache.size != size)
@@ -165,13 +169,13 @@ function returnCacheImage(file, sha, callback = false)
 
 function writeFile(name, content)
 {
-	fs.writeFile(p.join(appDir, 'cache', name), content, function(){}); 
+	fs.writeFile(p.join(cacheFolder, name), content, function(){}); 
 }
 
 function readFile(name)
 {
-	if(fs.existsSync(p.join(appDir, 'cache', name)))
-		return fs.readFileSync(p.join(appDir, 'cache', name), 'utf8');
+	if(fs.existsSync(p.join(cacheFolder, name)))
+		return fs.readFileSync(p.join(cacheFolder, name), 'utf8');
 	else
 		return false;
 }
