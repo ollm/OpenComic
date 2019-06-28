@@ -1,7 +1,16 @@
 {
-  "name": "OpenComic",
+  "name": "opencomic",
+  "productName": "OpenComic",
   "version": "0.1.0",
   "main": "scripts/main.js",
+  "keywords": [
+    "comics",
+    "manga",
+    "books"
+  ],
+  "description": "Comic and manga reader",
+  "homepage": "https://github.com/ollm/OpenComic",
+  "license": "GPL-3.0",
   "scripts": {
     "start": "electron scripts/main.js",
     "rebuild": "electron-rebuild -f -w sharp",
@@ -14,8 +23,6 @@
     "make-zip": "electron-forge make --targets zip",
     "make-squirrel": "electron-forge make --platform win32 --targets squirrel"
   },
-  "description": "Comic and manga reader",
-  "license": "GPL-3.0",
   "dependencies": {
     "electron-compile": "^6.4.4",
     "electron-json-storage": "^4.1.6",
@@ -62,11 +69,11 @@
         ]
       },
       "electronPackagerConfig": {
+        "executableName": "opencomic",
         "buildVersion": 1,
         "appCategoryType": "public.app-category.graphics-design",
         "packageManager": "npm",
-        "ignore": [
-        ]
+        "ignore": []
       },
       "electronWinstallerConfig": {
         "name": "OpenComic",
@@ -95,7 +102,7 @@
       "electronInstallerSnap": {
         "name": "opencomic",
         "description": "Comic and manga reader",
-        "executableName": "OpenComic"
+        "executableName": "opencomic"
       },
       "electronInstallerRedhat": {
         "name": "opencomic",
