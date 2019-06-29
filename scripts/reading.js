@@ -1171,6 +1171,12 @@ function saveReadingProgress(path = false)
 		}
 	}
 
+	storage.updateVar('readingProgress', dom.indexMainPathA(), {
+		path: path,
+		lastReading: +new Date(),
+		progress: 0,
+	});
+
 	if(comic && path)
 	{
 		comic.readingProgress.path = path;

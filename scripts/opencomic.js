@@ -9,6 +9,16 @@ window.onerror = function(msg, url, linenumber) {
 
 }*/
 
+document.addEventListener("keydown", event => {
+
+	if(event.key == 'Escape')
+	{
+		if(electron.remote.getCurrentWindow().isFullScreen())
+			electron.remote.getCurrentWindow().setFullScreen(false);
+	}
+
+});
+
 const electron = require('electron'),
 	fs = require('fs'),
 	hb = require('handlebars'),
@@ -207,11 +217,8 @@ function time()
 	return Math.floor(Date.now() / 1000);
 }
 
-function loadLanguage(lan)
+function loadLanguage(lan = false)
 {
-
-	var lan = lan || false;
-
 	var data = readFileApp('./languages/es.json');
 
 	language = $.parseJSON(data);
@@ -224,8 +231,111 @@ function loadLanguage(lan)
 		data = $.parseJSON(data);
 
 		loadLanguageMD(handlebarsContext.language, data);
-	}
 
+		generateAppMenu();
+	}
+}
+
+function zoomIn()
+{
+	var factor = electron.webFrame.getZoomFactor();
+
+	if(factor >= 3)
+		factor += 1;
+	else if(factor >= 2)
+		factor += 1;
+	else if(factor >= 1.25)
+		factor += 0.25;
+	else if(factor >= 1.10)
+		factor += 0.15;
+	else
+		factor += 0.10;
+
+	if(factor > 5)
+		factor = 5;
+	else if(factor < 0.50)
+		factor = 0.50;
+
+	electron.webFrame.setZoomFactor(Math.round(factor * 100) / 100);
+}
+
+function zoomOut()
+{
+	var factor = electron.webFrame.getZoomFactor();
+
+	if(factor > 3)
+		factor -= 1;
+	else if(factor > 2)
+		factor -= 1;
+	else if(factor > 1.25)
+		factor -= 0.25;
+	else if(factor > 1.10)
+		factor -= 0.15;
+	else
+		factor -= 0.10;
+
+	if(factor > 5)
+		factor = 5;
+	else if(factor < 0.50)
+		factor = 0.50;
+
+	electron.webFrame.setZoomFactor(Math.round(factor * 100) / 100);
+}
+
+function resetZoom()
+{
+	electron.webFrame.setZoomLevel(0);
+}
+
+function generateAppMenu()
+{
+	electron.remote.globalShortcut.unregisterAll();
+	electron.remote.globalShortcut.register('CmdOrCtrl+O', function(){openComic()});
+	electron.remote.globalShortcut.register('CmdOrCtrl+Q', function(){electron.remote.app.quit()});
+	electron.remote.globalShortcut.register('CmdOrCtrl+0', function(){resetZoom(); generateAppMenu();});
+	electron.remote.globalShortcut.register('CmdOrCtrl+Shift+0', function(){resetZoom(); generateAppMenu();});
+	electron.remote.globalShortcut.register('CmdOrCtrl+Plus', function(){zoomIn(); generateAppMenu();});
+	electron.remote.globalShortcut.register('CmdOrCtrl+=', function(){zoomIn(); generateAppMenu();});
+	electron.remote.globalShortcut.register('CmdOrCtrl+-', function(){zoomOut(); generateAppMenu();});
+	electron.remote.globalShortcut.register('CmdOrCtrl+Shift+-', function(){zoomOut(); generateAppMenu();});
+
+	var menuTemplate = [
+		{
+			label: handlebarsContext.language.menu.file.main,
+			submenu: [
+				{label: handlebarsContext.language.menu.file.openFile, click: function(){openComic()}, accelerator: 'CmdOrCtrl+O'},
+				{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComic(true)}},
+				{label: handlebarsContext.language.menu.file.addFile, click: function(){addComic()}},
+				{label: handlebarsContext.language.menu.file.addFolder, click: function(){addComic(true)}},
+				{type: 'separator'},
+				{role: 'quit', label: handlebarsContext.language.menu.file.quit},
+			]
+		},
+		{
+			label: handlebarsContext.language.menu.view.main,
+			submenu: [
+				{label: handlebarsContext.language.menu.view.resetZoom, enabled: (electron.webFrame.getZoomFactor() != 1 ? true : false), click: function(){resetZoom(); generateAppMenu();}, accelerator: 'CmdOrCtrl+0'},
+				{label: handlebarsContext.language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
+				{label: handlebarsContext.language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
+				{type: 'separator'},
+				{role: 'toggleFullScreen', label: handlebarsContext.language.menu.view.toggleFullScreen},
+			]
+		},
+		{
+			label: handlebarsContext.language.menu.debbug.main,
+			submenu: [
+				{role: 'reload', label: handlebarsContext.language.menu.debbug.reload},
+				{role: 'forceReload', label: handlebarsContext.language.menu.debbug.forceReload},
+				{role: 'toggleDevTools', label: handlebarsContext.language.menu.debbug.toggleDevTools},
+			]
+		}
+	];
+
+
+
+
+	var menu = electron.remote.Menu.buildFromTemplate(menuTemplate);
+	electron.remote.Menu.setApplicationMenu(menu);
 }
 
 function escapeBackSlash(string)
@@ -415,6 +525,43 @@ hb.registerHelper('configIsTrue', function(key, value) {
 
 /*Tests functions*/
 
+function openComic(folders = false)
+{
+	if(folders)
+		var properties = ['openDirectory'];
+	else
+		var properties = ['openFile'];
+
+	var dialog = electron.remote.dialog;
+
+	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
+
+		var filePath = files[0];
+
+		if(fs.statSync(filePath).isDirectory())
+		{
+			var path = filePath;
+		}
+		else
+		{
+			if(inArray(mime.getType(filePath), compatibleMime))
+			{
+				filePath = p.dirname(filePath);
+
+				var path = filePath;
+			}
+			else
+			{
+				var path = filePath;
+			}
+		}
+
+		dom.loadIndexPage(true, path, false, false, path);
+
+	});
+
+}
+
 function addComic(folders = false)
 {
 	if(folders)
@@ -422,8 +569,7 @@ function addComic(folders = false)
 	else
 		var properties = ['openFile', 'multiSelections'];
 
-	var remote = electron.remote;
-	var dialog = remote.dialog;
+	var dialog = electron.remote.dialog;
 
 	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
 

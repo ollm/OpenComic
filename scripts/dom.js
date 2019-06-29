@@ -181,21 +181,10 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		var order = 'numeric';
 		var key = 'name';
 	}
-	else if(sort == 'name-numeric')
+	else
 	{
 		var order = 'simple-numeric';
 		var key = 'name';
-	}
-	else if(sort == 'last-add')
-	{
-		var order = 'simple';
-		var key = 'added';
-	}
-	else
-	{
-		var order = 'simple';
-		var key = 'readingProgress';
-		var key2 = 'lastReading';
 	}
 
 	fs.readdir(file.realPath(path), function(error, files){
@@ -323,11 +312,13 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 			}
 		}
 
-		if(comic.readingProgress.lastReading > 0)
-		{
-			var sha = sha1(comic.readingProgress.path);
+		var readingProgress = storage.get('readingProgress');
 
-			var realPath = file.realPath(comic.readingProgress.path, -1);
+		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+		{
+			var sha = sha1(readingProgress[mainPath].path);
+
+			var realPath = file.realPath(readingProgress[mainPath].path, -1);
 
 			var thumbnail = cache.returnCacheImage(realPath, sha, function(data){
 
@@ -335,10 +326,10 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 			});
 
-			comic.readingProgress.thumbnail =  (thumbnail.cache) ? thumbnail.path : '',
-			comic.readingProgress.mainPath = mainPath;	
-			comic.readingProgress.pathText = returnTextPath(comic.readingProgress.path, mainPath);	
-			handlebarsContext.comicsReadingProgress = comic.readingProgress;
+			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+			readingProgress[mainPath].mainPath = mainPath;	
+			readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath);	
+			handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
 		}
 		else
 		{
@@ -352,7 +343,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 	});
 }
 
-function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
+function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, onlyOpen = false)
 {
 	onReading = false;
 

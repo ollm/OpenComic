@@ -1,4 +1,4 @@
-var changes = 12;
+var changes = 13;
 
 var storageDefault = {
 	config: {
@@ -69,9 +69,7 @@ var storageDefault = {
 		wildcard: [{
 			path: 'Path',
 			lastReading: 0,
-			progress: {
-				wildcard: 0,
-			},
+			progress: 0,
 		}]
 	},
 	cache: {

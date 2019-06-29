@@ -63,5 +63,28 @@
 		"remove-bookmark": "Eliminar marcador",
 		"empty-bookmarks": "No hay ningún marcador",
 		"current-reading": "Lectura actual"
+	},
+	"menu": {
+		"file": {
+			"main": "Archivo",
+			"openFile": "Abrir archivo",
+			"openFolder": "Abrir carpeta",
+			"addFile": "Añadir archivo",
+			"addFolder": "Añadir carpeta",
+			"quit": "Salir"
+		},
+		"view": {
+			"main": "Ver",
+			"resetZoom": "Restablecer zoom",
+			"zoomIn": "Ampliar zoom",
+			"zoomOut": "Reducir zoom",
+			"toggleFullScreen": "Pantalla completa"
+		},
+		"debbug": {
+			"main": "Depuracion",
+			"reload": "Recargar",
+			"forceReload": "Recargar de forma forzada",
+			"toggleDevTools": "Herramientas para desarrolladores"
+		}
 	}
 }

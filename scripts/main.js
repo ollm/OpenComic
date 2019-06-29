@@ -2,23 +2,6 @@ const {app, BrowserWindow, Menu} = require('electron');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
-const {addBypassChecker} = require('electron-compile');
-
-var compatibleExtensions = [
-	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
-	/*png*/'png', 'x-png', 'apng',
-	/*gif*/'gif',
-	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7',
-];
-
-var compatibleExtensionsRegex = new RegExp('\\.'+compatibleExtensions.join('|\\.'));
-
-addBypassChecker(function(filePath) {
-
-	return (filePath.indexOf(app.getAppPath()) === -1 && compatibleExtensionsRegex.test(filePath));
-
-});
-
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -39,8 +22,11 @@ function createWindow () {
 		width: mainWindowState.width,
 		height: mainWindowState.height,
 		minWidth: 320,
-		minHeight: 200/*,
-		icon: __dirname + '/icon.svg'*/
+		minHeight: 200,
+		webPreferences: {
+			nodeIntegration: true
+		},
+		//icon: __dirname + '/icon.svg',
 	});
 
 	// and load the index.html of the app.
@@ -120,16 +106,8 @@ app.on('activate', () => {
 
 
 // Menu
-const menuTemplate = [
-	{
-		label: 'Debugg',
-		submenu: [
-			{role: 'reload'},
-			{role: 'forcereload'},
-			{role: 'toggledevtools'},
-		]
-	}
-];
+/*
+const menuTemplate = [{}];
 
 const menu = Menu.buildFromTemplate(menuTemplate)
-Menu.setApplicationMenu(menu)
+Menu.setApplicationMenu(menu)*/

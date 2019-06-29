@@ -1,4 +1,4 @@
-var unzip = false, unrar = false, un7z = false, compressedFiles = {};
+var unzip = false, unrar = false, un7z = false, bin7z = false, compressedFiles = {};
 
 function returnFilesWD(path, all, callback = false)
 {
@@ -142,7 +142,7 @@ function returnFiles(path, all, fromCache, callback)
 	{
 		if(inArray(fileExtension(path), compressedExtensions.zip))
 		{
-			if(!unzip) unzip = require('unzip2');
+			if(unzip === false) unzip = require('unzip2');
 
 			fs.createReadStream(path).pipe(
 
@@ -162,7 +162,7 @@ function returnFiles(path, all, fromCache, callback)
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.rar))
 		{
-			if(!unrar) unrar = require('node-unrar');
+			if(unrar === false) unrar = require('node-unrar');
 			 
 			var rar = new unrar(path);
 			 			 
@@ -185,10 +185,11 @@ function returnFiles(path, all, fromCache, callback)
 		}
 		else if(inArray(fileExtension(path), compressedExtensions['7z']))
 		{
-			if(!un7z) un7z = require('node-7z');
+			if(un7z === false) un7z = require('node-7z');
+			if(bin7z === false) bin7z = require('7zip-bin').path7za;
 
 			var myTask = new un7z();
-			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/}).progress(function (files){}).then(function () {
+			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/, $bin: bin7z}).progress(function (files){}).then(function () {
 
 				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
