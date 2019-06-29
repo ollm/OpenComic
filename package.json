@@ -11,8 +11,12 @@
   "description": "Comic and manga reader",
   "homepage": "https://github.com/ollm/OpenComic",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ollm/OpenComic.git"
+  },
   "scripts": {
-    "start": "electron scripts/main.js",
+    "start": "electron-forge start",
     "rebuild": "electron-rebuild -f -w sharp",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -24,7 +28,7 @@
     "make-squirrel": "electron-forge make --platform win32 --targets squirrel"
   },
   "dependencies": {
-    "electron-compile": "^6.4.4",
+    "7zip-bin": "^4.1.0",
     "electron-json-storage": "^4.1.6",
     "electron-squirrel-startup": "^1.0.0",
     "electron-window-state": "^5.0.3",
@@ -36,92 +40,105 @@
     "node-7z": "^1.0.1",
     "node-unrar": "^0.1.5",
     "sha1": "^1.1.1",
-    "sha256": "^0.2.0",
     "sharp": "^0.22.1",
     "unzip2": "^0.2.5"
   },
   "devDependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.2.4",
-    "electron-prebuilt-compile": "4.0.0",
-    "electron-rebuild": "^1.8.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ollm/OpenComic.git"
+    "@electron-forge/cli": "^6.0.0-beta.33",
+    "@electron-forge/maker-deb": "^6.0.0-beta.33",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.33",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.33",
+    "@electron-forge/maker-zip": "^6.0.0-beta.33",
+    "electron": "^5.0.6",
+    "electron-rebuild": "^1.8.5"
   },
   "config": {
     "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm",
-          "flatpak",
-          "snap"
-        ]
-      },
-      "electronPackagerConfig": {
+      "packagerConfig": {
         "executableName": "opencomic",
         "buildVersion": 1,
         "appCategoryType": "public.app-category.graphics-design",
         "packageManager": "npm",
-        "ignore": []
-      },
-      "electronWinstallerConfig": {
-        "name": "OpenComic",
-        "description": "Comic and manga reader"
-      },
-      "electronInstallerDebian": {
-        "name": "opencomic",
-        "productName": "OpenComic",
-        "genericName": "Comic Reader",
-        "description": "Comic and manga reader",
-        "maintainer": "ollm",
-        "homepage": "https://github.com/ollm/OpenComic",
-        "section": "graphics",
-        "categories": [
-          "Graphics"
+        "ignore": [
+          "out"
         ]
       },
-      "electronInstallerFlatpak": {
-        "productName": "OpenComic",
-        "genericName": "Comic Reader",
-        "description": "Comic and manga reader",
-        "categories": [
-          "Graphics"
-        ]
-      },
-      "electronInstallerSnap": {
-        "name": "opencomic",
-        "description": "Comic and manga reader",
-        "executableName": "opencomic"
-      },
-      "electronInstallerRedhat": {
-        "name": "opencomic",
-        "productName": "OpenComic",
-        "genericName": "Comic Reader",
-        "description": "Comic and manga reader",
-        "homepage": "https://github.com/ollm/OpenComic",
-        "categories": [
-          "Graphics"
-        ]
-      },
-      "github_repository": {
-        "owner": "ollm",
-        "name": "OpenComic"
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "OpenComic"
-      }
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "OpenComic",
+            "description": "Comic and manga reader"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {
+            "name": "opencomic",
+            "productName": "OpenComic",
+            "genericName": "Comic Reader",
+            "description": "Comic and manga reader",
+            "maintainer": "ollm",
+            "homepage": "https://github.com/ollm/OpenComic",
+            "section": "graphics",
+            "categories": [
+              "Graphics"
+            ],
+            "depends": [
+              "libvips",
+              "unrar"
+            ]
+          }
+        },
+        {
+          "name": "@electron-forge/maker-snap",
+          "config": {
+            "name": "opencomic",
+            "description": "Comic and manga reader",
+            "executableName": "opencomic"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-flatpak",
+          "config": {
+            "productName": "OpenComic",
+            "genericName": "Comic Reader",
+            "description": "Comic and manga reader",
+            "categories": [
+              "Graphics"
+            ]
+          }
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {
+            "name": "opencomic",
+            "productName": "OpenComic",
+            "genericName": "Comic Reader",
+            "description": "Comic and manga reader",
+            "homepage": "https://github.com/ollm/OpenComic",
+            "categories": [
+              "Graphics"
+            ]
+          }
+        },
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "ollm",
+              "name": "OpenComic"
+            },
+            "prerelease": true
+          }
+        }
+      ]
     }
   }
 }
