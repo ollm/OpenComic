@@ -142,7 +142,7 @@ function returnFiles(path, all, fromCache, callback)
 	{
 		if(inArray(fileExtension(path), compressedExtensions.zip))
 		{
-			if(unzip === false) unzip = require('unzip2');
+			if(unzip === false) unzip = require('unzipper');
 
 			fs.createReadStream(path).pipe(
 

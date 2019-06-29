@@ -41,7 +41,7 @@
     "node-unrar": "^0.1.5",
     "sha1": "^1.1.1",
     "sharp": "^0.22.1",
-    "unzip2": "^0.2.5"
+    "unzipper": "^0.10.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.33",
