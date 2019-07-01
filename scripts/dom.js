@@ -146,12 +146,10 @@ function addImageToDom(querySelector, path)
 	else
 		$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css('background-image', 'url('+path+')').addClass('a');
 
+	$('.ri-sha-'+querySelector).attr('src', path);
+
 	$('.continue-reading-sha-'+querySelector).css('background-image', 'url('+path+')').addClass('a');
 }
-
-var indexPathControlA = [];
-
-var indexPathA = false, indexMainPathA = false;
 
 function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 {
@@ -392,6 +390,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 	if(!path)
 	{
+		indexPathControl(false);
+
 		var comicsStorage = storage.get('comics');
 		var comics = [];
 
@@ -499,16 +499,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	}
 	else
 	{
-		var indexPathA = path;
+		indexPathControl(path, mainPath);
 
-		indexMainPathA = mainPath;
-
-		if(indexPathControlA.length == 0 || (indexPathControlA[indexPathControlA.length - 1].path != path))
-		{
-			indexPathControlA.push({path: path, mainPath: mainPath});
-		}
-
-		indexPathControl(2);
 		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsIndexVar = 'false';
 
@@ -867,56 +859,66 @@ function folderImagesWD(path, num, mode = false)
 	}
 }
 
-var barBackDisable = false;
-var barBackShow = false;
+var indexPathControlA = [], indexPathA = false, indexMainPathA = false;
 
-function indexPathControl(mode)
+function indexPathControlGoBack()
 {
-	if(mode == 1)
+	if(indexPathControlA.length == 1)
 	{
-		if(indexPathControlA.length == 1)
-		{
-			indexPathControl(3);
-			loadIndexPage(true, false);
-		}
-		else if(indexPathControlA.length > 0)
-		{
-			loadIndexPage(true, indexPathControlA[indexPathControlA.length - 2].path, false, false,  indexPathControlA[indexPathControlA.length - 2].mainPath);
-			indexPathControlA.splice(indexPathControlA.length - 2, 2);
-		}
+		loadIndexPage(true, false);
 	}
-	else if(mode == 2)
+	else if(indexPathControlA.length > 0)
 	{
-		if(indexPathControlA.length > 0)
-		{
-			if(!barBackShow)
-			{
-				handlebarsContext['bar-back'] = 'show';
-				$('.bar-back').removeClass('disable active').addClass('show');
-				barBackShow = true;
-			}
-			else
-			{
-				handlebarsContext['bar-back'] = 'active';
-			}
-		}
-		else
-		{
-			if(!barBackDisable)
-			{
-				handlebarsContext['bar-back'] = 'disable';
-				$('.bar-back').removeClass('active show').addClass('disable');
-				barBackDisable = true;
-			}
-			else
-			{
-				handlebarsContext['bar-back'] = '';
-			}
-		}
+		loadIndexPage(true, indexPathControlA[indexPathControlA.length - 2].path, false, false,  indexPathControlA[indexPathControlA.length - 2].mainPath);
+	}
+}
+
+var barBackStatus = false; 
+
+function indexPathControl(path = false, mainPath = false)
+{
+	if(path === false || mainPath === false)
+	{
+		indexPathControlA = [];
 	}
 	else
 	{
-		if(indexPathControlA.length > 0)
+		indexPathA = path;
+		indexMainPathA = mainPath;
+
+		var mainPathR = p.dirname(mainPath) + p.sep;
+
+		var files = path.replace(mainPathR, '').split(p.sep);
+
+		var prev = '';
+
+		indexPathControlA = [];
+
+		for(let index in files)
+		{
+			indexPathControlA.push({file: files[index], path: p.join(mainPathR, prev, files[index]), mainPath: mainPath});
+			
+			prev = p.join(prev, files[index]);
+		}
+	}
+
+	if(indexPathControlA.length > 0)
+	{
+		if(!barBackStatus)
+		{
+			handlebarsContext['bar-back'] = 'show';
+			$('.bar-back').removeClass('disable active').addClass('show');
+		}
+		else
+		{
+			handlebarsContext['bar-back'] = 'active';
+		}
+
+		barBackStatus = true;
+	}
+	else
+	{
+		if(barBackStatus)
 		{
 			handlebarsContext['bar-back'] = 'disable';
 			$('.bar-back').removeClass('active show').addClass('disable');
@@ -926,10 +928,7 @@ function indexPathControl(mode)
 			handlebarsContext['bar-back'] = '';
 		}
 
-		barBackShow = false;
-		barBackDisable = false;
-
-		indexPathControlA = [];
+		barBackStatus = false;
 	}
 }
 
@@ -937,6 +936,8 @@ function indexPathControl(mode)
 
 function loadLanguagesPage(animation = true)
 {
+	indexPathControl(false);
+
 	onReading = false;
 
 	if(typeof handlebarsContext.languagesList == 'undefined')
@@ -1222,7 +1223,7 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 function openComic(animation = true, path = true, mainPath = true, end = false)
 {
-	var startImage;
+	var startImage = false;
 	var imagePath = path;
 	var indexStart = 1;
 
@@ -1244,8 +1245,11 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		if(checkError(skipPreviousComic))
 			skipPreviousComic = false;
 
-		if(indexPathControlA.length > 0 && indexPathControlA[indexPathControlA.length - 1] != '')
-			indexPathControlA.push({path: '', mainPath: mainPath});
+		console.log(imagePath);
+		console.log(path);
+		console.log(mainPath);
+
+		indexPathControl(imagePath, mainPath);
 
 		readingActive = true;
 
@@ -1325,7 +1329,9 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 							var sha = sha1(originalPath);
 
 							images[i2] = cache.returnCacheImage(originalPath, sha, function(data){
-								//$('.ri-sha-'+data.sha).css('background-image', 'url('+data.path+')');
+								
+								addImageToDom(data.sha, data.path);
+								
 							});
 
 							images[i2].originalPath = originalPath;
@@ -1411,6 +1417,7 @@ module.exports = {
 	changeSort: changeSort,
 	indexPathControl: indexPathControl,
 	indexPathControlA: indexPathControlA,
+	indexPathControlGoBack: indexPathControlGoBack,
 	folderImages: folderImages,
 	folderImagesWD: folderImagesWD,
 	selectElement: selectElement,
