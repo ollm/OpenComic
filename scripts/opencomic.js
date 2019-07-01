@@ -57,6 +57,8 @@ var compressedMime = {
 		'application/x-cbz',
 		'application/rar',
 		'application/x-cbr',
+		'application/7z',
+		'application/x-7z',
 	],
 	'zip': [
 		'application/zip',
@@ -65,6 +67,10 @@ var compressedMime = {
 	'rar': [
 		'application/rar',
 		'application/x-cbr',
+	],
+	'7z': [
+		'application/7z',
+		'application/x-7z',
 	],
 };
 
@@ -115,6 +121,7 @@ var tempFolder = p.join(os.tmpdir(), 'OpenComic');
 //console.timeEnd('Require time 2');
 
 storage.start(function(){
+
 	config = storage.get('config');
 	handlebarsContext.config = config;
 
@@ -131,6 +138,19 @@ storage.start(function(){
 	//console.timeEnd('Load body');
 
 });
+
+function startApp()
+{
+	template.loadContentRight('index.content.right.module.html', false);
+	template.loadHeader('index.header.html', false);
+	template.loadContentLeft('index.content.left.html', false);
+	template.loadGlobalElement('index.elements.menus.html', 'menus');
+
+	if(electron.remote.process.argv && electron.remote.process.argv[1] && !inArray(electron.remote.process.argv[1], ['--no-sandbox', 'scripts/main.js', '.']) && fs.existsSync(electron.remote.process.argv[1]))
+		openComic(electron.remote.process.argv[1], false);
+	else
+		dom.loadIndexPage(false);
+}
 
 /*Global functions*/
 
@@ -290,7 +310,7 @@ function resetZoom()
 function generateAppMenu()
 {
 	electron.remote.globalShortcut.unregisterAll();
-	electron.remote.globalShortcut.register('CmdOrCtrl+O', function(){openComic()});
+	electron.remote.globalShortcut.register('CmdOrCtrl+O', function(){openComicDialog()});
 	electron.remote.globalShortcut.register('CmdOrCtrl+Q', function(){electron.remote.app.quit()});
 	electron.remote.globalShortcut.register('CmdOrCtrl+0', function(){resetZoom(); generateAppMenu();});
 	electron.remote.globalShortcut.register('CmdOrCtrl+Shift+0', function(){resetZoom(); generateAppMenu();});
@@ -303,8 +323,8 @@ function generateAppMenu()
 		{
 			label: handlebarsContext.language.menu.file.main,
 			submenu: [
-				{label: handlebarsContext.language.menu.file.openFile, click: function(){openComic()}, accelerator: 'CmdOrCtrl+O'},
-				{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComic(true)}},
+				{label: handlebarsContext.language.menu.file.openFile, click: function(){openComicDialog()}, accelerator: 'CmdOrCtrl+O'},
+				{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComicDialog(true)}},
 				{label: handlebarsContext.language.menu.file.addFile, click: function(){addComic()}},
 				{label: handlebarsContext.language.menu.file.addFolder, click: function(){addComic(true)}},
 				{type: 'separator'},
@@ -523,9 +543,15 @@ hb.registerHelper('configIsTrue', function(key, value) {
 
 });
 
-/*Tests functions*/
+function pathIsSupported(path)
+{
+	if(fs.statSync(path).isDirectory() || inArray(mime.getType(path), compatibleMime) || inArray(fileExtension(path), compressedExtensions.all))
+		return true;
 
-function openComic(folders = false)
+	return false;
+}
+
+function openComicDialog(folders = false)
 {
 	if(folders)
 		var properties = ['openDirectory'];
@@ -536,30 +562,54 @@ function openComic(folders = false)
 
 	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
 
-		var filePath = files[0];
+		openComic(files[0]);
+
+	});
+
+}
+
+function openComic(filePath, animation = true)
+{
+	console.log(filePath);
+
+	if(pathIsSupported(filePath))
+	{
+		var selectImage = false, path = false, mainPath = false;
 
 		if(fs.statSync(filePath).isDirectory())
 		{
-			var path = filePath;
+			path = filePath;
 		}
 		else
 		{
 			if(inArray(mime.getType(filePath), compatibleMime))
 			{
+				selectImage = true;
+				path = filePath;
+
 				filePath = p.dirname(filePath);
 
-				var path = filePath;
+				mainPath = filePath;
 			}
 			else
 			{
-				var path = filePath;
+				path = filePath;
 			}
 		}
 
-		dom.loadIndexPage(true, path, false, false, path);
+		if(mainPath === false)
+			mainPath = path;
 
-	});
+		if(onReading)
+			reading.saveReadingProgress();
 
+		console.log(path, mainPath);
+
+		if(selectImage)
+			dom.openComic(animation, path, mainPath);
+		else
+			dom.loadIndexPage(animation, path, false, false, mainPath);
+	}
 }
 
 function addComic(folders = false)
@@ -579,66 +629,73 @@ function addComic(folders = false)
 		{
 			var filePath = files[i];
 
-			if(fs.statSync(filePath).isDirectory())
+			if(pathIsSupported(filePath))
 			{
-				var name = p.basename(filePath);
-				var path = filePath;
-				var compressed = false;
-			}
-			else
-			{
-				if(inArray(mime.getType(filePath), compatibleMime))
+				if(fs.statSync(filePath).isDirectory())
 				{
-					filePath = p.dirname(filePath);
-
 					var name = p.basename(filePath);
 					var path = filePath;
 					var compressed = false;
 				}
 				else
 				{
-					var name = p.basename(filePath).replace(/\.[^\.]*$/, '');
-					var path = filePath;
-					var compressed = true;
+					if(inArray(mime.getType(filePath), compatibleMime))
+					{
+						filePath = p.dirname(filePath);
+
+						var name = p.basename(filePath);
+						var path = filePath;
+						var compressed = false;
+					}
+					else
+					{
+						var name = p.basename(filePath).replace(/\.[^\.]*$/, '');
+						var path = filePath;
+						var compressed = true;
+					}
 				}
-			}
 
-			var comics = storage.get('comics');
+				var comics = storage.get('comics');
 
-			var exists = false;
+				var exists = false;
 
-			for(var key in comics)
-			{
-				if(comics[key].path == path)
+				for(var key in comics)
 				{
-					exists = true;
+					if(comics[key].path == path)
+					{
+						exists = true;
 
-					break;
+						break;
+					}
+				}
+
+				if(!exists)
+				{
+					storage.push('comics', {
+						name: name,
+						path: path,
+						added: time(),
+						compressed: compressed,
+						folder: true,
+						readingProgress: {
+							path: 'Path',
+							lastReading: 0,
+							progress: 0,
+						},
+					});
+
+					added = true;
 				}
 			}
-
-			if(!exists)
-			{
-				storage.push('comics', {
-					name: name,
-					path: path,
-					added: time(),
-					compressed: compressed,
-					folder: true,
-					readingProgress: {
-						path: 'Path',
-						lastReading: 0,
-						progress: 0,
-					},
-				});
-
-				added = true;
-			}
-
 		}
 
 		if(added)
+		{
+			if(onReading)
+				reading.saveReadingProgress();
+
 			dom.loadIndexPage(true);
+		}
 
 	});
 

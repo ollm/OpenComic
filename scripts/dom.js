@@ -187,9 +187,9 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		var key = 'name';
 	}
 
-	fs.readdir(file.realPath(path), function(error, files){
+	let pathFiles = [];
 
-		var comics = [];
+	fs.readdir(file.realPath(path), function(error, files){
 
 		if(files)
 		{
@@ -210,7 +210,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 					});
 
-					comics.push({
+					pathFiles.push({
 						sha: sha,
 						name: fileName.replace(/\.[^\.]*$/, ''),
 						path: filePath,
@@ -257,6 +257,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 										}(i, sha, folderSha, images));
 									}
+
 								});
 
 							})(folderSha)
@@ -278,7 +279,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 						}
 					}
 
-					comics.push({
+					pathFiles.push({
 						name: fileName,
 						path: filePath,
 						mainPath: mainPath,
@@ -289,16 +290,16 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 			}
 		}
 
-		if(!isEmpty(comics))
+		if(!isEmpty(pathFiles))
 		{
-			comics.sort(function (a, b) {
+			pathFiles.sort(function (a, b) {
 				if(foldersFirst && a.folder && !b.folder) return -1; 
 				if(foldersFirst && b.folder && !a.folder) return 1; 
 				return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
 			});
 		}
 
-		handlebarsContext.comics = comics;
+		handlebarsContext.comics = pathFiles;
 
 		// Comic reading progress
 		var comic = false, _comics = storage.get('comics');
@@ -343,7 +344,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 	});
 }
 
-function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, onlyOpen = false)
+function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
 {
 	onReading = false;
 
@@ -498,7 +499,6 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	}
 	else
 	{
-
 		var indexPathA = path;
 
 		indexMainPathA = mainPath;

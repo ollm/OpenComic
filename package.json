@@ -1,136 +1,161 @@
 {
-  "name": "opencomic",
-  "productName": "OpenComic",
-  "version": "0.1.0",
-  "main": "scripts/main.js",
-  "keywords": [
-    "comics",
-    "manga",
-    "books"
-  ],
-  "description": "Comic and manga reader",
-  "homepage": "https://github.com/ollm/OpenComic",
-  "license": "GPL-3.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ollm/OpenComic.git"
-  },
-  "scripts": {
-    "start": "electron-forge start",
-    "rebuild": "electron-rebuild -f -w sharp",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "make-deb": "electron-forge make --platform linux --targets @electron-forge/maker-deb",
-    "make-rpm": "electron-forge make --platform linux --targets @electron-forge/maker-rpm",
-    "make-flatpak": "electron-forge make --platform linux --targets @electron-forge/maker-flatpak",
-    "make-snap": "electron-forge make --platform linux --targets @electron-forge/maker-snap",
-    "make-zip": "electron-forge make --targets @electron-forge/maker-zip",
-    "make-squirrel": "electron-forge make --platform win32 --targets @electron-forge/maker-squirrel"
-  },
-  "dependencies": {
-    "7zip-bin": "^4.1.0",
-    "electron-json-storage": "^4.1.6",
-    "electron-squirrel-startup": "^1.0.0",
-    "electron-window-state": "^5.0.3",
-    "fs": "0.0.1-security",
-    "gm": "^1.23.1",
-    "handlebars": "^4.1.2",
-    "jquery": "^3.4.1",
-    "mime": "^2.4.0",
-    "node-7z": "^1.0.1",
-    "node-unrar": "^0.1.5",
-    "sha1": "^1.1.1",
-    "sharp": "^0.22.1",
-    "unzipper": "^0.10.1"
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.33",
-    "@electron-forge/maker-deb": "^6.0.0-beta.33",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.33",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.33",
-    "@electron-forge/maker-zip": "^6.0.0-beta.33",
-    "@electron-forge/maker-snap": "^6.0.0-beta.33",
-    "@electron-forge/maker-flatpak": "^6.0.0-beta.33",
-    "electron": "^5.0.6",
-    "electron-rebuild": "^1.8.5"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "executableName": "opencomic",
-        "buildVersion": 1,
-        "appCategoryType": "public.app-category.graphics-design",
-        "packageManager": "npm",
-        "ignore": [
-          "out"
-        ]
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "OpenComic",
-            "description": "Comic and manga reader"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {
-            "name": "opencomic",
-            "productName": "OpenComic",
-            "genericName": "Comic Reader",
-            "description": "Comic and manga reader",
-            "maintainer": "ollm",
-            "homepage": "https://github.com/ollm/OpenComic",
-            "section": "graphics",
-            "categories": [
-              "Graphics"
-            ],
-            "depends": [
-              "libvips",
-              "unrar"
-            ]
-          }
-        },
-        {
-          "name": "@electron-forge/maker-snap",
-          "config": {
-            "name": "opencomic",
-            "description": "Comic and manga reader",
-            "executableName": "opencomic"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-flatpak",
-          "config": {
-            "productName": "OpenComic",
-            "genericName": "Comic Reader",
-            "description": "Comic and manga reader",
-            "categories": [
-              "Graphics"
-            ]
-          }
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {
-            "name": "opencomic",
-            "productName": "OpenComic",
-            "genericName": "Comic Reader",
-            "description": "Comic and manga reader",
-            "homepage": "https://github.com/ollm/OpenComic",
-            "categories": [
-              "Graphics"
-            ]
-          }
-        }
-      ]
-    }
-  }
+	"name": "opencomic",
+	"productName": "OpenComic",
+	"version": "0.1.0",
+	"main": "scripts/main.js",
+	"keywords": [
+		"comics",
+		"manga",
+		"books"
+	],
+	"description": "Comic and manga reader",
+	"homepage": "https://github.com/ollm/OpenComic#readme",
+	"license": "GPL-3.0",
+	"author": {
+		"name": "Oleguer Llopart",
+		"email": "oleguer.llopart.mora@gmail.com",
+		"url": "https://github.com/ollm"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ollm/OpenComic.git"
+	},
+	"scripts": {
+		"start": "electron scripts/main.js",
+		"rebuild": "electron-rebuild -f -w sharp",
+		"build": "electron-builder build",
+		"build-linux": "electron-builder --linux deb rpm snap AppImage tar.gz",
+		"build-deb": "electron-builder --linux deb",
+		"build-rpm": "electron-builder --linux rpm",
+		"build-snap": "electron-builder --linux snap",
+		"build-appimage": "electron-builder --linux AppImage",
+		"postinstall": "electron-builder install-app-deps"
+	},
+	"dependencies": {
+		"7zip-bin": "^4.1.0",
+		"electron-json-storage": "^4.1.6",
+		"electron-window-state": "^5.0.3",
+		"fs": "0.0.1-security",
+		"gm": "^1.23.1",
+		"handlebars": "^4.1.2",
+		"jquery": "^3.4.1",
+		"ldd": "^1.0.0",
+		"mime": "^2.4.0",
+		"node-7z": "^1.0.1",
+		"node-unrar": "^0.1.5",
+		"sha1": "^1.1.1",
+		"sharp": "^0.22.1",
+		"unzipper": "^0.10.1"
+	},
+	"devDependencies": {
+		"electron": "^5.0.6",
+		"electron-builder": "^20.44.4",
+		"electron-rebuild": "^1.8.5"
+	},
+	"build": {
+		"appId": "org.opencomic.app",
+		"productName": "OpenComic",
+		"asar": false,
+		"mac": {
+			"category": "public.app-category.graphics-design"
+		},
+		"linux": {
+			"target": [
+				"AppImage",
+				"deb",
+				"rpm",
+				"snap"
+			],
+			"category": "Graphics",
+			"mimeTypes": [
+				"image/jpeg",
+				"image/pjpeg",
+				"image/png",
+				"image/apng",
+				"image/gif",
+				"application/zip",
+				"application/x-cbz",
+				"application/rar",
+				"application/x-cbr",
+				"application/x-rar",
+				"application/7z",
+				"application/x-7z"
+			],
+			"depends": [
+				"gconf2",
+				"gconf-service",
+				"libnotify4",
+				"libappindicator1",
+				"libxtst6",
+				"libnss3",
+				"libvips",
+				"unrar"
+			]
+		},
+		"deb": {
+			"depends": [
+				"gconf2",
+				"gconf-service",
+				"libnotify4",
+				"libappindicator1",
+				"libxtst6",
+				"libnss3",
+				"libvips",
+				"unrar"
+			]
+		},
+		"fileAssociations": [
+			{
+				"description": "Image JPG",
+				"ext": [
+					"jpg",
+					"jpeg",
+					"jfif",
+					"jfif-tbnl",
+					"jpe"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Image PNG",
+				"ext": [
+					"png",
+					"x-png",
+					"apng"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Image GIF",
+				"ext": [
+					"gif"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with ZIP",
+				"ext": [
+					"zip",
+					"cbz"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with RAR",
+				"ext": [
+					"rar",
+					"cbr"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with 7z",
+				"ext": [
+					"7z",
+					"cb7"
+				],
+				"role": "Viewer"
+			}
+		]
+	}
 }
