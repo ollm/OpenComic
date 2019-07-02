@@ -55,7 +55,13 @@
 	"build": {
 		"appId": "org.opencomic.app",
 		"productName": "OpenComic",
-		"asar": false,
+		"files": [
+			"**/*",
+			"!themes/material-design/icons"
+		],
+		"asarUnpack": [
+			"node_modules/sharp"
+		],
 		"mac": {
 			"category": "public.app-category.graphics-design"
 		},
@@ -79,7 +85,10 @@
 				"application/x-cbr",
 				"application/x-rar",
 				"application/7z",
-				"application/x-7z"
+				"application/x-7z",
+				"text/directory",
+				"inode/directory",
+				"application/x-directory"
 			],
 			"depends": [
 				"gconf2",
