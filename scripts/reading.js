@@ -8,7 +8,7 @@ function blankPage(index)
 
 	if(config.readingDoublePage && config.readingDoNotApplyToHorizontals)
 	{
-		for(let i = index; i < (contentNum + 1); i++)
+		for(let i = index; i < (imagesNum + 1); i++)
 		{
 			if(typeof imagesData[i] !== 'undefined')
 			{
@@ -85,6 +85,9 @@ function calculateImagesDistribution()
 
 		if(data.length > 0)
 		{
+			if(data.length == 1 && data[0].width == 2)
+				data.push({index: false, folder: false, blank: true, width: 2});
+
 			imagesDistribution.push(data);
 			indexNum++;
 		}
@@ -108,153 +111,205 @@ function calculateImagesDistribution()
 	}
 }
 
-//Adds the distribution of the images
-function addImagesDistribution()
+var currentComics = [];
+
+function setCurrentComics(comics)
 {
-	var previous = false;
+	currentComics = {};
 
-	for(var key1 in imagesDistribution)
+	for(let key in comics)
 	{
-		for(var key2 in imagesDistribution[key1])
-		{
-			var image = imagesDistribution[key1][key2];
-
-			if(image.blank)
-			{
-				if(template.contentRight('.image-position'+key1+'-'+key2).length == 0)
-				{
-					if(previous)
-						previous.after('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
-					else
-						template.contentRight('.reading-body > div, .reading-lens > div > div').prepend('<div class="r-img blank image-position'+key1+'-'+key2+'"><div></div></div>');
-				}
-			}
-			else
-			{
-				previous = template.contentRight('.r-img-i'+image.index);
-				previous.addClass('image-position'+key1+'-'+key2);
-			}
-		}
+		currentComics[comics[key].index] = comics[key];
 	}
 }
 
+// Add images distribution to html
+function addHtmlImages()
+{
+	calculateImagesDistribution();
+
+	var folderImages = [];
+
+	for(let key1 in imagesDistribution)
+	{
+		var distribution = [];
+
+		for(let key2 in imagesDistribution[key1])
+		{
+			var image = imagesDistribution[key1][key2];
+
+			image.key1 = key1;
+			image.key2 = key2;
+
+			if(!image.folder && !image.blank)
+			{
+				image.path = currentComics[image.index].path;
+				image.image = currentComics[image.index].image;
+			}
+			else if(image.folder)
+			{
+				image.path = currentComics[image.index].path;
+				image.image = currentComics[image.index].image;
+				image.mainPath = currentComics[image.index].mainPath;
+				image.fristImage = currentComics[image.index].fristImage;
+			}
+
+			distribution.push(image);
+		}
+
+		folderImages.push({key1: key1, distribution: distribution});
+	}
+
+	handlebarsContext.folderImages = folderImages;
+
+	var html = template.load('reading.content.right.images.html');
+
+	template.contentRight('.reading-body > div').html(html);
+	template.contentRight('.reading-lens > div > div').html(html);
+
+}
+
 //Calculates the size and position of the images
+function calcAspectRatio(first, second)
+{
+	if(!first)
+		return false;
+
+	if(second)
+	{
+		if(first.folder)
+			first.aspectRatio = 1;
+		else if(first.blank)
+			first.aspectRatio = imagesData[second.index].folder ? 1 : imagesData[second.index].aspectRatio;
+		else
+			first.aspectRatio = imagesData[first.index].aspectRatio;
+	}
+	else
+	{
+		if(first.folder)
+			first.aspectRatio = 1;
+		else
+			first.aspectRatio = imagesData[first.index].aspectRatio;
+	}
+
+	return first;
+}
+
 function disposeImages(data = false)
 {
-
-	calculateImagesDistribution();
-	addImagesDistribution();
-
 	if(data && typeof data.margin !== 'undefined')
 		var margin = data.margin;
 	else
 		var margin = config.readingMargin.margin;
 
-	var content = template.contentRight().children('div');
-	var contentHeight = content.height() - (margin + margin);
+	var contentHeight = template.contentRight().children('div').height();
 
-	var contentRightWidth = template.contentRight('.reading-body').width();
+	if(config.readingView == 'scroll')
+		var contentWidth = template.contentRight('.reading-body').width();
+	else
+		var contentWidth = template.contentRight().width();
 
-	//Width 1
-	var contentWidth1 = contentRightWidth - (margin + margin);
-	var aspectRatio1 = contentWidth1 / contentHeight;
-
-	//Width 2
-	var contentWidth2 = (contentRightWidth / 2) - (margin + (margin / 2));
-	var aspectRatio2 = contentWidth2 / contentHeight;
+	//Width 0
+	var contentWidth0 = contentWidth - (margin * 2);
+	var aspectRatio0 = contentWidth0 / (contentHeight - margin * 2);
 
 	for(let key1 in imagesDistribution)
 	{
-		for(let key2 in imagesDistribution[key1])
+		var first = imagesDistribution[key1][0];
+		var second = imagesDistribution[key1][1];
+
+		first = calcAspectRatio(first, second);
+		second = calcAspectRatio(second, first);
+
+		if(second)
 		{
-			var image = imagesDistribution[key1][key2];
-			var sibling = (imagesDistribution[key1][(key2 == 0) ? 1 : 0] && !imagesDistribution[key1][(key2 == 0) ? 1 : 0].blank) ? imagesDistribution[key1][(key2 == 0) ? 1 : 0] : false;
+			var imageHeight0, imageWidth0, marginLeft0, marginTop0, imageHeight1, imageWidth1, marginLeft1, marginTop1;
 
-			if(!image.folder)
+			var imageHeight = imageHeight0 = imageHeight1 = (contentHeight - margin * 2);
+
+			imageWidth0 = imageHeight0 * first.aspectRatio;
+			imageWidth1 = imageHeight1 * second.aspectRatio;
+
+			var joinWidth = imageWidth0 + imageWidth1 + margin;
+
+			if(joinWidth < contentWidth0 && !(config.readingView == 'scroll' && config.readingViewAdjustToWidth))
 			{
-				if(image.blank)
-					var imageData = imagesData[imagesDistribution[key1][(key2 == 0) ? 1 : 0].index];
-				else
-					var imageData = imagesData[image.index];
-
-				var siblingData = (sibling) ? imagesData[sibling.index] : false;
-
-				if(image.width == 1)
-					var aspectRatio = aspectRatio1;
-				else
-					var aspectRatio = aspectRatio2;
-
-
-				if(image.width == 1)
-					var contentWidth = contentWidth1;
-				else
-					var contentWidth = contentWidth2;
-
-				if(typeof imageData === 'undefined')
-					imageData = {aspectRatio: aspectRatio};
-
-				if(typeof siblingData === 'undefined')
-					siblingData = {aspectRatio: aspectRatio2};
-
-				if(aspectRatio > imageData.aspectRatio && !config.readingViewAdjustToWidth)
-				{
-					if(image.width == 2 && key2 == 1)
-						var marginLeft = margin / 2;
-					else if(image.width == 2)
-						var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) + margin);
-					else
-						var marginLeft = ((contentWidth - contentHeight * imageData.aspectRatio) / 2 + margin);
-
-					template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
-						'height': contentHeight+'px',
-						'width': (contentHeight * imageData.aspectRatio)+'px',
-						'margin-left': marginLeft+'px',
-						'margin-top': margin+'px',
-						'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px',
-						'margin-right': ((image.width == 2 && key2 == 0) ? (margin / 2) : 0) + 'px',
-					});
-				}
-				else
-				{
-					if(sibling)
-					{
-						var imageWidth = (imageData.aspectRatio / (siblingData.aspectRatio + imageData.aspectRatio)) * (contentWidth1 - margin);
-
-						var marginLeftIncrease = (key2 == 1) ? (contentWidth2 - imageWidth) : 0;
-
-						template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
-							'height': (imageWidth / imageData.aspectRatio)+'px',
-							'width': imageWidth+'px',
-							'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - imageWidthimageWidth / imageData.aspectRatio) / 2 + margin))+'px',
-							'margin-left': (((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + marginLeftIncrease) + 'px',
-							'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px',
-							'margin-right': ((image.width == 2 && key2 == 0) ? (margin / 2) : (key2 == 1 ? 0 : margin)) + 'px',
-						});
-					}
-					else
-					{
-						template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
-							'height': (contentWidth / imageData.aspectRatio)+'px',
-							'width': contentWidth+'px',
-							'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / imageData.aspectRatio) / 2 + margin))+'px',
-							'margin-left': ((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + 'px',
-							'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px',
-							'margin-right': ((image.width == 2 && key2 == 0) ? (margin / 2) : (key2 == 1 ? 0 : margin)) + 'px',
-						});
-					}
-				}
+				marginLeft0 = contentWidth / 2 - (imageWidth0 + imageWidth1 + margin) / 2;
+				marginLeft1 = margin;
+				marginTop0 = marginTop1 = margin;
 			}
+			else
+			{
+				imageWidth0 = (first.aspectRatio / (first.aspectRatio + second.aspectRatio)) * (contentWidth0 - margin);
+				imageWidth1 = (second.aspectRatio / (second.aspectRatio + first.aspectRatio)) * (contentWidth0 - margin);
+
+				var imageHeight = imageHeight0 = imageHeight1 = imageWidth0 / first.aspectRatio;
+
+				marginLeft0 = marginLeft1 = margin;
+				marginTop0 = marginTop1 = contentHeight / 2 - imageHeight / 2;
+			}
+
+			if(config.readingView == 'scroll')
+				marginTop0 = marginTop1 = margin;
+
+			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 div').css({
+				'height': imageHeight0+'px',
+				'width': imageWidth0+'px',
+				'margin-left': marginLeft0+'px',
+				'margin-top': marginTop0+'px',
+				'margin-bottom': ((config.readingView == 'scroll' && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-right': '0px',
+			});
+
+			template.contentRight('.image-position'+key1+'-1 img, .image-position'+key1+'-1 div').css({
+				'height': imageHeight1+'px',
+				'width': imageWidth1+'px',
+				'margin-left': marginLeft1+'px',
+				'margin-top': marginTop1+'px',
+				'margin-bottom': ((config.readingView == 'scroll' && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-right': '0px',
+			});
 		}
+		else
+		{
+			if(aspectRatio0 > first.aspectRatio && !(config.readingView == 'scroll' && config.readingViewAdjustToWidth))
+			{
+				var imageHeight = (contentHeight - margin * 2);
+				var imageWidth = imageHeight * first.aspectRatio;
+				var marginLeft = contentWidth / 2 - imageWidth / 2;
+				var marginTop = margin;
+			}
+			else
+			{
+				var imageWidth = (contentWidth - margin * 2);
+				var imageHeight = imageWidth / first.aspectRatio;
+				var marginLeft = margin;
+				var marginTop = contentHeight / 2 - imageHeight / 2;
+			}
+
+			if(config.readingView == 'scroll')
+				marginTop = margin;
+
+			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 div').css({
+				'height': imageHeight+'px',
+				'width': imageWidth+'px',
+				'margin-left': marginLeft+'px',
+				'margin-top': marginTop+'px',
+				'margin-bottom': ((config.readingView == 'scroll' && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-right': '0px',
+			});
+		}
+
+		template.contentRight('.image-position'+key1).css({
+			'width': contentWidth+'px',
+		});
 	}
 }
-
 
 function calculateView()
 {
 	var content = template.contentRight().children('div');
 	var contentWidth = template.contentRight().width();
-
-	var float, height, contentWidth1, contentWidth2;
 
 	if(config.readingView == 'slide')
 	{
@@ -262,11 +317,6 @@ function calculateView()
 			'width': (contentWidth * indexNum)+'px',
 			'height': content.height(),
 		});
-
-		float = 'left';
-		height = content.height()+'px';
-		contentWidth1 = contentWidth+'px';
-		contentWidth2 = (contentWidth / 2)+'px';
 	}
 	else if(config.readingView == 'scroll')
 	{
@@ -277,30 +327,6 @@ function calculateView()
 		template.contentRight('.reading-lens > div > div').css({
 			'width': ($('.content-right').width())+'px',
 		});
-
-		float = 'none';
-		height = 'initial';
-		contentWidth1 = '100%';
-		contentWidth2 = '50%';
-	}
-
-	for(let key1 in imagesDistribution)
-	{
-		for(let key2 in imagesDistribution[key1])
-		{
-			var image = imagesDistribution[key1][key2];
-
-			if(image.width == 1)
-				var contentWidth = contentWidth1;
-			else
-				var contentWidth = contentWidth2;
-
-			template.contentRight('.image-position'+key1+'-'+key2).css({
-				'width': contentWidth,
-				'height': (config.readingView == 'scroll' && image.folder) ? (content.height() - config.readingMargin.margin) +'px' : height,
-				'float': 'left',
-			});
-		}
 	}
 
 	if(config.readingView == 'scroll')
@@ -336,17 +362,12 @@ function stayInLine()
 	}
 	else if(config.readingView == 'scroll')
 	{
-		goToImageCL(currentIndex, false);
-
-		var scrollTop = template.contentRight().children('div').scrollTop();
-		var contentHeight = template.contentRight().children('div').children('div').height();
-
-		var newScrollTop = (previousScrollTop * (1 - (previousContentHeight / contentHeight))) + previousScrollTop
-
-		disableOnScroll(1);
-
-		template.contentRight().children('div').scrollTop(newScrollTop);
-
+		if(currentIndex < 1)
+			showPreviousComic(1, false);
+		else if(currentIndex > contentNum)
+			showNextComic(1, false);
+		else
+			goToIndex(currentIndex, false);
 	}
 }
 
@@ -445,7 +466,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var imgHeight = false;
 
-	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && config.readingViewAdjustToWidth)
+	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (config.readingView == 'scroll' && config.readingViewAdjustToWidth))
 	{
 		image = returnLargerImage(eIndex-1);
 
@@ -471,7 +492,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		currentPageStart = false;
 	}
-	else if(nextPrevious && !currentPageStart && config.readingViewAdjustToWidth)
+	else if(nextPrevious && !currentPageStart && (config.readingView == 'scroll' && config.readingViewAdjustToWidth))
 	{
 		eIndex = currentIndex;
 
@@ -540,7 +561,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		var scrollSum = 0;
 
-		if(config.readingViewAdjustToWidth && pageVisibilityIndex !== false)
+		if((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && pageVisibilityIndex !== false)
 		{
 			imgHeight = image.height() + config.readingMargin.margin;
 
@@ -593,7 +614,7 @@ function goNext()
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= indexNum || (config.readingViewAdjustToWidth && currentPageVisibility < maxPageVisibility))
+	else if(nextIndex <= indexNum || ((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
 	else if(currentIndex == indexNum && dom.nextComic())
 		showNextComic(1, true);
@@ -608,7 +629,7 @@ function goPrevious()
 
 	if(currentIndex > indexNum)
 		showNextComic(2, true);
-	else if(previousIndex > 0 || (config.readingViewAdjustToWidth && currentPageVisibility > 0))
+	else if(previousIndex > 0 || ((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
 	else if(previousIndex == 0 && dom.previousComic())
 		showPreviousComic(1, true);
@@ -932,8 +953,10 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		var top = (y - lensHeightM);
 		var left = (x - (lensWidth / 2));
 
-		var topLens = y - template.contentRight('.reading-body').offset().top - (lensHeightM / zoom);
-		var leftLens = x - template.contentRight('.reading-body').offset().left - lensWidthM;
+		var offset = template.contentRight('.reading-body').offset();
+
+		var topLens = y - offset.top - (lensHeightM / zoom);
+		var leftLens = x - offset.left - lensWidthM;
 
 		template.contentRight('.reading-lens').css({
 			'top': top+'px',
@@ -956,7 +979,7 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		magnifyingGlassView = false;
 	}
 
-	calculateView();
+	//calculateView();
 
 }
 
@@ -993,8 +1016,8 @@ function changePagesView(mode, value, save)
 
 		if(value == 'slide' && config.readingViewAdjustToWidth)
 		{
-			storage.updateVar('config', 'readingViewAdjustToWidth', false);
-			template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
+			//storage.updateVar('config', 'readingViewAdjustToWidth', false);
+			//template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
 		}
 
 		if(value == 'slide')
@@ -1003,12 +1026,13 @@ function changePagesView(mode, value, save)
 			template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
 
 		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
 
 		read(readingCurrentPath, imageIndex);
 	}
 	else if(mode == 2) //Sets the margin of the pages
 	{
-		disposeImages({margin: value})
+		disposeImages({margin: value});
 
 		if(save) storage.updateVar('config', 'readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
 	}
@@ -1017,6 +1041,7 @@ function changePagesView(mode, value, save)
 		storage.updateVar('config', 'readingViewAdjustToWidth', value);
 
 		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
 
 		read(readingCurrentPath, imageIndex);
 	}
@@ -1038,6 +1063,7 @@ function changePagesView(mode, value, save)
 		storage.updateVar('config', 'readingDoublePage', value);
 
 		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
 
 		read(readingCurrentPath, imageIndex);
 	}
@@ -1046,6 +1072,7 @@ function changePagesView(mode, value, save)
 		storage.updateVar('config', 'readingDoNotApplyToHorizontals', value);
 
 		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
 
 		read(readingCurrentPath, imageIndex);
 	}
@@ -1385,10 +1412,13 @@ function read(path, index = 1, end = false)
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
 
-			var rbHeight = template.contentRight('.reading-body').height();
-			var rbWidth = template.contentRight('.reading-body').width();
-			var rbOffsetTop = template.contentRight('.reading-body').offset().top;
-			var rbOffsetLeft = template.contentRight('.reading-body').offset().left;
+			var readingBody = template.contentRight('.reading-body');
+
+			var rbHeight = readingBody.height();
+			var rbWidth = readingBody.width();
+			var offset = readingBody.offset();
+			var rbOffsetTop = offset.top;
+			var rbOffsetLeft = offset.left;
 
 			if(x > rbOffsetLeft && y > rbOffsetTop && x < (rbWidth + rbOffsetLeft) && y < (rbHeight + rbOffsetTop))
 			{
@@ -1561,7 +1591,7 @@ function read(path, index = 1, end = false)
 	});
 
 	imagesNum = template.contentRight('.reading-body img').length;
-	contentNum = template.contentRight('.reading-body .r-img').length;
+	contentNum = template.contentRight('.reading-body .r-img:not(.blank)').length;
 
 	template.contentRight('.reading-body img').each(function() {
 
@@ -1579,6 +1609,7 @@ function read(path, index = 1, end = false)
 			{
 				console.log('show');
 				template.contentRight('.reading-body').css('display', 'block');
+				addHtmlImages();
 				disposeImages();
 				calculateView();
 
@@ -1602,6 +1633,7 @@ function read(path, index = 1, end = false)
 			{
 				console.log('show');
 				template.contentRight('.reading-body').css('display', 'block');
+				addHtmlImages();
 				disposeImages();
 				calculateView();
 
@@ -1628,7 +1660,7 @@ module.exports = {
 	read: read,
 	images: function(){return images},
 	imagesNum: imagesNum,
-	contentNum: contentNum,
+	contentNum: function(){return contentNum},
 	imagesNumLoad: imagesNumLoad,
 	imagesData: function(){return imagesData},
 	goToImage: goToImage,
@@ -1643,11 +1675,14 @@ module.exports = {
 	changePagesView: changePagesView,
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
+	setCurrentComics: setCurrentComics,
+	currentComics: function(){return currentComics},
 	disableOnScroll: disableOnScroll,
 	saveReadingProgress: saveReadingProgress,
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
 	loadBookmarks: loadBookmarks,
 	onReading: function(){return onReading},
+	calculateImagesDistribution: calculateImagesDistribution,
 	imagesDistribution: function(){return imagesDistribution},
 };

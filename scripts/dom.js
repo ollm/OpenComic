@@ -1245,10 +1245,6 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		if(checkError(skipPreviousComic))
 			skipPreviousComic = false;
 
-		console.log(imagePath);
-		console.log(path);
-		console.log(mainPath);
-
 		indexPathControl(imagePath, mainPath);
 
 		readingActive = true;
@@ -1374,6 +1370,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			handlebarsContext.previousComic = skipPreviousComic;
 			handlebarsContext.nextComic = skipNextComic;
 			headerPath(path, mainPath);
+			reading.setCurrentComics(comics);
 
 			template.loadContentLeft('reading.content.left.html', true);
 			template.loadContentRight('reading.content.right.html', true);

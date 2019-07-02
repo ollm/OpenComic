@@ -24,6 +24,13 @@
 	<div class="reading-body" style="display: none;">
 		<div>
 			{{#each comics}}
+				{{#unless folder}}
+				<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
+					<img src="{{chain 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
+				</div>
+				{{/unless}}
+			{{/each}}
+			<!--{{#each comics}}
 			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
 				{{#if folder}}
 				<div class="r-folder" onclick="dom.openComic(true, '{{fristImage}}', '{{mainPath}}')">
@@ -36,14 +43,14 @@
 				<img src="{{chain 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
 				{{/if}}
 			</div>
-			{{/each}}
+			{{/each}}-->
 		</div>
 	</div>
 </div>
 <div class="reading-lens">
 	<div>
 		<div>
-			{{#each comics}}
+			<!--{{#each comics}}
 			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
 				{{#if folder}}
 				<div class="r-folder" onclick="dom.openComic(true, '{{fristImage}}', '{{mainPath}}')">
@@ -56,7 +63,7 @@
 				<img src="{{chain 'invertBackslash' image}}" index="{{index}}">
 				{{/if}}
 			</div>
-			{{/each}}
+			{{/each}}-->
 		</div>
 	</div>
 </div>

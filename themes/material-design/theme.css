@@ -1408,11 +1408,15 @@ body .app
 	position: relative;
 }
 
+.reading-body .r-flex, .reading-lens .r-flex
+{
+	float: left;
+	display: flex;
+}
+
 .reading-body .r-img
 {
 	height: 100%;
-	position: relative;
-
 }
 
 .reading-body .r-img > img, .reading-lens .r-img > img, .reading-body .r-img.blank > div, .reading-lens .r-img.blank > div
@@ -1610,7 +1614,7 @@ body .app
 	color: #333;
 }
 
-/*Scroll*/
+/*Scrolrl*/
 
 
 ::-webkit-scrollbar

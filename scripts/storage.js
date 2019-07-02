@@ -1,4 +1,4 @@
-var changes = 13;
+var changes = 14;
 
 var storageDefault = {
 	config: {
