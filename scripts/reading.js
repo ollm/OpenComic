@@ -153,12 +153,14 @@ function disposeImages(data = false)
 	var content = template.contentRight().children('div');
 	var contentHeight = content.height() - (margin + margin);
 
+	var contentRightWidth = template.contentRight('.reading-body').width();
+
 	//Width 1
-	var contentWidth1 = template.contentRight().width() - (margin + margin);
+	var contentWidth1 = contentRightWidth - (margin + margin);
 	var aspectRatio1 = contentWidth1 / contentHeight;
 
 	//Width 2
-	var contentWidth2 = (template.contentRight().width() / 2) - (margin + (margin / 2));
+	var contentWidth2 = (contentRightWidth / 2) - (margin + (margin / 2));
 	var aspectRatio2 = contentWidth2 / contentHeight;
 
 	for(let key1 in imagesDistribution)
@@ -166,6 +168,7 @@ function disposeImages(data = false)
 		for(let key2 in imagesDistribution[key1])
 		{
 			var image = imagesDistribution[key1][key2];
+			var sibling = (imagesDistribution[key1][(key2 == 0) ? 1 : 0] && !imagesDistribution[key1][(key2 == 0) ? 1 : 0].blank) ? imagesDistribution[key1][(key2 == 0) ? 1 : 0] : false;
 
 			if(!image.folder)
 			{
@@ -174,6 +177,7 @@ function disposeImages(data = false)
 				else
 					var imageData = imagesData[image.index];
 
+				var siblingData = (sibling) ? imagesData[sibling.index] : false;
 
 				if(image.width == 1)
 					var aspectRatio = aspectRatio1;
@@ -187,8 +191,10 @@ function disposeImages(data = false)
 					var contentWidth = contentWidth2;
 
 				if(typeof imageData === 'undefined')
-					imageData =  {aspectRatio: aspectRatio};
+					imageData = {aspectRatio: aspectRatio};
 
+				if(typeof siblingData === 'undefined')
+					siblingData = {aspectRatio: aspectRatio2};
 
 				if(aspectRatio > imageData.aspectRatio && !config.readingViewAdjustToWidth)
 				{
@@ -204,18 +210,38 @@ function disposeImages(data = false)
 						'width': (contentHeight * imageData.aspectRatio)+'px',
 						'margin-left': marginLeft+'px',
 						'margin-top': margin+'px',
-						'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px'
+						'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px',
+						'margin-right': ((image.width == 2 && key2 == 0) ? (margin / 2) : 0) + 'px',
 					});
 				}
 				else
 				{
-					template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
-						'height': (contentWidth / imageData.aspectRatio)+'px',
-						'width': contentWidth+'px',
-						'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / imageData.aspectRatio) / 2 + margin))+'px',
-						'margin-left': ((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + 'px',
-						'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px'
-					});
+					if(sibling)
+					{
+						var imageWidth = (imageData.aspectRatio / (siblingData.aspectRatio + imageData.aspectRatio)) * (contentWidth1 - margin);
+
+						var marginLeftIncrease = (key2 == 1) ? (contentWidth2 - imageWidth) : 0;
+
+						template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
+							'height': (imageWidth / imageData.aspectRatio)+'px',
+							'width': imageWidth+'px',
+							'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - imageWidthimageWidth / imageData.aspectRatio) / 2 + margin))+'px',
+							'margin-left': (((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + marginLeftIncrease) + 'px',
+							'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px',
+							'margin-right': ((image.width == 2 && key2 == 0) ? (margin / 2) : (key2 == 1 ? 0 : margin)) + 'px',
+						});
+					}
+					else
+					{
+						template.contentRight('.image-position'+key1+'-'+key2+' img, .image-position'+key1+'-'+key2+' div').css({
+							'height': (contentWidth / imageData.aspectRatio)+'px',
+							'width': contentWidth+'px',
+							'margin-top': ((config.readingView == 'scroll') ? margin : ((contentHeight - contentWidth / imageData.aspectRatio) / 2 + margin))+'px',
+							'margin-left': ((image.width == 2 && key2 == 1) ? (margin / 2) : margin) + 'px',
+							'margin-bottom': ((config.readingView == 'scroll' && (parseInt(key1) + 1) == indexNum) ? margin : 0)+'px',
+							'margin-right': ((image.width == 2 && key2 == 0) ? (margin / 2) : (key2 == 1 ? 0 : margin)) + 'px',
+						});
+					}
 				}
 			}
 		}
@@ -929,6 +955,8 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		template.contentRight('.reading-lens').removeClass('a').addClass('d');
 		magnifyingGlassView = false;
 	}
+
+	calculateView();
 
 }
 
