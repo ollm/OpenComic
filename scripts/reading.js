@@ -148,6 +148,7 @@ function addHtmlImages()
 			}
 			else if(image.folder)
 			{
+				image.name = currentComics[image.index].name;
 				image.path = currentComics[image.index].path;
 				image.image = currentComics[image.index].image;
 				image.mainPath = currentComics[image.index].mainPath;
@@ -252,7 +253,7 @@ function disposeImages(data = false)
 			if(config.readingView == 'scroll')
 				marginTop0 = marginTop1 = margin;
 
-			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 div').css({
+			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight0+'px',
 				'width': imageWidth0+'px',
 				'margin-left': marginLeft0+'px',
@@ -261,7 +262,7 @@ function disposeImages(data = false)
 				'margin-right': '0px',
 			});
 
-			template.contentRight('.image-position'+key1+'-1 img, .image-position'+key1+'-1 div').css({
+			template.contentRight('.image-position'+key1+'-1 img, .image-position'+key1+'-1 > div').css({
 				'height': imageHeight1+'px',
 				'width': imageWidth1+'px',
 				'margin-left': marginLeft1+'px',
@@ -290,7 +291,7 @@ function disposeImages(data = false)
 			if(config.readingView == 'scroll')
 				marginTop = margin;
 
-			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 div').css({
+			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight+'px',
 				'width': imageWidth+'px',
 				'margin-left': marginLeft+'px',
