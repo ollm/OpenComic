@@ -2,10 +2,10 @@
 
 {{#each bookmarks}}
 	<div class="reading-bookmark menu-simple-element">
-		<span>{{#if current}}{{../language.reading.current-reading}}: {{/if}}{{#if continueReading}}{{../language.comics.continueReading}}: {{/if}}{{name}}</span>
+		<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.current-reading}}: {{/if}}{{name}}</span>
 	</div>
 	{{#each bookmarks}}
-		<div class="reading-bookmark menu-simple-element" onclick="{{#if ../current}}reading.goToImage({{index}});{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
+		<div class="reading-bookmark menu-simple-element" onclick="{{#if ../current}}reading.goToImage({{index}}, true);{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
 			<div class="menu-simple-element-image menu-simple-element-image-{{sha}}" style="background-image: url({{thumbnail}})"></div>
 			<span>{{index}}</span>
 			{{name}}

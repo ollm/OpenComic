@@ -400,11 +400,12 @@ function goToImageCL(index, animation = true)
 }
 
 //Go to a specific comic image
-function goToImage(imageIndex)
+function goToImage(imageIndex, bookmarks = false)
 {
 	if(typeof imagesData[imageIndex] !== 'undefined')
 	{
-		saveReadingProgressA = true;
+		if(!bookmarks)
+			saveReadingProgressA = true;
 
 		readingDirection = true; 
 		goToIndex(imagesData[imageIndex].position + 1);
@@ -1331,7 +1332,7 @@ function loadBookmarks()
 
 		bookmarks.push({
 			continueReading: true,
-			current: false,
+			current: (bookmarkDirname === readingCurrentPath) ? true : false,
 			path: bookmarkDirname,
 			name: p.basename(bookmarkDirname),
 			bookmarks: [{
@@ -1637,7 +1638,7 @@ function read(path, index = 1, end = false)
 				if(imageIndex)
 				{
 					saveReadingProgressA = true;
-					
+
 					goToImageCL(imageIndex, true);
 				}
 
