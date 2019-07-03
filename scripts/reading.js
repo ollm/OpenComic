@@ -1132,7 +1132,6 @@ function createAndDeleteBookmark(index = false)
 			if(!imageIndex)
 				imageIndex = image.index;
 
-
 			if(isBookmark(p.normalize(images[image.index].path)))
 			{
 				if(imageBookmark)
@@ -1228,6 +1227,7 @@ function saveReadingProgress(path = false)
 	}
 
 	storage.updateVar('readingProgress', dom.indexMainPathA(), {
+		index: imagesPath[path],
 		path: path,
 		lastReading: +new Date(),
 		progress: 0,
@@ -1235,6 +1235,7 @@ function saveReadingProgress(path = false)
 
 	if(comic && path)
 	{
+		comic.readingProgress.path = imagesPath[path];
 		comic.readingProgress.path = path;
 		comic.readingProgress.lastReading = +new Date();
 		comic.readingProgress.progress = 0;
@@ -1258,15 +1259,18 @@ function loadBookmarks()
 
 			if(typeof bookmarksPath[bookmarkDirname] === 'undefined') bookmarksPath[bookmarkDirname] = [];
 
-			var thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha1(bookmark.path), function(data){
+			let sha = sha1(bookmark.path);
 
-				console.log(data);
+			var thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha, function(data){
 
-			})
+				addImageToDom(data.sha, data.path);
+
+			});
 
 			bookmarksPath[bookmarkDirname].push({
 				name: decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, '')),
 				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
+				sha: sha,
 				mainPath: mainPath,
 				thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 				path: bookmark.path,
@@ -1288,6 +1292,7 @@ function loadBookmarks()
 		});
 
 		bookmarks.push({
+			continueReading: false,
 			current: (path === readingCurrentPath) ? true : false,
 			path: path,
 			name: p.basename(path),
@@ -1295,11 +1300,41 @@ function loadBookmarks()
 		});
 	}
 
+	var readingProgress = storage.getKey('readingProgress', dom.indexMainPathA());
+
+	if(readingProgress)
+	{
+		var bookmarkDirname = p.dirname(readingProgress.path);
+
+		let sha = sha1(readingProgress.path);
+
+		var thumbnail = cache.returnCacheImage(file.realPath(readingProgress.path), sha, function(data){
+
+			addImageToDom(data.sha, data.path);
+
+		});
+
+		bookmarks.push({
+			continueReading: true,
+			current: false,
+			path: bookmarkDirname,
+			name: p.basename(bookmarkDirname),
+			bookmarks: [{
+				name: decodeURI(p.basename(readingProgress.path).replace(/\.[^\.]*$/, '')),
+				index: readingProgress.index,
+				sha: sha,
+				mainPath: readingProgress.mainPath,
+				thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+				path: readingProgress.path,
+			}],
+		});
+	}
+
 	bookmarks.sort(function (a, b) {
 
-		if(a.current) return -1;
+		if(a.current || a.continueReading) return -1;
 
-		if(b.current) return 1;
+		if(b.current && !a.continueReading) return 1;
 
 		return dom.orderBy(a, b, 'simple', 'path');
 	});

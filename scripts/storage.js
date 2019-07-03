@@ -1,4 +1,4 @@
-var changes = 14;
+var changes = 16;
 
 var storageDefault = {
 	config: {
@@ -11,7 +11,7 @@ var storageDefault = {
 		viewIndex: 'module',
 		view: 'module',
 		sortIndex: 'name',
-		sort: 'name',
+		sort: 'name-numeric',
 		sortInvertIndex: false,
 		sortInvert: false,
 		readingView: 'slide',
@@ -54,6 +54,7 @@ var storageDefault = {
 		bookmark: false,
 		folder: true,
 		readingProgress: {
+			index: 0,
 			path: '',
 			lastReading: 0,
 			progress: 0,
@@ -66,11 +67,12 @@ var storageDefault = {
 		}]
 	},
 	readingProgress: {
-		wildcard: [{
+		wildcard: {
+			index: 0,
 			path: 'Path',
 			lastReading: 0,
 			progress: 0,
-		}]
+		}
 	},
 	cache: {
 		wildcard: {
