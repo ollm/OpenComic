@@ -404,6 +404,8 @@ function goToImage(imageIndex)
 {
 	if(typeof imagesData[imageIndex] !== 'undefined')
 	{
+		saveReadingProgressA = true;
+
 		readingDirection = true; 
 		goToIndex(imagesData[imageIndex].position + 1);
 		goToImageCL(imageIndex, true)
@@ -609,6 +611,8 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 //Go to the next comic page
 function goNext()
 {
+	saveReadingProgressA = true;
+
 	var nextIndex = currentIndex + 1;
 
 	readingDirection = true;
@@ -624,6 +628,8 @@ function goNext()
 //Go to the previous comic page
 function goPrevious()
 {
+	saveReadingProgressA = true;
+
 	var previousIndex = currentIndex - 1;
 
 	readingDirection = false;
@@ -639,6 +645,8 @@ function goPrevious()
 //Go to the start of the comic
 function goStart()
 {
+	saveReadingProgressA = true;
+
 	if(currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic()))
 	{
 		goPrevious();
@@ -654,6 +662,8 @@ function goStart()
 //Go to the end of the comic
 function goEnd()
 {
+	saveReadingProgressA = true;
+
 	if(currentIndex < 1 || (currentIndex == indexNum && dom.nextComic()))
 	{
 		goNext();
@@ -1189,10 +1199,15 @@ function createAndDeleteBookmark(index = false)
 	}
 }
 
+var saveReadingProgressA = false;
+
 //Save current reading progress
 function saveReadingProgress(path = false)
 {
 	if(!onReading)
+		return;
+
+	if(!saveReadingProgressA)
 		return;
 
 	var mainPath = dom.indexMainPathA();
@@ -1388,6 +1403,8 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 function read(path, index = 1, end = false)
 {
 	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {};
+
+	saveReadingProgressA = false;
 
 	readingCurrentPath = path;
 
@@ -1618,7 +1635,11 @@ function read(path, index = 1, end = false)
 				});
 
 				if(imageIndex)
+				{
+					saveReadingProgressA = true;
+					
 					goToImageCL(imageIndex, true);
+				}
 
 				currentIndex = parseInt(selIndex) + 1;
 			}
@@ -1715,6 +1736,7 @@ module.exports = {
 	currentComics: function(){return currentComics},
 	disableOnScroll: disableOnScroll,
 	saveReadingProgress: saveReadingProgress,
+	saveReadingProgressA: function(){return saveReadingProgressA},
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
 	loadBookmarks: loadBookmarks,
