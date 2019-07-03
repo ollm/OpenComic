@@ -1,31 +1,31 @@
 {
-	"appName":	"OpenComic",
+	"appName": "OpenComic",
 	"global": {
-		"comics":	"Cómics",
-		"collection":	"Colección",
-		"sort":	"Ordenar",
-		"sort-v":	{
-			"name":	"Nombre",
+		"comics": "Cómics",
+		"collection": "Colección",
+		"sort": "Ordenar",
+		"sort-v": {
+			"name": "Nombre",
 			"number": "Numerico",
 			"name-number": "Nombre / Numerico",
 			"last-add": "Último agregado",
-			"last-reading":	"Última lectura",
-			"folders-first":	"Carpetas primero",
-			"invert":	"Invertir"
+			"last-reading": "Última lectura",
+			"folders-first": "Carpetas primero",
+			"invert": "Invertir"
 		},
-		"view":	"Vista",
-		"view-v":	{
-			"module":	"Cuadricula",
+		"view": "Vista",
+		"view-v": {
+			"module": "Cuadricula",
 			"list": "Lista"
 		},
 		"contextMenu": {
 			"remove": "Retirar"
 		},
-		"back":	"Atrás",
-		"add":	"Añadir",
-		"language":	"Idioma",
-		"theme":	"Tema",
-		"night-mode":	"Modo noche"
+		"back": "Atrás",
+		"add": "Añadir",
+		"language": "Idioma",
+		"theme": "Tema",
+		"night-mode": "Modo noche"
 	},
 	"comics": {
 		"continueReading": "Continuar leyendo",
@@ -33,25 +33,25 @@
 		"emptyFolder": "No hay ningún archivo compatible en esta carpeta."
 	},
 	"reading": {
-		"first-page":	"Primera página",
-		"previous":	"Anterior",
-		"next":	"Siguiente",
-		"last-page":	"Última página",
+		"firstPage": "Primera página",
+		"previous": "Anterior",
+		"next": "Siguiente",
+		"lastPage": "Última página",
 
-		"pages":	"Páginas",
-		"pages-v":	{
-			"slide":	"Deslizar",
-			"scroll":	"Desplazarse hacia abajo",
-			"adjust-to-width":	"Ajustar a lo ancho",
-			"margin":	"Margen",
-			"double-page":	"Doble página",
+		"pages": "Páginas",
+		"pages-v": {
+			"slide": "Deslizar",
+			"scroll": "Desplazarse hacia abajo",
+			"adjust-to-width": "Ajustar a lo ancho",
+			"margin": "Margen",
+			"double-page": "Doble página",
 			"do-not-apply-to-horizontals": "No aplicar a las horizontales",
 			"auto-blank-page": "Página en blanco automática",
-			"reading-delay-skip":	"Retraso al cambiar de cómic",
-			"animation-speed":	"Velocidad de la animación"
+			"reading-delay-skip": "Retraso al cambiar de cómic",
+			"animation-speed": "Velocidad de la animación"
 		},
-		"magnifying-glass":	"Lupa",
-		"magnifying-glass-v":	{
+		"magnifying-glass": "Lupa",
+		"magnifying-glass-v": {
 			"activate": "Activar lupa",
 			"zoom": "Aumentos",
 			"size": "Tamaño",
@@ -80,7 +80,10 @@
 			"zoomOut": "Reducir zoom",
 			"toggleFullScreen": "Pantalla completa"
 		},
-		"debbug": {
+		"goto": {
+			"main": "Ir"
+		},
+		"debug": {
 			"main": "Depuracion",
 			"reload": "Recargar",
 			"forceReload": "Recargar de forma forzada",

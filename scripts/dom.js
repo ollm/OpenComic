@@ -346,6 +346,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 {
 	onReading = false;
 
+	generateAppMenu();
+
 	if(!path)
 	{
 		var sort = config.sortIndex;
@@ -940,6 +942,8 @@ function loadLanguagesPage(animation = true)
 
 	onReading = false;
 
+	generateAppMenu();
+
 	if(typeof handlebarsContext.languagesList == 'undefined')
 	{
 		var languagesList = $.parseJSON(readFileApp('/languages/languagesList.json'));
@@ -1382,6 +1386,8 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			events.events();
 
 			reading.read(path, indexStart, end);
+
+			generateAppMenu();
 
 		});
 	}

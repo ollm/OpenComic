@@ -1,31 +1,31 @@
 {
-	"appName":	"OpenComic",
+	"appName": "OpenComic",
 	"global": {
-		"comics":	"Comics",
-		"collection":	"Collection",
-		"sort":	"Sort",
-		"sort-v":	{
-			"name":	"Name",
+		"comics": "Comics",
+		"collection": "Collection",
+		"sort": "Sort",
+		"sort-v": {
+			"name": "Name",
 			"number": "Number",
 			"name-number": "Name / Number",
 			"last-add": "Last add",
-			"last-reading":	"Last reading",
-			"folders-first":	"Folders first",
-			"invert":	"Invert"
+			"last-reading": "Last reading",
+			"folders-first": "Folders first",
+			"invert": "Invert"
 		},
-		"view":	"View",
-		"view-v":	{
+		"view": "View",
+		"view-v": {
 			"module": "Grid",
 			"list": "List"
 		},
 		"contextMenu": {
 			"remove": "Remove"
 		},
-		"back":	"Back",
-		"add":	"Add",
-		"language":	"Language",
-		"theme":	"Theme",
-		"night-mode":	"Night mode"
+		"back": "Back",
+		"add": "Add",
+		"language": "Language",
+		"theme": "Theme",
+		"night-mode": "Night mode"
 	},
 	"comics": {
 		"continueReading": "Continue reading",
@@ -33,25 +33,25 @@
 		"emptyFolder": "There is no compatible file in this folder."
 	},
 	"reading": {
-		"first-page":	"First page",
-		"previous":	"Previous",
-		"next":	"Next",
-		"last-page":	"Last page",
+		"firstPage": "First page",
+		"previous": "Previous",
+		"next": "Next",
+		"lastPage": "Last page",
 
-		"pages":	"Pages",
-		"pages-v":	{
-			"slide":	"Slide",
-			"scroll":	"Scroll down",
-			"adjust-to-width":	"Adjust to width",
-			"margin":	"Margin",
-			"double-page":	"Double page",
+		"pages": "Pages",
+		"pages-v": {
+			"slide": "Slide",
+			"scroll": "Scroll down",
+			"adjust-to-width": "Adjust to width",
+			"margin": "Margin",
+			"double-page": "Double page",
 			"do-not-apply-to-horizontals": "Do not apply to horizontals",
 			"auto-blank-page": "Auto blank page",
-			"reading-delay-skip":	"Delay in changing comics",
-			"animation-speed":	"Animation speed"
+			"reading-delay-skip": "Delay in changing comics",
+			"animation-speed": "Animation speed"
 		},
-		"magnifying-glass":	"Magnifying glass",
-		"magnifying-glass-v":	{
+		"magnifying-glass": "Magnifying glass",
+		"magnifying-glass-v": {
 			"activate": "Activate",
 			"zoom": "Zoom",
 			"size": "Size",
@@ -63,5 +63,31 @@
 		"remove-bookmark": "Remove bookmark",
 		"empty-bookmarks": "No bookmarks",
 		"current-reading": "Current reading"
+	},
+	"menu": {
+		"file": {
+			"main": "File",
+			"openFile": "Open file",
+			"openFolder": "Open folder",
+			"addFile": "Add file",
+			"addFolder": "Add folder",
+			"quit": "Quit"
+		},
+		"view": {
+			"main": "View",
+			"resetZoom": "Reset zoom",
+			"zoomIn": "Zoom in",
+			"zoomOut": "Zoom out",
+			"toggleFullScreen": "Full screen"
+		},
+		"goto": {
+			"main": "Goto"
+		},
+		"debug": {
+			"main": "Debug",
+			"reload": "Reload",
+			"forceReload": "Force reload",
+			"toggleDevTools": "Toggle DevTools"
+		}
 	}
 }

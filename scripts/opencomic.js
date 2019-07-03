@@ -252,7 +252,8 @@ function loadLanguage(lan = false)
 
 		loadLanguageMD(handlebarsContext.language, data);
 
-		generateAppMenu();
+		generateAppMenu(true);
+		generateAppMenuShortcut();
 	}
 }
 
@@ -307,55 +308,71 @@ function resetZoom()
 	electron.webFrame.setZoomLevel(0);
 }
 
-function generateAppMenu()
+function generateAppMenuShortcut()
 {
 	electron.remote.globalShortcut.unregisterAll();
-	electron.remote.globalShortcut.register('CmdOrCtrl+O', function(){openComicDialog()});
+	/*electron.remote.globalShortcut.register('CmdOrCtrl+O', function(){openComicDialog()});
 	electron.remote.globalShortcut.register('CmdOrCtrl+Q', function(){electron.remote.app.quit()});
 	electron.remote.globalShortcut.register('CmdOrCtrl+0', function(){resetZoom(); generateAppMenu();});
 	electron.remote.globalShortcut.register('CmdOrCtrl+Shift+0', function(){resetZoom(); generateAppMenu();});
 	electron.remote.globalShortcut.register('CmdOrCtrl+Plus', function(){zoomIn(); generateAppMenu();});
 	electron.remote.globalShortcut.register('CmdOrCtrl+=', function(){zoomIn(); generateAppMenu();});
 	electron.remote.globalShortcut.register('CmdOrCtrl+-', function(){zoomOut(); generateAppMenu();});
-	electron.remote.globalShortcut.register('CmdOrCtrl+Shift+-', function(){zoomOut(); generateAppMenu();});
+	electron.remote.globalShortcut.register('CmdOrCtrl+Shift+-', function(){zoomOut(); generateAppMenu();});*/
+}
 
-	var menuTemplate = [
-		{
-			label: handlebarsContext.language.menu.file.main,
-			submenu: [
-				{label: handlebarsContext.language.menu.file.openFile, click: function(){openComicDialog()}, accelerator: 'CmdOrCtrl+O'},
-				{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComicDialog(true)}},
-				{label: handlebarsContext.language.menu.file.addFile, click: function(){addComic()}},
-				{label: handlebarsContext.language.menu.file.addFolder, click: function(){addComic(true)}},
-				{type: 'separator'},
-				{role: 'quit', label: handlebarsContext.language.menu.file.quit},
-			]
-		},
-		{
-			label: handlebarsContext.language.menu.view.main,
-			submenu: [
-				{label: handlebarsContext.language.menu.view.resetZoom, enabled: (electron.webFrame.getZoomFactor() != 1 ? true : false), click: function(){resetZoom(); generateAppMenu();}, accelerator: 'CmdOrCtrl+0'},
-				{label: handlebarsContext.language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
-				{label: handlebarsContext.language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
-				{type: 'separator'},
-				{role: 'toggleFullScreen', label: handlebarsContext.language.menu.view.toggleFullScreen},
-			]
-		},
-		{
-			label: handlebarsContext.language.menu.debbug.main,
-			submenu: [
-				{role: 'reload', label: handlebarsContext.language.menu.debbug.reload},
-				{role: 'forceReload', label: handlebarsContext.language.menu.debbug.forceReload},
-				{role: 'toggleDevTools', label: handlebarsContext.language.menu.debbug.toggleDevTools},
-			]
-		}
-	];
+var generateAppMenuData = {resetZoom: null, onReading: null};
 
+function generateAppMenu(force = false)
+{
+	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading)
+	{
+		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading};
 
+		var menuTemplate = [
+			{
+				label: handlebarsContext.language.menu.file.main,
+				submenu: [
+					{label: handlebarsContext.language.menu.file.openFile, click: function(){openComicDialog()}, accelerator: 'CmdOrCtrl+O'},
+					{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComicDialog(true)}},
+					{label: handlebarsContext.language.menu.file.addFile, click: function(){addComic()}},
+					{label: handlebarsContext.language.menu.file.addFolder, click: function(){addComic(true)}},
+					{type: 'separator'},
+					{role: 'quit', label: handlebarsContext.language.menu.file.quit},
+				]
+			},
+			{
+				label: handlebarsContext.language.menu.view.main,
+				submenu: [
+					{label: handlebarsContext.language.menu.view.resetZoom, enabled: (electron.webFrame.getZoomFactor() != 1 ? true : false), click: function(){resetZoom(); generateAppMenu();}, accelerator: 'CmdOrCtrl+0'},
+					{label: handlebarsContext.language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
+					{label: handlebarsContext.language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
+					{type: 'separator'},
+					{role: 'toggleFullScreen', label: handlebarsContext.language.menu.view.toggleFullScreen},
+				]
+			},
+			{
+				label: handlebarsContext.language.menu.goto.main,
+				submenu: [
+					{label: handlebarsContext.language.reading.firstPage, enabled: onReading, click: function(){reading.goStart();}, accelerator: 'Home'},
+					{label: handlebarsContext.language.reading.previous, enabled: onReading, click: function(){reading.goPrevious();}, accelerator: 'Backspace'},
+					{label: handlebarsContext.language.reading.next, enabled: onReading, click: function(){reading.goNext();}, accelerator: 'Space'},
+					{label: handlebarsContext.language.reading.lastPage, enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'End'},
+				]
+			},
+			{
+				label: handlebarsContext.language.menu.debug.main,
+				submenu: [
+					{role: 'reload', label: handlebarsContext.language.menu.debug.reload},
+					{role: 'forceReload', label: handlebarsContext.language.menu.debug.forceReload},
+					{role: 'toggleDevTools', label: handlebarsContext.language.menu.debug.toggleDevTools},
+				]
+			}
+		];
 
-
-	var menu = electron.remote.Menu.buildFromTemplate(menuTemplate);
-	electron.remote.Menu.setApplicationMenu(menu);
+		var menu = electron.remote.Menu.buildFromTemplate(menuTemplate);
+		electron.remote.Menu.setApplicationMenu(menu);
+	}
 }
 
 function escapeBackSlash(string)
@@ -562,7 +579,8 @@ function openComicDialog(folders = false)
 
 	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
 
-		openComic(files[0]);
+		if(files[0])
+			openComic(files[0]);
 
 	});
 
