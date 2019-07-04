@@ -1,19 +1,19 @@
 <div class="menu" id="index-sort">
 	<div class="menu-simple elevation8" style="width: 256px;">
-		<div class="menu-simple-element sort-name" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort-v.name}}</div>
-		<div class="menu-simple-element sort-numeric" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort-v.number}}</div>
-		<div class="menu-simple-element sort-name-numeric" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort-v.name-number}}</div>
+		<div class="menu-simple-element sort-name" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
+		<div class="menu-simple-element sort-numeric" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
+		<div class="menu-simple-element sort-name-numeric" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
 		{{#if comicsIndex}}
-		<div class="menu-simple-element sort-last-add" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort-v.last-add}}</div>
-		<div class="menu-simple-element sort-last-reading" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort-v.last-reading}}</div>
+		<div class="menu-simple-element sort-last-add" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
+		<div class="menu-simple-element sort-last-reading" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
 		{{else}}
 		<div class="menu-simple-text">
-			{{language.global.sort-v.folders-first}}
+			{{language.global.sort.foldersFirst}}
 			<div class="switch{{#if config.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)"></div>
 		</div>
 		{{/if}}
 		<div class="menu-simple-text">
-			{{language.global.sort-v.invert}}
+			{{language.global.sort.invert}}
 			<div class="switch{{#if comicsIndex}}{{#if config.sortInvertIndex}} a{{/if}}{{else}}{{#if config.sortInvert}} a{{/if}}{{/if}}" on="dom.changeSort(2, true, {{comicsIndexVar}})" off="dom.changeSort(2, false, {{comicsIndexVar}})"></div>
 		</div>
 	</div>

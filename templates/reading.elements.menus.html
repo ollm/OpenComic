@@ -1,23 +1,23 @@
 <div class="menu" id="reading-magnifying-glass">
 	<div class="menu-simple elevation8" style="width: 256px;">
 		<div class="menu-simple-text">
-			{{language.reading.magnifying-glass-v.activate}}
+			{{language.reading.magnifyingGlass.activate}}
 			<div class="switch{{#if config.readingMagnifyingGlass}} a{{/if}}" on="reading.activeMagnifyingGlass(true)" off="reading.activeMagnifyingGlass(false)"></div>
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.zoom}}<div><span>{{normalizeNumber config.readingMagnifyingGlassZoom "0.1"}}</span>x</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifyingGlass.zoom}}<div><span>{{normalizeNumber config.readingMagnifyingGlassZoom "0.1"}}</span>x</div></div>
 			<input class="range" type="range" max="6" min="1.5" step="0.1" value="{{config.readingMagnifyingGlassZoom}}" onrange="reading.changeMagnifyingGlass(1, \{{value}}, \{{toEnd}})">
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifyingGlass.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
 			<input class="range" type="range" max="500" min="100" step="2" value="{{config.readingMagnifyingGlassSize}}" onrange="reading.changeMagnifyingGlass(2, \{{value}}, \{{toEnd}})">
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.ratio}}<div><span>{{normalizeNumber config.readingMagnifyingGlassRatio "0.01"}}</span>:1</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifyingGlass.ratio}}<div><span>{{normalizeNumber config.readingMagnifyingGlassRatio "0.01"}}</span>:1</div></div>
 			<input class="range" type="range" max="2" min="0.5" step="0.01" value="{{config.readingMagnifyingGlassRatio}}" onrange="reading.changeMagnifyingGlass(3, \{{value}}, \{{toEnd}})">
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifying-glass-v.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
+			<div class="simple-slider-text">{{language.reading.magnifyingGlass.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
 			<input class="range" type="range" max="250" min="0" step="1" value="{{config.readingMagnifyingGlassRadius}}" onrange="reading.changeMagnifyingGlass(4, \{{value}}, \{{toEnd}})">
 		</div>
 	</div>
@@ -25,38 +25,38 @@
 </div>
 <div class="menu reading-elements-menus" id="reading-pages">
 	<div class="menu-simple elevation8" style="width: 300px;">
-		<div class="menu-simple-element pages-slide" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages-v.slide}}</div>
-		<div class="menu-simple-element pages-scroll" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages-v.scroll}}</div>
+		<div class="menu-simple-element pages-slide" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
+		<div class="menu-simple-element pages-scroll" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
 		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-reading-manga">
-			{{language.reading.pages-v.readingManga}}
+			{{language.reading.pages.readingManga}}
 			<div class="switch{{#if config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)"></div>
 		</div>
 		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-double-page">
-			{{language.reading.pages-v.double-page}}
+			{{language.reading.pages.doublePage}}
 			<div class="switch{{#if config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)"></div>
 		</div>
 		<div class="menu-simple-text reading-do-not-apply-to-horizontals{{#unless config.readingDoublePage}} disable-pointer{{/unless}}">
-			{{language.reading.pages-v.do-not-apply-to-horizontals}}
+			{{language.reading.pages.doNotApplyToHorizontals}}
 			<div class="switch{{#if config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)"></div>
 		</div>
 		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-ajust-to-width{{#compare config.readingView '==' 'slide'}} disable-pointer{{/compare}}">
-			{{language.reading.pages-v.adjust-to-width}}
+			{{language.reading.pages.adjustToWidth}}
 			<div class="switch{{#if config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)"></div>
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.pages-v.margin}}<div><span>{{config.readingMargin.margin}}</span>px</div></div>
+			<div class="simple-slider-text">{{language.reading.pages.margin}}<div><span>{{config.readingMargin.margin}}</span>px</div></div>
 			<input class="range" type="range" max="100" min="0" step="1" value="{{config.readingMargin.margin}}" onrange="reading.changePagesView(2, \{{value}}, \{{toEnd}})">
 		</div>
 		<div class="menu-simple-separator"></div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.pages-v.reading-delay-skip}}<div><span>{{normalizeNumber config.readingDelayComicSkip "0.2"}}</span>s</div></div>
+			<div class="simple-slider-text">{{language.reading.pages.readingDelaySkip}}<div><span>{{normalizeNumber config.readingDelayComicSkip "0.2"}}</span>s</div></div>
 			<input class="range" type="range" max="10" min="0" step="0.1" value="{{config.readingDelayComicSkip}}" onrange="reading.changePagesView(5, \{{value}}, \{{toEnd}})">
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.pages-v.animation-speed}}<div><span>{{normalizeNumber config.readingViewSpeed "0.05"}}</span>s</div></div>
+			<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><span>{{normalizeNumber config.readingViewSpeed "0.05"}}</span>s</div></div>
 			<input class="range" type="range" max="4" min="0" step="0.05" value="{{config.readingViewSpeed}}" onrange="reading.changePagesView(4, \{{value}}, \{{toEnd}})">
 		</div>
 	</div>

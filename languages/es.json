@@ -3,18 +3,18 @@
 	"global": {
 		"comics": "Cómics",
 		"collection": "Colección",
-		"sort": "Ordenar",
-		"sort-v": {
+		"sort": {
+			"main": "Ordenar",
 			"name": "Nombre",
 			"number": "Numerico",
-			"name-number": "Nombre / Numerico",
-			"last-add": "Último agregado",
-			"last-reading": "Última lectura",
-			"folders-first": "Carpetas primero",
+			"nameNumber": "Nombre / Numerico",
+			"lastAdd": "Último agregado",
+			"lastReading": "Última lectura",
+			"foldersFirst": "Carpetas primero",
 			"invert": "Invertir"
 		},
-		"view": "Vista",
-		"view-v": {
+		"view": {
+			"main": "Vista",
 			"module": "Cuadricula",
 			"list": "Lista"
 		},
@@ -25,7 +25,7 @@
 		"add": "Añadir",
 		"language": "Idioma",
 		"theme": "Tema",
-		"night-mode": "Modo noche"
+		"nightMode": "Modo noche"
 	},
 	"comics": {
 		"continueReading": "Continuar leyendo",
@@ -38,32 +38,31 @@
 		"next": "Siguiente",
 		"lastPage": "Última página",
 
-		"pages": "Páginas",
-		"pages-v": {
+		"pages": {
+			"main": "Páginas",
 			"slide": "Deslizar",
 			"scroll": "Desplazarse hacia abajo",
-			"adjust-to-width": "Ajustar a lo ancho",
+			"adjustToWidth": "Ajustar a lo ancho",
 			"margin": "Margen",
-			"double-page": "Doble página",
-			"do-not-apply-to-horizontals": "No aplicar a las horizontales",
-			"auto-blank-page": "Página en blanco automática",
-			"reading-delay-skip": "Retraso al cambiar de cómic",
-			"animation-speed": "Velocidad de la animación",
+			"doublePage": "Doble página",
+			"doNotApplyToHorizontals": "No aplicar a las horizontales",
+			"readingDelaySkip": "Retraso al cambiar de cómic",
+			"animationSpeed": "Velocidad de la animación",
 			"readingManga": "Lectura de manga (Invertir)"
 		},
-		"magnifying-glass": "Lupa",
-		"magnifying-glass-v": {
+		"magnifyingGlass": {
+			"main": "Lupa",
 			"activate": "Activar lupa",
 			"zoom": "Aumentos",
 			"size": "Tamaño",
 			"ratio": "Proporción",
 			"radius": "Radio"
 		},
-		"view-bookmarks": "Ver marcadores",
-		"add-bookmark": "Añadir marcador",
-		"remove-bookmark": "Eliminar marcador",
-		"empty-bookmarks": "No hay ningún marcador",
-		"current-reading": "Lectura actual"
+		"viewBookmarks": "Ver marcadores",
+		"addBookmark": "Añadir marcador",
+		"removeBookmark": "Eliminar marcador",
+		"emptyBookmarks": "No hay ningún marcador",
+		"currentReading": "Lectura actual"
 	},
 	"menu": {
 		"file": {

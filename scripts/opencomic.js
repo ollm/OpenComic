@@ -33,8 +33,8 @@ const electron = require('electron'),
 
 var testVar = 'test';
 
-var handlebarsContext = new Object();
-var language = new Object();
+var handlebarsContext = {};
+var language = {};
 var config = false;
 var onReading = false;
 var readingTouchEvent = false;
@@ -220,10 +220,13 @@ function existsFile(file)
 
 function loadLanguageMD(hbc, obj)
 {
-	for(var key in obj)
+	for(let key in obj)
 	{
 		if(typeof obj[key] == 'object')
 		{
+			if(!hbc[key])
+				hbc[key] = {};
+
 			loadLanguageMD(hbc[key], obj[key]);
 		}
 		else
@@ -251,7 +254,7 @@ function loadLanguage(lan = false)
 
 		data = $.parseJSON(data);
 
-		loadLanguageMD(handlebarsContext.language, data);
+		loadLanguageMD(language, data);
 
 		generateAppMenu(true);
 		generateAppMenuShortcut();
@@ -332,41 +335,41 @@ function generateAppMenu(force = false)
 
 		var menuTemplate = [
 			{
-				label: handlebarsContext.language.menu.file.main,
+				label: language.menu.file.main,
 				submenu: [
-					{label: handlebarsContext.language.menu.file.openFile, click: function(){openComicDialog()}, accelerator: 'CmdOrCtrl+O'},
-					{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComicDialog(true)}, accelerator: 'CmdOrCtrl+Shift+O'},
-					{label: handlebarsContext.language.menu.file.addFile, click: function(){addComic()}},
-					{label: handlebarsContext.language.menu.file.addFolder, click: function(){addComic(true)}},
+					{label: language.menu.file.openFile, click: function(){openComicDialog()}, accelerator: 'CmdOrCtrl+O'},
+					{label: language.menu.file.openFolder, click: function(){openComicDialog(true)}, accelerator: 'CmdOrCtrl+Shift+O'},
+					{label: language.menu.file.addFile, click: function(){addComic()}},
+					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
-					{role: 'quit', label: handlebarsContext.language.menu.file.quit},
+					{role: 'quit', label: language.menu.file.quit},
 				]
 			},
 			{
-				label: handlebarsContext.language.menu.view.main,
+				label: language.menu.view.main,
 				submenu: [
-					{label: handlebarsContext.language.menu.view.resetZoom, enabled: (electron.webFrame.getZoomFactor() != 1 ? true : false), click: function(){resetZoom(); generateAppMenu();}, accelerator: 'CmdOrCtrl+0'},
-					{label: handlebarsContext.language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
-					{label: handlebarsContext.language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
+					{label: language.menu.view.resetZoom, enabled: (electron.webFrame.getZoomFactor() != 1 ? true : false), click: function(){resetZoom(); generateAppMenu();}, accelerator: 'CmdOrCtrl+0'},
+					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
+					{label: language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
 					{type: 'separator'},
-					{role: 'toggleFullScreen', label: handlebarsContext.language.menu.view.toggleFullScreen},
+					{role: 'toggleFullScreen', label: language.menu.view.toggleFullScreen},
 				]
 			},
 			{
-				label: handlebarsContext.language.menu.goto.main,
+				label: language.menu.goto.main,
 				submenu: [
-					{label: handlebarsContext.language.reading.firstPage, enabled: onReading, click: function(){reading.goStart();}, accelerator: 'Home'},
-					{label: handlebarsContext.language.reading.previous, enabled: onReading, click: function(){reading.goPrevious();}, accelerator: 'Backspace'},
-					{label: handlebarsContext.language.reading.next, enabled: onReading, click: function(){reading.goNext();}, accelerator: 'Space'},
-					{label: handlebarsContext.language.reading.lastPage, enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'End'},
+					{label: language.reading.firstPage, enabled: onReading, click: function(){reading.goStart();}, accelerator: 'Home'},
+					{label: language.reading.previous, enabled: onReading, click: function(){reading.goPrevious();}, accelerator: 'Backspace'},
+					{label: language.reading.next, enabled: onReading, click: function(){reading.goNext();}, accelerator: 'Space'},
+					{label: language.reading.lastPage, enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'End'},
 				]
 			},
 			{
-				label: handlebarsContext.language.menu.debug.main,
+				label: language.menu.debug.main,
 				submenu: [
-					{role: 'reload', label: handlebarsContext.language.menu.debug.reload},
-					{role: 'forceReload', label: handlebarsContext.language.menu.debug.forceReload},
-					{role: 'toggleDevTools', label: handlebarsContext.language.menu.debug.toggleDevTools},
+					{role: 'reload', label: language.menu.debug.reload},
+					{role: 'forceReload', label: language.menu.debug.forceReload},
+					{role: 'toggleDevTools', label: language.menu.debug.toggleDevTools},
 				]
 			}
 		];

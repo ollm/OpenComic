@@ -2,7 +2,7 @@
 
 {{#each bookmarks}}
 	<div class="reading-bookmark menu-simple-element">
-		<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.current-reading}}: {{/if}}{{name}}</span>
+		<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.currentReading}}: {{/if}}{{name}}</span>
 	</div>
 	{{#each bookmarks}}
 		<div class="reading-bookmark menu-simple-element" onclick="{{#if ../current}}reading.goToImage({{index}}, true);{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
@@ -12,7 +12,7 @@
 		</div>
 	{{/each}}
 {{else}}
-	<div class="menu-simple-text">{{language.reading.empty-bookmarks}}</div>
+	<div class="menu-simple-text">{{language.reading.emptyBookmarks}}</div>
 {{/each}}
 
 <!--

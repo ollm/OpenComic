@@ -3,18 +3,18 @@
 	"global": {
 		"comics": "Comics",
 		"collection": "Collection",
-		"sort": "Sort",
-		"sort-v": {
+		"sort": {
+			"main": "Sort",
 			"name": "Name",
 			"number": "Number",
-			"name-number": "Name / Number",
-			"last-add": "Last add",
-			"last-reading": "Last reading",
-			"folders-first": "Folders first",
+			"nameNumber": "Name / Number",
+			"lastAdd": "Last add",
+			"lastReading": "Last reading",
+			"foldersFirst": "Folders first",
 			"invert": "Invert"
 		},
-		"view": "View",
-		"view-v": {
+		"view": {
+			"main": "View",
 			"module": "Grid",
 			"list": "List"
 		},
@@ -25,7 +25,7 @@
 		"add": "Add",
 		"language": "Language",
 		"theme": "Theme",
-		"night-mode": "Night mode"
+		"nightMode": "Night mode"
 	},
 	"comics": {
 		"continueReading": "Continue reading",
@@ -38,32 +38,31 @@
 		"next": "Next",
 		"lastPage": "Last page",
 
-		"pages": "Pages",
-		"pages-v": {
+		"pages": {
+			"main": "Pages",
 			"slide": "Slide",
 			"scroll": "Scroll down",
-			"adjust-to-width": "Adjust to width",
+			"adjustToWidth": "Adjust to width",
 			"margin": "Margin",
-			"double-page": "Double page",
-			"do-not-apply-to-horizontals": "Do not apply to horizontals",
-			"auto-blank-page": "Auto blank page",
-			"reading-delay-skip": "Delay in changing comics",
-			"animation-speed": "Animation speed",
+			"doublePage": "Double page",
+			"doNotApplyToHorizontals": "Do not apply to horizontals",
+			"readingDelaySkip": "Delay in changing comics",
+			"animationSpeed": "Animation speed",
 			"readingManga": "Reading manga (Inverted)"
 		},
-		"magnifying-glass": "Magnifying glass",
-		"magnifying-glass-v": {
+		"magnifyingGlass": {
+			"main": "Magnifying glass",
 			"activate": "Activate",
 			"zoom": "Zoom",
 			"size": "Size",
 			"ratio": "Ratio",
 			"radius": "Radius"
 		},
-		"view-bookmarks": "View bookmarks",
-		"add-bookmark": "Add bookmark",
-		"remove-bookmark": "Remove bookmark",
-		"empty-bookmarks": "No bookmarks",
-		"current-reading": "Current reading"
+		"viewBookmarks": "View bookmarks",
+		"addBookmark": "Add bookmark",
+		"removeBookmark": "Remove bookmark",
+		"emptyBookmarks": "No bookmarks",
+		"currentReading": "Current reading"
 	},
 	"menu": {
 		"file": {
