@@ -1,7 +1,7 @@
 {{#if comicsReadingProgress}}
 <div class="continue-reading" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
 	<div>
-		<div class="continue-reading-sha-{{sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
+		<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
 		<span>{{language.comics.continueReading}}: {{comicsReadingProgress.pathText}}</span>
 	</div>
 </div>

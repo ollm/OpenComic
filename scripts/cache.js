@@ -61,7 +61,7 @@ function processTheImageQueue()
 
 					data[sha].size = img.size;
 
-					img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha});
+					img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha}, img.vars);
 
 					queuedImages.splice(0, 1);
 
@@ -86,7 +86,7 @@ function processTheImageQueue()
 
 			data[sha].size = img.size;
 
-			img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha});
+			img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha}, img.vars);
 
 			queuedImages.splice(0, 1);
 
@@ -106,17 +106,21 @@ function processTheImageQueue()
 	});
 }
 
-function addImageToQueue(file, size, sha, callback)
+function addImageToQueue(file, size, sha, callback, vars)
 {
-	queuedImages.push({file: file, size: size, sha: sha, callback: callback});
+	queuedImages.push({file: file, size: size, sha: sha, callback: callback, vars: vars});
 
 	if(!processingTheImageQueue)
 	{
 		processingTheImageQueue = true;
 
-		process.nextTick(function() {
-  			processTheImageQueue();
-		});
+		setTimeout(function(){
+
+			process.nextTick(function() {
+				processTheImageQueue();
+			});
+
+		}, 0);
 	}
 }
 
@@ -127,7 +131,7 @@ function cleanQueue()
 
 var data = false;
 
-function returnCacheImage(file, sha, callback = false)
+function returnCacheImage(file, sha, callback = false, vars = false)
 {
 
 	if(!data) data = storage.get('cache');
@@ -135,6 +139,7 @@ function returnCacheImage(file, sha, callback = false)
 	if(!callback)
 	{
 		callback = sha;
+		vars = callback;
 		sha = sha1(file);
 	}
 	
@@ -146,7 +151,7 @@ function returnCacheImage(file, sha, callback = false)
 
 	if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(cacheFolder, sha+'.jpg')))
 	{
-		addImageToQueue(file, size, sha, callback);
+		addImageToQueue(file, size, sha, callback, vars);
 
 		return {cache: false, path: /*path*/'', sha: sha};
 	}
@@ -156,7 +161,7 @@ function returnCacheImage(file, sha, callback = false)
 
 		if(imgCache.size != size)
 		{
-			addImageToQueue(file, size, sha, callback);
+			addImageToQueue(file, size, sha, callback, vars);
 
 			return {cache: true, path: escapeBackSlash(path), sha: sha};
 		}

@@ -109,6 +109,7 @@ var compatibleExtensions = [
 
 const storage = require(p.join(appDir, 'scripts/storage.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
+	queue = require(p.join(appDir, 'scripts/queue.js')),
 	template = require(p.join(appDir, 'scripts/template.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
@@ -334,7 +335,7 @@ function generateAppMenu(force = false)
 				label: handlebarsContext.language.menu.file.main,
 				submenu: [
 					{label: handlebarsContext.language.menu.file.openFile, click: function(){openComicDialog()}, accelerator: 'CmdOrCtrl+O'},
-					{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComicDialog(true)}},
+					{label: handlebarsContext.language.menu.file.openFolder, click: function(){openComicDialog(true)}, accelerator: 'CmdOrCtrl+Shift+O'},
 					{label: handlebarsContext.language.menu.file.addFile, click: function(){addComic()}},
 					{label: handlebarsContext.language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
@@ -579,7 +580,7 @@ function openComicDialog(folders = false)
 
 	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
 
-		if(files[0])
+		if(files && files[0])
 			openComic(files[0]);
 
 	});

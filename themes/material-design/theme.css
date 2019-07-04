@@ -1154,6 +1154,7 @@ body .app
 	float: left;
 	background-repeat: no-repeat;
 	line-height: 97px;
+	text-align: center;
 }
 
 .content-view-module .folder-images > img
@@ -1175,6 +1176,11 @@ body .app
 	animation-name: show-in;
 	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
+}
+
+.content-view-module .folder-images > img.s
+{
+	opacity: 1;
 }
 
 /* Continue reading */

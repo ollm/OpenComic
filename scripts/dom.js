@@ -139,20 +139,38 @@ function calcReadingProgressWD()
 
 }
 
-function addImageToDom(querySelector, path)
+function addImageToDom(querySelector, path, animation = true)
 {
-	if($('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).length > 0)
-		$('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).attr('src', path).addClass('a');
+	if(animation)
+	{
+		var src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
+
+		if(src.length > 0)
+			src.attr('src', path).addClass('a');
+		else
+			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'background-image': 'url('+path+')'}).addClass('a');
+
+		$('.ri-sha-'+querySelector).attr('src', path);
+
+		$('.continue-reading-sha-'+querySelector).css({'background-image': 'url('+path+')'}).addClass('a');
+	}
 	else
-		$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css('background-image', 'url('+path+')').addClass('a');
+	{
+		var src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
 
-	$('.ri-sha-'+querySelector).attr('src', path);
+		if(src.length > 0)
+			src.attr('src', path);
+		else
+			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'transition': '0s', 'background-image': 'url('+path+')'});
 
-	$('.continue-reading-sha-'+querySelector).css('background-image', 'url('+path+')').addClass('a');
+		$('.ri-sha-'+querySelector).attr('src', path);
+		$('.continue-reading-sha-'+querySelector).css({'transition': '0s', 'background-image': 'url('+path+')'});
+	}
 }
 
 function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 {
+	queue.clean('folderThumbnails');
 
 	if(!path)
 	{
@@ -219,63 +237,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 				}
 				else if(fs.statSync(realPath).isDirectory() || inArray(fileExtension(filePath), compressedExtensions.all))
 				{
-					var images = folderImagesWD(filePath, 4);
-
-					if(checkError(images))
-					{
-						var folderSha = sha1(filePath);
-
-						var images = [
-							{cache: false, path: '', sha: folderSha+'-0'},
-							{cache: false, path: '', sha: folderSha+'-1'},
-							{cache: false, path: '', sha: folderSha+'-2'},
-							{cache: false, path: '', sha: folderSha+'-3'},
-						];
-
-						if(file.containsCompressed(filePath))
-						{
-							(function(folderSha){
-
-								addFolderImagesQueue(filePath, 4, function(images){
-
-									for(var i = 0; i < images.length; i++)
-									{
-										var sha = sha1(images[i]);
-
-										(function(i, sha, folderSha, images){
-
-											var image = cache.returnCacheImage(images[i], sha, function(data){
-
-												addImageToDom(folderSha+'-'+i, data.path);
-
-											});
-
-											if(image.cache)
-												addImageToDom(folderSha+'-'+i, image.path);
-
-										}(i, sha, folderSha, images));
-									}
-
-								});
-
-							})(folderSha)
-						}
-
-						//Compatibility has to be added to uncompress the file and create the thumbnails
-					}
-					else
-					{
-						for(var i2 = 0; i2 < images.length; i2++)
-						{
-							var sha = sha1(images[i2]);
-
-							images[i2] = cache.returnCacheImage(images[i2], sha, function(data){
-
-								addImageToDom(data.sha, data.path);
-
-							});
-						}
-					}
+					var images = getFolderThumbnailsAsync(filePath);
 
 					pathFiles.push({
 						name: fileName,
@@ -325,6 +287,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 			});
 
+			readingProgress[mainPath].sha = sha;
 			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
 			readingProgress[mainPath].mainPath = mainPath;	
 			readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath);	
@@ -413,61 +376,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(let key in comics)
 			{
-				var images = folderImagesWD(comics[key].path, 4);
-
-				if(checkError(images))
-				{
-					var folderSha = sha1(comics[key].path);
-
-					var images = [
-						{cache: false, path: '', sha: folderSha+'-0'},
-						{cache: false, path: '', sha: folderSha+'-1'},
-						{cache: false, path: '', sha: folderSha+'-2'},
-						{cache: false, path: '', sha: folderSha+'-3'},
-					];
-
-					if(file.containsCompressed(comics[key].path))
-					{
-						(function(folderSha){
-
-							addFolderImagesQueue(comics[key].path, 4, function(images){
-
-								for(var i = 0; i < images.length; i++)
-								{
-									var sha = sha1(images[i]);
-
-									(function(i, sha, folderSha, images){
-
-										var image = cache.returnCacheImage(images[i], sha, function(data){
-
-											addImageToDom(folderSha, data.path);
-
-										});
-
-										if(image.cache)
-											addImageToDom(folderSha, image.path);
-
-									}(i, sha, folderSha, images));
-								}
-							});
-
-						})(folderSha)
-					}
-					//Compatibility has to be added to uncompress the file and create the thumbnails
-				}
-				else
-				{
-					for(var i = 0; i < images.length; i++)
-					{
-						var sha = sha1(images[i]);
-
-						images[i] = cache.returnCacheImage(images[i], sha, function(data){
-
-							addImageToDom(data.sha, data.path);
-
-						});
-					}
-				}
+				var images = getFolderThumbnailsAsync(comics[key].path);
 
 				comics[key].images = images;
 				comics[key].mainPath = comics[key].path;
@@ -698,6 +607,166 @@ function previousComic(path, mainPath)
 	return false;
 }
 
+function getFolderThumbnailsAsync(path)
+{
+	var folderSha = sha1(path);
+
+	var images = [
+		{cache: false, path: '', sha: folderSha+'-0'},
+		{cache: false, path: '', sha: folderSha+'-1'},
+		{cache: false, path: '', sha: folderSha+'-2'},
+		{cache: false, path: '', sha: folderSha+'-3'},
+	];
+
+	queue.add('folderThumbnails', function(path, folderSha) {
+
+		var images = folderImagesWD(path, 4);
+
+		if(checkError(images))
+		{
+			var error = images;
+
+			var images = [
+				{cache: false, path: '', sha: folderSha+'-0'},
+				{cache: false, path: '', sha: folderSha+'-1'},
+				{cache: false, path: '', sha: folderSha+'-2'},
+				{cache: false, path: '', sha: folderSha+'-3'},
+			];
+
+			var realPath = file.realPath(error.compressedPath, -1);
+
+			if(file.containsCompressed(path) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
+			{
+				(function(folderSha){
+
+					addFolderImagesQueue(path, 4, function(images){
+
+						for(var i = 0; i < images.length; i++)
+						{
+							var sha = sha1(images[i]);
+
+							(function(i, sha, folderSha, images){
+
+								var image = cache.returnCacheImage(images[i], sha, function(data, vars){
+
+									addImageToDom(data.sha, data.path);
+									addImageToDom(folderSha+'-'+vars.i, data.path);
+
+								}, {i: i});
+
+								if(image.cache)
+								{
+									addImageToDom(sha, image.path);
+									addImageToDom(folderSha+'-'+i, image.path);
+								}
+
+							}(i, sha, folderSha, images));
+						}
+
+					});
+
+				})(folderSha)
+			}
+
+			//Compatibility has to be added to uncompress the file and create the thumbnails
+		}
+		else
+		{
+			for(let i = 0; i < images.length; i++)
+			{
+				var sha = sha1(images[i]);
+
+				images[i] = cache.returnCacheImage(images[i], sha, function(data, vars){
+
+					addImageToDom(data.sha, data.path);
+					addImageToDom(vars.folderSha+'-'+vars.i, data.path);
+
+				}, {i: i, folderSha: folderSha});
+
+				if(images[i].cache)
+				{
+					addImageToDom(sha, images[i].path, false);
+					addImageToDom(folderSha+'-'+i, images[i].path, false);
+				}
+			}
+		}
+
+	}, path, folderSha);
+
+	return images;
+}
+
+function getFolderThumbnailsWD(path)
+{
+	var images = folderImagesWD(path, 4);
+
+	if(checkError(images))
+	{
+		var error = images;
+
+		var folderSha = sha1(path);
+
+		var images = [
+			{cache: false, path: '', sha: folderSha+'-0'},
+			{cache: false, path: '', sha: folderSha+'-1'},
+			{cache: false, path: '', sha: folderSha+'-2'},
+			{cache: false, path: '', sha: folderSha+'-3'},
+		];
+
+		var realPath = file.realPath(error.compressedPath, -1);
+
+		if(file.containsCompressed(path) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
+		{
+			(function(folderSha){
+
+				addFolderImagesQueue(path, 4, function(images){
+
+					for(var i = 0; i < images.length; i++)
+					{
+						var sha = sha1(images[i]);
+
+						(function(i, sha, folderSha, images){
+
+							var image = cache.returnCacheImage(images[i], sha, function(data, vars){
+
+								addImageToDom(data.sha, data.path);
+								addImageToDom(folderSha+'-'+vars.i, data.path);
+
+							}, {i: i});
+
+							if(image.cache)
+							{
+								addImageToDom(sha, image.path);
+								addImageToDom(folderSha+'-'+i, image.path);
+							}
+
+						}(i, sha, folderSha, images));
+					}
+
+				});
+
+			})(folderSha)
+		}
+
+		//Compatibility has to be added to uncompress the file and create the thumbnails
+	}
+	else
+	{
+		for(let i = 0; i < images.length; i++)
+		{
+			var sha = sha1(images[i]);
+
+			images[i] = cache.returnCacheImage(images[i], sha, function(data){
+
+				addImageToDom(data.sha, data.path);
+
+			});
+		}
+	}
+
+	return images;
+}
+
 var queuedFolderImages = [], processingFolderImagesQueue = false;
 
 function addFolderImagesQueue(path, num, callback = false, processQueue = true)
@@ -706,9 +775,13 @@ function addFolderImagesQueue(path, num, callback = false, processQueue = true)
 
 	if(!processingFolderImagesQueue && processQueue)
 	{
-		process.nextTick(function() {
-			processFolderImagesQueue();
-		});
+		setTimeout(function(){
+
+			process.nextTick(function() {
+				processFolderImagesQueue();
+			});
+
+		}, 0);
 	}
 }
 
