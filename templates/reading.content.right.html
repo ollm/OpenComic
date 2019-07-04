@@ -24,46 +24,20 @@
 	<div class="reading-body" style="display: none;">
 		<div>
 			{{#each comics}}
-				{{#unless folder}}
-				<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
+				{{#if folder}}
+				<div class="r-img r-img-i{{index}} folder"></div>
+				{{else}}
+				<div class="r-img r-img-i{{index}}">
 					<img src="{{chain 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
 				</div>
-				{{/unless}}
-			{{/each}}
-			<!--{{#each comics}}
-			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
-				{{#if folder}}
-				<div class="r-folder" onclick="dom.openComic(true, '{{fristImage}}', '{{mainPath}}')">
-					<div>
-						<div class="r-folder-img material-icon">folder</div>	
-						<div class="r-folder-name">{{name}}</div>
-					</div>	
-				</div>
-				{{else}}
-				<img src="{{chain 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
 				{{/if}}
-			</div>
-			{{/each}}-->
+			{{/each}}
 		</div>
 	</div>
 </div>
-<div class="reading-lens">
+<div class="reading-lens h">
 	<div>
 		<div>
-			<!--{{#each comics}}
-			<div class="r-img r-img-i{{index}}{{#if folder}} folder{{/if}}">
-				{{#if folder}}
-				<div class="r-folder" onclick="dom.openComic(true, '{{fristImage}}', '{{mainPath}}')">
-					<div>
-						<div class="r-folder-img material-icon">folder</div>	
-						<div class="r-folder-name">{{name}}</div>
-					</div>	
-				</div>
-				{{else}}
-				<img src="{{chain 'invertBackslash' image}}" index="{{index}}">
-				{{/if}}
-			</div>
-			{{/each}}-->
 		</div>
 	</div>
 </div>
