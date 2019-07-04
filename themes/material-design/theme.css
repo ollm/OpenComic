@@ -366,6 +366,13 @@ body
 body .app
 {
 	transition: color 0.2s;
+	display: none;
+}
+
+body .preload
+{
+	opacity: 0;
+	display: block;
 }
 
 .disable-pointer

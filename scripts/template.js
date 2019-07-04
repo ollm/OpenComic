@@ -1,29 +1,14 @@
 //Load template
 
-var templatesCache = new Object();
-
 function loadTemplate(file)
 {
-	if(typeof templatesCache[file] === 'undefined')
-	{
-		if(existsFileApp('./themes/'+config.theme+'/templates/'+file))
-		{
-			templatesCache[file] = hb.compile(readFileApp('./themes/'+config.theme+'/templates/'+file));
-			return templatesCache[file](handlebarsContext);
-		}
-		else
-		{
-			templatesCache[file] = hb.compile(readFileApp('./templates/'+file));
-			return templatesCache[file](handlebarsContext);	
-		}
-	}
-	else
-	{
-		return templatesCache[file](handlebarsContext);
-	}
+	if(templates.templatesCacheTheme[config.theme] && templates.templatesCacheTheme[config.theme][file])
+		return templates.templatesCacheTheme[config.theme][file](handlebarsContext);
+	else if(templates.templatesCache[file])
+		return templates.templatesCache[file](handlebarsContext);
 }
 
-function registerPartial(name, file)
+/*function registerPartial(name, file)
 {
 	if(existsFileApp('./themes/'+config.theme+'/templates/'+file))
 	{
@@ -33,12 +18,12 @@ function registerPartial(name, file)
 	{
 		hb.registerPartial(name, readFileApp('./templates/'+file));
 	}
-}
-
+}*/
 
 function loadTemplateQuery(querySelector, file)
 {
-	$(querySelector).html(loadTemplate(file));
+	var element = document.querySelector(querySelector);
+	if(element) element.innerHTML = loadTemplate(file);
 }
 
 function loadTemplateFunction(file, functionVar)

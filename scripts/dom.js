@@ -1505,5 +1505,6 @@ module.exports = {
 	removeComic: removeComic,
 	calcReadingProgress: calcReadingProgress,
 	calcReadingProgressWD: calcReadingProgressWD,
+	justifyViewModule: justifyViewModule,
 	indexMainPathA: function(){return indexMainPathA},
 };

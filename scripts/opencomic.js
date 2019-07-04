@@ -110,6 +110,7 @@ var compatibleExtensions = [
 const storage = require(p.join(appDir, 'scripts/storage.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
+	templates = require(p.join(appDir, 'scripts/templates.js')),
 	template = require(p.join(appDir, 'scripts/template.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
@@ -117,7 +118,7 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js'));
 
-var tempFolder = p.join(os.tmpdir(), 'OpenComic');
+var tempFolder = p.join(os.tmpdir(), 'opencomic');
 
 //console.timeEnd('Require time 2');
 
@@ -138,6 +139,8 @@ storage.start(function(){
 
 	//console.timeEnd('Load body');
 
+	startApp();
+
 });
 
 function startApp()
@@ -151,6 +154,15 @@ function startApp()
 		openComic(electron.remote.process.argv[1], false);
 	else
 		dom.loadIndexPage(false);
+
+	document.fonts.onloadingdone = function (fontFaceSetEvent) {
+
+		$('body .app').css('display', 'block');
+		$('body .preload').css('display', 'none');
+		dom.justifyViewModule();
+
+	};
+
 }
 
 /*Global functions*/
@@ -592,8 +604,6 @@ function openComicDialog(folders = false)
 
 function openComic(filePath, animation = true)
 {
-	console.log(filePath);
-
 	if(pathIsSupported(filePath))
 	{
 		var selectImage = false, path = false, mainPath = false;
@@ -624,8 +634,6 @@ function openComic(filePath, animation = true)
 
 		if(onReading)
 			reading.saveReadingProgress();
-
-		console.log(path, mainPath);
 
 		if(selectImage)
 			dom.openComic(animation, path, mainPath);

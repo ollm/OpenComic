@@ -21,14 +21,15 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "electron scripts/main.js",
+		"start": "npm run prebuild && electron scripts/main.js",
 		"rebuild": "electron-rebuild -f -w sharp",
-		"build": "electron-builder build",
-		"build-linux": "electron-builder --linux deb rpm snap AppImage tar.gz",
-		"build-deb": "electron-builder --linux deb",
-		"build-rpm": "electron-builder --linux rpm",
-		"build-snap": "electron-builder --linux snap",
-		"build-appimage": "electron-builder --linux AppImage",
+		"prebuild": "nodejs scripts/build.js",
+		"build": "npm run prebuild && electron-builder build",
+		"build-linux": "npm run prebuild && electron-builder --linux deb rpm snap AppImage tar.gz",
+		"build-deb": "npm run prebuild && electron-builder --linux deb",
+		"build-rpm": "npm run prebuild && electron-builder --linux rpm",
+		"build-snap": "npm run prebuild && electron-builder --linux snap",
+		"build-appimage": "npm run prebuild && electron-builder --linux AppImage",
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
@@ -57,7 +58,9 @@
 		"productName": "OpenComic",
 		"files": [
 			"**/*",
-			"!themes/material-design/icons"
+			"!themes/material-design/icons",
+			"!themes/*/templates",
+			"!templates"
 		],
 		"asarUnpack": [
 			"node_modules/sharp"
