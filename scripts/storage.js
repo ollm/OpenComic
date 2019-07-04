@@ -28,10 +28,11 @@ var storageDefault = {
 		readingMagnifyingGlassZoom: 2,
 		readingMagnifyingGlassSize: 200,
 		readingMagnifyingGlassRatio: 1.25,
-		readingMagnifyingGlassRadius: 2,
+		readingMagnifyingGlassRadius: 4,
 		readingDelayComicSkip: 1,
 		readingDoublePage: false,
-		readingDoNotApplyToHorizontals: true
+		readingDoNotApplyToHorizontals: true,
+		readingManga: false
 	},
 	comics: [{
 		name: 'Name',
@@ -215,7 +216,10 @@ function start(callback)
 			{
 				if(config.appVersion != _package.version || config.changes != changes)
 				{
-					var newData = updateStorageMD(data[key], storageDefault[key]);
+					if(config.changes != changes)
+						var newData = updateStorageMD(data[key], storageDefault[key]);
+					else
+						var newData = data[key];
 
 					if(key == 'config')
 					{

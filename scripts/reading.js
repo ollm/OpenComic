@@ -123,20 +123,40 @@ function setCurrentComics(comics)
 	}
 }
 
+function applyMangaReading(distribution)
+{
+	_distribution = JSON.parse(JSON.stringify(distribution));
+
+	if(config.readingManga)
+	{
+		if(config.readingView != 'scroll')
+			_distribution.reverse();
+
+		for(let i = 0, len = _distribution.length; i < len; i++)
+		{
+			_distribution[i].reverse();
+		}
+	}
+
+	return _distribution;
+}
+
 // Add images distribution to html
 function addHtmlImages()
 {
 	calculateImagesDistribution();
 
+	var _imagesDistribution = applyMangaReading(imagesDistribution);
+
 	var folderImages = [];
 
-	for(let key1 in imagesDistribution)
+	for(let key1 in _imagesDistribution)
 	{
 		var distribution = [];
 
-		for(let key2 in imagesDistribution[key1])
+		for(let key2 in _imagesDistribution[key1])
 		{
-			var image = imagesDistribution[key1][key2];
+			var image = _imagesDistribution[key1][key2];
 
 			image.key1 = key1;
 			image.key2 = key2;
@@ -213,11 +233,13 @@ function disposeImages(data = false)
 	//Width 0
 	var contentWidth0 = contentWidth - (margin * 2);
 	var aspectRatio0 = contentWidth0 / (contentHeight - margin * 2);
+	
+	var _imagesDistribution = applyMangaReading(imagesDistribution);
 
-	for(let key1 in imagesDistribution)
+	for(let key1 in _imagesDistribution)
 	{
-		var first = imagesDistribution[key1][0];
-		var second = imagesDistribution[key1][1];
+		var first = _imagesDistribution[key1][0];
+		var second = _imagesDistribution[key1][1];
 
 		first = calcAspectRatio(first, second);
 		second = calcAspectRatio(second, first);
@@ -407,8 +429,14 @@ function goToImage(imageIndex, bookmarks = false)
 		if(!bookmarks)
 			saveReadingProgressA = true;
 
-		readingDirection = true; 
-		goToIndex(imagesData[imageIndex].position + 1);
+		readingDirection = true;
+
+		var newIndex = imagesData[imageIndex].position + 1;
+
+		if(config.readingManga && config.readingView != 'scroll')
+			newIndex = (indexNum - newIndex) + 1;
+
+		goToIndex(newIndex);
 		goToImageCL(imageIndex, true)
 	}
 }
@@ -418,8 +446,14 @@ function goToFolder(folderIndex)
 {
 	if(typeof foldersPosition[folderIndex] !== 'undefined')
 	{
-		readingDirection = true; 
-		goToIndex(foldersPosition[folderIndex] + 1);
+		readingDirection = true;
+
+		var newIndex = foldersPosition[folderIndex] + 1;
+
+		if(config.readingManga && config.readingView != 'scroll')
+			newIndex = (indexNum - newIndex) + 1;
+
+		goToIndex(newIndex);
 		goToImageCL(folderIndex, true)
 	}
 }
@@ -586,7 +620,12 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
-	eachImagesDistribution((eIndex - 1), ['image', 'folder'], function(image){
+	var newIndex = (eIndex - 1);
+
+	if(config.readingManga && config.readingView != 'scroll')
+		newIndex = (indexNum - newIndex) - 1;
+
+	eachImagesDistribution(newIndex, ['image', 'folder'], function(image){
 
 		goToImageCL(image.index, animation);
 
@@ -622,8 +661,10 @@ function goNext()
 		showPreviousComic(2, true);
 	else if(nextIndex <= indexNum || ((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
-	else if(currentIndex == indexNum && dom.nextComic())
+	else if(currentIndex == indexNum && dom.nextComic() && (!config.readingManga || config.readingView == 'scroll'))
 		showNextComic(1, true);
+	else if(currentIndex == indexNum && dom.previousComic() && config.readingManga && config.readingView != 'scroll')
+		showNextComic(1, true, true);
 }
 
 //Go to the previous comic page
@@ -639,48 +680,64 @@ function goPrevious()
 		showNextComic(2, true);
 	else if(previousIndex > 0 || ((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
-	else if(previousIndex == 0 && dom.previousComic())
+	else if(previousIndex == 0 && dom.previousComic() && (!config.readingManga || config.readingView == 'scroll'))
 		showPreviousComic(1, true);
+	else if(previousIndex == 0 && dom.nextComic() && config.readingManga && config.readingView != 'scroll')
+		showPreviousComic(1, true, true);
 }
 
 //Go to the start of the comic
-function goStart()
+function goStart(force = false)
 {
-	saveReadingProgressA = true;
-
-	if(currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic()))
+	if(force || !config.readingManga || config.readingView == 'scroll')
 	{
-		goPrevious();
+		saveReadingProgressA = true;
+
+		if(currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic()))
+		{
+			goPrevious();
+		}
+		else
+		{
+			readingDirection = true;
+
+			goToIndex(1, true);
+		}
 	}
 	else
 	{
-		readingDirection = true;
-
-		goToIndex(1, true);
+		goEnd(true);
 	}
 }
 
 //Go to the end of the comic
-function goEnd()
+function goEnd(force = false)
 {
-	saveReadingProgressA = true;
-
-	if(currentIndex < 1 || (currentIndex == indexNum && dom.nextComic()))
+	if(force || !config.readingManga || config.readingView == 'scroll')
 	{
-		goNext();
+		saveReadingProgressA = true;
+
+		if(currentIndex < 1 || (currentIndex == indexNum && dom.nextComic()))
+		{
+			goNext();
+		}
+		else
+		{
+			readingDirection = false;
+
+			goToIndex(indexNum, true, true, true);
+		}
 	}
 	else
 	{
-		readingDirection = false;
-
-		goToIndex(indexNum, true, true, true);
+		goStart(true);
 	}
 }
 
 var showComicSkip;
 
 //Begins to show the next comic
-function showNextComic(mode, animation = true)
+function showNextComic(mode, animation = true, invert = false)
 {
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
@@ -734,7 +791,10 @@ function showNextComic(mode, animation = true)
 			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
-		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
+		if(invert)
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
+		else
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -770,7 +830,7 @@ function showNextComic(mode, animation = true)
 }
 
 //Begins to show the previous comic
-function showPreviousComic(mode, animation = true)
+function showPreviousComic(mode, animation = true, invert = false)
 {
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
@@ -826,7 +886,10 @@ function showPreviousComic(mode, animation = true)
 			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
-		showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
+		if(invert)
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
+		else
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -1008,10 +1071,14 @@ function disableOnScroll(mode)
 //Controls the page view
 function changePagesView(mode, value, save)
 {
-
 	var imageIndex = false;
 
-	eachImagesDistribution((currentIndex - 1), ['image'], function(image){
+	var newIndex = (currentIndex - 1);
+
+	if(config.readingManga && config.readingView != 'scroll')
+		newIndex = (indexNum - newIndex) - 1;
+
+	eachImagesDistribution(newIndex, ['image'], function(image){
 
 		if(!imageIndex)
 			imageIndex = image.index;
@@ -1020,7 +1087,7 @@ function changePagesView(mode, value, save)
 
 	if(!imageIndex) imageIndex = currentIndex;
 
-	if(mode == 1) //Set the scroll mode
+	if(mode == 1) // Set the scroll mode
 	{
 		storage.updateVar('config', 'readingView', value);
 
@@ -1042,13 +1109,13 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
-	else if(mode == 2) //Sets the margin of the pages
+	else if(mode == 2) // Sets the margin of the pages
 	{
 		disposeImages({margin: value});
 
 		if(save) storage.updateVar('config', 'readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
 	}
-	else if(mode == 3) //Set width adjustment
+	else if(mode == 3) // Set width adjustment
 	{
 		storage.updateVar('config', 'readingViewAdjustToWidth', value);
 
@@ -1057,15 +1124,15 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
-	else if(mode == 4) //Set the speed of the animation when changing pages
+	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
 		if(save) storage.updateVar('config', 'readingViewSpeed', value);
 	}
-	else if(mode == 5) //Set the delay when skip from comic
+	else if(mode == 5) // Set the delay when skip from comic
 	{
 		if(save) storage.updateVar('config', 'readingDelayComicSkip', value);
 	}
-	else if(mode == 6) //Set the reading to double page
+	else if(mode == 6) // Set the reading to double page
 	{
 		if(value == 1)
 			$('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
@@ -1079,9 +1146,18 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
-	else if(mode == 7) //Disables double-page reading in horizontal images
+	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
 		storage.updateVar('config', 'readingDoNotApplyToHorizontals', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
+
+		read(readingCurrentPath, imageIndex);
+	}
+	else if(mode == 8) // Manga reading, invert the direction and double pages
+	{
+		storage.updateVar('config', 'readingManga', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 		addHtmlImages();
@@ -1217,7 +1293,12 @@ function saveReadingProgress(path = false)
 	{
 		let imageIndex = false;
 
-		eachImagesDistribution((currentIndex - 1), ['image'], function(image){
+		var newIndex = (currentIndex - 1);
+
+		if(config.readingManga && config.readingView != 'scroll')
+			newIndex = (indexNum - newIndex) - 1;
+
+		eachImagesDistribution(newIndex, ['image'], function(image){
 
 			if(!imageIndex)
 				imageIndex = image.index;
@@ -1665,7 +1746,6 @@ function read(path, index = 1, end = false)
 
 			if(imagesNumLoad == imagesNum)
 			{
-				console.log('show');
 				template.contentRight('.reading-body').css('display', 'block');
 				addHtmlImages();
 				disposeImages();
@@ -1673,11 +1753,15 @@ function read(path, index = 1, end = false)
 
 				currentIndex = imagesData[currentIndex].position + 1;
 
-				goToIndex(currentIndex, false, end, end);
+				var newIndex = currentIndex;
+
+				if(config.readingManga && config.readingView != 'scroll')
+					newIndex = (indexNum - newIndex) + 1;
+
+				goToIndex(newIndex, false, end, end);
+
 				if(config.readingView == 'scroll')
-				{
 					previousContentHeight = template.contentRight().children('div').children('div').height();
-				}
 			}
 
 		}
@@ -1689,7 +1773,6 @@ function read(path, index = 1, end = false)
 
 			if(imagesNumLoad == imagesNum)
 			{
-				console.log('show');
 				template.contentRight('.reading-body').css('display', 'block');
 				addHtmlImages();
 				disposeImages();
@@ -1697,11 +1780,15 @@ function read(path, index = 1, end = false)
 
 				currentIndex = imagesData[currentIndex].position + 1;
 
-				goToIndex(currentIndex, false, end, end);
+				var newIndex = currentIndex;
+
+				if(config.readingManga && config.readingView != 'scroll')
+					newIndex = (indexNum - newIndex) + 1;
+
+				goToIndex(newIndex, false, end, end);
+
 				if(config.readingView == 'scroll')
-				{
 					previousContentHeight = template.contentRight().children('div').children('div').height();
-				}
 			}
 
 		}
@@ -1744,4 +1831,5 @@ module.exports = {
 	onReading: function(){return onReading},
 	calculateImagesDistribution: calculateImagesDistribution,
 	imagesDistribution: function(){return imagesDistribution},
+	applyMangaReading: applyMangaReading,
 };

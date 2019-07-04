@@ -28,6 +28,11 @@
 		<div class="menu-simple-element pages-slide" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages-v.slide}}</div>
 		<div class="menu-simple-element pages-scroll" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages-v.scroll}}</div>
 		<div class="menu-simple-separator"></div>
+		<div class="menu-simple-text reading-reading-manga">
+			{{language.reading.pages-v.readingManga}}
+			<div class="switch{{#if config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)"></div>
+		</div>
+		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-double-page">
 			{{language.reading.pages-v.double-page}}
 			<div class="switch{{#if config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)"></div>

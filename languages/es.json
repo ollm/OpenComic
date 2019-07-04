@@ -48,7 +48,8 @@
 			"do-not-apply-to-horizontals": "No aplicar a las horizontales",
 			"auto-blank-page": "Página en blanco automática",
 			"reading-delay-skip": "Retraso al cambiar de cómic",
-			"animation-speed": "Velocidad de la animación"
+			"animation-speed": "Velocidad de la animación",
+			"readingManga": "Lectura de manga (Invertir)"
 		},
 		"magnifying-glass": "Lupa",
 		"magnifying-glass-v": {

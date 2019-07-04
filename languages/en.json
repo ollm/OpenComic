@@ -48,7 +48,8 @@
 			"do-not-apply-to-horizontals": "Do not apply to horizontals",
 			"auto-blank-page": "Auto blank page",
 			"reading-delay-skip": "Delay in changing comics",
-			"animation-speed": "Animation speed"
+			"animation-speed": "Animation speed",
+			"readingManga": "Reading manga (Inverted)"
 		},
 		"magnifying-glass": "Magnifying glass",
 		"magnifying-glass-v": {
