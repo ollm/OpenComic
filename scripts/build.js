@@ -43,4 +43,7 @@ for(let i = 0, len = themes.length; i < len; i++)
 
 templatesJs += 'module.exports = {templatesCacheTheme: templatesCacheTheme, templatesCache: templatesCache};';
 
-fs.writeFileSync(p.join(__dirname, '../scripts/templates.js'), templatesJs);
+if(!fs.existsSync(p.join(__dirname, '../scripts/builded/')))
+	fs.mkdirSync(p.join(__dirname, '../scripts/builded/'));
+
+fs.writeFileSync(p.join(__dirname, '../scripts/builded/templates.js'), templatesJs);

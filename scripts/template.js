@@ -8,18 +8,6 @@ function loadTemplate(file)
 		return templates.templatesCache[file](handlebarsContext);
 }
 
-/*function registerPartial(name, file)
-{
-	if(existsFileApp('./themes/'+config.theme+'/templates/'+file))
-	{
-		hb.registerPartial(name, readFileApp('./themes/'+config.theme+'/templates/'+file));
-	}
-	else
-	{
-		hb.registerPartial(name, readFileApp('./templates/'+file));
-	}
-}*/
-
 function loadTemplateQuery(querySelector, file)
 {
 	var element = document.querySelector(querySelector);
@@ -167,5 +155,4 @@ module.exports = {
 	barHeader: selectBarHeader,
 	globalElement: selectGlobalElement,
 	loadGlobalElement: loadGlobalElement,
-	registerPartial: registerPartial,
 };
