@@ -488,6 +488,7 @@ body .app
 	overflow: auto;
 	height: 100%;
 	overflow-x: hidden;
+	will-change: scroll;
 }
 
 .content-left > div.a
@@ -559,6 +560,7 @@ body .app
 	overflow: auto;
 	height: 100%;
 	width: 100%;
+	will-change: scroll;
 }
 
 .bar-right-buttons
@@ -1178,11 +1180,6 @@ body .app
 	animation-fill-mode: forwards;
 }
 
-.content-view-module .folder-images > img.s
-{
-	opacity: 1;
-}
-
 /* Continue reading */
 
 .continue-reading
@@ -1405,6 +1402,7 @@ body .app
 	width: 100%;
 	height: 100%;
 	overflow-x: hidden;
+    contain: paint;
 }
 
 .reading-body > div
@@ -1412,6 +1410,7 @@ body .app
 	width: 100%;
 	height: 100%;
 	position: relative;
+	will-change: transform;
 }
 
 .reading-body .r-flex, .reading-lens .r-flex
@@ -1480,13 +1479,14 @@ body .app
 	box-shadow: 0 2px 5px rgba(0,0,0, 0.26);
 	width: 200px;
 	height: 160px;
-	top: -1000px;
-	left: -1000px;
+	top: 0px;
+	left: 0px;
 	background-color: #eee;
 	overflow: hidden;
 	opacity: 0;
 	z-index: 3;
 	transition: background-color 0.2s;
+	contain: strict;
 }
 
 .reading-lens > div
@@ -1500,6 +1500,12 @@ body .app
 	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
 	cursor: none;
+	will-change: transform;
+}
+
+.reading-lens.a > div
+{
+	will-change: transform;
 }
 
 .reading-lens.d

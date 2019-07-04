@@ -56,10 +56,12 @@ function changeContentLeft(html, animation = true)
 {
 	$('.content-left > div.to-remove').remove();
 	$('.content-left > div').addClass('to-remove');
-	$('.content-left').append('<div '+(animation ? 'class="a"' : '')+'style="z-index: ' + contentLeftZindex + ';"><div>'+html+'</div></div>');
-	contentLeftZindex++;
+	document.querySelector('.content-left').insertAdjacentHTML('beforeend', '<div class="content-left-'+contentLeftZindex+(animation ? ' a' : '')+'" style="z-index: ' + contentLeftZindex + ';"><div>'+html+'</div></div>');
 
-	contentLeft = $('.content-left .a').not('.to-remove');
+	contentLeft = $('.content-left .content-left-'+contentLeftZindex);
+	setTimeout('$(\'.content-left-'+(contentLeftZindex-1)+'\').remove()', 300);
+
+	contentLeftZindex++;
 }
 
 function loadContentLeft(template, animation)
@@ -80,7 +82,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 		var scroll = (previous.scrollTop() / (previous.prop('scrollHeight') - previous.height()));
 	}
 
-	$('.content-right').append('<div '+(animation ? 'class="a"' : '')+'style="z-index: ' + contentRightZindex + ';"><div>'+html+'</div></div>');
+	document.querySelector('.content-right').insertAdjacentHTML('beforeend', '<div class="content-right-'+contentRightZindex+(animation ? ' a' : '')+'" style="z-index: ' + contentRightZindex + ';"><div>'+html+'</div></div>');
 
 	if(keepScroll)
 	{
@@ -88,9 +90,10 @@ function changeContentRight(html, animation = true, keepScroll = false)
 		current.scrollTop((current.prop('scrollHeight') - current.height()) * scroll);
 	}
 
-	contentRightZindex++;
+	contentRight = $('.content-right .content-right-'+contentRightZindex);
+	setTimeout('$(\'.content-right-'+(contentRightZindex-1)+'\').remove()', 300);
 
-	contentRight = $('.content-right > div').not('.to-remove');
+	contentRightZindex++;
 }
 
 function loadContentRight(template, animation, keepScroll)
@@ -98,17 +101,18 @@ function loadContentRight(template, animation, keepScroll)
 	changeContentRight(loadTemplate(template), animation, keepScroll);
 }
 
-
 var headerZindex = 1;
 
 function changeHeader(html, animation = true)
 {
 	$('.bar-header > div.to-remove').remove();
 	$('.bar-header > div').addClass('to-remove');
-	$('.bar-header').append('<div '+(animation ? 'class="a"' : '')+'style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
-	headerZindex++;
+	document.querySelector('.bar-header').insertAdjacentHTML('beforeend', '<div class="bar-header-'+headerZindex+(animation ? ' a' : '')+'" style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
 
-	barHeader = $('.bar-header .a').not('.to-remove');
+	barHeader = $('.bar-header .bar-header-'+headerZindex);
+	setTimeout('$(\'.bar-header-'+(headerZindex-1)+'\').remove()', 300);
+
+	headerZindex++;
 }
 
 function loadHeader(template, animation)
@@ -118,8 +122,11 @@ function loadHeader(template, animation)
 
 function changeGlobalElement(html, element)
 {
-	$('.global-elements .'+element).html(html);
-	globalElement = $('.global-elements').not('.to-remove');
+	var element = document.querySelector('.global-elements .'+element);
+	if(element) element.innerHTML = html;
+
+	if(globalElement === false)
+		globalElement = $('.global-elements');
 }
 
 function loadGlobalElement(template, element)

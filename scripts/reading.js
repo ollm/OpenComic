@@ -1034,8 +1034,7 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		var leftLens = x - offset.left - lensWidthM;
 
 		template.contentRight('.reading-lens').css({
-			'top': top+'px',
-			'left': left+'px',
+			'transform': 'translate('+left+'px, '+top+'px)',
 			'width': lensWidth+'px',
 			'height': lensHeight+'px',
 			'border-radius': ((lensData && typeof lensData.radius != 'undefined') ? lensData.radius : config.readingMagnifyingGlassRadius)+'px'

@@ -205,104 +205,103 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 	let pathFiles = [];
 
-	fs.readdir(file.realPath(path), function(error, files){
+	var files = fs.readdirSync(file.realPath(path));
 
-		if(files)
+	if(files)
+	{
+		for(var i = 0; i < files.length; i++)
 		{
-			for(var i = 0; i < files.length; i++)
+			var fileName = files[i];
+			var filePath = p.join(path, fileName);
+
+			var realPath = file.realPath(filePath, -1);
+
+			if(inArray(mime.getType(realPath), compatibleMime))
 			{
-				var fileName = files[i];
-				var filePath = p.join(path, fileName);
+				var sha = sha1(filePath);
 
-				var realPath = file.realPath(filePath, -1);
+				var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
 
-				if(inArray(mime.getType(realPath), compatibleMime))
-				{
-					var sha = sha1(filePath);
+					addImageToDom(data.sha, data.path);
 
-					var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
+				});
 
-						addImageToDom(data.sha, data.path);
+				pathFiles.push({
+					sha: sha,
+					name: fileName.replace(/\.[^\.]*$/, ''),
+					path: filePath,
+					mainPath: mainPath,
+					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+					folder: false,
+				});
+			}
+			else if(fs.statSync(realPath).isDirectory() || inArray(fileExtension(filePath), compressedExtensions.all))
+			{
+				var images = getFolderThumbnailsAsync(filePath);
 
-					});
-
-					pathFiles.push({
-						sha: sha,
-						name: fileName.replace(/\.[^\.]*$/, ''),
-						path: filePath,
-						mainPath: mainPath,
-						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
-						folder: false,
-					});
-				}
-				else if(fs.statSync(realPath).isDirectory() || inArray(fileExtension(filePath), compressedExtensions.all))
-				{
-					var images = getFolderThumbnailsAsync(filePath);
-
-					pathFiles.push({
-						name: fileName,
-						path: filePath,
-						mainPath: mainPath,
-						images: images,
-						folder: true,
-					});
-				}
+				pathFiles.push({
+					name: fileName,
+					path: filePath,
+					mainPath: mainPath,
+					images: images,
+					folder: true,
+				});
 			}
 		}
+	}
 
-		if(!isEmpty(pathFiles))
+	if(!isEmpty(pathFiles))
+	{
+		pathFiles.sort(function (a, b) {
+			if(foldersFirst && a.folder && !b.folder) return -1; 
+			if(foldersFirst && b.folder && !a.folder) return 1; 
+			return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
+		});
+	}
+
+	handlebarsContext.comics = pathFiles;
+
+	// Comic reading progress
+	var comic = false, _comics = storage.get('comics');
+
+	for(let i in _comics)
+	{
+		if(_comics[i].path == mainPath)
 		{
-			pathFiles.sort(function (a, b) {
-				if(foldersFirst && a.folder && !b.folder) return -1; 
-				if(foldersFirst && b.folder && !a.folder) return 1; 
-				return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
-			});
+			comic = _comics[i];
+			break;
 		}
+	}
 
-		handlebarsContext.comics = pathFiles;
+	var readingProgress = storage.get('readingProgress');
 
-		// Comic reading progress
-		var comic = false, _comics = storage.get('comics');
+	if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+	{
+		var sha = sha1(readingProgress[mainPath].path);
 
-		for(let i in _comics)
-		{
-			if(_comics[i].path == mainPath)
-			{
-				comic = _comics[i];
-				break;
-			}
-		}
+		var realPath = file.realPath(readingProgress[mainPath].path, -1);
 
-		var readingProgress = storage.get('readingProgress');
+		var thumbnail = cache.returnCacheImage(realPath, sha, function(data){
 
-		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
-		{
-			var sha = sha1(readingProgress[mainPath].path);
+			addImageToDom(data.sha, data.path);
 
-			var realPath = file.realPath(readingProgress[mainPath].path, -1);
+		});
 
-			var thumbnail = cache.returnCacheImage(realPath, sha, function(data){
+		readingProgress[mainPath].sha = sha;
+		readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+		readingProgress[mainPath].mainPath = mainPath;	
+		readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath);	
+		handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
+	}
+	else
+	{
+		handlebarsContext.comicsReadingProgress = false;
+	}
 
-				addImageToDom(data.sha, data.path);
+	template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
+	events.events();
+	justifyViewModule();
 
-			});
-
-			readingProgress[mainPath].sha = sha;
-			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-			readingProgress[mainPath].mainPath = mainPath;	
-			readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath);	
-			handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
-		}
-		else
-		{
-			handlebarsContext.comicsReadingProgress = false;
-		}
-
-		template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
-		events.events();
-		justifyViewModule();
-
-	});
 }
 
 function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
@@ -1359,110 +1358,109 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			var key2 = 'lastReading';
 		}
 
-		fs.readdir(file.realPath(path), function(error, files){
+		var files = fs.readdirSync(file.realPath(path));
 
-			var comics = [];
+		var comics = [];
 
-			if(files)
+		if(files)
+		{
+
+			for(var i = 0; i < files.length; i++)
 			{
+				var fileName = files[i];
+				var filePath = p.join(path, fileName);
 
-				for(var i = 0; i < files.length; i++)
+				if(compatibleMime.indexOf(mime.getType(filePath)) != -1)
 				{
-					var fileName = files[i];
-					var filePath = p.join(path, fileName);
+					var sha = sha1(filePath);
 
-					if(compatibleMime.indexOf(mime.getType(filePath)) != -1)
+					var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
+
+						addImageToDom(data.sha, data.path);
+
+					});
+
+					comics.push({
+						sha: sha,
+						name: fileName.replace(/\.[^\.]*$/, ''),
+						image: file.realPath(filePath),
+						path: filePath,
+						mainPath: mainPath,
+						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+						folder: false,
+					});
+				}
+				else if(fs.statSync(filePath).isDirectory())
+				{
+					var images = folderImagesWD(filePath, 4);
+
+					for(var i2 = 0; i2 < images.length; i2++)
 					{
-						var sha = sha1(filePath);
+						var originalPath = images[i2];
 
-						var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
+						var sha = sha1(originalPath);
 
+						images[i2] = cache.returnCacheImage(originalPath, sha, function(data){
+							
 							addImageToDom(data.sha, data.path);
-
+							
 						});
 
+						images[i2].originalPath = originalPath;
+					}
+
+					if(typeof images[0] != 'undefined')
+					{
 						comics.push({
-							sha: sha,
-							name: fileName.replace(/\.[^\.]*$/, ''),
-							image: file.realPath(filePath),
+							name: fileName,
 							path: filePath,
 							mainPath: mainPath,
-							thumbnail: (thumbnail.cache) ? thumbnail.path : '',
-							folder: false,
+							fristImage: images[0].originalPath,
+							images: images,
+							folder: true,
 						});
 					}
-					else if(fs.statSync(filePath).isDirectory())
-					{
-						var images = folderImagesWD(filePath, 4);
-
-						for(var i2 = 0; i2 < images.length; i2++)
-						{
-							var originalPath = images[i2];
-
-							var sha = sha1(originalPath);
-
-							images[i2] = cache.returnCacheImage(originalPath, sha, function(data){
-								
-								addImageToDom(data.sha, data.path);
-								
-							});
-
-							images[i2].originalPath = originalPath;
-						}
-
-						if(typeof images[0] != 'undefined')
-						{
-							comics.push({
-								name: fileName,
-								path: filePath,
-								mainPath: mainPath,
-								fristImage: images[0].originalPath,
-								images: images,
-								folder: true,
-							});
-						}
-					}
 				}
 			}
+		}
 
-			if(!isEmpty(comics))
+		if(!isEmpty(comics))
+		{
+			comics.sort(function (a, b) {
+				if(foldersFirst && a.folder && !b.folder) return -1; 
+				if(foldersFirst && b.folder && !a.folder) return 1; 
+				return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
+			});
+
+			for(let key in comics)
 			{
-				comics.sort(function (a, b) {
-					if(foldersFirst && a.folder && !b.folder) return -1; 
-					if(foldersFirst && b.folder && !a.folder) return 1; 
-					return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
-				});
-
-				for(let key in comics)
+				comics[key].index = parseInt(key) + 1;
+				if(comics[key].path == imagePath)
 				{
-					comics[key].index = parseInt(key) + 1;
-					if(comics[key].path == imagePath)
-					{
-						indexStart = parseInt(key) + 1;
-					}
+					indexStart = parseInt(key) + 1;
 				}
 			}
+		}
 
-			handlebarsContext.comics = comics;
-			handlebarsContext.previousComic = skipPreviousComic;
-			handlebarsContext.nextComic = skipNextComic;
-			headerPath(path, mainPath);
-			reading.setCurrentComics(comics);
+		handlebarsContext.comics = comics;
+		handlebarsContext.previousComic = skipPreviousComic;
+		handlebarsContext.nextComic = skipNextComic;
+		headerPath(path, mainPath);
+		reading.setCurrentComics(comics);
 
-			template.loadContentLeft('reading.content.left.html', true);
-			template.loadContentRight('reading.content.right.html', true);
-			template.loadHeader('reading.header.html', true);
-			if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
+		template.loadContentLeft('reading.content.left.html', true);
+		template.loadContentRight('reading.content.right.html', true);
+		template.loadHeader('reading.header.html', true);
+		if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
 
-			floatingActionButton(false);
-			
-			events.events();
+		floatingActionButton(false);
+		
+		events.events();
 
-			reading.read(path, indexStart, end);
+		reading.read(path, indexStart, end);
 
-			generateAppMenu();
+		generateAppMenu();
 
-		});
 	}
 	else if(file.containsCompressed(path))
 	{
