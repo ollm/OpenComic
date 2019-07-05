@@ -1,3 +1,6 @@
 node_modules/
 dist/
 scripts/builded
+
+# OSX
+.DS_Store

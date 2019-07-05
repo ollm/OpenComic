@@ -68,7 +68,13 @@
 		"asarUnpack": [
 			"node_modules/sharp"
 		],
+		"win": {
+			"target": [
+				"nsis"
+			]
+		},
 		"mac": {
+			"icon": "build/icon.png",
 			"category": "public.app-category.graphics-design"
 		},
 		"linux": {
@@ -78,6 +84,7 @@
 				"rpm",
 				"snap"
 			],
+			"icon": "build/icons",
 			"category": "Graphics",
 			"mimeTypes": [
 				"image/jpeg",

@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, nativeImage} = require('electron');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
@@ -15,6 +15,8 @@ function createWindow () {
 		defaultHeight: 600
 	});
 
+	var image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png')); 
+
 	win = new BrowserWindow({
 		show: false,
 		x: mainWindowState.x,
@@ -23,6 +25,7 @@ function createWindow () {
 		height: mainWindowState.height,
 		minWidth: 320,
 		minHeight: 200,
+		icon: image,
 		webPreferences: {
 			nodeIntegration: true
 		},
