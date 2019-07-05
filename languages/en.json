@@ -1,6 +1,7 @@
 {
 	"appName": "OpenComic",
 	"global": {
+		"and": "and",
 		"comics": "Comics",
 		"collection": "Collection",
 		"sort": {
@@ -88,6 +89,22 @@
 			"reload": "Reload",
 			"forceReload": "Force reload",
 			"toggleDevTools": "Toggle DevTools"
+		},
+		"help": {
+			"main": "Help",
+			"about": "About OpenComic"
 		}
+	},
+	"about": {
+		"version": "Version",
+		"translatedBy": "Translated into English by",
+		"contributedBy": "Contributed by",
+		"translators": [
+			{
+				"name": "Oleguer Llopart",
+				"email": "oleguer.llopart.mora@gmail.com",
+				"url": "https://github.com/ollm"
+			}
+		]
 	}
 }

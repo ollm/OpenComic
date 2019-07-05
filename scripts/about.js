@@ -1,0 +1,1 @@
+var shell = require('electron').shell;

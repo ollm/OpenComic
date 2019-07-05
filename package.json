@@ -16,6 +16,7 @@
 		"email": "oleguer.llopart.mora@gmail.com",
 		"url": "https://github.com/ollm"
 	},
+	"contributors": [],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/ollm/OpenComic.git"
@@ -60,7 +61,9 @@
 			"**/*",
 			"!themes/material-design/icons",
 			"!themes/*/templates",
-			"!templates"
+			"!templates",
+			"templates/index.html",
+			"templates/about.html"
 		],
 		"asarUnpack": [
 			"node_modules/sharp"

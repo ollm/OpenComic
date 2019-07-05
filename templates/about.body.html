@@ -1,0 +1,134 @@
+<style type="text/css">
+
+body
+{
+	margin: 0px;
+}
+
+.about
+{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	padding: 16px;
+	box-sizing: border-box;
+	text-align: center;
+	overflow: auto;
+}
+
+.about::before
+{
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	margin-right: -0.25em;
+}
+
+.about > div
+{
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.about-header-logo
+{
+	height: 56px;
+	width: 56px;
+	background-color: #888;
+	border-radius: 56px;
+	margin-bottom: 16px;
+	display: inline-block;
+}	
+
+.about-header-text
+{
+	height: 40px;
+	box-sizing: border-box;
+	margin-bottom: 16px;
+	display: inline-block;
+}	
+
+.about-header-text > div
+{
+	font-size: 16px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	color: rgba(0, 0, 0, 0.87);
+	height: 20px;
+	line-height: 22px;
+}
+
+.about-header-text > span
+{
+	display: block;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	color: rgba(0, 0, 0, 0.6);
+	height: 20px;
+	line-height: 22px;
+}
+
+.about-text
+{
+	line-height: 20px;
+}
+
+.night-mode
+{
+	background-color: #212121;
+}
+
+.night-mode .about-header-text > span
+{
+	color: rgba(255, 255, 255, 0.6);
+}
+
+.night-mode .about-header-text > div
+{
+	color: rgba(255, 255, 255, 1);
+}
+
+a
+{
+	color: #1976D2 !important;
+    text-decoration: none !important;
+}
+
+</style>
+
+<div class="about{{#if config.nightMode}} night-mode{{/if}}">
+	<div>
+		<div class="about-header-logo"></div>
+		<br>
+		<div class="about-header-text">
+			<div>{{language.appName}}</div>
+			<span>{{language.about.version}} {{config.appVersion}}</span>
+		</div>
+		<br>
+		<div class="about-text">
+			GNU General Public License v3 (<a href="javascript:void(0);" onclick="shell.openExternal('https://github.com/ollm/OpenComic/blob/master/LICENSE');">GPL-3</a>)
+			<br>
+			Copyright © 2017-2019 <a href="javascript:void(0);" onclick="shell.openExternal('{{#if packageJson.author.url}}{{packageJson.author.url}}{{else}}mailto:{{packageJson.author.email}}{{/if}}')">{{packageJson.author.name}}</a>
+			<br>
+			{{#if packageJson.contributors}}
+				{{language.about.contributedBy}}
+				{{#each packageJson.contributors}}{{#unless @first}}{{#if @last}} {{@root.language.global.and}} {{else}}, {{/if}}{{/unless}}
+				<a href="javascript:void(0);" onclick="shell.openExternal('{{#if url}}{{url}}{{else}}mailto:{{email}}{{/if}}')">{{name}}</a>
+				{{/each}}
+				<br>
+			{{/if}}
+			{{language.about.translatedBy}}
+			{{#each language.about.translators}}{{#unless @first}}{{#if @last}} {{@root.language.global.and}} {{else}}, {{/if}}{{/unless}}
+			<a href="javascript:void(0);" onclick="shell.openExternal('{{#if url}}{{url}}{{else}}mailto:{{email}}{{/if}}')">{{name}}</a>
+			{{/each}}
+		</div>
+	</div>
+</div>

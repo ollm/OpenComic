@@ -1522,6 +1522,11 @@ body .preload
 	animation-fill-mode: forwards;
 }
 
+.reading-lens.h
+{
+	visibility: hidden;
+}
+
 .reading-skip > div
 {
 	background-color: #fff;

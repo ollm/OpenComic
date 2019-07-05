@@ -43,6 +43,8 @@ var appDir = p.join(__dirname, '../');
 
 var _package = $.parseJSON(readFileApp('package.json'));
 
+handlebarsContext.packageJson = _package;
+
 var compatibleMime = [
 	'image/jpeg',
 	'image/pjpeg',
@@ -234,7 +236,11 @@ function loadLanguageMD(hbc, obj)
 {
 	for(let key in obj)
 	{
-		if(typeof obj[key] == 'object')
+		if(Array.isArray(obj[key]))
+		{
+			hbc[key] = obj[key];
+		}
+		else if(typeof obj[key] == 'object')
 		{
 			if(!hbc[key])
 				hbc[key] = {};
@@ -383,12 +389,56 @@ function generateAppMenu(force = false)
 					{role: 'forceReload', label: language.menu.debug.forceReload},
 					{role: 'toggleDevTools', label: language.menu.debug.toggleDevTools},
 				]
+			},
+			{
+				label: language.menu.help.main,
+				submenu: [
+					{label: language.menu.help.about, click: function(){showAboutWindow();}},
+				]
 			}
 		];
 
 		var menu = electron.remote.Menu.buildFromTemplate(menuTemplate);
 		electron.remote.Menu.setApplicationMenu(menu);
 	}
+}
+
+var about = false;
+
+function showAboutWindow()
+{
+	var about = new electron.remote.BrowserWindow({
+		show: false,
+		title: language.menu.help.about,
+		width: 380,
+		height: 250,
+		minWidth: 380,
+		minHeight: 250,
+		//resizable: false,
+		modal: true,
+		parent: electron.remote.getCurrentWindow(),
+		webPreferences: {
+			nodeIntegration: true
+		},
+	});
+
+	var url = require('url');
+
+	about.loadURL(url.format({
+		pathname: p.join(appDir, './templates/about.html'),
+		protocol: 'file:',
+		slashes: true
+	}));
+
+	about.once('ready-to-show', function() {
+	
+		about.webContents.executeJavaScript('document.querySelector(\'body\').innerHTML = `'+template.load('about.body.html')+'`;', false, function(){
+
+			about.show();
+
+		});
+
+	});
 }
 
 function escapeBackSlash(string)
