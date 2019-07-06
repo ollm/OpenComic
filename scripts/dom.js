@@ -634,7 +634,7 @@ function getFolderThumbnailsAsync(path)
 
 			var realPath = file.realPath(error.compressedPath, -1);
 
-			if(file.containsCompressed(path) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
+			if(file.containsCompressed(error.compressedPath) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
 			{
 				(function(folderSha){
 

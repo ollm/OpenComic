@@ -268,8 +268,8 @@ function sort(files)
 		}
 
 		files.sort(function (a, b) {
-			if(foldersFirst && a.folder && !b.folder) return -1; 
-			if(foldersFirst && b.folder && !a.folder) return 1; 
+			if(foldersFirst && (a.folder || a.compressed) && !(b.folder || b.compressed)) return -1; 
+			if(foldersFirst && (b.folder || b.compressed) && !(a.folder || a.compressed)) return 1; 
 			return (sortInvert) ? -(dom.orderBy(a, b, order, 'name')) : dom.orderBy(a, b, order, 'name');
 		});
 
