@@ -73,7 +73,14 @@
 		"win": {
 			"target": [
 				"nsis"
-			]
+			],
+			"icon": "build/icon.ico"
+		},
+		"nsis": {
+			"oneClick": false,
+			"installerIcon": "build/icon.ico",
+			"uninstallerIcon": "build/icon.ico",
+			"installerHeaderIcon": "build/icon.ico"
 		},
 		"mac": {
 			"icon": "build/icon.png",
