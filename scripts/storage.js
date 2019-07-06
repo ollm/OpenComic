@@ -4,7 +4,7 @@ var storageDefault = {
 	config: {
 		appVersion: _package.version,
 		changes: changes,
-		language: 'es',
+		language: 'en',
 		theme: 'material-design',
 		nightMode: false,
 		foldersFirst: true,
