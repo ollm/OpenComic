@@ -1,4 +1,6 @@
 ## Downloads `version 0.1.0`
+###### Windows
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.0/OpenComic.Setup.0.1.0.exe)
 ###### Linux
 * [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic_0.1.0_amd64.deb)
 * [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic-0.1.0.x86_64.rpm)
