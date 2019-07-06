@@ -3,7 +3,7 @@
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
 			<span class="bar-title-a" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')">{{name}}</span>
-			{{#unless last}} / {{/unless}}
+			{{#unless last}} <i class="material-icon navegation">chevron_right</i> {{/unless}}
 		{{/each}}
 	{{else}}
 		{{#if headerTitle}}

@@ -290,7 +290,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		readingProgress[mainPath].sha = sha;
 		readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
 		readingProgress[mainPath].mainPath = mainPath;	
-		readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath);	
+		readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath, true);	
 		handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
 	}
 	else
@@ -479,7 +479,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 }
 
-function returnTextPath(path, mainPath)
+function returnTextPath(path, mainPath, image = false)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
@@ -489,10 +489,10 @@ function returnTextPath(path, mainPath)
 
 	for(let index in files)
 	{
-		path.push(files[index]);
+		path.push(image ? htmlEntities(files[index]) : files[index]);
 	}
 
-	return path.join(' / '); 
+	return path.join(image ? '<i class="material-icon navegation">chevron_right</i>' : ' / '); 
 }
 
 function headerPath(path, mainPath)

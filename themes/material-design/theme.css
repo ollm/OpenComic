@@ -851,6 +851,15 @@ body .preload
 	text-decoration: underline;
 }
 
+.bar-title .navegation
+{
+	font-size: 18px;
+	display: inline-block;
+	transform: translate(0px, 4px);
+	color: inherit;
+	margin: 0px 2px;
+}
+
 /*Global Elements*/
 /*Hover*/
 
@@ -1233,6 +1242,15 @@ body .preload
 	color: #fff;
 	display: block;
 	padding-right: 16px;
+}
+
+.continue-reading .navegation
+{
+	color: #fff;
+	font-size: 16px;
+	display: inline-block;
+	transform: translate(0px, 4px);
+	margin: 0px 2px;
 }
 
 /*Controls*/
