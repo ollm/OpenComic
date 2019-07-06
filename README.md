@@ -1,6 +1,9 @@
-## Warning
-
-This software is under development.
+## Downloads `version 0.1.0`
+###### Linux
+* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic_0.1.0_amd64.deb)
+* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic-0.1.0.x86_64.rpm)
+* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic_0.1.0_amd64.snap)
+* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic-0.1.0.tar.gz)
 
 ## ScreenShot
 
@@ -10,7 +13,7 @@ This software is under development.
 
 
 
-## Installation and Starting
+## Installation and Starting for development
 __Requirements__: Git, Node and NPM
 
 ```shell
