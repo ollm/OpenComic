@@ -5,21 +5,35 @@ function orderBy(a, b, mode, key = false, key2 = false)
 {
 	if(key2)
 	{
-		var aValue = a[key][key2].toLowerCase();
-		var bValue = b[key][key2].toLowerCase();
+		var aValue = a[key][key2];
+		var bValue = b[key][key2];
 	}
 	else if(key)
 	{
-		var aValue = a[key].toLowerCase();
-		var bValue = b[key].toLowerCase();
+		var aValue = a[key];
+		var bValue = b[key];
 	}
 	else
 	{
-		var aValue = a.toLowerCase();
-		var bValue = b.toLowerCase();
+		var aValue = a;
+		var bValue = b;
+	}
+
+	if(mode != 'real-numeric')
+	{
+		aValue = aValue.toLowerCase();
+		bValue = bValue.toLowerCase();
 	}
 
 	if(mode == 'simple')
+	{
+		if (aValue > bValue) return 1;
+
+		if (aValue < bValue) return -1;
+
+		return 0;
+	}
+	else if(mode == 'real-numeric')
 	{
 		if (aValue > bValue) return 1;
 
@@ -185,23 +199,14 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		var foldersFirst = config.foldersFirst;
 	}
 
-	var key2 = false;
+	var order = '';
 
 	if(sort == 'name')
-	{
-		var order = 'simple';
-		var key = 'name';
-	}
+		order = 'simple';
 	else if(sort == 'numeric')
-	{
-		var order = 'numeric';
-		var key = 'name';
-	}
+		order = 'numeric';
 	else
-	{
-		var order = 'simple-numeric';
-		var key = 'name';
-	}
+		order = 'simple-numeric';
 
 	let pathFiles = [];
 
@@ -255,7 +260,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		pathFiles.sort(function (a, b) {
 			if(foldersFirst && a.folder && !b.folder) return -1; 
 			if(foldersFirst && b.folder && !a.folder) return 1; 
-			return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
+			return (sortInvert) ? -(orderBy(a, b, order, 'name')) : orderBy(a, b, order, 'name');
 		});
 	}
 
@@ -323,33 +328,35 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		var foldersFirst = config.foldersFirst;
 	}
 
-	var key2 = false;
+	var orderKey2 = false;
 
 	if(sort == 'name')
 	{
 		var order = 'simple';
-		var key = 'name';
+		var orderKey = 'name';
 	}
 	else if(sort == 'numeric')
 	{
 		var order = 'numeric';
-		var key = 'name';
+		var orderKey = 'name';
 	}
 	else if(sort == 'name-numeric')
 	{
 		var order = 'simple-numeric';
-		var key = 'name';
+		var orderKey = 'name';
 	}
 	else if(sort == 'last-add')
 	{
-		var order = 'simple';
-		var key = 'added';
+		var order = 'real-numeric';
+		var orderKey = 'added';
+		sortInvert = !sortInvert;
 	}
 	else
 	{
-		var order = 'simple';
-		var key = 'readingProgress';
-		var key2 = 'lastReading';
+		var order = 'real-numeric';
+		var orderKey = 'readingProgress';
+		var orderKey2 = 'lastReading';
+		sortInvert = !sortInvert;
 	}
 
 	if(!path)
@@ -382,7 +389,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 			}
 
 			comics.sort(function (a, b) {
-				return (sortInvert) ? -(orderBy(a, b, order, 'name')) : orderBy(a, b, order, 'name');
+				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
 			});
 		}
 
@@ -1329,34 +1336,14 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		var sortInvert = config.sortInvert;
 		var foldersFirst = config.foldersFirst;
 
-		var key2 = false;
+		var order = '';
 
 		if(sort == 'name')
-		{
-			var order = 'simple';
-			var key = 'name';
-		}
+			order = 'simple';
 		else if(sort == 'numeric')
-		{
-			var order = 'numeric';
-			var key = 'name';
-		}
-		else if(sort == 'name-numeric')
-		{
-			var order = 'simple-numeric';
-			var key = 'name';
-		}
-		else if(sort == 'last-add')
-		{
-			var order = 'simple';
-			var key = 'added';
-		}
+			order = 'numeric';
 		else
-		{
-			var order = 'simple';
-			var key = 'readingProgress';
-			var key2 = 'lastReading';
-		}
+			order = 'simple-numeric';
 
 		var files = fs.readdirSync(file.realPath(path));
 
@@ -1429,7 +1416,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 			comics.sort(function (a, b) {
 				if(foldersFirst && a.folder && !b.folder) return -1; 
 				if(foldersFirst && b.folder && !a.folder) return 1; 
-				return (sortInvert) ? -(orderBy(a, b, order, key, key2)) : orderBy(a, b, order, key, key2);
+				return (sortInvert) ? -(orderBy(a, b, order, 'name')) : orderBy(a, b, order, 'name');
 			});
 
 			for(let key in comics)

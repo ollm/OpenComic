@@ -25,8 +25,8 @@
 </div>
 <div class="menu reading-elements-menus" id="reading-pages">
 	<div class="menu-simple elevation8" style="width: 300px;">
-		<div class="menu-simple-element pages-slide" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
-		<div class="menu-simple-element pages-scroll" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
+		<div class="menu-simple-element pages-slide{{#compare config.readingView '==' 'slide'}} s{{/compare}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
+		<div class="menu-simple-element pages-scroll{{#compare config.readingView '==' 'scroll'}} s{{/compare}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
 		<div class="menu-simple-separator"></div>
 		<div class="menu-simple-text reading-reading-manga">
 			{{language.reading.pages.readingManga}}

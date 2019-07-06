@@ -1,11 +1,11 @@
 <div class="menu" id="index-sort">
 	<div class="menu-simple elevation8" style="width: 256px;">
-		<div class="menu-simple-element sort-name" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
-		<div class="menu-simple-element sort-numeric" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
-		<div class="menu-simple-element sort-name-numeric" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
+		<div class="menu-simple-element sort-name{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
+		<div class="menu-simple-element sort-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
+		<div class="menu-simple-element sort-name-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name-numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name-numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
 		{{#if comicsIndex}}
-		<div class="menu-simple-element sort-last-add" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
-		<div class="menu-simple-element sort-last-reading" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
+		<div class="menu-simple-element sort-last-add{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-add'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-add'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
+		<div class="menu-simple-element sort-last-reading{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-reading'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-reading'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
 		{{else}}
 		<div class="menu-simple-text">
 			{{language.global.sort.foldersFirst}}

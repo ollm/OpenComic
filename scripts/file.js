@@ -241,31 +241,14 @@ function sort(files)
 		var sortInvert = config.sortInvert;
 		var foldersFirst = config.foldersFirst;
 
+		var order = '';
+
 		if(sort == 'name')
-		{
-			var order = 'simple';
-			var key = 'name';
-		}
+			order = 'simple';
 		else if(sort == 'numeric')
-		{
-			var order = 'numeric';
-			var key = 'name';
-		}
-		else if(sort == 'name-numeric')
-		{
-			var order = 'simple-numeric';
-			var key = 'name';
-		}
-		else if(sort == 'last-add')
-		{
-			var order = 'simple';
-			var key = 'added';
-		}
+			order = 'numeric';
 		else
-		{
-			var order = 'simple';
-			var key = 'lastReading';
-		}
+			order = 'simple-numeric';
 
 		files.sort(function (a, b) {
 			if(foldersFirst && (a.folder || a.compressed) && !(b.folder || b.compressed)) return -1; 
