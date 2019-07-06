@@ -31,6 +31,7 @@
 		"build-rpm": "npm run prebuild && electron-builder --linux rpm",
 		"build-snap": "npm run prebuild && electron-builder --linux snap",
 		"build-appimage": "npm run prebuild && electron-builder --linux AppImage",
+		"build-tar": "npm run prebuild && electron-builder --linux tar.gz",
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
