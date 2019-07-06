@@ -5,7 +5,10 @@ This software is under development.
 ## ScreenShot
 
 <!--![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYlckNFTkF6QmdVbE0 "Screenshot")-->
-![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYldFpNZjFkZmlubWc "Screenshot")
+<!--![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYldFpNZjFkZmlubWc "Screenshot")-->
+![Screenshot](https://drive.google.com/uc?export=view&id=17OzzFPC5Y38bXKbgCTsxQjlTnRX4rKk4 "Screenshot")
+
+
 
 ## Installation and Starting
 __Requirements__: Git, Node and NPM
