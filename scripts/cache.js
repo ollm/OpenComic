@@ -1,4 +1,4 @@
-var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im', sharp = false;
+var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im', sharp = false, jimp = false;
 
 var cacheFolder = p.join(electron.remote.app.getPath('cache'), 'opencomic');
 
@@ -6,18 +6,18 @@ if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 
 function processTheImageQueue()
 {
-	if(!sharp) sharp = require('sharp');
+	if(sharp === false) sharp = require('sharp');
 
 	var img = queuedImages[0];
 	var sha = img.sha;
 
 	var realPath = file.realPath(img.file);
 
-
 	sharp(realPath).jpeg({quality: 95}).resize({width: img.size, background: 'white'}).toFile(p.join(cacheFolder, sha+'.jpg'), function(error) {
 	
 		if(error)
 		{
+
 			if(!imageLibrary) imageLibrary = require('gm').subClass({imageMagick: true});
 
 			imageLibrary(realPath).resize(img.size, null).quality(95).noProfile().write(p.join(cacheFolder, sha+'.jpg'), function(error){
@@ -38,20 +38,59 @@ function processTheImageQueue()
 						imageLibrary = require('gm').subClass({imageMagick: true});
 						imageUse = 'im';
 
-						queuedImages.splice(0, 1);
+						if(jimp === false) jimp = require('jimp');
 
-						if(queuedImages.length > 0)
-						{
-							process.nextTick(function() {
-								processTheImageQueue();
-							});
-						}
-						else
-						{
-							processingTheImageQueue = false;
+						jimp.read(realPath, function(error, lenna) {
 
-							storage.set('cache', data);
-						}
+							if(error)
+							{
+								img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
+
+								queuedImages.splice(0, 1);
+
+								if(queuedImages.length > 0)
+								{
+									process.nextTick(function() {
+										processTheImageQueue();
+									});
+								}
+								else
+								{
+									processingTheImageQueue = false;
+
+									storage.set('cache', data);
+								}
+							}
+							else
+							{
+								lenna.resize(img.size, jimp.AUTO).quality(95).background(0xFFFFFFFF).write(p.join(cacheFolder, sha+'.jpg'), function(){
+
+									if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
+
+									data[sha].size = img.size;
+
+									img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha}, img.vars);
+
+									queuedImages.splice(0, 1);
+
+									if(queuedImages.length > 0)
+									{
+										process.nextTick(function() {
+											processTheImageQueue();
+										});
+									}
+									else
+									{
+										processingTheImageQueue = false;
+
+										storage.set('cache', data);
+									}
+
+								});
+							}
+
+						});
+
 					}
 
 				}

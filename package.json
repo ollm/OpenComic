@@ -40,9 +40,10 @@
 		"fs": "0.0.1-security",
 		"gm": "^1.23.1",
 		"handlebars": "^4.1.2",
+		"jimp": "^0.6.4",
 		"jquery": "^3.4.1",
 		"ldd": "^1.0.0",
-		"mime": "^2.4.0",
+		"mime": "^2.4.4",
 		"node-7z": "^1.0.1",
 		"node-unrar": "^0.1.5",
 		"sha1": "^1.1.1",
@@ -91,10 +92,19 @@
 				"image/pjpeg",
 				"image/png",
 				"image/apng",
+				"image/svg",
+				"image/svg+xml",
 				"image/gif",
+				"image/x-ms-bmp",
+				"image/bmp",
+				"image/x-icon",
+				"image/vnd.microsoft.icon",
+				"image/webp",
 				"application/zip",
 				"application/x-cbz",
+				"application/x-zip-compressed",
 				"application/rar",
+				"application/x-rar-compressed",
 				"application/x-cbr",
 				"application/x-rar",
 				"application/7z",
@@ -132,6 +142,8 @@
 				"ext": [
 					"jpg",
 					"jpeg",
+					"jif",
+					"jfi",
 					"jfif",
 					"jfif-tbnl",
 					"jpe"
@@ -148,6 +160,14 @@
 				"role": "Viewer"
 			},
 			{
+				"description": "Image SVG",
+				"ext": [
+					"svg",
+					"svgz"
+				],
+				"role": "Viewer"
+			},
+			{
 				"description": "Image GIF",
 				"ext": [
 					"gif"
@@ -155,9 +175,32 @@
 				"role": "Viewer"
 			},
 			{
+				"description": "Image BMP",
+				"ext": [
+					"bmp",
+					"dib"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Image ICO",
+				"ext": [
+					"ico"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Image WEBP",
+				"ext": [
+					"webp"
+				],
+				"role": "Viewer"
+			},
+			{
 				"description": "Compressed with ZIP",
 				"ext": [
 					"zip",
+					"zipx",
 					"cbz"
 				],
 				"role": "Viewer"

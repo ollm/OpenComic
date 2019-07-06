@@ -226,7 +226,7 @@ function decompressRecursive(path, callback = false, start = 1, virtualPath = fa
 
 		if(i < numSegments)
 		{
-			var extension = fileExtension(virtualPath);
+			extension = fileExtension(virtualPath);
 
 			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
 			{

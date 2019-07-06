@@ -1819,6 +1819,8 @@ module.exports = {
 	changePagesView: changePagesView,
 	magnifyingGlassControl: magnifyingGlassControl,
 	disposeImages: disposeImages,
+	calculateView: calculateView,
+	stayInLine: stayInLine,
 	setCurrentComics: setCurrentComics,
 	currentComics: function(){return currentComics},
 	disableOnScroll: disableOnScroll,

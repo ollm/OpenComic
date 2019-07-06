@@ -50,35 +50,51 @@ var compatibleMime = [
 	'image/pjpeg',
 	'image/png',
 	'image/apng',
-	'image/gif'
+	'image/svg',
+	'image/svg+xml',
+	'image/gif',
+	'image/x-ms-bmp',
+	'image/bmp',
+	'image/x-icon',
+	'image/vnd.microsoft.icon',
+	'image/webp',
 ];
 
 var compressedMime = {
 	'all': [
 		'application/zip',
 		'application/x-cbz',
+		'application/x-zip-compressed',
 		'application/rar',
+		'application/x-rar-compressed',
 		'application/x-cbr',
+		'application/x-rar',
 		'application/7z',
 		'application/x-7z',
+		'application/x-7z-compressed',
 	],
 	'zip': [
 		'application/zip',
 		'application/x-cbz',
+		'application/x-zip-compressed',
 	],
 	'rar': [
 		'application/rar',
+		'application/x-rar-compressed',
 		'application/x-cbr',
+		'application/x-rar',
 	],
 	'7z': [
 		'application/7z',
 		'application/x-7z',
+		'application/x-7z-compressed',
 	],
 };
 
 var compressedExtensions = {
 	'all': [
 		'zip',
+		'zipx',
 		'cbz',
 		'rar',
 		'cbr',
@@ -87,6 +103,7 @@ var compressedExtensions = {
 	],
 	'zip': [
 		'zip',
+		'zipx',
 		'cbz',
 	],
 	'rar': [
@@ -99,11 +116,14 @@ var compressedExtensions = {
 	],
 };
 
-// Update also in main.js
 var compatibleExtensions = [
-	/*jpeg*/'jpg', 'jpeg', 'jfif', 'jfif-tbnl', 'jpe', 
+	/*jpeg*/'jpg', 'jpeg', 'jif', 'jfi', 'jfif', 'jfif-tbnl', 'jpe', 
 	/*png*/'png', 'x-png', 'apng',
+	/*svg*/'svg', 'svgz',
 	/*gif*/'gif',
+	/*bmp*/'bmp', 'dib',
+	/*ico*/'ico',
+	/*webp*/'webp',
 	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7',
 ];
 
@@ -162,6 +182,13 @@ function startApp()
 		$('body .app').css('display', 'block');
 		$('body .preload').css('display', 'none');
 		dom.justifyViewModule();
+
+		if(onReading)
+		{
+			reading.disposeImages();
+			reading.calculateView();
+			reading.stayInLine();
+		}
 
 	};
 
