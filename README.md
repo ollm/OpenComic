@@ -5,6 +5,16 @@
 * [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic_0.1.0_amd64.snap)
 * [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic-0.1.0.tar.gz)
 
+## Features
+
+* Support this image formats: JPG, PNG, APNG, GIF, WEBP, SVG, BMP, ICO.
+* Support this compressed formats: RAR, ZIP, 7Z, CBR, CBZ, CB7.
+* Manga read mode
+* Double page view
+* Bookmarks and continue reading
+* Floating magnifying glass
+* Reading in scroll or slide
+
 ## ScreenShot
 
 <!--![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYlckNFTkF6QmdVbE0 "Screenshot")-->
