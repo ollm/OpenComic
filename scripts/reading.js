@@ -201,7 +201,7 @@ function calcAspectRatio(first, second)
 		if(first.folder)
 			first.aspectRatio = 1;
 		else if(first.blank)
-			first.aspectRatio = imagesData[second.index].folder ? 1 : imagesData[second.index].aspectRatio;
+			first.aspectRatio = second.folder ? 1 : imagesData[second.index].aspectRatio;
 		else
 			first.aspectRatio = imagesData[first.index].aspectRatio;
 	}
