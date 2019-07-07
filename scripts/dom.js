@@ -490,7 +490,7 @@ function returnTextPath(path, mainPath, image = false)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
-	var files = path.replace(mainPathR, '').split(p.sep);
+	var files = path.replace(new RegExp('^\s*'+escapeBackSlash(mainPathR)), '').split(p.sep);
 
 	var path = [];
 
@@ -506,7 +506,7 @@ function headerPath(path, mainPath)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
-	var files = path.replace(mainPathR, '').split(p.sep);
+	var files = path.replace(new RegExp('^\s*'+escapeBackSlash(mainPathR)), '').split(p.sep);
 
 	var path = [];
 
@@ -969,7 +969,7 @@ function indexPathControl(path = false, mainPath = false)
 
 		var mainPathR = p.dirname(mainPath) + p.sep;
 
-		var files = path.replace(mainPathR, '').split(p.sep);
+		var files = path.replace(new RegExp('^\s*'+escapeBackSlash(mainPathR)), '').split(p.sep);
 
 		var prev = '';
 

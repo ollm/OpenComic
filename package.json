@@ -32,6 +32,7 @@
 		"build-snap": "npm run prebuild && electron-builder --linux snap",
 		"build-appimage": "npm run prebuild && electron-builder --linux AppImage",
 		"build-tar": "npm run prebuild && electron-builder --linux tar.gz",
+		"build-nsis": "npm run prebuild && electron-builder --win nsis",
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
