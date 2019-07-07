@@ -24,7 +24,7 @@
 	"scripts": {
 		"start": "npm run prebuild && electron scripts/main.js",
 		"rebuild": "electron-rebuild -f -w sharp",
-		"prebuild": "nodejs scripts/build.js",
+		"prebuild": "node scripts/build.js",
 		"build": "npm run prebuild && electron-builder build",
 		"build-linux": "npm run prebuild && electron-builder --linux deb rpm snap AppImage tar.gz",
 		"build-deb": "npm run prebuild && electron-builder --linux deb",
