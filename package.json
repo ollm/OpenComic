@@ -46,10 +46,10 @@
 		"jquery": "^3.4.1",
 		"ldd": "^1.0.0",
 		"mime": "^2.4.4",
-		"node-7z": "^1.0.1",
-		"node-unrar": "^0.1.5",
+		"node-7z": "^1.1.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.22.1",
+		"unrar": "^0.1.7",
 		"unzipper": "^0.10.1"
 	},
 	"devDependencies": {
