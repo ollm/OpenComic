@@ -439,11 +439,17 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		if(!fs.existsSync(file.realPath(path, -1)) && file.containsCompressed(path))
 		{
-			fileCompressed.decompressRecursive(path, function(){
+			fileCompressed.decompressRecursive(path, function(files){
+
+				if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
+					return dom.compressedError(files);
 
 				if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
 				{
 					fileCompressed.returnFiles(path, false, false, function(files){
+
+						if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
+							return dom.compressedError(files);
 
 						loadFilesIndexPage(animation, path, keepScroll, mainPath);
 
@@ -461,6 +467,9 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 			if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
 			{
 				fileCompressed.returnFiles(path, false, false, function(files){
+
+					if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
+						return dom.compressedError(files);
 
 					loadFilesIndexPage(animation, path, keepScroll, mainPath);
 
@@ -484,6 +493,18 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		justifyViewModule();
 	});
 
+}
+
+function compressedError(error)
+{
+	//console.log(error);
+
+	electron.remote.dialog.showMessageBox({
+		type: 'error',
+		title: language.error.uncompress.title,
+		message: language.error.uncompress.message,
+		detail: error.detail,
+	});
 }
 
 function returnTextPath(path, mainPath, image = false)
@@ -1493,5 +1514,6 @@ module.exports = {
 	calcReadingProgress: calcReadingProgress,
 	calcReadingProgressWD: calcReadingProgressWD,
 	justifyViewModule: justifyViewModule,
+	compressedError: compressedError,
 	indexMainPathA: function(){return indexMainPathA},
 };

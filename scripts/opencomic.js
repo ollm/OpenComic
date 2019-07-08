@@ -141,6 +141,7 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js'));
 
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
+if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 
 //console.timeEnd('Require time 2');
 

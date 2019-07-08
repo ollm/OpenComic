@@ -1,3 +1,6 @@
+const fs = require('fs'),
+	p = require('path');
+
 var unzip = false, unrar = false, un7z = false, bin7z = false, compressedFiles = {};
 
 function returnFilesWD(path, all, callback = false)
@@ -50,7 +53,9 @@ function addCompressedFilesQueue(path, all, callback = false, processQueue = tru
 {
 	var sha = sha1(p.normalize(path));
 
-	if(typeof queuedCompressedFiles[sha] != 'undefined')
+	console.log(sha);
+
+	if(typeof queuedCompressedFiles[sha] !== 'undefined')
 		queuedCompressedFiles[sha].callback.push(callback);
 	else
 		queuedCompressedFiles[sha] = {path: path, all: all, callback: [callback]};
@@ -140,8 +145,6 @@ function returnFiles(path, all, fromCache, callback)
 	}
 	else
 	{
-		if(!fs.existsSync(p.join(tempFolder, sha))) fs.mkdirSync(p.join(tempFolder, sha));
-
 		if(inArray(fileExtension(path), compressedExtensions.zip))
 		{
 			if(unzip === false) unzip = require('unzipper');
@@ -159,28 +162,82 @@ function returnFiles(path, all, fromCache, callback)
 
 					callback((all) ? files : file.allToFirst(files));
 
+				}).on('error', function(error){
+
+					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+					
 				})
 			);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.rar))
 		{
-			if(unrar === false) unrar = require('node-unrar');
-			 
-			var rar = new unrar(path);
+			if(unrar === false) unrar = require('unrar');
 
-			rar.extract(p.join(tempFolder, sha), null, function (err) {
+			var archive = new unrar(path);
 
-				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+			archive.list(function (error, entries) {
 
-				if(!json || json.mtime != mtime)
-					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+				if(!error)
+				{
+					if(!fs.existsSync(p.join(tempFolder, sha))) fs.mkdirSync(p.join(tempFolder, sha));
 
-				compressedFiles[sha] = files;
+					var dirs = [];
 
-				if(!err)
-					callback((all) ? files : file.allToFirst(files));
+					for(let i = 0, len = entries.length; i < len; i++)
+					{
+						if(entries[i].type !== 'File')
+							dirs.push({name: entries[i].name, dimensions: entries[i].name.split(p.sep).length})
+					}
+
+					dirs.sort(function (a, b) {
+
+						if(a.dimensions == b.dimensions)
+							return 0;
+						
+						return (a.dimensions > b.dimensions) ? 1 : -1;
+
+					});
+
+					for(let i = 0, len = dirs.length; i < len; i++)
+					{
+						fs.mkdirSync(p.join(tempFolder, sha, dirs[i].name));
+					}
+
+					var tasks = [];
+
+					for(let i = 0, len = entries.length; i < len; i++)
+					{
+						if(entries[i].type !== 'File')
+							continue;
+
+						tasks.push(new Promise(function(resolve, reject) {
+
+							var stream = archive.stream(entries[i].name);
+							stream.on('error', console.error);
+							stream.on('end', resolve);
+							stream.pipe(require('fs').createWriteStream(p.join(tempFolder, sha, entries[i].name)));
+
+						}));
+					}
+
+					Promise.all(tasks).then(function(){
+
+						// Get files
+						var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+						if(!json || json.mtime != mtime)
+							cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+						compressedFiles[sha] = files;
+						
+						callback((all) ? files : file.allToFirst(files));
+
+					});
+				}
 				else
-					callback({error: ERROR_UNZIPPING_THE_FILE});
+				{
+					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+				}
 
 			});
 
@@ -190,17 +247,27 @@ function returnFiles(path, all, fromCache, callback)
 			if(un7z === false) un7z = require('node-7z');
 			if(bin7z === false) bin7z = require('7zip-bin').path7za;
 
-			var myTask = new un7z();
-			myTask.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/, $bin: bin7z}).progress(function (files){}).then(function () {
+			un7z.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/, $bin: bin7z}).on('data', function (data) {
 
-				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+				if(data.status == 'extracted')
+				{
+	 				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
-				if(!json || json.mtime != mtime)
-					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+					if(!json || json.mtime != mtime)
+						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
 
-				compressedFiles[sha] = files;
+					compressedFiles[sha] = files;
 
-				callback((all) ? files : file.allToFirst(files));
+					callback((all) ? files : file.allToFirst(files));
+				}
+				else
+				{
+					console.log(data);
+				}
+
+			}).on('error', function(error){
+
+				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.stderr});
 
 			});
 
