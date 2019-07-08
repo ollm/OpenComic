@@ -64,46 +64,61 @@ var compressedMime = {
 	'all': [
 		'application/zip',
 		'application/x-cbz',
+		'application/x-zip',
 		'application/x-zip-compressed',
 		'application/rar',
-		'application/x-rar-compressed',
 		'application/x-cbr',
 		'application/x-rar',
+		'application/x-rar-compressed',
 		'application/7z',
+		'application/x-cb7',
 		'application/x-7z',
 		'application/x-7z-compressed',
+		'application/tar',
+		'application/x-cbt',
+		'application/x-tar',
+		'application/x-tar-compressed',
 	],
 	'zip': [
 		'application/zip',
 		'application/x-cbz',
+		'application/x-zip',
 		'application/x-zip-compressed',
 	],
 	'rar': [
 		'application/rar',
-		'application/x-rar-compressed',
 		'application/x-cbr',
 		'application/x-rar',
+		'application/x-rar-compressed',
 	],
 	'7z': [
 		'application/7z',
+		'application/x-cb7',
 		'application/x-7z',
 		'application/x-7z-compressed',
 	],
+	'tar': [
+		'application/tar',
+		'application/x-cbt',
+		'application/x-tar',
+		'application/x-tar-compressed',
+	],
 };
+
 
 var compressedExtensions = {
 	'all': [
 		'zip',
-		'zipx',
 		'cbz',
 		'rar',
 		'cbr',
 		'7z',
 		'cb7',
+		'tar',
+		'cbt',
 	],
 	'zip': [
 		'zip',
-		'zipx',
 		'cbz',
 	],
 	'rar': [
@@ -113,6 +128,10 @@ var compressedExtensions = {
 	'7z': [
 		'7z',
 		'cb7',
+	],
+	'tar': [
+		'tar',
+		'cbt',
 	],
 };
 
@@ -124,7 +143,7 @@ var compatibleExtensions = [
 	/*bmp*/'bmp', 'dib',
 	/*ico*/'ico',
 	/*webp*/'webp',
-	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7',
+	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt',
 ];
 
 //console.time('Require time 2');

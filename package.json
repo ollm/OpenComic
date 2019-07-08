@@ -49,6 +49,7 @@
 		"node-7z": "^1.1.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.22.1",
+		"tar-fs": "^2.0.0",
 		"unrar": "^0.1.7",
 		"unzipper": "^0.10.1"
 	},
@@ -111,13 +112,20 @@
 				"image/webp",
 				"application/zip",
 				"application/x-cbz",
+				"application/x-zip",
 				"application/x-zip-compressed",
 				"application/rar",
-				"application/x-rar-compressed",
 				"application/x-cbr",
 				"application/x-rar",
+				"application/x-rar-compressed",
 				"application/7z",
+				"application/x-cb7",
 				"application/x-7z",
+				"application/x-7z-compressed",
+				"application/tar",
+				"application/x-cbt",
+				"application/x-tar",
+				"application/x-tar-compressed",
 				"text/directory",
 				"inode/directory",
 				"application/x-directory"
@@ -209,7 +217,6 @@
 				"description": "Compressed with ZIP",
 				"ext": [
 					"zip",
-					"zipx",
 					"cbz"
 				],
 				"role": "Viewer"
@@ -227,6 +234,14 @@
 				"ext": [
 					"7z",
 					"cb7"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with TAR",
+				"ext": [
+					"tar",
+					"cbt"
 				],
 				"role": "Viewer"
 			}

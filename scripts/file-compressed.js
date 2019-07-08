@@ -1,7 +1,7 @@
 const fs = require('fs'),
 	p = require('path');
 
-var unzip = false, unrar = false, un7z = false, bin7z = false, compressedFiles = {};
+var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, compressedFiles = {};
 
 function returnFilesWD(path, all, callback = false)
 {
@@ -62,9 +62,13 @@ function addCompressedFilesQueue(path, all, callback = false, processQueue = tru
 
 	if(!processingCompressedFilesQueue && processQueue)
 	{
-		process.nextTick(function() {
-			processCompressedFilesQueue();
-		});
+		setTimeout(function(){
+
+			process.nextTick(function() {
+				processCompressedFilesQueue();
+			});
+
+		}, 0);
 	}
 }
 
@@ -271,6 +275,29 @@ function returnFiles(path, all, fromCache, callback)
 
 			});
 
+		}
+		else if(inArray(fileExtension(path), compressedExtensions.tar))
+		{
+			if(untar === false) untar = require('tar-fs');
+
+			var untarP = fs.createReadStream(path).pipe(untar.extract(p.join(tempFolder, sha))).on('finish', function () {
+
+				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+				if(!json || json.mtime != mtime)
+					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+				compressedFiles[sha] = files;
+
+				callback((all) ? files : file.allToFirst(files));
+
+			}).on('error', function(error){
+
+				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+
+				untarP.destroy();
+
+			});
 		}
 
 		return true;
