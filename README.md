@@ -6,6 +6,7 @@
 * [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic-0.1.1.x86_64.rpm)
 * [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic_0.1.1_amd64.snap)
 * [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic-0.1.1.tar.gz)
+* `snap install opencomic`
 
 ## ScreenShot
 
