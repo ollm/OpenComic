@@ -1,11 +1,19 @@
-## Downloads `version 0.1.0`
+<a target="_blank" href="https://github.com/ollm/OpenComic/blob/master/images/logo.png">
+  <img src="https://github.com/ollm/OpenComic/raw/master/images/logo.png" alt="OpenComic" title="OpenComic" width="68">
+</a>
+
+## Download `version 0.1.1`
 ###### Windows
-* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.0/OpenComic.Setup.0.1.0.exe)
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.1/OpenComic.Setup.0.1.1.exe)
 ###### Linux
-* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic_0.1.0_amd64.deb)
-* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic-0.1.0.x86_64.rpm)
-* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic_0.1.0_amd64.snap)
-* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.0/opencomic-0.1.0.tar.gz)
+* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic_0.1.1_amd64.deb)
+* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic-0.1.1.x86_64.rpm)
+* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic_0.1.1_amd64.snap)
+* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.1/opencomic-0.1.1.tar.gz)
+
+## ScreenShot
+
+![Screenshot](https://drive.google.com/uc?export=view&id=1zoJRURY2NTZubdMgnWmDkr_A_6AqcMnj "Screenshot")
 
 ## Features
 
@@ -16,14 +24,6 @@
 * Bookmarks and continue reading
 * Floating magnifying glass
 * Reading in scroll or slide
-
-## ScreenShot
-
-<!--![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYlckNFTkF6QmdVbE0 "Screenshot")-->
-<!--![Screenshot](https://drive.google.com/uc?export=view&id=0Bys7xcli0VYldFpNZjFkZmlubWc "Screenshot")-->
-![Screenshot](https://drive.google.com/uc?export=view&id=17OzzFPC5Y38bXKbgCTsxQjlTnRX4rKk4 "Screenshot")
-
-
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM
