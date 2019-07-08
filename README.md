@@ -1,7 +1,3 @@
-<a target="_blank" href="https://github.com/ollm/OpenComic/blob/master/images/logo.png">
-  <img src="https://github.com/ollm/OpenComic/raw/master/images/logo.png" alt="OpenComic" title="OpenComic" width="68">
-</a>
-
 ## Download `version 0.1.1`
 ###### Windows
 * [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.1/OpenComic.Setup.0.1.1.exe)
