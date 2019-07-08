@@ -140,6 +140,8 @@ function returnFiles(path, all, fromCache, callback)
 	}
 	else
 	{
+		if(!fs.existsSync(p.join(tempFolder, sha))) fs.mkdirSync(p.join(tempFolder, sha));
+
 		if(inArray(fileExtension(path), compressedExtensions.zip))
 		{
 			if(unzip === false) unzip = require('unzipper');
@@ -165,7 +167,7 @@ function returnFiles(path, all, fromCache, callback)
 			if(unrar === false) unrar = require('node-unrar');
 			 
 			var rar = new unrar(path);
-			 			 
+
 			rar.extract(p.join(tempFolder, sha), null, function (err) {
 
 				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
