@@ -185,6 +185,7 @@ function addHtmlImages()
 
 	var html = template.load('reading.content.right.images.html');
 
+	template.contentRight('.loading').remove();
 	template.contentRight('.reading-body > div').html(html);
 	template.contentRight('.reading-lens > div > div').html(html);
 

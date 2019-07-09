@@ -347,6 +347,91 @@
 	}
 }
 
+@keyframes rotate
+{
+	100%
+	{
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes dash96
+{
+	0%
+	{
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+	50%
+	{
+		stroke-dasharray: 150, 200;
+		stroke-dashoffset: -60px;
+	}
+	100%
+	{
+		stroke-dasharray: 150, 200;
+		stroke-dashoffset: -201px;
+	}
+}
+
+
+@keyframes dash48
+{
+	0%
+	{
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+	50%
+	{
+		stroke-dasharray: 84, 200;
+		stroke-dashoffset: -30px;
+	}
+	100%
+	{
+		stroke-dasharray: 84, 200;
+		stroke-dashoffset: -112px;
+	}
+}
+
+@keyframes dash36
+{
+	0%
+	{
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+	50%
+	{
+		stroke-dasharray: 52, 200;
+		stroke-dashoffset: -20px;
+	}
+	100%
+	{
+		stroke-dasharray: 52, 200;
+		stroke-dashoffset: -68px;
+	}
+}
+
+@keyframes dash24
+{
+	0%
+	{
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+	50%
+	{
+		stroke-dasharray: 42, 200;
+		stroke-dashoffset: -16px;
+	}
+	100%
+	{
+		stroke-dasharray: 42, 200;
+		stroke-dashoffset: -56px;
+	}
+}
+
 /*CSS*/
 
 
@@ -1653,6 +1738,128 @@ body .preload
 {
 	padding-right: 6px;
 	color: #333;
+}
+
+/* Loading */
+
+.loading
+{
+
+}
+
+.loading.align
+{
+	position: relative;
+	margin: 0 auto;
+	top: 50%;
+	contain: strict;
+	transform: translate(0px, -50%);
+}
+
+.loading96
+{
+	width: 96px;
+	height: 96px;
+}
+
+.loading48
+{
+	width: 48px;
+	height: 48px;
+}
+
+.loading36
+{
+	width: 36px;
+	height: 36px;
+}
+
+.loading24
+{
+	width: 24px;
+	height: 24px;
+}
+
+.loading > svg
+{
+	animation: rotate 2s linear infinite;
+	height: 100%;
+	transform-origin: center center;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.loading > svg > circle
+{
+	stroke-dasharray: 1, 200;
+	stroke-dashoffset: 0;
+	stroke-linecap: round;
+	stroke: #da4336;
+}
+
+.loading96 > svg > circle
+{
+	animation: dash96 1.5s ease-in-out infinite;
+}
+
+.loading48 > svg > circle
+{
+	animation: dash48 1.5s ease-in-out infinite;
+}
+
+.loading36 > svg > circle
+{
+	animation: dash36 1.5s ease-in-out infinite;
+}
+
+.loading24 > svg > circle
+{
+	animation: dash24 1.5s ease-in-out infinite;
+}
+
+.loading96 > svg > circle
+{
+	cx: 96;
+	cy: 96;
+	r: 32;
+	fill: none;
+	stroke-width: 6;
+	stroke-linecap: square;
+}
+
+.loading48 > svg > circle
+{
+	cx: 48;
+	cy: 48;
+	r: 18;
+	fill: none;
+	stroke-width: 4;
+	stroke-linecap: square;
+}
+
+.loading36 > svg > circle
+{
+	cx: 36;
+	cy: 36;
+	r: 11;
+	fill: none;
+	stroke-width: 3;
+	stroke-linecap: square;
+}
+
+.loading24 > svg > circle
+{
+	cx: 24;
+	cy: 24;
+	r: 9;
+	fill: none;
+	stroke-width: 2;
+	stroke-linecap: square;
 }
 
 /*Scrolrl*/

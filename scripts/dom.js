@@ -303,7 +303,9 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		handlebarsContext.comicsReadingProgress = false;
 	}
 
-	template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
+	template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));
+
+	//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 	events.events();
 	justifyViewModule();
 
@@ -423,6 +425,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		headerPath(path, mainPath);
 		template.loadHeader('index.header.html', animation);
+		template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
 
 		if(!content)
 		{
