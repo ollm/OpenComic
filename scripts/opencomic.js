@@ -503,6 +503,12 @@ function toUnixPath(string)
 	return string.replace(/\\+/g, '/').trim().replace(/^c\:/ig, '/');
 }
 
+function extract(code, string, value)
+{
+	string = string.match(code);
+	return (string !== null && typeof string[value] != 'undefined') ? string[value] : '';
+}
+
 function isEmpty(obj)
 {
 	if (obj == null) return true;

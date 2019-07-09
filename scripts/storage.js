@@ -84,6 +84,56 @@ var storageDefault = {
 },
 storageJson = {};
 
+var languagesList = false, getLocaleUserLanguageCache = {};
+
+function getLocaleUserLanguage(userLanguage = false)
+{
+	if(userLanguage === false)
+		userLanguage = navigator.language || navigator.userLanguage;
+
+	if(!userLanguage)
+		return 'en';
+
+	userLanguage = userLanguage.replace(/\-/g, '_');
+
+	if(getLocaleUserLanguageCache[_userLanguage])
+		return getLocaleUserLanguageCache[_userLanguage];
+
+	var _userLanguage = userLanguage;
+
+	if(languagesList === false)
+		languagesList = $.parseJSON(readFileApp('/languages/languagesList.json'));
+
+	var codes = [];
+
+	for(let code in languagesList)
+	{
+		if(languagesList[code].active)
+		{
+			codes.push(code.replace(/\-/g, '_'));
+		}
+	}
+
+	for(let i = 0, len = codes.length; i < len; i++)
+	{
+		if(codes[i] === userLanguage)
+		{
+			return getLocaleUserLanguageCache[_userLanguage] = codes[i];
+		}
+	}
+
+	userLanguage = extract(/^([a-z]+)/iu, userLanguage, 1).toLowerCase();
+
+	for(let i = 0, len = codes.length; i < len; i++)
+	{
+		if(codes[i] === userLanguage)
+		{
+			return getLocaleUserLanguageCache[_userLanguage] = codes[i];
+		}
+	}
+
+	return getLocaleUserLanguageCache[_userLanguage] = 'en';
+}
 
 function updateStorageArrayMD(data, defaultObj)
 {
@@ -206,6 +256,9 @@ function start(callback)
 
 			if(typeof data[key] == 'undefined')
 			{
+				if(key == 'config')
+					storageDefault[key].language = getLocaleUserLanguage();
+
 				var storageNew = updateStorageMD(false, storageDefault[key]);
 
 				ejs.set(key, storageNew, function(error){});
@@ -216,6 +269,9 @@ function start(callback)
 			{
 				if(config.appVersion != _package.version || config.changes != changes)
 				{
+					if(key == 'config')
+						storageDefault[key].language = getLocaleUserLanguage();
+
 					if(config.changes != changes)
 						var newData = updateStorageMD(data[key], storageDefault[key]);
 					else
@@ -265,4 +321,5 @@ module.exports = {
 	push: push,
 	storageJson: storageJson,
 	updateStorageMD: updateStorageMD,
+	getLocaleUserLanguage: getLocaleUserLanguage,
 };
