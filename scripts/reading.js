@@ -1360,7 +1360,7 @@ function loadBookmarks()
 
 			var thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha, function(data){
 
-				addImageToDom(data.sha, data.path);
+				dom.addImageToDom(data.sha, data.path);
 
 			});
 
@@ -1407,7 +1407,7 @@ function loadBookmarks()
 
 		var thumbnail = cache.returnCacheImage(file.realPath(readingProgress.path), sha, function(data){
 
-			addImageToDom(data.sha, data.path);
+			dom.addImageToDom(data.sha, data.path);
 
 		});
 

@@ -1518,5 +1518,6 @@ module.exports = {
 	calcReadingProgressWD: calcReadingProgressWD,
 	justifyViewModule: justifyViewModule,
 	compressedError: compressedError,
+	addImageToDom: addImageToDom,
 	indexMainPathA: function(){return indexMainPathA},
 };

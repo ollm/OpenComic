@@ -61,31 +61,37 @@
 	"build": {
 		"appId": "org.opencomic.app",
 		"productName": "OpenComic",
+		"asar": false,
 		"files": [
 			"**/*",
 			"!themes/material-design/icons",
 			"!themes/*/templates",
 			"!templates",
+			"!images/icons",
+			"!images/icon.ico",
+			"!images/icon.png",
 			"templates/index.html",
 			"templates/about.html"
 		],
 		"asarUnpack": [
-			"node_modules/sharp"
+			"node_modules/sharp",
+			"node_modules/node-7z",
+			"node_modules/7zip-bin"
 		],
 		"win": {
 			"target": [
 				"nsis"
 			],
-			"icon": "build/icon.ico"
+			"icon": "images/icon.ico"
 		},
 		"nsis": {
 			"oneClick": false,
-			"installerIcon": "build/icon.ico",
-			"uninstallerIcon": "build/icon.ico",
-			"installerHeaderIcon": "build/icon.ico"
+			"installerIcon": "images/icon.ico",
+			"uninstallerIcon": "images/icon.ico",
+			"installerHeaderIcon": "images/icon.ico"
 		},
 		"mac": {
-			"icon": "build/icon.png",
+			"icon": "images/icon.png",
 			"category": "public.app-category.graphics-design"
 		},
 		"linux": {
@@ -95,7 +101,7 @@
 				"rpm",
 				"snap"
 			],
-			"icon": "build/icons",
+			"icon": "images/icons",
 			"category": "Graphics",
 			"mimeTypes": [
 				"image/jpeg",
@@ -137,7 +143,6 @@
 				"libappindicator1",
 				"libxtst6",
 				"libnss3",
-				"libvips",
 				"unrar"
 			]
 		},
@@ -149,7 +154,15 @@
 				"libappindicator1",
 				"libxtst6",
 				"libnss3",
-				"libvips",
+				"unrar"
+			]
+		},
+		"snap": {
+			"buildPackages": [
+				"unrar"
+			],
+			"stagePackages": [
+				"default",
 				"unrar"
 			]
 		},
