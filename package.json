@@ -61,7 +61,7 @@
 	"build": {
 		"appId": "org.opencomic.app",
 		"productName": "OpenComic",
-		"asar": false,
+		"asar": true,
 		"files": [
 			"**/*",
 			"!themes/material-design/icons",
@@ -76,7 +76,12 @@
 		"asarUnpack": [
 			"node_modules/sharp",
 			"node_modules/node-7z",
-			"node_modules/7zip-bin"
+			"node_modules/7zip-bin",
+			"node_modules/nice-try",
+			"node_modules/path-key",
+			"node_modules/semver",
+			"node_modules/shebang-command",
+			"node_modules/which"
 		],
 		"win": {
 			"target": [
