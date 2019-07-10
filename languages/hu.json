@@ -1,0 +1,120 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "és",
+		"comics": "Képregények",
+		"collection": "Gyűjtemény",
+		"sort": {
+			"main": "Rendezés",
+			"name": "Név",
+			"number": "Sorszám",
+			"nameNumber": "Név / Sorszám",
+			"lastAdd": "Utoljára hozzáadva",
+			"lastReading": "Utoljára olvasott",
+			"foldersFirst": "Mappák előre",
+			"invert": "Megfordít"
+		},
+		"view": {
+			"main": "Nézet",
+			"module": "Rács",
+			"list": "Lista"
+		},
+		"contextMenu": {
+			"remove": "Töröl"
+		},
+		"back": "Vissza",
+		"add": "Hozzáadás",
+		"language": "Nyelv",
+		"theme": "Téma",
+		"nightMode": "Sötét téma"
+	},
+	"comics": {
+		"continueReading": "Folytatás",
+		"emptyIndex": "Ebben a gyűjteményben nincsenek képregények.",
+		"emptyFolder": "Ebben a mappában nincsenek megfelelő fájlok."
+	},
+	"reading": {
+		"firstPage": "Első oldal",
+		"previous": "Előző",
+		"next": "Következő",
+		"lastPage": "Utolsó oldal",
+
+		"pages": {
+			"main": "Oldalak",
+			"slide": "Egyszerre egy oldalt",
+			"scroll": "Minden oldalt",
+			"adjustToWidth": "Teljes szélesség",
+			"margin": "Margó",
+			"doublePage": "Két oldalt egyszerre",
+			"doNotApplyToHorizontals": "Széles képekre ne vonatkozzon",
+			"readingDelaySkip": "Lapozás késleltetése",
+			"animationSpeed": "Animáció sebessége",
+			"readingManga": "Manga olvasása (Tükrözött)"
+		},
+		"magnifyingGlass": {
+			"main": "Nagyító",
+			"activate": "Aktiválás",
+			"zoom": "Nagyítás",
+			"size": "Méret",
+			"ratio": "Képarány",
+			"radius": "Lekerekítés"
+		},
+		"viewBookmarks": "Könyvjelzők megtekintése",
+		"addBookmark": "Könyvjelző hozzáadása",
+		"removeBookmark": "Könyvjelző törlése",
+		"emptyBookmarks": "Nincsenek könyvjelzők",
+		"currentReading": "Most olvasott"
+	},
+	"menu": {
+		"file": {
+			"main": "Fájl",
+			"openFile": "Fájl megnyitása",
+			"openFolder": "Mappa megnyitása",
+			"addFile": "Fájl hozzáadása",
+			"addFolder": "Mappa hozzáadása",
+			"quit": "Kilépés"
+		},
+		"view": {
+			"main": "Nézet",
+			"resetZoom": "Nagyítás alaphelyzetbe",
+			"zoomIn": "Nagyítás",
+			"zoomOut": "Kicsinyítés",
+			"toggleFullScreen": "Teljes képernyő"
+		},
+		"goto": {
+			"main": "Ugrás"
+		},
+		"debug": {
+			"main": "Hibakeresés",
+			"reload": "Frissítés",
+			"forceReload": "Kényszerített frissítés",
+			"toggleDevTools": "Fejlesztői eszközök megnyitása"
+		},
+		"help": {
+			"main": "Súgó",
+			"about": "Névjegy"
+		}
+	},
+	"error": {
+		"uncompress": {
+			"title": "Hiba történt a kicsomagláskor",
+			"message": "Hiba történt a fájl kicsomagolása közben."
+		}
+	},
+	"about": {
+		"version": "Verzió",
+		"translatedBy": "Magyar fordítás:",
+		"contributedBy": "Közreműködött:",
+		"translators": [
+			{
+				"name": "Oleguer Llopart",
+				"email": "oleguer.llopart.mora@gmail.com",
+				"url": "https://github.com/ollm"
+			},
+			{
+				"name": "Tóth Róbert",
+				"url": "https://github.com/Nekomajin42"
+			}
+		]
+	}
+}
