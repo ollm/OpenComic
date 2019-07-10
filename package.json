@@ -30,6 +30,7 @@
 		"build-deb": "npm run prebuild && electron-builder --linux deb",
 		"build-rpm": "npm run prebuild && electron-builder --linux rpm",
 		"build-snap": "npm run prebuild && electron-builder --linux snap",
+		"snapcraft": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-x64/ && snapcraft",
 		"build-appimage": "npm run prebuild && electron-builder --linux AppImage",
 		"build-tar": "npm run prebuild && electron-builder --linux tar.gz",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis",
@@ -76,12 +77,7 @@
 		"asarUnpack": [
 			"node_modules/sharp",
 			"node_modules/node-7z",
-			"node_modules/7zip-bin",
-			"node_modules/nice-try",
-			"node_modules/path-key",
-			"node_modules/semver",
-			"node_modules/shebang-command",
-			"node_modules/which"
+			"node_modules/7zip-bin"
 		],
 		"win": {
 			"target": [
@@ -169,6 +165,10 @@
 			"stagePackages": [
 				"default",
 				"unrar"
+			],
+			"plugs": [
+				"default",
+				"removable-media"
 			]
 		},
 		"fileAssociations": [
