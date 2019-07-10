@@ -247,7 +247,18 @@ function returnFiles(path, all, fromCache, callback)
 		else if(inArray(fileExtension(path), compressedExtensions['7z']))
 		{
 			if(un7z === false) un7z = require('node-7z');
-			if(bin7z === false) bin7z = require('7zip-bin').path7za;
+			
+			if(bin7z === false)
+			{
+				bin7z = require('7zip-bin').path7za;
+
+				if(!/app\.asar\.unpacked/.test(bin7z))
+				{
+					var bin7zUnpacked = bin7z.replace(/app\.asar/, 'app.asar.unpacked');
+
+					if(fs.existsSync(bin7zUnpacked)) bin7z = bin7zUnpacked;
+				}
+			}
 
 			un7z.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/, $bin: bin7z}).on('data', function (data) {
 
