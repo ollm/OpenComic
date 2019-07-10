@@ -53,8 +53,6 @@ function addCompressedFilesQueue(path, all, callback = false, processQueue = tru
 {
 	var sha = sha1(p.normalize(path));
 
-	console.log(sha);
-
 	if(typeof queuedCompressedFiles[sha] !== 'undefined')
 		queuedCompressedFiles[sha].callback.push(callback);
 	else
@@ -267,6 +265,8 @@ function returnFiles(path, all, fromCache, callback)
 				else
 				{
 					console.log(data);
+
+					callback({error: ERROR_UNZIPPING_THE_FILE, detail: data.status});
 				}
 
 			}).on('error', function(error){

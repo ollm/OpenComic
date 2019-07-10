@@ -844,29 +844,36 @@ function processFolderImagesQueue(force = false)
 	}
 }
 
-function folderImages(path, num, callback = false)
+function folderImages(path, num, callback = false, ignore = [])
 {
 
 	(function(path, num, callback){
 
 		process.nextTick(function() {
 
-			var images = folderImagesWD(path, num);
+			var images = folderImagesWD(path, num, false, ignore);
 
 			if(checkError(images))
 			{
-				(function(error, path, num, callback){
+				var startPath = images.startPath;
+
+				(function(error, path, num, callback, ignore, startPath){
 
 					fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
 
+						/*if(checkError(files))
+							ignore.push(startPath);
+
+						dom.folderImages(path, num, callback, ignore);*/
+
 						if(!checkError(files))
-							dom.folderImages(path, num, callback);
+							dom.folderImages(path, num, callback, ignore);
 						else
 							callback(files);
 
 					});
 
-				})(images, path, num, callback)
+				})(images, path, num, callback, ignore, startPath)
 			}
 			else
 			{
@@ -878,17 +885,29 @@ function folderImages(path, num, callback = false)
 	})(path, num, callback);
 }
 
-function folderImagesWD(path, num, mode = false)
+function folderImagesWD(path, num, mode = false, ignore = [])
 {
+	var _ignore = {};
+
+	for(let i = 0, len = ignore.length; i < len; i++)
+	{
+		_ignore[p.normalize(ignore[i])] = true;
+	}
 
 	if(!mode)
 	{
 		var dirs = [];
 
-		var files = file.returnFirstWD(path);
+		if(!_ignore[p.normalize(path)])
+			var files = file.returnFirstWD(path);
+		else
+			return [];
 
 		if(checkError(files))
+		{
+			files.startPath = path;
 			return files;
+		}
 
 		files = file.sort(files);
 
@@ -900,12 +919,19 @@ function folderImagesWD(path, num, mode = false)
 
 				if(files[i].folder || files[i].compressed)
 				{
-					filePath = folderImagesWD(filePath, 1, 1);
+					if(!_ignore[p.normalize(filePath)])
+					{
+						_filePath = filePath;
+						filePath = folderImagesWD(filePath, 1, 1);
 
-					if(checkError(filePath))
-						return filePath;
+						if(checkError(filePath))
+						{
+							filePath.startPath = _filePath;
+							return filePath;
+						}
 
-					if(filePath) dirs.push(filePath);
+						if(filePath) dirs.push(filePath);
+					}
 				}
 				else
 				{
@@ -921,10 +947,16 @@ function folderImagesWD(path, num, mode = false)
 	else
 	{
 
-		var files = file.returnFirstWD(path);
+		if(!_ignore[p.normalize(path)])
+			var files = file.returnFirstWD(path);
+		else
+			return false;
 
 		if(checkError(files))
+		{
+			files.startPath = path;
 			return files;
+		}
 
 		files = file.sort(files);
 
@@ -941,12 +973,19 @@ function folderImagesWD(path, num, mode = false)
 
 				if(files[i].folder || files[i].compressed)
 				{
-					filePath = folderImagesWD(filePath, 1, 1);
+					if(!_ignore[p.normalize(filePath)])
+					{
+						_filePath = filePath;
+						filePath = folderImagesWD(filePath, 1, 1);
 
-					if(checkError(filePath))
-						return filePath;
+						if(checkError(filePath))
+						{
+							filePath.startPath = _filePath;
+							return filePath;
+						}
 
-					if(filePath) return filePath;
+						if(filePath) return filePath;
+					}
 				}
 				else
 				{

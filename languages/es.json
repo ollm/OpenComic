@@ -95,6 +95,12 @@
 			"about": "Acerca de OpenComic"
 		}
 	},
+	"error": {
+		"uncompress": {
+			"title": "Error al descomprimir",
+			"message": "Ha ocurrido un error al intentar descomprimir el archivo."
+		}
+	},
 	"about": {
 		"version": "Versión",
 		"translatedBy": "Traducido al Español por",
@@ -106,11 +112,5 @@
 				"url": "https://github.com/ollm"
 			}
 		]
-	},
-	"error": {
-		"uncompress": {
-			"title": "Error al descomprimir",
-			"message": "Ha ocurrido un error al intentar descomprimir el archivo."
-		}
 	}
 }
