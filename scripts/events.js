@@ -11,11 +11,6 @@ function eventButton()
 		buttonCancel = false;
 		buttonPulsed = true;
 
-		eventHoverTimeoutActive = false;
-
-		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
-		$('.global-elements .hover.a').removeClass('a').addClass('d');
-
 	});
 
 	$('.button').on('mouseup touchend', function(e){
@@ -48,11 +43,6 @@ function eventButton()
 		buttonCancel = false;
 		buttonPulsed = true;
 
-		eventHoverTimeoutActive = false;
-
-		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
-		$('.global-elements .hover.a').removeClass('a').addClass('d');
-
 	});
 
 	$('.floating-action-button').on('mouseup touchend', function(e){
@@ -80,7 +70,7 @@ function eventButton()
 
 }
 
-var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, currentPageX, currentPageY;
+var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, showedHoverText = false, currentPageX, currentPageY;
 
 function eventHover()
 {
@@ -97,22 +87,21 @@ function eventHover()
 
 	$('.hover-text').on('mouseleave', function(){
 
-		eventHoverTimeoutActive = false;
-
-		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
-		$('.global-elements .hover.a').removeClass('a').addClass('d');
-	
+		hideHoverText();
 
 	});
 
 	$(document).on('mouseleave', function(){
 
-		//eventHoverTimeoutActive = false;
+		hideHoverText();
 
-		//$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
-		//$('.global-elements .hover.a').removeClass('a').addClass('d');
+		clearTimeout(eventHoverTimeout);
 
-		//clearTimeout(eventHoverTimeout);
+	});
+
+	$(window).on('mousedown touchstart', function(){
+
+		hideHoverText();
 
 	});
 
@@ -122,6 +111,15 @@ function eventHover()
 
 		if(eventHoverTimeoutActive)
 			eventHoverTimeout = setTimeout('events.showHoverText()', 300);
+		else
+			hideHoverText();
+
+	});
+
+	$(window).on('mousemove touchstart touchmove', function (e){
+
+		currentPageX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
+		currentPageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
 
 	});
 
@@ -184,7 +182,8 @@ function eventRange()
 function events()
 {
 	$('.button').off('mousedown mouseup touchstart touchend mouseout');
-	$(window).off('mouseover mouseleave');
+	$(window).off('mouseover mouseleave mousedown mousemove');
+	$(document).off('mouseleave');
 	$('.hover-text').off('mousemove');
 	$('.floating-action-button').off('mousedown mouseup touchstart touchend');
 	$('.switch').off('click');
@@ -212,6 +211,21 @@ function showHoverText()
 	else
 	{
 		$('.global-elements .hover').removeClass('d d-i').addClass('a').css('bottom', '').css('top', top+'px').css('left', left+'px');
+	}
+
+	showedHoverText = true;
+}
+
+function hideHoverText()
+{
+	if(showedHoverText)
+	{
+		eventHoverTimeoutActive = false;
+
+		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
+		$('.global-elements .hover.a').removeClass('a').addClass('d');
+
+		showedHoverText = false;
 	}
 }
 
@@ -313,18 +327,12 @@ function desactiveMenu(query, query2)
 	$(query2+'.p, '+query2+'.c, '+query2+'.a').removeClass('p c a').addClass('d');
 }
 
-$(window).on('mousemove touchstart touchmove', function (e){
-
-	currentPageX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
-	currentPageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
-
-});
-
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
 	events: events,
 	showHoverText: showHoverText,
+	hideHoverText: hideHoverText,
 	activeMenu: activeMenu,
 	activeContextMenu: activeContextMenu,
 	desactiveMenu: desactiveMenu
