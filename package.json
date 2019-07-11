@@ -59,7 +59,7 @@
 		"sha1": "^1.1.1",
 		"sharp": "^0.22.1",
 		"tar-fs": "^2.0.0",
-		"unrar": "^0.1.7",
+		"unrar": "git+https://git@github.com/ollm/node-unrar.git",
 		"unzipper": "^0.10.1"
 	},
 	"devDependencies": {

@@ -4,3 +4,6 @@ scripts/builded
 
 # OSX
 .DS_Store
+
+# Unrar Exe
+unrar
