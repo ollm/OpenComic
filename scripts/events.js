@@ -218,6 +218,8 @@ function showHoverText()
 
 function hideHoverText()
 {
+	eventHoverTimeoutActive = false;
+
 	if(showedHoverText)
 	{
 		eventHoverTimeoutActive = false;

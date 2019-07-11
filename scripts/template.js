@@ -32,7 +32,7 @@ function changeContentLeft(html, animation = true)
 	document.querySelector('.content-left').insertAdjacentHTML('beforeend', '<div class="content-left-'+contentLeftZindex+(animation ? ' a' : '')+'" style="z-index: ' + contentLeftZindex + ';"><div>'+html+'</div></div>');
 
 	contentLeft = $('.content-left .content-left-'+contentLeftZindex);
-	setTimeout('$(\'.content-left-'+(contentLeftZindex-1)+'\').remove()', 300);
+	setTimeout('$(\'.content-left-'+(contentLeftZindex-1)+'\').remove(); $(\'.content-left-'+contentLeftZindex+'\').removeClass(\'a\')', 300);
 
 	contentLeftZindex++;
 }
@@ -64,7 +64,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 	}
 
 	contentRight = $('.content-right .content-right-'+contentRightZindex);
-	setTimeout('$(\'.content-right-'+(contentRightZindex-1)+'\').remove()', 300);
+	setTimeout('$(\'.content-right-'+(contentRightZindex-1)+'\').remove(); $(\'.content-right-'+contentRightZindex+'\').removeClass(\'a\')', 300);
 
 	contentRightZindex++;
 }
@@ -83,7 +83,7 @@ function changeHeader(html, animation = true)
 	document.querySelector('.bar-header').insertAdjacentHTML('beforeend', '<div class="bar-header-'+headerZindex+(animation ? ' a' : '')+'" style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
 
 	barHeader = $('.bar-header .bar-header-'+headerZindex);
-	setTimeout('$(\'.bar-header-'+(headerZindex-1)+'\').remove()', 300);
+	setTimeout('$(\'.bar-header-'+(headerZindex-1)+'\').remove(); $(\'.bar-header-'+headerZindex+'\').removeClass(\'a\')', 300);
 
 	headerZindex++;
 }

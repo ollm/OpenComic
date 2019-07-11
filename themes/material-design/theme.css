@@ -463,8 +463,8 @@ body .preload
 .disable-pointer
 {
 	opacity: 0.5;
-    pointer-events: none;
-    transition: 0.2s;
+	pointer-events: none;
+	transition: 0.2s;
 }
 
 .bar-header
@@ -571,7 +571,7 @@ body .preload
 	background-color: #fff;
 	/*box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);*/
 	transition: background-color 0.2s, box-shadow 0.2s;
-	border-right: 1px solid #e6e6e6;
+	border-right: 1px solid #e0e0e0/*#e6e6e6*/;
 }
 
 .content-left > div > div
@@ -1266,7 +1266,6 @@ body .preload
 	display: inline-block;
 	vertical-align: middle;
 	border-radius: 4px;
-	background-color: #fff;
 	overflow: hidden;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -1510,7 +1509,7 @@ body .preload
 	width: 100%;
 	height: 100%;
 	overflow-x: hidden;
-    contain: paint;
+	contain: paint;
 }
 
 .reading-body > div
@@ -1573,10 +1572,10 @@ body .preload
 	line-height: 40px;
 	padding: 0px 16px;
 	text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    word-wrap: normal;
-    margin-top: -10px;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	margin-top: -10px;
 }
 
 .reading-lens
@@ -1726,10 +1725,10 @@ body .preload
 {
 	padding: 0px 24px;
 	color: #777;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    word-wrap: normal;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
 }
 
 .reading-bookmark > span
@@ -1915,13 +1914,13 @@ body .night-mode
 .night-mode .bar-header, .night-mode .bar-header > div
 {
 	/*background-color: #212121;*/
-	background-color: #303030;
+	background-color: #212121;
 }
 
 .night-mode .content-right > div
 {
 	/*background-color: #303030;*/
-	background-color: #212121;
+	background-color: #141414;
 }
 
 .night-mode .reading-lens
@@ -1931,13 +1930,13 @@ body .night-mode
 
 .night-mode .content-left, .night-mode .content-left > div
 {
-	background-color: #303030;
+	background-color: #212121;
 }
 
 .night-mode .menu-simple
 {
 	/*background-color: #212121;*/
-	background-color: #303030;
+	background-color: #212121;
 }
 
 .night-mode .reading-number
@@ -1947,14 +1946,14 @@ body .night-mode
 
 .night-mode .reading-skip > div
 {
-	background-color: #303030;
+	background-color: #212121;
 	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0), inset 0px 0px 2px 1px rgba(0, 0, 0, 0), inset 0px 0px 1px 1px rgba(0, 0, 0, 0);
 }
 
 .night-mode .simple-list
 {
 	background-color: #212121;
-	border-bottom: 1px solid rgb(29, 29, 29);
+	border-bottom: 1px solid #414141;
 }
 
 .night-mode .simple-list:hover
@@ -1964,12 +1963,12 @@ body .night-mode
 
 .night-mode  .content-view-module .v-folder
 {
-	background-color: #303030;
+	background-color: #212121;
 }
 
 .night-mode .reading-left
 {
-	border-bottom: 1px solid rgb(42, 42, 42);
+	border-bottom: 1px solid #414141;
 	color: #fff;
 }
 
@@ -2007,16 +2006,63 @@ body .night-mode
 
 .night-mode .floating-action-button-min
 {
-	background-color: #303030;
+	background-color: #212121;
 }
 
 .night-mode .content-left > div
 {
-	border-right: 1px solid rgb(42, 42, 42);
+	border-right: 1px solid #414141;
+}
+
+.night-mode .separator-1
+{
+	border-top: 1px solid #414141;
+}
+
+.night-mode .bar-buttons-separator
+{
+	border-left: 1px solid #414141;
+}
+
+.night-mode .menu-simple-separator
+{
+	border-top: 1px solid #414141;
+}
+
+.night-mode .menu-simple-element.s,
+.night-mode .content-left .menu-list:hover,
+.night-mode .reading-left:hover, .reading-left.s
+{
+	background-color: rgba(255, 255, 255, 0.14);
+}
+
+.night-mode .menu-simple-element:hover
+{
+	background-color: rgba(255, 255, 255, 0.14) !important;
 }
 
 .night-mode ::-webkit-scrollbar
 {
-	border-left: 1px solid rgb(42, 42, 42);
-	background-color: #303030;
+	border-left: 1px solid #414141;
+	background-color: #212121;
+}
+
+.night-mode ::-webkit-scrollbar-thumb
+{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:hover
+{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:active
+{
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:window-inactive
+{
+	background-color: rgba(255, 255, 255, 0.12);
 }
