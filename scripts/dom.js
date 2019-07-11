@@ -1298,7 +1298,7 @@ function justifyViewModule()
 {
 	if(config.viewIndex == 'module')
 	{
-		var contentWidth = template.contentRight().width();
+		var contentWidth = template.contentRight().children().width();
 
 		var contentPerLine = Math.floor((contentWidth - 16) / (150 + 16));
 

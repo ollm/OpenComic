@@ -550,11 +550,9 @@ body .preload
 	top: 48px;
 	left: 0px;
 	width: 192px;
-	overflow: auto;
 	height: calc(100% - 48px);
 	padding: 50px 0px;
 	margin-top: -50px;
-	box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);
 	background-color: #fff;
 	overflow: hidden;
 	z-index: 1;
@@ -569,10 +567,11 @@ body .preload
 	height: calc(100% - 100px);
 	padding: 50px 0px;
 	margin-top: -50px;
-	width: 100%;
+	width: calc(100% - 1px);
 	background-color: #fff;
-	box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);
+	/*box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);*/
 	transition: background-color 0.2s, box-shadow 0.2s;
+	border-right: 1px solid #e6e6e6;
 }
 
 .content-left > div > div
@@ -1457,14 +1456,13 @@ body .preload
 
 .reading-left
 {
-	width: 176px;
-	/*border-radius: 4px;*/
+	width: 100%;
 	padding: 16px 16px 16px 0px;
 	cursor: pointer;
 	position: relative;
 	transition: border 0.2s, background-color 0.2s;
-	/*border-bottom: 1px solid rgba(0, 0, 0, 0.1);*/
 	border-bottom: 1px solid #e6e6e6;
+	box-sizing: border-box;
 }
 
 .reading-left:hover, .reading-left.s
@@ -1488,12 +1486,12 @@ body .preload
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
-	margin-left: 96px;
+	margin-left: calc(100% - 80px);
 }
 
 .reading-number
 {
-	width: 96px;
+	width: calc(100% - 96px);
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
@@ -1865,32 +1863,40 @@ body .preload
 /*Scrolrl*/
 
 
+
 ::-webkit-scrollbar
 {
-	width: 5px;
-	height: 5px;
-	background-color: rgba(0, 0, 0, 0.07);
+	width: 14px;
+	height: 14px;
+	border-left: 1px solid #e6e6e6;
+	/*background-color: #f5f5f5;*/
+	background-color: #fff;
 }
 
 ::-webkit-scrollbar-thumb
 {
-	border-radius: 0px;
-	background-color: rgba(0, 0, 0, 0.12);
+	border-radius: 16px;
+	width: 14px;
+	height: 14px;
+	background-clip: padding-box;
+	background-color: rgba(0, 0, 0, 0.2);
+	border: 5px solid transparent;
+	border-right: 4px solid transparent;
 }
 
 ::-webkit-scrollbar-thumb:hover
 {
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb:active
 {
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 ::-webkit-scrollbar-thumb:window-inactive
 {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.12);
 }
 
 /*Night Theme*/
@@ -2001,5 +2007,16 @@ body .night-mode
 
 .night-mode .floating-action-button-min
 {
+	background-color: #303030;
+}
+
+.night-mode .content-left > div
+{
+	border-right: 1px solid rgb(42, 42, 42);
+}
+
+.night-mode ::-webkit-scrollbar
+{
+	border-left: 1px solid rgb(42, 42, 42);
 	background-color: #303030;
 }
