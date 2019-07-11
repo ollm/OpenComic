@@ -211,13 +211,13 @@
 {
 	0%
 	{
-		transform: translate(0, -10px);
+		transform: translate(0, 4px);
 		opacity: 0;
 		visibility: visible;
 	}
 	100%
 	{
-		transform: translate(0, 0px);
+		transform: translate(0, 14px);
 		opacity: 1;
 		visibility: visible;
 	}
@@ -227,13 +227,13 @@
 {
 	0%
 	{
-		transform: translate(0, 10px);
+		transform: translate(0, -4px);
 		opacity: 0;
 		visibility: visible;
 	}
 	100%
 	{
-		transform: translate(0, 0px);
+		transform: translate(0, -14px);
 		opacity: 1;
 		visibility: visible;
 	}
@@ -243,14 +243,14 @@
 {
 	0%
 	{
-		transform: translate(0, 0px);
+		transform: translate(0, 14px);
 		opacity: 1;
 		visibility: visible;
 
 	}
 	100%
 	{
-		transform: translate(0, -10px);
+		transform: translate(0, 4px);
 		opacity: 0;
 		visibility: hidden;
 	}
@@ -260,14 +260,14 @@
 {
 	0%
 	{
-		transform: translate(0, 0px);
+		transform: translate(0, -14px);
 		opacity: 1;
 		visibility: visible;
 
 	}
 	100%
 	{
-		transform: translate(0, 10px);
+		transform: translate(0, -4px);
 		opacity: 0;
 		visibility: hidden;
 	}
@@ -990,8 +990,8 @@ body .preload
 
 .hover > div
 {
-	margin-top: 14px;
-	margin-bottom: 14px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	display: inline-block;
 	border-radius: 4px;
 	background-color: #808080;
@@ -1000,7 +1000,7 @@ body .preload
 	color: #fff;
 	padding: 0px 8px;
 	min-height: 22px;
-	opacity: 0.9;
+	/*opacity: 0.9;*/
 }
 
 /*Listas*/
@@ -1997,4 +1997,9 @@ body .night-mode
 .night-mode .switch:before
 {
 	background-color: #bdbdbd;
+}
+
+.night-mode .floating-action-button-min
+{
+	background-color: #303030;
 }

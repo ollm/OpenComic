@@ -4,28 +4,33 @@ function eventButton()
 {
 
 	$('.button').on('mousedown touchstart', function(e){
+
 		$(this).removeClass('p c d').addClass('a');
 		clearTimeout(eventHoverTimeout);
+
 		buttonCancel = false;
 		buttonPulsed = true;
 
 		eventHoverTimeoutActive = false;
 
-		eventHoverActiveTemporal = false;
-
+		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
 		$('.global-elements .hover.a').removeClass('a').addClass('d');
+
 	});
 
 	$('.button').on('mouseup touchend', function(e){
+
 		if(!buttonCancel)
 		{
 			$(this).removeClass('a c d').addClass('p');
 		}
 
 		buttonPulsed = false;
+
 	});
 
 	$('.button').on('mouseout', function(){
+
 		if(buttonPulsed)
 		{
 			buttonCancel = true;
@@ -33,32 +38,36 @@ function eventButton()
 
 			buttonPulsed = false;
 		}
+
 	});
 
 	$('.floating-action-button').on('mousedown touchstart', function(e){
+
 		$(this).removeClass('p c d').addClass('a');
 		clearTimeout(eventHoverTimeout);
 		buttonCancel = false;
 		buttonPulsed = true;
 
-
 		eventHoverTimeoutActive = false;
 
-		eventHoverActiveTemporal = false;
-
+		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
 		$('.global-elements .hover.a').removeClass('a').addClass('d');
+
 	});
 
 	$('.floating-action-button').on('mouseup touchend', function(e){
+
 		if(!buttonCancel)
 		{
 			$(this).removeClass('a c d').addClass('p');
 		}
 
 		buttonPulsed = false;
+
 	});
 
-	$('.floating-action-button').on('mouseout', function(){
+	$('.floating-action-button').on('mouseleave', function(){
+
 		if(buttonPulsed)
 		{
 			buttonCancel = true;
@@ -66,11 +75,12 @@ function eventButton()
 
 			buttonPulsed = false;
 		}
+
 	});
 
 }
 
-var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive, eventHoverActiveTemporal, currentPageX, currentPageY;
+var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, currentPageX, currentPageY;
 
 function eventHover()
 {
@@ -79,17 +89,15 @@ function eventHover()
 
 		eventHoverTimeoutActive = true;
 
-		eventHoverActiveTemporal = true;
-
 		eventHoverTimeoutThis = this;
+
+		eventHoverTimeout = setTimeout('events.showHoverText()', 300);
 
 	});
 
-	$('.hover-text').on('mouseout', function(){
+	$('.hover-text').on('mouseleave', function(){
 
 		eventHoverTimeoutActive = false;
-
-		eventHoverActiveTemporal = false;
 
 		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
 		$('.global-elements .hover.a').removeClass('a').addClass('d');
@@ -97,15 +105,14 @@ function eventHover()
 
 	});
 
-	$(window).on('mouseout', function(){
+	$(document).on('mouseleave', function(){
 
-		eventHoverTimeoutActive = false;
+		//eventHoverTimeoutActive = false;
 
-		eventHoverActiveTemporal = false;
+		//$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
+		//$('.global-elements .hover.a').removeClass('a').addClass('d');
 
-		$('.global-elements .hover.a-i').removeClass('a-i').addClass('d-i');
-		$('.global-elements .hover.a').removeClass('a').addClass('d');
-		clearTimeout(eventHoverTimeout);
+		//clearTimeout(eventHoverTimeout);
 
 	});
 
@@ -177,7 +184,7 @@ function eventRange()
 function events()
 {
 	$('.button').off('mousedown mouseup touchstart touchend mouseout');
-	$(window).off('mouseover mouseout');
+	$(window).off('mouseover mouseleave');
 	$('.hover-text').off('mousemove');
 	$('.floating-action-button').off('mousedown mouseup touchstart touchend');
 	$('.switch').off('click');
