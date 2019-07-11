@@ -227,6 +227,7 @@ function readFile(name)
 }
 
 module.exports = {
+	folder: cacheFolder,
 	returnCacheImage: returnCacheImage,
 	cleanQueue: cleanQueue,
 	writeFile: writeFile,

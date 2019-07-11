@@ -844,10 +844,10 @@ function processFolderImagesQueue(force = false)
 	}
 }
 
-function folderImages(path, num, callback = false, ignore = [])
+function folderImages(path, num, callback = false, ignore = {})
 {
 
-	(function(path, num, callback){
+	(function(path, num, callback, ignore){
 
 		process.nextTick(function() {
 
@@ -859,19 +859,28 @@ function folderImages(path, num, callback = false, ignore = [])
 
 				(function(error, path, num, callback, ignore, startPath){
 
-					fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
+					if(fs.existsSync(error.compressedPath) && fs.statSync(error.compressedPath).size < 52428800)
+					{
+						fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
 
-						/*if(checkError(files))
-							ignore.push(startPath);
+							/*if(checkError(files))
+								ignore[p.normalize(startPath)] = true;
 
-						dom.folderImages(path, num, callback, ignore);*/
+							dom.folderImages(path, num, callback, ignore);*/
 
-						if(!checkError(files))
-							dom.folderImages(path, num, callback, ignore);
-						else
-							callback(files);
+							if(!checkError(files))
+								dom.folderImages(path, num, callback, ignore);
+							else
+								callback(files);
 
-					});
+						});
+					}
+					else
+					{
+						ignore[p.normalize(startPath)] = true;
+
+						dom.folderImages(path, num, callback, ignore);
+					}
 
 				})(images, path, num, callback, ignore, startPath)
 			}
@@ -882,23 +891,16 @@ function folderImages(path, num, callback = false, ignore = [])
 			}
 		});
 
-	})(path, num, callback);
+	})(path, num, callback, ignore);
 }
 
-function folderImagesWD(path, num, mode = false, ignore = [])
+function folderImagesWD(path, num, mode = false, ignore = {})
 {
-	var _ignore = {};
-
-	for(let i = 0, len = ignore.length; i < len; i++)
-	{
-		_ignore[p.normalize(ignore[i])] = true;
-	}
-
 	if(!mode)
 	{
 		var dirs = [];
 
-		if(!_ignore[p.normalize(path)])
+		if(!ignore[p.normalize(path)])
 			var files = file.returnFirstWD(path);
 		else
 			return [];
@@ -913,16 +915,16 @@ function folderImagesWD(path, num, mode = false, ignore = [])
 
 		if(files)
 		{
-			for(var i = 0; i < files.length; i++)
+			for(var i = 0, len = files.length; i < len; i++)
 			{
 				var filePath = files[i].path;
 
 				if(files[i].folder || files[i].compressed)
 				{
-					if(!_ignore[p.normalize(filePath)])
+					if(!ignore[p.normalize(filePath)])
 					{
 						_filePath = filePath;
-						filePath = folderImagesWD(filePath, 1, 1);
+						filePath = folderImagesWD(filePath, 1, 1, ignore);
 
 						if(checkError(filePath))
 						{
@@ -947,7 +949,7 @@ function folderImagesWD(path, num, mode = false, ignore = [])
 	else
 	{
 
-		if(!_ignore[p.normalize(path)])
+		if(!ignore[p.normalize(path)])
 			var files = file.returnFirstWD(path);
 		else
 			return false;
@@ -973,10 +975,10 @@ function folderImagesWD(path, num, mode = false, ignore = [])
 
 				if(files[i].folder || files[i].compressed)
 				{
-					if(!_ignore[p.normalize(filePath)])
+					if(!ignore[p.normalize(filePath)])
 					{
 						_filePath = filePath;
-						filePath = folderImagesWD(filePath, 1, 1);
+						filePath = folderImagesWD(filePath, 1, 1, ignore);
 
 						if(checkError(filePath))
 						{
