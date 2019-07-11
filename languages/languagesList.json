@@ -241,6 +241,7 @@
         "nativeName":"Hiri Motu"
     },
     "hu":{
+        "active": true,
         "name":"Hungarian",
         "nativeName":"Magyar"
     },
