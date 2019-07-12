@@ -1442,7 +1442,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 						folder: false,
 					});
 				}
-				else if(fs.statSync(filePath).isDirectory())
+				else if(fs.statSync(file.realPath(filePath)).isDirectory())
 				{
 					var images = folderImagesWD(filePath, 4);
 
