@@ -32,6 +32,22 @@ function createWindow () {
 		//icon: __dirname + '/icon.svg',
 	});
 
+	var menuTemplate = [
+		{
+			label: '...',
+			submenu: [
+				{role: 'reload'},
+				{role: 'forceReload'},
+				{role: 'toggleDevTools'},
+			]
+		}
+	];
+
+	var menu = Menu.buildFromTemplate(menuTemplate);
+	win.setMenu(menu);
+
+	win.removeMenu();
+
 	// and load the index.html of the app.
 	win.loadURL(url.format({
 		pathname: path.join(__dirname, '../templates/index.html'),

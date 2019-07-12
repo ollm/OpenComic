@@ -446,7 +446,7 @@ function generateAppMenu(force = false)
 		];
 
 		var menu = electron.remote.Menu.buildFromTemplate(menuTemplate);
-		electron.remote.Menu.setApplicationMenu(menu);
+		electron.remote.getCurrentWindow().setMenu(menu);
 	}
 }
 
@@ -458,9 +458,9 @@ function showAboutWindow()
 		show: false,
 		title: language.menu.help.about,
 		width: 380,
-		height: 280,
+		height: 260,
 		minWidth: 380,
-		minHeight: 280,
+		minHeight: 260,
 		//resizable: false,
 		modal: true,
 		parent: electron.remote.getCurrentWindow(),
@@ -468,6 +468,9 @@ function showAboutWindow()
 			nodeIntegration: true
 		},
 	});
+
+	about.removeMenu();
+	about.setMenuBarVisibility(false);
 
 	var url = require('url');
 
