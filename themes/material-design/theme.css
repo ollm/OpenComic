@@ -570,7 +570,7 @@ body .preload
 	width: calc(100% - 1px);
 	background-color: #fff;
 	/*box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);*/
-	transition: background-color 0.2s, box-shadow 0.2s;
+	transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
 	border-right: 1px solid #e0e0e0/*#e6e6e6*/;
 }
 
@@ -597,7 +597,7 @@ body .preload
 	box-sizing: border-box;
 	width: 100%;
 	line-height: 48px;
-	transition: 0.2s;
+	transition: background-color 0.2s;
 	cursor: pointer;
 }
 
@@ -684,20 +684,23 @@ body .preload
 
 .separator-1
 {
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-top: 1px solid #e6e6e6;
+	transition: border-color 0.2s;
 }
 
 .bar-buttons-separator
 {
 	float: right;
 	height: 48px;
-	border-left: 1px solid rgba(0, 0, 0, 0.1);
+	border-left: 1px solid #e6e6e6;
+	transition: border-color 0.2s;
 	margin: 0px 12px;
 }
 
 .menu-simple-separator
 {
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	border-top: 1px solid #e6e6e6;
+	transition: border-color 0.2s;
 	margin: 12px 0;
 }
 
@@ -1198,6 +1201,7 @@ body .preload
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
+	transition: background-color 0.2s;
 }
 
 .content-view-module .v-img
@@ -1870,6 +1874,7 @@ body .preload
 	border-left: 1px solid #e6e6e6;
 	/*background-color: #f5f5f5;*/
 	background-color: #fff;
+	transition: background-color 0.2s, border-color 0.2s;
 }
 
 ::-webkit-scrollbar-thumb
@@ -1881,6 +1886,7 @@ body .preload
 	background-color: rgba(0, 0, 0, 0.2);
 	border: 5px solid transparent;
 	border-right: 4px solid transparent;
+	transition: background-color 0.2s, border-color 0.2s;
 }
 
 ::-webkit-scrollbar-thumb:hover
