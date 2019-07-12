@@ -1,22 +1,41 @@
 const fs = require('fs'),
+	p = require('path'),
 	yaml = require('node-yaml');
 
-var snapcraft = yaml.readSync('../dist/__snap-x64/snap/snapcraft.yaml');
+var yamlDir = p.join(__dirname, '../dist/__snap-x64/snap/snapcraft.yaml');
 
-snapcraft.parts.unrar = {
-	'plugin': 'make',
-	'source': 'https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/unrar-nonfree/1:5.5.8-1/unrar-nonfree_5.5.8.orig.tar.gz',
-	'build-packages': ['g++'],
-};
+if(fs.existsSync(yamlDir))
+{
+	var snapcraft = yaml.readSync(yamlDir);
 
-yaml.writeSync('../dist/__snap-x64/snap/snapcraft.yaml', snapcraft)
+	snapcraft.parts.unrar = {
+		'plugin': 'make',
+		'source': 'https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/unrar-nonfree/1:5.5.8-1/unrar-nonfree_5.5.8.orig.tar.gz',
+		'build-packages': ['g++'],
+	};
 
-var snapcraftArm = yaml.readSync('../dist/__snap-arm64/snap/snapcraft.yaml');
+	yaml.writeSync(yamlDir, snapcraft);
+}
+else
+{
+	console.log('__snap-x64 not found');
+}
 
-snapcraftArm.parts.unrar = {
-	'plugin': 'make',
-	'source': 'https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/unrar-nonfree/1:5.5.8-1/unrar-nonfree_5.5.8.orig.tar.gz',
-	'build-packages': ['g++'],
-};
+var yamlDir = p.join(__dirname, '../dist/__snap-arm64/snap/snapcraft.yaml');
 
-yaml.writeSync('../dist/__snap-arm64/snap/snapcraft.yaml', snapcraftArm)
+if(fs.existsSync(yamlDir))
+{
+	var snapcraftArm = yaml.readSync(yamlDir);
+
+	snapcraftArm.parts.unrar = {
+		'plugin': 'make',
+		'source': 'https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/unrar-nonfree/1:5.5.8-1/unrar-nonfree_5.5.8.orig.tar.gz',
+		'build-packages': ['g++'],
+	};
+
+	yaml.writeSync(yamlDir, snapcraftArm);
+}
+else
+{
+	console.log('__snap-arm64 not found');
+}

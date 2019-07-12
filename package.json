@@ -41,7 +41,7 @@
 		"build-appimage-arm": "npm run prebuild && electron-builder --arm64 --linux AppImage",
 		"build-tar-arm": "npm run prebuild && electron-builder --arm64 --linux tar.gz",
 		"snapcraft": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-x64/ && snapcraft",
-		"snapcraft-arm": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-arm64/ && snapcraft",
+		"snapcraft-arm": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64",
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
@@ -65,7 +65,9 @@
 	"devDependencies": {
 		"electron": "^5.0.6",
 		"electron-builder": "^20.44.4",
-		"electron-rebuild": "^1.8.5"
+		"electron-rebuild": "^1.8.5",
+		"js-yaml": "^3.13.1",
+		"node-yaml": "^4.0.1"
 	},
 	"build": {
 		"appId": "org.opencomic.app",
