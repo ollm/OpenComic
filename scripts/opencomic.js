@@ -308,18 +308,14 @@ function time()
 
 function loadLanguage(lan = false)
 {
-	var data = readFileApp('./languages/es.json');
+	language = $.parseJSON(readFileApp('./languages/es.json'));
+	loadLanguageMD(language, $.parseJSON(readFileApp('./languages/en.json')));
 
-	language = $.parseJSON(data);
 	handlebarsContext.language = language;
 
 	if(lan)
 	{
-		data = readFileApp('./languages/'+lan+'.json');
-
-		data = $.parseJSON(data);
-
-		loadLanguageMD(language, data);
+		loadLanguageMD(language, $.parseJSON(readFileApp('./languages/'+lan+'.json')));
 
 		generateAppMenu(true);
 		generateAppMenuShortcut();
