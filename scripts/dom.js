@@ -1116,6 +1116,10 @@ function loadLanguagesPage(animation = true)
 function changeLanguage(lan)
 {
 	loadLanguage(lan);
+	
+	template.contentRight('.language-list.active').removeClass('active');
+	template.contentRight('.language-list-'+lan).addClass('active');
+
 	template.loadContentLeft('index.content.left.html', false);
 	template.loadHeader('languages.header.html', false);
 	storage.updateVar('config', 'language', lan);

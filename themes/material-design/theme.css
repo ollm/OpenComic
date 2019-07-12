@@ -1025,7 +1025,7 @@ body .preload
 	word-wrap: normal;
 }
 
-.simple-list:hover
+.simple-list:hover, .simple-list.active
 {
 	background-color: #eeeeee;
 }
@@ -1917,7 +1917,8 @@ body .night-mode
 	background-color: #212121;
 }
 
-.night-mode .bar-header, .night-mode .bar-header > div
+.night-mode .bar-header,
+.night-mode .bar-header > div
 {
 	/*background-color: #212121;*/
 	background-color: #212121;
@@ -1934,7 +1935,8 @@ body .night-mode
 	background-color: #212121;
 }
 
-.night-mode .content-left, .night-mode .content-left > div
+.night-mode .content-left,
+.night-mode .content-left > div
 {
 	background-color: #212121;
 }
@@ -1960,11 +1962,6 @@ body .night-mode
 {
 	background-color: #212121;
 	border-bottom: 1px solid #414141;
-}
-
-.night-mode .simple-list:hover
-{
-	background-color: rgb(29, 29, 29);;
 }
 
 .night-mode  .content-view-module .v-folder
@@ -2037,7 +2034,11 @@ body .night-mode
 
 .night-mode .menu-simple-element.s,
 .night-mode .content-left .menu-list:hover,
-.night-mode .reading-left:hover, .reading-left.s
+.night-mode .reading-left:hover,
+.night-mode .reading-left.s,
+.night-mode .simple-list:hover,
+.night-mode .simple-list:hover,
+.night-mode .simple-list.active
 {
 	background-color: rgba(255, 255, 255, 0.14);
 }

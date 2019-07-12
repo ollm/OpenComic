@@ -1,5 +1,5 @@
 {{#each languagesList}}
-<div class="simple-list" onclick="dom.changeLanguage('{{code}}')">
+<div class="simple-list language-list language-list-{{code}} {{#compare code '==' @root.config.language}} active{{/compare}}" onclick="dom.changeLanguage('{{code}}')">
 	{{name}} - {{nativeName}}
 </div>
 {{/each}}
