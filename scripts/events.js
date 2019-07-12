@@ -81,7 +81,7 @@ function eventHover()
 
 		eventHoverTimeoutThis = this;
 
-		eventHoverTimeout = setTimeout('events.showHoverText()', 300);
+		//eventHoverTimeout = setTimeout('events.showHoverText()', 300);
 
 	});
 

@@ -4,7 +4,7 @@
 	</svg>
 </div>
 <div style="position: relative; overflow: hidden;">
-	<div class="reading-skip">
+	<div class="reading-skip" onclick="reading.goPrevious();" oncontextmenu="reading.goNext();">
 		<div class="reading-skip-top">
 			<svg viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
 				<circle cx="33" cy="33" r="30"></circle>
@@ -26,7 +26,7 @@
 			</svg>
 		</div>
 	</div>
-	<div class="reading-body" style="display: none;">
+	<div class="reading-body" onclick="reading.goPrevious();" oncontextmenu="reading.goNext();" style="display: none;">
 		<div>
 			{{#each comics}}
 				{{#if folder}}
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 </div>
-<div class="reading-lens h">
+<div class="reading-lens h" onclick="reading.goPrevious();" oncontextmenu="reading.goNext();">
 	<div>
 		<div>
 		</div>
