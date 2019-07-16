@@ -177,7 +177,7 @@ function returnFiles(path, all, fromCache, callback)
 
 			var archive = new unrar({
 				path: path,
-				$bin: (process.platform == 'win32' || process.platform == 'win64') ? p.join(appDir, 'unrar/UnRAR.exe') : false,
+				$bin: (process.platform == 'win32' || process.platform == 'win64') ? asarToAsarUnpacked(p.join(appDir, 'unrar/UnRAR.exe')) : false,
 			});
 			
 			archive.list(function (error, entries) {
@@ -250,18 +250,7 @@ function returnFiles(path, all, fromCache, callback)
 		else if(inArray(fileExtension(path), compressedExtensions['7z']))
 		{
 			if(un7z === false) un7z = require('node-7z');
-			
-			if(bin7z === false)
-			{
-				bin7z = require('7zip-bin').path7za;
-
-				if(!/app\.asar\.unpacked/.test(bin7z))
-				{
-					var bin7zUnpacked = bin7z.replace(/app\.asar/, 'app.asar.unpacked');
-
-					if(fs.existsSync(bin7zUnpacked)) bin7z = bin7zUnpacked;
-				}
-			}
+			if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7za);
 
 			un7z.extractFull(path, p.join(tempFolder, sha), {p: false/*'myPassword'*/, $bin: bin7z}).on('data', function (data) {
 

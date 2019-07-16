@@ -34,6 +34,7 @@
 		"build-appimage": "npm run prebuild && electron-builder --x64 --linux AppImage",
 		"build-tar": "npm run prebuild && electron-builder --x64 --linux tar.gz",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis",
+		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
 		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm snap AppImage tar.gz",
 		"build-deb-arm": "npm run prebuild && electron-builder --arm64 --linux deb",
 		"build-rpm-arm": "npm run prebuild && electron-builder --arm64 --linux rpm",
@@ -87,7 +88,9 @@
 		"asarUnpack": [
 			"node_modules/sharp",
 			"node_modules/node-7z",
-			"node_modules/7zip-bin"
+			"node_modules/7zip-bin",
+			"unrar",
+			"Pepper & Carrot"
 		],
 		"win": {
 			"target": [
@@ -102,6 +105,9 @@
 			"installerHeaderIcon": "images/icon.ico"
 		},
 		"mac": {
+			"target": [
+				"dmg"
+			],
 			"icon": "images/icon.png",
 			"category": "public.app-category.graphics-design"
 		},

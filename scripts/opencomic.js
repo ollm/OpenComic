@@ -322,6 +322,18 @@ function loadLanguage(lan = false)
 	}
 }
 
+function asarToAsarUnpacked(path)
+{
+	if(!/app\.asar\.unpacked/.test(path))
+	{
+		var pathUnpacked = path.replace(/app\.asar/, 'app.asar.unpacked');
+
+		if(fs.existsSync(pathUnpacked)) path = pathUnpacked;
+	}
+
+	return path;
+}
+
 function zoomIn()
 {
 	var factor = electron.webFrame.getZoomFactor();

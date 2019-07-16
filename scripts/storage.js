@@ -49,7 +49,7 @@ var storageDefault = {
 	},
 	{
 		name: 'Pepper & Carrot',
-		path: p.join(appDir, 'Pepper & Carrot'),
+		path: asarToAsarUnpacked(p.join(appDir, 'Pepper & Carrot')),
 		added: 0,
 		compressed: false,
 		bookmark: false,
