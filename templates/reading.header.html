@@ -14,8 +14,12 @@
 	{{/if}}</div>
 <div class="bar-right-buttons reading-header">
 	<div>
-		<div class="material-icon button button1 button-magnifying-glass hover-text" hover-text="{{language.reading.magnifyingGlass.main}}" onclick="events.activeMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass', 'right');">search</div>
 		<div class="material-icon-extras button button1 button-book-open-page-variant hover-text" hover-text="{{language.reading.pages.main}}" onclick="events.activeMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant', 'right');">page_variant</div>
+		<div class="material-icon button button1 button-magnifying-glass hover-text" hover-text="{{language.reading.magnifyingGlass.main}}" onclick="events.activeMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass', 'right');">search</div>
+		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.menu.view.zoomIn}}" onclick="reading.zoomIn();">zoom_in</div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.menu.view.resetZoom}}" onclick="reading.resetZoom();">zoom_out_map</div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.menu.view.zoomOut}}" onclick="reading.zoomOut();">zoom_out</div>
 		<div class="bar-buttons-separator"></div>
 		<div class="material-icon button button1 button-collections-bookmark hover-text" hover-text="{{language.reading.viewBookmarks}}" onclick="reading.loadBookmarks();events.activeMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark', 'right');">collections_bookmark</div>
 		<div class="material-icon button button2 button-bookmark hover-text" hover-text="{{language.reading.addBookmark}}" onclick="reading.createAndDeleteBookmark();">bookmark_border</div>
