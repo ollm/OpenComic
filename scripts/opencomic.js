@@ -692,7 +692,7 @@ hb.registerHelper('configIsTrue', function(key, value) {
 
 function pathIsSupported(path)
 {
-	if(fs.statSync(path).isDirectory() || inArray(mime.getType(path), compatibleMime) || inArray(fileExtension(path), compressedExtensions.all))
+	if(inArray(mime.getType(path), compatibleMime) || inArray(fileExtension(path), compressedExtensions.all) || fs.statSync(path).isDirectory())
 		return true;
 
 	return false;

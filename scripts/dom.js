@@ -1446,7 +1446,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 						folder: false,
 					});
 				}
-				else if(fs.statSync(file.realPath(filePath)).isDirectory())
+				else if(inArray(fileExtension(filePath), compressedExtensions.all) || fs.statSync(file.realPath(filePath)).isDirectory())
 				{
 					var images = folderImagesWD(filePath, 4);
 

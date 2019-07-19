@@ -1,5 +1,5 @@
 
-var images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [];
+var images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -326,6 +326,7 @@ function disposeImages(data = false)
 
 		template.contentRight('.image-position'+key1).css({
 			'width': contentWidth+'px',
+			'height': config.readingView != 'scroll' ? contentHeight+'px' : '',
 		});
 	}
 }
@@ -356,6 +357,8 @@ function calculateView()
 	if(config.readingView == 'scroll')
 	{
 		imagesPosition = [];
+		var element = template.contentRight().children('div');
+		var scrollTop = element.scrollTop() + element.offset().top;
 
 		for(var key1 in imagesDistribution)
 		{
@@ -365,7 +368,7 @@ function calculateView()
 			{
 				var image = template.contentRight('.image-position'+key1+'-'+key2);
 
-				imagesPosition[key1][key2] = image.position().top + (image.height() / 2);
+				imagesPosition[key1][key2] = (image.offset().top + (image.height() / 2)) - scrollTop;
 			}
 		}
 	}
@@ -489,9 +492,11 @@ var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, r
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
-
 	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
 	var animationDurationMS = animationDurationS * 1000;
+
+	if(currentScale != 1 && animation)
+		reading.resetZoom();
 
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
@@ -929,6 +934,156 @@ function showPreviousComic(mode, animation = true, invert = false)
 	}
 }
 
+var currentScale = 1, scalePrevData = {tranX: 0, tranY: 0, scale: 1}, originalRect = false, originalRectReadingBody = false, haveZoom = false, currentZoomIndex = false;
+
+function applyScale(animation = true, scale = 1, center = false, zoomOut = false)
+{
+	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
+
+	scale = Math.round(scale * 100) / 100;
+
+	if(currentZoomIndex === false)
+	{
+		if(center || config.readingView != 'scroll')
+		{
+			currentZoomIndex = (currentIndex - 1);
+		}
+		else
+		{
+			var currentRect = template.contentRight('.image-position'+(currentIndex - 1)).get(0).getBoundingClientRect();
+
+			if(currentRect.top > currentPageXY.y && (currentIndex - 2) >= 0)
+			{
+				currentZoomIndex = (currentIndex - 2);
+			}
+			else if(currentRect.top + currentRect.height < currentPageXY.y && currentIndex <= indexNum)
+			{
+				currentZoomIndex = currentIndex;
+			}
+			else
+			{
+				currentZoomIndex = (currentIndex - 1);
+			}			
+		}
+	}
+
+	if(scale != scalePrevData.scale)
+	{
+		if(originalRect === false)
+		{
+			originalRect = template.contentRight('.image-position'+currentZoomIndex).get(0).getBoundingClientRect();
+			originalRectReadingBody = template.contentRight().children().get(0).getBoundingClientRect();
+		}
+
+		var scaleDiff = (scale - (scalePrevData.scale - 1));
+
+		if(!zoomOut)
+		{
+			var pageX = currentPageXY.x - originalRect.left;
+			var pageY = currentPageXY.y - originalRect.top;
+
+			var addX = (0.5 - (pageX / originalRect.width)) * originalRect.width;
+			var addY = (0.5 - (pageY / originalRect.height)) * originalRect.height;
+
+			if(center)
+			{
+				addX = 0;
+				addY = 0;
+			}
+
+			var translateX = (scalePrevData.tranX / scalePrevData.scale * scale) + (addX / scalePrevData.scale * (scale - scalePrevData.scale));
+			var translateY = (scalePrevData.tranY / scalePrevData.scale * scale) + (addY / scalePrevData.scale * (scale - scalePrevData.scale));
+		}
+		else
+		{
+			var translateX = scalePrevData.tranX - (scalePrevData.tranX * ((scalePrevData.scale - scale) / (scalePrevData.scale - 1)));
+			var translateY = scalePrevData.tranY - (scalePrevData.tranY * ((scalePrevData.scale - scale) / (scalePrevData.scale - 1)));
+		}
+
+		if(scale <= 1)
+		{
+			translateX = 0;
+			translateY = 0;
+			haveZoom = false;
+		}
+		else
+		{
+			haveZoom = true;
+		}
+
+		template.contentRight('.image-position'+currentZoomIndex).css({
+			'transition': 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
+			'transform': 'translate('+(translateX)+'px, '+(translateY)+'px) scale('+scale+')',
+			'transform-origin': 'center center',
+			'z-index': scale == 1 ? 1 : 2,
+			'will-change': scale == 1 ? '' : 'transform',
+		});
+
+		if(scale == 1)
+		{
+			originalRect = false;
+			currentZoomIndex = false;
+		}
+
+		scalePrevData = {
+			tranX: translateX,
+			tranY: translateY,
+			scale: scale,
+		};
+	}
+}
+
+// Zoom in
+function zoomIn(animation = true, center = false)
+{
+	if(zoomMoveData.active)
+		return;
+
+	if(currentScale < 8)
+		currentScale *= 1.25;
+
+	applyScale(animation, currentScale, center);
+}
+
+// Zoom out
+function zoomOut(animation = true, center = false)
+{
+	if(zoomMoveData.active)
+		return;
+
+	if(currentScale > 0.2)
+		currentScale /= 1.25;
+
+	applyScale(animation, currentScale, center, true);
+}
+
+
+// Reset zoom
+function resetZoom(animation = true, index = false, apply = true)
+{
+	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
+
+	currentScale = 1;
+
+	if(apply)
+	{
+		template.contentRight('.image-position'+currentZoomIndex).css({
+			'transition': 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
+			'transform': 'scale('+currentScale+')',
+			'transform-origin': 'center center',
+			'z-index': 1,
+			'will-change': '',
+		});
+	}
+
+	originalRect = false;
+	scalePrevData = {tranX: 0, tranY: 0, scale: 1};
+	haveZoom = false;
+	zoomMoveData.active = false;
+	currentZoomIndex = false;
+}
+
+
 //Turn the magnifying glass on and off
 function activeMagnifyingGlass(active)
 {
@@ -1071,6 +1226,9 @@ function disableOnScroll(mode)
 //Controls the page view
 function changePagesView(mode, value, save)
 {
+	if(currentScale != 1)
+		reading.resetZoom(true, false, false);
+
 	var imageIndex = false;
 
 	var newIndex = (currentIndex - 1);
@@ -1479,12 +1637,12 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined;
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {};
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
 {
-	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {};
+	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1;
 
 	saveReadingProgressA = false;
 
@@ -1497,16 +1655,32 @@ function read(path, index = 1, end = false)
 
 	goToImageCL(index, false);
 
-	$(window).off('keydown touchstart mouseout click resize');
+	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click resize');
+	template.contentRight().off('mousewheel');
 	$('.reading-body, .reading-lens').off('mousemove');
-	$('.reading-body').off('mouseout mouseenter touchmove');
+	$('.reading-body').off('mouseout mouseenter mousedown touchstart touchmove');
 	$('.content-right > div > div').off('scroll');
 
 	events.eventHover();
 
 	onReading = true;
 
-	$(window).on('keydown', function(e){
+	template.contentRight().on('mousewheel', function(e) {
+
+		if(onReading && (e.originalEvent.ctrlKey || config.readingView != 'scroll'))
+		{
+			e.preventDefault();
+
+			if(e.originalEvent.wheelDelta / 120 > 0)
+				reading.zoomIn();
+			else
+				reading.zoomOut();
+		}
+
+	});
+
+	$(window).on('keydown', function(e) {
+
 		if(onReading)
 		{
 			if(e.keyCode == 37)
@@ -1526,9 +1700,11 @@ function read(path, index = 1, end = false)
 				goEnd();
 			}
 		}
+		
 	})
 
-	$(window).on('touchstart', function(e){
+	$(window).on('touchstart', function(e) {
+
 		if(onReading && config.readingMagnifyingGlass)
 		{
 			touchStart = e;
@@ -1539,14 +1715,21 @@ function read(path, index = 1, end = false)
 			readingTouchEvent = true;
 			touchTimeout = setTimeout('readingTouchEvent = false;', 500);
 		}
-	})
 
-	template.contentRight(/*window*/'.reading-body, .reading-lens').on('mousemove', function(e){
+	});
+
+	template.contentRight(/*window*/'.reading-body, .reading-lens').on('mousemove', function(e) {
+
+		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
+		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+
+		currentPageXY = {
+			x: x,
+			y: y,
+		};
+
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
-			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
-
 			var readingBody = template.contentRight('.reading-body');
 
 			var rbHeight = readingBody.height();
@@ -1564,25 +1747,31 @@ function read(path, index = 1, end = false)
 				magnifyingGlassControl(0, e);
 			}
 		}
+
 	})
 
-	template.contentRight('.reading-body').on('mouseout', function(e){
+	template.contentRight('.reading-body').on('mouseout', function(e) {
+
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['body'] = true;
 
 			if(mouseOut['lens'] == true) magnifyingGlassControl(0, e);
 		}
+
 	})
 
-	template.contentRight('.reading-body').on('mouseenter', function(e){
+	template.contentRight('.reading-body').on('mouseenter', function(e) {
+
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['body'] = false;
 		}
+
 	})
 
-	$(window).on('mouseout', function(e){
+	$(window).on('mouseout', function(e) {
+
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['lens'] = true;
@@ -1600,34 +1789,126 @@ function read(path, index = 1, end = false)
 				magnifyingGlassControl(0, e);
 			}
 		}
+
 	})
 
-	template.contentRight('.reading-lens').on('mouseenter', function(e){
+	template.contentRight('.reading-lens').on('mouseenter', function(e) {
+
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseOut['lens'] = false;
 		}
+
 	})
 
-	template.contentRight('.reading-lens').on('touchmove', function(e){
+	template.contentRight('.reading-lens').on('touchmove', function(e) {
+
+		let pageX = e.originalEvent.touches[0].pageX;
+		let pageY = e.originalEvent.touches[0].pageY;
+
+		currentPageXY = {
+			x: pageX,
+			y: pageY,
+		};
+
 		if(onReading && config.readingMagnifyingGlass)
 		{
-
-			let x = mousePosition(touchStart, 'x'), y = mousePosition(touchStart, 'y');
-
 			let readingLens = template.contentRight('.reading-lens');
 
 			let xLess = x - (magnifyingGlassOffset.left + (readingLens.width() / 2));
 			let yLess = y - (magnifyingGlassOffset.top + (readingLens.height() / 2));
 
-			let pageX = e.originalEvent.touches[0].pageX - xLess;
-			let pageY = e.originalEvent.touches[0].pageY - yLess;
+			pageX = pageX - xLess;
+			pageY = pageY - yLess;
 
 			magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}});
 		}
-	})
 
-	$(window).on('click', function(e){
+	});
+
+	template.contentRight('.reading-body, .reading-lens').on('mousedown touchstart', function(e) {
+
+		if(haveZoom)
+		{
+			e.preventDefault();
+
+			zoomMoveData = {
+				x: e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX),
+				y: e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY),
+				active: true,
+			};
+
+			$('body').addClass('dragging');
+		}
+
+	});
+
+	$(window).on('mousemove touchmove', function(e) {
+
+		if(haveZoom && zoomMoveData.active)
+		{
+			e.preventDefault();
+
+			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
+			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+
+			x = scalePrevData.tranX + (x - zoomMoveData.x);
+			y = scalePrevData.tranY + (y - zoomMoveData.y);
+
+			var maxX = originalRect.width * 0.5 * scalePrevData.scale - originalRect.width * 0.5;
+			var minX = originalRect.width * -0.5 * scalePrevData.scale - originalRect.width * -0.5;
+
+			var maxDiff = config.readingView == 'scroll' ? ((originalRect.top + originalRect.height) - (originalRectReadingBody.top + originalRectReadingBody.height)) : 0;
+			var minDiff = config.readingView == 'scroll' ? (originalRect.top - originalRectReadingBody.top) : 0;
+
+			var maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
+			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + config.readingMargin.margin : 0);
+
+			//(maxDiff < 0 ? maxDiff : 0)
+
+			console.log(maxDiff, minDiff);
+
+			if(x > maxX)
+				x = maxX;
+			else if(x < minX)
+				x = minX;
+
+			if(y > maxY)
+				y = maxY;
+			else if(y < minY)
+				y = minY;
+
+			zoomMoveData.tranX = x;
+			zoomMoveData.tranY = y;
+
+			template.contentRight('.image-position'+currentZoomIndex).css({
+				'transition': 'transform 0s, z-index 0s',
+				'transform': 'translate('+(x)+'px, '+(y)+'px) scale('+scalePrevData.scale+')',
+				'transform-origin': 'center center',
+			});
+		}
+
+	});
+
+	$(window).on('mouseup touchend', function(e) {
+
+		if(haveZoom && zoomMoveData.active)
+		{
+			if(typeof zoomMoveData.tranX !== 'undefined')
+			{
+				scalePrevData.tranX = zoomMoveData.tranX;
+				scalePrevData.tranY = zoomMoveData.tranY;
+			}
+
+			zoomMoveData.active = false;
+
+			$('body').removeClass('dragging');
+		}
+
+	});
+
+	$(window).on('click', function(e) {
+
 		if(onReading && config.readingMagnifyingGlass && readingTouchEvent)
 		{
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
@@ -1654,9 +1935,10 @@ function read(path, index = 1, end = false)
 				magnifyingGlassControl(0, e);
 			}
 		}
+
 	})
 
-	$(window).on('resize', function(){
+	$(window).on('resize', function() {
 
 		if(onReading)
 		{
@@ -1666,18 +1948,22 @@ function read(path, index = 1, end = false)
 		}
 
 		previousContentHeight = template.contentRight().children('div').children('div').height();
+
 	});
 
-	$(window).on('mousewheel touchstart keydown', function(e)
-	{
+	$(window).on('mousewheel touchstart keydown', function(e) {
+
 		if(e.type != 'keydown' || (e.type == 'keydown' && (e.keyCode == 38 || e.keyCode == 40)))
 			disableOnScroll(2);
+	
 	});
 
-	template.contentRight().children('div').on('scroll', function(e){
+	template.contentRight().children('div').on('scroll', function(e) {
 
 		if(activeOnScroll && config.readingView == 'scroll')
 		{
+			console.log('scroll');
+
 			previousScrollTop = $(this).scrollTop();
 			let contentHeight = template.contentRight().children('div').height();
 			let contentPosition = (previousScrollTop + (contentHeight / 2));
@@ -1698,6 +1984,9 @@ function read(path, index = 1, end = false)
 
 			if(currentIndex != (parseInt(selIndex) + 1))
 			{
+				if(currentScale != 1)
+					reading.resetZoom();
+
 				var isBookmarkTrue = false;
 
 				eachImagesDistribution(selIndex, ['image'], function(image){
@@ -1815,6 +2104,9 @@ module.exports = {
 	goPrevious: goPrevious,
 	goNext: goNext,
 	goEnd: goEnd,
+	zoomIn: zoomIn,
+	zoomOut: zoomOut,
+	resetZoom: resetZoom,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	changePagesView: changePagesView,
@@ -1834,4 +2126,6 @@ module.exports = {
 	calculateImagesDistribution: calculateImagesDistribution,
 	imagesDistribution: function(){return imagesDistribution},
 	applyMangaReading: applyMangaReading,
+	haveZoom: function(){return haveZoom},
+	imagesPosition: function(){return imagesPosition},
 };

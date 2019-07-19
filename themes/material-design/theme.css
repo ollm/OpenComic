@@ -460,6 +460,11 @@ body .preload
 	display: block;
 }
 
+.dragging, .dragging *
+{
+	cursor: grabbing !important;
+}
+
 .disable-pointer
 {
 	opacity: 0.5;
@@ -1466,6 +1471,7 @@ body .preload
 	transition: border 0.2s, background-color 0.2s;
 	border-bottom: 1px solid #e6e6e6;
 	box-sizing: border-box;
+	font-size: 0px;
 }
 
 .reading-left:hover, .reading-left.s
@@ -1480,6 +1486,7 @@ body .preload
 	width: 80px;
 	font-size: 24px;
 	display: block;
+	margin-left: calc(100% - 80px);
 }
 
 .reading-images
@@ -1522,12 +1529,14 @@ body .preload
 	height: 100%;
 	position: relative;
 	will-change: transform;
+	overflow: hidden;
 }
 
 .reading-body .r-flex, .reading-lens .r-flex
 {
 	float: left;
 	display: flex;
+	position: relative;
 }
 
 .reading-body .r-img
