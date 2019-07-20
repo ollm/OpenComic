@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"main": "scripts/main.js",
 	"keywords": [
 		"comics",
@@ -35,6 +35,7 @@
 		"build-tar": "npm run prebuild && electron-builder --x64 --linux tar.gz",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis",
 		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
+		"build-mac-zip": "npm run prebuild && electron-builder --mac zip",
 		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm snap AppImage tar.gz",
 		"build-deb-arm": "npm run prebuild && electron-builder --arm64 --linux deb",
 		"build-rpm-arm": "npm run prebuild && electron-builder --arm64 --linux rpm",
