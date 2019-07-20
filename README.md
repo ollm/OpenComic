@@ -1,16 +1,19 @@
-## Download `version 0.1.2`
+## Download `version 0.1.3`
 ###### Windows
-* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.2/OpenComic.Setup.0.1.2.exe)
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.2/OpenComic.Setup.0.1.2.exe) `version 0.1.2`
+###### macOS
+* [zip](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic-0.1.3-mac.zip)
+* [tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic-0.1.3-mac.tar.gz)
 ###### Linux
-* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic_0.1.2_amd64.deb)
-* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic-0.1.2.x86_64.rpm)
-* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic_0.1.2_amd64.snap)
-* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic-0.1.2.tar.gz)
+* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic_0.1.3_amd64.deb)
+* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3.x86_64.rpm)
+* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic_0.1.3_amd64.snap)
+* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3.tar.gz)
 * `snap install opencomic`
 ###### Linux Arm64
-* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic_0.1.2_arm64.deb)
-* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic-0.1.2.arm64.rpm)
-* [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.2/opencomic-0.1.2-arm64.tar.gz)
+* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic_0.1.3_arm64.deb)
+* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3.arm64.rpm)
+* [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3-arm64.tar.gz)
 
 ## ScreenShot
 
