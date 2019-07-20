@@ -740,6 +740,32 @@ function goEnd(force = false)
 	}
 }
 
+function leftClick(e)
+{
+	var isTouch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) ? true : false;
+
+	if(!reading.haveZoom() && (!isTouch || !config.readingMagnifyingGlass))
+	{
+		if(isTouch)
+			reading.goNext();
+		else
+			reading.goPrevious();
+	}
+}
+
+function rightClick(e)
+{
+	var isTouch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) ? true : false;
+
+	if(!reading.haveZoom() && (!isTouch || !config.readingMagnifyingGlass))
+	{
+		if(isTouch)
+			reading.goPrevious();
+		else
+			reading.goNext();
+	}
+}
+
 var showComicSkip;
 
 //Begins to show the next comic
@@ -1658,6 +1684,7 @@ function read(path, index = 1, end = false)
 	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click resize');
 	template.contentRight().off('mousewheel');
 	$('.reading-body, .reading-lens').off('mousemove');
+	$('.reading-lens').off('mousemove');
 	$('.reading-body').off('mouseout mouseenter mousedown touchstart touchmove');
 	$('.content-right > div > div').off('scroll');
 
@@ -1675,6 +1702,20 @@ function read(path, index = 1, end = false)
 				reading.zoomIn();
 			else
 				reading.zoomOut();
+		}
+
+	});
+
+	template.contentRight().on('mousewheel', function(e) {
+
+		if(onReading && !haveZoom && config.readingView == 'scroll')
+		{
+			e.preventDefault();
+
+			if(e.originalEvent.wheelDelta / 120 > 0)
+				console.log('up');
+			else
+				console.log('down');
 		}
 
 	});
@@ -1806,12 +1847,15 @@ function read(path, index = 1, end = false)
 		let pageX = e.originalEvent.touches[0].pageX;
 		let pageY = e.originalEvent.touches[0].pageY;
 
+		let x = touchStart.originalEvent.touches[0].pageX;
+		let y = touchStart.originalEvent.touches[0].pageY;
+
 		currentPageXY = {
 			x: pageX,
 			y: pageY,
 		};
 
-		if(onReading && config.readingMagnifyingGlass)
+		if(onReading && config.readingMagnifyingGlass && !haveZoom)
 		{
 			let readingLens = template.contentRight('.reading-lens');
 
@@ -1863,10 +1907,6 @@ function read(path, index = 1, end = false)
 
 			var maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
 			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + config.readingMargin.margin : 0);
-
-			//(maxDiff < 0 ? maxDiff : 0)
-
-			console.log(maxDiff, minDiff);
 
 			if(x > maxX)
 				x = maxX;
@@ -2104,6 +2144,8 @@ module.exports = {
 	goPrevious: goPrevious,
 	goNext: goNext,
 	goEnd: goEnd,
+	leftClick: leftClick,
+	rightClick: rightClick,
 	zoomIn: zoomIn,
 	zoomOut: zoomOut,
 	resetZoom: resetZoom,

@@ -26,7 +26,7 @@
 			</svg>
 		</div>
 	</div>
-	<div class="reading-body" onclick="if(!reading.haveZoom()){reading.goPrevious();}" oncontextmenu="if(!reading.haveZoom()){reading.goNext();}" style="display: none;">
+	<div class="reading-body" onclick="reading.leftClick(event)" oncontextmenu="reading.rightClick(event)" style="display: none;">
 		<div>
 			{{#each comics}}
 				{{#if folder}}
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 </div>
-<div class="reading-lens h" onclick="if(!reading.haveZoom()){reading.goPrevious();}" oncontextmenu="if(!reading.haveZoom()){reading.goNext();}">
+<div class="reading-lens h" onclick="reading.leftClick(event)" oncontextmenu="reading.rightClick(event)">
 	<div>
 		<div>
 		</div>
