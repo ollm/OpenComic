@@ -1663,7 +1663,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {};
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0};
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
@@ -1706,16 +1706,30 @@ function read(path, index = 1, end = false)
 
 	});
 
-	template.contentRight().on('mousewheel', function(e) {
+	template.contentRight('.reading-lens').on('mousewheel', function(e) {
 
 		if(onReading && !haveZoom && config.readingView == 'scroll')
 		{
 			e.preventDefault();
 
-			if(e.originalEvent.wheelDelta / 120 > 0)
-				console.log('up');
+			var content = template.contentRight().children();
+
+			if(Date.now() - magnifyingGlassScroll.time < 300)
+				var scrollTop = magnifyingGlassScroll.scrollTop;
 			else
-				console.log('down');
+				var scrollTop = content.scrollTop();
+
+			if(e.originalEvent.wheelDelta / 120 > 0)
+				scrollTop -= 62;
+			else
+				scrollTop += 62;
+
+			magnifyingGlassScroll = {
+				scrollTop: scrollTop,
+				time: Date.now(),
+			};
+
+			content.stop(true).animate({scrollTop: scrollTop+'px'}, 200);
 		}
 
 	});
