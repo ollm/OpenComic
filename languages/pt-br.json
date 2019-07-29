@@ -1,0 +1,116 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "e",
+		"comics": "Quadrinhos",
+		"collection": "Coleção",
+		"sort": {
+			"main": "Classificar",
+			"name": "Nome",
+			"number": "Número",
+			"nameNumber": "Nome / Número",
+			"lastAdd": "Último adicionado",
+			"lastReading": "Última leitura",
+			"foldersFirst": "Pastas primeiro",
+			"invert": "Inverter"
+		},
+		"view": {
+			"main": "Visualização",
+			"module": "Grade",
+			"list": "Lista"
+		},
+		"contextMenu": {
+			"remove": "Remover"
+		},
+		"back": "Voltar",
+		"add": "Adicionar",
+		"language": "Linguagem",
+		"theme": "Tema",
+		"nightMode": "Modo Noturno"
+	},
+	"comics": {
+		"continueReading": "Continue lendo",
+		"emptyIndex": "Não há quadrinhos nesta coleção.",
+		"emptyFolder": "Não há arquivo compatível nesta pasta."
+	},
+	"reading": {
+		"firstPage": "Primeira página",
+		"previous": "Anterior",
+		"next": "Próximo",
+		"lastPage": "Última página",
+
+		"pages": {
+			"main": "Páginas",
+			"slide": "Deslizar",
+			"scroll": "Rolar para baixo",
+			"adjustToWidth": "Ajustar a largura",
+			"margin": "Margem",
+			"doublePage": "Página dupla",
+			"doNotApplyToHorizontals": "Não aplicar a horizontais",
+			"readingDelaySkip": "Atraso na mudança de histórias em quadrinhos",
+			"animationSpeed": "Velocidade da animação",
+			"readingManga": "Ler mangá (invertida)"
+		},
+		"magnifyingGlass": {
+			"main": "Lupa",
+			"activate": "Ativar",
+			"zoom": "Zoom",
+			"size": "Tamanho",
+			"ratio": "Proporção",
+			"radius": "Raio"
+		},
+		"viewBookmarks": "Visualizar favoritos",
+		"addBookmark": "Adicionar a favorito",
+		"removeBookmark": "Remover favorito",
+		"emptyBookmarks": "Sem favoritos",
+		"currentReading": "Leitura atual"
+	},
+	"menu": {
+		"file": {
+			"main": "Arquivo",
+			"openFile": "Abrir arquivo",
+			"openFolder": "Abrir pasta",
+			"addFile": "Adicionar arquivo",
+			"addFolder": "Adicionar pasta",
+			"quit": "Sair"
+		},
+		"view": {
+			"main": "Visualização",
+			"resetZoom": "Redefinir zoom",
+			"zoomIn": "Mais zoom",
+			"zoomOut": "Reduzir zoom",
+			"toggleFullScreen": "Tela cheia"
+		},
+		"goto": {
+			"main": "Ir para"
+		},
+		"debug": {
+			"main": "Depuração",
+			"reload": "Recarregar",
+			"forceReload": "Forçar recarregar",
+			"toggleDevTools": "Ativar Ferramentas de Desenvolvimento"
+		},
+		"help": {
+			"main": "Ajuda",
+			"about": "Sobre o OpenComic"
+		}
+	},
+	"error": {
+		"uncompress": {
+			"title": "Erro ao descompactar",
+			"message": "Ocorreu um erro ao tentar descompactar o arquivo."
+		}
+	},
+	"about": {
+		"version": "Versão",
+		"translatedBy": "Traduzido para o Português Brasileiro por",
+		"contributedBy": "Contribuído por",
+		"translators": [
+			{
+				"name": "LoadSec",
+				"email": "loadsec@ggames.com.br",
+				"url": "https://ggames.com.br"
+			}
+		]
+	}
+}
