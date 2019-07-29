@@ -1388,14 +1388,15 @@ body .preload
 
 .simple-slider
 {
-	height: 64px;
-	padding: 0px 24px;
+	min-height: 64px;
+	padding: 0px 24px 15px 24px;
 	transition: 0.2s;
+	box-sizing: border-box;
 }
 
 .simple-slider-text
 {
-	height: 32px;
+	min-height: 32px;
 	line-height: 32px;
 	transition: 0.2s;
 }
