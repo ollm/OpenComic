@@ -132,6 +132,14 @@ function getLocaleUserLanguage(userLanguage = false)
 		}
 	}
 
+	for(let i = 0, len = codes.length; i < len; i++)
+	{
+		if(extract(/^([a-z]+)/iu, codes[i], 1).toLowerCase() === userLanguage)
+		{
+			return getLocaleUserLanguageCache[_userLanguage] = codes[i];
+		}
+	}
+
 	return getLocaleUserLanguageCache[_userLanguage] = 'en';
 }
 
