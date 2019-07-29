@@ -115,9 +115,14 @@
         "name":"Chichewa; Chewa; Nyanja",
         "nativeName":"chiCheŵa, chinyanja"
     },
-    "zh":{
-        "name":"Chinese",
-        "nativeName":"中文 (Zhōngwén), 汉语, 漢語"
+    "zh-hans":{
+    	"active": true,
+        "name":"Simple Chinese",
+        "nativeName":"中文（简体中文）"
+    },
+    "zh-hant":{
+        "name":"Traditional Chinese",
+        "nativeName":"中文（繁體中文）"
     },
     "cv":{
         "name":"Chuvash",

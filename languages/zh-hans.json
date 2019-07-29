@@ -1,0 +1,115 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "和",
+		"comics": "漫画",
+		"collection": "收藏夹",
+		"sort": {
+			"main": "排列",
+			"name": "名称",
+			"number": "页数",
+			"nameNumber": "名称 / 页数",
+			"lastAdd": "最后添加时间",
+			"lastReading": "最后阅读时间",
+			"foldersFirst": "文件夹置前",
+			"invert": "倒序"
+		},
+		"view": {
+			"main": "视图",
+			"module": "网格",
+			"list": "列表"
+		},
+		"contextMenu": {
+			"remove": "移除"
+		},
+		"back": "返回",
+		"add": "添加",
+		"language": "语言",
+		"theme": "主题",
+		"nightMode": "夜间模式"
+	},
+	"comics": {
+		"continueReading": "继续阅读",
+		"emptyIndex": "收藏夹里还没有漫画。",
+		"emptyFolder": "这个文件夹里没有可读文件。"
+	},
+	"reading": {
+		"firstPage": "首页",
+		"previous": "前一页",
+		"next": "后一页",
+		"lastPage": "尾页",
+
+		"pages": {
+			"main": "页面设置",
+			"slide": "横向翻页",
+			"scroll": "纵向翻页",
+			"adjustToWidth": "适应屏幕",
+			"margin": "边距",
+			"doublePage": "双页展示",
+			"doNotApplyToHorizontals": "不用于横幅画面",
+			"readingDelaySkip": "切换漫画时延迟",
+			"animationSpeed": "动效速度",
+			"readingManga": "阅读方向（反转）"
+		},
+		"magnifyingGlass": {
+			"main": "放大镜",
+			"activate": "启用",
+			"zoom": "倍数",
+			"size": "尺寸",
+			"ratio": "比例",
+			"radius": "半径"
+		},
+		"viewBookmarks": "查看书签",
+		"addBookmark": "添加书签",
+		"removeBookmark": "移除书签",
+		"emptyBookmarks": "没有书签",
+		"currentReading": "目前阅读"
+	},
+	"menu": {
+		"file": {
+			"main": "文件",
+			"openFile": "打开文件",
+			"openFolder": "打开文件夹",
+			"addFile": "添加文件",
+			"addFolder": "添加文件夹",
+			"quit": "退出"
+		},
+		"view": {
+			"main": "显示",
+			"resetZoom": "重置缩放",
+			"zoomIn": "放大",
+			"zoomOut": "缩小",
+			"toggleFullScreen": "全屏"
+		},
+		"goto": {
+			"main": "转至"
+		},
+		"debug": {
+			"main": "调试",
+			"reload": "重载",
+			"forceReload": "强制重载",
+			"toggleDevTools": "切换开发者工具"
+		},
+		"help": {
+			"main": "帮助",
+			"about": "关于 OpenComic"
+		}
+	},
+	"error": {
+		"uncompress": {
+			"title": "解压错误",
+			"message": "当尝试解压缩文件时发生错误。"
+		}
+	},
+	"about": {
+		"version": "版本",
+		"translatedBy": "中文翻译由",
+		"contributedBy": "贡献由",
+		"translators": [
+			{
+				"name": "珩",
+				"url": "https://github.com/inkiron"
+			}
+		]
+	}
+}
