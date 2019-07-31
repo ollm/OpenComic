@@ -434,7 +434,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
 					{label: language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
 					{type: 'separator'},
-					{role: 'toggleFullScreen', label: language.menu.view.toggleFullScreen},
+					{role: 'toggleFullScreen', label: language.menu.view.toggleFullScreen, click: function(){var win = electron.remote.getCurrentWindow(); win.setMenuBarVisibility(win.isFullScreen()); win.setFullScreen(!win.isFullScreen());}},
 				]
 			},
 			{
