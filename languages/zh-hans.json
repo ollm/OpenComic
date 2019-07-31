@@ -47,7 +47,7 @@
 			"margin": "边距",
 			"doublePage": "双页展示",
 			"doNotApplyToHorizontals": "不用于横幅画面",
-			"readingDelaySkip": "切换漫画时延迟",
+			"readingDelaySkip": "漫画切换延迟",
 			"animationSpeed": "动效速度",
 			"readingManga": "阅读方向（反转）"
 		},
@@ -62,8 +62,8 @@
 		"viewBookmarks": "查看书签",
 		"addBookmark": "添加书签",
 		"removeBookmark": "移除书签",
-		"emptyBookmarks": "没有书签",
-		"currentReading": "目前阅读"
+		"emptyBookmarks": "暂无书签",
+		"currentReading": "当前阅读"
 	},
 	"menu": {
 		"file": {
@@ -88,7 +88,7 @@
 			"main": "调试",
 			"reload": "重载",
 			"forceReload": "强制重载",
-			"toggleDevTools": "切换开发者工具"
+			"toggleDevTools": "开发者工具"
 		},
 		"help": {
 			"main": "帮助",
@@ -98,12 +98,12 @@
 	"error": {
 		"uncompress": {
 			"title": "解压错误",
-			"message": "当尝试解压缩文件时发生错误。"
+			"message": "在尝试解压缩文件时发生错误。"
 		}
 	},
 	"about": {
 		"version": "版本",
-		"translatedBy": "中文翻译由",
+		"translatedBy": "简体中文翻译由",
 		"contributedBy": "贡献由",
 		"translators": [
 			{

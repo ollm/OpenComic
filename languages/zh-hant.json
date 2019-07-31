@@ -1,0 +1,115 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "和",
+		"comics": "漫畫",
+		"collection": "收藏夾",
+		"sort": {
+			"main": "排序",
+			"name": "名稱",
+			"number": "頁數",
+			"nameNumber": "名稱 / 頁數",
+			"lastAdd": "最後添加時間",
+			"lastReading": "最後閱讀時間",
+			"foldersFirst": "資料夾前置",
+			"invert": "倒置"
+		},
+		"view": {
+			"main": "檢視",
+			"module": "格子",
+			"list": "列表"
+		},
+		"contextMenu": {
+			"remove": "移除"
+		},
+		"back": "返回",
+		"add": "新增",
+		"language": "語言",
+		"theme": "圖形介面",
+		"nightMode": "夜間模式"
+	},
+	"comics": {
+		"continueReading": "繼續閱讀",
+		"emptyIndex": "收藏夾裡還沒有漫畫。",
+		"emptyFolder": "這個檔案夾裡沒有可讀檔案。"
+	},
+	"reading": {
+		"firstPage": "第一頁",
+		"previous": "前一頁",
+		"next": "後一頁",
+		"lastPage": "最後頁",
+
+		"pages": {
+			"main": "页面設定",
+			"slide": "水平翻頁",
+			"scroll": "垂直翻頁",
+			"adjustToWidth": "適應寬度",
+			"margin": "邊際",
+			"doublePage": "雙頁展覽",
+			"doNotApplyToHorizontals": "不應用於橫構圖畫面",
+			"readingDelaySkip": "漫畫切換延遲",
+			"animationSpeed": "動畫效果速度",
+			"readingManga": "閱讀方向（倒轉）"
+		},
+		"magnifyingGlass": {
+			"main": "放大鏡",
+			"activate": "啟用",
+			"zoom": "圖像變比",
+			"size": "尺寸",
+			"ratio": "比例",
+			"radius": "半徑"
+		},
+		"viewBookmarks": "檢視書籤",
+		"addBookmark": "新增書籤",
+		"removeBookmark": "移除書籤",
+		"emptyBookmarks": "暫無書籤",
+		"currentReading": "正在閱讀"
+	},
+	"menu": {
+		"file": {
+			"main": "檔案",
+			"openFile": "打開檔案",
+			"openFolder": "打開檔案夾",
+			"addFile": "新增檔案",
+			"addFolder": "新增檔案夾",
+			"quit": "退出"
+		},
+		"view": {
+			"main": "顯示",
+			"resetZoom": "重置圖像變比",
+			"zoomIn": "放大",
+			"zoomOut": "縮小",
+			"toggleFullScreen": "全螢幕"
+		},
+		"goto": {
+			"main": "跳至"
+		},
+		"debug": {
+			"main": "除錯",
+			"reload": "再啟動",
+			"forceReload": "強制再啟動",
+			"toggleDevTools": "開發者工具"
+		},
+		"help": {
+			"main": "支援",
+			"about": "關於 OpenComic"
+		}
+	},
+	"error": {
+		"uncompress": {
+			"title": "解壓縮錯誤",
+			"message": "在嘗試解壓縮檔案時出錯。"
+		}
+	},
+	"about": {
+		"version": "版本",
+		"translatedBy": "繁體中文翻譯由",
+		"contributedBy": "貢獻由",
+		"translators": [
+			{
+				"name": "珩",
+				"url": "https://github.com/inkiron"
+			}
+		]
+	}
+}
