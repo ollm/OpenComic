@@ -103,6 +103,11 @@ var compressedMime = {
 		'application/x-tar',
 		'application/x-tar-compressed',
 	],
+	'pdf': [
+		'application/pdf',
+		'application/x-bzpdf',
+		'application/x-gzpdf',
+	],
 };
 
 
@@ -116,6 +121,7 @@ var compressedExtensions = {
 		'cb7',
 		'tar',
 		'cbt',
+		'pdf',
 	],
 	'zip': [
 		'zip',
@@ -133,6 +139,9 @@ var compressedExtensions = {
 		'tar',
 		'cbt',
 	],
+	'pdf': [
+		'pdf',
+	],
 };
 
 var compatibleExtensions = [
@@ -143,7 +152,7 @@ var compatibleExtensions = [
 	/*bmp*/'bmp', 'dib',
 	/*ico*/'ico',
 	/*webp*/'webp',
-	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt',
+	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt', 'pdf',
 ];
 
 //console.time('Require time 2');

@@ -155,4 +155,5 @@ module.exports = {
 	barHeader: selectBarHeader,
 	globalElement: selectGlobalElement,
 	loadGlobalElement: loadGlobalElement,
+	contentRightZindex: function(){return contentRightZindex - 1}
 };

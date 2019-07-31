@@ -23,7 +23,7 @@
 	},
 	"scripts": {
 		"start": "npm run prebuild && electron scripts/main.js",
-		"rebuild": "electron-rebuild -f -w sharp",
+		"rebuild": "electron-rebuild -f -w sharp canvas",
 		"prebuild": "node scripts/build.js",
 		"build": "npm run prebuild && electron-builder build",
 		"build-dist": "npm run prebuild && electron-builder --x64 --linux deb rpm tar.gz && electron-builder --arm64 --linux deb rpm tar.gz && electron-builder --arm64 --mac zip tar.gz",
@@ -58,6 +58,7 @@
 		"ldd": "^1.0.0",
 		"mime": "^2.4.4",
 		"node-7z": "^1.1.0",
+		"pdfjs-dist": "^2.1.266",
 		"sha1": "^1.1.1",
 		"sharp": "^0.22.1",
 		"tar-fs": "^2.0.0",

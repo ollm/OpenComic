@@ -2016,8 +2016,6 @@ function read(path, index = 1, end = false)
 
 		if(activeOnScroll && config.readingView == 'scroll')
 		{
-			console.log('scroll');
-
 			previousScrollTop = $(this).scrollTop();
 			let contentHeight = template.contentRight().children('div').height();
 			let contentPosition = (previousScrollTop + (contentHeight / 2));
