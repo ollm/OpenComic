@@ -1,6 +1,6 @@
 ## Download `version 0.1.3`
 ###### Windows
-* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.2/OpenComic.Setup.0.1.2.exe) `version 0.1.2`
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic.Setup.0.1.3.exe)
 ###### macOS
 * [zip](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic-0.1.3-mac.zip)
 * [tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic-0.1.3-mac.tar.gz)
