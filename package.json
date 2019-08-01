@@ -152,6 +152,9 @@
 				"application/x-cbt",
 				"application/x-tar",
 				"application/x-tar-compressed",
+				"application/pdf",
+				"application/x-bzpdf",
+				"application/x-gzpdf",
 				"text/directory",
 				"inode/directory",
 				"application/x-directory"
@@ -279,6 +282,13 @@
 				"ext": [
 					"tar",
 					"cbt"
+				],
+				"role": "Viewer"
+			},
+			{
+				"description": "PDF Document",
+				"ext": [
+					"pdf"
 				],
 				"role": "Viewer"
 			}
