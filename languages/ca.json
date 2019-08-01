@@ -1,0 +1,116 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "i",
+		"comics": "Còmics",
+		"collection": "Col·lecció",
+		"sort": {
+			"main": "Ordenar",
+			"name": "Nom",
+			"number": "Numèric",
+			"nameNumber": "Nom / Numèric",
+			"lastAdd": "Últim agregat",
+			"lastReading": "Última lectura",
+			"foldersFirst": "Carpetes primer",
+			"invert": "Invertir"
+		},
+		"view": {
+			"main": "Vista",
+			"module": "Quadrícula",
+			"list": "Llista"
+		},
+		"contextMenu": {
+			"remove": "Retirar"
+		},
+		"back": "Enrere",
+		"add": "Afegir",
+		"language": "Idioma",
+		"theme": "Tema",
+		"nightMode": "Mode nit"
+	},
+	"comics": {
+		"continueReading": "Continuar llegint",
+		"emptyIndex": "No hi ha cap còmic en aquesta col·lecció.",
+		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta."
+	},
+	"reading": {
+		"firstPage": "Primera pàgina",
+		"previous": "Anterior",
+		"next": "Següent",
+		"lastPage": "Última pàgina",
+
+		"pages": {
+			"main": "Pàgines",
+			"slide": "Lliscar",
+			"scroll": "Navega cap avall",
+			"adjustToWidth": "Ajustar a l'ample",
+			"margin": "Marge",
+			"doublePage": "Doble pàgina",
+			"doNotApplyToHorizontals": "No aplicar a les horitzontals",
+			"readingDelaySkip": "Retard en canviar de còmic",
+			"animationSpeed": "Velocitat de l'animació",
+			"readingManga": "Lectura de manga (Invertir)"
+		},
+		"magnifyingGlass": {
+			"main": "Lupa",
+			"activate": "Activar lupa",
+			"zoom": "Augments",
+			"size": "Mida",
+			"ratio": "Proporció",
+			"radius": "Radi"
+		},
+		"viewBookmarks": "Veure marcadors",
+		"addBookmark": "Afegeix marcador",
+		"removeBookmark": "Eliminar marcador",
+		"emptyBookmarks": "No hi ha cap marcador",
+		"currentReading": "Lectura actual"
+	},
+	"menu": {
+		"file": {
+			"main": "Arxiu",
+			"openFile": "Obrir arxiu",
+			"openFolder": "Obrir carpeta",
+			"addFile": "Afegir arxiu",
+			"addFolder": "Afegir carpeta",
+			"quit": "Sortir"
+		},
+		"view": {
+			"main": "Veure",
+			"resetZoom": "Restablir zoom",
+			"zoomIn": "Ampliar zoom",
+			"zoomOut": "Reduir zoom",
+			"toggleFullScreen": "Pantalla completa"
+		},
+		"goto": {
+			"main": "Anar a"
+		},
+		"debug": {
+			"main": "Depuració",
+			"reload": "Recarregar",
+			"forceReload": "Recarregar de manera forçada",
+			"toggleDevTools": "Eines per a desenvolupadors"
+		},
+		"help": {
+			"main": "Ajuda",
+			"about": "Sobre OpenComic"
+		}
+	},
+	"error": {
+		"uncompress": {
+			"title": "Error en descomprimir",
+			"message": "Hi ha hagut un error en intentar descomprimir l'arxiu."
+		}
+	},
+	"about": {
+		"version": "Versió",
+		"translatedBy": "Traduït al Català per",
+		"contributedBy": "Contribuït per",
+		"translators": [
+			{
+				"name": "Oleguer Llopart",
+				"email": "oleguer.llopart.mora@gmail.com",
+				"url": "https://github.com/ollm"
+			}
+		]
+	}
+}
