@@ -1092,7 +1092,7 @@ function loadLanguagesPage(animation = true)
 	{
 		var languagesList = $.parseJSON(readFileApp('/languages/languagesList.json'));
 
-		handlebarsContext.languagesList = new Array();
+		handlebarsContext.languagesList = [];
 
 		for(let code in languagesList)
 		{
@@ -1102,6 +1102,15 @@ function loadLanguagesPage(animation = true)
 			}
 		}
 	}
+
+	handlebarsContext.languagesList.sort(function(a, b) {
+		
+		if(a.nativeName == b.nativeName)
+			return 0;
+
+		return a.nativeName > b.nativeName ? 1 : -1;
+		
+	});
 
 	template.loadContentRight('languages.content.right.html', animation);
 	template.loadHeader('languages.header.html', animation);
