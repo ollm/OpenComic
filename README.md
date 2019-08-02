@@ -1,19 +1,19 @@
-## Download `version 0.1.3`
+## Download `version 0.1.4`
 ###### Windows
-* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic.Setup.0.1.3.exe)
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.4/OpenComic.Setup.0.1.4.exe)
 ###### macOS
-* [zip](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic-0.1.3-mac.zip)
-* [tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/OpenComic-0.1.3-mac.tar.gz)
+* [zip](https://github.com/ollm/OpenComic/releases/download/v0.1.4/OpenComic-0.1.4-mac.zip)
+* [tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.4/OpenComic-0.1.4-mac.tar.gz)
 ###### Linux
-* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic_0.1.3_amd64.deb)
-* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3.x86_64.rpm)
-* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic_0.1.3_amd64.snap)
-* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3.tar.gz)
+* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic_0.1.4_amd64.deb)
+* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic-0.1.4.x86_64.rpm)
+* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic_0.1.4_amd64.snap)
+* [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic-0.1.4.tar.gz)
 * `snap install opencomic`
 ###### Linux Arm64
-* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic_0.1.3_arm64.deb)
-* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3.arm64.rpm)
-* [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.3/opencomic-0.1.3-arm64.tar.gz)
+* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic_0.1.4_arm64.deb)
+* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic-0.1.4.arm64.rpm)
+* [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v0.1.4/opencomic-0.1.4-arm64.tar.gz)
 
 ## ScreenShot
 
@@ -22,7 +22,7 @@
 ## Features
 
 * Support this image formats: JPG, PNG, APNG, GIF, WEBP, SVG, BMP, ICO
-* Support this compressed formats: RAR, ZIP, 7Z, TAR, CBR, CBZ, CB7, CBT
+* Support this compressed formats: PDF, RAR, ZIP, 7Z, TAR, CBR, CBZ, CB7, CBT
 * Manga read mode
 * Double page view
 * Bookmarks and continue reading
