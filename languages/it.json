@@ -20,13 +20,13 @@
 			"list": "Lista"
 		},
 		"contextMenu": {
-			"remove": "Remuovi"
+			"remove": "Rimuovi"
 		},
 		"back": "Indietro",
 		"add": "Aggiungi",
 		"language": "Lingua",
-		"theme": "Thema",
-		"nightMode": "Modalità notturna"
+		"theme": "Tema",
+		"nightMode": "Modalità notte"
 	},
 	"comics": {
 		"continueReading": "Continua a leggere",
