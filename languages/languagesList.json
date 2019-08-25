@@ -285,6 +285,7 @@
         "nativeName":"Íslenska"
     },
     "it":{
+        "active":true,
         "name":"Italian",
         "nativeName":"Italiano"
     },
