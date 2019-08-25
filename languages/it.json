@@ -1,0 +1,116 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "e",
+		"comics": "Comics",
+		"collection": "Collezione",
+		"sort": {
+			"main": "Principale",
+			"name": "Nome",
+			"number": "Numero",
+			"nameNumber": "Nome / Numero",
+			"lastAdd": "Ultimo aggiunto",
+			"lastReading": "Ultimo letto",
+			"foldersFirst": "Prima le cartelle",
+			"invert": "Inverti"
+		},
+		"view": {
+			"main": "Vista",
+			"module": "Griglia",
+			"list": "Lista"
+		},
+		"contextMenu": {
+			"remove": "Rimuovi"
+		},
+		"back": "Indietro",
+		"add": "Aggiungi",
+		"language": "Lingua",
+		"theme": "Tema",
+		"nightMode": "Modalità notte"
+	},
+	"comics": {
+		"continueReading": "Continua a leggere",
+		"emptyIndex": "Non ci sono fumetti in questa raccolta.",
+		"emptyFolder": "Non ci sono file compatibili in questa cartella."
+	},
+	"reading": {
+		"firstPage": "Prima pagina",
+		"previous": "Precedente",
+		"next": "Prossima",
+		"lastPage": "Ultima pagina",
+
+		"pages": {
+			"main": "Pagine",
+			"slide": "diapositiva",
+			"scroll": "Scorri verso il basso",
+			"adjustToWidth": "Regola in larghezza",
+			"margin": "Margine",
+			"doublePage": "Doppia pagina",
+			"doNotApplyToHorizontals": "Non applicare agli orizzontali",
+			"readingDelaySkip": "Ritardo nel cambio di fumetti",
+			"animationSpeed": "Velocità di animazione",
+			"readingManga": "Lettura di manga (invertito)"
+		},
+		"magnifyingGlass": {
+			"main": "Lente d'ingrandimento",
+			"activate": "Attivare",
+			"zoom": "Zoom",
+			"size": "Dimensione",
+			"ratio": "Proporzione",
+			"radius": "Raggio"
+		},
+		"viewBookmarks": "Visualizza i segnalibri",
+		"addBookmark": "Aggiungi segnalibro",
+		"removeBookmark": "Rimuovi segnalibro",
+		"emptyBookmarks": "Nessun segnalibro",
+		"currentReading": "Lettura attuale"
+	},
+	"menu": {
+		"file": {
+			"main": "File",
+			"openFile": "Opri file",
+			"openFolder": "Opri cartella",
+			"addFile": "Aggiungi file",
+			"addFolder": "Aggiungi cartella",
+			"quit": "Esci"
+		},
+		"view": {
+			"main": "Vista",
+			"resetZoom": "Ripristina zoom",
+			"zoomIn": "Zoom avanti",
+			"zoomOut": "Zoom indietro",
+			"toggleFullScreen": "A schermo intero"
+		},
+		"goto": {
+			"main": "Goto"
+		},
+		"debug": {
+			"main": "Debug",
+			"reload": "Ricarica",
+			"forceReload": "Forza ricarica",
+			"toggleDevTools": "Strumenti per gli sviluppatori"
+		},
+		"help": {
+			"main": "Aiuto",
+			"about": "Informazioni su OpenComic"
+		}
+	},
+	"error": {
+		"uncompress": {
+			"title": "Errore durante la decompressione",
+			"message": "Si è verificato un errore durante il tentativo di decomprimere il file."
+		}
+	},
+	"about": {
+		"version": "Versione",
+		"translatedBy": "Tradotto in italiano da",
+		"contributedBy": "Contributo di",
+		"translators": [
+			{
+				"name": "Albano Battistella",
+				"email": "albano_battistell@hotmail.com",
+				"url": "www.zorinos.com"
+			}
+		]
+	}
+}
