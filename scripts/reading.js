@@ -1523,6 +1523,8 @@ function saveReadingProgress(path = false)
 
 		storage.updateVar('comics', comicIndex, comic);
 	}
+
+	return true;
 }
 
 //Load the bookmarks in the current directory

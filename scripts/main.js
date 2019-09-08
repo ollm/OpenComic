@@ -64,9 +64,12 @@ function createWindow () {
 		{
 			appClosing = true;
 				
-			win.webContents.executeJavaScript('reading.saveReadingProgress();', false, function(){
+			win.webContents.executeJavaScript('reading.saveReadingProgress();', false, function(value) {
 
-				win.close();
+				if(!value)
+					win.close();
+				else // Wait for it to save
+					setTimeout(function(win){win.close();}, 200, win);
 
 			});
 
