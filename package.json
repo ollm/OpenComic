@@ -58,7 +58,7 @@
 		"ldd": "^1.0.0",
 		"mime": "^2.4.4",
 		"node-7z": "^1.1.0",
-		"pdfjs-dist": "^2.1.266",
+		"pdfjs-dist": "^2.2.228",
 		"sha1": "^1.1.1",
 		"sharp": "^0.22.1",
 		"tar-fs": "^2.0.0",
@@ -68,10 +68,10 @@
 	"devDependencies": {
 		"electron": "^5.0.6",
 		"electron-builder": "^20.44.4",
-		"electron-rebuild": "^1.8.5",
+		"electron-rebuild": "^1.8.8",
 		"js-yaml": "^3.13.1",
 		"node-yaml": "^4.0.1",
-		"webpack": "^4.38.0"
+		"webpack": "^4.41.4"
 	},
 	"build": {
 		"appId": "org.opencomic.app",
