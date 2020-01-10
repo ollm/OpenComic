@@ -169,7 +169,8 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
 	file = require(p.join(appDir, 'scripts/file.js')),
 	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
-	reading = require(p.join(appDir, 'scripts/reading.js'));
+	reading = require(p.join(appDir, 'scripts/reading.js')),
+	tracking = require(p.join(appDir, 'scripts/tracking.js'));
 
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
 if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);

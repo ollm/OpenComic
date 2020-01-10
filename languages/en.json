@@ -41,8 +41,8 @@
 
 		"pages": {
 			"main": "Pages",
-			"slide": "Slide",
-			"scroll": "Scroll down",
+			"slide": "Slide Reader",
+			"scroll": "Vertical Reader",
 			"adjustToWidth": "Adjust to width",
 			"margin": "Margin",
 			"marginHorizontal": "Horizontal margin",
@@ -66,7 +66,8 @@
 		"addBookmark": "Add bookmark",
 		"removeBookmark": "Remove bookmark",
 		"emptyBookmarks": "No bookmarks",
-		"currentReading": "Current reading"
+		"currentReading": "Current reading",
+		"trackingText": "AniList Tracking"
 	},
 	"menu": {
 		"file": {

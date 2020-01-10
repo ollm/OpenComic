@@ -34,6 +34,11 @@ var storageDefault = {
 		readingDoNotApplyToHorizontals: true,
 		readingManga: false,
 		readingWebtoon: false
+		readingManga: false,
+		anilist: {
+			accessToken: '',
+			refreshToken: '',
+		},
 	},
 	comics: [{
 		name: 'Name',
@@ -42,6 +47,7 @@ var storageDefault = {
 		compressed: false,
 		bookmark: false,
 		folder: true,
+		anilistId: 0,
 		readingProgress: {
 			path: 'Path',
 			lastReading: 0,
@@ -55,6 +61,7 @@ var storageDefault = {
 		compressed: false,
 		bookmark: false,
 		folder: true,
+		anilistId: 0,
 		readingProgress: {
 			index: 0,
 			path: '',
