@@ -50,7 +50,7 @@
 			{{language.reading.pages.adjustToWidth}}
 			<div class="switch{{#if config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)"></div>
 		</div>
-		<div class="simple-slider">
+		<div class="simple-slider" style="margin-top: 8px;">
 			<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{config.readingMargin.left}}</span>px</div></div>
 			<input class="range" type="range" max="200" min="0" list="marginlist" value="{{config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
 		</div>
