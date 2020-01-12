@@ -219,10 +219,9 @@ function calcAspectRatio(first, second)
 
 function disposeImages(data = false)
 {
-	if(data && typeof data.margin !== 'undefined')
-		var margin = data.margin;
-	else
-		var margin = config.readingMargin.margin;
+	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : config.readingMargin.margin;
+	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : config.readingMargin.left;
+	var marginVertical = (data && typeof data.top !== 'undefined') ? data.top : config.readingMargin.top;
 
 	var contentHeight = template.contentRight().children('div').height();
 
@@ -232,8 +231,8 @@ function disposeImages(data = false)
 		var contentWidth = template.contentRight().width();
 
 	//Width 0
-	var contentWidth0 = contentWidth - (margin * 2);
-	var aspectRatio0 = contentWidth0 / (contentHeight - margin * 2);
+	var contentWidth0 = contentWidth - (marginHorizontal * 2);
+	var aspectRatio0 = contentWidth0 / (contentHeight - marginVertical /*dd*/ * 2);
 	
 	var _imagesDistribution = applyMangaReading(imagesDistribution);
 
@@ -249,39 +248,39 @@ function disposeImages(data = false)
 		{
 			var imageHeight0, imageWidth0, marginLeft0, marginTop0, imageHeight1, imageWidth1, marginLeft1, marginTop1;
 
-			var imageHeight = imageHeight0 = imageHeight1 = (contentHeight - margin * 2);
+			var imageHeight = imageHeight0 = imageHeight1 = (contentHeight - marginVertical * 2);
 
 			imageWidth0 = imageHeight0 * first.aspectRatio;
 			imageWidth1 = imageHeight1 * second.aspectRatio;
 
-			var joinWidth = imageWidth0 + imageWidth1 + margin;
+			var joinWidth = imageWidth0 + imageWidth1 + marginHorizontal;
 
 			if(joinWidth < contentWidth0 && !(readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
 			{
-				marginLeft0 = contentWidth / 2 - (imageWidth0 + imageWidth1 + margin) / 2;
-				marginLeft1 = margin;
-				marginTop0 = marginTop1 = margin;
+				marginLeft0 = contentWidth / 2 - (imageWidth0 + imageWidth1 + marginHorizontal) / 2;
+				marginLeft1 = marginHorizontal;
+				marginTop0 = marginTop1 = marginVertical;
 			}
 			else
 			{
-				imageWidth0 = (first.aspectRatio / (first.aspectRatio + second.aspectRatio)) * (contentWidth0 - margin);
-				imageWidth1 = (second.aspectRatio / (second.aspectRatio + first.aspectRatio)) * (contentWidth0 - margin);
+				imageWidth0 = (first.aspectRatio / (first.aspectRatio + second.aspectRatio)) * (contentWidth0 - marginHorizontal);
+				imageWidth1 = (second.aspectRatio / (second.aspectRatio + first.aspectRatio)) * (contentWidth0 - marginHorizontal);
 
 				var imageHeight = imageHeight0 = imageHeight1 = imageWidth0 / first.aspectRatio;
 
-				marginLeft0 = marginLeft1 = margin;
+				marginLeft0 = marginLeft1 = marginHorizontal;
 				marginTop0 = marginTop1 = contentHeight / 2 - imageHeight / 2;
 			}
 
 			if(readingViewIs('scroll'))
-				marginTop0 = marginTop1 = margin;
+				marginTop0 = marginTop1 = marginVertical;
 
 			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight0+'px',
 				'width': imageWidth0+'px',
 				'margin-left': marginLeft0+'px',
 				'margin-top': marginTop0+'px',
-				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
 			});
 
@@ -290,7 +289,7 @@ function disposeImages(data = false)
 				'width': imageWidth1+'px',
 				'margin-left': marginLeft1+'px',
 				'margin-top': marginTop1+'px',
-				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
 			});
 		}
@@ -298,28 +297,28 @@ function disposeImages(data = false)
 		{
 			if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
 			{
-				var imageHeight = (contentHeight - margin * 2);
+				var imageHeight = (contentHeight - marginVertical * 2);
 				var imageWidth = imageHeight * first.aspectRatio;
 				var marginLeft = contentWidth / 2 - imageWidth / 2;
-				var marginTop = margin;
+				var marginTop = marginVertical;
 			}
 			else
 			{
-				var imageWidth = (contentWidth - margin * 2);
+				var imageWidth = (contentWidth - marginHorizontal * 2);
 				var imageHeight = imageWidth / first.aspectRatio;
-				var marginLeft = margin;
+				var marginLeft = marginHorizontal;
 				var marginTop = contentHeight / 2 - imageHeight / 2;
 			}
 
 			if(readingViewIs('scroll'))
-				marginTop = margin;
+				marginTop = marginVertical;
 
 			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight+'px',
 				'width': imageWidth+'px',
 				'margin-left': marginLeft+'px',
 				'margin-top': marginTop+'px',
-				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
 			});
 		}
@@ -514,7 +513,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	{
 		image = returnLargerImage(eIndex-1);
 
-		imgHeight = image.height() + config.readingMargin.margin;
+		imgHeight = image.height() + config.readingMargin.top;
 
 		if(imgHeight > contentHeight)
 		{
@@ -542,7 +541,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		image = returnLargerImage(eIndex-1);
 
-		imgHeight = image.height() + config.readingMargin.margin;
+		imgHeight = image.height() + config.readingMargin.top;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -565,7 +564,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 			image = returnLargerImage(eIndex-1);
 
-			imgHeight = image.height() + config.readingMargin.margin;
+			imgHeight = image.height() + config.readingMargin.top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -607,7 +606,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		if((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && pageVisibilityIndex !== false)
 		{
-			imgHeight = image.height() + config.readingMargin.margin;
+			imgHeight = image.height() + config.readingMargin.top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -1383,7 +1382,20 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
+	else if(mode == 10) // Set horizontal margin of the pages
+	{
+		disposeImages({left: value, right: value});
+		stayInLine();
 
+		if(save) storage.updateVar('config', 'readingMargin', {margin: config.readingMargin.margin, top: config.readingMargin.top, bottom: config.readingMargin.bottom, left: value, right: value});
+	}
+	else if(mode == 11) // Set vertical margin of the pages
+	{
+		disposeImages({top: value, bottom: value});
+		stayInLine();
+
+		if(save) storage.updateVar('config', 'readingMargin', {margin: config.readingMargin.margin, top: value, bottom: value, left: config.readingMargin.left, right: config.readingMargin.right});
+	}
 }
 
 //Change the bookmark icon
@@ -1958,7 +1970,7 @@ function read(path, index = 1, end = false)
 			var minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
 
 			var maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
-			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + config.readingMargin.margin : 0);
+			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + config.readingMargin.top : 0);
 
 			if(x > maxX)
 				x = maxX;

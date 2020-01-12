@@ -45,6 +45,8 @@
 			"scroll": "Navega cap avall",
 			"adjustToWidth": "Ajustar a l'ample",
 			"margin": "Marge",
+			"marginHorizontal": "Margen horitzontal",
+			"marginVertical": "Margen vertical",
 			"doublePage": "Doble pàgina",
 			"doNotApplyToHorizontals": "No aplicar a les horitzontals",
 			"readingDelaySkip": "Retard en canviar de còmic",

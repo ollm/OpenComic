@@ -1399,6 +1399,7 @@ body .preload
 	min-height: 32px;
 	line-height: 32px;
 	transition: 0.2s;
+	margin-bottom: 15px;
 }
 
 .simple-slider-text > div
@@ -1410,19 +1411,26 @@ body .preload
 .simple-slider .range
 {
 	display: block;
-	margin-top: 15px;
+	
 }
 
 .range
 {
 	-webkit-appearance: none !important;
-	background: rgba(218, 67, 54, 1);
-	height: 2px;
+	height: 30px;
 	outline: 0px;
 	width: 100%;
 	cursor: pointer;
 	transition: 0.2s;
-	margin: 0px;
+	margin: -14px 0px;
+}
+
+.range::-webkit-slider-runnable-track
+{
+	width: 100%;
+	height: 2px;
+	background: rgba(218, 67, 54, 1);
+	border: none;
 }
 
 .range.d
@@ -1440,6 +1448,7 @@ body .preload
 	outline: 0px;
 	transition: 0.2s;
 	border: 0px solid #fff;
+	margin-top: -5px;
 }
 
 .range.d::-webkit-slider-thumb

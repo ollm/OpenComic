@@ -51,8 +51,12 @@
 			<div class="switch{{#if config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)"></div>
 		</div>
 		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.pages.margin}}<div><span>{{config.readingMargin.margin}}</span>px</div></div>
-			<input class="range" type="range" max="100" min="0" step="1" value="{{config.readingMargin.margin}}" onrange="reading.changePagesView(2, \{{value}}, \{{toEnd}})">
+			<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{config.readingMargin.left}}</span>px</div></div>
+			<input class="range" type="range" max="200" min="0" list="marginlist" value="{{config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
+		</div>
+		<div class="simple-slider">
+			<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{config.readingMargin.top}}</span>px</div></div>
+			<input class="range" type="range" max="200" min="0" list="marginlist" value="{{config.readingMargin.top}}" onrange="reading.changePagesView(11, \{{value}}, \{{toEnd}})">
 		</div>
 		<div class="menu-simple-separator"></div>
 		<div class="simple-slider">
@@ -73,3 +77,17 @@
 <script type="text/javascript">
 	dom.selectElement('.pages-{{config.readingView}}');	
 </script>
+<datalist id="marginlist">
+	{{#for 0 8 1}}
+	<option value="{{this}}">
+	{{/for}}
+	{{#for 8 26 2}}
+	<option value="{{this}}">
+	{{/for}}
+	{{#for 26 50 4}}
+	<option value="{{this}}">
+	{{/for}}
+	{{#for 50 201 5}}
+	<option value="{{this}}">
+	{{/for}}
+</datalist>

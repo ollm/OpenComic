@@ -45,6 +45,8 @@
 			"scroll": "Desplazarse hacia abajo",
 			"adjustToWidth": "Ajustar a lo ancho",
 			"margin": "Margen",
+			"marginHorizontal": "Margen horizontal",
+			"marginVertical": "Margen vertical",
 			"doublePage": "Doble página",
 			"doNotApplyToHorizontals": "No aplicar a las horizontales",
 			"readingDelaySkip": "Retraso al cambiar de cómic",

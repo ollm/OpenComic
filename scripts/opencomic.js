@@ -616,6 +616,17 @@ hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
 
 });
 
+hb.registerHelper('for', function(from, to, incr, options) {
+
+	var accum = '';
+
+	for(var i = from; i < to; i += incr)
+		accum += options.fn(i);
+
+	return accum;
+
+});
+
 hb.registerHelper('escapeQuotes', function(string) {
 
 	return escapeQuotes(string);

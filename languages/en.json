@@ -45,6 +45,8 @@
 			"scroll": "Scroll down",
 			"adjustToWidth": "Adjust to width",
 			"margin": "Margin",
+			"marginHorizontal": "Horizontal margin",
+			"marginVertical": "Vertical margin",
 			"doublePage": "Double page",
 			"doNotApplyToHorizontals": "Do not apply to horizontals",
 			"readingDelaySkip": "Delay in changing comics",
