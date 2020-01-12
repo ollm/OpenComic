@@ -25,24 +25,28 @@
 </div>
 <div class="menu reading-elements-menus" id="reading-pages">
 	<div class="menu-simple elevation8" style="width: 300px;">
-		<div class="menu-simple-element pages-slide{{#compare config.readingView '==' 'slide'}} s{{/compare}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
-		<div class="menu-simple-element pages-scroll{{#compare config.readingView '==' 'scroll'}} s{{/compare}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
+		<div class="menu-simple-element pages-slide{{#compare config.readingView '==' 'slide'}} s{{/compare}}{{#if config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
+		<div class="menu-simple-element pages-scroll{{#compare config.readingView '==' 'scroll'}} s{{/compare}}{{#if config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
 		<div class="menu-simple-separator"></div>
-		<div class="menu-simple-text reading-reading-manga">
+		<div class="menu-simple-text reading-reading-manga{{#if config.readingWebtoon}} disable-pointer{{/if}}">
 			{{language.reading.pages.readingManga}}
 			<div class="switch{{#if config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)"></div>
 		</div>
+		<div class="menu-simple-text reading-reading-webtoon">
+			{{language.reading.pages.readingWebtoon}}
+			<div class="switch{{#if config.readingWebtoon}} a{{/if}}" on="reading.changePagesView(9, true, false)" off="reading.changePagesView(9, false, false)"></div>
+		</div>
 		<div class="menu-simple-separator"></div>
-		<div class="menu-simple-text reading-double-page">
+		<div class="menu-simple-text reading-double-page{{#if config.readingWebtoon}} disable-pointer{{/if}}">
 			{{language.reading.pages.doublePage}}
 			<div class="switch{{#if config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)"></div>
 		</div>
-		<div class="menu-simple-text reading-do-not-apply-to-horizontals{{#unless config.readingDoublePage}} disable-pointer{{/unless}}">
+		<div class="menu-simple-text reading-do-not-apply-to-horizontals{{#unless config.readingDoublePage}} disable-pointer{{else if config.readingWebtoon}} disable-pointer{{/unless}}">
 			{{language.reading.pages.doNotApplyToHorizontals}}
 			<div class="switch{{#if config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)"></div>
 		</div>
 		<div class="menu-simple-separator"></div>
-		<div class="menu-simple-text reading-ajust-to-width{{#compare config.readingView '==' 'slide'}} disable-pointer{{/compare}}">
+		<div class="menu-simple-text reading-ajust-to-width{{#compare config.readingView '==' 'slide'}} disable-pointer{{else if config.readingWebtoon}} disable-pointer{{/compare}}">
 			{{language.reading.pages.adjustToWidth}}
 			<div class="switch{{#if config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)"></div>
 		</div>

@@ -49,7 +49,8 @@
 			"doNotApplyToHorizontals": "Do not apply to horizontals",
 			"readingDelaySkip": "Delay in changing comics",
 			"animationSpeed": "Animation speed",
-			"readingManga": "Reading manga (Inverted)"
+			"readingManga": "Reading manga (Inverted)",
+			"readingWebtoon": "Reading webtoon"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",

@@ -6,7 +6,7 @@ function blankPage(index)
 {
 	var key = 0;
 
-	if(config.readingDoublePage && config.readingDoNotApplyToHorizontals)
+	if(config.readingDoublePage && !config.readingWebtoon && config.readingDoNotApplyToHorizontals)
 	{
 		for(let i = index; i < (imagesNum + 1); i++)
 		{
@@ -35,7 +35,7 @@ function calculateImagesDistribution()
 	imagesDistribution = [];
 	indexNum = 0;
 
-	if(config.readingDoublePage)
+	if(config.readingDoublePage && !config.readingWebtoon)
 	{
 		var data = [];
 
@@ -43,7 +43,7 @@ function calculateImagesDistribution()
 		{
 			if(typeof imagesData[i] !== 'undefined')
 			{
-				if(config.readingDoublePage && config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
+				if(config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
 				{
 					if(data.length > 0)
 					{
@@ -129,7 +129,7 @@ function applyMangaReading(distribution)
 
 	if(config.readingManga)
 	{
-		if(config.readingView != 'scroll')
+		if(!readingViewIs('scroll'))
 			_distribution.reverse();
 
 		for(let i = 0, len = _distribution.length; i < len; i++)
@@ -226,7 +226,7 @@ function disposeImages(data = false)
 
 	var contentHeight = template.contentRight().children('div').height();
 
-	if(config.readingView == 'scroll')
+	if(readingViewIs('scroll'))
 		var contentWidth = template.contentRight('.reading-body').width();
 	else
 		var contentWidth = template.contentRight().width();
@@ -256,7 +256,7 @@ function disposeImages(data = false)
 
 			var joinWidth = imageWidth0 + imageWidth1 + margin;
 
-			if(joinWidth < contentWidth0 && !(config.readingView == 'scroll' && config.readingViewAdjustToWidth))
+			if(joinWidth < contentWidth0 && !(readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
 			{
 				marginLeft0 = contentWidth / 2 - (imageWidth0 + imageWidth1 + margin) / 2;
 				marginLeft1 = margin;
@@ -273,7 +273,7 @@ function disposeImages(data = false)
 				marginTop0 = marginTop1 = contentHeight / 2 - imageHeight / 2;
 			}
 
-			if(config.readingView == 'scroll')
+			if(readingViewIs('scroll'))
 				marginTop0 = marginTop1 = margin;
 
 			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
@@ -281,7 +281,7 @@ function disposeImages(data = false)
 				'width': imageWidth0+'px',
 				'margin-left': marginLeft0+'px',
 				'margin-top': marginTop0+'px',
-				'margin-bottom': ((config.readingView == 'scroll' && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
 				'margin-right': '0px',
 			});
 
@@ -290,13 +290,13 @@ function disposeImages(data = false)
 				'width': imageWidth1+'px',
 				'margin-left': marginLeft1+'px',
 				'margin-top': marginTop1+'px',
-				'margin-bottom': ((config.readingView == 'scroll' && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
 				'margin-right': '0px',
 			});
 		}
 		else
 		{
-			if(aspectRatio0 > first.aspectRatio && !(config.readingView == 'scroll' && config.readingViewAdjustToWidth))
+			if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
 			{
 				var imageHeight = (contentHeight - margin * 2);
 				var imageWidth = imageHeight * first.aspectRatio;
@@ -311,7 +311,7 @@ function disposeImages(data = false)
 				var marginTop = contentHeight / 2 - imageHeight / 2;
 			}
 
-			if(config.readingView == 'scroll')
+			if(readingViewIs('scroll'))
 				marginTop = margin;
 
 			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
@@ -319,14 +319,14 @@ function disposeImages(data = false)
 				'width': imageWidth+'px',
 				'margin-left': marginLeft+'px',
 				'margin-top': marginTop+'px',
-				'margin-bottom': ((config.readingView == 'scroll' && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
+				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? margin : 0)+'px',
 				'margin-right': '0px',
 			});
 		}
 
 		template.contentRight('.image-position'+key1).css({
 			'width': contentWidth+'px',
-			'height': config.readingView != 'scroll' ? contentHeight+'px' : '',
+			'height': !readingViewIs('scroll') ? contentHeight+'px' : '',
 		});
 	}
 }
@@ -336,14 +336,14 @@ function calculateView()
 	var content = template.contentRight().children('div');
 	var contentWidth = template.contentRight().width();
 
-	if(config.readingView == 'slide')
+	if(readingViewIs('slide'))
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'width': (contentWidth * indexNum)+'px',
 			'height': content.height(),
 		});
 	}
-	else if(config.readingView == 'scroll')
+	else if(readingViewIs('scroll'))
 	{
 		template.contentRight('.reading-body > div').css({
 			'width': '100%',
@@ -354,7 +354,7 @@ function calculateView()
 		});
 	}
 
-	if(config.readingView == 'scroll')
+	if(readingViewIs('scroll'))
 	{
 		imagesPosition = [];
 		var element = template.contentRight().children('div');
@@ -378,7 +378,7 @@ var previousScrollTop = 0, previousContentHeight = 0;
 
 function stayInLine()
 {
-	if(config.readingView == 'slide' || (config.readingView == 'scroll' && !config.readingViewAdjustToWidth))
+	if(readingViewIs('slide') || (readingViewIs('scroll') && !config.readingViewAdjustToWidth && !config.readingWebtoon))
 	{
 		if(currentIndex < 1)
 			showPreviousComic(1, false);
@@ -387,7 +387,7 @@ function stayInLine()
 		else
 			goToIndex(currentIndex, false);
 	}
-	else if(config.readingView == 'scroll')
+	else if(readingViewIs('scroll'))
 	{
 		if(currentIndex < 1)
 			showPreviousComic(1, false);
@@ -437,7 +437,7 @@ function goToImage(imageIndex, bookmarks = false)
 
 		var newIndex = imagesData[imageIndex].position + 1;
 
-		if(config.readingManga && config.readingView != 'scroll')
+		if(config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
 
 		goToIndex(newIndex);
@@ -454,7 +454,7 @@ function goToFolder(folderIndex)
 
 		var newIndex = foldersPosition[folderIndex] + 1;
 
-		if(config.readingManga && config.readingView != 'scroll')
+		if(config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
 
 		goToIndex(newIndex);
@@ -465,7 +465,7 @@ function goToFolder(folderIndex)
 //Returns the highest image
 function returnLargerImage(index)
 {
-	if(config.readingDoublePage)
+	if(config.readingDoublePage && !config.readingWebtoon)
 	{
 		var imageHeight0 = template.contentRight('.image-position'+(index)+'-0').height();
 		var imageHeight1 = template.contentRight('.image-position'+(index)+'-1').height();
@@ -510,7 +510,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var imgHeight = false;
 
-	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (config.readingView == 'scroll' && config.readingViewAdjustToWidth))
+	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
 	{
 		image = returnLargerImage(eIndex-1);
 
@@ -536,7 +536,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		currentPageStart = false;
 	}
-	else if(nextPrevious && !currentPageStart && (config.readingView == 'scroll' && config.readingViewAdjustToWidth))
+	else if(nextPrevious && !currentPageStart && (readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
 	{
 		eIndex = currentIndex;
 
@@ -590,14 +590,14 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		currentPageStart = true;
 	}
 
-	if(config.readingView == 'slide')
+	if(readingViewIs('slide'))
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'transition': animationDurationS+'s',
 			'transform': 'translate(-'+(contentWidth * (eIndex - 1))+'px, 0)',
 		});
 	}
-	else if(config.readingView == 'scroll')
+	else if(readingViewIs('scroll'))
 	{
 		var image = returnLargerImage(eIndex-1);
 
@@ -605,7 +605,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		var scrollSum = 0;
 
-		if((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && pageVisibilityIndex !== false)
+		if((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && pageVisibilityIndex !== false)
 		{
 			imgHeight = image.height() + config.readingMargin.margin;
 
@@ -628,7 +628,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var newIndex = (eIndex - 1);
 
-	if(config.readingManga && config.readingView != 'scroll')
+	if(config.readingManga && !readingViewIs('scroll'))
 		newIndex = (indexNum - newIndex) - 1;
 
 	eachImagesDistribution(newIndex, ['image', 'folder'], function(image){
@@ -665,11 +665,11 @@ function goNext()
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= indexNum || ((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && currentPageVisibility < maxPageVisibility))
+	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
-	else if(currentIndex == indexNum && dom.nextComic() && (!config.readingManga || config.readingView == 'scroll'))
+	else if(currentIndex == indexNum && dom.nextComic() && (!config.readingManga || readingViewIs('scroll')))
 		showNextComic(1, true);
-	else if(currentIndex == indexNum && dom.previousComic() && config.readingManga && config.readingView != 'scroll')
+	else if(currentIndex == indexNum && dom.previousComic() && config.readingManga && !readingViewIs('scroll'))
 		showNextComic(1, true, true);
 }
 
@@ -684,18 +684,18 @@ function goPrevious()
 
 	if(currentIndex > indexNum)
 		showNextComic(2, true);
-	else if(previousIndex > 0 || ((config.readingView == 'scroll' && config.readingViewAdjustToWidth) && currentPageVisibility > 0))
+	else if(previousIndex > 0 || ((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
-	else if(previousIndex == 0 && dom.previousComic() && (!config.readingManga || config.readingView == 'scroll'))
+	else if(previousIndex == 0 && dom.previousComic() && (!config.readingManga || readingViewIs('scroll')))
 		showPreviousComic(1, true);
-	else if(previousIndex == 0 && dom.nextComic() && config.readingManga && config.readingView != 'scroll')
+	else if(previousIndex == 0 && dom.nextComic() && config.readingManga && !readingViewIs('scroll'))
 		showPreviousComic(1, true, true);
 }
 
 //Go to the start of the comic
 function goStart(force = false)
 {
-	if(force || !config.readingManga || config.readingView == 'scroll')
+	if(force || !config.readingManga || readingViewIs('scroll'))
 	{
 		saveReadingProgressA = true;
 
@@ -719,7 +719,7 @@ function goStart(force = false)
 //Go to the end of the comic
 function goEnd(force = false)
 {
-	if(force || !config.readingManga || config.readingView == 'scroll')
+	if(force || !config.readingManga || readingViewIs('scroll'))
 	{
 		saveReadingProgressA = true;
 
@@ -783,7 +783,7 @@ function showNextComic(mode, animation = true, invert = false)
 
 		if(config.readingDelayComicSkip != 0)
 		{
-			if(config.readingView == 'slide')
+			if(readingViewIs('slide'))
 			{
 				var skip = template.contentRight('.reading-skip-right');
 
@@ -801,7 +801,7 @@ function showNextComic(mode, animation = true, invert = false)
 					'transform': 'scale('+scale+') translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 				});
 			}
-			else if(config.readingView == 'scroll')
+			else if(readingViewIs('scroll'))
 			{
 				var skip = template.contentRight('.reading-skip-bottom');
 
@@ -832,7 +832,7 @@ function showNextComic(mode, animation = true, invert = false)
 	}
 	else
 	{
-		if(config.readingView == 'slide')
+		if(readingViewIs('slide'))
 		{
 			var skip = template.contentRight('.reading-skip-right').css({
 				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
@@ -844,7 +844,7 @@ function showNextComic(mode, animation = true, invert = false)
 				'transform': 'scale(1) translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 			});
 		}
-		else if(config.readingView == 'scroll')
+		else if(readingViewIs('scroll'))
 		{
 			var skip = template.contentRight('.reading-skip-bottom').css({
 				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
@@ -877,7 +877,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 		if(config.readingDelayComicSkip != 0)
 		{
-			if(config.readingView == 'slide')
+			if(readingViewIs('slide'))
 			{
 				var skip = template.contentRight('.reading-skip-left');
 
@@ -896,7 +896,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 				});
 
 			}
-			else if(config.readingView == 'scroll')
+			else if(readingViewIs('scroll'))
 			{
 				var skip = template.contentRight('.reading-skip-top');
 
@@ -927,7 +927,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 	}
 	else
 	{
-		if(config.readingView == 'slide')
+		if(readingViewIs('slide'))
 		{
 			var skip = template.contentRight('.reading-skip-left');
 
@@ -941,7 +941,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
-		else if(config.readingView == 'scroll')
+		else if(readingViewIs('scroll'))
 		{
 			var skip = template.contentRight('.reading-skip-top');
 
@@ -970,7 +970,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 	if(currentZoomIndex === false)
 	{
-		if(center || config.readingView != 'scroll')
+		if(center || !readingViewIs('scroll'))
 		{
 			currentZoomIndex = (currentIndex - 1);
 		}
@@ -1239,6 +1239,17 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 }
 
+function readingViewIs(value)
+{
+	if(value == 'scroll' && config.readingWebtoon)
+		return true;
+
+	if(config.readingView == value && !config.readingWebtoon)
+		return true;
+
+	return false;
+}
+
 var activeOnScroll = true;
 
 function disableOnScroll(mode)
@@ -1259,7 +1270,7 @@ function changePagesView(mode, value, save)
 
 	var newIndex = (currentIndex - 1);
 
-	if(config.readingManga && config.readingView != 'scroll')
+	if(config.readingManga && !readingViewIs('scroll'))
 		newIndex = (indexNum - newIndex) - 1;
 
 	eachImagesDistribution(newIndex, ['image'], function(image){
@@ -1275,9 +1286,9 @@ function changePagesView(mode, value, save)
 	{
 		storage.updateVar('config', 'readingView', value);
 
-		dom.selectElement('.pages-'+value);	
+		dom.selectElement('.pages-'+value);
 
-		if(value == 'slide' && config.readingViewAdjustToWidth)
+		if(value == 'slide' && (config.readingViewAdjustToWidth || config.readingWebtoon))
 		{
 			//storage.updateVar('config', 'readingViewAdjustToWidth', false);
 			//template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
@@ -1318,7 +1329,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 6) // Set the reading to double page
 	{
-		if(value == 1)
+		if(value)
 			$('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
 		else
 			$('.reading-do-not-apply-to-horizontals').addClass('disable-pointer');
@@ -1348,6 +1359,31 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
+	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
+	{
+		storage.updateVar('config', 'readingWebtoon', value);
+
+		if(value)
+		{
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-ajust-to-width').addClass('disable-pointer');
+		}
+		else
+		{
+			if(config.readingView == 'scroll')
+				template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
+			
+			if(config.readingDoublePage)
+				template.globalElement('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
+
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page').removeClass('disable-pointer');
+		}
+
+		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
+
+		read(readingCurrentPath, imageIndex);
+	}
+
 }
 
 //Change the bookmark icon
@@ -1479,7 +1515,7 @@ function saveReadingProgress(path = false)
 
 		var newIndex = (currentIndex - 1);
 
-		if(config.readingManga && config.readingView != 'scroll')
+		if(config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) - 1;
 
 		eachImagesDistribution(newIndex, ['image'], function(image){
@@ -1696,7 +1732,7 @@ function read(path, index = 1, end = false)
 
 	template.contentRight().on('mousewheel', function(e) {
 
-		if(onReading && (e.originalEvent.ctrlKey || config.readingView != 'scroll'))
+		if(onReading && (e.originalEvent.ctrlKey || !readingViewIs('scroll')))
 		{
 			e.preventDefault();
 
@@ -1710,7 +1746,7 @@ function read(path, index = 1, end = false)
 
 	template.contentRight('.reading-lens').on('mousewheel', function(e) {
 
-		if(onReading && !haveZoom && config.readingView == 'scroll')
+		if(onReading && !haveZoom && readingViewIs('scroll'))
 		{
 			e.preventDefault();
 
@@ -1744,7 +1780,7 @@ function read(path, index = 1, end = false)
 			{
 				goPrevious();
 			}
-			else if(e.keyCode == 38 && config.readingView != 'scroll')
+			else if(e.keyCode == 38 && !readingViewIs('scroll'))
 			{
 				goStart();
 			}
@@ -1752,7 +1788,7 @@ function read(path, index = 1, end = false)
 			{
 				goNext();
 			}
-			else if(e.keyCode == 40 && config.readingView != 'scroll')
+			else if(e.keyCode == 40 && !readingViewIs('scroll'))
 			{
 				goEnd();
 			}
@@ -1918,8 +1954,8 @@ function read(path, index = 1, end = false)
 			var maxX = originalRect.width * 0.5 * scalePrevData.scale - originalRect.width * 0.5;
 			var minX = originalRect.width * -0.5 * scalePrevData.scale - originalRect.width * -0.5;
 
-			var maxDiff = config.readingView == 'scroll' ? ((originalRect.top + originalRect.height) - (originalRectReadingBody.top + originalRectReadingBody.height)) : 0;
-			var minDiff = config.readingView == 'scroll' ? (originalRect.top - originalRectReadingBody.top) : 0;
+			var maxDiff = readingViewIs('scroll') ? ((originalRect.top + originalRect.height) - (originalRectReadingBody.top + originalRectReadingBody.height)) : 0;
+			var minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
 
 			var maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
 			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + config.readingMargin.margin : 0);
@@ -2016,7 +2052,7 @@ function read(path, index = 1, end = false)
 
 	template.contentRight().children('div').on('scroll', function(e) {
 
-		if(activeOnScroll && config.readingView == 'scroll')
+		if(activeOnScroll && readingViewIs('scroll'))
 		{
 			previousScrollTop = $(this).scrollTop();
 			let contentHeight = template.contentRight().children('div').height();
@@ -2098,12 +2134,12 @@ function read(path, index = 1, end = false)
 
 				var newIndex = currentIndex;
 
-				if(config.readingManga && config.readingView != 'scroll')
+				if(config.readingManga && !readingViewIs('scroll'))
 					newIndex = (indexNum - newIndex) + 1;
 
 				goToIndex(newIndex, false, end, end);
 
-				if(config.readingView == 'scroll')
+				if(readingViewIs('scroll'))
 					previousContentHeight = template.contentRight().children('div').children('div').height();
 			}
 
@@ -2125,12 +2161,12 @@ function read(path, index = 1, end = false)
 
 				var newIndex = currentIndex;
 
-				if(config.readingManga && config.readingView != 'scroll')
+				if(config.readingManga && !readingViewIs('scroll'))
 					newIndex = (indexNum - newIndex) + 1;
 
 				goToIndex(newIndex, false, end, end);
 
-				if(config.readingView == 'scroll')
+				if(readingViewIs('scroll'))
 					previousContentHeight = template.contentRight().children('div').children('div').height();
 			}
 

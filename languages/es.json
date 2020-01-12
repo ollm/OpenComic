@@ -49,7 +49,8 @@
 			"doNotApplyToHorizontals": "No aplicar a las horizontales",
 			"readingDelaySkip": "Retraso al cambiar de cómic",
 			"animationSpeed": "Velocidad de la animación",
-			"readingManga": "Lectura de manga (Invertir)"
+			"readingManga": "Lectura de manga (Invertir)",
+			"readingWebtoon": "Lectura de webtoon"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

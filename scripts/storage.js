@@ -32,7 +32,8 @@ var storageDefault = {
 		readingDelayComicSkip: 1,
 		readingDoublePage: false,
 		readingDoNotApplyToHorizontals: true,
-		readingManga: false
+		readingManga: false,
+		readingWebtoon: false
 	},
 	comics: [{
 		name: 'Name',

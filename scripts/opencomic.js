@@ -611,6 +611,8 @@ hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
 
 	if(result)
 		return options.fn(this);
+	else
+		return options.inverse(this);
 
 });
 
