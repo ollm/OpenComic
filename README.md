@@ -16,7 +16,7 @@
 
 ## ScreenShot
 
-![Screenshot](https://drive.google.com/uc?export=view&id=1zoJRURY2NTZubdMgnWmDkr_A_6AqcMnj "Screenshot")
+![Screenshot](https://i.ibb.co/PYJs7Cs/screenshots.png "Screenshot")
 
 ## Features
 
