@@ -60,7 +60,7 @@
 		"node-7z": "^1.1.0",
 		"pdfjs-dist": "^2.2.228",
 		"sha1": "^1.1.1",
-		"sharp": "^0.22.1",
+		"sharp": "^0.23.4",
 		"tar-fs": "^2.0.0",
 		"unrar": "git+https://git@github.com/ollm/node-unrar.git",
 		"unzipper": "^0.10.1"
