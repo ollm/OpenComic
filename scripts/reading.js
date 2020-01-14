@@ -1134,8 +1134,8 @@ function changeMagnifyingGlass(mode, value, save)
 
 
 	var width = contentRight.width(),
-		height = contentRight.height(),
-		offset = contentRight.offset();
+	height = contentRight.height(),
+	offset = contentRight.offset();
 
 	var pageX = (width / 2) + offset.left;
 	var pageY = (height / 2) + offset.top + paddingTop;
@@ -2059,7 +2059,7 @@ function read(path, index = 1, end = false)
 
 		if(e.type != 'keydown' || (e.type == 'keydown' && (e.keyCode == 38 || e.keyCode == 40)))
 			disableOnScroll(2);
-	
+
 	});
 
 	template.contentRight().children('div').on('scroll', function(e) {

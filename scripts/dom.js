@@ -551,8 +551,10 @@ function headerPath(path, mainPath)
 
 function nextComic(path, mainPath)
 {
-	var searchPath = p.dirname(path);
+	tracking.startTracking();
 
+	var searchPath = p.dirname(path);
+	
 	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
 	{
 		var files = file.returnFirstWD(searchPath);
