@@ -248,7 +248,12 @@ function push(key, item)
 	ejs.set(key, storageJson[key], function(error){});
 }
 
-var storageKeys = ['config', 'comics', 'cache', 'bookmarks', 'readingProgress'];
+var storageKeys = [];
+
+for(let key in storageDefault)
+{
+	storageKeys.push(key);
+}
 
 function start(callback)
 {
