@@ -2,9 +2,10 @@ const Dialogs = require('dialogs')
 const dialogs = Dialogs()
 var request = require('request');
 
-function track() {
+async function track() {
 	try{
 		var tracking = storage.getKey('tracking', dom.indexMainPathA());
+		var anilist = storage.getKey('config', "anilist");
 	}catch(e) {
 
 	}
@@ -12,26 +13,141 @@ function track() {
 	if(tracking && checkAuth()) {
 		var chaptername = p.basename(reading.readingCurrentPath());
 
-		var chapter = chaptername.match(/(ch\.\s*\d*)|(chapter\s*\d*)|(ch\s*\d*)|(episode\s*\d*)/gmi);
-		if(chapter){
-			chapter = parseInt(chapter[0].replace(/\D+/g, ''));
+		var chapters = chaptername.match(/(ch\.\s*\d*)|(chapter\s*\d*)|(ch\s*\d*)|(episode\s*\d*)/gmi);
+		if(chapters){
+			chapters = parseInt(chapters[0].replace(/\D+/g, ''));
 		}
 
-		console.log("chapter: " + chapter);
+		console.log("chapter: " + chapters);
 
-		var volume = chaptername.match(/(vol\.\s*\d*)|(volume\s*\d*)|(ch\s*\d*)|(vol\s*\d*)/gmi);
-		if(volume){
-			volume = parseInt(volume[0].replace(/\D+/g, ''));
+		var volumes = chaptername.match(/(vol\.\s*\d*)|(volume\s*\d*)|(ch\s*\d*)|(vol\s*\d*)/gmi);
+		if(volumes){
+			volumes = parseInt(volumes[0].replace(/\D+/g, ''));
 		}
-		console.log("volume: " + volume);
+		console.log("volume: " + volumes);
 
 
-
-		if(volume && chapter) {
-
-		} else if (chapter)  {
-
+		var query = `
+		query ($id: Int, $type: MediaType) {
+			Media (id: $id, type: $type) {
+				id
+				chapters
+				volumes
+				mediaListEntry {
+					status
+					progress
+					progressVolumes
+				}
+			}
 		}
+		`;
+
+		var variables = {
+			id: tracking.anilistId,
+			type: "MANGA"
+		};
+
+		var url = 'https://graphql.anilist.co',
+		options = {
+			method: 'POST',
+			headers: {
+				'Authorization': 'Bearer ' + anilist.accessToken,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+			},
+			body: JSON.stringify({
+				query: query,
+				variables: variables
+			})
+		};
+		new Promise((resolve,reject) => {
+			request(url,options, function (error, response, body) {
+				if (!error && response.statusCode == 200) {
+					var json = JSON.parse(body).data.Media;
+					var aniChapters,aniVolumes,aniUserStatus,aniUserProgress,aniUserProgressVolumes;
+					aniChapters = json.chapters;
+					aniVolumes = json.volumes;
+					if(json.mediaListEntry) {
+						aniUserStatus = json.mediaListEntry.status;
+						aniUserProgress = json.mediaListEntry.progress;
+						aniUserProgressVolumes = json.mediaListEntry.progressVolumes;
+					}
+
+					var upUserStatus,upUserProgress,upUserProgressVolumes;
+
+					if(aniChapters && chapters && chapters == aniChapters) {
+						upUserStatus = "COMPLETED";
+					} else if((aniUserStatus && aniUserStatus !== "CURRENT") || !aniUserStatus){
+						upUserStatus = "CURRENT";
+					}
+
+					if(chapters && aniUserProgress && chapters > aniUserProgress) {
+						upUserProgress = chapters;
+					} else if (chapters && !aniUserProgress) {
+						upUserProgress = chapters;
+					}
+
+					if(volumes && aniUserProgressVolumes && volumes > aniUserProgressVolumes) {
+						upUserProgressVolumes = volumes;
+					} else if (volumes && !aniUserProgressVolumes) {
+						upUserProgressVolumes = volumes;
+					}
+
+					console.log("upchapter: " + upUserProgress);
+					console.log("upvolumes: " + upUserProgressVolumes);
+					console.log("upstatus: " + upUserStatus);
+
+
+
+					var variables = {
+						"mediaId": tracking.anilistId,
+					};
+					if(upUserProgressVolumes) {
+						variables['volumes'] = upUserProgressVolumes;
+					}
+					if(upUserProgress) {
+						variables['progress'] = upUserProgress
+					}
+					if(upUserStatus) {
+						variables['status'] = upUserStatus
+					}
+					query = `
+					mutation ($mediaId: Int, $status: MediaListStatus, $progress: Int, $volumes: Int) {
+						SaveMediaListEntry (mediaId: $mediaId, status: $status, progress: $progress, progressVolumes: $volumes) {
+							id
+							status
+							progress
+							progressVolumes
+						}
+					}
+					`;
+
+					var url = 'https://graphql.anilist.co',
+					options = {
+						method: 'POST',
+						headers: {
+							'Authorization': 'Bearer ' + anilist.accessToken,
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+						},
+						body: JSON.stringify({
+							query: query,
+							variables: variables
+						})
+					};
+					request(url,options, function (error, response, body) {
+						console.log(body)
+					});
+
+
+
+					resolve(true)
+				} else {
+					console.log(error)
+					resolve(false);
+				}
+			});
+		});
 	}
 }
 
@@ -41,7 +157,7 @@ async function startTracking() {
 	try{
 		var tracking = storage.getKey('tracking', dom.indexMainPathA());
 	}catch(e) {
-		
+
 	}
 	if(!tracking) {
 		var tracking = {};

@@ -1,4 +1,4 @@
-var changes = 18;
+var changes = 19;
 
 var storageDefault = {
 	config: {
@@ -33,8 +33,7 @@ var storageDefault = {
 		readingDoublePage: false,
 		readingDoNotApplyToHorizontals: true,
 		readingManga: false,
-		readingWebtoon: false
-		readingManga: false,
+		readingWebtoon: false,
 		anilist: {
 			accessToken: '',
 			refreshToken: '',
