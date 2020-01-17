@@ -106,10 +106,10 @@ async function track() {
 						variables['volumes'] = upUserProgressVolumes;
 					}
 					if(upUserProgress) {
-						variables['progress'] = upUserProgress
+						variables['progress'] = upUserProgress;
 					}
 					if(upUserStatus) {
-						variables['status'] = upUserStatus
+						variables['status'] = upUserStatus;
 					}
 					query = `
 					mutation ($mediaId: Int, $status: MediaListStatus, $progress: Int, $volumes: Int) {
@@ -174,7 +174,13 @@ async function startTracking() {
 }
 
 function checkAuth() {
-	if(config.anilist.accessToken === "undefined"){
+	try{
+		var config = storage.getKey('config', "anilist");
+	}catch(e) {
+
+	}
+
+	if(!config.accessToken){
 
 		require("electron").shell.openExternal("https://anilist.co/api/v2/oauth/authorize?client_id=3050&response_type=code");
 
