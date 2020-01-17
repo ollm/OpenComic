@@ -769,7 +769,7 @@ var showComicSkip;
 
 //Begins to show the next comic
 function showNextComic(mode, animation = true, invert = false)
-{
+{	
 	var content = template.contentRight().children('div');
 	var contentWidth = content.width();
 	var contentHeight = content.height();
@@ -1554,7 +1554,6 @@ function saveReadingProgress(path = false)
 			break;
 		}
 	}
-
 	storage.updateVar('readingProgress', dom.indexMainPathA(), {
 		index: imagesPath[path],
 		path: path,
@@ -1571,7 +1570,6 @@ function saveReadingProgress(path = false)
 
 		storage.updateVar('comics', comicIndex, comic);
 	}
-
 	return true;
 }
 
@@ -2189,7 +2187,7 @@ function read(path, index = 1, end = false)
 
 
 	});
-
+	tracking.track();
 }
 
 module.exports = {
@@ -2232,4 +2230,5 @@ module.exports = {
 	applyMangaReading: applyMangaReading,
 	haveZoom: function(){return haveZoom},
 	imagesPosition: function(){return imagesPosition},
+	readingCurrentPath: function () {return readingCurrentPath},
 };

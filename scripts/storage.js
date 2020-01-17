@@ -1,4 +1,4 @@
-var changes = 16;
+var changes = 18;
 
 var storageDefault = {
 	config: {
@@ -47,7 +47,6 @@ var storageDefault = {
 		compressed: false,
 		bookmark: false,
 		folder: true,
-		anilistId: 0,
 		readingProgress: {
 			path: 'Path',
 			lastReading: 0,
@@ -61,7 +60,6 @@ var storageDefault = {
 		compressed: false,
 		bookmark: false,
 		folder: true,
-		anilistId: 0,
 		readingProgress: {
 			index: 0,
 			path: '',
@@ -81,6 +79,11 @@ var storageDefault = {
 			path: 'Path',
 			lastReading: 0,
 			progress: 0,
+		}
+	},
+	tracking: {
+		wildcard: {
+			anilistId: 0,
 		}
 	},
 	cache: {

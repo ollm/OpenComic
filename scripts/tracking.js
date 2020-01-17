@@ -2,10 +2,57 @@ const Dialogs = require('dialogs')
 const dialogs = Dialogs()
 var request = require('request');
 
-function startTracking() {
+function track() {
+	try{
+		var tracking = storage.getKey('tracking', dom.indexMainPathA());
+	}catch(e) {
+
+	}
+
+	if(tracking && checkAuth()) {
+		var chaptername = p.basename(reading.readingCurrentPath());
+
+		var chapter = chaptername.match(/(ch\.\s*\d*)|(chapter\s*\d*)|(ch\s*\d*)|(episode\s*\d*)/gmi);
+		if(chapter){
+			chapter = parseInt(chapter[0].replace(/\D+/g, ''));
+		}
+
+		console.log("chapter: " + chapter);
+
+		var volume = chaptername.match(/(vol\.\s*\d*)|(volume\s*\d*)|(ch\s*\d*)|(vol\s*\d*)/gmi);
+		if(volume){
+			volume = parseInt(volume[0].replace(/\D+/g, ''));
+		}
+		console.log("volume: " + volume);
+
+
+
+		if(volume && chapter) {
+
+		} else if (chapter)  {
+
+		}
+	}
+}
+
+async function startTracking() {
 	console.log("tracking start");
-	if(checkAuth()){
-		console.log("Auth passed")
+
+	try{
+		var tracking = storage.getKey('tracking', dom.indexMainPathA());
+	}catch(e) {
+		
+	}
+	if(!tracking) {
+		var tracking = {};
+		var id = await searchTitle();
+		console.log(id)
+		if(id) {
+			tracking.anilistId = id;
+			storage.updateVar('tracking', dom.indexMainPathA(), tracking);
+		}
+	} else {
+		dialogs.alert('already tracking this manga', ok => {})
 	}
 }
 
@@ -44,7 +91,7 @@ function checkAuth() {
 	}
 }
 
-function searchTitle() {
+async function searchTitle() {
 
 	var query = `
 	query ($id: Int, $page: Int, $perPage: Int, $search: String) {
@@ -83,44 +130,45 @@ function searchTitle() {
 			variables: variables
 		})
 	};
+	return new Promise((resolve,reject) => {
+		request(url,options, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var json = JSON.parse(body);
+				var id = 0;
+				dialogs.confirm("Is this the correct AniList entry?\n [" + json.data.Page.media[0].title.romaji+ "] ("+ json.data.Page.media[0].id + ")", ok => {
+					if(ok){
+						console.log("yes")
+						id = parseInt(json.data.Page.media[0].id);
+						console.log("anilistid: "+ id)
+						resolve(id);
+					}else{
+						console.log("no")
+						dialogs.prompt('please enter the correct AniList Id/Link', '', ok2 => {
 
-	request(url,options, function (error, response, body) {
-		if (!error && response.statusCode == 200) {
-			var json = JSON.parse(body);
-			var id = 0;
-			dialogs.confirm("Is this the correct AniList entry?\n [" + json.data.Page.media[0].title.romaji+ "] " +"("+ json.data.Page.media[0].id + ")", ok => {
-				if(ok){
-					console.log("yes")
-					id = json.data.Page.media[0].id;
-					id = parseInt(id);
-					console.log(id)
-				}else{
-					console.log("no")
-					dialogs.prompt('please enter the correct AniList Id/Link', '', ok2 => {
+							if(ok2 && ok2.indexOf("anilist.co/manga/") !== -1) {
+								if(ok2.indexOf("https://") !== -1) {
+									id = ok2.split("/")[4]
+								} else {
+									id = ok2.split("/")[2]
+								}
 
-						if(ok2 && ok2.indexOf("anilist.co/manga/") !== -1) {
-							console.log("anilist manga link");
-							if(ok2.indexOf("https://") !== -1) {
-								id = ok2.split("/")[4]
 							} else {
-								id = ok2.split("/")[2]
+								id = ok2;
 							}
-
-						} else {
-							console.log("anilist id");
-							id = ok2;
-						}
-						id = parseInt(id);
-						console.log(id)
-
-					});
-				}
-			});
-		}
+							id = parseInt(id);
+							console.log("anilistid: " + id)
+							resolve(id);
+						});
+					}
+				});
+			} else {
+				resolve(undefined);
+			}
+		});
 	});
 }
 
 module.exports = {
 	startTracking: startTracking,
-	searchTitle: searchTitle
+	track: track
 };
