@@ -153,22 +153,23 @@ async function track() {
 
 async function startTracking() {
 	console.log("tracking start");
+	if(checkAuth) {
+		try{
+			var tracking = storage.getKey('tracking', dom.indexMainPathA());
+		}catch(e) {
 
-	try{
-		var tracking = storage.getKey('tracking', dom.indexMainPathA());
-	}catch(e) {
-
-	}
-	if(!tracking) {
-		var tracking = {};
-		var id = await searchTitle();
-		console.log(id)
-		if(id) {
-			tracking.anilistId = id;
-			storage.updateVar('tracking', dom.indexMainPathA(), tracking);
 		}
-	} else {
-		dialogs.alert('already tracking this manga', ok => {})
+		if(!tracking) {
+			var tracking = {};
+			var id = await searchTitle();
+			console.log(id)
+			if(id) {
+				tracking.anilistId = id;
+				storage.updateVar('tracking', dom.indexMainPathA(), tracking);
+			}
+		} else {
+			dialogs.alert('already tracking this manga', ok => {})
+		}
 	}
 }
 
