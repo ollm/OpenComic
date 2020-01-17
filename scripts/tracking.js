@@ -153,7 +153,7 @@ async function track() {
 
 async function startTracking() {
 	console.log("tracking start");
-	if(checkAuth) {
+	if(checkAuth()) {
 		try{
 			var tracking = storage.getKey('tracking', dom.indexMainPathA());
 		}catch(e) {
