@@ -1,4 +1,4 @@
-var changes = 16;
+var changes = 19;
 
 var storageDefault = {
 	config: {
@@ -33,7 +33,11 @@ var storageDefault = {
 		readingDoublePage: false,
 		readingDoNotApplyToHorizontals: true,
 		readingManga: false,
-		readingWebtoon: false
+		readingWebtoon: false,
+		anilist: {
+			accessToken: '',
+			refreshToken: '',
+		},
 	},
 	comics: [{
 		name: 'Name',
@@ -74,6 +78,11 @@ var storageDefault = {
 			path: 'Path',
 			lastReading: 0,
 			progress: 0,
+		}
+	},
+	tracking: {
+		wildcard: {
+			anilistId: 0,
 		}
 	},
 	cache: {
