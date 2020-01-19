@@ -55,7 +55,6 @@
 	},
 	"dependencies": {
 		"7zip-bin": "^4.1.0",
-		"dialogs": "^2.0.1",
 		"electron-json-storage": "^4.1.6",
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
@@ -66,7 +65,6 @@
 		"ldd": "^1.0.0",
 		"mime": "^2.4.4",
 		"node-7z": "^1.1.0",
-		"nodemon": "^2.0.2",
 		"pdfjs-dist": "^2.2.228",
 		"sha1": "^1.1.1",
 		"sharp": "^0.23.4",
@@ -80,7 +78,8 @@
 		"electron-rebuild": "^1.8.8",
 		"js-yaml": "^3.13.1",
 		"node-yaml": "^4.0.1",
-		"webpack": "^4.41.4"
+		"webpack": "^4.41.4",
+		"nodemon": "^2.0.2"
 	},
 	"build": {
 		"appId": "org.opencomic.app",
