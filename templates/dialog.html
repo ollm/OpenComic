@@ -1,0 +1,24 @@
+<div class="dialog elevation24" style="width: {{dialog.width}}px;{{#if dialog.height}}height: {{dialog.height}}px;{{/if}}">
+
+	{{#if dialog.header}}
+	<div class="dialog-header">{{{dialog.header}}}</div>
+	{{/if}}
+	{{#if dialog.scroll}}<div class="dialog-scroll-header"></div>{{/if}}
+	{{#if dialog.content}}
+	<div class="dialog-text{{#unless dialog.header}} dialog-not-header{{/unless}}{{#if dialog.scroll}} dialog-scroll{{#if dialog.buttons}} dialog-scroll-buttons{{/if}}{{/if}}">{{{dialog.content}}}</div>
+	{{/if}}
+	{{#if dialog.buttons}}
+	{{#if dialog.scroll}}<div class="dialog-scroll-bottom"></div>{{/if}}
+	<div class="dialog-buttons">
+		{{#each dialog.buttons}}
+		<div class="simple-button transparent"{{#if ../dialog.buttonsInNewLine}} style="float: right;"{{/if}}>
+			<div class="touch-effect" onclick="{{function}}">{{text}}</div>
+		</div>
+		{{#if ../dialog.buttonsInNewLine}}{{#unless @last}}<br>{{/unless}}{{/if}}
+		{{/each}}
+	</div>
+	{{/if}}
+
+</div>
+
+<div class="dialog-close" onclick="events.closeDialog()"></div>

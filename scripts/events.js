@@ -329,6 +329,35 @@ function desactiveMenu(query, query2)
 	$(query2+'.p, '+query2+'.c, '+query2+'.a').removeClass('p c a').addClass('d');
 }
 
+// Dialogs
+var closeDialogST = false;
+
+function dialog(config)
+{
+	clearTimeout(closeDialogST);
+
+	config.width = (config.width) ? config.width : 280;
+	config.buttonsInNewLine = config.buttonsInNewLine;
+
+	handlebarsContext.dialog = config;
+
+	$('.dialogs').html(template.load('dialog.html'));
+}
+
+function closeDialog()
+{
+	clearTimeout(closeDialogST);
+
+	$('.dialogs .dialog, .dialogs .dialog-close').addClass('hide');
+
+	closeDialogST = setTimeout(function(){
+
+		$('.dialogs .dialog, .dialogs .dialog-close').remove();
+
+	}, 150);
+
+}
+
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
@@ -337,5 +366,7 @@ module.exports = {
 	hideHoverText: hideHoverText,
 	activeMenu: activeMenu,
 	activeContextMenu: activeContextMenu,
-	desactiveMenu: desactiveMenu
+	desactiveMenu: desactiveMenu,
+	dialog: dialog,
+	closeDialog: closeDialog,
 };
