@@ -39,7 +39,7 @@ var testVar = 'test';
 var handlebarsContext = {};
 var language = {};
 var config = false;
-var onReading = false;
+var onReading = _onReading = false;
 var readingTouchEvent = false;
 
 var appDir = p.join(__dirname, '../');

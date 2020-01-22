@@ -342,6 +342,9 @@ function dialog(config)
 	handlebarsContext.dialog = config;
 
 	$('.dialogs').html(template.load('dialog.html'));
+
+	onReading = false;
+	generateAppMenu();
 }
 
 function closeDialog()
@@ -356,6 +359,8 @@ function closeDialog()
 
 	}, 150);
 
+	onReading = _onReading;
+	generateAppMenu();
 }
 
 module.exports = {

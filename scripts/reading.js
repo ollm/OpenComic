@@ -1769,7 +1769,7 @@ function read(path, index = 1, end = false)
 
 	events.eventHover();
 
-	onReading = true;
+	onReading = _onReading = true;
 
 	template.contentRight().on('mousewheel', function(e) {
 
