@@ -63,7 +63,11 @@
 			"radius": "Radius"
 		},
 		"tracking": {
-			"main": "Tracking with sites"
+			"main": "Tracking with sites",
+			"sites": "All sites",
+			"favoriteSites": "Favorite sites",
+			"emptyFavoriteSites": "No favorite site",
+			"problemChapter": "Chapter not detected"
 		},
 		"viewBookmarks": "View bookmarks",
 		"addBookmark": "Add bookmark",
@@ -99,6 +103,26 @@
 		"help": {
 			"main": "Help",
 			"about": "About OpenComic"
+		}
+	},
+	"dialog": {
+		"buttons": {
+			"cancel": "Cancel",
+			"ok": "Ok"
+		},
+		"tracking": {
+			"getTokenHeader": "Sign in to {{siteName}} via token",
+			"getTokenInput": "The {{siteName}} token",
+			"invalidTokenHeader": "Invalid {{siteName}} token",
+			"resendToken": "Do you want to add the {{siteName}} token again?",
+			"serachIn": "Search in {{siteName}}",
+			"emptySearch": "No results found",
+			"setHeader": "Mark manually",
+			"setMessage": "If you wish you can manually mark the chapters",
+			"setWaitMessage": "You can do this now or wait for it to be automatically detected in another chapter.",
+			"setChapterNumber": "Mark until the chapter",
+			"setVolumeNumber": "Mark until the volume",
+			"activate": "Activate tracking"
 		}
 	},
 	"error": {

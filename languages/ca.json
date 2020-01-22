@@ -62,6 +62,13 @@
 			"ratio": "Proporció",
 			"radius": "Radi"
 		},
+		"tracking": {
+			"main": "Seguiment amb llocs",
+			"sites": "Tots els llocs",
+			"favoriteSites": "Llocs favorits",
+			"emptyFavoriteSites": "Cap lloc a favorits",
+			"problemChapter": "Capítol no detectat"
+		},
 		"viewBookmarks": "Veure marcadors",
 		"addBookmark": "Afegeix marcador",
 		"removeBookmark": "Eliminar marcador",
@@ -96,6 +103,26 @@
 		"help": {
 			"main": "Ajuda",
 			"about": "Sobre OpenComic"
+		}
+	},
+	"dialog": {
+		"buttons": {
+			"cancel": "Cancel·lar",
+			"ok": "Ok"
+		},
+		"tracking": {
+			"getTokenHeader": "Inicia sessió a {{SITENAME}} mitjançant token",
+			"getTokenInput": "El token de {{siteName}}",
+			"invalidTokenHeader": "Token de {{siteName}} no vàlid",
+			"resendToken": "Vol tornar a afegir el token de {{siteName}}?",
+			"serachIn": "Buscar a {{siteName}}",
+			"emptySearch": "No s'ha trobat cap resultat",
+			"setHeader": "Marcar manualment",
+			"setMessage": "Si ho desitja pot marcar manualment els capítols",
+			"setWaitMessage": "Pot fer això ara o esperar que es detecti automàticament en un altre capítol.",
+			"setChapterNumber": "Marcar fins al següent capítol",
+			"setVolumeNumber": "Marcar fins al següent tom",
+			"activate": "Activa seguiment"
 		}
 	},
 	"error": {
