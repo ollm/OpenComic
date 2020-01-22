@@ -378,7 +378,7 @@ function setTrackingId(site, siteId)
 	storage.updateVar('tracking', dom.indexMainPathA(), _tracking);
 
 	if(tracked[dom.indexMainPathA()] && tracked[dom.indexMainPathA()][site])
-		tracked[dom.indexMainPathA()][site] = {};
+		tracked[dom.indexMainPathA()][site] = [];
 
 	tracking.track();
 
