@@ -1,20 +1,21 @@
-if(fs.existsSync(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js')))
-	var trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));
-else
-	var trackingSitesKeys = require(p.join(tracking.scriptsPath(), '_tracking-sites-keys.js'));
-
-trackingSitesKeys = trackingSitesKeys.authKeys;
-
 sites = [
 	{
 		key: 'anilist',
 		name: 'AniList',
 		description: 'Track, Discover, Share Anime & Manga',
-		trackingChapter: true,
-		trackingVolume: true, 
+		trackingChapter: true, // Supports chapter tracking 
+		trackingVolume: true,  // Supports volume tracking
 		url: 'https://anilist.co/',
 	},
 ];
+
+
+if(fs.existsSync(p.join(tracking.scriptsPath(), '_tracking-sites-keys.js')))
+	var trackingSitesKeys = require(p.join(tracking.scriptsPath(), '_tracking-sites-keys.js'));
+else
+	var trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));
+
+trackingSitesKeys = trackingSitesKeys.authKeys;
 
 // Get user site config
 function getSiteConfig(site = '')

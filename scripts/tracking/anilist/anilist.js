@@ -140,7 +140,6 @@ async function getComicData(siteId, callback = false)
 			if(json.data && json.data.Page && json.data.Page.media && json.data.Page.media[0])
 			{
 				callback({
-					id: json.data.Page.media[0].id,
 					title: json.data.Page.media[0].title.romaji,
 					image: json.data.Page.media[0].coverImage.large,
 				});
