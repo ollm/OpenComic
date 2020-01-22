@@ -62,12 +62,14 @@
 			"ratio": "Ratio",
 			"radius": "Radius"
 		},
+		"tracking": {
+			"main": "Tracking with sites"
+		},
 		"viewBookmarks": "View bookmarks",
 		"addBookmark": "Add bookmark",
 		"removeBookmark": "Remove bookmark",
 		"emptyBookmarks": "No bookmarks",
-		"currentReading": "Current reading",
-		"trackingText": "AniList Tracking"
+		"currentReading": "Current reading"
 	},
 	"menu": {
 		"file": {

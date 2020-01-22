@@ -1,6 +1,7 @@
 node_modules/
 dist/
 scripts/builded
+scripts/tracking/tracking-sites-keys.js
 
 # OSX
 .DS_Store

@@ -1,0 +1,32 @@
+{{#if trackingProblem}}
+<div class="menu-tracking-sites menu-tracking-sites-problem menu-simple-element" onclick="tracking.addChapterNumberDialog();">
+	<i class="material-icon">sync_problem</i>
+	{{language.reading.tracking.problemChapter}}
+</div>
+{{/if}}
+
+<div class="menu-tracking-sites menu-simple-text">
+	<span>{{language.reading.tracking.favoriteSites}}</span>
+</div>
+{{#each favoriteTrackingSites}}
+	<div class="menu-tracking-sites menu-simple-element menu-simple-element-medium" onclick="tracking.configTracking('{{key}}')">
+		<div class="menu-simple-element-image" style="background-image: url({{logo}})"></div>
+		<span>{{name}}</span>
+		<i class="material-icon menu-simple-icon-last" onclick="reading.trackingSiteToFavorite('{{key}}'); event.stopPropagation();">{{#if config.favorite}}favorite{{else}}favorite_border{{/if}}</i>
+		{{#if tracking.id}}<i class="material-icon">{{#if tracking.active}}sync{{else}}sync_disabled{{/if}}</i>{{/if}}
+	</div>
+{{else}}
+	<div class="menu-simple-text menu-tracking-sites-empty">{{language.reading.tracking.emptyFavoriteSites}}</div>
+{{/each}}
+
+<div class="menu-tracking-sites menu-simple-text">
+	<span>{{language.reading.tracking.sites}}</span>
+</div>
+{{#each trackingSites}}
+	<div class="menu-tracking-sites menu-tracking-sites--{{key}} menu-simple-element menu-simple-element-medium" onclick="tracking.configTracking('{{key}}')">
+		<div class="menu-simple-element-image" style="background-image: url({{logo}})"></div>
+		<span>{{name}}</span>
+		<i class="material-icon menu-simple-icon-last" onclick="reading.trackingSiteToFavorite('{{key}}'); event.stopPropagation();">{{#if config.favorite}}favorite{{else}}favorite_border{{/if}}</i>
+		{{#if tracking.id}}<i class="material-icon">{{#if tracking.active}}sync{{else}}sync_disabled{{/if}}</i>{{/if}}
+	</div>
+{{/each}}

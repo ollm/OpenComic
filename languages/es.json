@@ -62,6 +62,13 @@
 			"ratio": "Proporción",
 			"radius": "Radio"
 		},
+		"tracking": {
+			"main": "Seguimiento con sitios",
+			"sites": "Todos los sitios",
+			"favoriteSites": "Sitios favoritos",
+			"emptyFavoriteSites": "Ningun sitio en favoritos",
+			"problemChapter": "Capítulo no detectado"
+		},
 		"viewBookmarks": "Ver marcadores",
 		"addBookmark": "Añadir marcador",
 		"removeBookmark": "Eliminar marcador",
@@ -96,6 +103,26 @@
 		"help": {
 			"main": "Ayuda",
 			"about": "Acerca de OpenComic"
+		}
+	},
+	"dialog": {
+		"buttons": {
+			"cancel": "Cancelar",
+			"ok": "Ok"
+		},
+		"tracking": {
+			"getTokenHeader": "Iniciar sesión en {{siteName}} mediante token",
+			"getTokenInput": "El token de {{siteName}}",
+			"invalidTokenHeader": "Token de {{siteName}} no válido",
+			"resendToken": "¿Quiere volver a agregar el token de {{siteName}}?",
+			"serachIn": "Buscar en {{siteName}}",
+			"emptySearch": "No se ha encontrado ningún resultado",
+			"setHeader": "Marcar manualmente",
+			"setMessage": "Si lo desea puede marcar manualmente los capítulos",
+			"setWaitMessage": "Puede hacer esto ahora o esperar a que se detecte automáticamente en otro capítulo.",
+			"setChapterNumber": "Marcar hasta el siguiente capítulo",
+			"setVolumeNumber": "Marcar hasta el siguiente tomo",
+			"activate": "Activar seguimiento"
 		}
 	},
 	"error": {

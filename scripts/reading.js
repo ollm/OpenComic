@@ -1673,6 +1673,37 @@ function loadBookmarks()
 	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
+// Load supported tracking sites and favorite tracking sites
+function loadTrackigSites()
+{
+	handlebarsContext.trackingProblem = $('.bar-right-buttons .button-tracking-sites').hasClass('tracking-problem') ? true : false;
+	handlebarsContext.trackingSites = trackingSites.list(true);
+	handlebarsContext.favoriteTrackingSites = trackingSites.listFavorite(true);
+
+	$('#tracking-sites .menu-simple').html(template.load('reading.elements.menus.tracking.sites.html'));
+}
+
+function trackingSiteToFavorite(site = '')
+{
+	var siteData = trackingSites.site(site);
+
+	if(siteData)
+	{
+		if(siteData.config.favorite)
+			siteData.config.favorite = false;
+		else
+			siteData.config.favorite = true;
+
+		var configSites = storage.getKey('config', 'trackingSites');
+
+		configSites[site] = siteData.config;
+
+		storage.updateVar('config', 'trackingSites', configSites);
+
+		loadTrackigSites()
+	}
+}
+
 //Returns an image depending on the type (Image, folder, blank)
 function eachImagesDistribution(index, contains, callback, first = false, notFound = false, onlyFirstMeet = false)
 {
@@ -2187,6 +2218,7 @@ function read(path, index = 1, end = false)
 
 
 	});
+	
 	tracking.track();
 }
 
@@ -2224,6 +2256,8 @@ module.exports = {
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
 	loadBookmarks: loadBookmarks,
+	loadTrackigSites: loadTrackigSites,
+	trackingSiteToFavorite: trackingSiteToFavorite,
 	onReading: function(){return onReading},
 	calculateImagesDistribution: calculateImagesDistribution,
 	imagesDistribution: function(){return imagesDistribution},

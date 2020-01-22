@@ -1,0 +1,32 @@
+<div class="tracking-current">
+	<div class="tracking-current-image" style="background-image: url({{trackingResult.image}})"></div>
+	<span class="dialog-header">{{trackingResult.title}}</span>
+	<i class="material-icon" onclick="events.closeDialog(); setTimeout(function(){tracking.searchDialog('{{siteData.key}}')}, 150)">edit</i>
+</div>
+
+<div class="menu-simple-text">
+	{{language.dialog.tracking.activate}}
+	<div class="switch{{#if siteData.tracking.active}} a{{/if}}" on="tracking.activeAndDeactivateTrackingSite('{{siteData.key}}', true)" off="tracking.activeAndDeactivateTrackingSite('{{siteData.key}}', false)"></div>
+</div>
+
+<div class="menu-simple-separator"></div>
+
+<div class="tracking-set-message">
+{{language.dialog.tracking.setMessage}}
+</div>
+
+{{#if siteData.trackingChapter}}
+<input class="input input-margin-top input-chapter" type="number" min="0" max="99999" placeholder="{{language.dialog.tracking.setChapterNumber}}"> 
+{{/if}}
+{{#if siteData.trackingVolume}}
+<input class="input input-margin-top input-volume" type="number" min="0" max="99999" placeholder="{{language.dialog.tracking.setVolumeNumber}}">
+{{/if}}
+
+<div class="dialog-buttons" style="margin: 0px -24px -24px 0px;">
+	<div class="simple-button transparent">
+		<div class="touch-effect" onclick="events.closeDialog();">{{language.dialog.buttons.cancel}}</div>
+	</div>
+	<div class="simple-button transparent">
+		<div class="touch-effect" onclick="events.closeDialog(); tracking.addChapterNumberDialog(true, '{{siteData.key}}')">{{language.dialog.buttons.ok}}</div>
+	</div>
+</div>

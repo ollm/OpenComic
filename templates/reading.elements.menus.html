@@ -1,5 +1,5 @@
 <div class="menu" id="reading-magnifying-glass">
-	<div class="menu-simple elevation8" style="width: 256px;">
+	<div class="menu-simple menu-simple-header elevation8" style="width: 256px;">
 		<div class="menu-simple-text">
 			{{language.reading.magnifyingGlass.activate}}
 			<div class="switch{{#if config.readingMagnifyingGlass}} a{{/if}}" on="reading.activeMagnifyingGlass(true)" off="reading.activeMagnifyingGlass(false)"></div>
@@ -24,7 +24,7 @@
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass');"></div>
 </div>
 <div class="menu reading-elements-menus" id="reading-pages">
-	<div class="menu-simple elevation8" style="width: 300px;">
+	<div class="menu-simple menu-simple-header elevation8" style="width: 300px;">
 		<div class="menu-simple-element pages-slide{{#compare config.readingView '==' 'slide'}} s{{/compare}}{{#if config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
 		<div class="menu-simple-element pages-scroll{{#compare config.readingView '==' 'scroll'}} s{{/compare}}{{#if config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
 		<div class="menu-simple-separator"></div>
@@ -71,8 +71,12 @@
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant');"></div>
 </div>
 <div class="menu" id="collections-bookmark">
-	<div class="menu-simple elevation8" style="width: 256px;"></div>
+	<div class="menu-simple menu-simple-header elevation8" style="width: 256px;"></div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');"></div>
+</div>
+<div class="menu" id="tracking-sites">
+	<div class="menu-simple menu-simple-header elevation8" style="width: 256px;"></div>
+	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#tracking-sites', '.bar-right-buttons .button-tracking-sites');"></div>
 </div>
 <script type="text/javascript">
 	dom.selectElement('.pages-{{config.readingView}}');	

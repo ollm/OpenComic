@@ -709,6 +709,12 @@ body .preload
 	margin: 12px 0;
 }
 
+.dialog-text .menu-simple-separator
+{
+	width: calc(100% + 48px);
+	margin-left: -24px;
+}
+
 /*icons*/
 
 .icon-24
@@ -1098,6 +1104,12 @@ body .preload
 	display: none;
 	padding: 12px 0px;
 	font-size: 15px;
+	overflow: auto;
+}
+
+.menu-simple-header
+{
+	max-height: calc(100vh - 88px);
 }
 
 .menu-simple.a
@@ -1149,6 +1161,17 @@ body .preload
 	word-wrap: normal;
 }
 
+.menu-simple-element i
+{
+	float: right;
+	padding: 4px 0px 4px 8px;	
+}
+
+.menu-simple-element i.menu-simple-icon-last
+{
+	margin-right: -8px;
+}
+
 .menu-simple-element.s
 {
 	background-color: rgba(0, 0, 0, 0.07);
@@ -1176,13 +1199,326 @@ body .preload
 	float: left;
 }
 
-.menu-simple-text
+.menu-simple-element-medium
+{
+	padding: 8px 24px;
+}
+
+.menu-simple-element-medium .menu-simple-element-image
+{
+	height: 32px;
+	width: 32px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 0px 6px 0px 0px;
+	float: left;
+}
+
+.menu-simple-element-poster
+{
+	height: 72px;
+	padding: 8px 24px;
+	line-height: 72px;
+}
+
+.menu-simple-element-poster .menu-simple-element-image
+{
+	height: 72px;
+	width: 48px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 0px 12px 0px 0px;
+	float: left;
+}
+
+.menu-tracking-sites .menu-simple-element-image
+{
+	margin-right: 12px;
+}
+
+.menu-simple-text, .menu-simple-button
 {
 	height: 32px;
 	padding: 0px 24px;
 	line-height: 32px;
 	transition: 0.2s;
 }
+
+.dialog-text .menu-simple-text
+{
+	padding: 0px;
+	font-size: 15px;
+	font-weight: normal;
+	color: #333;
+}
+
+.menu-simple-button
+{
+	height: 36px;
+}
+
+/* Dialog */
+
+@keyframes dialog-show
+{
+	from
+	{
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.85);
+	}
+	to
+	{
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+@keyframes dialog-hide
+{
+	from
+	{
+		opacity: 1;
+	}
+	to
+	{
+		opacity: 0;
+	}
+}
+
+@keyframes dialog-close-show
+{
+	from
+	{
+		opacity: 0;
+	}
+	to
+	{
+		opacity: 1;
+	}
+}
+
+@keyframes dialog-close-hide
+{
+	from
+	{
+		opacity: 1;
+	}
+	to
+	{
+		opacity: 0;
+	}
+}
+
+.dialog
+{
+	border-radius: 4px;
+	background-color: #ffffff;
+	position: fixed;
+	width: 280px;
+	left: 50%;
+	top: 50%;
+	max-height: calc(100vh - 32px);
+	max-width: calc(100vw - 32px);
+	animation-fill-mode: forwards;
+	animation-name: dialog-show;
+	animation-duration: 0.25s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+	/*will-change: transform opacity;*/
+	z-index: 120;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+}
+
+.dialog.hide
+{
+	animation-fill-mode: forwards;
+	animation-name: dialog-hide;
+	animation-duration: 0.15s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.dialog-header
+{
+	font-size: 20px;
+	line-height: 28px;
+	padding: 0px 0px;
+	color: rgba(0, 0, 0, 0.87);
+	font-weight: 500;
+	padding: 20px 24px 12px 24px;
+}
+
+.dialog-text
+{
+	font-size: 16px;
+	line-height: 24px;
+	padding: 0px 0px;
+	color: rgba(0, 0, 0, 0.6);
+	font-weight: 500;
+	padding: 0px 24px 20px 24px;
+}
+
+.dialog-not-header
+{
+	padding: 20px 24px 20px 24px;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.dialog-buttons
+{
+	float: right;
+	padding: 8px;
+}
+
+.dialog-buttons .simple-button
+{
+	margin-left: 8px; 
+}
+
+.dialog-scroll-header
+{
+	border-top: 1px solid #e0e0e0;
+	margin-top: 4px;
+}
+
+.dialog-scroll-bottom
+{
+	border-top: 1px solid #e0e0e0;
+}
+
+.dialog-scroll
+{
+	overflow: auto;
+	box-sizing: border-box;
+	padding: 20px 24px 20px 24px;
+	max-height: calc(100vh - 98px);
+}
+
+.dialog-scroll-buttons
+{
+	max-height: calc(100vh - 98px);
+}
+
+.dialog-close
+{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 119;
+	background-color: rgba(0, 0, 0, 0.32);
+	animation-fill-mode: forwards;
+	animation-name: dialog-close-show;
+	animation-duration: 0.15s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.dialog-close.hide
+{
+	animation-fill-mode: forwards;
+	animation-name: dialog-close-hide;
+	animation-duration: 0.15s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Input */
+.input
+{
+	height: 56px;
+	box-sizing: border-box;
+	border: 2px solid #999999;
+	border-radius: 4px;
+	font-size: 16px;
+	padding: 0px 14px;
+	width: 100%;
+	/*transition: all 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);*/
+	transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+	outline: none;
+	background-color: transparent;
+}
+
+.input:focus
+{
+	border: 2px solid #da4336;
+	padding: 0px 14px;
+}
+
+.input-margin-top
+{
+	margin-top: 16px;
+}
+
+/* Buttons */
+
+.simple-button
+{
+	box-sizing: border-box;
+	float: left;
+	transition: opacity 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+	cursor: pointer;
+}
+
+.simple-button.disable
+{
+	opacity: .4;
+	pointer-events: none;
+}
+
+.simple-button.big
+{
+	width: 100%;
+}
+
+.simple-button > div
+{
+	height: 36px;
+	width: 100%;
+	line-height: 36px;
+	border-radius: 4px;
+	border: 0px;
+	padding: 0px 16px;
+	box-sizing: border-box;
+	text-align: center;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 14px;
+	transition: 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+
+.simple-button.white > div
+{
+	background-color: #fff;
+}
+
+.simple-button.transparent > div
+{
+	background-color: transparent;
+	color: #da4336;
+	padding: 0px 8px;
+} 
+
+.simple-button.outlined > div
+{
+	background-color: transparent;
+	color: #da4336;
+	border: 1px solid #e0e0e0;
+	line-height: 34px;
+}
+
+.simple-button.normal > div
+{
+	border: 1px solid #da4336;
+	background-color: #da4336;
+	line-height: 34px;
+	color: #fff;
+} 
+
 
 /*Content View*/
 
@@ -1744,7 +2080,7 @@ body .preload
 	animation-timing-function: linear;
 }
 
-.reading-bookmark
+.reading-bookmark, .menu-tracking-sites, .menu-tracking-sites-empty
 {
 	padding: 0px 24px;
 	color: #777;
@@ -1754,10 +2090,105 @@ body .preload
 	word-wrap: normal;
 }
 
-.reading-bookmark > span
+.menu-tracking-sites
+{
+	padding: 8px 24px;
+}
+
+.reading-bookmark > span, .menu-tracking-sites > span, .menu-tracking-sites-empty > span
 {
 	padding-right: 6px;
 	color: #333;
+}
+
+.menu-tracking-sites > span
+{
+	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	max-width: 110px;
+}
+
+.menu-simple-text.menu-tracking-sites > span
+{
+	width: initial;
+}
+
+.menu-tracking-sites-problem > span
+{
+	max-width: 170px;
+}
+
+.menu-tracking-sites-problem i
+{
+	padding: 4px 8px 0px 0px;
+	float: left;
+}
+
+/* Tracking */
+
+.tracking-search
+{
+	min-height: calc(100% - 36px);
+	position: relative;
+	width: calc(100% + 48px);
+	margin-left: -24px;
+	padding: 8px 0px;
+	box-sizing: border-box;
+}
+
+.tracking-search-empty
+{
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	box-sizing: border-box;
+	transform: translate(0px, -50%);
+}
+
+.tracking-current
+{
+	height: 144px;
+	padding: 0px 0px 16px 0px;
+	line-height: 36px;
+}
+
+.tracking-current .tracking-current-image
+{
+	height: 144px;
+	width: 96px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 0px 12px 0px 0px;
+	float: left;
+}
+
+.tracking-current > span
+{
+	padding: 0px;
+    float: left;
+    max-width: calc(100% - 140px);
+	overflow: hidden;
+	max-height: 144px;
+}
+
+.tracking-current > i
+{
+	float: right;
+	cursor: pointer;
+}
+
+.tracking-set-message
+{
+	font-size: 15px;
+	font-weight: normal;
+	color: #333;
+	padding: 8px 0px 4px 0px;
 }
 
 /* Loading */
@@ -1769,11 +2200,12 @@ body .preload
 
 .loading.align
 {
-	position: relative;
+	position: absolute;
 	margin: 0 auto;
 	top: 50%;
+	left: 50%;
 	contain: strict;
-	transform: translate(0px, -50%);
+	transform: translate(-50%, -50%);
 }
 
 .loading96
@@ -1932,6 +2364,12 @@ body .night-mode
 	background-color: #212121;
 }
 
+.night-mode .dialog-text .menu-simple-text,
+.night-mode .tracking-set-message
+{
+	color: #fff;
+}
+
 .night-mode .content-right
 {
 	background-color: #212121;
@@ -2000,12 +2438,12 @@ body .night-mode
 	box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0), inset -1px 0px 1px 0px rgba(0, 0, 0, 0), inset -1px 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
-.night-mode .reading-bookmark
+.night-mode .reading-bookmark, .night-mode .menu-tracking-sites, .night-mode .menu-tracking-sites-empty
 {
 	color: #ccc;
 }
 
-.night-mode .reading-bookmark > span
+.night-mode .reading-bookmark > span, .night-mode .menu-tracking-sites > span, .night-mode .menu-tracking-sites-empty > span
 {
 	color: #fff;
 }

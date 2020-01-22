@@ -170,7 +170,8 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	file = require(p.join(appDir, 'scripts/file.js')),
 	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
-	tracking = require(p.join(appDir, 'scripts/tracking.js'));
+	tracking = require(p.join(appDir, 'scripts/tracking.js')),
+	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
 if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
@@ -525,6 +526,18 @@ function invertBackslash(string)
 function toUnixPath(string)
 {
 	return string.replace(/\\+/g, '/').trim().replace(/^c\:/ig, '/');
+}
+
+function joinRegexs(regexs)
+{
+	var _regexs = [];
+
+	for(let key in regexs)
+	{
+		_regexs.push(regexs[key].source);
+	}
+
+	return new RegExp(_regexs.join('|'));
 }
 
 function extract(code, string, value)

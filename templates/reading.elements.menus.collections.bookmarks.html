@@ -1,7 +1,7 @@
 
 
 {{#each bookmarks}}
-	<div class="reading-bookmark menu-simple-element">
+	<div class="reading-bookmark menu-simple-text">
 		<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.currentReading}}: {{/if}}{{name}}</span>
 	</div>
 	{{#each bookmarks}}
@@ -14,17 +14,3 @@
 {{else}}
 	<div class="menu-simple-text">{{language.reading.emptyBookmarks}}</div>
 {{/each}}
-
-<!--
-
-{{#each bookmarks}}
-
-	<div class="reading-bookmark menu-simple-element" onclick="reading.goToImage({{index}}); events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
-		<span>{{index}}</span>
-		{{name}}
-	</div>
-{{else}}
-	<div class="menu-simple-text">{{language.reading.empty-bookmarks}}</div>
-{{/each}}
-
--->
