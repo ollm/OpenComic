@@ -74,7 +74,7 @@
 	},
 	"devDependencies": {
 		"electron": "^5.0.6",
-		"electron-builder": "^20.44.4",
+		"electron-builder": "^22.3.1",
 		"electron-rebuild": "^1.8.8",
 		"js-yaml": "^3.13.1",
 		"node-yaml": "^4.0.1",
@@ -166,7 +166,9 @@
 				"text/directory",
 				"inode/directory",
 				"application/x-directory"
-			],
+			]
+		},
+		"deb": {
 			"depends": [
 				"gconf2",
 				"gconf-service",
@@ -177,7 +179,7 @@
 				"unrar"
 			]
 		},
-		"deb": {
+		"rpm": {
 			"depends": [
 				"gconf2",
 				"gconf-service",
@@ -204,100 +206,133 @@
 		"fileAssociations": [
 			{
 				"description": "Image JPG",
-				"ext": [
-					"jpg",
-					"jpeg",
-					"jif",
-					"jfi",
-					"jfif",
-					"jfif-tbnl",
-					"jpe"
-				],
+				"ext": "jpg",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image JPG",
+				"ext": "jpeg",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image JPG",
+				"ext": "jif",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image JPG",
+				"ext": "jfi",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image JPG",
+				"ext": "jfif",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image JPG",
+				"ext": "jfif-tbnl",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image JPG",
+				"ext": "jpe",
 				"role": "Viewer"
 			},
 			{
 				"description": "Image PNG",
-				"ext": [
-					"png",
-					"x-png",
-					"apng"
-				],
+				"ext": "png",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image PNG",
+				"ext": "x-png",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image PNG",
+				"ext": "apng",
 				"role": "Viewer"
 			},
 			{
 				"description": "Image SVG",
-				"ext": [
-					"svg",
-					"svgz"
-				],
+				"ext": "svg",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image SVG",
+				"ext": "svgz",
 				"role": "Viewer"
 			},
 			{
 				"description": "Image GIF",
-				"ext": [
-					"gif"
-				],
+				"ext": "gif",
 				"role": "Viewer"
 			},
 			{
 				"description": "Image BMP",
-				"ext": [
-					"bmp",
-					"dib"
-				],
+				"ext": "bmp",
+				"role": "Viewer"
+			},
+			{
+				"description": "Image BMP",
+				"ext": "dib",
 				"role": "Viewer"
 			},
 			{
 				"description": "Image ICO",
-				"ext": [
-					"ico"
-				],
+				"ext": "ico",
 				"role": "Viewer"
 			},
 			{
 				"description": "Image WEBP",
-				"ext": [
-					"webp"
-				],
+				"ext": "webp",
 				"role": "Viewer"
 			},
 			{
 				"description": "Compressed with ZIP",
-				"ext": [
-					"zip",
-					"cbz"
-				],
+				"ext": "zip",
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with ZIP",
+				"ext": "cbz",
 				"role": "Viewer"
 			},
 			{
 				"description": "Compressed with RAR",
-				"ext": [
-					"rar",
-					"cbr"
-				],
+				"ext": "rar",
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with RAR",
+				"ext": "cbr",
+				"role": "Viewer"
+			},
+
+			{
+				"description": "Compressed with 7z",
+				"ext": "7z",
 				"role": "Viewer"
 			},
 			{
 				"description": "Compressed with 7z",
-				"ext": [
-					"7z",
-					"cb7"
-				],
+				"ext": "cb7",
 				"role": "Viewer"
 			},
 			{
 				"description": "Compressed with TAR",
-				"ext": [
-					"tar",
-					"cbt"
-				],
+				"ext": "tar",
+				"role": "Viewer"
+			},
+			{
+				"description": "Compressed with TAR",
+				"ext": "cbt",
 				"role": "Viewer"
 			},
 			{
 				"description": "PDF Document",
-				"ext": [
-					"pdf"
-				],
+				"ext": "pdf",
 				"role": "Viewer"
 			}
 		]
