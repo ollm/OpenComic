@@ -363,6 +363,97 @@ function closeDialog()
 	generateAppMenu();
 }
 
+// Snackbar
+var snackbarQueue = [],
+	snackbarCurrent = false,
+	snackbarST = false;
+
+function snackbar(snackbar)
+{
+	if(!snackbarCurrent)
+	{
+		clearTimeout(snackbarST);
+
+		snackbarCurrent = snackbar;
+
+		var duration = snackbar.duration;
+
+		if(duration > 10)
+			duration = 10;
+		else if(duration < 4)
+			duration = 4;
+
+		handlebarsContext.snackbar = snackbar;
+
+		$('.snackbars').html(template.load('snackbar.html'));
+
+		snackbarST = setTimeout(function() {
+
+			$('.snackbars .snackbar').addClass('hide');
+
+			snackbarST = setTimeout(function() {
+
+				$('.snackbars .snackbar').remove();
+
+				snackbarCurrent = false;
+
+				if(snackbarQueue.length > 0)
+				{
+					var snackbar = snackbarQueue.shift();
+
+					events.snackbar(snackbar);
+				}
+
+			}, 300);
+
+		}, duration * 1000);
+	}
+	else	
+	{
+		var isset = false;
+
+		for(let key in snackbarQueue)
+		{
+			if(snackbar.key == snackbarQueue[key].key)
+			{
+				isset = true;
+
+				if(snackbar.update)
+					snackbarQueue[key] = snackbar;
+			}
+		}
+
+		if(!isset && (!snackbarCurrent || (snackbarCurrent.key != snackbar.key || snackbar.update)))
+		{
+			clearTimeout(snackbarST);
+			snackbarQueue.push(snackbar);
+		}
+	}
+}
+
+function closeSnackbar()
+{
+	clearTimeout(snackbarST);
+
+	$('.snackbars .snackbar').addClass('hide');
+
+	snackbarST = setTimeout(function() {
+
+		$('.snackbars .snackbar').remove();
+
+		snackbarCurrent = false;
+
+		if(snackbarQueue.length > 0)
+		{
+			var snackbar = snackbarQueue.shift();
+
+			snackbar(snackbar);
+		}
+
+	}, 300);
+
+}
+
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
@@ -374,4 +465,6 @@ module.exports = {
 	desactiveMenu: desactiveMenu,
 	dialog: dialog,
 	closeDialog: closeDialog,
+	snackbar: snackbar,
+	closeSnackbar: closeSnackbar,
 };

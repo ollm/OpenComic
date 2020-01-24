@@ -221,8 +221,6 @@ function currentTrackingDialog(site)
 
 		sitesScripts[site].getComicData(siteData.tracking.id, function(data){
 
-			console.log(data);
-
 			handlebarsContext.trackingResult = data;
 			handlebarsContext.siteData = siteData;
 
