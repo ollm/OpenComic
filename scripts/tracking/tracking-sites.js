@@ -54,7 +54,7 @@ function list(returnTrackingActive = false)
 	{
 		site = sites[i];
 
-		site.logo = p.join(tracking.scriptsPath(site.key), 'logo.png');
+		site.logo = '../scripts/tracking/'+site.key+'/logo.png';
 		site.script = p.join(tracking.scriptsPath(site.key), site.key+'.js');
 		site.config = getSiteConfig(site.key);
 		site.auth = trackingSitesKeys[site.key] ? trackingSitesKeys[site.key] : {};

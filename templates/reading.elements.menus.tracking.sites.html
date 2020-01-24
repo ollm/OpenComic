@@ -10,7 +10,7 @@
 </div>
 {{#each favoriteTrackingSites}}
 	<div class="menu-tracking-sites menu-simple-element menu-simple-element-medium" onclick="tracking.configTracking('{{key}}')">
-		<div class="menu-simple-element-image" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' logo}})"></div>
+		<div class="menu-simple-element-image" style="background-image: url({{logo}})"></div>
 		<span>{{name}}</span>
 		<i class="material-icon menu-simple-icon-last" onclick="reading.trackingSiteToFavorite('{{key}}'); event.stopPropagation();">{{#if config.favorite}}favorite{{else}}favorite_border{{/if}}</i>
 		{{#if tracking.id}}<i class="material-icon">{{#if tracking.active}}sync{{else}}sync_disabled{{/if}}</i>{{/if}}
@@ -24,7 +24,7 @@
 </div>
 {{#each trackingSites}}
 	<div class="menu-tracking-sites menu-tracking-sites--{{key}} menu-simple-element menu-simple-element-medium" onclick="tracking.configTracking('{{key}}')">
-		<div class="menu-simple-element-image" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' logo}})"></div>
+		<div class="menu-simple-element-image" style="background-image: url({{logo}})"></div>
 		<span>{{name}}</span>
 		<i class="material-icon menu-simple-icon-last" onclick="reading.trackingSiteToFavorite('{{key}}'); event.stopPropagation();">{{#if config.favorite}}favorite{{else}}favorite_border{{/if}}</i>
 		{{#if tracking.id}}<i class="material-icon">{{#if tracking.active}}sync{{else}}sync_disabled{{/if}}</i>{{/if}}
