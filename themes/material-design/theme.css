@@ -1316,7 +1316,7 @@ body .preload
 .dialog
 {
 	border-radius: 4px;
-	background-color: #ffffff;
+	background-color: #fff;
 	position: fixed;
 	width: 280px;
 	left: 50%;
@@ -2437,6 +2437,21 @@ body .night-mode
 .night-mode  .content-view-module .v-folder
 {
 	background-color: #212121;
+}
+
+.night-mode .dialog
+{
+	background-color: #212121;
+}
+
+.night-mode .dialog-header
+{
+	color: rgba(255, 255, 255, 0.96);
+}
+
+.night-mode .dialog-text
+{
+	color: rgba(255, 255, 255, 0.6);
 }
 
 .night-mode .reading-left

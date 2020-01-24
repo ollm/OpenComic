@@ -66,6 +66,7 @@
 		"mime": "^2.4.4",
 		"node-7z": "^1.1.0",
 		"pdfjs-dist": "^2.2.228",
+		"request": "^2.88.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.23.4",
 		"tar-fs": "^2.0.0",
@@ -309,7 +310,6 @@
 				"ext": "cbr",
 				"role": "Viewer"
 			},
-
 			{
 				"description": "Compressed with 7z",
 				"ext": "7z",
