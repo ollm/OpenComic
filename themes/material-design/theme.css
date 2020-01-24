@@ -2172,9 +2172,21 @@ body .preload
 {
 	padding: 0px;
     float: left;
-    max-width: calc(100% - 140px);
+    width: calc(100% - 140px);
 	overflow: hidden;
-	max-height: 144px;
+	height: 84px;
+	word-break: break-all;
+}
+
+.tracking-current-progress
+{
+	float: left;
+	width: calc(100% - 140px);
+}
+
+.tracking-current-progress > div
+{
+	margin-bottom: -10px;
 }
 
 .tracking-current > i

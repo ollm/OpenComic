@@ -89,23 +89,21 @@ async function searchComic(title, callback = false)
 async function getComicData(siteId, callback = false)
 {
 	var query = `
-	query ($id: Int, $page: Int, $perPage: Int, $search: String) {
-		Page (page: $page, perPage: $perPage) {
-			pageInfo {
-				total
-				currentPage
-				lastPage
-				hasNextPage
-				perPage
+	query ($id: Int, $type: MediaType) {
+		Media (id: $id, type: $type) {
+			id
+			chapters
+			volumes
+			mediaListEntry {
+				status
+				progress
+				progressVolumes
 			}
-			media (id: $id, type: MANGA, search: $search) {
-				id
-				coverImage {
-					large
-				}
-				title {
-					romaji
-				}
+			coverImage {
+				large
+			}
+			title {
+				romaji
 			}
 		}
 	}
@@ -113,13 +111,13 @@ async function getComicData(siteId, callback = false)
 
 	var variables = {
 		id: siteId,
-		page: 1,
-		perPage: 1
+		type: 'MANGA'
 	};
 
 	var options = {
 		method: 'POST',
 		headers: {
+			'Authorization': 'Bearer '+site.config.session.token,
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
 		},
@@ -129,19 +127,23 @@ async function getComicData(siteId, callback = false)
 		})
 	};
 
-	if(prevSearchRequest) prevSearchRequest.abort();
-
-	prevSearchRequest = request('https://graphql.anilist.co', options, function(error, response, body) {
+	request('https://graphql.anilist.co', options, function(error, response, body) {
 
 		if(!error && response.statusCode == 200)
 		{
 			var json = JSON.parse(body);
 		
-			if(json.data && json.data.Page && json.data.Page.media && json.data.Page.media[0])
+			if(json.data && json.data.Media)
 			{
 				callback({
-					title: json.data.Page.media[0].title.romaji,
-					image: json.data.Page.media[0].coverImage.large,
+					title: json.data.Media.title.romaji,
+					image: json.data.Media.coverImage.large,
+					chapters: +json.data.Media.chapters,
+					volumes: +json.data.Media.volumes,
+					progress: {
+						chapters: json.data.Media.mediaListEntry ? +json.data.Media.mediaListEntry.progress : 0,
+						volumes: json.data.Media.mediaListEntry ? +json.data.Media.mediaListEntry.progressVolumes : 0,
+					},
 				});
 			}
 			else

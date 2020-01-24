@@ -38,7 +38,6 @@
 		"previous": "Anterior",
 		"next": "Siguiente",
 		"lastPage": "Última página",
-
 		"pages": {
 			"main": "Páginas",
 			"slide": "Deslizar",
@@ -67,7 +66,9 @@
 			"sites": "Todos los sitios",
 			"favoriteSites": "Sitios favoritos",
 			"emptyFavoriteSites": "Ningún sitio en favoritos",
-			"problemChapter": "Capítulo no detectado"
+			"problemChapter": "Capítulo no detectado",
+			"chapters": "Capítulos",
+			"volumes": "Tomos"
 		},
 		"viewBookmarks": "Ver marcadores",
 		"addBookmark": "Añadir marcador",

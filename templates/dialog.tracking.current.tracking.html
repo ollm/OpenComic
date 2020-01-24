@@ -2,6 +2,18 @@
 	<div class="tracking-current-image" style="background-image: url({{trackingResult.image}})"></div>
 	<span class="dialog-header">{{trackingResult.title}}</span>
 	<i class="material-icon" onclick="events.closeDialog(); setTimeout(function(){tracking.searchDialog('{{siteData.key}}')}, 150)">edit</i>
+	<div class="tracking-current-progress">
+		{{#if siteData.trackingChapter}}
+		<div class="tracking-current-progress-chapters">
+			<b>{{language.reading.tracking.chapters}}:</b> <span>{{trackingResult.progress.chapters}}</span>/{{trackingResult.chapters}}
+		</div>
+		{{/if}}
+		{{#if siteData.trackingVolume}}
+		<div class="tracking-current-progress-volumes">
+			<b>{{language.reading.tracking.volumes}}:</b> <span>{{trackingResult.progress.volumes}}</span>/{{trackingResult.volumes}}
+		</div>
+		{{/if}}
+	</div>
 </div>
 
 <div class="menu-simple-text">

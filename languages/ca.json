@@ -67,7 +67,9 @@
 			"sites": "Tots els llocs",
 			"favoriteSites": "Llocs favorits",
 			"emptyFavoriteSites": "Cap lloc a favorits",
-			"problemChapter": "Capítol no detectat"
+			"problemChapter": "Capítol no detectat",
+			"chapters": "Capítols",
+			"volumes": "Toms"
 		},
 		"viewBookmarks": "Veure marcadors",
 		"addBookmark": "Afegeix marcador",

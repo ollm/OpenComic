@@ -67,7 +67,9 @@
 			"sites": "All sites",
 			"favoriteSites": "Favorite sites",
 			"emptyFavoriteSites": "No favorite site",
-			"problemChapter": "Chapter not detected"
+			"problemChapter": "Chapter not detected",
+			"chapters": "Chapters",
+			"volumes": "Volumes"
 		},
 		"viewBookmarks": "View bookmarks",
 		"addBookmark": "Add bookmark",

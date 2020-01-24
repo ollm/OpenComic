@@ -51,6 +51,12 @@ async function getComicData(siteId, callback = false)
 	callback({
 		title: 'title', // Comic title
 		image: 'https://image.large', // Comic large image
+		chapters: 0, // Total comic chapters
+		volumes: 0, // Total comic volumes
+		progress: {
+			chapters: 0, // User viewed chapters
+			volumes: 0, // User viewed volumes
+		},
 	});
 }
 
