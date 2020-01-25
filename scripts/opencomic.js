@@ -504,7 +504,7 @@ function showAboutWindow()
 
 	about.once('ready-to-show', function() {
 	
-		about.webContents.executeJavaScript('document.querySelector(\'body\').innerHTML = `'+template.load('about.body.html')+'`;', false, function(){
+		about.webContents.executeJavaScript('document.querySelector(\'body\').innerHTML = `'+template.load('about.body.html')+'`;', false).then(function(){
 
 			about.show();
 
@@ -746,10 +746,10 @@ function openComicDialog(folders = false)
 
 	var dialog = electron.remote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
+	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}).then(function (files) {
 
-		if(files && files[0])
-			openComic(files[0]);
+		if(files.filePaths && files.filePaths[0])
+			openComic(files.filePaths[0]);
 
 	});
 
@@ -804,13 +804,13 @@ function addComic(folders = false)
 
 	var dialog = electron.remote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}, function (files) {
+	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}).then(function(files) {
 
 		var added = false;
 
-		for(let i in files)
+		for(let i in files.filePaths)
 		{
-			var filePath = files[i];
+			var filePath = files.filePaths[i];
 
 			if(pathIsSupported(filePath))
 			{
