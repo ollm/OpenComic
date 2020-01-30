@@ -64,7 +64,7 @@ function createWindow () {
 		{
 			appClosing = true;
 				
-			win.webContents.executeJavaScript('reading.saveReadingProgress();', false, function(value) {
+			win.webContents.executeJavaScript('reading.saveReadingProgress();', false).then(function(value) {
 
 				if(!value)
 					win.close();
