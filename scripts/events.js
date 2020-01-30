@@ -368,22 +368,22 @@ var snackbarQueue = [],
 	snackbarCurrent = false,
 	snackbarST = false;
 
-function snackbar(snackbar)
+function snackbar(config)
 {
 	if(!snackbarCurrent)
 	{
 		clearTimeout(snackbarST);
 
-		snackbarCurrent = snackbar;
+		snackbarCurrent = config;
 
-		var duration = snackbar.duration;
+		var duration = config.duration;
 
 		if(duration > 10)
 			duration = 10;
 		else if(duration < 4)
 			duration = 4;
 
-		handlebarsContext.snackbar = snackbar;
+		handlebarsContext.snackbar = config;
 
 		$('.snackbars').html(template.load('snackbar.html'));
 
@@ -399,9 +399,9 @@ function snackbar(snackbar)
 
 				if(snackbarQueue.length > 0)
 				{
-					var snackbar = snackbarQueue.shift();
+					var config = snackbarQueue.shift();
 
-					events.snackbar(snackbar);
+					snackbar(config);
 				}
 
 			}, 300);
@@ -414,19 +414,18 @@ function snackbar(snackbar)
 
 		for(let key in snackbarQueue)
 		{
-			if(snackbar.key == snackbarQueue[key].key)
+			if(config.key == snackbarQueue[key].key)
 			{
 				isset = true;
 
-				if(snackbar.update)
-					snackbarQueue[key] = snackbar;
+				if(config.update)
+					snackbarQueue[key] = config;
 			}
 		}
 
-		if(!isset && (!snackbarCurrent || (snackbarCurrent.key != snackbar.key || snackbar.update)))
+		if(!isset && (!snackbarCurrent || (snackbarCurrent.key != config.key || config.update)))
 		{
-			clearTimeout(snackbarST);
-			snackbarQueue.push(snackbar);
+			snackbarQueue.push(config);
 		}
 	}
 }
@@ -445,9 +444,9 @@ function closeSnackbar()
 
 		if(snackbarQueue.length > 0)
 		{
-			var snackbar = snackbarQueue.shift();
+			var config = snackbarQueue.shift();
 
-			snackbar(snackbar);
+			snackbar(config);
 		}
 
 	}, 300);
