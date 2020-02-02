@@ -25,7 +25,7 @@ function setSiteData(site)
 	}
 }
 
-var tracked = {};
+var tracked = {}, trackST = [], trackIndex = 0;
 
 async function track(chapter = false, volume = false, onlySite = false)
 {
@@ -62,6 +62,8 @@ async function track(chapter = false, volume = false, onlySite = false)
 			if(!fromDialog)
 				$('.bar-right-buttons .button-tracking-sites').html('sync').removeClass('tracking-problem');
 
+			var allTracked = true;
+
 			for(let key in _trackingSites)
 			{
 				var site = _trackingSites[key];
@@ -84,19 +86,78 @@ async function track(chapter = false, volume = false, onlySite = false)
 				}
 
 				if(site.config.session.valid && ((onlySite && onlySite == site.key) || (site.tracking.active && !prevTracked && !onlySite)))
-				{
-					if(!tracked[dom.indexMainPathA()]) tracked[dom.indexMainPathA()] = {};
-					if(!tracked[dom.indexMainPathA()][site.key]) tracked[dom.indexMainPathA()][site.key] = [];
-					tracked[dom.indexMainPathA()][site.key].push(reading.readingCurrentPath());
+					allTracked = false;
+			}
 
-					loadSiteScript(site.key);
+			if(!allTracked)
+			{
+				trackST[trackIndex] = setTimeout(function(vars) {
 
-					sitesScripts[site.key].track({
-						id: site.tracking.id,
-						chapters: chapter,
-						volumes: volume,
-					});
-				}
+					console.log('Tracking');
+
+					for(let key in _trackingSites)
+					{
+						var site = _trackingSites[key];
+
+						var prevTracked = false;
+
+						if(tracked[dom.indexMainPathA()] && tracked[dom.indexMainPathA()][site.key])
+						{
+							var readingCurrentPath = reading.readingCurrentPath();
+
+							for(let key2 in tracked[dom.indexMainPathA()][site.key])
+							{
+								if(readingCurrentPath == tracked[dom.indexMainPathA()][site.key][key2])
+								{
+									prevTracked = true;
+
+									break;
+								}
+							}
+						}
+
+						if(site.config.session.valid && ((vars.onlySite && vars.onlySite == site.key) || (site.tracking.active && !prevTracked && !vars.onlySite)))
+						{
+							if(!tracked[dom.indexMainPathA()]) tracked[dom.indexMainPathA()] = {};
+							if(!tracked[dom.indexMainPathA()][site.key]) tracked[dom.indexMainPathA()][site.key] = [];
+							tracked[dom.indexMainPathA()][site.key].push(reading.readingCurrentPath());
+
+							loadSiteScript(site.key);
+
+							sitesScripts[site.key].track({
+								id: site.tracking.id,
+								chapters: vars.chapter,
+								volumes: vars.volume,
+							});
+						}
+					}
+
+				}, 6500, { // 6.5 seconds to track
+					chapter: chapter,
+					volume: volume,
+					onlySite: onlySite,
+				});
+
+				// Remove prev
+
+				events.snackbar({
+					key: 'trackingConfirm',
+					text: language.reading.tracking.marked+': '+(chapter !== false ? language.reading.tracking.chapter+' '+chapter+'/??' : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+': '+volume+'/??' : ''),
+					duration: 6,
+					update: true,
+					buttons: [
+						{
+							text: language.buttons.dismiss,
+							function: 'events.closeSnackbar();',
+						},
+						{
+							text: language.buttons.undo,
+							function: 'events.closeSnackbar(); clearTimeout(tracking.trackST()['+trackIndex+'])',
+						},
+					],
+				});
+
+				trackIndex++;
 			}
 		}
 	}
@@ -270,11 +331,11 @@ function getTokenDialog(site = '', callback = false, done = false)
 				content: template.load('dialog.tracking.sites.token.html'),
 				buttons: [
 					{
-						text: language.dialog.buttons.cancel,
+						text: language.buttons.cancel,
 						function: 'events.closeDialog();',
 					},
 					{
-						text: language.dialog.buttons.ok,
+						text: language.buttons.ok,
 						function: 'events.closeDialog(); tracking.getTokenDialog(\''+site+'\', false, true);',
 					}
 				],
@@ -294,11 +355,11 @@ function invalidTokenDialog(site, fromConfig = false)
 		content: hb.compile(language.dialog.tracking.resendToken)({siteName: siteData.name}),
 		buttons: [
 			{
-				text: language.dialog.buttons.cancel,
+				text: language.buttons.cancel,
 				function: 'events.closeDialog();',
 			},
 			{
-				text: language.dialog.buttons.ok,
+				text: language.buttons.ok,
 				function: 'events.closeDialog(); tracking.login(\''+site+'\', '+(fromConfig ? 'true' : 'false')+');',
 			}
 		],
@@ -419,11 +480,11 @@ function addChapterNumberDialog(done = false, onlySite = false)
 			content: template.load('dialog.tracking.sites.chapter.number.html'),
 			buttons: [
 				{
-					text: language.dialog.buttons.cancel,
+					text: language.buttons.cancel,
 					function: 'events.closeDialog();',
 				},
 				{
-					text: language.dialog.buttons.ok,
+					text: language.buttons.ok,
 					function: 'events.closeDialog(); tracking.addChapterNumberDialog(true);',
 				}
 			],
@@ -522,6 +583,7 @@ module.exports = {
 	searchInput: searchInput,
 	setTrackingId: setTrackingId,
 	track: track,
+	trackST: function(){return trackST},
 	getChapter: getChapter,
 	getVolume: getVolume,
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,

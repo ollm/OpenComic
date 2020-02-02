@@ -64,12 +64,16 @@
 		},
 		"tracking": {
 			"main": "Tracking with sites",
+			"tracking": "Tracking",
+			"marked": "Marked",
 			"sites": "All sites",
 			"favoriteSites": "Favorite sites",
 			"emptyFavoriteSites": "No favorite site",
 			"problemChapter": "Chapter not detected",
 			"chapters": "Chapters",
-			"volumes": "Volumes"
+			"chapter": "Chapter",
+			"volumes": "Volumes",
+			"volume": "Volume"
 		},
 		"viewBookmarks": "View bookmarks",
 		"addBookmark": "Add bookmark",
@@ -108,10 +112,6 @@
 		}
 	},
 	"dialog": {
-		"buttons": {
-			"cancel": "Cancel",
-			"ok": "Ok"
-		},
 		"tracking": {
 			"getTokenHeader": "Sign in to {{siteName}} via token",
 			"getTokenInput": "The {{siteName}} token",
@@ -126,6 +126,12 @@
 			"setVolumeNumber": "Mark until the volume",
 			"activate": "Activate tracking"
 		}
+	},
+	"buttons": {
+		"cancel": "Cancel",
+		"ok": "Ok",
+		"undo": "Undo",
+		"dismiss": "Dismiss"
 	},
 	"error": {
 		"uncompress": {

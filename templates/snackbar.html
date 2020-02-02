@@ -1,8 +1,10 @@
 <div class="snackbar elevation6">
 	<div class="snackbarText">{{snackbar.text}}</div>
-	{{#each snackbar.buttons}}
-	<div class="simple-button transparent"{{#if right}} style="right: {{right}}px"{{/if}}>
-		<div class="touch-effect" onclick="{{function}}">{{text}}</div>
+	<div class="snackbar-buttons">
+		{{#each snackbar.buttons}}
+		<div class="simple-button transparent"{{#if right}} style="right: {{right}}px"{{/if}}>
+			<div class="touch-effect" onclick="{{function}}">{{text}}</div>
+		</div>
+		{{/each}}
 	</div>
-	{{/each}}
 </div>

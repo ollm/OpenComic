@@ -1498,12 +1498,17 @@ body .preload
 	float: left;
 }
 
+.snackbar-buttons
+{
+	float: right;
+}
+
 .snackbars .snackbar .simple-button
 {
 	position: relative;
 	margin: 6px 8px 6px 0px;
 	float: right;
-	}
+}
 
 /* Input */
 .input

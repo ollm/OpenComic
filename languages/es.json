@@ -63,12 +63,16 @@
 		},
 		"tracking": {
 			"main": "Seguimiento con sitios",
+			"tracking": "Seguimiento",
+			"marked": "Marcado",
 			"sites": "Todos los sitios",
 			"favoriteSites": "Sitios favoritos",
 			"emptyFavoriteSites": "Ningún sitio en favoritos",
 			"problemChapter": "Capítulo no detectado",
 			"chapters": "Capítulos",
-			"volumes": "Tomos"
+			"chapter": "Capítulo",
+			"volumes": "Tomos",
+			"volume": "Tomo"
 		},
 		"viewBookmarks": "Ver marcadores",
 		"addBookmark": "Añadir marcador",
@@ -107,10 +111,6 @@
 		}
 	},
 	"dialog": {
-		"buttons": {
-			"cancel": "Cancelar",
-			"ok": "Ok"
-		},
 		"tracking": {
 			"getTokenHeader": "Iniciar sesión en {{siteName}} mediante token",
 			"getTokenInput": "El token de {{siteName}}",
@@ -125,6 +125,12 @@
 			"setVolumeNumber": "Marcar hasta el siguiente tomo",
 			"activate": "Activar seguimiento"
 		}
+	},
+	"buttons": {
+		"cancel": "Cancelar",
+		"ok": "Ok",
+		"undo": "Deshacer",
+		"dismiss": "Descartar"
 	},
 	"error": {
 		"uncompress": {

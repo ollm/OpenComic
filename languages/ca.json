@@ -64,12 +64,16 @@
 		},
 		"tracking": {
 			"main": "Seguiment amb llocs",
+			"tracking": "Seguiment",
+			"marked": "Marcat",
 			"sites": "Tots els llocs",
 			"favoriteSites": "Llocs favorits",
 			"emptyFavoriteSites": "Cap lloc a favorits",
 			"problemChapter": "Capítol no detectat",
 			"chapters": "Capítols",
-			"volumes": "Toms"
+			"chapters": "Capítol",
+			"volumes": "Toms",
+			"volume": "Tom"
 		},
 		"viewBookmarks": "Veure marcadors",
 		"addBookmark": "Afegeix marcador",
@@ -108,10 +112,6 @@
 		}
 	},
 	"dialog": {
-		"buttons": {
-			"cancel": "Cancel·lar",
-			"ok": "Ok"
-		},
 		"tracking": {
 			"getTokenHeader": "Inicia sessió a {{SITENAME}} mitjançant token",
 			"getTokenInput": "El token de {{siteName}}",
@@ -126,6 +126,12 @@
 			"setVolumeNumber": "Marcar fins al següent tom",
 			"activate": "Activa seguiment"
 		}
+	},
+	"buttons": {
+		"cancel": "Cancel·lar",
+		"ok": "Ok",
+		"undo": "Desfer",
+		"dismiss": "Descarta"
 	},
 	"error": {
 		"uncompress": {
