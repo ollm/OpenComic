@@ -40,16 +40,19 @@
 		"lastPage": "Utolsó oldal",
 
 		"pages": {
-			"main": "Oldalak",
-			"slide": "Egyszerre egy oldalt",
-			"scroll": "Minden oldalt",
+			"main": "Nézet",
+			"slide": "Lapozás",
+			"scroll": "Görgetés",
 			"adjustToWidth": "Teljes szélesség",
 			"margin": "Margó",
-			"doublePage": "Két oldalt egyszerre",
-			"doNotApplyToHorizontals": "Széles képekre ne vonatkozzon",
+			"marginHorizontal": "Vízszintes margó",
+			"marginVertical": "Függőlges margó",
+			"doublePage": "Kétoldalas elrendezés",
+			"doNotApplyToHorizontals": "Fekvő tájolású oldalnál ne",
 			"readingDelaySkip": "Lapozás késleltetése",
 			"animationSpeed": "Animáció sebessége",
-			"readingManga": "Manga olvasása (Tükrözött)"
+			"readingManga": "Manga nézet (Tükrözött)",
+			"readingWebtoon": "Webtoon nézet"
 		},
 		"magnifyingGlass": {
 			"main": "Nagyító",
@@ -58,6 +61,19 @@
 			"size": "Méret",
 			"ratio": "Képarány",
 			"radius": "Lekerekítés"
+		},
+		"tracking": {
+			"main": "Tracking with sites",
+			"tracking": "Tracking",
+			"marked": "Marked",
+			"sites": "All sites",
+			"favoriteSites": "Favorite sites",
+			"emptyFavoriteSites": "No favorite site",
+			"problemChapter": "Chapter not detected",
+			"chapters": "Chapters",
+			"chapter": "Chapter",
+			"volumes": "Volumes",
+			"volume": "Volume"
 		},
 		"viewBookmarks": "Könyvjelzők megtekintése",
 		"addBookmark": "Könyvjelző hozzáadása",
@@ -94,6 +110,28 @@
 			"main": "Súgó",
 			"about": "Névjegy"
 		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Sign in to {{siteName}} via token",
+			"getTokenInput": "The {{siteName}} token",
+			"invalidTokenHeader": "Invalid {{siteName}} token",
+			"resendToken": "Do you want to add the {{siteName}} token again?",
+			"serachIn": "Search in {{siteName}}",
+			"emptySearch": "No results found",
+			"setHeader": "Mark manually",
+			"setMessage": "If you wish you can manually mark the chapters",
+			"setWaitMessage": "You can do this now or wait for it to be automatically detected in another chapter.",
+			"setChapterNumber": "Mark until the chapter",
+			"setVolumeNumber": "Mark until the volume",
+			"activate": "Activate tracking"
+		}
+	},
+	"buttons": {
+		"cancel": "Cancel",
+		"ok": "Ok",
+		"undo": "Undo",
+		"dismiss": "Dismiss"
 	},
 	"error": {
 		"uncompress": {
