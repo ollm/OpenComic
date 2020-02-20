@@ -1,0 +1,153 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "und",
+		"comics": "Comics",
+		"collection": "Kollektion",
+		"sort": {
+			"main": "Sortieren",
+			"name": "Name",
+			"number": "Nummer",
+			"nameNumber": "Name / Nummer",
+			"lastAdd": "Zuletzt hinzugefügt",
+			"lastReading": "Zuletzt gelesen",
+			"foldersFirst": "Ordner zuerst",
+			"invert": "Invertieren"
+		},
+		"view": {
+			"main": "Ansicht",
+			"module": "Raster",
+			"list": "Liste"
+		},
+		"contextMenu": {
+			"remove": "Entfernen"
+		},
+		"back": "Zurück",
+		"add": "Hinzufügen",
+		"language": "Sprache",
+		"theme": "Thema",
+		"nightMode": "Nachtmodus"
+	},
+	"comics": {
+		"continueReading": "Lesen fortsetzen",
+		"emptyIndex": "In dieser Kollektion gibt es keine Comics.",
+		"emptyFolder": "In diesem Ordner gibt es keine kompatiblen Dateien."
+	},
+	"reading": {
+		"firstPage": "Erste Seite",
+		"previous": "Vorherige",
+		"next": "Nächste",
+		"lastPage": "Letzte",
+
+		"pages": {
+			"main": "Seiten",
+			"slide": "Slide Reader",
+			"scroll": "Vertikaler Reader",
+			"adjustToWidth": "Der Breite anpassen",
+			"margin": "Spanne",
+			"marginHorizontal": "Horizontale Spanne",
+			"marginVertical": "Vertikale Spanne",
+			"doublePage": "Doppelseite",
+			"doNotApplyToHorizontals": "Nicht die Horizontalen anpassen",
+			"readingDelaySkip": "Verzögerung im Comics wechseln",
+			"animationSpeed": "Animationsgeschwindigkeit",
+			"readingManga": "Mangas lesen (Invertiert)",
+			"readingWebtoon": "Webtoon lesen"
+		},
+		"magnifyingGlass": {
+			"main": "Leselupe",
+			"activate": "Aktivieren",
+			"zoom": "Zoom",
+			"size": "Größe",
+			"ratio": "Ratio",
+			"radius": "Radius"
+		},
+		"tracking": {
+			"main": "Seiten tracken",
+			"tracking": "Tracken",
+			"marked": "Markiert",
+			"sites": "Alle Seiten",
+			"favoriteSites": "Favorisierte Seiten",
+			"emptyFavoriteSites": "Keine favorisierten Seiten",
+			"problemChapter": "Kapitel nicht erkannt",
+			"chapters": "Kapitel",
+			"chapter": "Kapitel",
+			"volumes": "Ausgaben",
+			"volume": "Ausgabe"
+		},
+		"viewBookmarks": "Lesezeichen anzeigen",
+		"addBookmark": "Lesezeichen hinzufügen",
+		"removeBookmark": "Lesezeichen entfernen",
+		"emptyBookmarks": "Keine Lesezeichen",
+		"currentReading": "Zurzeit lesend"
+	},
+	"menu": {
+		"file": {
+			"main": "Datei",
+			"openFile": "Öffne eine Datei",
+			"openFolder": "Öffne einen Ordner",
+			"addFile": "Füge eine Datei hinzu",
+			"addFolder": "Füge einen Ordner hinzu",
+			"quit": "Verlassen"
+		},
+		"view": {
+			"main": "Ansicht",
+			"resetZoom": "Zoom zurücksetzen",
+			"zoomIn": "Reinzoomen",
+			"zoomOut": "Rauszoomen",
+			"toggleFullScreen": "Vollbildschirm"
+		},
+		"goto": {
+			"main": "Gehe zu"
+		},
+		"debug": {
+			"main": "Debug",
+			"reload": "Neu laden",
+			"forceReload": "Neu laden erzwingen",
+			"toggleDevTools": "DevTools umschalten"
+		},
+		"help": {
+			"main": "Hilfe",
+			"about": "Über OpenComic"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Logge dich mit dem Token bei {{siteName}} ein",
+			"getTokenInput": "Der {{siteName}} Token",
+			"invalidTokenHeader": "Ungültiger {{siteName}} Token",
+			"resendToken": "Möchtest du den {{siteName}} Token nochmal hinzufügen?",
+			"serachIn": "Suche in {{siteName}}",
+			"emptySearch": "Keine Ergebnisse gefunden",
+			"setHeader": "Manuell markieren",
+			"setMessage": "Wenn du möchtest kannst du die Kapitel auch manuell markieren",
+			"setWaitMessage": "Du kannst das jetzt machen oder warten bis es automatisch in einem anderen Kapitel erkannt wird",
+			"setChapterNumber": "Markiere bis zum Kapitel",
+			"setVolumeNumber": "Markiere bis zur Ausgabe",
+			"activate": "Tracken aktivieren"
+		}
+	},
+	"buttons": {
+		"cancel": "Abbrechen",
+		"ok": "Ok",
+		"undo": "Rückgängig machen",
+		"dismiss": "Ignorieren"
+	},
+	"error": {
+		"uncompress": {
+			"title": "Fehler während des Entpackens",
+			"message": "Während des Entpackens der Datei ist ein Fehler aufgetreten."
+		}
+	},
+	"about": {
+		"version": "Version",
+		"translatedBy": "Übersetzt ins Deutsche von",
+		"contributedBy": "Beigetragen von",
+		"translators": [
+			{
+				"name": "Hernesto Sanchez",
+				"url": "https://github.com/herrsunchess"
+			}
+		]
+	}
+}
