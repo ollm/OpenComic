@@ -208,6 +208,7 @@
         "nativeName":"ქართული"
     },
     "de":{
+        "active": true,
         "name":"German",
         "nativeName":"Deutsch"
     },
