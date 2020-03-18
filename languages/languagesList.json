@@ -192,8 +192,9 @@
         "nativeName":"suomi, suomen kieli"
     },
     "fr":{
+        "active": true,
         "name":"French",
-        "nativeName":"français, langue française"
+        "nativeName":"Français"
     },
     "ff":{
         "name":"Fula; Fulah; Pulaar; Pular",
