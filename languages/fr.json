@@ -1,0 +1,153 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "et",
+		"comics": "Comics",
+		"collection": "Collection",
+		"sort": {
+			"main": "Trier",
+			"name": "Nom",
+			"number": "Nombre",
+			"nameNumber": "Nom / Nombre",
+			"lastAdd": "Dernier ajouté",
+			"lastReading": "Dernier lu",
+			"foldersFirst": "Dossier en premier",
+			"invert": "Inverser"
+		},
+		"view": {
+			"main": "Vue",
+			"module": "Grille",
+			"list": "Liste"
+		},
+		"contextMenu": {
+			"remove": "Retirer"
+		},
+		"back": "Retour",
+		"add": "Ajouter",
+		"language": "Langues",
+		"theme": "Theme",
+		"nightMode": "Mode nuit"
+	},
+	"comics": {
+		"continueReading": "Continuer à lire",
+		"emptyIndex": "Il n'y a aucun comics dans cette collection.",
+		"emptyFolder": "Il n'y a aucun fichier compatible dans ce dossier."
+	},
+	"reading": {
+		"firstPage": "Première page",
+		"previous": "Précédent",
+		"next": "Suivant",
+		"lastPage": "Dernière page",
+
+		"pages": {
+			"main": "Pages",
+			"slide": "Lecture horizontale",
+			"scroll": "Lecture verticale",
+			"adjustToWidth": "Ajuster à la largeur",
+			"margin": "Marges",
+			"marginHorizontal": "Marge horizontale",
+			"marginVertical": "Marge verticale",
+			"doublePage": "Double page",
+			"doNotApplyToHorizontals": "Ne pas appliquer aux horizontaux",
+			"readingDelaySkip": "Délai de changement de comics",
+			"animationSpeed": "Vitesse d'animation",
+			"readingManga": "Lecture de manga (Inversé)",
+			"readingWebtoon": "Lecture de webtoon"
+		},
+		"magnifyingGlass": {
+			"main": "Loupe",
+			"activate": "Activer",
+			"zoom": "Zoom",
+			"size": "Taille",
+			"ratio": "Ratio",
+			"radius": "Radius"
+		},
+		"tracking": {
+			"main": "Suivi avec sites",
+			"tracking": "Suivi",
+			"marked": "Marqué",
+			"sites": "Tous les sites",
+			"favoriteSites": "Sites favoris",
+			"emptyFavoriteSites": "Aucun site favori",
+			"problemChapter": "Chapitre non détecté",
+			"chapters": "Chapitres",
+			"chapter": "Chapitre",
+			"volumes": "Volumes",
+			"volume": "Volume"
+		},
+		"viewBookmarks": "Afficher signets",
+		"addBookmark": "Ajouter signet",
+		"removeBookmark": "Retirer signet",
+		"emptyBookmarks": "Aucun signet",
+		"currentReading": "Lecture en cours"
+	},
+	"menu": {
+		"file": {
+			"main": "Fichier",
+			"openFile": "Ouvrir un fichier",
+			"openFolder": "Ouvrir un dossier",
+			"addFile": "Ajouter un fichier",
+			"addFolder": "Ajouter un dossier",
+			"quit": "Quitter"
+		},
+		"view": {
+			"main": "Vue",
+			"resetZoom": "Réinitialiser zoom",
+			"zoomIn": "Agrandir",
+			"zoomOut": "Réduire",
+			"toggleFullScreen": "Plein écran"
+		},
+		"goto": {
+			"main": "Aller à"
+		},
+		"debug": {
+			"main": "Debug",
+			"reload": "Recharger",
+			"forceReload": "Forcer le rechargement",
+			"toggleDevTools": "Basculer en DevTools"
+		},
+		"help": {
+			"main": "Aide",
+			"about": "À propos de OpenComic"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Se connecter à {{siteName}} via token",
+			"getTokenInput": "Le token {{siteName}}",
+			"invalidTokenHeader": "Token {{siteName}} invalide",
+			"resendToken": "Voulez-vous ajouter le token {{siteName}} à nouveau ?",
+			"serachIn": "Rechercher dans {{siteName}}",
+			"emptySearch": "Aucun résultat trouvé",
+			"setHeader": "Marquer manuellement",
+			"setMessage": "Si vous le voulez, vous pouvez marquer les chapitres manuellement",
+			"setWaitMessage": "Vous pouvez le faire maintenant ou attendre que cela se fasse par la détection automatique dans un autre chapitre.",
+			"setChapterNumber": "Marquer jusqu'au chapitre",
+			"setVolumeNumber": "Marquer jusqu'au volume",
+			"activate": "Activer le suivi"
+		}
+	},
+	"buttons": {
+		"cancel": "Annuler",
+		"ok": "Ok",
+		"undo": "Retour",
+		"dismiss": "Abandonner"
+	},
+	"error": {
+		"uncompress": {
+			"title": "Erreur lors de la décompression",
+			"message": "Une erreur s'est produite lors de la décompression du fichier."
+		}
+	},
+	"about": {
+		"version": "Version",
+		"translatedBy": "Traduit en français par",
+		"contributedBy": "Contribution par",
+		"translators": [
+			{
+				"name": "Nikwok",
+				"url": "https://github.com/nikwok"
+			}
+		]
+	}
+}
