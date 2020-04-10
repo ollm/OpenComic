@@ -133,34 +133,10 @@
 			"icon": "images/icons",
 			"category": "Graphics",
 			"mimeTypes": [
-				"image/jpeg",
-				"image/pjpeg",
-				"image/png",
-				"image/apng",
-				"image/svg",
-				"image/svg+xml",
-				"image/gif",
-				"image/x-ms-bmp",
-				"image/bmp",
-				"image/x-icon",
-				"image/vnd.microsoft.icon",
-				"image/webp",
-				"application/zip",
 				"application/x-cbz",
-				"application/x-zip",
-				"application/x-zip-compressed",
-				"application/rar",
 				"application/x-cbr",
-				"application/x-rar",
-				"application/x-rar-compressed",
-				"application/7z",
 				"application/x-cb7",
-				"application/x-7z",
-				"application/x-7z-compressed",
-				"application/tar",
 				"application/x-cbt",
-				"application/x-tar",
-				"application/x-tar-compressed",
 				"application/pdf",
 				"application/x-bzpdf",
 				"application/x-gzpdf",
@@ -206,103 +182,8 @@
 		},
 		"fileAssociations": [
 			{
-				"description": "Image JPG",
-				"ext": "jpg",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image JPG",
-				"ext": "jpeg",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image JPG",
-				"ext": "jif",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image JPG",
-				"ext": "jfi",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image JPG",
-				"ext": "jfif",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image JPG",
-				"ext": "jfif-tbnl",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image JPG",
-				"ext": "jpe",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image PNG",
-				"ext": "png",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image PNG",
-				"ext": "x-png",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image PNG",
-				"ext": "apng",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image SVG",
-				"ext": "svg",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image SVG",
-				"ext": "svgz",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image GIF",
-				"ext": "gif",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image BMP",
-				"ext": "bmp",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image BMP",
-				"ext": "dib",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image ICO",
-				"ext": "ico",
-				"role": "Viewer"
-			},
-			{
-				"description": "Image WEBP",
-				"ext": "webp",
-				"role": "Viewer"
-			},
-			{
-				"description": "Compressed with ZIP",
-				"ext": "zip",
-				"role": "Viewer"
-			},
-			{
 				"description": "Compressed with ZIP",
 				"ext": "cbz",
-				"role": "Viewer"
-			},
-			{
-				"description": "Compressed with RAR",
-				"ext": "rar",
 				"role": "Viewer"
 			},
 			{
@@ -312,17 +193,7 @@
 			},
 			{
 				"description": "Compressed with 7z",
-				"ext": "7z",
-				"role": "Viewer"
-			},
-			{
-				"description": "Compressed with 7z",
 				"ext": "cb7",
-				"role": "Viewer"
-			},
-			{
-				"description": "Compressed with TAR",
-				"ext": "tar",
 				"role": "Viewer"
 			},
 			{
