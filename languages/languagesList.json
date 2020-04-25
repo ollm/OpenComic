@@ -297,8 +297,8 @@
     },
     "ja":{
         "active": true,
-        "name":"日本語",
-        "nativeName":"日本語 (Japanese)"
+        "name":"Japanese",
+        "nativeName":"日本語"
     },
     "jv":{
         "name":"Javanese",
