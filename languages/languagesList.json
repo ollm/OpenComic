@@ -296,8 +296,9 @@
         "nativeName":"ᐃᓄᒃᑎᑐᑦ"
     },
     "ja":{
-        "name":"Japanese",
-        "nativeName":"日本語 (にほんご／にっぽんご)"
+        "active": true,
+        "name":"日本語",
+        "nativeName":"日本語 (Japanese)"
     },
     "jv":{
         "name":"Javanese",

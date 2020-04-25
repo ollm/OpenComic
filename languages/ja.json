@@ -1,0 +1,154 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "and",
+		"comics": "本",
+		"collection": "コレクション",
+		"sort": {
+			"main": "並び替え",
+			"name": "名前",
+			"number": "番号",
+			"nameNumber": "名前 / 番号",
+			"lastAdd": "最後に追加された本",
+			"lastReading": "最後に読んだ本",
+			"foldersFirst": "フォルダのリスト",
+			"invert": "逆順"
+		},
+		"view": {
+			"main": "ビュー",
+			"module": "グリッド",
+			"list": "一覧"
+		},
+		"contextMenu": {
+			"remove": "削除"
+		},
+		"back": "戻る",
+		"add": "追加",
+		"language": "言語",
+		"theme": "テーマ",
+		"nightMode": "ナイトモード"
+	},
+	"comics": {
+		"continueReading": "続きを読む",
+		"emptyIndex": "このコレクションには本がありません",
+		"emptyFolder": "このフォルダには閲覧可能なファイルがありません"
+	},
+	"reading": {
+		"firstPage": "最初のページ",
+		"previous": "前",
+		"next": "次",
+		"lastPage": "最後のページ",
+
+		"pages": {
+			"main": "ページ",
+			"slide": "スライドリーダー",
+			"scroll": "垂直方向リーダー",
+			"adjustToWidth": "幅に合わせる",
+			"margin": "マージン",
+			"marginHorizontal": "横方向のマージン",
+			"marginVertical": "縦方向のマージン",
+			"doublePage": "見開きページ",
+			"doNotApplyToHorizontals": "水平方向には適用しない",
+			"readingDelaySkip": "本を変更する際の遅延速度",
+			"animationSpeed": "アニメーションの速度",
+			"readingManga": "マンガ閲覧モード",
+			"readingWebtoon": "ウェブトゥーンモード"
+		},
+		"magnifyingGlass": {
+			"main": "拡大鏡",
+			"activate": "有効化",
+			"zoom": "ズーム",
+			"size": "サイズ",
+			"ratio": "比率",
+			"radius": "曲率"
+		},
+		"tracking": {
+			"main": "サイトで追跡",
+			"tracking": "追跡",
+			"marked": "マーク",
+			"sites": "全サイト",
+			"favoriteSites": "お気に入りサイト",
+			"emptyFavoriteSites": "お気に入りサイトがありません",
+			"problemChapter": "章が検出されていません",
+			"chapters": "章",
+			"chapter": "章",
+			"volumes": "巻",
+			"volume": "巻"
+		},
+		"viewBookmarks": "しおりを見る",
+		"addBookmark": "しおりの追加",
+		"removeBookmark": "しおりの削除",
+		"emptyBookmarks": "しおりがありません",
+		"currentReading": "現在読んでいる位置"
+	},
+	"menu": {
+		"file": {
+			"main": "ファイル",
+			"openFile": "ファイルを開く",
+			"openFolder": "フォルダを開く",
+			"addFile": "ファイルを追加",
+			"addFolder": "フォルダを追加",
+			"quit": "アプリケーションを終了する"
+		},
+		"view": {
+			"main": "閲覧",
+			"resetZoom": "ズームをリセット",
+			"zoomIn": "縮小",
+			"zoomOut": "拡大",
+			"toggleFullScreen": "全画面"
+		},
+		"goto": {
+			"main": "Goto"
+		},
+		"debug": {
+			"main": "デバッグ",
+			"reload": "リロード",
+			"forceReload": "強制リロード",
+			"toggleDevTools": "開発ツールへの切り替え"
+		},
+		"help": {
+			"main": "ヘルプ",
+			"about": "OpenComicについて"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "トークンで{{siteName}}にログインする",
+			"getTokenInput": "{{siteName}} のトークン",
+			"invalidTokenHeader": "不正な {{siteName}} のトークン",
+			"resendToken": "再度{{siteName}} トークンを作成しますか？",
+			"serachIn": "{{siteName}}内を検索",
+			"emptySearch": "検索結果がありません",
+			"setHeader": "手動でマーク",
+			"setMessage": "章を手動でマークしたい場合、",
+			"setWaitMessage": "ここで手動でやるか、次の章で自動的に削除させることができます",
+			"setChapterNumber": "次の章までマークする",
+			"setVolumeNumber": "次の巻までマークする",
+			"activate": "追跡を有効にする"
+		}
+	},
+	"buttons": {
+		"cancel": "キャンセル",
+		"ok": "Ok",
+		"undo": "やり直し",
+		"dismiss": "閉じる"
+	},
+	"error": {
+		"uncompress": {
+			"title": "解凍中エラー",
+			"message": "解凍中にエラーが発生しました"
+		}
+	},
+	"about": {
+		"version": "バージョン",
+		"translatedBy": "日本語への翻訳",
+		"contributedBy": "コントリビューター",
+		"translators": [
+			{
+				"name": "Yasuyuki Takeo",
+				"email": "yasuyuki.takeo@liferay.com",
+				"url": "https://github.com/yasuflatland-lf"
+			}
+		]
+	}
+}
