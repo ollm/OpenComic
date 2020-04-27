@@ -26,6 +26,7 @@
 		"add": "Afegir",
 		"language": "Idioma",
 		"theme": "Tema",
+		"valueCannotBeEmpty": "El valor no pot estar buit",
 		"nightMode": "Mode nit"
 	},
 	"comics": {
@@ -38,7 +39,6 @@
 		"previous": "Anterior",
 		"next": "Següent",
 		"lastPage": "Última pàgina",
-
 		"pages": {
 			"main": "Pàgines",
 			"slide": "Lliscar",
@@ -52,7 +52,9 @@
 			"readingDelaySkip": "Retard en canviar de còmic",
 			"animationSpeed": "Velocitat de l'animació",
 			"readingManga": "Lectura de manga (Invertir)",
-			"readingWebtoon": "Lectura de webtoon"
+			"readingWebtoon": "Lectura de webtoon",
+			"readingGlobal": "Configuració global",
+			"readingConfigNew": "Nova configuració"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -125,13 +127,21 @@
 			"setChapterNumber": "Marcar fins al següent capítol",
 			"setVolumeNumber": "Marcar fins al següent tom",
 			"activate": "Activa seguiment"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Crear nova configuració",
+			"readingConfigEditHeader": "Editar configuració",
+			"readingConfigName": "Nom de la configuració",
+			"readingConfigRemoveHeader": "Eliminar la configuració",
+			"readingConfigRemove": "Esteu segur que voleu eliminar aquesta configuració?"
 		}
 	},
 	"buttons": {
 		"cancel": "Cancel·lar",
 		"ok": "Ok",
 		"undo": "Desfer",
-		"dismiss": "Descarta"
+		"dismiss": "Descarta",
+		"remove": "Eliminar"
 	},
 	"error": {
 		"uncompress": {

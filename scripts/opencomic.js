@@ -38,7 +38,7 @@ var testVar = 'test';
 
 var handlebarsContext = {};
 var language = {};
-var config = false;
+var config = false, _config = false;
 var onReading = _onReading = false;
 var readingTouchEvent = false;
 
@@ -181,6 +181,7 @@ if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 storage.start(function(){
 
 	config = storage.get('config');
+	_config = copy(config);
 	handlebarsContext.config = config;
 
 	//console.time('Load language time');
@@ -229,6 +230,12 @@ function startApp()
 }
 
 /*Global functions*/
+
+function copy(data) {
+
+	return JSON.parse(JSON.stringify(data));
+
+}
 
 function inArray(string, array)
 {
@@ -614,6 +621,7 @@ hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
 		'==':	function(l,r) { return l == r; },
 		'===':	function(l,r) { return l === r; },
 		'!=':	function(l,r) { return l != r; },
+		'!==':	function(l,r) { return l !== r; },
 		'<':	function(l,r) { return l < r; },
 		'>':	function(l,r) { return l > r; },
 		'<=':	function(l,r) { return l <= r; },

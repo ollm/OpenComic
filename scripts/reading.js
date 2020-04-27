@@ -6,7 +6,7 @@ function blankPage(index)
 {
 	var key = 0;
 
-	if(config.readingDoublePage && !config.readingWebtoon && config.readingDoNotApplyToHorizontals)
+	if(_config.readingDoublePage && !_config.readingWebtoon && _config.readingDoNotApplyToHorizontals)
 	{
 		for(let i = index; i < (imagesNum + 1); i++)
 		{
@@ -35,7 +35,7 @@ function calculateImagesDistribution()
 	imagesDistribution = [];
 	indexNum = 0;
 
-	if(config.readingDoublePage && !config.readingWebtoon)
+	if(_config.readingDoublePage && !_config.readingWebtoon)
 	{
 		var data = [];
 
@@ -43,7 +43,7 @@ function calculateImagesDistribution()
 		{
 			if(typeof imagesData[i] !== 'undefined')
 			{
-				if(config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
+				if(_config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
 				{
 					if(data.length > 0)
 					{
@@ -61,7 +61,7 @@ function calculateImagesDistribution()
 				}
 				else
 				{
-					if(config.readingDoNotApplyToHorizontals && data.length == 0 && blankPage(i))
+					if(_config.readingDoNotApplyToHorizontals && data.length == 0 && blankPage(i))
 						data.push({index: false, folder: false, blank: true, width: 2});
 
 					data.push({index: i, folder: false, blank: false, width: 2});
@@ -127,7 +127,7 @@ function applyMangaReading(distribution)
 {
 	_distribution = JSON.parse(JSON.stringify(distribution));
 
-	if(config.readingManga)
+	if(_config.readingManga)
 	{
 		if(!readingViewIs('scroll'))
 			_distribution.reverse();
@@ -219,9 +219,9 @@ function calcAspectRatio(first, second)
 
 function disposeImages(data = false)
 {
-	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : config.readingMargin.margin;
-	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : config.readingMargin.left;
-	var marginVertical = (data && typeof data.top !== 'undefined') ? data.top : config.readingMargin.top;
+	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
+	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
+	var marginVertical = (data && typeof data.top !== 'undefined') ? data.top : _config.readingMargin.top;
 
 	var contentHeight = template.contentRight().children('div').height();
 
@@ -255,7 +255,7 @@ function disposeImages(data = false)
 
 			var joinWidth = imageWidth0 + imageWidth1 + marginHorizontal;
 
-			if(joinWidth < contentWidth0 && !(readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
+			if(joinWidth < contentWidth0 && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 			{
 				marginLeft0 = contentWidth / 2 - (imageWidth0 + imageWidth1 + marginHorizontal) / 2;
 				marginLeft1 = marginHorizontal;
@@ -295,7 +295,7 @@ function disposeImages(data = false)
 		}
 		else
 		{
-			if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
+			if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 			{
 				var imageHeight = (contentHeight - marginVertical * 2);
 				var imageWidth = imageHeight * first.aspectRatio;
@@ -377,7 +377,7 @@ var previousScrollTop = 0, previousContentHeight = 0;
 
 function stayInLine()
 {
-	if(readingViewIs('slide') || (readingViewIs('scroll') && !config.readingViewAdjustToWidth && !config.readingWebtoon))
+	if(readingViewIs('slide') || (readingViewIs('scroll') && !_config.readingViewAdjustToWidth && !_config.readingWebtoon))
 	{
 		if(currentIndex < 1)
 			showPreviousComic(1, false);
@@ -400,7 +400,7 @@ function stayInLine()
 //Go to a specific comic image (Left menu)
 function goToImageCL(index, animation = true)
 {
-	var animationDurationMS = ((animation) ? config.readingViewSpeed : 0) * 1000;
+	var animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
 
 	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
 	var leftImg = template.contentLeft('.r-l-i'+index);
@@ -436,7 +436,7 @@ function goToImage(imageIndex, bookmarks = false)
 
 		var newIndex = imagesData[imageIndex].position + 1;
 
-		if(config.readingManga && !readingViewIs('scroll'))
+		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
 
 		goToIndex(newIndex);
@@ -453,7 +453,7 @@ function goToFolder(folderIndex)
 
 		var newIndex = foldersPosition[folderIndex] + 1;
 
-		if(config.readingManga && !readingViewIs('scroll'))
+		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
 
 		goToIndex(newIndex);
@@ -464,7 +464,7 @@ function goToFolder(folderIndex)
 //Returns the highest image
 function returnLargerImage(index)
 {
-	if(config.readingDoublePage && !config.readingWebtoon)
+	if(_config.readingDoublePage && !_config.readingWebtoon)
 	{
 		var imageHeight0 = template.contentRight('.image-position'+(index)+'-0').height();
 		var imageHeight1 = template.contentRight('.image-position'+(index)+'-1').height();
@@ -491,7 +491,7 @@ var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, r
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
-	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
+	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 	var animationDurationMS = animationDurationS * 1000;
 
 	if(currentScale != 1 && animation)
@@ -509,11 +509,11 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var imgHeight = false;
 
-	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
+	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 	{
 		image = returnLargerImage(eIndex-1);
 
-		imgHeight = image.height() + config.readingMargin.top;
+		imgHeight = image.height() + _config.readingMargin.top;
 
 		if(imgHeight > contentHeight)
 		{
@@ -535,13 +535,13 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		currentPageStart = false;
 	}
-	else if(nextPrevious && !currentPageStart && (readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)))
+	else if(nextPrevious && !currentPageStart && (readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 	{
 		eIndex = currentIndex;
 
 		image = returnLargerImage(eIndex-1);
 
-		imgHeight = image.height() + config.readingMargin.top;
+		imgHeight = image.height() + _config.readingMargin.top;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -564,7 +564,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 			image = returnLargerImage(eIndex-1);
 
-			imgHeight = image.height() + config.readingMargin.top;
+			imgHeight = image.height() + _config.readingMargin.top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -604,9 +604,9 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		var scrollSum = 0;
 
-		if((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && pageVisibilityIndex !== false)
+		if((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && pageVisibilityIndex !== false)
 		{
-			imgHeight = image.height() + config.readingMargin.top;
+			imgHeight = image.height() + _config.readingMargin.top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -627,7 +627,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var newIndex = (eIndex - 1);
 
-	if(config.readingManga && !readingViewIs('scroll'))
+	if(_config.readingManga && !readingViewIs('scroll'))
 		newIndex = (indexNum - newIndex) - 1;
 
 	eachImagesDistribution(newIndex, ['image', 'folder'], function(image){
@@ -664,11 +664,11 @@ function goNext()
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
-	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
+	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 		goToIndex(nextIndex, true, true);
-	else if(currentIndex == indexNum && dom.nextComic() && (!config.readingManga || readingViewIs('scroll')))
+	else if(currentIndex == indexNum && dom.nextComic() && (!_config.readingManga || readingViewIs('scroll')))
 		showNextComic(1, true);
-	else if(currentIndex == indexNum && dom.previousComic() && config.readingManga && !readingViewIs('scroll'))
+	else if(currentIndex == indexNum && dom.previousComic() && _config.readingManga && !readingViewIs('scroll'))
 		showNextComic(1, true, true);
 }
 
@@ -683,18 +683,18 @@ function goPrevious()
 
 	if(currentIndex > indexNum)
 		showNextComic(2, true);
-	else if(previousIndex > 0 || ((readingViewIs('scroll') && (config.readingViewAdjustToWidth || config.readingWebtoon)) && currentPageVisibility > 0))
+	else if(previousIndex > 0 || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
 		goToIndex(previousIndex, true, true)
-	else if(previousIndex == 0 && dom.previousComic() && (!config.readingManga || readingViewIs('scroll')))
+	else if(previousIndex == 0 && dom.previousComic() && (!_config.readingManga || readingViewIs('scroll')))
 		showPreviousComic(1, true);
-	else if(previousIndex == 0 && dom.nextComic() && config.readingManga && !readingViewIs('scroll'))
+	else if(previousIndex == 0 && dom.nextComic() && _config.readingManga && !readingViewIs('scroll'))
 		showPreviousComic(1, true, true);
 }
 
 //Go to the start of the comic
 function goStart(force = false)
 {
-	if(force || !config.readingManga || readingViewIs('scroll'))
+	if(force || !_config.readingManga || readingViewIs('scroll'))
 	{
 		saveReadingProgressA = true;
 
@@ -718,7 +718,7 @@ function goStart(force = false)
 //Go to the end of the comic
 function goEnd(force = false)
 {
-	if(force || !config.readingManga || readingViewIs('scroll'))
+	if(force || !_config.readingManga || readingViewIs('scroll'))
 	{
 		saveReadingProgressA = true;
 
@@ -778,9 +778,9 @@ function showNextComic(mode, animation = true, invert = false)
 
 	if(mode == 1)
 	{
-		var transition = config.readingViewSpeed < config.readingDelayComicSkip ? config.readingViewSpeed : config.readingDelayComicSkip;
+		var transition = _config.readingViewSpeed < _config.readingDelayComicSkip ? _config.readingViewSpeed : _config.readingDelayComicSkip;
 
-		if(config.readingDelayComicSkip != 0)
+		if(_config.readingDelayComicSkip != 0)
 		{
 			if(readingViewIs('slide'))
 			{
@@ -819,13 +819,13 @@ function showNextComic(mode, animation = true, invert = false)
 				});
 			}
 
-			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
+			skip.find('circle').css('animation-duration', _config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -834,24 +834,24 @@ function showNextComic(mode, animation = true, invert = false)
 		if(readingViewIs('slide'))
 		{
 			var skip = template.contentRight('.reading-skip-right').css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
 			});
 		}
 		else if(readingViewIs('scroll'))
 		{
 			var skip = template.contentRight('.reading-skip-bottom').css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
@@ -872,9 +872,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 	if(mode == 1)
 	{
 
-		var transition = config.readingViewSpeed < config.readingDelayComicSkip ? config.readingViewSpeed : config.readingDelayComicSkip;
+		var transition = _config.readingViewSpeed < _config.readingDelayComicSkip ? _config.readingViewSpeed : _config.readingDelayComicSkip;
 
-		if(config.readingDelayComicSkip != 0)
+		if(_config.readingDelayComicSkip != 0)
 		{
 			if(readingViewIs('slide'))
 			{
@@ -914,13 +914,13 @@ function showPreviousComic(mode, animation = true, invert = false)
 				});
 			}
 
-			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
+			skip.find('circle').css('animation-duration', _config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -931,12 +931,12 @@ function showPreviousComic(mode, animation = true, invert = false)
 			var skip = template.contentRight('.reading-skip-left');
 
 			skip.css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
@@ -945,12 +945,12 @@ function showPreviousComic(mode, animation = true, invert = false)
 			var skip = template.contentRight('.reading-skip-top');
 
 			skip.css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 			});
 
 			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
@@ -963,7 +963,7 @@ var currentScale = 1, scalePrevData = {tranX: 0, tranY: 0, scale: 1}, originalRe
 
 function applyScale(animation = true, scale = 1, center = false, zoomOut = false)
 {
-	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
+	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 
 	scale = Math.round(scale * 100) / 100;
 
@@ -1086,7 +1086,7 @@ function zoomOut(animation = true, center = false)
 // Reset zoom
 function resetZoom(animation = true, index = false, apply = true)
 {
-	var animationDurationS = ((animation) ? config.readingViewSpeed : 0);
+	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 
 	currentScale = 1;
 
@@ -1240,10 +1240,10 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 function readingViewIs(value)
 {
-	if(value == 'scroll' && config.readingWebtoon)
+	if(value == 'scroll' && _config.readingWebtoon)
 		return true;
 
-	if(config.readingView == value && !config.readingWebtoon)
+	if(_config.readingView == value && !_config.readingWebtoon)
 		return true;
 
 	return false;
@@ -1259,6 +1259,54 @@ function disableOnScroll(mode)
 		activeOnScroll = true;
 }
 
+function updateReadingPagesConfig(key, value)
+{
+	_config[key] = value; 
+
+	if(currentReadingConfigKey === false)
+	{
+		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.indexMainPathA());
+		if(!readingPagesConfig || readingPagesConfig.configKey > 0)
+		{
+			if(readingPagesConfig && readingPagesConfig.configKey > 0)
+			{
+				var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', readingPagesConfig.configKey);
+
+				if(readingShortcutPagesConfig)
+					readingPagesConfig = copy(readingShortcutPagesConfig);
+				else
+					readingPagesConfig = copy(config);
+			}
+			else
+			{
+				readingPagesConfig = copy(config);
+			}
+		}
+
+		template.globalElement('.reading-shortcut-pages-config .menu-simple-element-icon-select').removeClass('active');
+
+		readingPagesConfig[key].configKey = false;
+		readingPagesConfig[key] = value;
+
+		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), readingPagesConfig);
+	}
+	else if(currentReadingConfigKey > 0)
+	{
+		var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', currentReadingConfigKey);
+
+		if(readingShortcutPagesConfig)
+		{		
+			readingShortcutPagesConfig[key] = value;
+
+			storage.updateVar('readingShortcutPagesConfig', currentReadingConfigKey, readingShortcutPagesConfig);
+		}
+	}
+	else if(currentReadingConfigKey == 0)
+	{
+		storage.updateVar('config', key, value);
+	}
+}
+
 //Controls the page view
 function changePagesView(mode, value, save)
 {
@@ -1269,7 +1317,7 @@ function changePagesView(mode, value, save)
 
 	var newIndex = (currentIndex - 1);
 
-	if(config.readingManga && !readingViewIs('scroll'))
+	if(_config.readingManga && !readingViewIs('scroll'))
 		newIndex = (indexNum - newIndex) - 1;
 
 	eachImagesDistribution(newIndex, ['image'], function(image){
@@ -1281,13 +1329,22 @@ function changePagesView(mode, value, save)
 
 	if(!imageIndex) imageIndex = currentIndex;
 
-	if(mode == 1) // Set the scroll mode
+	if(mode == 0)
 	{
-		storage.updateVar('config', 'readingView', value);
+		loadReadingPages();
+
+		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
+
+		read(readingCurrentPath, imageIndex);
+	}
+	else if(mode == 1) // Set the scroll mode
+	{
+		updateReadingPagesConfig('readingView', value);
 
 		dom.selectElement('.pages-'+value);
 
-		if(value == 'slide' && (config.readingViewAdjustToWidth || config.readingWebtoon))
+		if(value == 'slide' && (_config.readingViewAdjustToWidth || _config.readingWebtoon))
 		{
 			//storage.updateVar('config', 'readingViewAdjustToWidth', false);
 			//template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
@@ -1307,11 +1364,11 @@ function changePagesView(mode, value, save)
 	{
 		disposeImages({margin: value});
 
-		if(save) storage.updateVar('config', 'readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
+		if(save) updateReadingPagesConfig('readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
 	}
 	else if(mode == 3) // Set width adjustment
 	{
-		storage.updateVar('config', 'readingViewAdjustToWidth', value);
+		updateReadingPagesConfig('readingViewAdjustToWidth', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 		addHtmlImages();
@@ -1320,11 +1377,11 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
-		if(save) storage.updateVar('config', 'readingViewSpeed', value);
+		if(save) updateReadingPagesConfig('readingViewSpeed', value);
 	}
 	else if(mode == 5) // Set the delay when skip from comic
 	{
-		if(save) storage.updateVar('config', 'readingDelayComicSkip', value);
+		if(save) updateReadingPagesConfig('config', 'readingDelayComicSkip', value);
 	}
 	else if(mode == 6) // Set the reading to double page
 	{
@@ -1333,7 +1390,7 @@ function changePagesView(mode, value, save)
 		else
 			$('.reading-do-not-apply-to-horizontals').addClass('disable-pointer');
 
-		storage.updateVar('config', 'readingDoublePage', value);
+		updateReadingPagesConfig('readingDoublePage', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 		addHtmlImages();
@@ -1342,7 +1399,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
-		storage.updateVar('config', 'readingDoNotApplyToHorizontals', value);
+		updateReadingPagesConfig('readingDoNotApplyToHorizontals', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 		addHtmlImages();
@@ -1351,7 +1408,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
-		storage.updateVar('config', 'readingManga', value);
+		updateReadingPagesConfig('readingManga', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 		addHtmlImages();
@@ -1360,7 +1417,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
 	{
-		storage.updateVar('config', 'readingWebtoon', value);
+		updateReadingPagesConfig('readingWebtoon', value);
 
 		if(value)
 		{
@@ -1368,10 +1425,10 @@ function changePagesView(mode, value, save)
 		}
 		else
 		{
-			if(config.readingView == 'scroll')
+			if(_config.readingView == 'scroll')
 				template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
 			
-			if(config.readingDoublePage)
+			if(_config.readingDoublePage)
 				template.globalElement('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
 
 			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page').removeClass('disable-pointer');
@@ -1387,14 +1444,14 @@ function changePagesView(mode, value, save)
 		disposeImages({left: value, right: value});
 		stayInLine();
 
-		if(save) storage.updateVar('config', 'readingMargin', {margin: config.readingMargin.margin, top: config.readingMargin.top, bottom: config.readingMargin.bottom, left: value, right: value});
+		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: _config.readingMargin.top, bottom: _config.readingMargin.bottom, left: value, right: value});
 	}
 	else if(mode == 11) // Set vertical margin of the pages
 	{
 		disposeImages({top: value, bottom: value});
 		stayInLine();
 
-		if(save) storage.updateVar('config', 'readingMargin', {margin: config.readingMargin.margin, top: value, bottom: value, left: config.readingMargin.left, right: config.readingMargin.right});
+		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: value, bottom: value, left: _config.readingMargin.left, right: _config.readingMargin.right});
 	}
 }
 
@@ -1527,7 +1584,7 @@ function saveReadingProgress(path = false)
 
 		var newIndex = (currentIndex - 1);
 
-		if(config.readingManga && !readingViewIs('scroll'))
+		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) - 1;
 
 		eachImagesDistribution(newIndex, ['image'], function(image){
@@ -1673,6 +1730,289 @@ function loadBookmarks()
 	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
+var currentReadingConfigKey = false;
+
+function loadReadingConfig(key = false)
+{
+	_config = copy(config);
+
+	currentReadingConfigKey = key;
+
+	if(key === false)
+	{
+		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.indexMainPathA());
+
+		if(readingPagesConfig)
+		{
+			if(readingPagesConfig.configKey)
+				key = readingPagesConfig.configKey;
+			else
+				_config = {..._config, ...readingPagesConfig, key: readingPagesConfig.configKey};
+		}
+		else
+		{
+			_config.key = 0;
+		}
+	}
+
+	if(key > 0)
+	{
+		var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', key);
+
+		if(readingShortcutPagesConfig)
+			_config = {..._config, ...readingShortcutPagesConfig};
+
+		_config.key = key;
+	}
+	else if(key === 0)
+	{
+		_config.key = 0;
+	}
+
+	_config = copy(_config);
+
+	handlebarsContext._config = _config;
+}
+
+function loadReadingPages(key = false, edit = false)
+{
+	loadReadingConfig(key);
+
+	handlebarsContext.readingGlobalConfigName = config.readingConfigName ? config.readingConfigName : language.reading.pages.readingGlobal;
+
+	handlebarsContext.readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
+
+	handlebarsContext.editReadingShortcutPagesConfig = edit;
+
+	$('#reading-pages .menu-simple').html(template.load('reading.elements.menus.pages.html'));
+
+	events.events();
+}
+
+function setReadingShortcutPagesConfig(key = 0, desactiveMenu = true)
+{
+	if(key == 0)
+	{
+		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), null);
+	}
+	else
+	{
+		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.indexMainPathA());
+
+		if(!readingPagesConfig) readingPagesConfig = {};
+		readingPagesConfig.configKey = key;
+
+		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), readingPagesConfig);
+	}
+
+	changePagesView(0);
+
+	if(desactiveMenu)
+		events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant');
+}
+
+function editReadingShortcutPagesConfig(event, key = 0)
+{
+	event.stopPropagation();
+
+	loadReadingPages(key, true);
+
+	reading.changePagesView(0);
+
+	loadReadingPages(key, true);
+}
+
+function editReadingShortcutPagesConfigName(key = 0, save = false)
+{
+	if(save)
+	{
+		var name = $('.input-config-name').val();
+
+		if(isEmpty(name.trim()))
+		{
+			events.snackbar({
+				key: 'newReadingShortcutPagesConfig',
+				text: language.global.valueCannotBeEmpty,
+				duration: 6,
+				buttons: [
+					{
+						text: language.buttons.dismiss,
+						function: 'events.closeSnackbar();',
+					},
+				],
+			});
+		}
+		else
+		{
+			if(key === 0)
+			{
+				storage.updateVar('config', 'readingConfigName', name);
+			}
+			else
+			{			
+				var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', key);
+
+				if(readingShortcutPagesConfig)
+				{			
+					readingShortcutPagesConfig['readingConfigName'] = name;
+
+					storage.updateVar('readingShortcutPagesConfig', key, readingShortcutPagesConfig);
+
+				}
+			}
+
+			loadReadingPages(key, true);
+		}
+	}
+	else
+	{
+		if(key === 0)
+		{
+			handlebarsContext.readingShortcutConfigName = config.readingConfigName ? config.readingConfigName : language.reading.pages.readingGlobal;
+		}
+		else
+		{
+			var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', key);
+
+			handlebarsContext.readingShortcutConfigName = readingShortcutPagesConfig ? readingShortcutPagesConfig.readingConfigName : '';
+		}
+
+		events.dialog({
+			header: language.dialog.pages.readingConfigEditHeader,
+			width: 400,
+			height: false,
+			content: template.load('dialog.pages.reading.config.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.ok,
+					function: 'events.closeDialog(); reading.editReadingShortcutPagesConfigName('+key+', true);',
+				}
+			],
+		});
+	}
+}
+
+function newReadingShortcutPagesConfig(save = false)
+{
+	if(save)
+	{
+		var name = $('.input-config-name').val();
+
+		if(isEmpty(name.trim()))
+		{
+			events.snackbar({
+				key: 'newReadingShortcutPagesConfig',
+				text: language.global.valueCannotBeEmpty,
+				duration: 6,
+				buttons: [
+					{
+						text: language.buttons.dismiss,
+						function: 'events.closeSnackbar();',
+					},
+				],
+			});
+		}
+		else
+		{
+			var readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
+
+			var newKey = 0;
+
+			for(let key in readingShortcutPagesConfig)
+			{
+				if(key > newKey)
+					newKey = key;
+			}
+
+			newKey++;
+
+			readingShortcutPagesConfig[newKey] = {
+				...storage.readingPagesConfig,
+				key: newKey,
+				readingConfigName: name,
+			};
+
+			storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
+
+			reading.setReadingShortcutPagesConfig(newKey, false);
+		}
+	}
+	else
+	{
+		handlebarsContext.readingShortcutConfigName = '';
+
+		events.dialog({
+			header: language.dialog.pages.readingConfigNewHeader,
+			width: 400,
+			height: false,
+			content: template.load('dialog.pages.reading.config.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.ok,
+					function: 'events.closeDialog(); reading.newReadingShortcutPagesConfig(true);',
+				}
+			],
+		});
+	}
+}
+
+function removeReadingShortcutPagesConfig(key, confirm = false)
+{
+	if(confirm)
+	{
+		// Remove from shortcut config
+		var readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
+
+		delete readingShortcutPagesConfig[key];
+
+		storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
+
+		// Remove from comic config
+		var readingPagesConfig = storage.get('readingPagesConfig');
+
+		for(let path in readingPagesConfig)
+		{
+			if(readingPagesConfig[path].configKey && readingPagesConfig[path].configKey === key)
+				delete readingPagesConfig[path];
+		}
+
+		storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
+
+		// Reload
+		reading.loadReadingPages();
+		reading.changePagesView(0);
+	}
+	else
+	{
+		handlebarsContext.readingShortcutConfigName = '';
+
+		events.dialog({
+			header: language.dialog.pages.readingConfigRemoveHeader,
+			width: 400,
+			height: false,
+			content: language.dialog.pages.readingConfigRemove,
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.remove,
+					function: 'events.closeDialog(); reading.removeReadingShortcutPagesConfig('+key+', true);',
+				}
+			],
+		});
+	}
+}
+
 // Load supported tracking sites and favorite tracking sites
 function loadTrackigSites()
 {
@@ -1748,6 +2088,8 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 function read(path, index = 1, end = false)
 {
 	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1;
+
+	loadReadingConfig(currentReadingConfigKey);
 
 	saveReadingProgressA = false;
 
@@ -1999,7 +2341,7 @@ function read(path, index = 1, end = false)
 			var minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
 
 			var maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
-			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + config.readingMargin.top : 0);
+			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + _config.readingMargin.top : 0);
 
 			if(x > maxX)
 				x = maxX;
@@ -2175,7 +2517,7 @@ function read(path, index = 1, end = false)
 
 				var newIndex = currentIndex;
 
-				if(config.readingManga && !readingViewIs('scroll'))
+				if(_config.readingManga && !readingViewIs('scroll'))
 					newIndex = (indexNum - newIndex) + 1;
 
 				goToIndex(newIndex, false, end, end);
@@ -2202,7 +2544,7 @@ function read(path, index = 1, end = false)
 
 				var newIndex = currentIndex;
 
-				if(config.readingManga && !readingViewIs('scroll'))
+				if(_config.readingManga && !readingViewIs('scroll'))
 					newIndex = (indexNum - newIndex) + 1;
 
 				goToIndex(newIndex, false, end, end);
@@ -2257,7 +2599,14 @@ module.exports = {
 	currentIndex: function(){return currentIndex},
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,
+	loadReadingPages: loadReadingPages,
 	trackingSiteToFavorite: trackingSiteToFavorite,
+	setReadingShortcutPagesConfig: setReadingShortcutPagesConfig,
+	editReadingShortcutPagesConfig: editReadingShortcutPagesConfig,
+	editReadingShortcutPagesConfigName: editReadingShortcutPagesConfigName,
+	newReadingShortcutPagesConfig: newReadingShortcutPagesConfig,
+	removeReadingShortcutPagesConfig: removeReadingShortcutPagesConfig,
+	currentReadingConfigKey: function(){return currentReadingConfigKey},
 	onReading: function(){return onReading},
 	calculateImagesDistribution: calculateImagesDistribution,
 	imagesDistribution: function(){return imagesDistribution},

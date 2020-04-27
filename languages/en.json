@@ -26,6 +26,7 @@
 		"add": "Add",
 		"language": "Language",
 		"theme": "Theme",
+		"valueCannotBeEmpty": "Value cannot be empty",
 		"nightMode": "Night mode"
 	},
 	"comics": {
@@ -38,7 +39,6 @@
 		"previous": "Previous",
 		"next": "Next",
 		"lastPage": "Last page",
-
 		"pages": {
 			"main": "Pages",
 			"slide": "Slide Reader",
@@ -52,7 +52,9 @@
 			"readingDelaySkip": "Delay in changing comics",
 			"animationSpeed": "Animation speed",
 			"readingManga": "Reading manga (Inverted)",
-			"readingWebtoon": "Reading webtoon"
+			"readingWebtoon": "Reading webtoon",
+			"readingGlobal": "Global configuration",
+			"readingConfigNew": "New configuration"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",
@@ -125,13 +127,21 @@
 			"setChapterNumber": "Mark until the chapter",
 			"setVolumeNumber": "Mark until the volume",
 			"activate": "Activate tracking"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Create new configuration",
+			"readingConfigEditHeader": "Edit configuration",
+			"readingConfigName": "Configuration name",
+			"readingConfigRemoveHeader": "Remove configuration",
+			"readingConfigRemove": "Are you sure you want to remove this configuration?"
 		}
 	},
 	"buttons": {
 		"cancel": "Cancel",
 		"ok": "Ok",
 		"undo": "Undo",
-		"dismiss": "Dismiss"
+		"dismiss": "Dismiss",
+		"remove": "Remove"
 	},
 	"error": {
 		"uncompress": {

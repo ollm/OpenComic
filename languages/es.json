@@ -26,6 +26,7 @@
 		"add": "Añadir",
 		"language": "Idioma",
 		"theme": "Tema",
+		"valueCannotBeEmpty": "El valor no puede estar vació",
 		"nightMode": "Modo noche"
 	},
 	"comics": {
@@ -51,7 +52,9 @@
 			"readingDelaySkip": "Retraso al cambiar de cómic",
 			"animationSpeed": "Velocidad de la animación",
 			"readingManga": "Lectura de manga (Invertir)",
-			"readingWebtoon": "Lectura de webtoon"
+			"readingWebtoon": "Lectura de webtoon",
+			"readingGlobal": "Configuración global",
+			"readingConfigNew": "Nueva configuración"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -124,13 +127,21 @@
 			"setChapterNumber": "Marcar hasta el siguiente capítulo",
 			"setVolumeNumber": "Marcar hasta el siguiente tomo",
 			"activate": "Activar seguimiento"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Crear nueva configuración",
+			"readingConfigEditHeader": "Editar configuración",
+			"readingConfigName": "Nombre de la configuración",
+			"readingConfigRemoveHeader": "Eliminar configuración",
+			"readingConfigRemove": "¿Seguro que quiere eliminar esta configuración?"
 		}
 	},
 	"buttons": {
 		"cancel": "Cancelar",
 		"ok": "Ok",
 		"undo": "Deshacer",
-		"dismiss": "Descartar"
+		"dismiss": "Descartar",
+		"remove": "Eliminar"
 	},
 	"error": {
 		"uncompress": {

@@ -1,4 +1,23 @@
-var changes = 22;
+var changes = 26;
+
+var readingPagesConfig = {
+	readingConfigName: '',
+	readingView: 'slide',
+	readingViewSpeed: 0.3,
+	readingViewAdjustToWidth: false,
+	readingMargin: {
+		margin: 16,
+		top: 16,
+		bottom: 16,
+		left: 16,
+		right: 16
+	},
+	readingDelayComicSkip: 1,
+	readingDoublePage: false,
+	readingDoNotApplyToHorizontals: true,
+	readingManga: false,
+	readingWebtoon: false,
+};
 
 var storageDefault = {
 	config: {
@@ -14,26 +33,12 @@ var storageDefault = {
 		sort: 'name-numeric',
 		sortInvertIndex: false,
 		sortInvert: false,
-		readingView: 'slide',
-		readingViewSpeed: 0.3,
-		readingViewAdjustToWidth: false,
-		readingMargin: {
-			margin: 16,
-			top: 16,
-			bottom: 16,
-			left: 16,
-			right: 16
-		},
+		...readingPagesConfig,
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,
 		readingMagnifyingGlassSize: 200,
 		readingMagnifyingGlassRatio: 1.25,
 		readingMagnifyingGlassRadius: 4,
-		readingDelayComicSkip: 1,
-		readingDoublePage: false,
-		readingDoNotApplyToHorizontals: true,
-		readingManga: false,
-		readingWebtoon: false,
 		trackingSites: {
 			wildcard: {
 				favorite: false,
@@ -81,6 +86,18 @@ var storageDefault = {
 			index: 0,
 			path: 'Path',
 		}]
+	},
+	readingShortcutPagesConfig: {
+		wildcard: {
+			key: 0,
+			...readingPagesConfig,
+		}
+	},
+	readingPagesConfig: {
+		wildcard: {
+			configKey: false,
+			...readingPagesConfig,
+		}
 	},
 	readingProgress: {
 		wildcard: {
@@ -358,4 +375,5 @@ module.exports = {
 	storageJson: storageJson,
 	updateStorageMD: updateStorageMD,
 	getLocaleUserLanguage: getLocaleUserLanguage,
+	readingPagesConfig: readingPagesConfig,
 };
