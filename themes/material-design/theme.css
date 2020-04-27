@@ -2500,21 +2500,10 @@ body .night-mode
 }
 
 .night-mode .dialog-text .menu-simple-text,
-.night-mode .tracking-set-message
+.night-mode .tracking-set-message,
+.night-mode .input
 {
 	color: #fff;
-}
-
-.night-mode .content-right
-{
-	background-color: #212121;
-}
-
-.night-mode .bar-header,
-.night-mode .bar-header > div
-{
-	/*background-color: #212121;*/
-	background-color: #212121;
 }
 
 .night-mode .content-right > div
@@ -2523,20 +2512,18 @@ body .night-mode
 	background-color: #141414;
 }
 
-.night-mode .reading-lens
-{
-	background-color: #212121;
-}
-
+.night-mode .content-right,
+.night-mode .bar-header,
+.night-mode .bar-header > div,
+.night-mode .reading-lens,
 .night-mode .content-left,
-.night-mode .content-left > div
+.night-mode .content-left > div,
+.night-mode .menu-simple,
+.night-mode .content-view-module .v-folder,
+.night-mode .dialog,
+.night-mode .floating-action-button-min,
+.night-mode input
 {
-	background-color: #212121;
-}
-
-.night-mode .menu-simple
-{
-	/*background-color: #212121;*/
 	background-color: #212121;
 }
 
@@ -2555,16 +2542,6 @@ body .night-mode
 {
 	background-color: #212121;
 	border-bottom: 1px solid #414141;
-}
-
-.night-mode  .content-view-module .v-folder
-{
-	background-color: #212121;
-}
-
-.night-mode .dialog
-{
-	background-color: #212121;
 }
 
 .night-mode .dialog-header
@@ -2613,11 +2590,6 @@ body .night-mode
 .night-mode .switch:before
 {
 	background-color: #bdbdbd;
-}
-
-.night-mode .floating-action-button-min
-{
-	background-color: #212121;
 }
 
 .night-mode .content-left > div
