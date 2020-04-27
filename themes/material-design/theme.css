@@ -2015,6 +2015,7 @@ body .preload
 
 .reading-body .r-img > img, .reading-lens .r-img > img, .reading-body .r-img.blank > div, .reading-lens .r-img.blank > div/*, .reading-body .r-folder, .reading-lens .r-folder*/
 {
+	transition: background-color 0.2s;
 	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 3px, rgba(0, 0, 0, 0.239216) 0px 1px 2px;
 	background-color: #fff;
 	display: block;
@@ -2522,7 +2523,11 @@ body .night-mode
 .night-mode .content-view-module .v-folder,
 .night-mode .dialog,
 .night-mode .floating-action-button-min,
-.night-mode input
+.night-mode input,
+.night-mode .reading-body .r-img > img,
+.night-mode .reading-lens .r-img > img,
+.night-mode .reading-body .r-img.blank > div,
+.night-mode .reading-lens .r-img.blank > div
 {
 	background-color: #212121;
 }
