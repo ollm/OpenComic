@@ -49,6 +49,7 @@
 			"marginVertical": "Vertical margin",
 			"doublePage": "Double page",
 			"doNotApplyToHorizontals": "Do not apply to horizontals",
+			"blankPage": "Blank page at the beginning",
 			"readingDelaySkip": "Delay in changing comics",
 			"animationSpeed": "Animation speed",
 			"readingManga": "Reading manga (Inverted)",

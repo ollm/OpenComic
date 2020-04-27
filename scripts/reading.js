@@ -39,6 +39,9 @@ function calculateImagesDistribution()
 	{
 		var data = [];
 
+		if(_config.readingBlankPage && (!_config.readingDoNotApplyToHorizontals || (typeof imagesData[1] !== 'undefined' && imagesData[1].aspectRatio <= 1)))
+			data.push({index: false, folder: false, blank: true, width: 2});
+
 		for(let i = 1; i < (contentNum + 1); i++)
 		{
 			if(typeof imagesData[i] !== 'undefined')
@@ -1386,9 +1389,9 @@ function changePagesView(mode, value, save)
 	else if(mode == 6) // Set the reading to double page
 	{
 		if(value)
-			$('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
+			$('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
 		else
-			$('.reading-do-not-apply-to-horizontals').addClass('disable-pointer');
+			$('.reading-do-not-apply-to-horizontals, .reading-blank-page').addClass('disable-pointer');
 
 		updateReadingPagesConfig('readingDoublePage', value);
 
@@ -1421,7 +1424,7 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-ajust-to-width').addClass('disable-pointer');
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width').addClass('disable-pointer');
 		}
 		else
 		{
@@ -1429,7 +1432,7 @@ function changePagesView(mode, value, save)
 				template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
 			
 			if(_config.readingDoublePage)
-				template.globalElement('.reading-do-not-apply-to-horizontals').removeClass('disable-pointer');
+				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
 
 			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page').removeClass('disable-pointer');
 		}
@@ -1452,6 +1455,15 @@ function changePagesView(mode, value, save)
 		stayInLine();
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: value, bottom: value, left: _config.readingMargin.left, right: _config.readingMargin.right});
+	}
+	else if(mode == 12) // Add blank page at first
+	{
+		updateReadingPagesConfig('readingBlankPage', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
+
+		read(readingCurrentPath, imageIndex);
 	}
 }
 

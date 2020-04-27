@@ -1,4 +1,4 @@
-var changes = 26;
+var changes = 27;
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -15,6 +15,7 @@ var readingPagesConfig = {
 	readingDelayComicSkip: 1,
 	readingDoublePage: false,
 	readingDoNotApplyToHorizontals: true,
+	readingBlankPage: false,
 	readingManga: false,
 	readingWebtoon: false,
 };

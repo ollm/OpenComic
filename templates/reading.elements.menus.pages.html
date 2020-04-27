@@ -49,6 +49,10 @@
 	{{language.reading.pages.doNotApplyToHorizontals}}
 	<div class="switch{{#if _config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)"></div>
 </div>
+<div class="menu-simple-text reading-blank-page{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
+	{{language.reading.pages.blankPage}}
+	<div class="switch{{#if _config.readingBlankPage}} a{{/if}}" on="reading.changePagesView(12, true, false)" off="reading.changePagesView(12, false, false)"></div>
+</div>
 <div class="menu-simple-separator-min"></div>
 <div class="menu-simple-text reading-ajust-to-width{{#compare _config.readingView '==' 'slide'}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/compare}}">
 	{{language.reading.pages.adjustToWidth}}
