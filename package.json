@@ -59,8 +59,8 @@
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
 		"gm": "^1.23.1",
-		"handlebars": "^4.3.0",
-		"jimp": "^0.6.4",
+		"handlebars": "^4.7.6",
+		"jimp": "^0.10.3",
 		"jquery": "^3.4.1",
 		"ldd": "^1.0.0",
 		"mime": "^2.4.4",
@@ -79,7 +79,6 @@
 		"electron-rebuild": "^1.8.8",
 		"js-yaml": "^3.13.1",
 		"node-yaml": "^4.0.1",
-		"webpack": "^4.41.4",
 		"nodemon": "^2.0.2"
 	},
 	"build": {
