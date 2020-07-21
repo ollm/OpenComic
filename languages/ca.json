@@ -116,7 +116,7 @@
 	},
 	"dialog": {
 		"tracking": {
-			"getTokenHeader": "Inicia sessió a {{SITENAME}} mitjançant token",
+			"getTokenHeader": "Inicia sessió a {{siteName}} mitjançant token",
 			"getTokenInput": "El token de {{siteName}}",
 			"invalidTokenHeader": "Token de {{siteName}} no vàlid",
 			"resendToken": "Vol tornar a afegir el token de {{siteName}}?",
