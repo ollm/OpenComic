@@ -202,9 +202,16 @@ function returnFiles(path, all, fromCache, callback)
 		{
 			if(unrar === false) unrar = require('unrar');
 
+			var bin = false;
+
+			if(process.platform == 'win32' || process.platform == 'win64')
+				bin = asarToAsarUnpacked(p.join(appDir, 'unrar/UnRAR.exe'));
+			else if(process.platform == 'darwin')
+				bin = asarToAsarUnpacked(p.join(appDir, 'unrar/unrar_MacOSX_10.13.2_64bit'));
+
 			var archive = new unrar({
 				path: path,
-				$bin: (process.platform == 'win32' || process.platform == 'win64') ? asarToAsarUnpacked(p.join(appDir, 'unrar/UnRAR.exe')) : false,
+				bin: bin,
 			});
 			
 			archive.list(function (error, entries) {

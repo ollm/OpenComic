@@ -70,7 +70,7 @@
 		"sha1": "^1.1.1",
 		"sharp": "^0.23.4",
 		"tar-fs": "^2.0.0",
-		"unrar": "git+https://git@github.com/ollm/node-unrar.git",
+		"unrar": "^0.2.0",
 		"unzipper": "^0.10.1"
 	},
 	"devDependencies": {
