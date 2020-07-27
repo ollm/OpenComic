@@ -33,7 +33,7 @@
 				<div class="r-img r-img-i{{index}} folder"></div>
 				{{else}}
 				<div class="r-img r-img-i{{index}}">
-					<img src="{{chain 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
+					<img src="{{chain 'encodeSrcURI' 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
 				</div>
 				{{/if}}
 			{{/each}}
