@@ -3,7 +3,7 @@ var buttonCancel, buttonPulsed;
 function eventButton()
 {
 
-	$('.button').on('mousedown touchstart', function(e){
+	$('.button').on('mousedown.events touchstart.events', function(e){
 
 		$(this).removeClass('p c d').addClass('a');
 		clearTimeout(eventHoverTimeout);
@@ -13,7 +13,7 @@ function eventButton()
 
 	});
 
-	$('.button').on('mouseup touchend', function(e){
+	$('.button').on('mouseup.events touchend.events', function(e){
 
 		if(!buttonCancel)
 		{
@@ -24,7 +24,7 @@ function eventButton()
 
 	});
 
-	$('.button').on('mouseout', function(){
+	$('.button').on('mouseout.events', function(){
 
 		if(buttonPulsed)
 		{
@@ -36,7 +36,7 @@ function eventButton()
 
 	});
 
-	$('.floating-action-button').on('mousedown touchstart', function(e){
+	$('.floating-action-button').on('mousedown.events touchstart.events', function(e){
 
 		$(this).removeClass('p c d').addClass('a');
 		clearTimeout(eventHoverTimeout);
@@ -45,7 +45,7 @@ function eventButton()
 
 	});
 
-	$('.floating-action-button').on('mouseup touchend', function(e){
+	$('.floating-action-button').on('mouseup.events touchend.events', function(e){
 
 		if(!buttonCancel)
 		{
@@ -56,7 +56,7 @@ function eventButton()
 
 	});
 
-	$('.floating-action-button').on('mouseleave', function(){
+	$('.floating-action-button').on('mouseleave.events', function(){
 
 		if(buttonPulsed)
 		{
@@ -85,13 +85,13 @@ function eventHover()
 
 	});
 
-	$('.hover-text').on('mouseleave', function(){
+	$('.hover-text').on('mouseleave.events', function(){
 
 		hideHoverText();
 
 	});
 
-	$(document).on('mouseleave', function(){
+	$(document).on('mouseleave.events', function(){
 
 		hideHoverText();
 
@@ -99,13 +99,13 @@ function eventHover()
 
 	});
 
-	$(window).on('mousedown touchstart', function(){
+	$(window).on('mousedown.events touchstart.events', function(){
 
 		hideHoverText();
 
 	});
 
-	$(window).on('mousemove', function (e){
+	$(window).on('mousemove.events', function(e){
 
 		clearTimeout(eventHoverTimeout);
 
@@ -116,7 +116,7 @@ function eventHover()
 
 	});
 
-	$(window).on('mousemove touchstart touchmove', function (e){
+	$(window).on('mousemove.events touchstart.events touchmove', function(e){
 
 		currentPageX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
 		currentPageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
@@ -128,7 +128,7 @@ function eventHover()
 function eventSwitch()
 {
 
-	$('.switch').on('click', function(){
+	$('.switch').on('click.events', function(){
 
 		if($(this).hasClass('a'))
 		{
@@ -147,7 +147,7 @@ function eventSwitch()
 
 function eventRange()
 {
-	$('.range').on('change input', function(event) {
+	$('.range').on('change.events input.events', function(event) {
 
 		var onrange = $(this).attr('onrange');
 
@@ -181,13 +181,13 @@ function eventRange()
 
 function events()
 {
-	$('.button').off('mousedown mouseup touchstart touchend mouseout');
-	$(window).off('mouseover mouseleave mousedown mousemove');
-	$(document).off('mouseleave');
-	$('.hover-text').off('mousemove');
-	$('.floating-action-button').off('mousedown mouseup touchstart touchend');
-	$('.switch').off('click');
-	$('.range').off('change input');
+	$('.button').off('mousedown.events mouseup.events touchstart.events touchend.events mouseout.events');
+	$(window).off('mouseleave.events mousedown.events mousemove.events');
+	$(document).off('mouseleave.events');
+	$('.hover-text').off('mousemove.events');
+	$('.floating-action-button').off('mousedown.events mouseup.events touchstart.events touchend.events');
+	$('.switch').off('click.events');
+	$('.range').off('change.events input.events');
 
 	eventHover();
 	eventButton();

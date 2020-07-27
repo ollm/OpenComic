@@ -359,8 +359,8 @@ function calculateView()
 	if(readingViewIs('scroll'))
 	{
 		imagesPosition = [];
-		var element = template.contentRight().children('div');
-		var scrollTop = element.scrollTop() + element.offset().top;
+
+		var scrollTop = content.scrollTop() - content.offset().top;
 
 		for(var key1 in imagesDistribution)
 		{
@@ -370,7 +370,7 @@ function calculateView()
 			{
 				var image = template.contentRight('.image-position'+key1+'-'+key2);
 
-				imagesPosition[key1][key2] = (image.offset().top + (image.height() / 2)) - scrollTop;
+				imagesPosition[key1][key2] = (image.offset().top + (image.height() / 2)) + scrollTop;
 			}
 		}
 	}
@@ -489,7 +489,7 @@ function returnLargerImage(index)
 	return image;
 }
 
-var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true;
+var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true, disableOnScrollST = false;
 
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
@@ -623,7 +623,15 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 			}		
 		}
 
-		disableOnScroll(1)
+		clearTimeout(disableOnScrollST);
+
+		disableOnScroll(1);
+
+		disableOnScrollST = setTimeout(function(){
+
+			reading.disableOnScroll(2);
+
+		}, animationDurationMS);
 
 		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
@@ -746,7 +754,7 @@ function leftClick(e)
 {
 	var isTouch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if(!reading.haveZoom() && (!isTouch || !config.readingMagnifyingGlass))
+	if(!reading.haveZoom() && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
 		if(isTouch)
 			reading.goNext();
@@ -759,7 +767,7 @@ function rightClick(e)
 {
 	var isTouch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if(!reading.haveZoom() && (!isTouch || !config.readingMagnifyingGlass))
+	if(!reading.haveZoom() && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
 		if(isTouch)
 			reading.goPrevious();
@@ -1260,6 +1268,11 @@ function disableOnScroll(mode)
 		activeOnScroll = false;
 	else
 		activeOnScroll = true;
+}
+
+function setReadingDragScroll(dragScroll)
+{
+	readingDragScroll = dragScroll;
 }
 
 function updateReadingPagesConfig(key, value)
@@ -2094,7 +2107,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0};
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
@@ -2163,6 +2176,35 @@ function read(path, index = 1, end = false)
 			};
 
 			content.stop(true).animate({scrollTop: scrollTop+'px'}, 200);
+		}
+
+	});
+
+	template.contentRight('.reading-body, .reading-lens').on('pointerdown', function(e) {
+
+		if(onReading && !haveZoom && readingViewIs('scroll'))
+		{
+			if(e.originalEvent.pointerType != 'touch')
+			{
+				// e.preventDefault();
+
+				var content = template.contentRight().children();
+
+				var pageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+
+				readingDragScroll = {
+					start: false,
+					pageY: pageY,
+					content: content,
+					scrollTop: content.scrollTop(),
+					speed: [{
+						time: performance.now(),
+						pageY: pageY,
+					}],
+				};
+
+				content.stop(true);
+			}
 		}
 
 	});
@@ -2336,7 +2378,7 @@ function read(path, index = 1, end = false)
 
 	$(window).on('mousemove touchmove', function(e) {
 
-		if(haveZoom && zoomMoveData.active)
+		if(haveZoom && zoomMoveData.active) // Drag Image zoom
 		{
 			e.preventDefault();
 
@@ -2374,6 +2416,30 @@ function read(path, index = 1, end = false)
 				'transform-origin': 'center center',
 			});
 		}
+		
+		if(readingDragScroll) // Drag to scroll
+		{
+			e.preventDefault();
+
+			if(!readingDragScroll.start)
+			{
+				readingDragScroll.start = true;
+
+				$('body').addClass('dragging');
+			}
+
+			var pageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+
+			if(readingDragScroll.speed.length > 2)
+				readingDragScroll.speed.shift();
+
+			readingDragScroll.speed.push({
+				time: performance.now(),
+				pageY: pageY,
+			});
+
+			readingDragScroll.content.scrollTop(readingDragScroll.scrollTop - (pageY - readingDragScroll.pageY));
+		}
 
 	});
 
@@ -2390,6 +2456,35 @@ function read(path, index = 1, end = false)
 			zoomMoveData.active = false;
 
 			$('body').removeClass('dragging');
+		}
+		
+		if(readingDragScroll)
+		{
+			if(readingDragScroll.start)
+			{
+				var first = readingDragScroll.speed[0];
+				var last = readingDragScroll.speed[readingDragScroll.speed.length-1];
+
+				var dragSpeed = (first.pageY - last.pageY) / ((performance.now() - first.time) / 1000);
+
+				if(Math.abs(dragSpeed) > 120)
+				{
+					var duration = Math.abs(dragSpeed) / 1000;
+
+					if(duration > 2)
+						duration = 2;
+					else if(duration < 0.4)
+						duration = 0.4;
+
+					var moreScroll = Math.round((dragSpeed * duration) * 0.366);
+
+					readingDragScroll.content.stop(true).animate({scrollTop: (readingDragScroll.content.scrollTop() + moreScroll)+'px'}, duration * 1000, $.bez([0.22, 0.6, 0.3, 1]));
+				}
+
+				$('body').removeClass('dragging');
+			}
+
+			setTimeout(function(){reading.setReadingDragScroll(false)}, 10);
 		}
 
 	});
@@ -2605,6 +2700,7 @@ module.exports = {
 	setCurrentComics: setCurrentComics,
 	currentComics: function(){return currentComics},
 	disableOnScroll: disableOnScroll,
+	activeOnScroll: function(){return activeOnScroll},
 	saveReadingProgress: saveReadingProgress,
 	saveReadingProgressA: function(){return saveReadingProgressA},
 	createAndDeleteBookmark: createAndDeleteBookmark,
@@ -2626,4 +2722,5 @@ module.exports = {
 	haveZoom: function(){return haveZoom},
 	imagesPosition: function(){return imagesPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
+	setReadingDragScroll: setReadingDragScroll,
 };

@@ -32,6 +32,8 @@ const electron = require('electron'),
 	p = require('path'),
 	$ = require('jquery');
 
+require('jquery-bez');
+
 //console.timeEnd('Require time 1');
 
 var testVar = 'test';
