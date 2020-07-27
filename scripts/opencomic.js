@@ -530,6 +530,18 @@ function invertBackslash(string)
 	return string.replace(/\\+/g, '/');
 }
 
+function encodeSrcURI(string)
+{
+	let segments = string.split(p.sep);
+
+	for(let i in segments)
+	{
+		segments[i] = encodeURIComponent(segments[i]);
+	}
+
+	return segments.join(p.sep);
+}
+
 function toUnixPath(string)
 {
 	return string.replace(/\\+/g, '/').trim().replace(/^c\:/ig, '/');
@@ -694,6 +706,12 @@ hb.registerHelper('isEmpty', function(obj) {
 hb.registerHelper('encodeURI', function(string) {
 
 	return encodeURI(string);
+
+});
+
+hb.registerHelper('encodeSrcURI', function(string) {
+
+	return encodeSrcURI(string);
 
 });
 

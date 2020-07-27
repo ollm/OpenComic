@@ -12,7 +12,7 @@
 			{{else if blank}}
 			<div></div>
 			{{else}}
-			<img src="{{chain 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
+			<img src="{{chain 'encodeSrcURI' 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
 			{{/if}}
 		</div>
 	{{/each}}
