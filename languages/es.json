@@ -78,6 +78,11 @@
 			"volumes": "Tomos",
 			"volume": "Tomo"
 		},
+		"moreOptions": {
+			"main": "Más opciones",
+			"hideBarHeader": "Ocultar barra superior",
+			"hideContentLeft": "Ocultar barra lateral"
+		},
 		"viewBookmarks": "Ver marcadores",
 		"addBookmark": "Añadir marcador",
 		"removeBookmark": "Eliminar marcador",

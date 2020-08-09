@@ -1249,6 +1249,116 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 }
 
+function resizedWindow()
+{
+	if(onReading)
+	{
+		disposeImages();
+		calculateView();
+		stayInLine();
+	}
+
+	previousContentHeight = template.contentRight().children('div').children('div').height();
+}
+
+var hiddenContentLeft = false, hiddenBarHeader = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
+
+function hideContent(fullScreen = false, first = false)
+{
+	if(!onReading)
+	{
+		var _hideContentLeft = false;
+		var _hideBarHeader = false;
+	}
+	else if(fullScreen)
+	{
+		var _hideContentLeft = config.readingHideContentLeftFullScreen;
+		var _hideBarHeader = config.readingHideBarHeaderFullScreen;
+	}
+	else
+	{
+		var _hideContentLeft = config.readingHideContentLeft;
+		var _hideBarHeader = config.readingHideBarHeader;
+	}
+
+	clearTimeout(hideContentDisableTransitionsST);
+
+	$('.bar-header, .content-left').css('transition', '0s');
+
+	hideContentDisableTransitionsST = setTimeout(function(){
+
+		$('.bar-header, .content-left').css('transition', '');
+
+	});
+
+	var app = $('.app');
+
+	if(_hideContentLeft)
+	{
+		app.addClass('hide-content-left');
+		hiddenContentLeft = true;
+	}
+	else
+	{
+		app.removeClass('hide-content-left');
+		$('.content-left').removeClass('show');
+		hiddenContentLeft = false;
+	}
+
+	if(_hideBarHeader)
+	{
+		app.addClass('hide-bar-header');
+		hiddenBarHeader = true;
+	}
+	else
+	{
+		app.removeClass('hide-bar-header');
+		$('.bar-header').removeClass('show');
+		hiddenBarHeader = false;
+	}
+
+	if(!first && onReading)
+		resizedWindow();
+}
+
+function hideBarHeader(value = false)
+{
+	var isFullScreen = electron.remote.getCurrentWindow().isFullScreen();
+
+	if(isFullScreen)
+		storage.updateVar('config', 'readingHideBarHeaderFullScreen', value);
+	else
+		storage.updateVar('config', 'readingHideBarHeader', value);
+
+	hideContent(isFullScreen);
+}
+
+function hideContentLeft(value = false)
+{
+	var isFullScreen = electron.remote.getCurrentWindow().isFullScreen();
+
+	if(isFullScreen)
+		storage.updateVar('config', 'readingHideContentLeftFullScreen', value);
+	else
+		storage.updateVar('config', 'readingHideContentLeft', value);
+
+	hideContent(isFullScreen);
+}
+
+function loadReadingMoreOptions()
+{
+	var isFullScreen = electron.remote.getCurrentWindow().isFullScreen();
+
+	handlebarsContext.hideContent = {
+		barHeader: isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader,
+		contentLeft: isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft,
+	};
+
+	$('#reading-more-options .menu-simple').html(template.load('reading.elements.menus.more.options.html'));
+
+	events.events();
+}
+
 function readingViewIs(value)
 {
 	if(value == 'scroll' && _config.readingWebtoon)
@@ -2378,12 +2488,12 @@ function read(path, index = 1, end = false)
 
 	$(window).on('mousemove touchmove', function(e) {
 
+		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
+		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+
 		if(haveZoom && zoomMoveData.active) // Drag Image zoom
 		{
 			e.preventDefault();
-
-			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
-			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
 
 			x = scalePrevData.tranX + (x - zoomMoveData.x);
 			y = scalePrevData.tranY + (y - zoomMoveData.y);
@@ -2439,6 +2549,64 @@ function read(path, index = 1, end = false)
 			});
 
 			readingDragScroll.content.scrollTop(readingDragScroll.scrollTop - (pageY - readingDragScroll.pageY));
+		}
+
+		if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
+		{
+			if(y < 48)
+			{
+				if(hiddenBarHeader && !shownBarHeader && !shownContentLeft && !hideContentRunningST)
+				{
+					hideContentST = setTimeout(function(){
+
+						$('.bar-header').addClass('show');
+						reading.setShownBarHeader(true);
+
+					}, 300);
+
+					hideContentRunningST = true;
+				}
+			}
+			else if(x < 48)
+			{
+				if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && !hideContentRunningST)
+				{
+					hideContentST = setTimeout(function(){
+
+						$('.content-left').addClass('show');
+						reading.setShownContentLeft(true);
+
+					}, 300);
+
+					hideContentRunningST = true;
+				}
+			}
+			else
+			{
+				clearTimeout(hideContentST);
+
+				hideContentRunningST = false;
+			}
+
+			if(shownBarHeader && y > template.barHeader().height() + 48)
+			{
+				clearTimeout(hideContentST);
+
+				$('.bar-header').removeClass('show');
+				reading.setShownBarHeader(false);
+
+				hideContentRunningST = false;
+			}
+
+			if(shownContentLeft && x > template.contentLeft().width() + 48)
+			{
+				clearTimeout(hideContentST);
+
+				$('.content-left').removeClass('show');
+				reading.setShownContentLeft(false);
+
+				hideContentRunningST = false;
+			}
 		}
 
 	});
@@ -2520,18 +2688,7 @@ function read(path, index = 1, end = false)
 
 	})
 
-	$(window).on('resize', function() {
-
-		if(onReading)
-		{
-			disposeImages();
-			calculateView();
-			stayInLine();
-		}
-
-		previousContentHeight = template.contentRight().children('div').children('div').height();
-
-	});
+	$(window).on('resize', resizedWindow);
 
 	$(window).on('mousewheel touchstart keydown', function(e) {
 
@@ -2723,4 +2880,10 @@ module.exports = {
 	imagesPosition: function(){return imagesPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
 	setReadingDragScroll: setReadingDragScroll,
+	hideContent: hideContent,
+	hideContentLeft: hideContentLeft,
+	hideBarHeader: hideBarHeader,
+	setShownContentLeft: function(value){shownContentLeft = value},
+	setShownBarHeader: function(value){shownBarHeader = value},
+	loadReadingMoreOptions: loadReadingMoreOptions,
 };

@@ -315,6 +315,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 {
 	onReading = false;
 
+	reading.hideContent();
+
 	generateAppMenu();
 
 	if(!path)
@@ -1086,6 +1088,8 @@ function loadLanguagesPage(animation = true)
 
 	onReading = false;
 
+	reading.hideContent();
+
 	generateAppMenu();
 
 	if(typeof handlebarsContext.languagesList == 'undefined')
@@ -1523,6 +1527,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		events.events();
 
 		reading.read(path, indexStart, end);
+		reading.hideContent(electron.remote.getCurrentWindow().isFullScreen(), true);
 
 		generateAppMenu();
 

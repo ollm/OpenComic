@@ -487,7 +487,17 @@ body .preload
 	background-color: #fff;
 	z-index: 10;
 	overflow: hidden;
-	transition: background-color 0.2s;
+	transition: background-color 0.2s, transform 0.2s;
+}
+
+.hide-bar-header .bar-header
+{
+	top: -64px;
+}
+
+.hide-bar-header .bar-header.show
+{
+	transform: translate(0px, 64px);
 }
 
 .bar-header > div
@@ -564,6 +574,19 @@ body .preload
 	transition: background-color 0.2s;
 }
 
+.hide-content-left .content-left
+{
+	z-index: 2;
+	left: -220px;
+	box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.26);
+	transition: transform 0.2s;
+}
+
+.hide-content-left .content-left.show
+{
+	transform: translate(220px, 0px);
+}
+
 .content-left > div
 {
 	position: absolute;
@@ -577,6 +600,18 @@ body .preload
 	/*box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);*/
 	transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
 	border-right: 1px solid #e0e0e0/*#e6e6e6*/;
+}
+
+.hide-content-left .content-left > div
+{
+	width: 100%;
+	border-right: 0px solid #e0e0e0;
+}
+
+.hide-bar-header .content-left > div
+{
+	height: calc(100% - 50px);
+	top: 0px;
 }
 
 .content-left > div > div
@@ -629,6 +664,18 @@ body .preload
 	padding: 50px 0px;
 	margin-top: -50px;
 	z-index: 1;
+}
+
+.hide-content-left .content-right
+{
+	width: 100%;
+	left: 0px;
+}
+
+.hide-bar-header .content-right
+{
+	height: 100%;
+	top: 0px;
 }
 
 .content-right > div.a
@@ -845,6 +892,12 @@ body .preload
 	padding: 12px;
 }
 
+.button-min
+{
+	width: 24px;
+	padding: 12px 0px;
+}
+
 .button:hover
 {
 	color: #666666;
@@ -870,6 +923,12 @@ body .preload
 	position: absolute;
 	top: 0px;
 	left: 0px;
+}
+
+.button-min:before
+{
+	width: 24px;
+	left: -8px;
 }
 
 /*Button 1*/
@@ -2600,6 +2659,11 @@ body .night-mode
 .night-mode .content-left > div
 {
 	border-right: 1px solid #414141;
+}
+
+.night-mode.hide-content-left .content-left > div
+{
+	border-right: 0px solid #414141;
 }
 
 .night-mode .separator-1

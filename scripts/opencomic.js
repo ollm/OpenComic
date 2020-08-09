@@ -15,6 +15,7 @@ document.addEventListener("keydown", event => {
 	{
 		if(electron.remote.getCurrentWindow().isFullScreen())
 		{
+			reading.hideContent(false);
 			electron.remote.getCurrentWindow().setFullScreen(false);
 			electron.remote.getCurrentWindow().setMenuBarVisibility(true)
 		}
@@ -448,7 +449,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
 					{label: language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
 					{type: 'separator'},
-					{label: language.menu.view.toggleFullScreen, click: function(){var win = electron.remote.getCurrentWindow(); win.setMenuBarVisibility(win.isFullScreen()); win.setFullScreen(!win.isFullScreen());}, accelerator: 'F11'},
+					{label: language.menu.view.toggleFullScreen, click: function(){var win = electron.remote.getCurrentWindow(); reading.hideContent(!win.isFullScreen()); win.setMenuBarVisibility(win.isFullScreen()); win.setFullScreen(!win.isFullScreen());}, accelerator: 'F11'},
 				]
 			},
 			{

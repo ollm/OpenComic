@@ -78,6 +78,11 @@
 			"volumes": "Volumes",
 			"volume": "Volume"
 		},
+		"moreOptions": {
+			"main": "More options",
+			"hideBarHeader": "Hide header bar",
+			"hideContentLeft": "Hide lateral bar"
+		},
 		"viewBookmarks": "View bookmarks",
 		"addBookmark": "Add bookmark",
 		"removeBookmark": "Remove bookmark",

@@ -78,6 +78,11 @@
 			"volumes": "Toms",
 			"volume": "Tom"
 		},
+		"moreOptions": {
+			"main": "Més opcions",
+			"hideBarHeader": "Amaga la barra superior",
+			"hideContentLeft": "Amaga la barra lateral"
+		},
 		"viewBookmarks": "Veure marcadors",
 		"addBookmark": "Afegeix marcador",
 		"removeBookmark": "Eliminar marcador",

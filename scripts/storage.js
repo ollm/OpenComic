@@ -1,4 +1,4 @@
-var changes = 27;
+var changes = 28;
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -40,6 +40,10 @@ var storageDefault = {
 		readingMagnifyingGlassSize: 200,
 		readingMagnifyingGlassRatio: 1.25,
 		readingMagnifyingGlassRadius: 4,
+		readingHideContentLeft: false,
+		readingHideBarHeader: false,
+		readingHideContentLeftFullScreen: true,
+		readingHideBarHeaderFullScreen: true,
 		trackingSites: {
 			wildcard: {
 				favorite: false,
