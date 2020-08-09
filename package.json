@@ -80,7 +80,7 @@
 		"electron-rebuild": "^1.8.8",
 		"js-yaml": "^3.13.1",
 		"node-yaml": "^4.0.1",
-		"nodemon": "^2.0.2"
+		"nodemon": "^2.0.4"
 	},
 	"build": {
 		"appId": "org.opencomic.app",
