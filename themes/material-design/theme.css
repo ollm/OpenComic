@@ -709,7 +709,18 @@ body .preload
 .bar-right-buttons
 {
 	float: right;
-	padding-right: 12px; 
+	max-width: calc(100% - 160px);
+	overflow-x: auto;
+	overflow-y: hidden;
+	height: 48px;
+}
+
+.bar-right-buttons > div
+{
+	min-width: max-content;
+	height: 48px;
+	padding-right: 12px;
+	overflow: hidden;
 }
 
 .bar-right-buttons > div > div.button
@@ -1002,6 +1013,7 @@ body .preload
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
+	min-width: 92px;
 }
 
 .bar-title-a
@@ -1251,7 +1263,7 @@ body .preload
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
-    max-width: 184px;
+	max-width: 184px;
 }
 
 .menu-simple-element-icon-select
@@ -2524,6 +2536,11 @@ body .preload
 	transition: background-color 0.2s, border-color 0.2s;
 }
 
+.bar-right-buttons::-webkit-scrollbar
+{
+	border-left: 0px;
+}
+
 ::-webkit-scrollbar-thumb
 {
 	border-radius: 16px;
@@ -2702,6 +2719,11 @@ body .night-mode
 {
 	border-left: 1px solid #414141;
 	background-color: #212121;
+}
+
+.night-mode .bar-right-buttons::-webkit-scrollbar
+{
+	border-left: 0px;
 }
 
 .night-mode ::-webkit-scrollbar-thumb
