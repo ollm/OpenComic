@@ -264,7 +264,7 @@ function returnFiles(path, all, fromCache, callback)
 
 						Promise.all(tasks).then(function(){
 
-							if(if(process.platform == 'win32' || process.platform == 'win64')) // Fix Windows bug: EPERM: operation not permitted, rename
+							if(process.platform == 'win32' || process.platform == 'win64') // Fix Windows bug: EPERM: operation not permitted, rename
 							{
 								for(let i = 0; i < 100; i++)
 								{
