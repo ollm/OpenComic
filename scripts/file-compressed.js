@@ -242,7 +242,7 @@ function returnFiles(path, all, fromCache, callback)
 
 						for(let i = 0, len = dirs.length; i < len; i++)
 						{
-							fs.mkdirSync(p.join(tempFolder, shaExt, dirs[i].name));
+							if(!fs.existsSync(p.join(tempFolder, shaExt, dirs[i].name))) fs.mkdirSync(p.join(tempFolder, shaExt, dirs[i].name));
 						}
 
 						var tasks = [];
@@ -263,6 +263,28 @@ function returnFiles(path, all, fromCache, callback)
 						}
 
 						Promise.all(tasks).then(function(){
+
+							if(if(process.platform == 'win32' || process.platform == 'win64')) // Fix Windows bug: EPERM: operation not permitted, rename
+							{
+								for(let i = 0; i < 100; i++)
+								{
+									if(fs.existsSync(p.join(tempFolder, shaExt)))
+									{
+										try
+										{
+											fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+										}
+										catch
+										{
+
+										}
+									}
+									else
+									{
+										break;
+									}
+								}
+							}
 
 							if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
 
