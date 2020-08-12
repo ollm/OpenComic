@@ -542,7 +542,7 @@ function encodeSrcURI(string)
 		if(i != 0)
 			segments[i] = encodeURIComponent(segments[i]);
 		else
-			segments[i] = encodeURIComponent(segments[i]);
+			segments[i] = segments[i];
 	}
 
 	return segments.join(p.sep);
