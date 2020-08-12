@@ -1,18 +1,20 @@
-## Download `version 0.1.5`
+## Download `version 0.2.0`
 ###### Windows
-* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.1.5/OpenComic.Setup.0.1.5.exe)
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic.Setup.0.2.0.exe)
 ###### macOS
-* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.1.5/OpenComic-0.1.5-mac.7z)
+* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0-mac.7z)
 ###### Linux
-* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic_0.1.5_amd64.deb)
-* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic-0.1.5.x86_64.rpm)
-* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic_0.1.5_amd64.snap)
-* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic-0.1.5.7z)
+* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_amd64.deb)
+* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.x86_64.rpm)
+* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_amd64.snap)
+* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.7z)
+* [.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0.AppImage)
 * `snap install opencomic`
 ###### Linux Arm64
-* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic_0.1.5_arm64.deb)
-* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic-0.1.5.arm64.rpm)
-* [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v0.1.5/opencomic-0.1.5-arm64.7z)
+* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_arm64.deb)
+* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.arm64.rpm)
+* [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0-arm64.7z)
+* [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0-arm64.AppImage)
 
 ## ScreenShot
 
@@ -23,6 +25,7 @@
 * Support this image formats: JPG, PNG, APNG, GIF, WEBP, SVG, BMP, ICO
 * Support this compressed formats: PDF, RAR, ZIP, 7Z, TAR, CBR, CBZ, CB7, CBT
 * Manga read mode
+* Webtoon read mode
 * Double page view
 * Bookmarks and continue reading
 * Floating magnifying glass
