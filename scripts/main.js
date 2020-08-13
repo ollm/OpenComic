@@ -11,8 +11,8 @@ function createWindow () {
 	// Create the browser window.
 
 	var mainWindowState = windowStateKeeper({
-		defaultWidth: 800,
-		defaultHeight: 600
+		defaultWidth: 1100,
+		defaultHeight: 640
 	});
 
 	var image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png')); 

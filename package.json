@@ -41,7 +41,7 @@
 		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
 		"build-mac-zip": "npm run prebuild && electron-builder --mac zip",
 		"build-mac-7z": "npm run prebuild && electron-builder --mac 7z",
-		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm snap AppImage tar.gz",
+		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm AppImage 7z",
 		"build-deb-arm": "npm run prebuild && electron-builder --arm64 --linux deb",
 		"build-rpm-arm": "npm run prebuild && electron-builder --arm64 --linux rpm",
 		"build-snap-arm": "npm run prebuild && electron-builder --arm64 --linux snap",
@@ -49,7 +49,7 @@
 		"build-tar-arm": "npm run prebuild && electron-builder --arm64 --linux tar.gz",
 		"build-zip-arm": "npm run prebuild && electron-builder --arm64 --linux zip",
 		"build-7z-arm": "npm run prebuild && electron-builder --arm64 --linux 7z",
-		"snapcraft": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-x64/ && snapcraft",
+		"snapcraft": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-amd64/ && snapcraft",
 		"snapcraft-arm": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64",
 		"postinstall": "electron-builder install-app-deps"
 	},

@@ -2,7 +2,7 @@ const fs = require('fs'),
 	p = require('path'),
 	yaml = require('node-yaml');
 
-var yamlDir = p.join(__dirname, '../dist/__snap-x64/snap/snapcraft.yaml');
+var yamlDir = p.join(__dirname, '../dist/__snap-amd64/snap/snapcraft.yaml');
 
 if(fs.existsSync(yamlDir))
 {
@@ -18,7 +18,7 @@ if(fs.existsSync(yamlDir))
 }
 else
 {
-	console.log('__snap-x64 not found');
+	console.log('__snap-amd64 not found');
 }
 
 var yamlDir = p.join(__dirname, '../dist/__snap-arm64/snap/snapcraft.yaml');
