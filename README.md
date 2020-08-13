@@ -8,15 +8,17 @@
 * [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.x86_64.rpm)
 * [.snap](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_amd64.snap)
 * [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.7z)
+* [.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0.AppImage)
 * `snap install opencomic`
 ###### Linux Arm64
 * [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_arm64.deb)
 * [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.arm64.rpm)
 * [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0-arm64.7z)
+* [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0-arm64.AppImage)
 
 ## ScreenShot
 
-![Screenshot](https://i.ibb.co/PYJs7Cs/screenshots.png "Screenshot")
+![Screenshot](https://i.ibb.co/vPKbpyQ/Open-Comic-Screen-Shot.png "Screenshot")
 
 ## Features
 
