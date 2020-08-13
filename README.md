@@ -18,7 +18,7 @@
 
 ## ScreenShot
 
-![Screenshot](https://i.ibb.co/PYJs7Cs/screenshots.png "Screenshot")
+![Screenshot](https://i.ibb.co/vPKbpyQ/Open-Comic-Screen-Shot.png "Screenshot")
 
 ## Features
 
