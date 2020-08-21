@@ -49,7 +49,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 	$('.content-right > div.to-remove').remove();
 	$('.content-right > div').addClass('to-remove');
 
-	if(keepScroll)
+	if(keepScroll && keepScroll < 2)
 	{
 		var previous = $('.content-right > div > div').last();
 		var scroll = (previous.scrollTop() / (previous.prop('scrollHeight') - previous.height()));
@@ -60,7 +60,11 @@ function changeContentRight(html, animation = true, keepScroll = false)
 	if(keepScroll)
 	{
 		var current = $('.content-right > div > div').last();
-		current.scrollTop((current.prop('scrollHeight') - current.height()) * scroll);
+
+		if(keepScroll > 1)
+			current.scrollTop(keepScroll);
+		else
+			current.scrollTop((current.prop('scrollHeight') - current.height()) * scroll);
 	}
 
 	contentRight = $('.content-right .content-right-'+contentRightZindex);

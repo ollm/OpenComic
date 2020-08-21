@@ -303,13 +303,18 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 		handlebarsContext.comicsReadingProgress = false;
 	}
 
-	template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));
+	if(keepScroll > 1)
+		template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html')).scrollTop(keepScroll);
+	else
+		template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));
 
 	//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 	events.events();
 	justifyViewModule();
 
 }
+
+var currentPath = false, currentPathScrollTop = [];
 
 function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
 {
@@ -318,6 +323,19 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	reading.hideContent();
 
 	generateAppMenu();
+
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
+
+	for(let _path in currentPathScrollTop)
+	{
+		if(_path != 0 && !new RegExp('^'+escapeRegExp(_path)).test(path))
+			delete currentPathScrollTop[_path];
+	}
+
+	if(currentPathScrollTop[path === false ? 0 : path])
+		keepScroll = currentPathScrollTop[path === false ? 0 : path];
+
+	currentPath = path;
 
 	if(!path)
 	{
@@ -1388,6 +1406,9 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 function openComic(animation = true, path = true, mainPath = true, end = false)
 {
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
+	currentPath = path;
+
 	var startImage = false;
 	var imagePath = path;
 	var indexStart = 1;

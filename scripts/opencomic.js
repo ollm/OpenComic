@@ -283,6 +283,11 @@ function escapeQuotes(str, mode = false)
 		return String(str).replace(/'/g, '\\\'').replace(/"/g, '\\\"');
 }
 
+function escapeRegExp(string)
+{
+	return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function readFileApp(file)
 {
 	return fs.readFileSync(p.join(appDir, file), 'utf8');
