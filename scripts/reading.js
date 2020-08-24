@@ -1,5 +1,5 @@
 
-var images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
+var images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -359,18 +359,29 @@ function calculateView()
 	if(readingViewIs('scroll'))
 	{
 		imagesPosition = [];
+		imagesFullPosition = [];
 
 		var scrollTop = content.scrollTop() - content.offset().top;
 
 		for(var key1 in imagesDistribution)
 		{
 			if(typeof imagesPosition[key1] === 'undefined') imagesPosition[key1] = [];
+			if(typeof imagesFullPosition[key1] === 'undefined') imagesFullPosition[key1] = [];
 
 			for(var key2 in imagesDistribution[key1])
 			{
 				var image = template.contentRight('.image-position'+key1+'-'+key2);
 
-				imagesPosition[key1][key2] = (image.offset().top + (image.height() / 2)) + scrollTop;
+				let offset = image.offset(),
+					top = offset.top + _config.readingMargin.top;
+					height = image.height() - _config.readingMargin.top;
+
+				imagesPosition[key1][key2] = (top + (height / 2)) + scrollTop;
+				imagesFullPosition[key1][key2] = {
+					top: top + scrollTop,
+					center: imagesPosition[key1][key2],
+					bottom: top + height + scrollTop,
+				};
 			}
 		}
 	}
@@ -387,7 +398,7 @@ function stayInLine()
 		else if(currentIndex > contentNum)
 			showNextComic(1, false);
 		else
-			goToIndex(currentIndex, false);
+			goToIndex(currentIndex, false, currentPageVisibility);
 	}
 	else if(readingViewIs('scroll'))
 	{
@@ -396,7 +407,7 @@ function stayInLine()
 		else if(currentIndex > contentNum)
 			showNextComic(1, false);
 		else
-			goToIndex(currentIndex, false);
+			goToIndex(currentIndex, false, currentPageVisibility);
 	}
 }
 
@@ -489,7 +500,7 @@ function returnLargerImage(index)
 	return image;
 }
 
-var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, previousReadingDirection = true, readingDirection = true, disableOnScrollST = false;
+var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, disableOnScrollST = false;
 
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
@@ -534,6 +545,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 			currentPageVisibility = 0;
 		}
 
+		if(nextPrevious !== false && nextPrevious !== true) currentPageVisibility = nextPrevious;
 		pageVisibilityIndex = currentPageVisibility;
 
 		currentPageStart = false;
@@ -551,6 +563,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		else
 			currentPageVisibility--;
 
+		if(nextPrevious !== false && nextPrevious !== true) currentPageVisibility = nextPrevious;
 		pageVisibilityIndex = currentPageVisibility;
 
 		var pageVisibility = Math.floor(imgHeight / contentHeight);
@@ -583,6 +596,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 				currentPageVisibility = 0;
 			}
 
+			if(nextPrevious !== false && nextPrevious !== true) currentPageVisibility = nextPrevious;
 			pageVisibilityIndex = currentPageVisibility;
 			currentPageStart = false;
 		}
@@ -660,8 +674,6 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 			isBookmarkTrue = true;
 
 	});
-
-	previousReadingDirection = readingDirection;
 }
 
 //Go to the next comic page
@@ -2222,7 +2234,7 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
 {
-	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1;
+	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0;
 
 	loadReadingConfig(currentReadingConfigKey);
 
@@ -2703,21 +2715,66 @@ function read(path, index = 1, end = false)
 		{
 			previousScrollTop = $(this).scrollTop();
 			let contentHeight = template.contentRight().children('div').height();
-			let contentPosition = (previousScrollTop + (contentHeight / 2));
+			let contentPosition = (previousScrollTop + (contentHeight / 2)),
+				contentPositionTop = previousScrollTop,
+				contentPositionBottom = previousScrollTop + contentHeight;
 
 			let selIndex = false, selPosition = false;
 
-			for(let key1 in imagesPosition)
+			let lastKey = imagesFullPosition.length - 1;
+
+			toBreak:
+			for(let key1 in imagesFullPosition)
 			{
-				for(let key2 in imagesPosition[key1])
+				for(let key2 in imagesFullPosition[key1])
 				{
-					if(!selIndex || Math.abs(contentPosition - imagesPosition[key1][key2]) < selPosition)
+					if(key1 == 0 && imagesFullPosition[key1][key2].center - contentPositionTop > 0)
 					{
 						selIndex = key1;
-						selPosition = Math.abs(contentPosition - imagesPosition[key1][key2]);
+
+						break toBreak;
+					}
+					else if(key1 == lastKey && imagesFullPosition[key1][key2].center - contentPositionBottom < 0)
+					{
+						selIndex = key1;
+
+						break toBreak;
+					}
+					else
+					{
+						var position = 0;
+
+						if(Math.abs(contentPosition - imagesFullPosition[key1][key2].top) < Math.abs(contentPosition - imagesFullPosition[key1][key2].bottom))
+							position = imagesFullPosition[key1][key2].top + 16;
+						else
+							position = imagesFullPosition[key1][key2].bottom - 16;
+
+						position = Math.abs(contentPosition - position);
+
+						if(!selIndex || position < selPosition)
+						{
+							selIndex = key1;
+							selPosition = position;
+						}
+						else if(selIndex && position > selPosition)
+						{
+							break toBreak;
+						}
 					}
 				}
 			}
+
+			var imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (_config.readingMargin.top * 2);
+
+			var pageVisibility = Math.floor(imgHeight / contentHeight);
+
+			maxPageVisibility = pageVisibility;
+
+			var contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
+
+			scrollPart = ((contentHeight - contentHeightRes) - contentHeight / pageVisibility);
+
+			currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - _config.readingMargin.top)) / scrollPart);
 
 			if(currentIndex != (parseInt(selIndex) + 1))
 			{
@@ -2862,6 +2919,7 @@ module.exports = {
 	saveReadingProgressA: function(){return saveReadingProgressA},
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
+	currentPageVisibility: function(){return currentPageVisibility},
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,
 	loadReadingPages: loadReadingPages,
@@ -2878,6 +2936,7 @@ module.exports = {
 	applyMangaReading: applyMangaReading,
 	haveZoom: function(){return haveZoom},
 	imagesPosition: function(){return imagesPosition},
+	imagesFullPosition: function(){return imagesFullPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
 	setReadingDragScroll: setReadingDragScroll,
 	hideContent: hideContent,
