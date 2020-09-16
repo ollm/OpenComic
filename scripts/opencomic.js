@@ -23,6 +23,33 @@ document.addEventListener("keydown", event => {
 
 });
 
+
+window.addEventListener('error', function(evt) {
+
+	var error = false;
+
+	if(evt.message)
+		error = 'Error: '+evt.message +' at linenumber '+evt.lineno+':'+evt.colno+' of file '+evt.filename;
+
+	if(error !== false)
+	{
+		if(electron.remote.dialog)
+		{
+			electron.remote.dialog.showMessageBox({
+				type: 'error',
+				title: 'Linenumber '+evt.lineno+':'+evt.colno,
+				message: error,
+				detail: evt.error.stack ? evt.error.stack : error,
+			});
+		}
+		else if(evt.filename || evt.lineno || evt.colno)
+		{
+			alert(error+(evt.error.stack ? ' '+evt.error.stack : ''));
+		}
+	}
+
+}, true);
+
 const electron = require('electron'),
 	fs = require('fs'),
 	hb = require('handlebars'),
