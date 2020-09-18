@@ -8,7 +8,7 @@
 {{/if}}
 <div class="content-view-list">
 	{{#each comics}}
-	<div id="v-id{{index}}" class="simple-list{{#unless folder}} sha-{{sha}}{{/unless}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{escapeBackSlash path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
+	<div id="v-id{{index}}" class="simple-list{{#unless folder}} sha-{{sha}}{{/unless}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
 		<div class="{{#if folder}}icon-24 material-icon{{else}}simple-list-image{{/if}} item-image"{{#unless folder}} style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}});"{{/unless}}>{{#if folder}}folder{{/if}}</div>
 		<div class="simple-list-text">{{name}}</div>
 	</div>
