@@ -327,12 +327,12 @@ function readFile(file)
 
 function existsFileApp(file)
 {
-	fs.existsSync(p.join(appDir, file))
+	return fs.existsSync(p.join(appDir, file))
 }
 
 function existsFile(file)
 {
-	fs.existsSync(file)
+	return fs.existsSync(file)
 }
 
 function loadLanguageMD(hbc, obj)
