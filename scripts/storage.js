@@ -139,10 +139,10 @@ function getLocaleUserLanguage(userLanguage = false)
 	if(!userLanguage)
 		return 'en';
 
-	userLanguage = userLanguage.replace(/\-/g, '_');
+	userLanguage = userLanguage.replace(/\_/g, '-').toLowerCase();
 
-	if(getLocaleUserLanguageCache[_userLanguage])
-		return getLocaleUserLanguageCache[_userLanguage];
+	if(getLocaleUserLanguageCache[userLanguage])
+		return getLocaleUserLanguageCache[userLanguage];
 
 	var _userLanguage = userLanguage;
 
@@ -155,7 +155,7 @@ function getLocaleUserLanguage(userLanguage = false)
 	{
 		if(languagesList[code].active)
 		{
-			codes.push(code.replace(/\-/g, '_'));
+			codes.push(code.replace(/\_/g, '-'));
 		}
 	}
 

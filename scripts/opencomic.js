@@ -369,7 +369,7 @@ function loadLanguage(lan = false)
 
 	handlebarsContext.language = language;
 
-	if(lan)
+	if(lan && existsFileApp('./languages/'+lan+'.json'))
 	{
 		loadLanguageMD(language, $.parseJSON(readFileApp('./languages/'+lan+'.json')));
 
