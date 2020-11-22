@@ -1,4 +1,4 @@
-var changes = 28;
+var changes = 29;
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -6,6 +6,14 @@ var readingPagesConfig = {
 	readingViewSpeed: 0.3,
 	readingViewAdjustToWidth: false,
 	readingMargin: {
+		margin: 16,
+		top: 16,
+		bottom: 16,
+		left: 16,
+		right: 16
+	},
+	readingHorizontalsMarginActive: false,
+	readingHorizontalsMargin: {
 		margin: 16,
 		top: 16,
 		bottom: 16,
@@ -44,6 +52,7 @@ var storageDefault = {
 		readingHideBarHeader: false,
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
+		readingMaxMargin: 200,
 		trackingSites: {
 			wildcard: {
 				favorite: false,

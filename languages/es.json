@@ -25,6 +25,7 @@
 		"back": "Atrás",
 		"add": "Añadir",
 		"language": "Idioma",
+		"settings": "Ajustes",
 		"theme": "Tema",
 		"valueCannotBeEmpty": "El valor no puede estar vació",
 		"nightMode": "Modo noche"
@@ -47,6 +48,7 @@
 			"margin": "Margen",
 			"marginHorizontal": "Margen horizontal",
 			"marginVertical": "Margen vertical",
+			"differentMarginInHorizontals": "Diferente en las horizontales",
 			"doublePage": "Doble página",
 			"doNotApplyToHorizontals": "No aplicar a las horizontales",
 			"blankPage": "Página en blanco al principio",

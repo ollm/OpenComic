@@ -47,6 +47,7 @@
 			"margin": "Margin",
 			"marginHorizontal": "Horizontal margin",
 			"marginVertical": "Vertical margin",
+			"differentMarginInHorizontals": "Different in horizontals",
 			"doublePage": "Double page",
 			"doNotApplyToHorizontals": "Do not apply to horizontals",
 			"blankPage": "Blank page at the beginning",

@@ -225,6 +225,8 @@ function disposeImages(data = false)
 	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
 	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
 	var marginVertical = (data && typeof data.top !== 'undefined') ? data.top : _config.readingMargin.top;
+	var marginHorizontalsHorizontal = (data && typeof data.horizontalsLeft !== 'undefined') ? data.horizontalsLeft : _config.readingHorizontalsMargin.left;
+	//var marginHorizontalsVertical = (data && typeof data.horizontalsTop !== 'undefined') ? data.horizontalsTop : _config.readingHorizontalsMargin.top;
 
 	var contentHeight = template.contentRight().children('div').height();
 
@@ -235,8 +237,12 @@ function disposeImages(data = false)
 
 	//Width 0
 	var contentWidth0 = contentWidth - (marginHorizontal * 2);
-	var aspectRatio0 = contentWidth0 / (contentHeight - marginVertical /*dd*/ * 2);
-	
+	var aspectRatio0 = contentWidth0 / (contentHeight - marginVertical * 2);
+
+	//Width horizontals 0
+	var contentWidthHorizontals0 = contentWidth - (marginHorizontalsHorizontal * 2);
+	var aspectRatioHorizontals0 = contentWidthHorizontals0 / (contentHeight - marginVertical * 2);
+
 	var _imagesDistribution = applyMangaReading(imagesDistribution);
 
 	for(let key1 in _imagesDistribution)
@@ -298,19 +304,39 @@ function disposeImages(data = false)
 		}
 		else
 		{
-			if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
+			if(_config.readingHorizontalsMarginActive && first.aspectRatio > 1)
 			{
-				var imageHeight = (contentHeight - marginVertical * 2);
-				var imageWidth = imageHeight * first.aspectRatio;
-				var marginLeft = contentWidth / 2 - imageWidth / 2;
-				var marginTop = marginVertical;
+				if(aspectRatioHorizontals0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
+				{
+					var imageHeight = (contentHeight - marginVertical * 2);
+					var imageWidth = imageHeight * first.aspectRatio;
+					var marginLeft = contentWidth / 2 - imageWidth / 2;
+					var marginTop = marginVertical;
+				}
+				else
+				{
+					var imageWidth = (contentWidth - marginHorizontalsHorizontal * 2);
+					var imageHeight = imageWidth / first.aspectRatio;
+					var marginLeft = marginHorizontalsHorizontal;
+					var marginTop = contentHeight / 2 - imageHeight / 2;
+				}
 			}
 			else
 			{
-				var imageWidth = (contentWidth - marginHorizontal * 2);
-				var imageHeight = imageWidth / first.aspectRatio;
-				var marginLeft = marginHorizontal;
-				var marginTop = contentHeight / 2 - imageHeight / 2;
+				if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
+				{
+					var imageHeight = (contentHeight - marginVertical * 2);
+					var imageWidth = imageHeight * first.aspectRatio;
+					var marginLeft = contentWidth / 2 - imageWidth / 2;
+					var marginTop = marginVertical;
+				}
+				else
+				{
+					var imageWidth = (contentWidth - marginHorizontal * 2);
+					var imageHeight = imageWidth / first.aspectRatio;
+					var marginLeft = marginHorizontal;
+					var marginTop = contentHeight / 2 - imageHeight / 2;
+				}
 			}
 
 			if(readingViewIs('scroll'))
@@ -1600,6 +1626,34 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex);
 	}
+	else if(mode == 13) // Set width adjustment
+	{
+		updateReadingPagesConfig('readingHorizontalsMarginActive', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+		addHtmlImages();
+
+		if(value)
+			template.globalElement('.reading-horizontals-margin').removeClass('disable-pointer');
+		else
+			template.globalElement('.reading-horizontals-margin').addClass('disable-pointer');
+
+		read(readingCurrentPath, imageIndex);
+	}
+	else if(mode == 14) // Set horizontal margin of the horizontals pages
+	{
+		disposeImages({horizontalsLeft: value, horizontalsRight: value});
+		stayInLine();
+
+		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: _config.readingHorizontalsMargin.top, bottom: _config.readingHorizontalsMargin.bottom, left: value, right: value});
+	}
+	/*else if(mode == 15) // Set vertical margin of the horizontals pages
+	{
+		disposeImages({horizontalsTop: value, horizontalsBottom: value});
+		stayInLine();
+
+		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: value, bottom: value, left: _config.readingHorizontalsMargin.left, right: _config.readingHorizontalsMargin.right});
+	}*/
 }
 
 //Change the bookmark icon
