@@ -2824,7 +2824,10 @@ function read(path, index = 1, end = false)
 
 			maxPageVisibility = pageVisibility;
 
-			var contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
+			if(pageVisibility > 0)
+				var contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
+			else
+				var contentHeightRes = 0;
 
 			scrollPart = ((contentHeight - contentHeightRes) - contentHeight / pageVisibility);
 
