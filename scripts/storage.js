@@ -1,4 +1,4 @@
-var changes = 29;
+var changes = 30;
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -35,6 +35,7 @@ var storageDefault = {
 		language: 'en',
 		theme: 'material-design',
 		nightMode: false,
+		zoomFactor: 1,
 		foldersFirst: true,
 		viewIndex: 'module',
 		view: 'module',
