@@ -694,7 +694,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	var isBookmarkTrue = false;
 
-	eachImagesDistribution((eIndex - 1), ['image', 'folder'], function(image){
+	eachImagesDistribution(newIndex, ['image', 'folder'], function(image){
 
 		if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
 			isBookmarkTrue = true;
@@ -1704,7 +1704,12 @@ function createAndDeleteBookmark(index = false)
 	{
 		let imageBookmark = false;
 
-		eachImagesDistribution((currentIndex - 1), ['image'], function(image){
+		var newIndex = (currentIndex - 1);
+
+		if(_config.readingManga && !readingViewIs('scroll'))
+			newIndex = (indexNum - newIndex) - 1;
+
+		eachImagesDistribution(newIndex, ['image'], function(image){
 
 			if(!imageIndex)
 				imageIndex = image.index;
