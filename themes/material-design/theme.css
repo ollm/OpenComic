@@ -1252,7 +1252,7 @@ body .preload
 .menu-simple-element i.menu-simple-icon-first
 {
 	margin: 0px 0px 0px -2px;
-	padding: 4px 8px 4px 0px;
+	padding: 4px 20px 4px 0px;
 	float: left;
 }
 
@@ -1263,7 +1263,7 @@ body .preload
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
-	max-width: 184px;
+	max-width: 172px;
 }
 
 .menu-simple-element-icon-select
