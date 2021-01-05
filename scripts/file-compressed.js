@@ -123,11 +123,11 @@ function setProgress(progress, contentRightZindex)
 	});
 }
 
-function extractZip(path, virtualPath, sha, all, callback = false)
+function extractZip(path, virtualPath, sha, all, json, callback)
 {
-	var cacheFile = 'compressed-files-'+sha+'.json';
-	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
-	var shaExt = 'extracting-'+sha;
+	let cacheFile = 'compressed-files-'+sha+'.json';
+	let mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	let shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
 	if(unzip === false) unzip = require('unzipper');
@@ -152,7 +152,7 @@ function extractZip(path, virtualPath, sha, all, callback = false)
 			}).on('error', function(error){
 
 				if(/0xafbc7a37/.test(error.message)) // 7zip file
-					fileCompressed.extract7zip(path, virtualPath, sha, all, callback);
+					fileCompressed.extract7zip(path, virtualPath, sha, all, json, callback);
 				else
 					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
 				
@@ -166,11 +166,11 @@ function extractZip(path, virtualPath, sha, all, callback = false)
 	}
 }
 
-function extract7zip(path, virtualPath, sha, all, callback = false)
+function extract7zip(path, virtualPath, sha, all, json, callback)
 {
-	var cacheFile = 'compressed-files-'+sha+'.json';
-	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
-	var shaExt = 'extracting-'+sha;
+	let cacheFile = 'compressed-files-'+sha+'.json';
+	let mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	let shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
 	if(un7z === false) un7z = require('node-7z');
@@ -208,11 +208,11 @@ function extract7zip(path, virtualPath, sha, all, callback = false)
 	});
 }
 
-function extractRar(path, virtualPath, sha, all, callback = false)
+function extractRar(path, virtualPath, sha, all, json, callback)
 {
-	var cacheFile = 'compressed-files-'+sha+'.json';
-	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
-	var shaExt = 'extracting-'+sha;
+	let cacheFile = 'compressed-files-'+sha+'.json';
+	let mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	let shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
 	if(unrar === false) unrar = require('unrar');
@@ -328,11 +328,11 @@ function extractRar(path, virtualPath, sha, all, callback = false)
 	});
 }
 
-function extractTar(path, virtualPath, sha, all, callback = false)
+function extractTar(path, virtualPath, sha, all, json, callback)
 {
-	var cacheFile = 'compressed-files-'+sha+'.json';
-	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
-	var shaExt = 'extracting-'+sha;
+	let cacheFile = 'compressed-files-'+sha+'.json';
+	let mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	let shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
 	if(untar === false) untar = require('tar-fs');
@@ -367,11 +367,11 @@ function extractTar(path, virtualPath, sha, all, callback = false)
 	});
 }
 
-function extractPdf(path, virtualPath, sha, all, callback = false)
+function extractPdf(path, virtualPath, sha, all, json, callback)
 {
-	var cacheFile = 'compressed-files-'+sha+'.json';
-	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
-	var shaExt = 'extracting-'+sha;
+	let cacheFile = 'compressed-files-'+sha+'.json';
+	let mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	let shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
 	if(unpdf === false)
@@ -441,7 +441,9 @@ function returnFiles(path, all, fromCache, callback)
 {
 	let sha = sha1(p.normalize(path));
 
-	var json = cache.readFile(cacheFile);
+	let cacheFile = 'compressed-files-'+sha+'.json';
+
+	let json = cache.readFile(cacheFile);
 
 	if(json)
 		json = JSON.parse(json);
@@ -449,7 +451,7 @@ function returnFiles(path, all, fromCache, callback)
 	let virtualPath = path;
 	path = file.realPath(path, -1);
 
-	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
+	let mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 
 	if(fromCache)
 	{
@@ -475,23 +477,23 @@ function returnFiles(path, all, fromCache, callback)
 	{
 		if(inArray(fileExtension(path), compressedExtensions.zip))
 		{
-			fileCompressed.extractZip(path, virtualPath, sha, all, callback);
+			fileCompressed.extractZip(path, virtualPath, sha, all, json, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions['7z']))
 		{
-			fileCompressed.extract7zip(path, virtualPath, sha, all, callback);
+			fileCompressed.extract7zip(path, virtualPath, sha, all, json, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.rar))
 		{
-			fileCompressed.extractRar(path, virtualPath, sha, all, callback);
+			fileCompressed.extractRar(path, virtualPath, sha, all, json, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.tar))
 		{
-			fileCompressed.extractTar(path, virtualPath, sha, all, callback);
+			fileCompressed.extractTar(path, virtualPath, sha, all, json, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.pdf))
 		{
-			fileCompressed.extractPdf(path, virtualPath, sha, all, callback);
+			fileCompressed.extractPdf(path, virtualPath, sha, all, json, callback);
 		}
 
 		return true;
