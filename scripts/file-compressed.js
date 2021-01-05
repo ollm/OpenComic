@@ -125,6 +125,8 @@ function setProgress(progress, contentRightZindex)
 
 function extractZip(path, virtualPath, sha, all, callback = false)
 {
+	var cacheFile = 'compressed-files-'+sha+'.json';
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 	var shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
@@ -166,6 +168,8 @@ function extractZip(path, virtualPath, sha, all, callback = false)
 
 function extract7zip(path, virtualPath, sha, all, callback = false)
 {
+	var cacheFile = 'compressed-files-'+sha+'.json';
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 	var shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
@@ -206,6 +210,8 @@ function extract7zip(path, virtualPath, sha, all, callback = false)
 
 function extractRar(path, virtualPath, sha, all, callback = false)
 {
+	var cacheFile = 'compressed-files-'+sha+'.json';
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 	var shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
@@ -324,6 +330,8 @@ function extractRar(path, virtualPath, sha, all, callback = false)
 
 function extractTar(path, virtualPath, sha, all, callback = false)
 {
+	var cacheFile = 'compressed-files-'+sha+'.json';
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 	var shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
@@ -361,6 +369,8 @@ function extractTar(path, virtualPath, sha, all, callback = false)
 
 function extractPdf(path, virtualPath, sha, all, callback = false)
 {
+	var cacheFile = 'compressed-files-'+sha+'.json';
+	var mtime = Date.parse(fs.statSync(file.firstCompressedFile(path)).mtime);
 	var shaExt = 'extracting-'+sha;
 	let contentRightZindex = template.contentRightZindex();
 
@@ -430,8 +440,6 @@ function extractPdf(path, virtualPath, sha, all, callback = false)
 function returnFiles(path, all, fromCache, callback)
 {
 	let sha = sha1(p.normalize(path));
-
-	var cacheFile = 'compressed-files-'+sha+'.json';
 
 	var json = cache.readFile(cacheFile);
 
