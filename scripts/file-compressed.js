@@ -123,6 +123,310 @@ function setProgress(progress, contentRightZindex)
 	});
 }
 
+function extractZip(path, virtualPath, sha, all, callback = false)
+{
+	var shaExt = 'extracting-'+sha;
+	let contentRightZindex = template.contentRightZindex();
+
+	if(unzip === false) unzip = require('unzipper');
+
+	try
+	{
+		fs.createReadStream(path).pipe(
+
+			unzip.Extract({path: p.join(tempFolder, shaExt)}).on('close', function () {
+
+				if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+
+				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+				if(!json || json.mtime != mtime)
+					cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+				compressedFiles[sha] = files;
+
+				callback((all) ? files : file.allToFirst(files));
+
+			}).on('error', function(error){
+
+				if(/0xafbc7a37/.test(error.message)) // 7zip file
+					fileCompressed.extract7zip(path, virtualPath, sha, all, callback);
+				else
+					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+				
+			})
+		);
+	}
+	catch(error)
+	{
+		console.error(error);
+		callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+	}
+}
+
+function extract7zip(path, virtualPath, sha, all, callback = false)
+{
+	var shaExt = 'extracting-'+sha;
+	let contentRightZindex = template.contentRightZindex();
+
+	if(un7z === false) un7z = require('node-7z');
+	if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7za);
+
+	un7z.extractFull(path, p.join(tempFolder, shaExt), {$progress: true, p: false/*'myPassword'*/, $bin: bin7z}).on('progress', function(progress) {
+
+		setProgress(progress.percent / 100, contentRightZindex);
+
+	}).on('end', function (data) {
+
+		try
+		{
+			if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+
+				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+			if(!json || json.mtime != mtime)
+				cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+			compressedFiles[sha] = files;
+
+			callback((all) ? files : file.allToFirst(files));
+		}
+		catch(error)
+		{
+			console.error(error);
+			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+		}
+
+	}).on('error', function(error){
+
+		callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.stderr});
+
+	});
+}
+
+function extractRar(path, virtualPath, sha, all, callback = false)
+{
+	var shaExt = 'extracting-'+sha;
+	let contentRightZindex = template.contentRightZindex();
+
+	if(unrar === false) unrar = require('unrar');
+
+	var bin = false;
+
+	if(process.platform == 'win32' || process.platform == 'win64')
+		bin = asarToAsarUnpacked(p.join(appDir, 'unrar/UnRAR.exe'));
+	else if(process.platform == 'darwin')
+		bin = asarToAsarUnpacked(p.join(appDir, 'unrar/unrar_MacOSX_10.13.2_64bit'));
+
+	var archive = new unrar({
+		path: path,
+		bin: bin,
+	});
+	
+	archive.list(function (error, entries) {
+
+		try
+		{
+			if(!error)
+			{
+				if(!fs.existsSync(p.join(tempFolder, shaExt))) fs.mkdirSync(p.join(tempFolder, shaExt));
+
+				var dirs = [];
+
+				for(let i = 0, len = entries.length; i < len; i++)
+				{
+					if(entries[i].type !== 'File')
+						dirs.push({name: entries[i].name, dimensions: entries[i].name.split(p.sep).length})
+				}
+
+				dirs.sort(function (a, b) {
+
+					if(a.dimensions == b.dimensions)
+						return 0;
+					
+					return (a.dimensions > b.dimensions) ? 1 : -1;
+
+				});
+
+				for(let i = 0, len = dirs.length; i < len; i++)
+				{
+					if(!fs.existsSync(p.join(tempFolder, shaExt, dirs[i].name))) fs.mkdirSync(p.join(tempFolder, shaExt, dirs[i].name));
+				}
+
+				var tasks = [];
+
+				for(let i = 0, len = entries.length; i < len; i++)
+				{
+					if(entries[i].type !== 'File')
+						continue;
+
+					tasks.push(new Promise(function(resolve, reject) {
+
+						var stream = archive.stream(entries[i].name);
+						stream.on('error', console.error);
+						stream.on('end', resolve);
+						stream.pipe(require('fs').createWriteStream(p.join(tempFolder, shaExt, entries[i].name)));
+
+					}));
+				}
+
+				Promise.all(tasks).then(function(){
+
+					if(process.platform == 'win32' || process.platform == 'win64') // Fix Windows bug: EPERM: operation not permitted, rename
+					{
+						for(let i = 0; i < 100; i++)
+						{
+							if(fs.existsSync(p.join(tempFolder, shaExt)))
+							{
+								try
+								{
+									fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+								}
+								catch
+								{
+
+								}
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+
+					if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+
+					// Get files
+					var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+					if(!json || json.mtime != mtime)
+						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+					compressedFiles[sha] = files;
+					
+					callback((all) ? files : file.allToFirst(files));
+
+				});
+			}
+			else
+			{
+				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+			}
+		}
+		catch(error)
+		{
+			console.error(error);
+			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+		}
+
+	});
+}
+
+function extractTar(path, virtualPath, sha, all, callback = false)
+{
+	var shaExt = 'extracting-'+sha;
+	let contentRightZindex = template.contentRightZindex();
+
+	if(untar === false) untar = require('tar-fs');
+
+	var untarP = fs.createReadStream(path).pipe(untar.extract(p.join(tempFolder, shaExt))).on('finish', function () {
+
+		try
+		{
+			if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+
+			var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+			if(!json || json.mtime != mtime)
+				cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+			compressedFiles[sha] = files;
+
+			callback((all) ? files : file.allToFirst(files));
+		}
+		catch(error)
+		{
+			console.error(error);
+			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+		}
+
+	}).on('error', function(error){
+
+		callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+
+		untarP.destroy();
+
+	});
+}
+
+function extractPdf(path, virtualPath, sha, all, callback = false)
+{
+	var shaExt = 'extracting-'+sha;
+	let contentRightZindex = template.contentRightZindex();
+
+	if(unpdf === false)
+	{
+		unpdf = require('pdfjs-dist/build/pdf');
+		unpdf.GlobalWorkerOptions.workerSrc = p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.js');
+	}
+
+	(async function() {
+
+		try
+		{
+			console.time('pdf render');
+
+			var doc = await unpdf.getDocument({url: path, nativeImageDecoderSupport: 'none', disableFontFace: true});
+
+			var pages = doc._pdfInfo.numPages;
+
+			if(!fs.existsSync(p.join(tempFolder, shaExt))) fs.mkdirSync(p.join(tempFolder, shaExt));
+
+			for (let i = 1; i <= pages; i++)
+			{
+				setProgress((i - 1) / pages, contentRightZindex);
+
+				// Render page
+				var page = await doc.getPage(i);
+				var viewport = page.getViewport(1);
+
+
+				var canvas = document.createElement('canvas');
+				canvas.width = viewport.width;
+				canvas.height = viewport.height;
+				var context = canvas.getContext('2d');
+
+				await page.render({canvasContext: context, viewport: viewport});
+
+				var imageData = canvas.toDataURL('image/jpeg', 1);
+
+				fs.writeFileSync(p.join(tempFolder, shaExt, 'page-'+i+'.jpg'), Buffer.from(imageData.replace(/^data:image\/[a-z]+;base64,/, ''), 'base64'));
+			}
+
+			setProgress(1, contentRightZindex);
+
+			console.timeEnd('pdf render');
+
+			if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
+
+				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
+
+			if(!json || json.mtime != mtime)
+				cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+
+			compressedFiles[sha] = files;
+
+			callback((all) ? files : file.allToFirst(files));
+		}
+		catch(error)
+		{
+			console.error(error);
+			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+		}
+
+	})();
+}
+
 function returnFiles(path, all, fromCache, callback)
 {
 	let sha = sha1(p.normalize(path));
@@ -161,294 +465,25 @@ function returnFiles(path, all, fromCache, callback)
 	}
 	else
 	{
-		var shaExt = 'extracting-'+sha;
-		let contentRightZindex = template.contentRightZindex();
-
 		if(inArray(fileExtension(path), compressedExtensions.zip))
 		{
-			if(unzip === false) unzip = require('unzipper');
-
-			try
-			{
-				fs.createReadStream(path).pipe(
-
-					unzip.Extract({path: p.join(tempFolder, shaExt)}).on('close', function () {
-
-						if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-
-						var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
-
-						if(!json || json.mtime != mtime)
-							cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
-
-						compressedFiles[sha] = files;
-
-						callback((all) ? files : file.allToFirst(files));
-
-					}).on('error', function(error){
-
-						callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-						
-					})
-				);
-			}
-			catch(error)
-			{
-				console.error(error);
-				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-			}
-		}
-		else if(inArray(fileExtension(path), compressedExtensions.rar))
-		{
-			if(unrar === false) unrar = require('unrar');
-
-			var bin = false;
-
-			if(process.platform == 'win32' || process.platform == 'win64')
-				bin = asarToAsarUnpacked(p.join(appDir, 'unrar/UnRAR.exe'));
-			else if(process.platform == 'darwin')
-				bin = asarToAsarUnpacked(p.join(appDir, 'unrar/unrar_MacOSX_10.13.2_64bit'));
-
-			var archive = new unrar({
-				path: path,
-				bin: bin,
-			});
-			
-			archive.list(function (error, entries) {
-
-				try
-				{
-
-					if(!error)
-					{
-						if(!fs.existsSync(p.join(tempFolder, shaExt))) fs.mkdirSync(p.join(tempFolder, shaExt));
-
-						var dirs = [];
-
-						for(let i = 0, len = entries.length; i < len; i++)
-						{
-							if(entries[i].type !== 'File')
-								dirs.push({name: entries[i].name, dimensions: entries[i].name.split(p.sep).length})
-						}
-
-						dirs.sort(function (a, b) {
-
-							if(a.dimensions == b.dimensions)
-								return 0;
-							
-							return (a.dimensions > b.dimensions) ? 1 : -1;
-
-						});
-
-						for(let i = 0, len = dirs.length; i < len; i++)
-						{
-							if(!fs.existsSync(p.join(tempFolder, shaExt, dirs[i].name))) fs.mkdirSync(p.join(tempFolder, shaExt, dirs[i].name));
-						}
-
-						var tasks = [];
-
-						for(let i = 0, len = entries.length; i < len; i++)
-						{
-							if(entries[i].type !== 'File')
-								continue;
-
-							tasks.push(new Promise(function(resolve, reject) {
-
-								var stream = archive.stream(entries[i].name);
-								stream.on('error', console.error);
-								stream.on('end', resolve);
-								stream.pipe(require('fs').createWriteStream(p.join(tempFolder, shaExt, entries[i].name)));
-
-							}));
-						}
-
-						Promise.all(tasks).then(function(){
-
-							if(process.platform == 'win32' || process.platform == 'win64') // Fix Windows bug: EPERM: operation not permitted, rename
-							{
-								for(let i = 0; i < 100; i++)
-								{
-									if(fs.existsSync(p.join(tempFolder, shaExt)))
-									{
-										try
-										{
-											fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-										}
-										catch
-										{
-
-										}
-									}
-									else
-									{
-										break;
-									}
-								}
-							}
-
-							if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-
-							// Get files
-							var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
-
-							if(!json || json.mtime != mtime)
-								cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
-
-							compressedFiles[sha] = files;
-							
-							callback((all) ? files : file.allToFirst(files));
-
-						});
-					}
-					else
-					{
-						callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-					}
-				}
-				catch(error)
-				{
-					console.error(error);
-					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-				}
-
-			});
-
+			fileCompressed.extractZip(path, virtualPath, sha, all, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions['7z']))
 		{
-			if(un7z === false) un7z = require('node-7z');
-			if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7za);
-
-			un7z.extractFull(path, p.join(tempFolder, shaExt), {$progress: true, p: false/*'myPassword'*/, $bin: bin7z}).on('progress', function(progress) {
-
-				setProgress(progress.percent / 100, contentRightZindex);
-
-			}).on('end', function (data) {
-
-				try
-				{
-					if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-
-	 				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
-
-					if(!json || json.mtime != mtime)
-						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
-
-					compressedFiles[sha] = files;
-
-					callback((all) ? files : file.allToFirst(files));
-				}
-				catch(error)
-				{
-					console.error(error);
-					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-				}
-
-			}).on('error', function(error){
-
-				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.stderr});
-
-			});
-
+			fileCompressed.extract7zip(path, virtualPath, sha, all, callback);
+		}
+		else if(inArray(fileExtension(path), compressedExtensions.rar))
+		{
+			fileCompressed.extractRar(path, virtualPath, sha, all, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.tar))
 		{
-			if(untar === false) untar = require('tar-fs');
-
-			var untarP = fs.createReadStream(path).pipe(untar.extract(p.join(tempFolder, shaExt))).on('finish', function () {
-
-				try
-				{
-					if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-
-					var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
-
-					if(!json || json.mtime != mtime)
-						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
-
-					compressedFiles[sha] = files;
-
-					callback((all) ? files : file.allToFirst(files));
-				}
-				catch(error)
-				{
-					console.error(error);
-					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-				}
-
-			}).on('error', function(error){
-
-				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-
-				untarP.destroy();
-
-			});
-
+			fileCompressed.extractTar(path, virtualPath, sha, all, callback);
 		}
 		else if(inArray(fileExtension(path), compressedExtensions.pdf))
 		{
-			if(unpdf === false)
-			{
-				unpdf = require('pdfjs-dist/build/pdf');
-				unpdf.GlobalWorkerOptions.workerSrc = p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.js');
-			}
-
-			(async function() {
-
-				try
-				{
-					console.time('pdf render');
-
-					var doc = await unpdf.getDocument({url: path, nativeImageDecoderSupport: 'none', disableFontFace: true});
-
-					var pages = doc._pdfInfo.numPages;
-
-					if(!fs.existsSync(p.join(tempFolder, shaExt))) fs.mkdirSync(p.join(tempFolder, shaExt));
-
-					for (let i = 1; i <= pages; i++)
-					{
-						setProgress((i - 1) / pages, contentRightZindex);
-
-						// Render page
-						var page = await doc.getPage(i);
-						var viewport = page.getViewport(1);
-
-
-						var canvas = document.createElement('canvas');
-						canvas.width = viewport.width;
-						canvas.height = viewport.height;
-						var context = canvas.getContext('2d');
-
-						await page.render({canvasContext: context, viewport: viewport});
-
-						var imageData = canvas.toDataURL('image/jpeg', 1);
-
-						fs.writeFileSync(p.join(tempFolder, shaExt, 'page-'+i+'.jpg'), Buffer.from(imageData.replace(/^data:image\/[a-z]+;base64,/, ''), 'base64'));
-					}
-
-					setProgress(1, contentRightZindex);
-
-					console.timeEnd('pdf render');
-
-					if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-
-	 				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
-
-					if(!json || json.mtime != mtime)
-						cache.writeFile(cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
-
-					compressedFiles[sha] = files;
-
-					callback((all) ? files : file.allToFirst(files));
-				}
-				catch(error)
-				{
-					console.error(error);
-					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
-				}
-
-			})();
-
+			fileCompressed.extractPdf(path, virtualPath, sha, all, callback);
 		}
 
 		return true;
@@ -503,4 +538,10 @@ module.exports = {
 	returnFilesWD: returnFilesWD,
 	addCompressedFilesQueue: addCompressedFilesQueue,
 	decompressRecursive: decompressRecursive,
+
+	extractZip: extractZip,
+	extract7zip: extract7zip,
+	extractRar: extractRar,
+	extractTar: extractTar,
+	extractPdf: extractPdf,
 };
