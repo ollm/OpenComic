@@ -556,6 +556,36 @@ function showAboutWindow()
 	});
 }
 
+function removeFilesInFolder(folder = false, message = false)
+{
+	if(folder)
+	{
+		files = fs.readdirSync(folder);
+
+		for (let file of files)
+		{
+			if(fs.statSync(p.join(folder, file)).isDirectory())
+			{
+				removeFilesInFolder(p.join(folder, file));
+
+				fs.rmdirSync(p.join(folder, file));
+			}
+			else
+			{
+				fs.unlinkSync(p.join(folder, file));
+			}
+		}
+
+		if(message)
+			console.log(message);
+	}
+}
+
+function removeTemporaryFiles()
+{
+	removeFilesInFolder(tempFolder, 'Temporary files removed');
+}
+
 function escapeBackSlash(string)
 {
 	return string.replace(/\\+/g, '\\\\');
