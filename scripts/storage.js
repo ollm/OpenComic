@@ -1,4 +1,4 @@
-var changes = 30;
+var changes = 32;
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -240,7 +240,11 @@ function updateStorageMD(data, defaultObj)
 
 		for(let key in defaultObj)
 		{
-			if(key == 'wildcard')
+			if(isEmpty(data) || typeof data[key] === 'undefined')
+			{
+				newData[key] = defaultObj[key];
+			}
+			else if(key == 'wildcard')
 			{
 				newData = {};
 
@@ -259,15 +263,7 @@ function updateStorageMD(data, defaultObj)
 			}
 			else
 			{
-
-				if(!isEmpty(data) && typeof data[key] != 'undefined')
-				{
-					newData[key] = data[key];
-				}
-				else
-				{
-					newData[key] = defaultObj[key];
-				}
+				newData[key] = data[key];
 			}
 		}
 	}
@@ -278,14 +274,12 @@ function updateStorageMD(data, defaultObj)
 
 function updateVar(key, keyVar, value)
 {
-
 	if(typeof storageJson[key] === 'undefined')
 		storageJson[key] = {};
 
 	storageJson[key][keyVar] = value;
 
 	ejs.set(key, storageJson[key], function(error){});
-
 }
 
 function update(key, value)
@@ -391,4 +385,5 @@ module.exports = {
 	updateStorageMD: updateStorageMD,
 	getLocaleUserLanguage: getLocaleUserLanguage,
 	readingPagesConfig: readingPagesConfig,
+	changes: changes,
 };
