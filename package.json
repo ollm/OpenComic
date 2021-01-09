@@ -58,6 +58,7 @@
 		"electron-json-storage": "^4.1.8",
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
+		"fs-extra": "^9.0.1",
 		"gm": "^1.23.1",
 		"handlebars": "^4.7.6",
 		"jimp": "^0.10.3",

@@ -52,6 +52,7 @@ window.addEventListener('error', function(evt) {
 
 const electron = require('electron'),
 	fs = require('fs'),
+	fse = require('fs-extra'),
 	hb = require('handlebars'),
 	os = require('os'),
 	ejs = require('electron-json-storage'),
@@ -492,6 +493,7 @@ function generateAppMenu(force = false)
 					{label: language.reading.previous, enabled: onReading, click: function(){reading.goPrevious();}, accelerator: 'Backspace'},
 					{label: language.reading.next, enabled: onReading, click: function(){reading.goNext();}, accelerator: 'Space'},
 					{label: language.reading.lastPage, enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'End'},
+					{label: 'Next chapter', enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'Ctrl+End'},
 				]
 			},
 			{
@@ -556,34 +558,16 @@ function showAboutWindow()
 	});
 }
 
-function removeFilesInFolder(folder = false, message = false)
-{
-	if(folder)
-	{
-		files = fs.readdirSync(folder);
-
-		for (let file of files)
-		{
-			if(fs.statSync(p.join(folder, file)).isDirectory())
-			{
-				removeFilesInFolder(p.join(folder, file));
-
-				fs.rmdirSync(p.join(folder, file));
-			}
-			else
-			{
-				fs.unlinkSync(p.join(folder, file));
-			}
-		}
-
-		if(message)
-			console.log(message);
-	}
-}
-
 function removeTemporaryFiles()
 {
-	removeFilesInFolder(tempFolder, 'Temporary files removed');
+	try
+	{
+		fse.emptyDirSync(tempFolder);
+	}
+	catch(error)
+	{
+		console.error(error);
+	}
 }
 
 function escapeBackSlash(string)
