@@ -1,0 +1,171 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "и",
+		"comics": "Комиксы",
+		"collection": "Коллекция",
+		"sort": {
+			"main": "Сортировка",
+			"name": "По названию",
+			"number": "По номеру",
+			"nameNumber": "По названию/номер",
+			"lastAdd": "По последнему добавленному",
+			"lastReading": "По последнему читавшему",
+			"foldersFirst": "Сначала папки",
+			"invert": "Инвертировать"
+		},
+		"view": {
+			"main": "Вид",
+			"module": "Сетка",
+			"list": "Список"
+		},
+		"contextMenu": {
+			"remove": "Удалить"
+		},
+		"back": "Назад",
+		"add": "Добавить",
+		"language": "Язык",
+		"theme": "Тема",
+		"valueCannotBeEmpty": "Значение не может быть пустым",
+		"nightMode": "Ночной режим"
+	},
+	"comics": {
+		"continueReading": "Продолжить чтение",
+		"emptyIndex": "В этом сборнике нет комиксов.",
+		"emptyFolder": "В этой папке нет совместимых файлов."
+	},
+	"reading": {
+		"firstPage": "Первая страница",
+		"previous": "Предыдущая",
+		"next": "Следующая",
+		"lastPage": "Последняя страница",
+		"pages": {
+			"main": "Страницы",
+			"slide": "Слайд-ридер",
+			"scroll": "Вертикальный ридер",
+			"adjustToWidth": "Отрегулировать по ширине",
+			"margin": "Края",
+			"marginHorizontal": "Горизонтальный край",
+			"marginVertical": "Вертикальный край",
+			"differentMarginInHorizontals": "Разные по горизонтали",
+			"doublePage": "Две страницы",
+			"doNotApplyToHorizontals": "Не применять к горизонтали",
+			"blankPage": "Пустая страница в начале",
+			"readingDelaySkip": "Задержка смены комиксов",
+			"animationSpeed": "Скорость анимации",
+			"readingManga": "Чтение манги (Перевёрнуто)",
+			"readingWebtoon": "Чтение Webtoon",
+			"readingGlobal": "Глобальная конфигурация",
+			"readingConfigNew": "Новая конфигурация"
+		},
+		"magnifyingGlass": {
+			"main": "Увеличительное стекло",
+			"activate": "Активировать",
+			"zoom": "Масштаб",
+			"size": "Размер",
+			"ratio": "Соотношение",
+			"radius": "Радиус"
+		},
+		"tracking": {
+			"main": "Отслеживание с помощью сайтов",
+			"tracking": "Отслеживание",
+			"marked": "Отмечен",
+			"sites": "Все сайты",
+			"favoriteSites": "Избранные сайты",
+			"emptyFavoriteSites": "Нет избранных сайтов",
+			"problemChapter": "Глава не обнаружена",
+			"chapters": "Главы",
+			"chapter": "Глава",
+			"volumes": "Тома",
+			"volume": "Том"
+		},
+		"moreOptions": {
+			"main": "Дополнительные параметры",
+			"hideBarHeader": "Скрыть панель заголовка",
+			"hideContentLeft": "Скрыть боковую панель"
+		},
+		"viewBookmarks": "Просмотр закладок",
+		"addBookmark": "Добавить закладку",
+		"removeBookmark": "Удалить закладку",
+		"emptyBookmarks": "Нет закладок",
+		"currentReading": "Текущее чтение"
+	},
+	"menu": {
+		"file": {
+			"main": "Файл",
+			"openFile": "Открыть файл",
+			"openFolder": "Открыть папку",
+			"addFile": "Добавить файл",
+			"addFolder": "Добавить папку",
+			"quit": "Выход"
+		},
+		"view": {
+			"main": "Вид",
+			"resetZoom": "Сбросить масштаб",
+			"zoomIn": "Приблизить",
+			"zoomOut": "Отдалить",
+			"toggleFullScreen": "На весь экран"
+		},
+		"goto": {
+			"main": "Перейти к"
+		},
+		"debug": {
+			"main": "Отладка",
+			"reload": "Перезагрзить",
+			"forceReload": "Принудительно перезагрузить",
+			"toggleDevTools": "Переключить инструменты разработчика"
+		},
+		"help": {
+			"main": "Помощь",
+			"about": "О OpenComic"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Войдите на {{siteName}} с помощью токена",
+			"getTokenInput": "Токен {{siteName}}",
+			"invalidTokenHeader": "Неверный токен {{siteName}}",
+			"resendToken": "Вы хотите снова добавить токен {{siteName}}?",
+			"serachIn": "Искать на {{siteName}}",
+			"emptySearch": "Результаты не найдены",
+			"setHeader": "Пометить вручную",
+			"setMessage": "При желании вы можете вручную пометить главы",
+			"setWaitMessage": "Вы можете сделать это сейчас или подождать, пока это будет автоматически обнаружено в другой главе.",
+			"setChapterNumber": "Отметить до главы",
+			"setVolumeNumber": "Отметить до тома",
+			"activate": "Активировать отслеживание"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Создать новую конфигурацию",
+			"readingConfigEditHeader": "Изменить конфигурацию",
+			"readingConfigName": "Название конфигурации",
+			"readingConfigRemoveHeader": "Удалить конфигурацию",
+			"readingConfigRemove": "Вы уверены, что хотите удалить эту конфигурацию?"
+		}
+	},
+	"buttons": {
+		"cancel": "Отмена",
+		"ok": "ОК",
+		"undo": "Отменить",
+		"dismiss": "Отклонить",
+		"remove": "Удалить"
+	},
+	"error": {
+		"uncompress": {
+			"title": "Ошибка при распаковке",
+			"message": "Произошла ошибка при попытке распаковать файл."
+		}
+	},
+	"about": {
+		"version": "Версия",
+		"translatedBy": "Перевод предоставил",
+		"contributedBy": "Вклад от",
+		"translators": [
+			{
+				"name": "vanja-san",
+				"email": "vanjavs41@gmail.com",
+				"url": "https://github.com/vanja-san"
+			}
+		]
+	}
+}
