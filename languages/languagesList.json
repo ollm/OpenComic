@@ -546,6 +546,7 @@
         "nativeName":"română"
     },
     "ru":{
+        "active":true,
         "name":"Russian",
         "nativeName":"русский язык"
     },
