@@ -532,7 +532,8 @@ function showAboutWindow()
 		modal: true,
 		parent: electron.remote.getCurrentWindow(),
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			enableRemoteModule: true,
 		},
 	});
 
@@ -618,20 +619,35 @@ function extract(code, string, value)
 	return (string !== null && typeof string[value] != 'undefined') ? string[value] : '';
 }
 
-function isEmpty(obj)
+function isEmpty(mixedVar)
 {
-	if (obj == null) return true;
-	if (obj.length > 0)	return false;
-	if (obj.length === 0)  return true;
-	if (typeof obj !== "object") return true;
+	var undef, key, i, len, emptyValues = [undef, null, false, 0, '', '0'];
 
-
-	for (var key in obj)
+	for(var i = 0, len = emptyValues.length; i < len; i++)
 	{
-		if (hasOwnProperty.call(obj, key)) return false;
+		if(mixedVar === emptyValues[i])
+		{
+			return true
+		}
 	}
 
-	return true;
+	if(typeof mixedVar === 'undefined')
+	{
+		return true
+	}
+
+	if(typeof mixedVar === 'object')
+	{
+		for(key in mixedVar)
+		{
+			if (mixedVar.hasOwnProperty(key))
+			{
+				return false
+			}
+		}
+
+		return true
+	}
 }
 
 function matchArray(string, array)
