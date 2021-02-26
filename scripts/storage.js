@@ -1,4 +1,4 @@
-var changes = 32;
+var changes = 36;
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -227,7 +227,6 @@ function updateStorageArrayMD(data, defaultObj)
 
 function updateStorageMD(data, defaultObj)
 {
-
 	if($.isArray(defaultObj))
 	{
 		var newData = [];
@@ -240,18 +239,24 @@ function updateStorageMD(data, defaultObj)
 
 		for(let key in defaultObj)
 		{
-			if(isEmpty(data) || typeof data[key] === 'undefined')
+			if(key == 'wildcard')
 			{
-				newData[key] = defaultObj[key];
-			}
-			else if(key == 'wildcard')
-			{
+				if(isEmpty(data))
+					data = {};
+
 				newData = {};
 
 				for(let key2 in data)
 				{
-					newData[key2] = updateStorageMD(data[key2], defaultObj[key]);
+					if(key2 == 'wildcard') // Remove data generated from a previous bug
+						delete newData[key2];
+					else
+						newData[key2] = updateStorageMD(data[key2], defaultObj[key]);
 				}
+			}
+			else if(isEmpty(data) || typeof data[key] === 'undefined')
+			{
+				newData[key] = defaultObj[key];
 			}
 			else if($.isArray(defaultObj[key]))
 			{
