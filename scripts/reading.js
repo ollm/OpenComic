@@ -112,6 +112,29 @@ function calculateImagesDistribution()
 			}
 		}
 	}
+
+	if(_config.invisibleFirstBlankPage)
+	{
+		if(imagesDistribution[0])
+		{
+			for(let key2 in imagesDistribution[0])
+			{
+				if(imagesDistribution[0][key2].blank)
+					imagesDistribution[0].splice(key2, 1);
+			}		
+		}
+	}
+	else if(_config.invisibleBlankPages)
+	{
+		for(let key in imagesDistribution)
+		{
+			for(let key2 in imagesDistribution[key])
+			{
+				if(imagesDistribution[key][key2].blank)
+					imagesDistribution[key].splice(key2, 1);
+			}		
+		}
+	}
 }
 
 var currentComics = [];
@@ -1449,7 +1472,7 @@ function updateReadingPagesConfig(key, value)
 
 		template.globalElement('.reading-shortcut-pages-config .menu-simple-element-icon-select').removeClass('active');
 
-		readingPagesConfig[key].configKey = false;
+		readingPagesConfig.configKey = false;
 		readingPagesConfig[key] = value;
 
 		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), readingPagesConfig);
