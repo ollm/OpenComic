@@ -27,7 +27,8 @@ function createWindow () {
 		minHeight: 200,
 		icon: image,
 		webPreferences: {
-			nodeIntegration: true
+			nodeIntegration: true,
+			enableRemoteModule: true
 		},
 		//icon: __dirname + '/icon.svg',
 	});
@@ -45,6 +46,8 @@ function createWindow () {
 
 	var menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
+
+	// win.webContents.openDevTools()
 
 	win.removeMenu();
 

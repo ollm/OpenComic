@@ -55,7 +55,7 @@
 	},
 	"dependencies": {
 		"7zip-bin": "^4.1.0",
-		"electron-json-storage": "^4.1.8",
+		"electron-json-storage": "^4.3.0",
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
 		"fs-extra": "^9.0.1",
@@ -70,15 +70,15 @@
 		"pdfjs-dist": "^2.2.228",
 		"request": "^2.88.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.23.4",
+		"sharp": "^0.27.1",
 		"tar-fs": "^2.0.0",
 		"unrar": "^0.2.0",
 		"unzipper": "^0.10.1"
 	},
 	"devDependencies": {
-		"electron": "^7.3.2",
+		"electron": "^11.1.1",
 		"electron-builder": "^22.3.1",
-		"electron-rebuild": "^1.8.8",
+		"electron-rebuild": "^2.3.5",
 		"js-yaml": "^3.13.1",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^2.0.4"
