@@ -312,16 +312,16 @@ function start(callback)
 {
 	ejs.getMany(storageKeys, function(error, data) {
 
+		// if(error) throw error;
+
 		if(!isEmpty(data))
-		{
 			var config = data.config;
-		}
 
 		for(let i in storageKeys)
 		{
 			var key = storageKeys[i];
 
-			if(typeof data[key] == 'undefined')
+			if(typeof data == 'undefined' || typeof data[key] == 'undefined')
 			{
 				if(key == 'config')
 					storageDefault[key].language = getLocaleUserLanguage();
