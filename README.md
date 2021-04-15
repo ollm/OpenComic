@@ -10,6 +10,7 @@
 * [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.7z)
 * [.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0.AppImage)
 * `snap install opencomic`
+* [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
 ###### Linux Arm64
 * [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_arm64.deb)
 * [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.arm64.rpm)
