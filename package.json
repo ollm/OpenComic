@@ -60,7 +60,7 @@
 		"fs": "0.0.1-security",
 		"fs-extra": "^9.0.1",
 		"gm": "^1.23.1",
-		"handlebars": "^4.7.6",
+		"handlebars": "^4.7.7",
 		"jimp": "^0.10.3",
 		"jquery": "^3.5.1",
 		"jquery-bez": "^1.0.11",
