@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"main": "scripts/main.js",
 	"keywords": [
 		"comics",
@@ -29,10 +29,10 @@
 		"watch": "nodemon --ignore 'dist/' --ignore scripts/builded --watch * --exec npm run start",
 		"build": "npm run prebuild && electron-builder build",
 		"build-dist": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z && electron-builder --arm64 --linux deb rpm AppImage 7z && electron-builder --mac 7z",
-		"build-linux": "npm run prebuild && electron-builder --x64 --linux deb rpm snap AppImage tar.gz",
+		"build-linux": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z",
 		"build-deb": "npm run prebuild && electron-builder --x64 --linux deb",
 		"build-rpm": "npm run prebuild && electron-builder --x64 --linux rpm",
-		"build-snap": "npm run prebuild && electron-builder --x64 --linux snap",
+		"build-snap": "npm run prebuild && node ./scripts/snapcraft.js && electron-builder --x64 --linux snap",
 		"build-appimage": "npm run prebuild && electron-builder --x64 --linux AppImage",
 		"build-tar": "npm run prebuild && electron-builder --x64 --linux tar.gz",
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip",
@@ -70,16 +70,17 @@
 		"pdfjs-dist": "^2.2.228",
 		"request": "^2.88.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.27.1",
+		"sharp": "^0.28.3",
 		"tar-fs": "^2.0.0",
 		"unrar": "^0.2.0",
 		"unzipper": "^0.10.1"
 	},
 	"devDependencies": {
-		"electron": "^11.1.1",
-		"electron-builder": "^22.3.1",
+		"electron": "^11.4.7",
+		"electron-builder": "^22.10.5",
 		"electron-rebuild": "^2.3.5",
 		"js-yaml": "^3.13.1",
+		"node-abi": "^2.21.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^2.0.4"
 	},
