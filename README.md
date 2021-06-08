@@ -1,21 +1,21 @@
-## Download `version 0.2.0`
+## Download `version 0.2.1`
 ###### Windows
-* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic.Setup.0.2.0.exe)
+* [.exe](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic.Setup.0.2.1.exe)
 ###### macOS
 * [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0-mac.7z)
 ###### Linux
-* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_amd64.deb)
-* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.x86_64.rpm)
-* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_amd64.snap)
-* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.7z)
-* [.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0.AppImage)
+* [.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_amd64.deb)
+* [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.x86_64.rpm)
+* [.snap](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_amd64.snap)
+* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.7z)
+* [.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1.AppImage)
 * `snap install opencomic`
 * [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
 ###### Linux Arm64
-* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic_0.2.0_arm64.deb)
-* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0.arm64.rpm)
-* [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.0/opencomic-0.2.0-arm64.7z)
-* [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.0/OpenComic-0.2.0-arm64.AppImage)
+* [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_arm64.deb)
+* [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.arm64.rpm)
+* [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1-arm64.7z)
+* [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1-arm64.AppImage)
 
 ## ScreenShot
 
