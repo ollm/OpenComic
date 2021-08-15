@@ -1,0 +1,171 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "và",
+		"comics": "Truyện",
+		"collection": "Bộ sưu tập",
+		"sort": {
+			"main": "Lọc",
+			"name": "Tên",
+			"number": "Số",
+			"nameNumber": "Tên / Số",
+			"lastAdd": "Mới nhất",
+			"lastReading": "Đọc gần đây",
+			"foldersFirst": "Thư mục trước",
+			"invert": "Đảo ngược"
+		},
+		"view": {
+			"main": "Hiển thị",
+			"module": "Lưới",
+			"list": "Danh sách"
+		},
+		"contextMenu": {
+			"remove": "Xóa"
+		},
+		"back": "Trở về",
+		"add": "Thêm",
+		"language": "Ngôn ngữ",
+		"theme": "Chủ đề",
+		"valueCannotBeEmpty": "Giá trị không được để trống",
+		"nightMode": "Chế độ tối"
+	},
+	"comics": {
+		"continueReading": "Tiếp tục đọc",
+		"emptyIndex": "Chưa có truyện trong bộ sưu tập.",
+		"emptyFolder": "Không có tệp tương thích trong thư mục."
+	},
+	"reading": {
+		"firstPage": "Trang đầu",
+		"previous": "Trước",
+		"next": "Sau",
+		"lastPage": "Trang cuối",
+		"pages": {
+			"main": "Trang",
+			"slide": "Trình đọc ngang",
+			"scroll": "Trình đọc dọc",
+			"adjustToWidth": "Điều chỉnh theo độ rộng",
+			"margin": "Lề",
+			"marginHorizontal": "Lề ngang",
+			"marginVertical": "Lề dọc",
+			"differentMarginInHorizontals": "Khác cho trang dài",
+			"doublePage": "Hiển thị hai trang",
+			"doNotApplyToHorizontals": "Không áp dụng cho trang dài",
+			"blankPage": "Trang trắng khi bắt đầu",
+			"readingDelaySkip": "Thời gian chờ đổi truyện",
+			"animationSpeed": "Tốc độ chuyển trang",
+			"readingManga": "Đọc manga (đảo chiều)",
+			"readingWebtoon": "Đọc webtoon",
+			"readingGlobal": "Cấu hình chung",
+			"readingConfigNew": "Cấu hình mới"
+		},
+		"magnifyingGlass": {
+			"main": "Kính lúp",
+			"activate": "Bật",
+			"zoom": "Phóng to",
+			"size": "Kích cỡ",
+			"ratio": "Tỉ lệ",
+			"radius": "Bán kính"
+		},
+		"tracking": {
+			"main": "Theo dõi với web",
+			"tracking": "Theo dõi",
+			"marked": "Đánh dấu",
+			"sites": "Tất cả trang",
+			"favoriteSites": "Trang yêu thích",
+			"emptyFavoriteSites": "Không có trang yêu thích",
+			"problemChapter": "Không tìm thấy chương",
+			"chapters": "Chương",
+			"chapter": "Chương",
+			"volumes": "Tập",
+			"volume": "Tập"
+		},
+		"moreOptions": {
+			"main": "Thêm tùy chọn",
+			"hideBarHeader": "Ẩn thanh công cụ",
+			"hideContentLeft": "Ẩn danh sách trang"
+		},
+		"viewBookmarks": "Xem dấu trang",
+		"addBookmark": "Thêm dấu trang",
+		"removeBookmark": "Xóa dấu trang",
+		"emptyBookmarks": "Không có dấu trang",
+		"currentReading": "Hiện đang đọc"
+	},
+	"menu": {
+		"file": {
+			"main": "Tệp",
+			"openFile": "Mở tệp",
+			"openFolder": "Mở thư mục",
+			"addFile": "Thêm tệp",
+			"addFolder": "Thêm thư mục",
+			"quit": "Thoát"
+		},
+		"view": {
+			"main": "Hiển thị",
+			"resetZoom": "Đặt lại thu phóng",
+			"zoomIn": "Phóng to",
+			"zoomOut": "Thu nhỏ",
+			"toggleFullScreen": "Toàn màn hình"
+		},
+		"goto": {
+			"main": "Đi đến"
+		},
+		"debug": {
+			"main": "Debug",
+			"reload": "Tải lại",
+			"forceReload": "Buộc tải lại",
+			"toggleDevTools": "Bật DevTools"
+		},
+		"help": {
+			"main": "Trợ giúp",
+			"about": "Về OpenComic"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Đăng nhập vào {{siteName}} thông qua token",
+			"getTokenInput": "Token {{siteName}}",
+			"invalidTokenHeader": "Token {{siteName}} không hợp lệ",
+			"resendToken": "Bạn có muốn thêm lại token {{siteName}}?",
+			"serachIn": "Tìm trong {{siteName}}",
+			"emptySearch": "Không tìm thấy kết quả",
+			"setHeader": "Đánh dấu thủ công",
+			"setMessage": "Bạn có thể đánh dấu chương thủ công",
+			"setWaitMessage": "Bạn có thể thực hiện ngay hoặc đợi tự động phát hiện trong các chương sau.",
+			"setChapterNumber": "Đánh dấu đến chương",
+			"setVolumeNumber": "Đánh dấu đến tập",
+			"activate": "Kích hoạt trình theo dõi"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Tạo cấu hình mới",
+			"readingConfigEditHeader": "Sửa cấu hình",
+			"readingConfigName": "Tên cấu hình",
+			"readingConfigRemoveHeader": "Xóa cấu hình",
+			"readingConfigRemove": "Bạn chắc chắn muốn xóa cấu hình này?"
+		}
+	},
+	"buttons": {
+		"cancel": "Hủy",
+		"ok": "Ok",
+		"undo": "Hoàn tác",
+		"dismiss": "Ẩn",
+		"remove": "Xóa"
+	},
+	"error": {
+		"uncompress": {
+			"title": "Lỗi giải nén",
+			"message": "Đã gặp một lỗi khi giải nén tệp."
+		}
+	},
+	"about": {
+		"version": "Phiên bản",
+		"translatedBy": "Dịch sang tiếng Việt bởi",
+		"contributedBy": "Đóng góp bởi",
+		"translators": [
+			{
+				"name": "Khoa Nguyen Do",
+				"email": "khoanguyen.do@outlook.com",
+				"url": "https://github.com/catouberos"
+			}
+		]
+	}
+}
