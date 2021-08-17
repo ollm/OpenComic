@@ -147,6 +147,7 @@
         "nativeName":"hrvatski"
     },
     "cs":{
+        "active":true,
         "name":"Czech",
         "nativeName":"česky, čeština"
     },
