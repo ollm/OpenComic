@@ -1,0 +1,171 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "a",
+		"comics": "Komiksy",
+		"collection": "Sbírka",
+		"sort": {
+			"main": "Seřadit",
+			"name": "Podle názvu",
+			"number": "Podle čísla",
+			"nameNumber": "Podle názvu nebo čísla",
+			"lastAdd": "Podle data přidání",
+			"lastReading": "Podle data přečtení",
+			"foldersFirst": "Složky první",
+			"invert": "Převrátit"
+		},
+		"view": {
+			"main": "Zobrazit",
+			"module": "Jako mřížku",
+			"list": "Jako seznam"
+		},
+		"contextMenu": {
+			"remove": "Odstranit"
+		},
+		"back": "Zpět",
+		"add": "Přidat",
+		"language": "Jazyk",
+		"theme": "Vzhled",
+		"valueCannotBeEmpty": "Hodnota nesmí být prázdná",
+		"nightMode": "Noční režim"
+	},
+	"comics": {
+		"continueReading": "Pokračovat ve čtení",
+		"emptyIndex": "V této sbírce nejsou žádné komiksy.",
+		"emptyFolder": "V této složce nejsou žádné kompatibilní soubory."
+	},
+	"reading": {
+		"firstPage": "První strana",
+		"previous": "Předchozí",
+		"next": "Další",
+		"lastPage": "Poslední stránka",
+		"pages": {
+			"main": "Stránky",
+			"slide": "Režim Prezentace",
+			"scroll": "Režim Vertikální Čtečka",
+			"adjustToWidth": "Přizpůsobit šířce",
+			"margin": "Okraj",
+			"marginHorizontal": "Vodorovné odsazení",
+			"marginVertical": "Svislé odsazení",
+			"differentMarginInHorizontals": "Jiné u širokých",
+			"doublePage": "Dvojtá stránka",
+			"doNotApplyToHorizontals": "Nepoužívat u širokých",
+			"blankPage": "Prázdná stránka na začátku",
+			"readingDelaySkip": "Zpoždění při měnění komiksů",
+			"animationSpeed": "Rychlost animace",
+			"readingManga": "Manga režim (Převrácené)",
+			"readingWebtoon": "Webtoon režim",
+			"readingGlobal": "Globální nastavení",
+			"readingConfigNew": "Nové nastavení"
+		},
+		"magnifyingGlass": {
+			"main": "Lupa",
+			"activate": "Aktivovat",
+			"zoom": "Přiblížit",
+			"size": "Velikost",
+			"ratio": "Poměr",
+			"radius": "Poloměr"
+		},
+		"tracking": {
+			"main": "Sledování se stránkami",
+			"tracking": "Sledování",
+			"marked": "Označeno",
+			"sites": "Všechny stránky",
+			"favoriteSites": "Oblíbené stránky",
+			"emptyFavoriteSites": "Žádné oblíbené stránky",
+			"problemChapter": "Nebyla zjištěna kapitola",
+			"chapters": "Kapitoly",
+			"chapter": "Kapitola",
+			"volumes": "Svazky",
+			"volume": "Svazek"
+		},
+		"moreOptions": {
+			"main": "Více nastavení",
+			"hideBarHeader": "Skrýt vrchní panel",
+			"hideContentLeft": "Skrýt postranní panel"
+		},
+		"viewBookmarks": "Zobrazit záložky",
+		"addBookmark": "Přidat záložku",
+		"removeBookmark": "Odstranit záložku",
+		"emptyBookmarks": "Žádné záložky",
+		"currentReading": "Rozečtené"
+	},
+	"menu": {
+		"file": {
+			"main": "Soubor",
+			"openFile": "Otevřít soubor",
+			"openFolder": "Otevřít složku",
+			"addFile": "Přidat soubor",
+			"addFolder": "Přidat složku",
+			"quit": "Opustit"
+		},
+		"view": {
+			"main": "Zobrazit",
+			"resetZoom": "Obnovit přiblížení",
+			"zoomIn": "Přiblížit",
+			"zoomOut": "Oddálit",
+			"toggleFullScreen": "Na celou obrazovku"
+		},
+		"goto": {
+			"main": "Přejít"
+		},
+		"debug": {
+			"main": "Debug",
+			"reload": "Znovu načíst",
+			"forceReload": "Přinutit znovu načíst",
+			"toggleDevTools": "Vyp/Zapnout vývojářské nástroje"
+		},
+		"help": {
+			"main": "Pomoc",
+			"about": "O Aplikaci OpenComic"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Přihlašte se na {{siteName}} pomocí tokenu",
+			"getTokenInput": "Token stránky {{siteName}}",
+			"invalidTokenHeader": "Neplatný token pro {{siteName}}",
+			"resendToken": "Chcete token pro {{siteName}} přidat znovu?",
+			"serachIn": "Vyhledat na {{siteName}}",
+			"emptySearch": "Nic nenalezeno",
+			"setHeader": "Označit manuálně",
+			"setMessage": "Pokud chcete, můžete si kapitoly označit manuálně",
+			"setWaitMessage": "Můžete tak učinit teď nebo počkat, až budou detekovány v jiné kapitole.",
+			"setChapterNumber": "Označit do kapitoly",
+			"setVolumeNumber": "Označit do svazku",
+			"activate": "Povolit sledování"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Vytvořit nové nastavení",
+			"readingConfigEditHeader": "Upravit nastavení",
+			"readingConfigName": "Název nastavení",
+			"readingConfigRemoveHeader": "Odstranit nastavení",
+			"readingConfigRemove": "Opravdu chcete toto nastavení odstranit?"
+		}
+	},
+	"buttons": {
+		"cancel": "Zrušit",
+		"ok": "Ok",
+		"undo": "Vrátit",
+		"dismiss": "Dobře",
+		"remove": "Odstranit"
+	},
+	"error": {
+		"uncompress": {
+			"title": "Chyba při odzipování",
+			"message": "Při odzipování souboru nastala chyba."
+		}
+	},
+	"about": {
+		"version": "Verze",
+		"translatedBy": "Do češtiny přeložil",
+		"contributedBy": "Přispěl",
+		"translators": [
+			{
+				"name": "Matyáš Caras",
+				"email": "contact@hernikplays.cz",
+				"url": "https://github.com/hernikplays"
+			}
+		]
+	}
+}
