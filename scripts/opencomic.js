@@ -92,6 +92,8 @@ var compatibleMime = [
 	'image/x-icon',
 	'image/vnd.microsoft.icon',
 	'image/webp',
+	'image/avif',
+	'image/avif-sequence',
 ];
 
 var compressedMime = {
@@ -186,6 +188,7 @@ var compatibleExtensions = [
 	/*bmp*/'bmp', 'dib',
 	/*ico*/'ico',
 	/*webp*/'webp',
+	/*avif*/'avif', 'avifs',
 	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt', 'pdf',
 ];
 

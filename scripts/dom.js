@@ -1413,6 +1413,8 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 	var imagePath = path;
 	var indexStart = 1;
 
+	console.log(mime.getType(path));
+
 	if(compatibleMime.indexOf(mime.getType(path)) != -1)
 	{
 		startImage = path;
