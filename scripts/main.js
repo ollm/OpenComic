@@ -27,8 +27,10 @@ function createWindow () {
 		minHeight: 200,
 		icon: image,
 		webPreferences: {
+			contextIsolation: false,
 			nodeIntegration: true,
-			enableRemoteModule: true
+			nodeIntegrationInWorker: true,
+			enableRemoteModule: true,
 		},
 		//icon: __dirname + '/icon.svg',
 	});
@@ -47,7 +49,7 @@ function createWindow () {
 	var menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
 
-	// win.webContents.openDevTools()
+	win.webContents.openDevTools()
 
 	win.removeMenu();
 

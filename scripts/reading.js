@@ -1113,7 +1113,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			'transform': 'translate('+(translateX)+'px, '+(translateY)+'px) scale('+scale+')',
 			'transform-origin': 'center center',
 			'z-index': scale == 1 ? 1 : 2,
-			'will-change': scale == 1 ? '' : 'transform',
+			// 'will-change': scale == 1 ? '' : 'transform',
 		});
 
 		if(scale == 1)
