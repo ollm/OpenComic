@@ -2,7 +2,7 @@
 ###### Windows
 * [.exe](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic.Setup.0.2.1.exe)
 ###### macOS
-* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1-mac.7z)
+* [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1-mac-build2.7z)
 ###### Linux
 * [.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_amd64.deb)
 * [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.x86_64.rpm)
