@@ -2077,6 +2077,7 @@ body .preload
 	float: left;
 	display: flex;
 	position: relative;
+	will-change: auto !important;
 }
 
 .reading-body .r-img
