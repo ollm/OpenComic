@@ -1568,7 +1568,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 5) // Set the delay when skip from comic
 	{
-		if(save) updateReadingPagesConfig('config', 'readingDelayComicSkip', value);
+		if(save) updateReadingPagesConfig('readingDelayComicSkip', value);
 	}
 	else if(mode == 6) // Set the reading to double page
 	{
