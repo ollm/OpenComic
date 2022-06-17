@@ -3,6 +3,8 @@ const fs = require('fs'),
 
 var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, compressedFiles = {};
 
+var fileDocumentsToRender = {};
+
 function returnFilesWD(path, all, callback = false)
 {
 	var sha = sha1(p.normalize(path));
@@ -386,9 +388,11 @@ function extractPdf(path, virtualPath, sha, all, json, callback)
 		{
 			console.time('pdf render');
 
-			var doc = await unpdf.getDocument({url: path, nativeImageDecoderSupport: 'none', disableFontFace: true});
+			let pdf = await unpdf.getDocument({url: path, nativeImageDecoderSupport: 'none', disableFontFace: true}).promise;
 
-			var pages = doc._pdfInfo.numPages;
+			fileDocumentsToRender[path] = pdf;
+
+			let pages = pdf.numPages;
 
 			if(!fs.existsSync(p.join(tempFolder, shaExt))) fs.mkdirSync(p.join(tempFolder, shaExt));
 
@@ -397,18 +401,22 @@ function extractPdf(path, virtualPath, sha, all, json, callback)
 				setProgress((i - 1) / pages, contentRightZindex);
 
 				// Render page
-				var page = await doc.getPage(i);
-				var viewport = page.getViewport(1);
+				let page = await pdf.getPage(i);
+				let viewport = page.getViewport({scale: 1}); // window.devicePixelRatio;
 
+				//let scale = 300 / viewport.width;
+				//viewport = page.getViewport({scale: scale});
+				let scale = template.contentRight().children().width() / viewport.width;
+				viewport = page.getViewport({scale: scale});
 
-				var canvas = document.createElement('canvas');
+				let canvas = document.createElement('canvas');
 				canvas.width = viewport.width;
 				canvas.height = viewport.height;
-				var context = canvas.getContext('2d');
+				let context = canvas.getContext('2d');
 
-				await page.render({canvasContext: context, viewport: viewport});
+				await page.render({canvasContext: context, viewport: viewport}).promise;
 
-				var imageData = canvas.toDataURL('image/jpeg', 1);
+				let imageData = canvas.toDataURL('image/jpeg', 1);
 
 				fs.writeFileSync(p.join(tempFolder, shaExt, 'page-'+i+'.jpg'), Buffer.from(imageData.replace(/^data:image\/[a-z]+;base64,/, ''), 'base64'));
 			}
@@ -554,4 +562,5 @@ module.exports = {
 	extractRar: extractRar,
 	extractTar: extractTar,
 	extractPdf: extractPdf,
+	fileDocumentsToRender: function(){return fileDocumentsToRender},
 };
