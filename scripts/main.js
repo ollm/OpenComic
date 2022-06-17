@@ -49,7 +49,7 @@ function createWindow () {
 	var menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
 
-	win.webContents.openDevTools()
+	// win.webContents.openDevTools()
 
 	win.removeMenu();
 

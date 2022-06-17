@@ -1,0 +1,26 @@
+<div class="settings-body">
+	<h1>{{language.global.settings}}</h1>
+
+	<h2>{{language.settings.reading.main}}</h2>
+
+	<div class="simple-slider">
+		<div class="simple-slider-text">{{language.settings.reading.readingMaxMargin}}<div><span>{{config.readingMaxMargin}}</span>px</div></div>
+		<input class="range" type="range" max="3000" min="50" step="50" list="marginlist" value="{{config.readingMaxMargin}}" onrange="settings.setMaxMargin(\{{value}}, \{{toEnd}})">
+	</div>
+
+	<div class="menu-simple-text">
+		{{language.settings.reading.globalZoom}}
+		<div class="switch{{#if config.globalZoom}} a{{/if}}" on="settings.setGlobalZoom(true)" off="settings.setGlobalZoom(false)"></div>
+	</div>
+
+	<h2>{{language.settings.navigation.main}}</h2>
+
+	<div class="simple-slider">
+		<div class="simple-text-text">{{language.settings.navigation.showFullPathLibrary}}</div>
+	</div>
+
+	<div class="simple-slider">
+		<div class="simple-text-text">{{language.settings.navigation.showFullPathOpened}}</div>
+	</div>
+
+</div>

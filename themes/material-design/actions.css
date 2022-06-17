@@ -950,6 +950,7 @@
 	cursor: pointer;
 	transition: 0.2s;
 	margin: -14px 0px;
+	background-color: transparent;
 }
 
 .range::-webkit-slider-runnable-track
