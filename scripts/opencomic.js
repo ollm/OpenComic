@@ -204,6 +204,7 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	file = require(p.join(appDir, 'scripts/file.js')),
 	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
+	settings = require(p.join(appDir, 'scripts/settings.js'));
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
@@ -307,11 +308,6 @@ function escapeQuotes(str, mode = false)
 		return String(str).replace(/"/g, '\\\"');
 	else
 		return String(str).replace(/'/g, '\\\'').replace(/"/g, '\\\"');
-}
-
-function escapeRegExp(string)
-{
-	return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function readFileApp(file)

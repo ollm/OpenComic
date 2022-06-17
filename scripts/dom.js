@@ -328,7 +328,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 	for(let _path in currentPathScrollTop)
 	{
-		if(_path != 0 && !new RegExp('^'+escapeRegExp(_path)).test(path))
+		if(_path != 0 && !new RegExp('^'+pregQuote(_path)).test(path))
 			delete currentPathScrollTop[_path];
 	}
 
@@ -534,7 +534,7 @@ function returnTextPath(path, mainPath, image = false)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
-	var files = path.replace(new RegExp('^\s*'+escapeBackSlash(mainPathR)), '').split(p.sep);
+	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
 	var path = [];
 
@@ -550,7 +550,7 @@ function headerPath(path, mainPath)
 {
 	var mainPathR = p.dirname(mainPath) + p.sep;
 
-	var files = path.replace(new RegExp('^\s*'+escapeBackSlash(mainPathR)), '').split(p.sep);
+	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
 	var path = [];
 
@@ -1054,7 +1054,7 @@ function indexPathControl(path = false, mainPath = false)
 
 		var mainPathR = p.dirname(mainPath) + p.sep;
 
-		var files = path.replace(new RegExp('^\s*'+escapeBackSlash(mainPathR)), '').split(p.sep);
+		var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
 		var prev = '';
 
@@ -1139,9 +1139,7 @@ function loadLanguagesPage(animation = true)
 	floatingActionButton(false);
 
 	if(readingActive)
-	{
 		readingActive = false;
-	}
 }
 
 function changeLanguage(lan)
@@ -1154,6 +1152,28 @@ function changeLanguage(lan)
 	template.loadContentLeft('index.content.left.html', false);
 	template.loadHeader('languages.header.html', false);
 	storage.updateVar('config', 'language', lan);
+}
+
+/* Page - Settings */
+
+function loadSettingsPage(animation = true)
+{
+	indexPathControl(false);
+
+	onReading = false;
+
+	reading.hideContent();
+
+	generateAppMenu();
+
+	template.loadContentRight('settings.content.right.html', animation);
+	template.loadHeader('settings.header.html', animation);
+	floatingActionButton(false);
+
+	settings.start();
+
+	if(readingActive)
+		readingActive = false;
 }
 
 var addComicButtonsST = false, addComicButtonsActive = false;
@@ -1576,6 +1596,7 @@ function skipPreviousComicF()
 module.exports = {
 	loadIndexPage: loadIndexPage,
 	loadLanguagesPage: loadLanguagesPage,
+	loadSettingsPage: loadSettingsPage,
 	changeLanguage: changeLanguage,
 	floatingActionButton: floatingActionButton,
 	changeView: changeView,
