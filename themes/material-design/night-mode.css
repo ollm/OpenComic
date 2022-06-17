@@ -1,0 +1,177 @@
+/*Night Theme*/
+
+body .night-mode
+{
+	color: #fff;
+	background-color: #212121;
+}
+
+.night-mode .dialog-text .menu-simple-text,
+.night-mode .tracking-set-message,
+.night-mode .input
+{
+	color: #fff;
+}
+
+.night-mode .content-right > div
+{
+	/*background-color: #303030;*/
+	background-color: #141414;
+}
+
+.night-mode .content-right,
+.night-mode .bar-header,
+.night-mode .bar-header > div,
+.night-mode .reading-lens,
+.night-mode .content-left,
+.night-mode .content-left > div,
+.night-mode .menu-simple,
+.night-mode .content-view-module .v-folder,
+.night-mode .dialog,
+.night-mode .floating-action-button-min,
+.night-mode input,
+.night-mode .reading-body .r-img > img,
+.night-mode .reading-lens .r-img > img,
+.night-mode .reading-body .r-img.blank > div,
+.night-mode .reading-lens .r-img.blank > div
+{
+	background-color: #212121;
+}
+
+.night-mode .reading-number
+{
+	color: #fff;
+}
+
+.night-mode .reading-skip > div
+{
+	background-color: #212121;
+	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0), inset 0px 0px 2px 1px rgba(0, 0, 0, 0), inset 0px 0px 1px 1px rgba(0, 0, 0, 0);
+}
+
+.night-mode .simple-list
+{
+	background-color: #212121;
+	border-bottom: 1px solid #414141;
+}
+
+.night-mode .dialog-header
+{
+	color: rgba(255, 255, 255, 0.96);
+}
+
+.night-mode .dialog-text
+{
+	color: rgba(255, 255, 255, 0.6);
+}
+
+.night-mode .reading-left
+{
+	border-bottom: 1px solid #414141;
+	color: #fff;
+}
+
+.night-mode .content-left > div
+{
+	box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0), inset -1px 0px 1px 0px rgba(0, 0, 0, 0), inset -1px 0px 0px 0px rgba(0, 0, 0, 0);
+}
+
+.night-mode .reading-bookmark, .night-mode .menu-tracking-sites, .night-mode .menu-tracking-sites-empty
+{
+	color: #ccc;
+}
+
+.night-mode .reading-bookmark > span, .night-mode .menu-tracking-sites > span, .night-mode .menu-tracking-sites-empty > span
+{
+	color: #fff;
+}
+
+.night-mode .hover > div
+{
+	background-color: #444;
+}
+
+/*Controls Night Theme*/
+
+.night-mode .switch
+{
+	background-color: #717171;
+}
+
+.night-mode .switch:before
+{
+	background-color: #bdbdbd;
+}
+
+.night-mode .content-left > div
+{
+	border-right: 1px solid #414141;
+}
+
+.night-mode.hide-content-left .content-left > div
+{
+	border-right: 0px solid #414141;
+}
+
+.night-mode .separator-1
+{
+	border-top: 1px solid #414141;
+}
+
+.night-mode .bar-buttons-separator
+{
+	border-left: 1px solid #414141;
+}
+
+.night-mode .menu-simple-separator,
+.night-mode .menu-simple-separator-min
+{
+	border-top: 1px solid #414141;
+}
+
+.night-mode .menu-simple-element.s,
+.night-mode .content-left .menu-list:hover,
+.night-mode .reading-left:hover,
+.night-mode .reading-left.s,
+.night-mode .simple-list:hover,
+.night-mode .simple-list:hover,
+.night-mode .simple-list.active
+{
+	background-color: rgba(255, 255, 255, 0.14);
+}
+
+.night-mode .menu-simple-element:hover
+{
+	background-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+.night-mode ::-webkit-scrollbar
+{
+	border-left: 1px solid #414141;
+	background-color: #212121;
+}
+
+.night-mode .bar-right-buttons::-webkit-scrollbar
+{
+	border-left: 0px;
+}
+
+.night-mode ::-webkit-scrollbar-thumb
+{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:hover
+{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:active
+{
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:window-inactive
+{
+	background-color: rgba(255, 255, 255, 0.12);
+}

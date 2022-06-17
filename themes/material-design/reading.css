@@ -1,0 +1,398 @@
+/* Reading - Start */
+
+.reading-left
+{
+	width: 100%;
+	padding: 16px 16px 16px 0px;
+	cursor: pointer;
+	position: relative;
+	transition: border 0.2s, background-color 0.2s;
+	border-bottom: 1px solid #e6e6e6;
+	box-sizing: border-box;
+	font-size: 0px;
+}
+
+.reading-left:hover, .reading-left.s
+{
+	background-color: rgba(0, 0, 0, 0.07);
+}
+
+.reading-left i
+{
+	text-align: center;
+	margin-left: 96px;
+	width: 80px;
+	font-size: 24px;
+	display: block;
+	margin-left: calc(100% - 80px);
+}
+
+.reading-images
+{
+	width: 80px;
+	border-radius: 4px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	margin-left: calc(100% - 80px);
+}
+
+.reading-number
+{
+	width: calc(100% - 96px);
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	text-align: center;
+	font-size: 15px;
+	float: left;
+	position: absolute;
+	top: 50%;
+	margin-top: -9px;
+	color: #333;
+	transition: 0.2s color;
+}
+
+.reading-body
+{
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	contain: paint;
+}
+
+.reading-body > div
+{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	will-change: transform;
+	overflow: hidden;
+}
+
+.reading-body .r-flex, .reading-lens .r-flex
+{
+	float: left;
+	display: flex;
+	position: relative;
+	will-change: auto !important;
+}
+
+.reading-body .r-img
+{
+	height: 100%;
+}
+
+.reading-body .r-img > img, .reading-lens .r-img > img, .reading-body .r-img.blank > div, .reading-lens .r-img.blank > div/*, .reading-body .r-folder, .reading-lens .r-folder*/
+{
+	transition: background-color 0.2s;
+	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 3px, rgba(0, 0, 0, 0.239216) 0px 1px 2px;
+	background-color: #fff;
+	display: block;
+}
+
+.reading-body .r-folder, .reading-lens .r-folder
+{
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	position: relative;
+}
+
+.reading-body .r-folder > div, .reading-lens .r-folder > div
+{
+	width: 100%;
+	height: 116px;
+	position: relative;
+	top: calc(50% - 58px);
+	text-align: center;
+}
+
+.reading-body .r-folder .r-folder-img, .reading-lens .r-folder .r-folder-img
+{
+	width: 96px;
+	background-repeat: no-repeat;
+	background-size: 96px;
+	font-size: 96px;
+	height: 96px;
+	display: inline-block;
+}
+
+.reading-body .r-folder .r-folder-name, .reading-lens .r-folder .r-folder-name
+{
+	font-size: 28px;
+	height: 40px;
+	line-height: 40px;
+	padding: 0px 16px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	margin-top: -10px;
+}
+
+.reading-lens
+{
+	position: fixed;
+	/* display: none; */
+	border-radius: 4px;
+	box-shadow: 0 2px 5px rgba(0,0,0, 0.26);
+	width: 200px;
+	height: 160px;
+	top: 0px;
+	left: 0px;
+	background-color: #eee;
+	overflow: hidden;
+	opacity: 0;
+	z-index: 3;
+	transition: background-color 0.2s;
+	contain: strict;
+}
+
+.reading-lens > div
+{
+	transform-origin: center top;
+}
+
+.reading-lens.a
+{
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	cursor: none;
+	will-change: transform;
+}
+
+.reading-lens.a > div
+{
+	will-change: transform;
+}
+
+.reading-lens.d
+{
+	animation-name: show-out;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.reading-lens.h
+{
+	visibility: hidden;
+}
+
+.reading-skip > div
+{
+	background-color: #fff;
+	position: absolute;
+	z-index: 1;
+	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1), inset 0px 0px 2px 1px rgba(0, 0, 0, 0.1), inset 0px 0px 1px 1px rgba(0, 0, 0, 0.05);
+	transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.reading-skip .reading-skip-top
+{
+	height: 120px;
+	width: calc(100% + 40px);
+	top: -120px;
+	left: -20px;
+}
+
+.reading-skip .reading-skip-bottom
+{
+	height: 120px;
+	width: calc(100% + 40px);
+	bottom: -120px;
+	left: -20px;
+}
+
+.reading-skip .reading-skip-left
+{
+	height: calc(100% + 40px);
+	width: 120px;
+	top: -20px;
+	left: -120px;
+}
+
+.reading-skip .reading-skip-right
+{
+	height: calc(100% + 40px);
+	width: 120px;
+	top: -20px;
+	right: -120px;
+}
+
+.reading-skip .reading-skip-top svg
+{
+	margin-left: -30px;
+	margin-top: -20px;
+}
+
+.reading-skip .reading-skip-bottom svg
+{
+	margin-left: -30px;
+	margin-top: -40px;
+}
+
+.reading-skip .reading-skip-left svg
+{
+	margin-left: -20px;
+	margin-top: -30px;
+}
+
+.reading-skip .reading-skip-right svg
+{
+	margin-left: -40px;
+	margin-top: -30px;
+}
+
+.reading-skip svg
+{
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+.reading-skip circle
+{
+	fill: none;
+	stroke-width: 6;
+	stroke: #da4336;
+	stroke-dashoffset: 187;
+	stroke-dasharray: 187;
+	transform: rotate(-90deg);
+	transform-origin: center;
+}
+
+.reading-skip circle.a
+{
+	animation-name: skip-comic-load;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	animation-timing-function: linear;
+}
+
+.reading-bookmark, .menu-tracking-sites, .menu-tracking-sites-empty
+{
+	padding: 0px 24px;
+	color: #777;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+
+.menu-tracking-sites
+{
+	padding: 8px 24px;
+}
+
+.reading-bookmark > span, .menu-tracking-sites > span, .menu-tracking-sites-empty > span
+{
+	padding-right: 6px;
+	color: #333;
+}
+
+.menu-tracking-sites > span
+{
+	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	max-width: 110px;
+}
+
+.menu-simple-text.menu-tracking-sites > span
+{
+	width: initial;
+}
+
+.menu-tracking-sites-problem > span
+{
+	max-width: 170px;
+}
+
+.menu-tracking-sites-problem i
+{
+	padding: 4px 8px 0px 0px;
+	float: left;
+}
+
+/* Tracking */
+
+.tracking-search
+{
+	min-height: calc(100% - 36px);
+	position: relative;
+	width: calc(100% + 48px);
+	margin-left: -24px;
+	padding: 8px 0px;
+	box-sizing: border-box;
+}
+
+.tracking-search-empty
+{
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	box-sizing: border-box;
+	transform: translate(0px, -50%);
+}
+
+.tracking-current
+{
+	height: 144px;
+	padding: 0px 0px 16px 0px;
+	line-height: 36px;
+}
+
+.tracking-current .tracking-current-image
+{
+	height: 144px;
+	width: 96px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 0px 12px 0px 0px;
+	float: left;
+}
+
+.tracking-current > span
+{
+	padding: 0px;
+	float: left;
+	width: calc(100% - 140px);
+	overflow: hidden;
+	height: 84px;
+	word-break: break-all;
+}
+
+.tracking-current-progress
+{
+	float: left;
+	width: calc(100% - 140px);
+}
+
+.tracking-current-progress > div
+{
+	margin-bottom: -10px;
+}
+
+.tracking-current > i
+{
+	float: right;
+	cursor: pointer;
+}
+
+.tracking-set-message
+{
+	font-size: 15px;
+	font-weight: normal;
+	color: #333;
+	padding: 8px 0px 4px 0px;
+}

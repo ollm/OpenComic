@@ -1,0 +1,998 @@
+
+/* Buttons */
+
+.floating-action-button
+{
+	border-radius: 50%;
+	height: 36px;
+	width: 36px;
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+	background-size: 20px;
+	background-repeat: no-repeat;
+	background-position: 8px;
+	background-color: #da4336;
+	cursor: pointer;
+	overflow: hidden;
+	transition: 0.2s;
+	z-index: 2;
+	box-sizing: border-box;
+	padding: 6px;
+}
+
+.floating-action-button.disable
+{
+	transform: translate(0px, 84px);
+}
+
+.floating-action-button:before
+{
+	content: '';
+	display: block;
+	width: 32px;
+	height: 32px;
+	opacity: 0;
+	transform: scale(0);
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: 50%;
+	margin: -4px;
+	position: absolute;
+}
+
+.floating-action-button.a:before
+{
+	animation-name: zoom-in, show-in;
+	animation-duration: 0.2s, 0.2s;
+	animation-fill-mode: forwards, forwards;
+}
+
+.floating-action-button.p:before
+{
+	animation-name: zoom-in-mas, show-out;
+	animation-duration: 0.6s, 0.6s;
+	animation-fill-mode: forwards, forwards;
+}
+
+.floating-action-button.c:before
+{
+	animation-name: zoom-out, show-out;
+	animation-duration: 0.2s, 0.2s;
+	animation-fill-mode: forwards, forwards;
+}
+
+.floating-action-button > div
+{
+	color: #fff;
+	transition: 0.2s;
+}
+
+.floating-action-button-min
+{
+	background-color: #fff;
+	visibility: hidden;
+	transform: scale(0.6);
+	opacity: 0;
+}
+
+.floating-action-button-min.s
+{
+	animation-name: show-action-button-min;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.floating-action-button-min.h
+{
+	animation-name: hide-action-button-min;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.floating-action-button-min:before
+{
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.floating-action-button-min > div
+{
+	color: #808080;
+}
+
+.button
+{
+	height: 48px;
+	width: 48px;
+	background-size: 24px;
+	background-position: 12px;
+	background-repeat: no-repeat;
+	transition: 0.2s;
+	cursor: pointer;
+	box-sizing: border-box;
+	padding: 12px;
+}
+
+.button-min
+{
+	width: 24px;
+	padding: 12px 0px;
+}
+
+.button:hover
+{
+	color: #666666;
+}
+
+.night-mode .button:hover
+{
+	color: #cccccc;
+}
+
+.button:before
+{
+	content: '';
+	display: block;
+	height: 32px;
+	width: 32px;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.12);
+	transition: 0.3s;
+	margin: 8px;
+	opacity: 0;
+	transform: scale(0);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.button-min:before
+{
+	width: 24px;
+	left: -8px;
+}
+
+/*Button 1*/
+
+.button1.a:before
+{
+	/*animation-name: button-animation-1, button-pulse;
+	animation-duration: 0.2s, 2s;
+	animation-delay: 0s, 0.2s;
+	animation-iteration-count: 1, infinite;
+	animation-fill-mode: forwards, none;*/
+
+	animation-name: button-animation-1;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.button1.p:before
+{
+	animation-name: button-animation-4;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.button1.d:before
+{
+	animation-name: button-animation-5;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+}
+
+.button1.c:before
+{
+	animation-name: button-animation-3;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+/*Button 2*/
+
+.button2.a:before
+{
+	animation-name: button-animation-1;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.button2.p:before
+{
+	animation-name: button-animation-2;
+	animation-duration: 0.2s;
+	animation-fill-mode: none;
+}
+
+.button2.c:before
+{
+	animation-name: button-animation-3;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.bar-title
+{
+	float: left;
+	font-size: 14px;
+	line-height: 48px;
+	font-weight: 400;
+	height: 48px;
+	margin-left: 20px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	min-width: 92px;
+}
+
+.bar-title-a
+{
+	cursor: pointer;
+}
+
+.bar-title-a:hover
+{
+	text-decoration: underline;
+}
+
+.bar-title .navegation
+{
+	font-size: 18px;
+	display: inline-block;
+	transform: translate(0px, 4px);
+	color: inherit;
+	margin: 0px 2px;
+}
+
+/*Global Elements*/
+/* Hover */
+
+.hover
+{
+	width: 500px;
+	position: fixed;
+	opacity: 0;
+	text-align: center;
+	z-index: 15;
+	left: 0px;
+	margin-left: -250px;
+	visibility: hidden;
+}
+
+.hover.a
+{
+	animation-name: hover-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.hover.a-i
+{
+	animation-name: hover-in-invert;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.hover.d
+{
+	animation-name: hover-out;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.hover.d-i
+{
+	animation-name: hover-out-invert;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.hover > div
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	display: inline-block;
+	border-radius: 4px;
+	background-color: #808080;
+	line-height: 22px;
+	font-size: 10px;
+	color: #fff;
+	padding: 0px 8px;
+	min-height: 22px;
+	/*opacity: 0.9;*/
+}
+
+
+/* Menus */
+
+.menu
+{
+	position: relative;
+}
+
+.menu-close
+{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	z-index: 11;
+	display: none;
+}
+
+.menu-close.a
+{
+	display: block;
+}
+
+.menu-simple
+{
+	position: fixed;
+	background-color: #fff;
+	border-radius: 4px;
+	overflow: hidden;
+	opacity: 0;
+	z-index: 12;
+	/*box-shadow: 0 0px 3px 1px rgba(0,0,0,0.14), 0 2px 3px rgba(0,0,0,0.14);*/
+	display: none;
+	padding: 12px 0px;
+	font-size: 15px;
+	overflow: auto;
+}
+
+.menu-simple-header
+{
+	max-height: calc(100vh - 88px);
+}
+
+.menu-simple.a
+{
+	animation-name: cascading-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	display: block;
+}
+
+.menu-simple.d
+{
+	animation-name: cascading-out;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	display: block;
+}
+
+.menu-simple .menu-simple
+{
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.menu-simple .menu-simple .menu-simple
+{
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.menu-simple .menu-simple .menu-simple .menu-simple
+{
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.menu-simple .menu-simple .menu-simple .menu-simple .menu-simple
+{
+	box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+.menu-simple-element
+{
+	height: 32px;
+	padding: 0px 24px;
+	line-height: 32px;
+	cursor: pointer;
+	transition: 0.2s;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+
+.menu-simple-element i
+{
+	float: right;
+	padding: 4px 0px 4px 8px;	
+}
+
+.menu-simple-element i.menu-simple-icon-last
+{
+	margin-right: -8px;
+}
+
+.menu-simple-element i.menu-simple-icon-first
+{
+	margin: 0px 0px 0px -2px;
+	padding: 4px 20px 4px 0px;
+	float: left;
+}
+
+.menu-simple-element-icon2
+{
+	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	max-width: 172px;
+}
+
+.menu-simple-element-icon-select
+{
+	transition: 0.2s;
+	opacity: 0;
+}
+
+.menu-simple-element-icon-select.active
+{
+	opacity: 1;
+}
+
+.menu-simple-element.s
+{
+	background-color: rgba(0, 0, 0, 0.07);
+}
+
+.menu-simple:hover .menu-simple-element.s
+{
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.menu-simple-element:hover
+{
+	background-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+.menu-simple-element-image
+{
+	height: 24px;
+	width: 24px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 4px 6px 0px 0px;
+	float: left;
+}
+
+.menu-simple-element-little
+{
+	padding: 4px 24px;
+}
+
+.menu-simple-element-medium
+{
+	padding: 8px 24px;
+}
+
+.menu-simple-element-medium .menu-simple-element-image
+{
+	height: 32px;
+	width: 32px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 0px 6px 0px 0px;
+	float: left;
+}
+
+.menu-simple-element-poster
+{
+	height: 72px;
+	padding: 8px 24px;
+	line-height: 72px;
+}
+
+.menu-simple-element-poster .menu-simple-element-image
+{
+	height: 72px;
+	width: 48px;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	margin: 0px 12px 0px 0px;
+	float: left;
+}
+
+.menu-tracking-sites .menu-simple-element-image
+{
+	margin-right: 12px;
+}
+
+.menu-simple-text, .menu-simple-button
+{
+	height: 32px;
+	padding: 0px 24px;
+	line-height: 32px;
+	transition: 0.2s;
+}
+
+.dialog-text .menu-simple-text
+{
+	padding: 0px;
+	font-size: 15px;
+	font-weight: normal;
+	color: #333;
+}
+
+.menu-simple-button
+{
+	height: 36px;
+}
+
+/* Dialog */
+
+@keyframes dialog-show
+{
+	from
+	{
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.85);
+	}
+	to
+	{
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+@keyframes dialog-hide
+{
+	from
+	{
+		opacity: 1;
+	}
+	to
+	{
+		opacity: 0;
+	}
+}
+
+@keyframes dialog-close-show
+{
+	from
+	{
+		opacity: 0;
+	}
+	to
+	{
+		opacity: 1;
+	}
+}
+
+@keyframes dialog-close-hide
+{
+	from
+	{
+		opacity: 1;
+	}
+	to
+	{
+		opacity: 0;
+	}
+}
+
+.dialog
+{
+	border-radius: 4px;
+	background-color: #fff;
+	position: fixed;
+	width: 280px;
+	left: 50%;
+	top: 50%;
+	max-height: calc(100vh - 32px);
+	max-width: calc(100vw - 32px);
+	animation-fill-mode: forwards;
+	animation-name: dialog-show;
+	animation-duration: 0.25s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+	/*will-change: transform opacity;*/
+	z-index: 120;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+}
+
+.dialog.hide
+{
+	animation-fill-mode: forwards;
+	animation-name: dialog-hide;
+	animation-duration: 0.15s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.dialog-header
+{
+	font-size: 20px;
+	line-height: 28px;
+	padding: 0px 0px;
+	color: rgba(0, 0, 0, 0.87);
+	font-weight: 500;
+	padding: 20px 24px 12px 24px;
+}
+
+.dialog-text
+{
+	font-size: 16px;
+	line-height: 24px;
+	padding: 0px 0px;
+	color: rgba(0, 0, 0, 0.6);
+	font-weight: 500;
+	padding: 0px 24px 20px 24px;
+}
+
+.dialog-not-header
+{
+	padding: 20px 24px 20px 24px;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.dialog-buttons
+{
+	float: right;
+	padding: 8px;
+}
+
+.dialog-buttons .simple-button
+{
+	margin-left: 8px; 
+}
+
+.dialog-scroll-header
+{
+	border-top: 1px solid #e0e0e0;
+	margin-top: 4px;
+}
+
+.dialog-scroll-bottom
+{
+	border-top: 1px solid #e0e0e0;
+}
+
+.dialog-scroll
+{
+	overflow: auto;
+	box-sizing: border-box;
+	padding: 20px 24px 20px 24px;
+	max-height: calc(100vh - 98px);
+}
+
+.dialog-scroll-buttons
+{
+	max-height: calc(100vh - 98px);
+}
+
+.dialog-close
+{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 119;
+	background-color: rgba(0, 0, 0, 0.32);
+	animation-fill-mode: forwards;
+	animation-name: dialog-close-show;
+	animation-duration: 0.15s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.dialog-close.hide
+{
+	animation-fill-mode: forwards;
+	animation-name: dialog-close-hide;
+	animation-duration: 0.15s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Snackbar */
+
+@keyframes snackbarShow
+{
+	from
+	{
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to
+	{
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes snackbarHide
+{
+	from
+	{
+		opacity: 1;
+	}
+	to
+	{
+		opacity: 0;
+	}
+}
+
+.snackbars .snackbar
+{
+	min-height: 48px;
+	background-color: #323232;
+	border-radius: 4px;
+	position: fixed;
+	bottom: 8px;
+	left: 8px;
+	width: calc(100% - 16px);
+	animation-fill-mode: forwards;
+	animation-name: snackbarShow;
+	animation-duration: 0.2s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+	z-index: 130;
+}
+
+@media (min-width: 600px)
+{
+	.snackbars .snackbar
+	{
+		width: 440px !important;
+	}
+}
+
+.snackbars .snackbar.hide
+{
+	animation-fill-mode: forwards;
+	animation-name: snackbarHide;
+	animation-duration: 0.1s;
+	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.snackbars .snackbarText
+{
+	padding: 14px 16px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	box-sizing: border-box;
+	word-wrap: break-word;
+	word-break: break-all;
+	float: left;
+}
+
+.snackbar-buttons
+{
+	float: right;
+}
+
+.snackbars .snackbar .simple-button
+{
+	position: relative;
+	margin: 6px 8px 6px 0px;
+	float: right;
+}
+
+/* Input */
+.input
+{
+	height: 56px;
+	box-sizing: border-box;
+	border: 2px solid #999999;
+	border-radius: 4px;
+	font-size: 16px;
+	padding: 0px 14px;
+	width: 100%;
+	/*transition: all 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);*/
+	transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+	outline: none;
+	background-color: transparent;
+}
+
+.input:focus
+{
+	border: 2px solid #da4336;
+	padding: 0px 14px;
+}
+
+.input-margin-top
+{
+	margin-top: 16px;
+}
+
+/* Buttons */
+
+.simple-button
+{
+	box-sizing: border-box;
+	float: left;
+	transition: opacity 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+	cursor: pointer;
+}
+
+.simple-button.disable
+{
+	opacity: .4;
+	pointer-events: none;
+}
+
+.simple-button.big
+{
+	width: 100%;
+}
+
+.simple-button > div
+{
+	height: 36px;
+	width: 100%;
+	line-height: 36px;
+	border-radius: 4px;
+	border: 0px;
+	padding: 0px 16px;
+	box-sizing: border-box;
+	text-align: center;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 14px;
+	transition: 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+
+.simple-button.white > div
+{
+	background-color: #fff;
+}
+
+.simple-button.transparent > div
+{
+	background-color: transparent;
+	color: #da4336;
+	padding: 0px 8px;
+} 
+
+.simple-button.outlined > div
+{
+	background-color: transparent;
+	color: #da4336;
+	border: 1px solid #e0e0e0;
+	line-height: 34px;
+}
+
+.simple-button.normal > div
+{
+	border: 1px solid #da4336;
+	background-color: #da4336;
+	line-height: 34px;
+	color: #fff;
+}
+
+
+/* Controls */
+
+.switch
+{
+	width: 36px;
+	height: 14px;
+	border-radius: 18px;
+	background-color: #b0afaf;
+	position: relative;
+	transition: 0.2s;
+	float: right;
+	margin-top: 9px;
+	cursor: pointer;
+}
+
+.switch:before
+{
+	content: '';
+	display: block;
+	position: absolute;
+	border-radius: 100%;
+	width: 20px;
+	height: 20px;
+	top: -3px;
+	left: -3px;
+	background-color: #f1f1f1;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 0 0 16px rgba(0, 108, 181, 0), 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 0px 1px 0 rgba(0, 0, 0, 0.14);
+	transition: 0.2s;
+}
+
+.switch.a
+{
+	background-color: rgba(218, 67, 54, 0.3);
+}
+
+.switch.a:before
+{
+	transform: translate(22px, 0px);
+	background-color: rgba(218, 67, 54, 1) !important;
+}
+
+.simple-slider
+{
+	min-height: 64px;
+	padding: 0px 24px 15px 24px;
+	transition: 0.2s;
+	box-sizing: border-box;
+}
+
+.simple-slider-text
+{
+	min-height: 32px;
+	line-height: 32px;
+	transition: 0.2s;
+	margin-bottom: 15px;
+}
+
+.simple-slider-text > div
+{
+	float: right;
+	color: #666;
+}
+
+.simple-slider .range
+{
+	display: block;
+	
+}
+
+.range
+{
+	-webkit-appearance: none !important;
+	height: 30px;
+	outline: 0px;
+	width: 100%;
+	cursor: pointer;
+	transition: 0.2s;
+	margin: -14px 0px;
+}
+
+.range::-webkit-slider-runnable-track
+{
+	width: 100%;
+	height: 2px;
+	background: rgba(218, 67, 54, 1);
+	border: none;
+}
+
+.range.d
+{
+	background: #b0b0b0;
+}
+
+.range::-webkit-slider-thumb
+{
+	-webkit-appearance: none !important;
+	background: rgba(218, 67, 54, 1);
+	height: 12px;
+	width: 12px;
+	border-radius: 100px;
+	outline: 0px;
+	transition: 0.2s;
+	border: 0px solid #fff;
+	margin-top: -5px;
+}
+
+.range.d::-webkit-slider-thumb
+{
+	-webkit-appearance: none !important;
+	border: 2px solid #fff;
+	background: #b0b0b0;
+}
+	
+
+
+.range::-webkit-slider-thumb:active
+{
+	transform: scale(1.3333);
+}
+
+.range.d::-webkit-slider-thumb:active
+{
+	transform: scale(1);
+}
