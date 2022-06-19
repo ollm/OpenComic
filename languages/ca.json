@@ -41,8 +41,8 @@
 		"lastPage": "Última pàgina",
 		"pages": {
 			"main": "Pàgines",
-			"slide": "Lliscar",
-			"scroll": "Navega cap avall",
+			"slide": "Lectura horitzontal",
+			"scroll": "Lectura vertical",
 			"adjustToWidth": "Ajustar a l'ample",
 			"margin": "Marge",
 			"marginHorizontal": "Margen horitzontal",
@@ -89,6 +89,18 @@
 		"removeBookmark": "Eliminar marcador",
 		"emptyBookmarks": "No hi ha cap marcador",
 		"currentReading": "Lectura actual"
+	},
+	"settings": {
+		"reading": {
+			"main": "Preferències de lectura",
+			"maxMargin": "Marge horitzontal i vertical màxim",
+			"globalZoom": "Aplica un zoom global en comptes d'imatge a imatge (Només en lectura vertical)"
+		},
+		"navigation": {
+			"main": "Navegación",
+			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
+			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta"
+		}
 	},
 	"menu": {
 		"file": {

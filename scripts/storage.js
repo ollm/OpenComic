@@ -1,4 +1,4 @@
-var changes = 36;
+var changes = 37; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -54,6 +54,7 @@ var storageDefault = {
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
 		readingMaxMargin: 200,
+		readingGlobalZoom: true,
 		trackingSites: {
 			wildcard: {
 				favorite: false,

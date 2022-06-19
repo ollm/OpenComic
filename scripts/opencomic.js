@@ -59,6 +59,7 @@ const electron = require('electron'),
 	mime = require('mime'),
 	sha1 = require('sha1'),
 	p = require('path'),
+	anime = require('animejs'),
 	$ = require('jquery');
 
 require('jquery-bez');

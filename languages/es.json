@@ -42,8 +42,8 @@
 		"lastPage": "Última página",
 		"pages": {
 			"main": "Páginas",
-			"slide": "Deslizar",
-			"scroll": "Desplazarse hacia abajo",
+			"slide": "Lectura horizontal",
+			"scroll": "Lectura vertical",
 			"adjustToWidth": "Ajustar a lo ancho",
 			"margin": "Margen",
 			"marginHorizontal": "Margen horizontal",
@@ -94,12 +94,12 @@
 	"settings": {
 		"reading": {
 			"main": "Preferencias de lectura",
-			"readingMaxMargin": "Margen horizontal y vertical máximo",
-			"globalZoom": "Aplicar un zoom global en vez de página a página"
+			"maxMargin": "Margen horizontal y vertical máximo",
+			"globalZoom": "Aplica un zoom global en vez de imagen a imagen (Solo en lectura vertical)"
 		},
 		"navigation": {
-			"main": "Navegacion",
-			"showFullPathLibrary": "Mostrar la ruta completa en los comics de la biblioteca",
+			"main": "Navegación",
+			"showFullPathLibrary": "Mostrar la ruta completa al abrir los comics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta"
 		}
 	},

@@ -91,6 +91,18 @@
 		"emptyBookmarks": "No bookmarks",
 		"currentReading": "Current reading"
 	},
+	"settings": {
+		"reading": {
+			"main": "Reading preferences",
+			"maxMargin": "Maximum horizontal and vertical margin",
+			"globalZoom": "Applies a global zoom instead of image by image (Only in vertical reading)"
+		},
+		"navigation": {
+			"main": "Navigation",
+			"showFullPathLibrary": "Show full path when opening library comics",
+			"showFullPathOpened": "Show full path when opening a file or folder"
+		}
+	},
 	"menu": {
 		"file": {
 			"main": "File",
