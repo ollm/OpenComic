@@ -1,5 +1,5 @@
 
-var images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
+var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -10,9 +10,9 @@ function blankPage(index)
 	{
 		for(let i = index; i < (imagesNum + 1); i++)
 		{
-			if(typeof imagesData[i] !== 'undefined')
+			if(typeof imagesDataClip[i] !== 'undefined')
 			{
-				if(imagesData[i].aspectRatio > 1)
+				if(imagesDataClip[i].aspectRatio > 1)
 				{
 					return key % 2;
 				}
@@ -29,6 +29,35 @@ function blankPage(index)
 	}
 }
 
+function calculateImagesDataWithClip()
+{
+	imagesDataClip = {};
+
+	let imageClip = _config.readingImageClip;
+	let clipVertical = (imageClip.top + imageClip.bottom) / 100;
+	let clipHorizontal = (imageClip.left + imageClip.right) / 100;
+
+	if(clipVertical === 0 && clipHorizontal === 0)
+		return imagesDataClip = imagesData;
+
+	for(let i = 1; i < (contentNum + 1); i++)
+	{
+		if(typeof imagesData[i] !== 'undefined')
+		{
+			let width = Math.round(imagesData[i].width * (1 - clipHorizontal));
+			let height = Math.round(imagesData[i].height * (1 - clipVertical));
+
+			imagesDataClip[i] = {
+				width: width,
+				height: height,
+				aspectRatio: (width / height),
+			};
+		}
+	}
+
+	return imagesDataClip;
+}
+
 //Calculates the distribution of the images depending on the user's configuration
 function calculateImagesDistribution()
 {
@@ -39,14 +68,14 @@ function calculateImagesDistribution()
 	{
 		var data = [];
 
-		if(_config.readingBlankPage && (!_config.readingDoNotApplyToHorizontals || (typeof imagesData[1] !== 'undefined' && imagesData[1].aspectRatio <= 1)))
+		if(_config.readingBlankPage && (!_config.readingDoNotApplyToHorizontals || (typeof imagesDataClip[1] !== 'undefined' && imagesDataClip[1].aspectRatio <= 1)))
 			data.push({index: false, folder: false, blank: true, width: 2});
 
 		for(let i = 1; i < (contentNum + 1); i++)
 		{
-			if(typeof imagesData[i] !== 'undefined')
+			if(typeof imagesDataClip[i] !== 'undefined')
 			{
-				if(_config.readingDoNotApplyToHorizontals && imagesData[i].aspectRatio > 1)
+				if(_config.readingDoNotApplyToHorizontals && imagesDataClip[i].aspectRatio > 1)
 				{
 					if(data.length > 0)
 					{
@@ -57,7 +86,7 @@ function calculateImagesDistribution()
 					}
 
 					data.push({index: i, folder: false, blank: false, width: 1});
-					imagesData[i].position = indexNum; 
+					imagesDataClip[i].position = imagesData[i].position = indexNum;
 					imagesDistribution.push(data);
 					indexNum++;
 					data = [];
@@ -68,7 +97,7 @@ function calculateImagesDistribution()
 						data.push({index: false, folder: false, blank: true, width: 2});
 
 					data.push({index: i, folder: false, blank: false, width: 2});
-					imagesData[i].position = indexNum; 
+					imagesDataClip[i].position = imagesData[i].position = indexNum;
 				}
 			}
 			else
@@ -99,10 +128,10 @@ function calculateImagesDistribution()
 	{
 		for(let i = 1; i < (contentNum + 1); i++)
 		{
-			if(typeof imagesData[i] !== 'undefined')
+			if(typeof imagesDataClip[i] !== 'undefined')
 			{
 				imagesDistribution.push([{index: i, folder: false, blank: false, width: 1}]);
-				imagesData[i].position = indexNum;
+				imagesDataClip[i].position = imagesData[i].position = indexNum;
 				indexNum++;
 			}
 			else
@@ -170,6 +199,7 @@ function applyMangaReading(distribution)
 // Add images distribution to html
 function addHtmlImages()
 {
+	calculateImagesDataWithClip();
 	calculateImagesDistribution();
 
 	var _imagesDistribution = applyMangaReading(imagesDistribution);
@@ -228,16 +258,16 @@ function calcAspectRatio(first, second)
 		if(first.folder)
 			first.aspectRatio = 1;
 		else if(first.blank)
-			first.aspectRatio = second.folder ? 1 : imagesData[second.index].aspectRatio;
+			first.aspectRatio = second.folder ? 1 : imagesDataClip[second.index].aspectRatio;
 		else
-			first.aspectRatio = imagesData[first.index].aspectRatio;
+			first.aspectRatio = imagesDataClip[first.index].aspectRatio;
 	}
 	else
 	{
 		if(first.folder)
 			first.aspectRatio = 1;
 		else
-			first.aspectRatio = imagesData[first.index].aspectRatio;
+			first.aspectRatio = imagesDataClip[first.index].aspectRatio;
 	}
 
 	return first;
@@ -267,6 +297,15 @@ function disposeImages(data = false)
 	var aspectRatioHorizontals0 = contentWidthHorizontals0 / (contentHeight - marginVertical * 2);
 
 	var _imagesDistribution = applyMangaReading(imagesDistribution);
+
+	let imageClip = _config.readingImageClip;
+
+	let clipTop = imageClip.top / 100;
+	let clipBottom = imageClip.bottom / 100;
+	let clipVertical = clipTop + clipBottom;
+	let clipLeft = imageClip.left / 100;
+	let clipRight = imageClip.right / 100;
+	let clipHorizontal = clipLeft + clipRight;
 
 	for(let key1 in _imagesDistribution)
 	{
@@ -307,22 +346,28 @@ function disposeImages(data = false)
 			if(readingViewIs('scroll'))
 				marginTop0 = marginTop1 = marginVertical;
 
-			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
+			template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight0+'px',
 				'width': imageWidth0+'px',
 				'margin-left': marginLeft0+'px',
 				'margin-top': marginTop0+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
+			}).find('img').css({
+				'height': imageHeight0+'px',
+				'width': imageWidth0+'px',
 			});
 
-			template.contentRight('.image-position'+key1+'-1 img, .image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
+			template.contentRight('.image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
 				'height': imageHeight1+'px',
 				'width': imageWidth1+'px',
 				'margin-left': marginLeft1+'px',
 				'margin-top': marginTop1+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
+			}).find('img').css({
+				'height': imageHeight1+'px',
+				'width': imageWidth1+'px',
 			});
 		}
 		else
@@ -365,13 +410,21 @@ function disposeImages(data = false)
 			if(readingViewIs('scroll'))
 				marginTop = marginVertical;
 
-			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
+			let imgHeight = (clipVertical > 0 ? (imageHeight / (1 - clipVertical)) : imageHeight);
+			let imgWidth = (clipHorizontal > 0 ? (imageWidth / (1 - clipHorizontal)) : imageWidth);
+
+			template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight+'px',
 				'width': imageWidth+'px',
 				'margin-left': marginLeft+'px',
 				'margin-top': marginTop+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
+			}).find('img').css({
+				'height': imgHeight+'px',
+				'width': imgWidth+'px',
+				'margin-top': -(imgHeight * clipTop)+'px',
+				'margin-left': -(imgWidth * clipLeft)+'px',
 			});
 		}
 
@@ -1863,6 +1916,24 @@ function changePagesView(mode, value, save)
 
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: value, bottom: value, left: _config.readingHorizontalsMargin.left, right: _config.readingHorizontalsMargin.right});
 	}*/
+	else if(mode == 16) // Clip horizontal images
+	{
+		updateReadingPagesConfig('readingImageClip', {top: _config.readingImageClip.top, bottom: _config.readingImageClip.bottom, left: value, right: value});
+
+		addHtmlImages();
+		disposeImages();
+		calculateView();
+		stayInLine();
+	}
+	else if(mode == 17) // Clip vertical images
+	{
+		updateReadingPagesConfig('readingImageClip', {top: value, bottom: value, left: _config.readingImageClip.left, right: _config.readingImageClip.right});
+
+		addHtmlImages();
+		disposeImages();
+		calculateView();
+		stayInLine();
+	}
 }
 
 //Change the bookmark icon
@@ -2502,7 +2573,7 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
 {
-	images = {}, imagesData = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranY: 0, scale: 1};
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranY: 0, scale: 1};
 
 	loadReadingConfig(currentReadingConfigKey);
 
@@ -3177,6 +3248,7 @@ module.exports = {
 	contentNum: function(){return contentNum},
 	imagesNumLoad: imagesNumLoad,
 	imagesData: function(){return imagesData},
+	imagesDataClip: function(){return imagesDataClip},
 	goToImage: goToImage,
 	goToFolder: goToFolder,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
@@ -3193,6 +3265,7 @@ module.exports = {
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	changePagesView: changePagesView,
 	magnifyingGlassControl: magnifyingGlassControl,
+	addHtmlImages: addHtmlImages,
 	disposeImages: disposeImages,
 	calculateView: calculateView,
 	stayInLine: stayInLine,

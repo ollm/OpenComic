@@ -57,7 +57,9 @@
 			"readingManga": "Lectura de manga (Invertir)",
 			"readingWebtoon": "Lectura de webtoon",
 			"readingGlobal": "Configuración global",
-			"readingConfigNew": "Nueva configuración"
+			"readingConfigNew": "Nueva configuración",
+			"clipHorizontal": "Recortar horizontalmente",
+			"clipVertical": "Recortar verticalmente"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

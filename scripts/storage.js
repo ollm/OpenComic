@@ -1,4 +1,4 @@
-var changes = 37; // Update this if readingPagesConfig is updated
+var changes = 39; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -19,6 +19,12 @@ var readingPagesConfig = {
 		bottom: 16,
 		left: 16,
 		right: 16
+	},
+	readingImageClip: {
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0
 	},
 	readingDelayComicSkip: 1,
 	readingDoublePage: false,

@@ -57,7 +57,9 @@
 			"readingManga": "Reading manga (Inverted)",
 			"readingWebtoon": "Reading webtoon",
 			"readingGlobal": "Global configuration",
-			"readingConfigNew": "New configuration"
+			"readingConfigNew": "New configuration",
+			"clipHorizontal": "Clip horizontal",
+			"clipVertical": "Clip vertical"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",

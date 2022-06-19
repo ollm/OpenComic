@@ -23,15 +23,16 @@ document.addEventListener("keydown", event => {
 
 });
 
+var errorDialog = true;
 
 window.addEventListener('error', function(evt) {
 
-	/*var error = false;
+	var error = false;
 
 	if(evt.message)
 		error = 'Error: '+evt.message +' at linenumber '+evt.lineno+':'+evt.colno+' of file '+evt.filename;
 
-	if(error !== false)
+	if(error !== false && errorDialog)
 	{
 		if(electronRemote.dialog)
 		{
@@ -46,7 +47,7 @@ window.addEventListener('error', function(evt) {
 		{
 			alert(error+(evt.error.stack ? ' '+evt.error.stack : ''));
 		}
-	}*/
+	}
 
 }, true);
 
