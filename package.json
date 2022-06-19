@@ -77,7 +77,7 @@
 		"unzipper": "^0.10.11"
 	},
 	"devDependencies": {
-		"electron": "^13.6.9",
+		"electron": "^15.5.5",
 		"electron-builder": "^22.11.11",
 		"electron-rebuild": "^3.2.2",
 		"js-yaml": "^3.13.1",
