@@ -55,8 +55,9 @@
 	},
 	"dependencies": {
 		"7zip-bin": "^4.1.0",
+		"@electron/remote": "^2.0.8",
 		"animejs": "^3.2.1",
-		"electron-json-storage": "^4.3.0",
+		"electron-json-storage": "^4.5.0",
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
 		"fs-extra": "^9.0.1",
@@ -71,19 +72,19 @@
 		"pdfjs-dist": "^2.9.359",
 		"request": "^2.88.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.29.0",
+		"sharp": "^0.30.6",
 		"tar-fs": "^2.0.0",
 		"unrar": "^0.2.0",
 		"unzipper": "^0.10.11"
 	},
 	"devDependencies": {
-		"electron": "^13.6.9",
-		"electron-builder": "^22.11.11",
-		"electron-rebuild": "^3.2.2",
+		"electron": "^19.0.4",
+		"electron-builder": "^23.0.3",
+		"electron-rebuild": "^3.2.7",
 		"js-yaml": "^3.13.1",
-		"node-abi": "^2.21.0",
+		"node-abi": "^3.22.0",
 		"node-yaml": "^4.0.1",
-		"nodemon": "^2.0.4"
+		"nodemon": "^2.0.16"
 	},
 	"build": {
 		"appId": "org.opencomic.app",

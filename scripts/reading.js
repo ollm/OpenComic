@@ -307,7 +307,7 @@ function disposeImages(data = false)
 			if(readingViewIs('scroll'))
 				marginTop0 = marginTop1 = marginVertical;
 
-			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
+			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight0+'px',
 				'width': imageWidth0+'px',
 				'margin-left': marginLeft0+'px',
@@ -316,7 +316,7 @@ function disposeImages(data = false)
 				'margin-right': '0px',
 			});
 
-			template.contentRight('.image-position'+key1+'-1 img, .image-position'+key1+'-1 > div').css({
+			template.contentRight('.image-position'+key1+'-1 img, .image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
 				'height': imageHeight1+'px',
 				'width': imageWidth1+'px',
 				'margin-left': marginLeft1+'px',
@@ -365,7 +365,7 @@ function disposeImages(data = false)
 			if(readingViewIs('scroll'))
 				marginTop = marginVertical;
 
-			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 > div').css({
+			template.contentRight('.image-position'+key1+'-0 img, .image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight+'px',
 				'width': imageWidth+'px',
 				'margin-left': marginLeft+'px',
@@ -1570,7 +1570,7 @@ function hideContent(fullScreen = false, first = false)
 
 function hideBarHeader(value = false)
 {
-	var isFullScreen = electron.remote.getCurrentWindow().isFullScreen();
+	var isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
 
 	if(isFullScreen)
 		storage.updateVar('config', 'readingHideBarHeaderFullScreen', value);
@@ -1582,7 +1582,7 @@ function hideBarHeader(value = false)
 
 function hideContentLeft(value = false)
 {
-	var isFullScreen = electron.remote.getCurrentWindow().isFullScreen();
+	var isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
 
 	if(isFullScreen)
 		storage.updateVar('config', 'readingHideContentLeftFullScreen', value);
@@ -1594,7 +1594,7 @@ function hideContentLeft(value = false)
 
 function loadReadingMoreOptions()
 {
-	var isFullScreen = electron.remote.getCurrentWindow().isFullScreen();
+	var isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
 
 	handlebarsContext.hideContent = {
 		barHeader: isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader,

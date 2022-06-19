@@ -1,1 +1,1 @@
-var shell = require('electron').shell;
+const shell = require('electron').shell;

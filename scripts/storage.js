@@ -311,6 +311,8 @@ for(let key in storageDefault)
 
 function start(callback)
 {
+	ejs.setDataPath(p.join(electronRemote.app.getPath('userData'), 'storage'));
+
 	ejs.getMany(storageKeys, function(error, data) {
 
 		// if(error) throw error;

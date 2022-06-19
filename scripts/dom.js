@@ -522,7 +522,7 @@ function compressedError(error)
 {
 	//console.log(error);
 
-	electron.remote.dialog.showMessageBox({
+	electronRemote.dialog.showMessageBox({
 		type: 'error',
 		title: language.error.uncompress.title,
 		message: language.error.uncompress.message,
@@ -1568,7 +1568,7 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		events.events();
 
 		reading.read(path, indexStart, end);
-		reading.hideContent(electron.remote.getCurrentWindow().isFullScreen(), true);
+		reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
 
 		generateAppMenu();
 

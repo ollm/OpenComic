@@ -3,11 +3,14 @@ const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
 
+require('@electron/remote/main').initialize();
+//remoteMain.enable(window.webContents);
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var win, appClosing;
 
-function createWindow () {
+function createWindow() {
 	// Create the browser window.
 
 	var mainWindowState = windowStateKeeper({
@@ -27,13 +30,18 @@ function createWindow () {
 		minHeight: 200,
 		icon: image,
 		webPreferences: {
+			plugins: true, 
 			contextIsolation: false,
 			nodeIntegration: true,
 			nodeIntegrationInWorker: true,
 			enableRemoteModule: true,
+			backgroundThrottling: false,
+			nativeWindowOpen: false,
 		},
 		//icon: __dirname + '/icon.svg',
 	});
+
+	require("@electron/remote/main").enable(win.webContents)
 
 	var menuTemplate = [
 		{
@@ -49,7 +57,7 @@ function createWindow () {
 	var menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
 
-	// win.webContents.openDevTools()
+	// win.webContents.openDevTools();
 
 	win.removeMenu();
 

@@ -1,6 +1,6 @@
 var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im', sharp = false, jimp = false;
 
-var cacheFolder = p.join(electron.remote.app.getPath('cache'), 'opencomic');
+var cacheFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic');
 
 if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 cacheFolder = p.join(cacheFolder, 'cache');
