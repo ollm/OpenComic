@@ -57,14 +57,14 @@
 {
 	width: 100%;
 	height: 100%;
-	overflow-x: hidden;
+	overflow: hidden;
 	contain: paint;
 }
 
 .reading-body > div
 {
 	width: 100%;
-	height: 100%;
+	/*height: 100%;*/
 	position: relative;
 	will-change: auto; /*transform*/
 	overflow: hidden;

@@ -942,7 +942,7 @@ function showNextComic(mode, animation = true, invert = false)
 
 				var scale = ((contentHeight - 100) / contentHeight);
 
-				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				template.contentRight('.reading-body, .reading-lens > div').css({
 					'transform-origin': 'center '+(template.contentRight('.reading-body').height() - contentHeight)+'px',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -981,7 +981,7 @@ function showNextComic(mode, animation = true, invert = false)
 				'transform': 'translate(0px, 0px)',
 			});
 
-			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+			template.contentRight('.reading-body, .reading-lens > div').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
@@ -1037,7 +1037,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 				var scale = ((contentHeight - 100) / contentHeight);
 
-				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				template.contentRight('.reading-body, .reading-lens > div').css({
 					'transform-origin': 'center '+contentHeight+'px',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -1066,7 +1066,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 				'transform': 'translate(0px, 0px)',
 			});
 
-			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+			template.contentRight('.reading-body, .reading-lens > div').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
@@ -1080,7 +1080,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 				'transform': 'translate(0px, 0px)',
 			});
 
-			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+			template.contentRight('.reading-body, .reading-lens > div').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
@@ -1090,22 +1090,15 @@ function showPreviousComic(mode, animation = true, invert = false)
 	}
 }
 
-var currentScale = 1, scalePrevData = {tranX: 0, tranY: 0, scale: 1}, originalRect = false, originalRectReadingBody = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false, disableZoom = false;
+var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, originalRectReadingBody = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
+
+function applyScaleScrollAndHeight()
+{
+
+}
 
 function applyScale(animation = true, scale = 1, center = false, zoomOut = false)
 {
-	if(disableZoom) // Temporary fix to a flicker in the animation
-	{
-		disableZoom = {
-			animation: animation,
-			scale: scale,
-			center: center,
-			zoomOut: zoomOut,
-		};
-
-		return;
-	}
-
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 
 	scale = Math.round(scale * 100) / 100;
@@ -1139,6 +1132,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 	if(scale != scalePrevData.scale)
 	{
+		let content = template.contentRight().children();
+		content.stop(true);
+
 		if(config.readingGlobalZoom && readingViewIs('scroll'))
 		{
 			zoomingIn = true;
@@ -1150,39 +1146,35 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				originalRectReadingBody = template.contentRight().children().get(0).getBoundingClientRect();
 			}
 
-			let content = template.contentRight().children();
 			scrollTop = content.scrollTop();
 
-			if(!zoomOut)
+			let pageX = currentPageXY.x - originalRect.left;
+			let pageY = currentPageXY.y + scrollTop - originalRectReadingBody.top;
+
+			let addX = (0.5 - (pageX / originalRect.width)) * originalRect.width;
+			let addY = (0.5 - (pageY / originalRect.height)) * originalRect.height;
+
+			if(center)
 			{
-				let pageX = currentPageXY.x - originalRect.left;
-				let pageY = currentPageXY.y - originalRectReadingBody.top;
+				addX = 0;
+				addY = (originalRect.height / 2 - originalRectReadingBody.height / 2) - scrollTop;
 
-				let addX = (0.5 - (pageX / originalRect.width)) * originalRect.width;
-				let addY = pageY;
+				//if(addY > 0)
+				//	addY = 0;
 
-				if(center)
-				{
-					addX = 0;
-					addY = originalRectReadingBody.height / 2;
-				}
-
-				translateX = (scalePrevData.tranX / scalePrevData.scale * scale) + (addX / scalePrevData.scale * (scale - scalePrevData.scale));
-				//translateY = (scalePrevData.tranY / scalePrevData.scale * scale) + (addY / scalePrevData.scale * (scale - scalePrevData.scale));
-				translateY = addY;
-			}
-			else
-			{
-				translateX = scalePrevData.tranX - (scalePrevData.tranX * ((scalePrevData.scale - scale) / (scalePrevData.scale - 1)));
-				translateY = scalePrevData.tranY - (scalePrevData.tranY * ((scalePrevData.scale - scale) / (scalePrevData.scale - 1)))// + (originalRectReadingBody.height / 2);
+				console.log(addY);
 			}
 
-			// translateY = 0;
+			translateX = (scalePrevData.tranX / scalePrevData.scale * scale) + (addX / scalePrevData.scale * (scale - scalePrevData.scale));
+			translateY = (scalePrevData.tranY / scalePrevData.scale * scale) + (addY / scalePrevData.scale * (scale - scalePrevData.scale));
+
+			if(zoomOut)
+				translateX = scalePrevData.tranX * (scale - 1) / (scalePrevData.scale - 1);
 
 			if(scale <= 1)
 			{
 				translateX = 0;
-				translateY = 0;
+				if(scale < 1) translateY = 0;
 				haveZoom = false;
 			}
 			else
@@ -1190,72 +1182,44 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				haveZoom = true;
 			}
 
-			translateY = (translateY * (scale / scalePrevData.scale - 1));
-			let newScrollTop = ((scrollTop / scalePrevData.scale) * scale) + translateY;
-			translateY = 0;
-
-			if(animationDurationS > 0)
-			{
-				let readingBody = template.contentRight('.reading-body').css({
-					'transition': 'transform 0s, z-index '+animationDurationS+'s',
-					'transform-origin': 'top center',
-					// 'margin-top': (newScrollTop - scrollTop)+'px',
-					'z-index': 1,
-					'height': (scale == 1 ? '' : (originalRect.height * scale)+'px'),
-					// 'will-change': scale == 1 ? '' : 'transform',
-				}).get(0);
-
-				let _translateY = +anime.get(readingBody, 'translateY').replace(/[^0-9\.\,]/g, '');
-
-				disableZoom = true;
-
-				if(prevAnime)
-					prevAnime.remove();
-
-				prevAnime = anime({
-					targets: readingBody,
-					translateY: [(newScrollTop - scrollTop) + _translateY, 0],
-					translateX: translateX,
-					scale: scale,
-					duration: animationDurationS * 1000,
-					easing: 'cubicBezier(0.25, 0.1, 0.25, 1)',
-					complete: function() {
-
-						/*
-							Temporary fix to a flicker in the animation
-						*/
-
-						let _disableZoom = disableZoom;
-						disableZoom = false;
-
-						if(typeof _disableZoom === 'object')
-							applyScale(_disableZoom.animation, _disableZoom.scale, _disableZoom.center, _disableZoom.zoomOut);
-
-					}
-				});
-			}
-			else
-			{
-				template.contentRight('.reading-body').css({
-					'transition': 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-					'transform': 'translateX('+(translateX)+'px) translateY(0px) scale('+scale+')',
-					'transform-origin': 'top center',
-					// 'margin-top': (newScrollTop - scrollTop)+'px',
-					'z-index': 1,
-					'height': (scale == 1 ? '' : (originalRect.height * scale)+'px'),
-					// 'will-change': scale == 1 ? '' : 'transform',
-				});
-			}
-
-			content.scrollTop(newScrollTop);
+			template.contentRight('.reading-body > div').css({
+				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
+				transform: 'translateX('+translateX+'px) translateY('+translateY+'px) scale('+scale+')',
+				transformOrigin: 'center center',
+				zIndex: 1,
+				// willChange: scale == 1 ? '' : 'transform',
+			});
 
 			clearTimeout(applyScaleST);
 
-			applyScaleST = setTimeout(function(){
+			applyScaleST = setTimeout(function() {
+
+				let scrollTop = content.scrollTop();
+
+				let translateY = (originalRect.height * scale - originalRect.height) / 2;
+
+				template.contentRight('.reading-body').css({
+					height: (scale == 1 ? '' : (originalRect.height * scale)+'px'),
+				});
+
+				template.contentRight('.reading-body > div').css({
+					transition: 'transform 0s, z-index 0s',
+					transform: 'translateX('+scalePrevData.tranX+'px) translateY('+translateY+'px) scale('+scale+')',
+				});
+
+				content.scrollTop(scrollTop + (translateY - scalePrevData.tranY));
+
+				scalePrevData.tranY = translateY;
 
 				calculateView();
 				disableOnScroll(2);
 				zoomingIn = false;
+
+				if(scale == 1)
+				{
+					originalRect = false;
+					currentZoomIndex = false;
+				}
 
 			}, animationDurationS * 1000);
 		}
@@ -1286,8 +1250,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			}
 			else
 			{
-				translateX = scalePrevData.tranX - (scalePrevData.tranX * ((scalePrevData.scale - scale) / (scalePrevData.scale - 1)));
-				translateY = scalePrevData.tranY - (scalePrevData.tranY * ((scalePrevData.scale - scale) / (scalePrevData.scale - 1)));
+				translateX = scalePrevData.tranX * (scale - 1) / (scalePrevData.scale - 1);
+				translateY = scalePrevData.tranY * (scale - 1) / (scalePrevData.scale - 1);
 			}
 
 			if(scale <= 1)
@@ -1302,23 +1266,25 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			}
 
 			template.contentRight('.image-position'+currentZoomIndex).css({
-				'transition': 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-				'transform': 'translateX('+(translateX)+'px) translateY('+(translateY)+'px) scale('+scale+')',
-				'transform-origin': 'center center',
-				'z-index': scale == 1 ? 1 : 2,
-				// 'will-change': scale == 1 ? '' : 'transform',
+				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
+				transform: 'translateX('+(translateX)+'px) translateY('+(translateY)+'px) scale('+scale+')',
+				transformOrigin: 'center center',
+				zIndex: scale == 1 ? 1 : 2,
+				// willChange: scale == 1 ? '' : 'transform',
 			});
-		}
 
-		if(scale == 1)
-		{
-			originalRect = false;
-			currentZoomIndex = false;
+			if(scale == 1)
+			{
+				originalRect = false;
+				currentZoomIndex = false;
+			}
 		}
 
 		scalePrevData = {
 			tranX: translateX,
+			tranX2: translateX,
 			tranY: translateY,
+			tranY2: translateY,
 			scale: scale,
 			scrollTop: scrollTop,
 		};
@@ -1361,67 +1327,26 @@ function resetZoom(animation = true, index = false, apply = true)
 	{
 		if(config.readingGlobalZoom && readingViewIs('scroll'))
 		{
-			if(1 || animationDurationS > 0)
-			{
-				zoomingIn = true;
-				disableOnScroll(1);
-
-				let content = template.contentRight().children();
-				scrollTop = content.scrollTop();
-
-				let newScrollTop = scrollTop / scalePrevData.scale/* - (originalRectReadingBody.height / 2 / scalePrevData.scale)*/;
-
-				let readingBody = template.contentRight('.reading-body').css({
-					'transition': 'transform 0s, z-index '+animationDurationS+'s',
-					'transform-origin': 'top center',
-					'z-index': 1,
-					'height': '',
-					'will-change': '',
-				}).get(0);
-
-				if(prevAnime)
-					prevAnime.remove();
-
-				prevAnime = anime({
-					targets: readingBody,
-					translateY: [(newScrollTop - scrollTop), 0],
-					translateX: 0,
-					scale: 1,
-					duration: animationDurationS * 1000,
-					easing: 'cubicBezier(0.25, 0.1, 0.25, 1)',
-				});
-
-				content.scrollTop(newScrollTop);
-			}
-
-			clearTimeout(applyScaleST);
-
-			applyScaleST = setTimeout(function(){
-
-				calculateView();
-				disableOnScroll(2);
-				zoomingIn = false;
-
-			}, animationDurationS * 1000);
+			applyScale(animation, currentScale, true);
 		}
 		else
 		{
 			template.contentRight('.image-position'+currentZoomIndex).css({
-				'transition': 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-				'transform': 'translateX(0px) translateY(0px) scale('+currentScale+')',
-				'transform-origin': 'center center',
-				'z-index': 1,
-				'height': '',
-				'will-change': '',
+				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
+				transform: 'translateX(0px) translateY(0px) scale('+currentScale+')',
+				transformOrigin: 'center center',
+				zIndex: 1,
+				height: '',
+				willChange: '',
 			});
+
+			originalRect = false;
+			scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0};
+			haveZoom = false;
+			zoomMoveData.active = false;
+			currentZoomIndex = false;
 		}
 	}
-
-	originalRect = false;
-	scalePrevData = {tranX: 0, tranY: 0, scale: 1};
-	haveZoom = false;
-	zoomMoveData.active = false;
-	currentZoomIndex = false;
 }
 
 
@@ -1493,7 +1418,6 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 	if(mode == 1)
 	{
-
 		if(lensData && typeof lensData.ratio != 'undefined')
 			var ratio = 1 / lensData.ratio;
 		else
@@ -2573,7 +2497,7 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranY: 0, scale: 1};
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false;
 
 	loadReadingConfig(currentReadingConfigKey);
 
@@ -2846,8 +2770,8 @@ function read(path, index = 1, end = false)
 		{
 			e.preventDefault();
 
-			x = scalePrevData.tranX + (x - zoomMoveData.x);
-			y = scalePrevData.tranY + (y - zoomMoveData.y);
+			x = scalePrevData.tranX2 + (x - zoomMoveData.x);
+			y = scalePrevData.tranY2 + (y - zoomMoveData.y);
 
 			var maxX = originalRect.width * 0.5 * scalePrevData.scale - originalRect.width * 0.5;
 			var minX = originalRect.width * -0.5 * scalePrevData.scale - originalRect.width * -0.5;
@@ -2870,13 +2794,13 @@ function read(path, index = 1, end = false)
 
 			if(config.readingGlobalZoom && readingViewIs('scroll'))
 			{
-				zoomMoveData.tranX = x;
-				zoomMoveData.tranY = 0;
+				scalePrevData.tranX = zoomMoveData.tranX = x;
+				zoomMoveData.tranY = scalePrevData.tranY;
 
-				template.contentRight('.reading-body').css({
-					'transition': 'transform 0s, z-index 0s',
-					'transform': 'translateX('+(x)+'px) translateY(0px) scale('+scalePrevData.scale+')',
-					'transform-origin': 'top center',
+				template.contentRight('.reading-body > div').css({
+					transition: 'transform 0s, z-index 0s',
+					transform: 'translateX('+(x)+'px) translateY('+scalePrevData.tranY+'px) scale('+scalePrevData.scale+')',
+					transformOrigin: 'center center',
 				});
 			}
 			else
@@ -2885,9 +2809,9 @@ function read(path, index = 1, end = false)
 				zoomMoveData.tranY = y;
 
 				template.contentRight('.image-position'+currentZoomIndex).css({
-					'transition': 'transform 0s, z-index 0s',
-					'transform': 'translateX('+(x)+'px) translateY('+(y)+'px) scale('+scalePrevData.scale+')',
-					'transform-origin': 'center center',
+					transition: 'transform 0s, z-index 0s',
+					transform: 'translateX('+(x)+'px) translateY('+(y)+'px) scale('+scalePrevData.scale+')',
+					transformOrigin: 'center center',
 				});
 			}
 		}
@@ -3249,6 +3173,7 @@ module.exports = {
 	imagesNumLoad: imagesNumLoad,
 	imagesData: function(){return imagesData},
 	imagesDataClip: function(){return imagesDataClip},
+	scalePrevData: function(){return scalePrevData},
 	goToImage: goToImage,
 	goToFolder: goToFolder,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
