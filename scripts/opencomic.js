@@ -887,6 +887,8 @@ function openComic(filePath, animation = true)
 		if(mainPath === false)
 			mainPath = path;
 
+		mainPath = config.showFullPathOpened ? p.parse(mainPath).root : mainPath;
+
 		if(onReading)
 			reading.saveReadingProgress();
 

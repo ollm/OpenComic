@@ -2031,12 +2031,15 @@ function saveReadingProgress(path = false)
 			break;
 		}
 	}
+
 	storage.updateVar('readingProgress', dom.indexMainPathA(), {
 		index: imagesPath[path],
 		path: path,
 		lastReading: +new Date(),
 		progress: 0,
 	});
+
+	dom.indexPathControlUpdateLastComic(path);
 
 	if(comic && path)
 	{

@@ -15,12 +15,14 @@
 
 	<h2>{{language.settings.navigation.main}}</h2>
 
-	<div class="simple-slider">
-		<div class="simple-text-text">{{language.settings.navigation.showFullPathLibrary}}</div>
+	<div class="menu-simple-text">
+		{{language.settings.navigation.showFullPathLibrary}}
+		<div class="switch{{#if config.showFullPathLibrary}} a{{/if}}" on="settings.setShowFullPathLibrary(true)" off="settings.setShowFullPathLibrary(false)"></div>
 	</div>
 
-	<div class="simple-slider">
-		<div class="simple-text-text">{{language.settings.navigation.showFullPathOpened}}</div>
+	<div class="menu-simple-text">
+		{{language.settings.navigation.showFullPathOpened}}
+		<div class="switch{{#if config.showFullPathOpened}} a{{/if}}" on="settings.setShowFullPathOpened(true)" off="settings.setShowFullPathOpened(false)"></div>
 	</div>
 
 </div>

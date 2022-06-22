@@ -316,7 +316,7 @@ function loadFilesIndexPage(animation, path, keepScroll, mainPath)
 
 var currentPath = false, currentPathScrollTop = [];
 
-function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false)
+function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
 {
 	onReading = false;
 
@@ -407,7 +407,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 				var images = getFolderThumbnailsAsync(comics[key].path);
 
 				comics[key].images = images;
-				comics[key].mainPath = comics[key].path;
+				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
 			}
 
 			comics.sort(function (a, b) {
@@ -438,7 +438,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 	}
 	else
 	{
-		indexPathControl(path, mainPath);
+		if(!fromGoBack)
+			indexPathControl(path, mainPath);
 
 		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsIndexVar = 'false';
@@ -530,9 +531,17 @@ function compressedError(error)
 	});
 }
 
+function addSepToEnd(path)
+{
+	if(!new RegExp(pregQuote(p.sep)+'\s*$').test(path))
+		path = path + p.sep;
+
+	return path;
+}
+
 function returnTextPath(path, mainPath, image = false)
 {
-	var mainPathR = p.dirname(mainPath) + p.sep;
+	mainPathR = addSepToEnd(p.dirname(mainPath));
 
 	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
@@ -548,7 +557,7 @@ function returnTextPath(path, mainPath, image = false)
 
 function headerPath(path, mainPath)
 {
-	var mainPathR = p.dirname(mainPath) + p.sep;
+	mainPathR = addSepToEnd(p.dirname(mainPath));
 
 	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
@@ -1035,13 +1044,33 @@ function indexPathControlGoBack()
 	}
 	else if(indexPathControlA.length > 0)
 	{
-		loadIndexPage(true, indexPathControlA[indexPathControlA.length - 2].path, false, false,  indexPathControlA[indexPathControlA.length - 2].mainPath);
+		let goBack = indexPathControlA[indexPathControlA.length - 2];
+
+		if(goBack.isComic)
+			openComic(true, goBack.path, goBack.mainPath, false, true);
+		else
+			loadIndexPage(true, goBack.path, false, false,  goBack.mainPath, true);
+
+
+		indexPathControlA.pop();
+	}
+}
+
+function indexPathControlUpdateLastComic(path = false)
+{
+	let index = indexPathControlA.length - 1;
+	let last = indexPathControlA[index];
+
+	if(last.isComic && p.normalize(p.dirname(last.path)) === p.normalize(p.dirname(path)))
+	{
+		indexPathControlA[index].file = p.basename(path);
+		indexPathControlA[index].path = path;
 	}
 }
 
 var barBackStatus = false; 
 
-function indexPathControl(path = false, mainPath = false)
+function indexPathControl(path = false, mainPath = false, isComic = false)
 {
 	if(path === false || mainPath === false)
 	{
@@ -1052,20 +1081,14 @@ function indexPathControl(path = false, mainPath = false)
 		indexPathA = path;
 		indexMainPathA = mainPath;
 
-		var mainPathR = p.dirname(mainPath) + p.sep;
+		mainPathR = addSepToEnd(p.dirname(mainPath));
 
 		var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
-		var prev = '';
+		let index = files.length - 1;
 
-		indexPathControlA = [];
-
-		for(let index in files)
-		{
-			indexPathControlA.push({file: files[index], path: p.join(mainPathR, prev, files[index]), mainPath: mainPath});
-			
-			prev = p.join(prev, files[index]);
-		}
+		if(index >= 0)
+			indexPathControlA.push({file: files[index], path: path, mainPath: mainPath, isComic: isComic});
 	}
 
 	if(indexPathControlA.length > 0)
@@ -1424,7 +1447,7 @@ function removeComic(path, confirm = false)
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
-function openComic(animation = true, path = true, mainPath = true, end = false)
+function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false)
 {
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
 	currentPath = path;
@@ -1451,7 +1474,8 @@ function openComic(animation = true, path = true, mainPath = true, end = false)
 		if(checkError(skipPreviousComic))
 			skipPreviousComic = false;
 
-		indexPathControl(imagePath, mainPath);
+		if(!fromGoBack)
+			indexPathControl(imagePath, mainPath, true);
 
 		readingActive = true;
 
@@ -1602,7 +1626,7 @@ module.exports = {
 	changeView: changeView,
 	changeSort: changeSort,
 	indexPathControl: indexPathControl,
-	indexPathControlA: indexPathControlA,
+	indexPathControlA: function(){return indexPathControlA},
 	indexPathControlGoBack: indexPathControlGoBack,
 	folderImages: folderImages,
 	folderImagesWD: folderImagesWD,
@@ -1620,5 +1644,7 @@ module.exports = {
 	justifyViewModule: justifyViewModule,
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
+	addSepToEnd: addSepToEnd,
+	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
 	indexMainPathA: function(){return indexMainPathA},
 };

@@ -1,4 +1,4 @@
-var changes = 39; // Update this if readingPagesConfig is updated
+var changes = 40; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -49,6 +49,8 @@ var storageDefault = {
 		sort: 'name-numeric',
 		sortInvertIndex: false,
 		sortInvert: false,
+		showFullPathLibrary: false,
+		showFullPathOpened: false,
 		...readingPagesConfig,
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,
