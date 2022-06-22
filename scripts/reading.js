@@ -346,6 +346,9 @@ function disposeImages(data = false)
 			if(readingViewIs('scroll'))
 				marginTop0 = marginTop1 = marginVertical;
 
+			let imgHeight0 = (clipVertical > 0 ? (imageHeight0 / (1 - clipVertical)) : imageHeight0);
+			let imgWidth0 = (clipHorizontal > 0 ? (imageWidth0 / (1 - clipHorizontal)) : imageWidth0);
+
 			template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight0+'px',
 				'width': imageWidth0+'px',
@@ -354,9 +357,14 @@ function disposeImages(data = false)
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
 			}).find('img').css({
-				'height': imageHeight0+'px',
-				'width': imageWidth0+'px',
+				'height': imgHeight0+'px',
+				'width': imgWidth0+'px',
+				'margin-top': -(imgHeight0 * clipTop)+'px',
+				'margin-left': -(imgWidth0 * clipLeft)+'px',
 			});
+
+			let imgHeight1 = (clipVertical > 0 ? (imageHeight1 / (1 - clipVertical)) : imageHeight1);
+			let imgWidth1 = (clipHorizontal > 0 ? (imageWidth1 / (1 - clipHorizontal)) : imageWidth1);
 
 			template.contentRight('.image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
 				'height': imageHeight1+'px',
@@ -366,8 +374,10 @@ function disposeImages(data = false)
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
 			}).find('img').css({
-				'height': imageHeight1+'px',
-				'width': imageWidth1+'px',
+				'height': imgHeight1+'px',
+				'width': imgWidth1+'px',
+				'margin-top': -(imgHeight1 * clipTop)+'px',
+				'margin-left': -(imgWidth1 * clipLeft)+'px',
 			});
 		}
 		else
