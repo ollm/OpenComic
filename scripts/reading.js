@@ -2916,8 +2916,8 @@ function read(path, index = 1, end = false)
 		{
 			if(typeof zoomMoveData.tranX !== 'undefined')
 			{
-				scalePrevData.tranX = zoomMoveData.tranX;
-				scalePrevData.tranY = zoomMoveData.tranY;
+				scalePrevData.tranX = scalePrevData.tranX2 = zoomMoveData.tranX;
+				scalePrevData.tranY = scalePrevData.tranY2 = zoomMoveData.tranY;
 			}
 
 			zoomMoveData.active = false;
