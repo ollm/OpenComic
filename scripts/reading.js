@@ -288,6 +288,19 @@ function disposeImages(data = false)
 	else
 		var contentWidth = template.contentRight().width();
 
+	// Reduce shadow if margin is 0
+	if(readingViewIs('scroll'))
+	{
+		if(marginVertical == 0)
+			template.contentRight('.reading-body, .reading-lens').addClass('reduce-shadow');
+		else
+			template.contentRight('.reading-body, .reading-lens').removeClass('reduce-shadow');
+	}
+	else
+	{
+		template.contentRight('.reading-body, .reading-lens').removeClass('reduce-shadow');
+	}
+
 	//Width 0
 	var contentWidth0 = contentWidth - (marginHorizontal * 2);
 	var aspectRatio0 = contentWidth0 / (contentHeight - marginVertical * 2);
