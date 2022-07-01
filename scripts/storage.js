@@ -54,14 +54,14 @@ var storageDefault = {
 		...readingPagesConfig,
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,
-		readingMagnifyingGlassSize: 200,
+		readingMagnifyingGlassSize: 400,
 		readingMagnifyingGlassRatio: 1.25,
 		readingMagnifyingGlassRadius: 4,
 		readingHideContentLeft: false,
 		readingHideBarHeader: false,
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
-		readingMaxMargin: 200,
+		readingMaxMargin: 400,
 		readingGlobalZoom: true,
 		trackingSites: {
 			wildcard: {
