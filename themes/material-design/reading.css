@@ -91,6 +91,11 @@
 	display: block;
 }
 
+.reading-body.reduce-shadow .r-img > oc-img, .reading-lens.reduce-shadow .r-img > oc-img, .reading-body.reduce-shadow .r-img.blank > div, .reading-lens.reduce-shadow .r-img.blank > div
+{
+	box-shadow: rgba(0, 0, 0, 0.117647) 0px 3px 3px, rgba(0, 0, 0, 0.239216) 0px 2px 2px;
+}
+
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img
 {
 	overflow: hidden;
