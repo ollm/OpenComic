@@ -162,12 +162,11 @@
 		},
 		"rpm": {
 			"depends": [
-				"gconf2",
-				"gconf-service",
-				"libnotify4",
-				"libappindicator1",
-				"libxtst6",
-				"libnss3",
+				"GConf2",
+				"libnotify",
+				"libappindicator",
+				"libXtst",
+				"nss",
 				"unrar"
 			]
 		},
