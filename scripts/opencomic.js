@@ -848,7 +848,7 @@ function openComicDialog(folders = false)
 
 	var dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}).then(function (files) {
+	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}]}).then(function (files) {
 
 		if(files.filePaths && files.filePaths[0])
 			openComic(files.filePaths[0]);
@@ -908,7 +908,7 @@ function addComic(folders = false)
 
 	var dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [{name: language.global.comics, extensions: (folders) ? ['*'] : compatibleExtensions}]}).then(function(files) {
+	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}]}).then(function(files) {
 
 		var added = false;
 
