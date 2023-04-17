@@ -1,6 +1,7 @@
 ## Download beta `v0.2.2-beta3`
 
-[Pre-release whit all packages](https://github.com/ollm/OpenComic/releases/tag/v0.2.2-beta3)
+###### All packages
+* [v0.2.2-beta3](https://github.com/ollm/OpenComic/releases/tag/v0.2.2-beta3)
 
 ## Download `v0.2.1`
 ###### Windows
