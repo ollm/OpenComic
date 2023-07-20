@@ -28,7 +28,7 @@
 
 ## Features
 
-* Support this image formats: JPG, PNG, APNG, GIF, WEBP, SVG, BMP, ICO
+* Support this image formats: JPG, PNG, APNG, AVIF, WEBP, GIF, SVG, BMP, ICO
 * Support this compressed formats: PDF, RAR, ZIP, 7Z, TAR, CBR, CBZ, CB7, CBT
 * Manga read mode
 * Webtoon read mode
