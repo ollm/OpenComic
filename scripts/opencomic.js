@@ -27,9 +27,9 @@ var errorDialog = true;
 
 window.addEventListener('error', function(evt) {
 
-	var error = false;
+	let error = false;
 
-	if(evt.message)
+	if(evt.message && !/debug\-evaluate/.test(evt.message))
 		error = 'Error: '+evt.message +' at linenumber '+evt.lineno+':'+evt.colno+' of file '+evt.filename;
 
 	if(error !== false && errorDialog)
@@ -988,6 +988,15 @@ function addComic(folders = false)
 
 }
 
+function callCallbacks()
+{
+	for(let i = 1, len = arguments.length; i < len; i++)
+	{
+		if(arguments[i])
+			arguments[i].apply(null, arguments[0])
+	}
+}
+
 //Cheack errors
 
 function checkError(value, error = false)
@@ -1003,7 +1012,7 @@ function checkError(value, error = false)
 	return false;
 }
 
-//Errors list 
+//Errors list
 
 const NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
 const ERROR_UNZIPPING_THE_FILE = 2;

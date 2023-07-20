@@ -125,6 +125,20 @@ function setProgress(progress, contentRightZindex)
 	});
 }
 
+var currentExtracting = false;
+var waitingCurrentExtractionCallback = false;
+
+function waitingCurrentExtraction()
+{
+	currentExtracting = false;
+
+	if(waitingCurrentExtractionCallback)
+	{
+		waitingCurrentExtractionCallback.apply(null, arguments);
+		waitingCurrentExtractionCallback = false;
+	}
+}
+
 function extractZip(path, virtualPath, sha, all, json, callback)
 {
 	let cacheFile = 'compressed-files-'+sha+'.json';
@@ -136,6 +150,8 @@ function extractZip(path, virtualPath, sha, all, json, callback)
 
 	try
 	{
+		currentExtracting = path;
+
 		fs.createReadStream(path).pipe(
 
 			unzip.Extract({path: p.join(tempFolder, shaExt)}).on('close', function () {
@@ -149,14 +165,14 @@ function extractZip(path, virtualPath, sha, all, json, callback)
 
 				compressedFiles[sha] = files;
 
-				callback((all) ? files : file.allToFirst(files));
+				callCallbacks([(all) ? files : file.allToFirst(files)], waitingCurrentExtraction, callback);
 
 			}).on('error', function(error){
 
 				if(/0xafbc7a37/.test(error.message)) // 7zip file
 					fileCompressed.extract7zip(path, virtualPath, sha, all, json, callback);
 				else
-					callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+					callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 				
 			})
 		);
@@ -164,7 +180,7 @@ function extractZip(path, virtualPath, sha, all, json, callback)
 	catch(error)
 	{
 		console.error(error);
-		callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+		callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 	}
 }
 
@@ -177,6 +193,8 @@ function extract7zip(path, virtualPath, sha, all, json, callback)
 
 	if(un7z === false) un7z = require('node-7z');
 	if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7za);
+
+	currentExtracting = path;
 
 	un7z.extractFull(path, p.join(tempFolder, shaExt), {$progress: true, p: false/*'myPassword'*/, $bin: bin7z}).on('progress', function(progress) {
 
@@ -195,17 +213,17 @@ function extract7zip(path, virtualPath, sha, all, json, callback)
 
 			compressedFiles[sha] = files;
 
-			callback((all) ? files : file.allToFirst(files));
+			callCallbacks([(all) ? files : file.allToFirst(files)], waitingCurrentExtraction, callback);
 		}
 		catch(error)
 		{
 			console.error(error);
-			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+			callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 		}
 
 	}).on('error', function(error){
 
-		callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.stderr});
+		callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.stderr}], waitingCurrentExtraction, callback);
 
 	});
 }
@@ -230,7 +248,9 @@ function extractRar(path, virtualPath, sha, all, json, callback)
 		path: path,
 		bin: bin,
 	});
-	
+
+	currentExtracting = path;
+
 	archive.list(function (error, entries) {
 
 		try
@@ -312,19 +332,19 @@ function extractRar(path, virtualPath, sha, all, json, callback)
 
 					compressedFiles[sha] = files;
 					
-					callback((all) ? files : file.allToFirst(files));
+					callCallbacks([(all) ? files : file.allToFirst(files)], waitingCurrentExtraction, callback);
 
 				});
 			}
 			else
 			{
-				callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+				callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 			}
 		}
 		catch(error)
 		{
 			console.error(error);
-			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+			callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 		}
 
 	});
@@ -339,6 +359,8 @@ function extractTar(path, virtualPath, sha, all, json, callback)
 
 	if(untar === false) untar = require('tar-fs');
 
+	currentExtracting = path;
+
 	var untarP = fs.createReadStream(path).pipe(untar.extract(p.join(tempFolder, shaExt))).on('finish', function () {
 
 		try
@@ -352,17 +374,17 @@ function extractTar(path, virtualPath, sha, all, json, callback)
 
 			compressedFiles[sha] = files;
 
-			callback((all) ? files : file.allToFirst(files));
+			callCallbacks([(all) ? files : file.allToFirst(files)], waitingCurrentExtraction, callback);
 		}
 		catch(error)
 		{
 			console.error(error);
-			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+			callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 		}
 
 	}).on('error', function(error){
 
-		callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+		callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 
 		untarP.destroy();
 
@@ -381,6 +403,8 @@ function extractPdf(path, virtualPath, sha, all, json, callback)
 		unpdf = require('pdfjs-dist/build/pdf');
 		unpdf.GlobalWorkerOptions.workerSrc = p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.js');
 	}
+
+	currentExtracting = path;
 
 	(async function() {
 
@@ -426,7 +450,6 @@ function extractPdf(path, virtualPath, sha, all, json, callback)
 			console.timeEnd('pdf render');
 
 			if(fs.existsSync(p.join(tempFolder, shaExt))) fs.renameSync(p.join(tempFolder, shaExt), p.join(tempFolder, sha));
-
 				var files = file.returnAll(p.join(tempFolder, sha), {from: p.join(tempFolder, sha), to: virtualPath});
 
 			if(!json || json.mtime != mtime)
@@ -434,12 +457,12 @@ function extractPdf(path, virtualPath, sha, all, json, callback)
 
 			compressedFiles[sha] = files;
 
-			callback((all) ? files : file.allToFirst(files));
+			callCallbacks([(all) ? files : file.allToFirst(files)], waitingCurrentExtraction, callback);
 		}
 		catch(error)
 		{
 			console.error(error);
-			callback({error: ERROR_UNZIPPING_THE_FILE, detail: error.message});
+			callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 		}
 
 	})();
@@ -483,25 +506,34 @@ function returnFiles(path, all, fromCache, callback)
 	}
 	else
 	{
-		if(inArray(fileExtension(path), compressedExtensions.zip))
+		if(path === currentExtracting)
 		{
-			fileCompressed.extractZip(path, virtualPath, sha, all, json, callback);
+			console.log('Tried to unzip the same file 2 times', path);
+
+			waitingCurrentExtractionCallback = callback;
 		}
-		else if(inArray(fileExtension(path), compressedExtensions['7z']))
+		else
 		{
-			fileCompressed.extract7zip(path, virtualPath, sha, all, json, callback);
-		}
-		else if(inArray(fileExtension(path), compressedExtensions.rar))
-		{
-			fileCompressed.extractRar(path, virtualPath, sha, all, json, callback);
-		}
-		else if(inArray(fileExtension(path), compressedExtensions.tar))
-		{
-			fileCompressed.extractTar(path, virtualPath, sha, all, json, callback);
-		}
-		else if(inArray(fileExtension(path), compressedExtensions.pdf))
-		{
-			fileCompressed.extractPdf(path, virtualPath, sha, all, json, callback);
+			if(inArray(fileExtension(path), compressedExtensions.zip))
+			{
+				fileCompressed.extractZip(path, virtualPath, sha, all, json, callback);
+			}
+			else if(inArray(fileExtension(path), compressedExtensions['7z']))
+			{
+				fileCompressed.extract7zip(path, virtualPath, sha, all, json, callback);
+			}
+			else if(inArray(fileExtension(path), compressedExtensions.rar))
+			{
+				fileCompressed.extractRar(path, virtualPath, sha, all, json, callback);
+			}
+			else if(inArray(fileExtension(path), compressedExtensions.tar))
+			{
+				fileCompressed.extractTar(path, virtualPath, sha, all, json, callback);
+			}
+			else if(inArray(fileExtension(path), compressedExtensions.pdf))
+			{
+				fileCompressed.extractPdf(path, virtualPath, sha, all, json, callback);
+			}
 		}
 
 		return true;
@@ -563,4 +595,5 @@ module.exports = {
 	extractTar: extractTar,
 	extractPdf: extractPdf,
 	fileDocumentsToRender: function(){return fileDocumentsToRender},
+	currentExtracting: function(){return currentExtracting},
 };
