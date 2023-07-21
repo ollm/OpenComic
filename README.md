@@ -36,6 +36,7 @@
 * Bookmarks and continue reading
 * Floating magnifying glass
 * Reading in scroll or slide
+<!--- * 🎮 Gamepad navigation  --->
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM

@@ -1372,6 +1372,68 @@ function resetZoom(animation = true, index = false, apply = true)
 	}
 }
 
+// Drag zoom
+function dragZoom(x, y)
+{
+	x = scalePrevData.tranX2 + x;
+	y = scalePrevData.tranY2 + y;
+
+	let maxX = originalRect.width * 0.5 * scalePrevData.scale - originalRect.width * 0.5;
+	let minX = originalRect.width * -0.5 * scalePrevData.scale - originalRect.width * -0.5;
+
+	let maxDiff = readingViewIs('scroll') ? ((originalRect.top + originalRect.height) - (originalRectReadingBody.top + originalRectReadingBody.height)) : 0;
+	let minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
+
+	let maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
+	let minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + _config.readingMargin.top : 0);
+
+	if(x > maxX)
+		x = maxX;
+	else if(x < minX)
+		x = minX;
+
+	if(y > maxY)
+		y = maxY;
+	else if(y < minY)
+		y = minY;
+
+	if(config.readingGlobalZoom && readingViewIs('scroll'))
+	{
+		scalePrevData.tranX = zoomMoveData.tranX = x;
+		zoomMoveData.tranY = scalePrevData.tranY;
+
+		template.contentRight('.reading-body > div').css({
+			transition: 'transform 0s, z-index 0s',
+			transform: 'translateX('+(x)+'px) translateY('+scalePrevData.tranY+'px) scale('+scalePrevData.scale+')',
+			transformOrigin: 'center center',
+		});
+	}
+	else
+	{
+		zoomMoveData.tranX = x;
+		zoomMoveData.tranY = y;
+
+		template.contentRight('.image-position'+currentZoomIndex).css({
+			transition: 'transform 0s, z-index 0s',
+			transform: 'translateX('+(x)+'px) translateY('+(y)+'px) scale('+scalePrevData.scale+')',
+			transformOrigin: 'center center',
+		});
+	}
+}
+
+function dragZoomEnd()
+{
+	if(zoomMoveData.active)
+	{
+		if(typeof zoomMoveData.tranX !== 'undefined')
+		{
+			scalePrevData.tranX = scalePrevData.tranX2 = zoomMoveData.tranX;
+			scalePrevData.tranY = scalePrevData.tranY2 = zoomMoveData.tranY;
+		}
+
+		zoomMoveData.active = false;
+	}
+}
 
 //Turn the magnifying glass on and off
 function activeMagnifyingGlass(active)
@@ -2518,7 +2580,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false;
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 function read(path, index = 1, end = false)
@@ -2643,6 +2705,182 @@ function read(path, index = 1, end = false)
 		}
 		
 	})
+
+	gamepad.setButtonEvent('reading', [4, 5, 6, 7, 8, 9, 12, 13, 14, 15], function(key, button) {
+
+		if(onReading)
+		{
+			if(key == 4 || key ==  14)
+			{
+				goPrevious();
+			}
+			else if(key == 12)
+			{
+				if(!readingViewIs('scroll'))
+					goStart();
+				else
+					goPrevious();
+			}
+			else if(key == 5 || key ==  15)
+			{
+				goNext();
+			}
+			else if(key == 13)
+			{
+				if(!readingViewIs('scroll'))
+					goEnd();
+				else
+					goNext();
+			}
+			else if(key == 6)
+			{
+				reading.zoomOut(true, true);
+			}
+			else if(key == 7)
+			{
+				reading.zoomIn(true, true);
+			}
+			else if(key == 8)
+			{
+				reading.createAndDeleteBookmark();
+			}
+			else if(key == 9)
+			{
+				reading.resetZoom();
+			}
+		}
+
+	});
+
+	gamepad.setAxesEvent('reading', function(axes, status, now) {
+
+		if(onReading)
+		{
+			if(haveZoom)
+			{
+				if(status == 'start')
+				{
+					zoomMoveData = {
+						x: 0,
+						y: 0,
+						now: 0,
+						active: true,
+					};
+				}
+
+				if(status == 'start' || status == 'move')
+				{
+					let x = 0;
+					let y = 0;
+
+					if(axes[0] || axes[1])
+					{
+						x = axes[0];
+						y = axes[1];
+					}
+					else
+					{
+						x = axes[2];
+						y = axes[3];
+					}
+
+					let speed = zoomMoveData.now ? now - zoomMoveData.now : 16;
+
+					x = zoomMoveData.x = zoomMoveData.x + -(x * speed);
+					y = zoomMoveData.y = zoomMoveData.y + -(y * speed);
+
+					dragZoom(x, y);
+				}
+				else // status == 'end'
+				{
+					dragZoomEnd();
+				}
+			}
+			
+			if(readingViewIs('scroll'))
+			{
+				if(status == 'start')
+				{
+					let content = template.contentRight().children();
+
+					gamepadScroll = {
+						y: 0,
+						content: content,
+						scrollTop: content.scrollTop(),
+						prevNow: 0,
+					};
+
+					content.stop(true);
+				}
+
+				let y = 0;
+
+				if(axes[1])
+					y = axes[1];
+				else
+					y = axes[3];
+
+				if(status == 'start' || status == 'move')
+				{
+					let speed = (zoomMoveData.now ? now - zoomMoveData.now : 16) * (haveZoom ? 1 : 2);
+
+					y = gamepadScroll.y = gamepadScroll.y + (y * speed);
+
+					gamepadScroll.content.scrollTop(gamepadScroll.scrollTop + y);
+				}
+				else // status == 'end'
+				{
+					gamepadScroll = false;
+				}
+			}
+		}
+		
+	});
+
+	gamepad.setAxesStepsEvent('reading', [0, 1], function(key, axes) {
+
+		if(onReading)
+		{
+			if(!haveZoom && !readingViewIs('scroll'))
+			{
+				if(key == 0)
+					goPrevious();
+				else if(key == 1)
+					goNext();
+			}
+		}
+		
+	});
+
+	/*gamepad.setButtonEvent('reading', [4, 5, 6, 7, 12, 13, 14, 15], function(key, button) {
+
+		if(onReading)
+		{
+			if(key == 4 || key == 6 || key ==  14)
+			{
+				goPrevious();
+			}
+			else if(key == 12)
+			{
+				if(!readingViewIs('scroll'))
+					goStart();
+				else
+					goPrevious();
+			}
+			else if(key == 5 || key == 7 || key ==  15)
+			{
+				goNext();
+			}
+			else if(key == 13)
+			{
+				if(!readingViewIs('scroll'))
+					goEnd();
+				else
+					goNext();
+			}
+		}
+		
+	});*/
 
 	$(window).on('touchstart', function(e) {
 
@@ -2796,50 +3034,10 @@ function read(path, index = 1, end = false)
 		{
 			e.preventDefault();
 
-			x = scalePrevData.tranX2 + (x - zoomMoveData.x);
-			y = scalePrevData.tranY2 + (y - zoomMoveData.y);
+			x = x - zoomMoveData.x;
+			y = y - zoomMoveData.y;
 
-			var maxX = originalRect.width * 0.5 * scalePrevData.scale - originalRect.width * 0.5;
-			var minX = originalRect.width * -0.5 * scalePrevData.scale - originalRect.width * -0.5;
-
-			var maxDiff = readingViewIs('scroll') ? ((originalRect.top + originalRect.height) - (originalRectReadingBody.top + originalRectReadingBody.height)) : 0;
-			var minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
-
-			var maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
-			var minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + _config.readingMargin.top : 0);
-
-			if(x > maxX)
-				x = maxX;
-			else if(x < minX)
-				x = minX;
-
-			if(y > maxY)
-				y = maxY;
-			else if(y < minY)
-				y = minY;
-
-			if(config.readingGlobalZoom && readingViewIs('scroll'))
-			{
-				scalePrevData.tranX = zoomMoveData.tranX = x;
-				zoomMoveData.tranY = scalePrevData.tranY;
-
-				template.contentRight('.reading-body > div').css({
-					transition: 'transform 0s, z-index 0s',
-					transform: 'translateX('+(x)+'px) translateY('+scalePrevData.tranY+'px) scale('+scalePrevData.scale+')',
-					transformOrigin: 'center center',
-				});
-			}
-			else
-			{
-				zoomMoveData.tranX = x;
-				zoomMoveData.tranY = y;
-
-				template.contentRight('.image-position'+currentZoomIndex).css({
-					transition: 'transform 0s, z-index 0s',
-					transform: 'translateX('+(x)+'px) translateY('+(y)+'px) scale('+scalePrevData.scale+')',
-					transformOrigin: 'center center',
-				});
-			}
+			dragZoom(x, y);
 		}
 		
 		if(readingDragScroll) // Drag to scroll
@@ -2930,13 +3128,7 @@ function read(path, index = 1, end = false)
 
 		if(haveZoom && zoomMoveData.active)
 		{
-			if(typeof zoomMoveData.tranX !== 'undefined')
-			{
-				scalePrevData.tranX = scalePrevData.tranX2 = zoomMoveData.tranX;
-				scalePrevData.tranY = scalePrevData.tranY2 = zoomMoveData.tranY;
-			}
-
-			zoomMoveData.active = false;
+			dragZoomEnd();
 
 			$('body').removeClass('dragging');
 		}

@@ -513,6 +513,8 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 	justifyViewModule();
 
+	gamepad.updateBrowsableItems();
+
 	$(window).off('resize').on('resize', function(){
 		justifyViewModule();
 	});
@@ -697,7 +699,7 @@ function getFolderThumbnailsAsync(path)
 			if(file.containsCompressed(error.compressedPath) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
 			{
 				(function(folderSha){
-
+ 
 					addFolderImagesQueue(path, 4, function(images){
 
 						for(var i = 0; i < images.length; i++)
@@ -1596,10 +1598,12 @@ function openComic(animation = true, path = true, mainPath = true, end = false, 
 
 		generateAppMenu();
 
+		gamepad.updateBrowsableItems();
+
 	}
 	else if(file.containsCompressed(path))
 	{
-		fileCompressed.decompressRecursive(path, function(){
+		fileCompressed.decompressRecursive(path, function() {
 
 			openComic(animation, path, mainPath, end);
 
@@ -1616,6 +1620,19 @@ function skipPreviousComicF()
 {
 	return skipPreviousComic;
 }
+
+// Gamepad events
+gamepad.setButtonEvent('reading', 1, function(key, button) {
+
+	if(key == 1)
+	{
+		let barBack = document.querySelector('.bar-back.active, .bar-back.show');
+	
+		if(barBack)
+			eval(barBack.getAttribute('onclick'));
+	}
+
+});
 
 module.exports = {
 	loadIndexPage: loadIndexPage,

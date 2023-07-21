@@ -202,12 +202,13 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
 	templates = require(p.join(appDir, 'scripts/builded/templates.js')),
 	template = require(p.join(appDir, 'scripts/template.js')),
+	gamepad = require(p.join(appDir, 'scripts/gamepad.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
 	file = require(p.join(appDir, 'scripts/file.js')),
 	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
-	settings = require(p.join(appDir, 'scripts/settings.js'));
+	settings = require(p.join(appDir, 'scripts/settings.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 

@@ -63,6 +63,7 @@ var storageDefault = {
 		readingHideBarHeaderFullScreen: true,
 		readingMaxMargin: 400,
 		readingGlobalZoom: true,
+		controllerDeadZone: 0.06,
 		trackingSites: {
 			wildcard: {
 				favorite: false,
