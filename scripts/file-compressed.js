@@ -170,7 +170,9 @@ function extractZip(path, virtualPath, sha, all, json, callback)
 			}).on('error', function(error){
 
 				if(/0xafbc7a37/.test(error.message)) // 7zip file
-					fileCompressed.extract7zip(path, virtualPath, sha, all, json, callback);
+					fileCompressed.extractRar(path, virtualPath, sha, all, json, callback);
+				else if(/0x21726152/.test(error.message)) // rar file
+					fileCompressed.extractRar(path, virtualPath, sha, all, json, callback);
 				else
 					callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.message}], waitingCurrentExtraction, callback);
 				
@@ -223,6 +225,7 @@ function extract7zip(path, virtualPath, sha, all, json, callback)
 
 	}).on('error', function(error){
 
+		console.error(error);
 		callCallbacks([{error: ERROR_UNZIPPING_THE_FILE, detail: error.stderr}], waitingCurrentExtraction, callback);
 
 	});
