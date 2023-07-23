@@ -2706,7 +2706,7 @@ function read(path, index = 1, end = false)
 		
 	})
 
-	gamepad.setButtonEvent('reading', [4, 5, 6, 7, 8, 9, 12, 13, 14, 15], function(key, button) {
+	gamepad.setButtonEvent('reading', [4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15], function(key, button) {
 
 		if(onReading)
 		{
@@ -2744,7 +2744,7 @@ function read(path, index = 1, end = false)
 			{
 				reading.createAndDeleteBookmark();
 			}
-			else if(key == 9)
+			else if(key == 10)
 			{
 				reading.resetZoom();
 			}
