@@ -262,8 +262,6 @@ function updateBrowsableItems(force = false)
 {
 	if(!hasGamepads && !force) return;
 
-	console.time('updateBrowsableItems');
-
 	currentScreenItems = [];
 	currentHighlightItem = -1;
 
@@ -286,10 +284,6 @@ function updateBrowsableItems(force = false)
 
 	if(currentScreenItems.length > 0)
 		highlightItem(0);
-
-	console.log(currentScreenItems);
-
-	console.timeEnd('updateBrowsableItems');
 }
 
 function highlightItem(index)
@@ -325,8 +319,6 @@ function highlightClosestItem(key)
 
 		if(current)
 		{
-			console.time('highlightClosestItem');
-
 			let closest = false;
 
 			for(let i = 0, len = currentScreenItems.length; i < len; i++)
@@ -371,8 +363,6 @@ function highlightClosestItem(key)
 				}
 			}
 
-			console.timeEnd('highlightClosestItem');
-
 			if(closest)
 				highlightItem(closest.i);
 		}
@@ -409,6 +399,17 @@ setButtonEvent('browsableItems', [0, 12, 13, 14, 15], function(key) {
 setAxesStepsEvent('browsableItems', [0, 1, 2, 3], function(key, axes) {
 
 	highlightClosestItem(key);
+
+});
+
+setButtonEvent('fullscreen', 11, function(key) {
+
+	let win = electronRemote.getCurrentWindow();
+	let isFullScreen = win.isFullScreen();
+
+	reading.hideContent(!isFullScreen);
+	win.setMenuBarVisibility(isFullScreen);
+	win.setFullScreen(!isFullScreen);
 
 });
 
