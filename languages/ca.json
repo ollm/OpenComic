@@ -25,6 +25,7 @@
 		"back": "Enrere",
 		"add": "Afegir",
 		"language": "Idioma",
+		"settings": "Configuracions",
 		"theme": "Tema",
 		"valueCannotBeEmpty": "El valor no pot estar buit",
 		"nightMode": "Mode nit"
@@ -102,6 +103,10 @@
 			"main": "Navegación",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta"
+		},
+		"others": {
+			"main": "Altres configuracions",
+			"startInFullScreen": "Inicia OpenComic a pantalla completa"
 		}
 	},
 	"menu": {

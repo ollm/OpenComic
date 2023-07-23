@@ -103,6 +103,10 @@
 			"main": "Navegación",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los comics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta"
+		},
+		"others": {
+			"main": "Otras ajustes",
+			"startInFullScreen": "Inicial OpenComic en pantalla completa"
 		}
 	},
 	"menu": {

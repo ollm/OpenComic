@@ -252,6 +252,19 @@ function startApp()
 
 	document.fonts.ready.then(function(){
 
+		if(config.startInFullScreen)
+		{
+			let win = electronRemote.getCurrentWindow();
+			let isFullScreen = win.isFullScreen();
+
+			if(!isFullScreen)
+			{
+				reading.hideContent(true);
+				win.setMenuBarVisibility(false);
+				win.setFullScreen(true);
+			}
+		}
+
 		$('body .app').css('display', 'block');
 		$('body .preload').css('display', 'none');
 		dom.justifyViewModule();

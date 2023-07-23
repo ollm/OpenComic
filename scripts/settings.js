@@ -23,10 +23,16 @@ function setShowFullPathOpened(value)
 	storage.updateVar('config', 'showFullPathOpened', value);
 }
 
+function setStartInFullScreen(value)
+{
+	storage.updateVar('config', 'startInFullScreen', value);
+}
+
 module.exports = {
 	start: start,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,
+	setStartInFullScreen: setStartInFullScreen,
 };
