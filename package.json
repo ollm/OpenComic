@@ -54,7 +54,7 @@
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
-		"7zip-bin": "^4.1.0",
+		"7zip-bin": "^5.2.0",
 		"@electron/remote": "^2.0.8",
 		"animejs": "^3.2.1",
 		"electron-json-storage": "^4.5.0",
@@ -68,7 +68,7 @@
 		"jquery-bez": "^1.0.11",
 		"ldd": "^1.0.0",
 		"mime": "^2.5.2",
-		"node-7z": "^1.1.0",
+		"node-7z": "^3.0.0",
 		"pdfjs-dist": "^2.9.359",
 		"request": "^2.88.0",
 		"sha1": "^1.1.1",
