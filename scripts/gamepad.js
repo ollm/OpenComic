@@ -250,8 +250,6 @@ function setAxesStepsEvent(key, buttons, callback)
 		if(!axesStepsEvents[button]) axesStepsEvents[button] = {};
 		axesStepsEvents[button][key] = callback;
 	}
-
-	console.log(axesStepsEvents);
 }
 
 // Use the gamepad to navigate between the items in the content

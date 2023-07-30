@@ -1,35 +1,44 @@
-var processingTheQueue = false, queued = [];
+var processingTheQueue = {}, queued = {};
 
-async function processTheQueue()
+async function processTheQueue(key)
 {
-	var current = queued[0];
-
-	if(current)
+	if(queued[key])
 	{
-		current.callback.apply(false, current.arguments);
+		let current = queued[key].shift();
 
-		queued.splice(0, 1);
-
-		if(queued.length > 0)
+		if(current)
 		{
-			process.nextTick(function() {
+			try
+			{
+				await current.callback.apply(false, current.arguments);
+			}
+			catch(error)
+			{
+				if(key == 'folderThumbnails')
+					dom.compressedError(error);
 
-				processTheQueue();
+				console.error(error);
+			}
 
-			});
-		}
-		else
-		{
-			processingTheQueue = false;
+			if(queued[key].length > 0)
+			{
+				process.nextTick(function() {
+
+					processTheQueue(key);
+
+				});
+
+				return;
+			}
 		}
 	}
-	else
-	{
-		processingTheQueue = false;
-	}
+
+	processingTheQueue[key] = false;
+
+	return;
 }
 
-function addToQueue(key, callback)
+async function addToQueue(key, callback)
 {
 	_arguments = [];
 
@@ -38,33 +47,31 @@ function addToQueue(key, callback)
 		_arguments.push(arguments[i]);
 	}
 
-	queued.push({key: key, callback: callback, arguments: _arguments});
+	if(!queued[key]) queued[key] = [];
+	queued[key].push({key: key, callback: callback, arguments: _arguments});
 
-	if(!processingTheQueue)
+	if(!processingTheQueue[key])
 	{
-		processingTheQueue = true;
+		processingTheQueue[key] = true;
 
-		setTimeout(function(){
+		process.nextTick(function() {
 
-			process.nextTick(function() {
-				processTheQueue();
+			processTheQueue(key).catch(function(error){
+
+				//if(key == 'folderThumbnails')
+				//	dom.compressedError(error);
+
+				//console.error(error);
+
 			});
 
-		}, 0);
+		});
 	}
 }
 
 function cleanQueue(key = false)
 {
-	var newQueued = [];
-
-	for(let i = 0, len = queued.length; i < len; i++)
-	{
-		if(i == 0 || (queued[i].key != key && key !== false))
-			newQueued.push(queued[i]);
-	}
-
-	queued = newQueued;
+	queued[key] = [];
 }
 
 module.exports = {

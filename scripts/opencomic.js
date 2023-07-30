@@ -205,8 +205,7 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	gamepad = require(p.join(appDir, 'scripts/gamepad.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
-	file = require(p.join(appDir, 'scripts/file.js')),
-	fileCompressed = require(p.join(appDir, 'scripts/file-compressed.js')),
+	fileManager = require(p.join(appDir, 'scripts/file-manager.js')), // New file management
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
@@ -1030,3 +1029,5 @@ function checkError(value, error = false)
 
 const NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
 const ERROR_UNZIPPING_THE_FILE = 2;
+const ERROR_READING_THE_FILE = 3;
+const ERROR_RENDERING_THE_FILE = 4;

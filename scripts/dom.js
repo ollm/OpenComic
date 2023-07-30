@@ -182,141 +182,133 @@ function addImageToDom(querySelector, path, animation = true)
 	}
 }
 
-function loadFilesIndexPage(animation, path, keepScroll, mainPath)
+async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 {
-	queue.clean('folderThumbnails');
+	file.read().then(async function(files){
 
-	if(!path)
-	{
-		var sort = config.sortIndex;
-		var sortInvert = config.sortInvertIndex;
-		var foldersFirst = config.foldersFirstIndex;
-	}
-	else
-	{
-		var sort = config.sort;
-		var sortInvert = config.sortInvert;
-		var foldersFirst = config.foldersFirst;
-	}
+		queue.clean('folderThumbnails');
 
-	var order = '';
+		let pathFiles = [];
 
-	if(sort == 'name')
-		order = 'simple';
-	else if(sort == 'numeric')
-		order = 'numeric';
-	else
-		order = 'simple-numeric';
-
-	let pathFiles = [];
-
-	var files = fs.readdirSync(file.realPath(path));
-
-	if(files)
-	{
-		for(var i = 0; i < files.length; i++)
+		if(files)
 		{
-			var fileName = files[i];
-			var filePath = p.join(path, fileName);
+			let images = [];
 
-			var realPath = file.realPath(filePath, -1);
-
-			if(inArray(mime.getType(realPath), compatibleMime))
+			for(let i = 0, len = files.length; i < len; i++)
 			{
-				var sha = sha1(filePath);
+				let _file = files[i];
 
-				var thumbnail = cache.returnCacheImage(realPath/*filePath*/, sha, function(data){
-
-					addImageToDom(data.sha, data.path);
-
-				});
-
-				pathFiles.push({
-					sha: sha,
-					name: fileName.replace(/\.[^\.]*$/, ''),
-					path: filePath,
-					mainPath: mainPath,
-					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
-					folder: false,
-				});
+				if(inArray(mime.getType(_file.path), compatibleMime))
+				{
+					files[i].sha = sha1(_file.path);
+					images.push(files[i]);
+				}
 			}
-			else if(fs.statSync(realPath).isDirectory() || inArray(fileExtension(filePath), compressedExtensions.all))
-			{
-				var images = getFolderThumbnailsAsync(filePath);
 
-				pathFiles.push({
-					name: fileName,
-					path: filePath,
-					mainPath: mainPath,
-					images: images,
-					folder: true,
-				});
+			let thumbnails = await cache.returnThumbnailsImages(images, function(data){
+
+				addImageToDom(data.sha, data.path);
+
+			}, file);
+
+			for(let i = 0, len = files.length; i < len; i++)
+			{
+				let file = files[i];
+				let fileName = file.name;
+				let filePath = file.path;
+
+				let realPath = fileManager.realPath(filePath, -1);
+
+				if(inArray(mime.getType(realPath), compatibleMime))
+				{
+					let sha = file.sha;
+
+					let thumbnail = thumbnails[file.sha];
+
+					pathFiles.push({
+						sha: sha,
+						name: fileName.replace(/\.[^\.]*$/, ''),
+						path: filePath,
+						mainPath: mainPath,
+						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+						folder: false,
+					});
+				}
+				else if(file.folder || file.compressed)
+				{
+					let images = await getFolderThumbnails(filePath);
+
+					pathFiles.push({
+						name: fileName,
+						path: filePath,
+						mainPath: mainPath,
+						images: images,
+						folder: true,
+					});
+				}
 			}
 		}
-	}
 
-	if(!isEmpty(pathFiles))
-	{
-		pathFiles.sort(function (a, b) {
-			if(foldersFirst && a.folder && !b.folder) return -1; 
-			if(foldersFirst && b.folder && !a.folder) return 1; 
-			return (sortInvert) ? -(orderBy(a, b, order, 'name')) : orderBy(a, b, order, 'name');
-		});
-	}
+		handlebarsContext.comics = pathFiles;
 
-	handlebarsContext.comics = pathFiles;
+		// Comic reading progress
+		let comic = false, _comics = storage.get('comics');
 
-	// Comic reading progress
-	var comic = false, _comics = storage.get('comics');
-
-	for(let i in _comics)
-	{
-		if(_comics[i].path == mainPath)
+		for(let i in _comics)
 		{
-			comic = _comics[i];
-			break;
+			if(_comics[i].path == mainPath)
+			{
+				comic = _comics[i];
+				break;
+			}
 		}
-	}
 
-	var readingProgress = storage.get('readingProgress');
+		let readingProgress = storage.get('readingProgress');
 
-	if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
-	{
-		var sha = sha1(readingProgress[mainPath].path);
+		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+		{
+			let sha = sha1(readingProgress[mainPath].path);
 
-		var realPath = file.realPath(readingProgress[mainPath].path, -1);
+			let realPath = fileManager.realPath(readingProgress[mainPath].path, -1);
 
-		var thumbnail = cache.returnCacheImage(realPath, sha, function(data){
+			let thumbnail = cache.returnCacheImage(realPath, sha, function(data){
 
-			addImageToDom(data.sha, data.path);
+				addImageToDom(data.sha, data.path);
 
-		});
+			});
 
-		readingProgress[mainPath].sha = sha;
-		readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-		readingProgress[mainPath].mainPath = mainPath;	
-		readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath, true);	
-		handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
-	}
-	else
-	{
-		handlebarsContext.comicsReadingProgress = false;
-	}
+			readingProgress[mainPath].sha = sha;
+			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+			readingProgress[mainPath].mainPath = mainPath;	
+			readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath, true);	
+			handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
+		}
+		else
+		{
+			handlebarsContext.comicsReadingProgress = false;
+		}
 
-	if(keepScroll > 1)
-		template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html')).scrollTop(keepScroll);
-	else
-		template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));
+		if(keepScroll > 1)
+			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html')).scrollTop(keepScroll);
+		else
+			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));
 
-	//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
-	events.events();
-	justifyViewModule();
+		//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
+		events.events();
+		justifyViewModule();
+
+	}).catch(function(error){
+
+		console.error(error);
+		dom.compressedError(error);
+
+	});
 
 }
 
 var currentPath = false, currentPathScrollTop = [];
 
-function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
+function _loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
 {
 	onReading = false;
 
@@ -404,7 +396,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 			for(let key in comics)
 			{
-				var images = getFolderThumbnailsAsync(comics[key].path);
+				var images = getFolderThumbnails(comics[key].path);
 
 				comics[key].images = images;
 				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
@@ -461,14 +453,14 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 		cache.cleanQueue();
 
-		if(!fs.existsSync(file.realPath(path, -1)) && file.containsCompressed(path))
+		if(!fs.existsSync(fileManager.realPath(path, -1)) && fileManager.containsCompressed(path))
 		{
 			fileCompressed.decompressRecursive(path, function(files){
 
 				if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
 					return dom.compressedError(files);
 
-				if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
+				if(!fs.statSync(fileManager.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
 				{
 					fileCompressed.returnFiles(path, false, false, function(files){
 
@@ -488,7 +480,7 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 		}
 		else
 		{
-			if(!fs.statSync(file.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
+			if(!fs.statSync(fileManager.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
 			{
 				fileCompressed.returnFiles(path, false, false, function(files){
 
@@ -521,6 +513,160 @@ function loadIndexPage(animation = true, path = false, content = false, keepScro
 
 }
 
+async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
+{
+	onReading = false;
+
+	reading.hideContent();
+
+	generateAppMenu();
+
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
+
+	for(let _path in currentPathScrollTop)
+	{
+		if(_path != 0 && !new RegExp('^'+pregQuote(_path)).test(path))
+			delete currentPathScrollTop[_path];
+	}
+
+	if(currentPathScrollTop[path === false ? 0 : path])
+		keepScroll = currentPathScrollTop[path === false ? 0 : path];
+
+	currentPath = path;
+
+	if(!path)
+	{
+		indexPathControl(false);
+
+		let sort = config.sortIndex;
+		let sortInvert = config.sortInvertIndex;
+		let foldersFirst = config.foldersFirstIndex;
+
+		let order = '';
+		let orderKey = 'name';
+		let orderKey2 = false;
+
+		if(sort == 'name')
+		{
+			order = 'simple';
+		}
+		else if(sort == 'numeric')
+		{
+			order = 'numeric';
+		}
+		else if(sort == 'name-numeric')
+		{
+			order = 'simple-numeric';
+		}
+		else if(sort == 'last-add')
+		{
+			order = 'real-numeric';
+			orderKey = 'added';
+			sortInvert = !sortInvert;
+		}
+		else
+		{
+			order = 'real-numeric';
+			orderKey = 'readingProgress';
+			orderKey2 = 'lastReading';
+			sortInvert = !sortInvert;
+		}
+
+		var comicsStorage = storage.get('comics');
+		var comics = [];
+
+		if(!isEmpty(comicsStorage))
+		{
+			for(let key in comicsStorage)
+			{
+				if(fs.existsSync(comicsStorage[key].path))
+				{
+					comics.push(comicsStorage[key]);
+				}
+				else
+				{
+					//console.log(comicsStorage[key]);
+				}
+			}
+
+			for(let key in comics)
+			{
+				var images = await getFolderThumbnails(comics[key].path);
+
+				comics[key].images = images;
+				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
+			}
+
+			comics.sort(function (a, b) {
+				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
+			});
+		}
+
+		handlebarsContext.comics = comics;
+		handlebarsContext.comicsIndex = true;
+		handlebarsContext.comicsIndexVar = 'true';
+		handlebarsContext.comicsReadingProgress = false;
+
+		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
+
+		handlebarsContext.headerTitle = false;
+		handlebarsContext.headerTitlePath = false;
+		template.loadHeader('index.header.html', animation);
+
+		if(!content)
+		{
+			template.loadContentLeft('index.content.left.html', animation);
+			template.loadGlobalElement('index.elements.menus.html', 'menus');
+			floatingActionButton(true, 'dom.addComicButtons();');
+		}
+
+		events.events();
+
+	}
+	else
+	{
+		if(!fromGoBack)
+			indexPathControl(path, mainPath);
+
+		handlebarsContext.comicsIndex = false;
+		handlebarsContext.comicsIndexVar = 'false';
+
+		headerPath(path, mainPath);
+		template.loadHeader('index.header.html', animation);
+		template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+
+		if(!content)
+		{
+			if(readingActive)
+			{
+				template.loadContentLeft('index.content.left.html', animation);
+			}
+
+			template.loadGlobalElement('index.elements.menus.html', 'menus');
+			floatingActionButton(false);
+		}
+
+		cache.cleanQueue();
+
+		let file = fileManager.file(path);
+		loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+	}
+
+	if(readingActive)
+	{
+		readingActive = false;
+	}
+
+	justifyViewModule();
+
+	gamepad.updateBrowsableItems();
+
+	$(window).off('resize').on('resize', function(){
+		justifyViewModule();
+	});
+
+}
+
 function compressedError(error)
 {
 	//console.log(error);
@@ -529,7 +675,7 @@ function compressedError(error)
 		type: 'error',
 		title: language.error.uncompress.title,
 		message: language.error.uncompress.message,
-		detail: error.detail,
+		detail: error.detail || error.message,
 	});
 }
 
@@ -580,460 +726,109 @@ function headerPath(path, mainPath)
 	handlebarsContext.headerTitlePath = path;
 }
 
-function nextComic(path, mainPath)
+async function nextComic(path, mainPath)
 {
-	var searchPath = p.dirname(path);
-	
-	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
-	{
-		var files = file.returnFirstWD(searchPath);
+	let file = fileManager.file(mainPath);
+	let image = await file.images(1, path);
 
-		if(checkError(files))
-			return files;
-
-		files = file.sort(files);
-
-		var skipPath = false;
-
-		if(files)
-		{
-			for(var i = 0; i < files.length; i++)
-			{
-				var filePath = files[i].path;
-
-				if((skipPath && files[i].folder) || skipPath && files[i].compressed)
-				{
-					var image = folderImagesWD(filePath, 1, 1);
-
-					if(checkError(image) || image)
-						return image;
-				}
-				else if(skipPath)
-				{
-					return files[i].path;
-				}
-
-				if(filePath == path && !skipPath)
-					skipPath = true;
-			}
-		}
-
-		return nextComic(searchPath, mainPath);
-	}
-
-	return false;
+	return image && image.path ? image.path : false;
 }
 
-function previousComic(path, mainPath)
+async function previousComic(path, mainPath)
 {
-	var searchPath = p.dirname(path);
+	let file = fileManager.file(mainPath);
+	let image = await file.images(-1, path);
 
-	if(p.normalize(mainPath) != p.normalize(path) && p.normalize(searchPath) != p.normalize(path))
-	{
-		var files = file.returnFirstWD(searchPath);
-
-		if(checkError(files))
-			return files;
-
-		files = file.sort(files);
-
-		var skipPath = false;
-
-		if(files)
-		{
-			for(var i = (files.length - 1); i >= 0; i--)
-			{
-				var filePath = files[i].path;
-
-				if((skipPath && files[i].folder) || (skipPath && files[i].compressed))
-				{
-					var image = folderImagesWD(filePath, 1, 2);
-
-					if(checkError(image) || image)
-						return image;
-				}
-				else if(skipPath)
-				{
-					return files[i].path;
-				}
-
-				if(filePath == path && !skipPath)
-					skipPath = true;
-			}
-		}
-
-		return previousComic(searchPath, mainPath);
-	}
-
-	return false;
+	return image && image.path ? image.path : false;
 }
 
-function getFolderThumbnailsAsync(path)
+async function _getFolderThumbnails(file, images, _images, path, folderSha, isAsync = false)
 {
-	var folderSha = sha1(path);
+	let shaIndex = {};
 
-	var images = [
+	for(let i = 0, len = _images.length; i < len; i++)
+	{
+		let sha = sha1(_images[i].path);
+		_images[i].sha = sha;
+		_images[i].vars = {i: i};
+		shaIndex[i] = sha;
+	}
+
+	_images = await cache.returnThumbnailsImages(_images,  function(data, vars) {
+
+		addImageToDom(data.sha, data.path);
+		addImageToDom(folderSha+'-'+vars.i, data.path);
+
+	}, file);
+
+	for(let i = 0, len = images.length; i < len; i++)
+	{
+		let imageCache = _images[shaIndex[i]];
+
+		if(imageCache && imageCache.cache)
+		{
+			images[i].path = imageCache.path;
+			images[i].cache = true;
+
+			if(isAsync)
+			{
+				addImageToDom(imageCache.sha, imageCache.path);
+				addImageToDom(folderSha+'-'+i, imageCache.path);
+			}
+		}
+	}
+
+	return images;
+}
+
+async function getFolderThumbnails(path)
+{
+	let folderSha = sha1(path);
+
+	let images = [
 		{cache: false, path: '', sha: folderSha+'-0'},
 		{cache: false, path: '', sha: folderSha+'-1'},
 		{cache: false, path: '', sha: folderSha+'-2'},
 		{cache: false, path: '', sha: folderSha+'-3'},
 	];
-
-	queue.add('folderThumbnails', function(path, folderSha) {
-
-		var images = folderImagesWD(path, 4);
-
-		if(checkError(images))
-		{
-			var error = images;
-
-			var images = [
-				{cache: false, path: '', sha: folderSha+'-0'},
-				{cache: false, path: '', sha: folderSha+'-1'},
-				{cache: false, path: '', sha: folderSha+'-2'},
-				{cache: false, path: '', sha: folderSha+'-3'},
-			];
-
-			var realPath = file.realPath(error.compressedPath, -1);
-
-			if(file.containsCompressed(error.compressedPath) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
-			{
-				(function(folderSha){
- 
-					addFolderImagesQueue(path, 4, function(images){
-
-						for(var i = 0; i < images.length; i++)
-						{
-							var sha = sha1(images[i]);
-
-							(function(i, sha, folderSha, images){
-
-								var image = cache.returnCacheImage(images[i], sha, function(data, vars){
-
-									addImageToDom(data.sha, data.path);
-									addImageToDom(folderSha+'-'+vars.i, data.path);
-
-								}, {i: i});
-
-								if(image.cache)
-								{
-									addImageToDom(sha, image.path);
-									addImageToDom(folderSha+'-'+i, image.path);
-								}
-
-							}(i, sha, folderSha, images));
-						}
-
-					});
-
-				})(folderSha)
-			}
-
-			//Compatibility has to be added to uncompress the file and create the thumbnails
-		}
-		else
-		{
-			for(let i = 0; i < images.length; i++)
-			{
-				var sha = sha1(images[i]);
-
-				images[i] = cache.returnCacheImage(images[i], sha, function(data, vars){
-
-					addImageToDom(data.sha, data.path);
-					addImageToDom(vars.folderSha+'-'+vars.i, data.path);
-
-				}, {i: i, folderSha: folderSha});
-
-				if(images[i].cache)
-				{
-					addImageToDom(sha, images[i].path, false);
-					addImageToDom(folderSha+'-'+i, images[i].path, false);
-				}
-			}
-		}
-
-	}, path, folderSha);
-
-	return images;
-}
-
-function getFolderThumbnailsWD(path)
-{
-	var images = folderImagesWD(path, 4);
-
-	if(checkError(images))
+	
+	try
 	{
-		var error = images;
-
-		var folderSha = sha1(path);
-
-		var images = [
-			{cache: false, path: '', sha: folderSha+'-0'},
-			{cache: false, path: '', sha: folderSha+'-1'},
-			{cache: false, path: '', sha: folderSha+'-2'},
-			{cache: false, path: '', sha: folderSha+'-3'},
-		];
-
-		var realPath = file.realPath(error.compressedPath, -1);
-
-		if(file.containsCompressed(path) && fs.existsSync(realPath) && fs.statSync(realPath).size < 52428800)
+		try
 		{
-			(function(folderSha){
+			let file = fileManager.file(path);
+			file.updateConfig({cacheOnly: true});
+			let _images = await file.images(4);
 
-				addFolderImagesQueue(path, 4, function(images){
-
-					for(var i = 0; i < images.length; i++)
-					{
-						var sha = sha1(images[i]);
-
-						(function(i, sha, folderSha, images){
-
-							var image = cache.returnCacheImage(images[i], sha, function(data, vars){
-
-								addImageToDom(data.sha, data.path);
-								addImageToDom(folderSha+'-'+vars.i, data.path);
-
-							}, {i: i});
-
-							if(image.cache)
-							{
-								addImageToDom(sha, image.path);
-								addImageToDom(folderSha+'-'+i, image.path);
-							}
-
-						}(i, sha, folderSha, images));
-					}
-
-				});
-
-			})(folderSha)
+			images = await _getFolderThumbnails(file, images, _images, path, folderSha);
 		}
+		catch(error)
+		{
+			if(error.message && error.message === 'notCacheOnly')
+			{
+				queue.add('folderThumbnails', async function(path, folderSha) {
 
-		//Compatibility has to be added to uncompress the file and create the thumbnails
+					let file = fileManager.file(path);
+					let _images = await file.images(4);
+
+					_getFolderThumbnails(file, images, _images, path, folderSha, true);
+
+				}, path, folderSha);
+			}
+			else
+			{
+				console.error(error);
+				dom.compressedError(error);
+			}
+		}
 	}
-	else
+	catch(error)
 	{
-		for(let i = 0; i < images.length; i++)
-		{
-			var sha = sha1(images[i]);
-
-			images[i] = cache.returnCacheImage(images[i], sha, function(data){
-
-				addImageToDom(data.sha, data.path);
-
-			});
-		}
+		console.error(error);
+		dom.compressedError(error);
 	}
 
 	return images;
-}
-
-var queuedFolderImages = [], processingFolderImagesQueue = false;
-
-function addFolderImagesQueue(path, num, callback = false, processQueue = true)
-{
-	queuedFolderImages.push({path: path, num: num, callback: callback});
-
-	if(!processingFolderImagesQueue && processQueue)
-	{
-		setTimeout(function(){
-
-			process.nextTick(function() {
-				processFolderImagesQueue();
-			});
-
-		}, 0);
-	}
-}
-
-function processFolderImagesQueue(force = false)
-{
-
-	if((!processingFolderImagesQueue || force) && typeof queuedFolderImages[0] != 'undefined')
-	{
-		processingFolderImagesQueue = true;
-
-		folderImages(queuedFolderImages[0].path, queuedFolderImages[0].num, function(images){
-
-			if(queuedFolderImages[0].callback)
-				queuedFolderImages[0].callback(images);
-
-			queuedFolderImages.splice(0, 1);
-
-			if(queuedFolderImages.length > 0)
-			{
-				process.nextTick(function() {
-					processFolderImagesQueue(true);
-				});
-			}
-			else
-			{
-				processingFolderImagesQueue = false;
-			}
-
-		});
-	}
-}
-
-function folderImages(path, num, callback = false, ignore = {})
-{
-
-	(function(path, num, callback, ignore){
-
-		process.nextTick(function() {
-
-			var images = folderImagesWD(path, num, false, ignore);
-
-			if(checkError(images))
-			{
-				var startPath = images.startPath;
-
-				(function(error, path, num, callback, ignore, startPath){
-
-					if(fs.existsSync(error.compressedPath) && fs.statSync(error.compressedPath).size < 52428800)
-					{
-						fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
-
-							/*if(checkError(files))
-								ignore[p.normalize(startPath)] = true;
-
-							dom.folderImages(path, num, callback, ignore);*/
-
-							if(!checkError(files))
-								dom.folderImages(path, num, callback, ignore);
-							else
-								callback(files);
-
-						});
-					}
-					else
-					{
-						ignore[p.normalize(startPath)] = true;
-
-						dom.folderImages(path, num, callback, ignore);
-					}
-
-				})(images, path, num, callback, ignore, startPath)
-			}
-			else
-			{
-				if(callback)
-					callback(images);
-			}
-		});
-
-	})(path, num, callback, ignore);
-}
-
-function folderImagesWD(path, num, mode = false, ignore = {})
-{
-	if(!mode)
-	{
-		var dirs = [];
-
-		if(!ignore[p.normalize(path)])
-			var files = file.returnFirstWD(path);
-		else
-			return [];
-
-		if(checkError(files))
-		{
-			files.startPath = path;
-			return files;
-		}
-
-		files = file.sort(files);
-
-		if(files)
-		{
-			for(var i = 0, len = files.length; i < len; i++)
-			{
-				var filePath = files[i].path;
-
-				if(files[i].folder || files[i].compressed)
-				{
-					if(!ignore[p.normalize(filePath)])
-					{
-						_filePath = filePath;
-						filePath = folderImagesWD(filePath, 1, 1, ignore);
-
-						if(checkError(filePath))
-						{
-							filePath.startPath = _filePath;
-							return filePath;
-						}
-
-						if(filePath) dirs.push(filePath);
-					}
-				}
-				else
-				{
-					dirs.push(filePath);
-				}
-
-				if(dirs.length >= num) break;
-			}
-		}
-
-		return dirs;
-	}
-	else
-	{
-
-		if(!ignore[p.normalize(path)])
-			var files = file.returnFirstWD(path);
-		else
-			return false;
-
-		if(checkError(files))
-		{
-			files.startPath = path;
-			return files;
-		}
-
-		files = file.sort(files);
-
-		if(files)
-		{
-			if(mode == 2)
-				i = (files.length - 1);
-			else
-				i = 0;
-
-			while((mode == 2 && i >= 0) || (mode != 2 && i < files.length))
-			{
-				var filePath = files[i].path;
-
-				if(files[i].folder || files[i].compressed)
-				{
-					if(!ignore[p.normalize(filePath)])
-					{
-						_filePath = filePath;
-						filePath = folderImagesWD(filePath, 1, 1, ignore);
-
-						if(checkError(filePath))
-						{
-							filePath.startPath = _filePath;
-							return filePath;
-						}
-
-						if(filePath) return filePath;
-					}
-				}
-				else
-				{
-					return filePath;
-				}
-
-				if(mode == 2)
-					i--;
-				else
-					i++;
-			}
-		}
-
-		return false;
-	}
 }
 
 var indexPathControlA = [], indexPathA = false, indexMainPathA = false;
@@ -1072,7 +867,8 @@ function indexPathControlUpdateLastComic(path = false)
 
 var barBackStatus = false; 
 
-function indexPathControl(path = false, mainPath = false, isComic = false)
+// This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
+function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false)
 {
 	if(path === false || mainPath === false)
 	{
@@ -1085,12 +881,19 @@ function indexPathControl(path = false, mainPath = false, isComic = false)
 
 		mainPathR = addSepToEnd(p.dirname(mainPath));
 
-		var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+		let files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
 		let index = files.length - 1;
 
+		let len = indexPathControlA.length;
+
 		if(index >= 0)
-			indexPathControlA.push({file: files[index], path: path, mainPath: mainPath, isComic: isComic});
+		{
+			if(len > 0 && isComic && fromNextAndPrev && indexPathControlA[len-1].isComic) // 
+				indexPathControlA[len-1] = {file: files[index], path: path, mainPath: mainPath, isComic: isComic};
+			else
+				indexPathControlA.push({file: files[index], path: path, mainPath: mainPath, isComic: isComic});
+		}
 	}
 
 	if(indexPathControlA.length > 0)
@@ -1449,14 +1252,23 @@ function removeComic(path, confirm = false)
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
-function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false)
+async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
+
+	// Show loadign page
+	handlebarsContext.comics = [];
+	template.loadContentLeft('reading.content.left.html', true);
+	template.loadContentRight('reading.content.right.html', true);
+	template.loadHeader('reading.header.html', true);
+	headerPath(path, mainPath);
+
+	// Start reading comic
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
 	currentPath = path;
 
-	var startImage = false;
-	var imagePath = path;
-	var indexStart = 1;
+	let startImage = false;
+	let imagePath = path;
+	let indexStart = 1;
 
 	if(compatibleMime.indexOf(mime.getType(path)) != -1)
 	{
@@ -1464,161 +1276,111 @@ function openComic(animation = true, path = true, mainPath = true, end = false, 
 		path = p.dirname(path);
 	}
 
-	if(fs.existsSync(file.realPath(path)))
+	let file = fileManager.file(path);
+	let files = await file.read();
+
+	let compressedFile = fileManager.lastCompressedFile(path);
+
+	if(compressedFile)
 	{
+		let features = fileManager.fileCompressed(compressedFile);
+		features = features.getFeatures();
 
-		skipNextComic = nextComic(path, mainPath);
-		skipPreviousComic = previousComic(path, mainPath);
-
-		if(checkError(skipNextComic))
-			skipNextComic = false;
-
-		if(checkError(skipPreviousComic))
-			skipPreviousComic = false;
-
-		if(!fromGoBack)
-			indexPathControl(imagePath, mainPath, true);
-
-		readingActive = true;
-
-		var sort = config.sort;
-		var sortInvert = config.sortInvert;
-		var foldersFirst = config.foldersFirst;
-
-		var order = '';
-
-		if(sort == 'name')
-			order = 'simple';
-		else if(sort == 'numeric')
-			order = 'numeric';
+		if(features.canvas && false) // Not work yet
+		{
+			await file.makeAvailable([{path: compressedFile}]);
+		}
 		else
-			order = 'simple-numeric';
-
-		var files = fs.readdirSync(file.realPath(path));
-
-		var comics = [];
-
-		if(files)
 		{
-
-			for(var i = 0; i < files.length; i++)
-			{
-				var fileName = files[i];
-				var filePath = p.join(path, fileName);
-
-				if(compatibleMime.indexOf(mime.getType(filePath)) != -1)
-				{
-					var sha = sha1(filePath);
-
-					var thumbnail = cache.returnCacheImage(filePath, sha, function(data){
-
-						addImageToDom(data.sha, data.path);
-
-					});
-
-					comics.push({
-						sha: sha,
-						name: fileName.replace(/\.[^\.]*$/, ''),
-						image: file.realPath(filePath),
-						path: filePath,
-						mainPath: mainPath,
-						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
-						folder: false,
-					});
-				}
-				else if(inArray(fileExtension(filePath), compressedExtensions.all) || fs.statSync(file.realPath(filePath)).isDirectory())
-				{
-					var images = folderImagesWD(filePath, 4);
-
-					for(var i2 = 0; i2 < images.length; i2++)
-					{
-						var originalPath = images[i2];
-
-						var sha = sha1(originalPath);
-
-						images[i2] = cache.returnCacheImage(originalPath, sha, function(data){
-							
-							addImageToDom(data.sha, data.path);
-							
-						});
-
-						images[i2].originalPath = originalPath;
-					}
-
-					if(typeof images[0] != 'undefined')
-					{
-						comics.push({
-							name: fileName,
-							path: filePath,
-							mainPath: mainPath,
-							fristImage: images[0].originalPath,
-							images: images,
-							folder: true,
-						});
-					}
-				}
-			}
+			await file.makeAvailable(files);
 		}
-
-		if(!isEmpty(comics))
-		{
-			comics.sort(function (a, b) {
-				if(foldersFirst && a.folder && !b.folder) return -1; 
-				if(foldersFirst && b.folder && !a.folder) return 1; 
-				return (sortInvert) ? -(orderBy(a, b, order, 'name')) : orderBy(a, b, order, 'name');
-			});
-
-			for(let key in comics)
-			{
-				comics[key].index = parseInt(key) + 1;
-				if(comics[key].path == imagePath)
-				{
-					indexStart = parseInt(key) + 1;
-				}
-			}
-		}
-
-		handlebarsContext.comics = comics;
-		handlebarsContext.previousComic = skipPreviousComic;
-		handlebarsContext.nextComic = skipNextComic;
-		headerPath(path, mainPath);
-		reading.setCurrentComics(comics);
-
-		template.loadContentLeft('reading.content.left.html', true);
-		template.loadContentRight('reading.content.right.html', true);
-		template.loadHeader('reading.header.html', true);
-		if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
-
-		floatingActionButton(false);
-		
-		events.events();
-
-		reading.read(path, indexStart, end);
-		reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
-
-		generateAppMenu();
-
-		gamepad.updateBrowsableItems();
-
 	}
-	else if(file.containsCompressed(path))
+
+	skipNextComic = await nextComic(path, mainPath);
+	skipPreviousComic = await previousComic(path, mainPath);
+
+	if(!fromGoBack)
+		indexPathControl(imagePath, mainPath, true, fromNextAndPrev);
+
+	readingActive = true;
+
+	let comics = [];
+
+	if(files)
 	{
-		fileCompressed.decompressRecursive(path, function() {
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			let file = files[i];
 
-			openComic(animation, path, mainPath, end);
+			if(file.folder || file.compressed)
+			{
+				let fileImage = fileManager.file(file.path);
+				let images = await fileImage.images(4);
 
-		});
+				if(images.length > 0)
+				{
+					comics.push({
+						name: file.name,
+						path: file.path,
+						mainPath: mainPath,
+						fristImage: images[0].path,
+						images: images,
+						folder: true,
+					});
+				}
+			}
+			else
+			{
+				let sha = sha1(file.path);
+
+				let thumbnail = cache.returnCacheImage(file.path, sha, function(data){
+
+					addImageToDom(data.sha, data.path);
+
+				});
+
+				comics.push({
+					sha: sha,
+					name: file.name.replace(/\.[^\.]*$/, ''),
+					image: fileManager.realPath(file.path),
+					path: file.path,
+					mainPath: mainPath,
+					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+					folder: false,
+				});		
+			}
+		}
 	}
-}
 
-function skipNextComicF()
-{
-	return skipNextComic;
-}
+	for(let i = 0, len = comics.length; i < len; i++)
+	{
+		comics[i].index = i + 1;
 
-function skipPreviousComicF()
-{
-	return skipPreviousComic;
+		if(comics[i].path == imagePath)
+			indexStart = comics[i].index;
+	}
+
+	handlebarsContext.comics = comics;
+	handlebarsContext.previousComic = skipPreviousComic;
+	handlebarsContext.nextComic = skipNextComic;
+	headerPath(path, mainPath);
+	reading.setCurrentComics(comics);
+
+	template.loadContentLeft('reading.content.left.html', true);
+	template.loadContentRight('reading.content.right.html', true);
+	template.loadHeader('reading.header.html', true);
+	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
+
+	floatingActionButton(false);
+	
+	events.events();
+
+	reading.read(path, indexStart, end);
+	reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
+
+	generateAppMenu();
+
+	gamepad.updateBrowsableItems();
 }
 
 // Gamepad events
@@ -1645,12 +1407,10 @@ module.exports = {
 	indexPathControl: indexPathControl,
 	indexPathControlA: function(){return indexPathControlA},
 	indexPathControlGoBack: indexPathControlGoBack,
-	folderImages: folderImages,
-	folderImagesWD: folderImagesWD,
 	selectElement: selectElement,
 	openComic: openComic,
-	nextComic: skipNextComicF,
-	previousComic: skipPreviousComicF,
+	nextComic: function(){return skipNextComic},
+	previousComic: function(){return skipPreviousComic},
 	orderBy: orderBy,
 	nightMode: nightMode,
 	addComicButtons: addComicButtons,

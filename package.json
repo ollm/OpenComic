@@ -69,13 +69,13 @@
 		"ldd": "^1.0.0",
 		"mime": "^2.5.2",
 		"node-7z": "^3.0.0",
-		"pdfjs-dist": "^2.9.359",
+		"pdfjs-dist": "^3.8.162",
 		"request": "^2.88.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.30.6",
 		"tar-fs": "^2.0.0",
 		"unrar": "^0.2.0",
-		"unzipper": "^0.10.11"
+		"unzipper": "^0.10.14"
 	},
 	"devDependencies": {
 		"electron": "^19.0.4",

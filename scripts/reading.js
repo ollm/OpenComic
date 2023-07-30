@@ -977,9 +977,9 @@ function showNextComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -1072,9 +1072,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'");', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -3446,4 +3446,5 @@ module.exports = {
 	setShownContentLeft: function(value){shownContentLeft = value},
 	setShownBarHeader: function(value){shownBarHeader = value},
 	loadReadingMoreOptions: loadReadingMoreOptions,
+	currentScale: function(){return currentScale},
 };
