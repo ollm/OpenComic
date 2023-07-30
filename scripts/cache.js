@@ -10,10 +10,10 @@ function processTheImageQueue()
 {
 	if(sharp === false) sharp = require('sharp');
 
-	var img = queuedImages[0];
-	var sha = img.sha;
+	let img = queuedImages[0];
+	let sha = img.sha;
 
-	var realPath = fileManager.realPath(img.file);
+	let realPath = fileManager.realPath(img.file);
 
 	sharp(realPath).jpeg({quality: 95}).resize({width: img.size, background: 'white'}).toFile(p.join(cacheFolder, sha+'.jpg'), function(error) {
 	
@@ -172,52 +172,16 @@ function cleanQueue()
 
 var data = false;
 
-function returnCacheImage(file, sha, callback = false, vars = false)
+function returnThumbnailsImages(images, callback, file = false)
 {
 	if(!data) data = storage.get('cache');
 
-	if(!callback)
-	{
-		callback = sha;
-		vars = callback;
-		sha = sha1(file);
-	}
-	
-	let size = Math.round(window.devicePixelRatio * 150);
-
-	let imgCache = data[sha];
-
-	let path = p.join(cacheFolder, sha+'.jpg?size='+size);
-
-	if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(cacheFolder, sha+'.jpg')))
-	{
-		addImageToQueue(file, size, sha, callback, vars);
-
-		return {cache: false, path: /*path*/'', sha: sha};
-	}
-	else
-	{
-		data[sha].lastAccess = time();
-
-		if(imgCache.size != size)
-		{
-			addImageToQueue(file, size, sha, callback, vars);
-
-			return {cache: true, path: escapeBackSlash(path), sha: sha};
-		}
-		else
-		{
-			return {cache: true, path: escapeBackSlash(path), sha: sha};
-		}
-	}
-}
-
-async function returnThumbnailsImages(images, callback, file = false)
-{
-	if(!data) data = storage.get('cache');
+	let single = images.length === undefined ? true : false;
+	images = single ? [images] : images;
 
 	let size = Math.round(window.devicePixelRatio * 150);
 
+	let thumbnail = {};
 	let thumbnails = {};
 	let toGenerateThumbnails = [];
 	let toGenerateThumbnailsData = {};
@@ -236,7 +200,7 @@ async function returnThumbnailsImages(images, callback, file = false)
 			toGenerateThumbnails.push(image);
 			toGenerateThumbnailsData[image.path] = {sha: sha, vars: image.vars};
 
-			thumbnails[sha] = {cache: false, path: '', sha: sha};
+			thumbnails[sha] = thumbnail = {cache: false, path: '', sha: sha};
 		}
 		else
 		{
@@ -247,11 +211,11 @@ async function returnThumbnailsImages(images, callback, file = false)
 				toGenerateThumbnails.push(image);
 				toGenerateThumbnailsData[image.path] = {sha: sha, vars: image.vars};
 
-				thumbnails[sha] = {cache: true, path: escapeBackSlash(path), sha: sha};
+				thumbnails[sha] = thumbnail = {cache: true, path: escapeBackSlash(path), sha: sha};
 			}
 			else
 			{
-				thumbnails[sha] = {cache: true, path: escapeBackSlash(path), sha: sha};
+				thumbnails[sha] = thumbnail = {cache: true, path: escapeBackSlash(path), sha: sha};
 			}
 		}
 	}
@@ -267,7 +231,7 @@ async function returnThumbnailsImages(images, callback, file = false)
 		});
 	}
 
-	return thumbnails;
+	return single ? thumbnail : thumbnails;
 }
 
 
@@ -286,7 +250,6 @@ function readFile(name)
 
 module.exports = {
 	folder: cacheFolder,
-	returnCacheImage: returnCacheImage,
 	returnThumbnailsImages: returnThumbnailsImages,
 	cleanQueue: cleanQueue,
 	writeFile: writeFile,

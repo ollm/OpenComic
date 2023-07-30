@@ -2137,15 +2137,15 @@ function loadBookmarks()
 	{
 		if(typeof readingCurrentBookmarks[key].path != 'undefined')
 		{
-			var bookmark = readingCurrentBookmarks[key];
+			let bookmark = readingCurrentBookmarks[key];
 
-			var bookmarkDirname = p.dirname(bookmark.path);
+			let bookmarkDirname = p.dirname(bookmark.path);
 
 			if(typeof bookmarksPath[bookmarkDirname] === 'undefined') bookmarksPath[bookmarkDirname] = [];
 
 			let sha = sha1(bookmark.path);
 
-			var thumbnail = cache.returnCacheImage(file.realPath(bookmark.path), sha, function(data){
+			let thumbnail = cache.returnThumbnailsImages({path: bookmark.path, sha: sha}, function(data) {
 
 				dom.addImageToDom(data.sha, data.path);
 
@@ -2184,15 +2184,15 @@ function loadBookmarks()
 		});
 	}
 
-	var readingProgress = storage.getKey('readingProgress', dom.indexMainPathA());
+	let readingProgress = storage.getKey('readingProgress', dom.indexMainPathA());
 
 	if(readingProgress)
 	{
-		var bookmarkDirname = p.dirname(readingProgress.path);
+		let bookmarkDirname = p.dirname(readingProgress.path);
 
 		let sha = sha1(readingProgress.path);
 
-		var thumbnail = cache.returnCacheImage(file.realPath(readingProgress.path), sha, function(data){
+		let thumbnail = cache.returnThumbnailsImages({path: readingProgress.path, sha: sha}, function(data){
 
 			dom.addImageToDom(data.sha, data.path);
 

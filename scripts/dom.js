@@ -200,12 +200,11 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 				if(inArray(mime.getType(_file.path), compatibleMime))
 				{
-					files[i].sha = sha1(_file.path);
 					images.push(files[i]);
 				}
 			}
 
-			let thumbnails = await cache.returnThumbnailsImages(images, function(data){
+			let thumbnails = cache.returnThumbnailsImages(images, function(data){
 
 				addImageToDom(data.sha, data.path);
 
@@ -267,11 +266,10 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
 		{
-			let sha = sha1(readingProgress[mainPath].path);
+			let path = readingProgress[mainPath].path;
+			let sha = sha1(path);
 
-			let realPath = fileManager.realPath(readingProgress[mainPath].path, -1);
-
-			let thumbnail = cache.returnCacheImage(realPath, sha, function(data){
+			let thumbnail = cache.returnThumbnailsImages({path: path, sha: sha}, function(data){
 
 				addImageToDom(data.sha, data.path);
 
@@ -748,13 +746,11 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 	for(let i = 0, len = _images.length; i < len; i++)
 	{
-		let sha = sha1(_images[i].path);
-		_images[i].sha = sha;
 		_images[i].vars = {i: i};
-		shaIndex[i] = sha;
+		shaIndex[i] = _images[i].sha;
 	}
 
-	_images = await cache.returnThumbnailsImages(_images,  function(data, vars) {
+	_images = cache.returnThumbnailsImages(_images,  function(data, vars) {
 
 		addImageToDom(data.sha, data.path);
 		addImageToDom(folderSha+'-'+vars.i, data.path);
@@ -1308,7 +1304,24 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	if(files)
 	{
-		for(let i = 0, len = files.length; i < len; i++)
+		let len = files.length;
+		let images = [];
+
+		for(let i = 0; i < len; i++)
+		{
+			let file = files[i];
+
+			if(!file.folder && !file.compressed)
+				images.push(file);
+		}
+
+		let thumbnails = cache.returnThumbnailsImages(images, function(data) {
+
+			addImageToDom(data.sha, data.path);
+
+		});
+
+		for(let i = 0; i < len; i++)
 		{
 			let file = files[i];
 
@@ -1331,16 +1344,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 			}
 			else
 			{
-				let sha = sha1(file.path);
-
-				let thumbnail = cache.returnCacheImage(file.path, sha, function(data){
-
-					addImageToDom(data.sha, data.path);
-
-				});
+				let thumbnail = thumbnails[file.sha] || {};
 
 				comics.push({
-					sha: sha,
+					sha: file.sha,
 					name: file.name.replace(/\.[^\.]*$/, ''),
 					image: fileManager.realPath(file.path),
 					path: file.path,

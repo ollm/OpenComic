@@ -15,6 +15,7 @@ var file = function(path) {
 		cache: true, // Compressed
 		sort: true,
 		filtered: true,
+		sha: true,
 		only: false,
 	};
 
@@ -71,6 +72,9 @@ var file = function(path) {
 
 		if(this.config.only && typeof this.config.only === 'number')
 			files = this.only(files);
+
+		if(this.config.sha)
+			files = this.sha(files);
 
 		if(this.path === path)
 		{
@@ -307,6 +311,7 @@ var file = function(path) {
 		return {images: images, fromReached: fromReached};
 	}
 
+	// Get the first images of a folder/compressed
 	this.images = async function(only = 1, from = false) {
 
 		if(!this.alreadyRead) await this.read();
@@ -318,7 +323,20 @@ var file = function(path) {
 			images[i] = {name: p.basename(images[i]), path: images[i], folder: false, compressed: false};
 		}
 
+		if(this.config.sha)
+			images = this.sha(images);
+
 		return (Math.abs(only) == 1) ? (images[0] || false) : images;
+	}
+
+	this.sha = function(files) {
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			files[i].sha = sha1(files[i].path);
+		}
+
+		return files;
 	}
 
 	this.only = function(files) {
@@ -380,6 +398,7 @@ var file = function(path) {
 
 	}
 
+	// Makes the files available, extracting them from the respective compressed files if necessary
 	this.makeAvailable = async function(files, callbackWhenFileAvailable = false) {
 
 		let filesToDecompress = false;
@@ -405,6 +424,8 @@ var file = function(path) {
 
 		if(filesToDecompress)
 		{
+			let _this = this;
+
 			for(let compressedFile in filesToDecompress)
 			{
 				let compressed = this.openCompressed(compressedFile);
@@ -413,6 +434,7 @@ var file = function(path) {
 
 				await compressed.extract({only: filesToDecompress[compressedFile]}, function(file) {
 
+					if(_this.config.sha) file.sha = sha1(file.path);
 					if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
 
 				});
