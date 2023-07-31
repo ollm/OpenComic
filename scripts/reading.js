@@ -1,3 +1,4 @@
+const readingRender = require(p.join(appDir, 'scripts/reading/render.js'));
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
 
@@ -219,6 +220,7 @@ function addHtmlImages()
 
 			if(!image.folder && !image.blank)
 			{
+				image.name = currentComics[image.index].name;
 				image.path = currentComics[image.index].path;
 				image.image = currentComics[image.index].image;
 			}
@@ -230,6 +232,9 @@ function addHtmlImages()
 				image.mainPath = currentComics[image.index].mainPath;
 				image.fristImage = currentComics[image.index].fristImage;
 			}
+
+			if(readingIsCanvas)
+				image.canvas = true;
 
 			distribution.push(image);
 		}
@@ -369,7 +374,7 @@ function disposeImages(data = false)
 				'margin-top': marginTop0+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
-			}).find('img').css({
+			}).attr('data-height', imageHeight0).attr('data-width', imageWidth0).find('img').css({
 				'height': imgHeight0+'px',
 				'width': imgWidth0+'px',
 				'margin-top': -(imgHeight0 * clipTop)+'px',
@@ -386,7 +391,7 @@ function disposeImages(data = false)
 				'margin-top': marginTop1+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
-			}).find('img').css({
+			}).attr('data-width', imageHeight1).attr('data-width', imageWidth1).find('img').css({
 				'height': imgHeight1+'px',
 				'width': imgWidth1+'px',
 				'margin-top': -(imgHeight1 * clipTop)+'px',
@@ -443,7 +448,7 @@ function disposeImages(data = false)
 				'margin-top': marginTop+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
-			}).find('img').css({
+			}).attr('data-height', imageHeight).attr('data-width', imageWidth).find('img').css({
 				'height': imgHeight+'px',
 				'width': imgWidth+'px',
 				'margin-top': -(imgHeight * clipTop)+'px',
@@ -545,6 +550,8 @@ function stayInLine()
 //Go to a specific comic image (Left menu)
 function goToImageCL(index, animation = true)
 {
+	readingRender.focusIndex(index);
+
 	var animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
 
 	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
@@ -1311,6 +1318,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			scale: scale,
 			scrollTop: scrollTop,
 		};
+
+		readingRender.setScale(scale, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
 	}
 }
 
@@ -1565,6 +1574,8 @@ function resizedWindow()
 		disposeImages();
 		calculateView();
 		stayInLine();
+
+		readingRender.resized(_config.readingDoublePage);
 	}
 
 	previousContentHeight = template.contentRight().children('div').children('div').height();
@@ -2580,10 +2591,10 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false;
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
-function read(path, index = 1, end = false)
+async function read(path, index = 1, end = false, isCanvas = false)
 {
 	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false;
 
@@ -3313,72 +3324,121 @@ function read(path, index = 1, end = false)
 	imagesNum = template.contentRight('.reading-body img').length;
 	contentNum = template.contentRight('.reading-body .r-img:not(.blank)').length;
 
-	template.contentRight('.reading-body img').each(function() {
+	readingIsCanvas = isCanvas;
 
-		var index = parseInt($(this).attr('index'));
+	if(isCanvas)
+	{
+		readingFile = fileManager.fileCompressed(path);
+		await readingRender.setFile(readingFile);
 
-		images[index] = new Image();
-		images[index].index = index;
-		images[index].onload = function() {
+		let _images = template.contentRight('.reading-body oc-img canvas').get();
 
-			imagesData[this.index] = {width: this.width, height: this.height, aspectRatio: (this.width / this.height)};
+		for(let i = 0, len = _images.length; i < len; i++)
+		{
+			let image = _images[i];
+			let index = +image.dataset.index;
+			let width = +image.dataset.width;
+			let height = +image.dataset.height;
+			let path = image.dataset.path;
 
-			imagesNumLoad++;
+			images[index] = {index: index, path: path};
+			imagesPath[path] = index;
 
-			if(imagesNumLoad == imagesNum)
-			{
-				template.contentRight('.reading-body').css('display', 'block');
-				addHtmlImages();
-				disposeImages();
-				calculateView();
-
-				currentIndex = imagesData[currentIndex].position + 1;
-
-				var newIndex = currentIndex;
-
-				if(_config.readingManga && !readingViewIs('scroll'))
-					newIndex = (indexNum - newIndex) + 1;
-
-				goToIndex(newIndex, false, end, end);
-
-				if(readingViewIs('scroll'))
-					previousContentHeight = template.contentRight().children('div').children('div').height();
-			}
-
-		}
-		images[index].onerror = function() {
-
-			imagesData[this.index] = {width: 0, height: 0, aspectRatio: 0};
-
-			imagesNumLoad++;
-
-			if(imagesNumLoad == imagesNum)
-			{
-				template.contentRight('.reading-body').css('display', 'block');
-				addHtmlImages();
-				disposeImages();
-				calculateView();
-
-				currentIndex = imagesData[currentIndex].position + 1;
-
-				var newIndex = currentIndex;
-
-				if(_config.readingManga && !readingViewIs('scroll'))
-					newIndex = (indexNum - newIndex) + 1;
-
-				goToIndex(newIndex, false, end, end);
-
-				if(readingViewIs('scroll'))
-					previousContentHeight = template.contentRight().children('div').children('div').height();
-			}
-
+			imagesData[index] = {width: width, height: height, aspectRatio: (width / height), name: image.dataset.name};
 		}
 
-		images[index].src = $(this).attr('src');
-		images[index].path = $(this).attr('path');
-		imagesPath[$(this).attr('path')] = index;
+		readingRender.setImagesData(imagesData);
 
-	});
+		template.contentRight('.reading-body').css('display', 'block');
+		addHtmlImages();
+		disposeImages();
+		calculateView();
+
+		currentIndex = imagesData[currentIndex].position + 1;
+
+		var newIndex = currentIndex;
+
+		if(_config.readingManga && !readingViewIs('scroll'))
+			newIndex = (indexNum - newIndex) + 1;
+
+		goToIndex(newIndex, false, end, end);
+
+		if(readingViewIs('scroll'))
+			previousContentHeight = template.contentRight().children('div').children('div').height();
+
+	}
+	else
+	{
+		readingFile = false;
+		readingRender.setFile(false);
+
+		template.contentRight('.reading-body img').each(function() {
+
+			var index = +this.dataset.index;
+
+			images[index] = new Image();
+			images[index].index = index;
+			images[index].onload = function() {
+
+				imagesData[this.index] = {width: this.width, height: this.height, aspectRatio: (this.width / this.height)};
+
+				imagesNumLoad++;
+
+				if(imagesNumLoad == imagesNum)
+				{
+					template.contentRight('.reading-body').css('display', 'block');
+					addHtmlImages();
+					disposeImages();
+					calculateView();
+
+					currentIndex = imagesData[currentIndex].position + 1;
+
+					var newIndex = currentIndex;
+
+					if(_config.readingManga && !readingViewIs('scroll'))
+						newIndex = (indexNum - newIndex) + 1;
+
+					goToIndex(newIndex, false, end, end);
+
+					if(readingViewIs('scroll'))
+						previousContentHeight = template.contentRight().children('div').children('div').height();
+				}
+
+			}
+			images[index].onerror = function() {
+
+				imagesData[this.index] = {width: 0, height: 0, aspectRatio: 0};
+
+				imagesNumLoad++;
+
+				if(imagesNumLoad == imagesNum)
+				{
+					template.contentRight('.reading-body').css('display', 'block');
+					addHtmlImages();
+					disposeImages();
+					calculateView();
+
+					currentIndex = imagesData[currentIndex].position + 1;
+
+					var newIndex = currentIndex;
+
+					if(_config.readingManga && !readingViewIs('scroll'))
+						newIndex = (indexNum - newIndex) + 1;
+
+					goToIndex(newIndex, false, end, end);
+
+					if(readingViewIs('scroll'))
+						previousContentHeight = template.contentRight().children('div').children('div').height();
+				}
+
+			}
+
+			images[index].src = $(this).attr('src');
+			images[index].path = this.dataset.path;
+			imagesPath[this.dataset.path] = index;
+
+		});
+	}
 	
 	tracking.track();
 }

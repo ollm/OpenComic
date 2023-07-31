@@ -13,7 +13,11 @@
 			<div></div>
 			{{else}}
 			<oc-img>
-				<img src="{{chain 'encodeSrcURI' 'invertBackslash' image}}" path="{{htmlQuote path}}" index="{{index}}">
+				{{#if canvas}}
+				<canvas data-width="{{size.width}}" data-height="{{size.height}}" data-path="{{htmlQuote path}}" data-index="{{index}}" data-name="{{htmlQuote name}}"></canvas>
+				{{else}}
+				<img src="{{chain 'encodeSrcURI' 'invertBackslash' image}}" data-path="{{htmlQuote path}}" data-index="{{index}}">
+				{{/if}}
 			</oc-img>
 			{{/if}}
 		</div>

@@ -157,7 +157,7 @@ function addImageToDom(querySelector, path, animation = true)
 {
 	if(animation)
 	{
-		var src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
+		let src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
 
 		if(src.length > 0)
 			src.attr('src', path).addClass('a');
@@ -165,12 +165,11 @@ function addImageToDom(querySelector, path, animation = true)
 			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'background-image': 'url('+path+')'}).addClass('a');
 
 		$('.ri-sha-'+querySelector).attr('src', path);
-
 		$('.continue-reading-sha-'+querySelector).css({'background-image': 'url('+path+')'}).addClass('a');
 	}
 	else
 	{
-		var src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
+		let src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
 
 		if(src.length > 0)
 			src.attr('src', path);
@@ -1275,6 +1274,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	let file = fileManager.file(path);
 	let files = await file.read();
 
+	let isCanvas = false;
 	let compressedFile = fileManager.lastCompressedFile(path);
 
 	if(compressedFile)
@@ -1282,9 +1282,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		let features = fileManager.fileCompressed(compressedFile);
 		features = features.getFeatures();
 
-		if(features.canvas && false) // Not work yet
+		if(features.canvas)
 		{
 			await file.makeAvailable([{path: compressedFile}]);
+			isCanvas = true;
 		}
 		else
 		{
@@ -1353,6 +1354,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 					path: file.path,
 					mainPath: mainPath,
 					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+					size: file.size || false,
+					canvas: isCanvas,
 					folder: false,
 				});		
 			}
@@ -1382,7 +1385,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	
 	events.events();
 
-	reading.read(path, indexStart, end);
+	reading.read(path, indexStart, end, isCanvas);
 	reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
 
 	generateAppMenu();

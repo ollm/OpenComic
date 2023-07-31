@@ -712,13 +712,13 @@ var fileCompressed = function(path, _realPath = false) {
 
 	}
 
-	this.renderCanvas = async function(file, canvas, config = {}, callback = false, callbackError = false) {
+	this.renderCanvas = async function(file, canvas, config = {}) {
 
 		this.updateConfig(config);
 		this.getFeatures();
 
 		if(this.features.pdf)
-			this.renderCanvasPdf(file, canvas, callback);
+			return this.renderCanvasPdf(file, canvas);
 
 	}
 
@@ -1465,7 +1465,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			let size = {width: viewport.width, height: viewport.height};
 
-			files.push({name: file, path: p.join(this.path, file), folder: false, compressed: false, size: size});
+			files.push({name: file, path: p.join(this.path, file), folder: false, compressed: false, size: size, page: i});
 			this.setFileStatus(file, {page: i, extracted: false, size: size});
 		}
 
@@ -1528,14 +1528,14 @@ var fileCompressed = function(path, _realPath = false) {
 
 	}
 
-	this.renderCanvasPdf = async function(file, canvas, callback = false, callbackError = false) {
+	this.renderCanvasPdf = async function(file, canvas) {
 
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
 
 		let status = this.getFileStatus(file);
 
-		console.log(file, status);
+		console.log('renderCanvasPdf', file/*, status*/);
 
 		if((status && status.widthRendered !== this.config.width) || this.config.force)
 		{
@@ -1549,13 +1549,12 @@ var fileCompressed = function(path, _realPath = false) {
 			canvas.height = viewport.height;
 			let context = canvas.getContext('2d');
 
-			var transform = this.config.scale && this.config.scale !== 1 ? [this.config.scale, 0, 0, this.config.scale, 0, 0] : null;
-
-			await page.render({canvasContext: context, viewport: viewport, transform: transform}).promise;
+			await page.render({canvasContext: context, viewport: viewport}).promise;
 
 			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width});
 		}
 
+		return;
 	}
 
 }
