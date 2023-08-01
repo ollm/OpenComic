@@ -130,7 +130,7 @@ async function render(index, _scale = false)
 		_scale = (_scale || scale);
 		rendered[index] = _scale;
 
-		_scale = _scale * window.devicePixelRatio;
+		_scale = _scale * window.devicePixelRatio * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
 
 		let ocImg = template.contentRight('.r-img-i'+index+' oc-img').get(0);
 		let originalCanvas = ocImg.querySelector('canvas');
@@ -157,13 +157,10 @@ async function render(index, _scale = false)
 	return;
 }
 
-
 async function renderMagnifyingGlass(index)
 {
 
 }
-
-
 
 module.exports = {
 	setFile: setFile,

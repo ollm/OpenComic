@@ -456,7 +456,8 @@ var fileCompressed = function(path, _realPath = false) {
 	this.cacheFile = 'compressed-files-'+this.sha+'.json';
 	this.tmp = p.join(tempFolder, this.sha);
 	this.tmpPartialExtraction = p.join(this.tmp, this.sha+'-opencomic-partial-extraction.txt');
-	// this.tmpExt = p.join(tempFolder, 'extracting-'+sha);
+	this.tmpIsVector = p.join(this.tmp, this.sha+'-opencomic-is-vector.txt');
+
 	this.contentRightZindex = template.contentRightZindex();
 
 	this.fullExtracted = false;
@@ -622,6 +623,9 @@ var fileCompressed = function(path, _realPath = false) {
 			if(fs.existsSync(this.tmpPartialExtraction))
 				fs.unlinkSync(this.tmpPartialExtraction);
 		}
+
+		if(this.features.vector && !fs.existsSync(this.tmpIsVector))
+			fs.writeFileSync(this.tmpIsVector, window.devicePixelRatio.toString());
 
 		if(!this.config.force)
 		{
@@ -1559,6 +1563,29 @@ var fileCompressed = function(path, _realPath = false) {
 
 }
 
+// Use this to remove generated vector images if window.devicePixelRatio is changed
+async function removeTmpVector()
+{
+	let file = fileManager.file(tempFolder);
+	let folders = await file.read();
+
+	let devicePixelRatio = window.devicePixelRatio;
+
+	for(let i = 0, len = folders.length; i < len; i++)
+	{
+		let folder = folders[i];
+		let vector = p.join(tempFolder, folder.name, folder.name+'-opencomic-is-vector.txt');
+
+		if(fs.existsSync(vector))
+		{
+			let _devicePixelRatio = +readFile(vector);
+
+			if(devicePixelRatio !== _devicePixelRatio)
+				fs.rmdir(p.join(tempFolder, folder.name), {recursive: true, force: true}, function(){});
+		}
+	}
+}
+
 function realPath(path, index = 0)
 {
 	let segments = path.split(p.sep);
@@ -1761,6 +1788,19 @@ function sort(files)
 	}
 }
 
+var prevDevicePixelRatio = window.devicePixelRatio;
+
+window.addEventListener('resize', function() {
+
+	if(prevDevicePixelRatio !== window.devicePixelRatio)
+	{
+		prevDevicePixelRatio = window.devicePixelRatio;
+
+		removeTmpVector();
+	}
+
+});
+
 module.exports = {
 	file: function(path) {
 		return new file(path);
@@ -1768,6 +1808,7 @@ module.exports = {
 	fileCompressed: function(path, realPath = false){ // This consider moving it to a separate file
 		return new fileCompressed(path, realPath);
 	},
+	removeTmpVector: removeTmpVector,
 	filtered: filtered,
 	sort: sort,
 	realPath: realPath,

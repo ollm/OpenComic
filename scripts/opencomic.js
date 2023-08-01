@@ -214,6 +214,8 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
 if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 
+fileManager.removeTmpVector();
+
 //console.timeEnd('Require time 2');
 
 window.onload = function() {
@@ -500,6 +502,7 @@ function generateAppMenu(force = false)
 				submenu: [
 					{label: language.menu.view.resetZoom, enabled: (electron.webFrame.getZoomFactor() != 1 ? true : false), click: function(){resetZoom(); generateAppMenu();}, accelerator: 'CmdOrCtrl+0'},
 					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+Plus'},
+					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+=', visible: false, acceleratorWorksWhenHidden: true},
 					{label: language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
 					{type: 'separator'},
 					{label: language.menu.view.toggleFullScreen, click: function(){var win = electronRemote.getCurrentWindow(); reading.hideContent(!win.isFullScreen()); win.setMenuBarVisibility(win.isFullScreen()); win.setFullScreen(!win.isFullScreen());}, accelerator: 'F11'},
