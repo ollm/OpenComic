@@ -253,13 +253,18 @@ function setAxesStepsEvent(key, buttons, callback)
 }
 
 // Use the gamepad to navigate between the items in the content
+var currentKey = false;
 var currentScreenItems = [];
 var currentHighlightItem = -1;
+var highlightItemHistory = {};
 var lastUpdateBrowsableItemsSkiped = false;
 var hasKeyboardNavigation = false;
+var fromGoBack = false;
 
-function updateBrowsableItems(force = false)
+function updateBrowsableItems(key = false, force = false)
 {
+	currentKey = key;
+
 	if(!hasGamepads && !hasKeyboardNavigation && !force)
 	{
 		lastUpdateBrowsableItemsSkiped = true;
@@ -295,8 +300,13 @@ function updateBrowsableItems(force = false)
 		});
 	}
 
+	if(fromGoBack && highlightItemHistory[key] !== undefined)
+		toHighlight = highlightItemHistory[key];
+
 	if(currentScreenItems.length > 0)
 		highlightItem(toHighlight ? toHighlight : 0);
+
+	fromGoBack = false;
 }
 
 function highlightItem(index)
@@ -320,6 +330,8 @@ function highlightItem(index)
 
 		currentHighlightItem = index;
 	}
+
+	highlightItemHistory[currentKey] = currentHighlightItem;
 }
 
 function highlightClosestItem(key)
@@ -399,7 +411,10 @@ function goBack()
 	let barBack = document.querySelector('.bar-back.active, .bar-back.show');
 
 	if(barBack)
+	{
+		fromGoBack = true;
 		eval(barBack.getAttribute('onclick'));
+	}
 }
 
 setButtonEvent('browsableItems', [0, 12, 13, 14, 15], function(key) {
@@ -448,7 +463,7 @@ window.addEventListener('keydown', function(event) {
 			hasKeyboardNavigation = true;
 
 			if(lastUpdateBrowsableItemsSkiped)
-				updateBrowsableItems(true);
+				updateBrowsableItems(currentKey, true);
 
 			if(key == 8)
 				goBack();
@@ -478,7 +493,7 @@ window.addEventListener('resize', function() {
 
 	gamepadResizeST = setTimeout(function(){
 
-		updateBrowsableItems();
+		updateBrowsableItems(currentKey);
 
 	}, 500);
 

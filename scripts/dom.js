@@ -449,7 +449,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	justifyViewModule();
 
-	gamepad.updateBrowsableItems();
+	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
 
 	$(window).off('resize').on('resize', function(){
 		justifyViewModule();
@@ -1042,7 +1042,6 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
-
 	// Show loadign page
 	handlebarsContext.comics = [];
 	template.loadContentLeft('reading.content.left.html', true);
@@ -1183,7 +1182,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	generateAppMenu();
 
-	gamepad.updateBrowsableItems();
+	gamepad.updateBrowsableItems('reading-'+sha1(path));
 }
 
 // Gamepad events
