@@ -10,7 +10,7 @@ var file = false,
 async function setFile(_file)
 {
 	file = _file;
-	await file.read(); // Try make this from cache
+	if(file) await file.read(); // Try make this from cache
 
 	rendered = {};
 	scale = 1;

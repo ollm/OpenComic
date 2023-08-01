@@ -183,7 +183,7 @@ function addImageToDom(querySelector, path, animation = true)
 
 async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 {
-	file.read().then(async function(files){
+	return file.read().then(async function(files){
 
 		queue.clean('folderThumbnails');
 
@@ -304,211 +304,6 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 }
 
 var currentPath = false, currentPathScrollTop = [];
-
-function _loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
-{
-	onReading = false;
-
-	reading.hideContent();
-
-	generateAppMenu();
-
-	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
-
-	for(let _path in currentPathScrollTop)
-	{
-		if(_path != 0 && !new RegExp('^'+pregQuote(_path)).test(path))
-			delete currentPathScrollTop[_path];
-	}
-
-	if(currentPathScrollTop[path === false ? 0 : path])
-		keepScroll = currentPathScrollTop[path === false ? 0 : path];
-
-	currentPath = path;
-
-	if(!path)
-	{
-		var sort = config.sortIndex;
-		var sortInvert = config.sortInvertIndex;
-		var foldersFirst = config.foldersFirstIndex;
-	}
-	else
-	{
-		var sort = config.sort;
-		var sortInvert = config.sortInvert;
-		var foldersFirst = config.foldersFirst;
-	}
-
-	var orderKey2 = false;
-
-	if(sort == 'name')
-	{
-		var order = 'simple';
-		var orderKey = 'name';
-	}
-	else if(sort == 'numeric')
-	{
-		var order = 'numeric';
-		var orderKey = 'name';
-	}
-	else if(sort == 'name-numeric')
-	{
-		var order = 'simple-numeric';
-		var orderKey = 'name';
-	}
-	else if(sort == 'last-add')
-	{
-		var order = 'real-numeric';
-		var orderKey = 'added';
-		sortInvert = !sortInvert;
-	}
-	else
-	{
-		var order = 'real-numeric';
-		var orderKey = 'readingProgress';
-		var orderKey2 = 'lastReading';
-		sortInvert = !sortInvert;
-	}
-
-	if(!path)
-	{
-		indexPathControl(false);
-
-		var comicsStorage = storage.get('comics');
-		var comics = [];
-
-		if(!isEmpty(comicsStorage))
-		{
-			for(let key in comicsStorage)
-			{
-				if(fs.existsSync(comicsStorage[key].path))
-				{
-					comics.push(comicsStorage[key]);
-				}
-				else
-				{
-					//console.log(comicsStorage[key]);
-				}
-			}
-
-			for(let key in comics)
-			{
-				var images = getFolderThumbnails(comics[key].path);
-
-				comics[key].images = images;
-				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
-			}
-
-			comics.sort(function (a, b) {
-				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
-			});
-		}
-
-		handlebarsContext.comics = comics;
-		handlebarsContext.comicsIndex = true;
-		handlebarsContext.comicsIndexVar = 'true';
-		handlebarsContext.comicsReadingProgress = false;
-
-		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
-
-		handlebarsContext.headerTitle = false;
-		handlebarsContext.headerTitlePath = false;
-		template.loadHeader('index.header.html', animation);
-
-		if(!content)
-		{
-			template.loadContentLeft('index.content.left.html', animation);
-			template.loadGlobalElement('index.elements.menus.html', 'menus');
-			floatingActionButton(true, 'dom.addComicButtons();');
-		}
-
-		events.events();
-
-	}
-	else
-	{
-		if(!fromGoBack)
-			indexPathControl(path, mainPath);
-
-		handlebarsContext.comicsIndex = false;
-		handlebarsContext.comicsIndexVar = 'false';
-
-		headerPath(path, mainPath);
-		template.loadHeader('index.header.html', animation);
-		template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
-
-		if(!content)
-		{
-			if(readingActive)
-			{
-				template.loadContentLeft('index.content.left.html', animation);
-			}
-
-			template.loadGlobalElement('index.elements.menus.html', 'menus');
-			floatingActionButton(false);
-		}
-
-		cache.cleanQueue();
-
-		if(!fs.existsSync(fileManager.realPath(path, -1)) && fileManager.containsCompressed(path))
-		{
-			fileCompressed.decompressRecursive(path, function(files){
-
-				if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
-					return dom.compressedError(files);
-
-				if(!fs.statSync(fileManager.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
-				{
-					fileCompressed.returnFiles(path, false, false, function(files){
-
-						if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
-							return dom.compressedError(files);
-
-						loadFilesIndexPage(animation, path, keepScroll, mainPath);
-
-					});
-				}
-				else
-				{
-					loadFilesIndexPage(animation, path, keepScroll, mainPath);
-				}
-
-			});
-		}
-		else
-		{
-			if(!fs.statSync(fileManager.realPath(path, -1)).isDirectory() && inArray(fileExtension(path), compressedExtensions.all))
-			{
-				fileCompressed.returnFiles(path, false, false, function(files){
-
-					if(checkError(files) && files.error == ERROR_UNZIPPING_THE_FILE)
-						return dom.compressedError(files);
-
-					loadFilesIndexPage(animation, path, keepScroll, mainPath);
-
-				});
-			}
-			else
-			{
-				loadFilesIndexPage(animation, path, keepScroll, mainPath);
-			}
-		}
-	}
-
-	if(readingActive)
-	{
-		readingActive = false;
-	}
-
-	justifyViewModule();
-
-	gamepad.updateBrowsableItems();
-
-	$(window).off('resize').on('resize', function(){
-		justifyViewModule();
-	});
-
-}
 
 async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
 {
@@ -646,13 +441,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		cache.cleanQueue();
 
 		let file = fileManager.file(path);
-		loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+		await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 	}
 
 	if(readingActive)
-	{
 		readingActive = false;
-	}
 
 	justifyViewModule();
 
@@ -1397,12 +1190,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 gamepad.setButtonEvent('reading', 1, function(key, button) {
 
 	if(key == 1)
-	{
-		let barBack = document.querySelector('.bar-back.active, .bar-back.show');
-	
-		if(barBack)
-			eval(barBack.getAttribute('onclick'));
-	}
+		gamepad.goBack();
 
 });
 

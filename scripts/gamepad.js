@@ -255,10 +255,20 @@ function setAxesStepsEvent(key, buttons, callback)
 // Use the gamepad to navigate between the items in the content
 var currentScreenItems = [];
 var currentHighlightItem = -1;
+var lastUpdateBrowsableItemsSkiped = false;
+var hasKeyboardNavigation = false;
 
 function updateBrowsableItems(force = false)
 {
-	if(!hasGamepads && !force) return;
+	if(!hasGamepads && !hasKeyboardNavigation && !force)
+	{
+		lastUpdateBrowsableItemsSkiped = true;
+
+		return;
+	}
+
+	hasKeyboardNavigation = false;
+	lastUpdateBrowsableItemsSkiped = false;
 
 	currentScreenItems = [];
 	currentHighlightItem = -1;
@@ -268,20 +278,25 @@ function updateBrowsableItems(force = false)
 	let scrollElement = template.contentRight().children().get(0);
 	let scrollTop = scrollElement.scrollTop;
 
+	let toHighlight = false;
+
 	for(let i = 0, len = items.length; i < len; i++)
 	{
 		let item = items[i];
 		let rect = item.getBoundingClientRect();
 
+		if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
+			toHighlight = i;
+
 		currentScreenItems.push({
 			element: item,
-			x: rect.left + (rect.width / 2),
-			y: rect.top + (rect.height / 2) + scrollTop,
+			x: rect.left/* + (rect.width / 2)*/,
+			y: rect.top/* + (rect.height / 2)*/ + scrollTop,
 		});
 	}
 
 	if(currentScreenItems.length > 0)
-		highlightItem(0);
+		highlightItem(toHighlight ? toHighlight : 0);
 }
 
 function highlightItem(index)
@@ -379,6 +394,14 @@ function goHighlightItem()
 		eval(current.element.getAttribute('onclick'));
 }
 
+function goBack()
+{
+	let barBack = document.querySelector('.bar-back.active, .bar-back.show');
+
+	if(barBack)
+		eval(barBack.getAttribute('onclick'));
+}
+
 setButtonEvent('browsableItems', [0, 12, 13, 14, 15], function(key) {
 
 	if(key == 0)
@@ -412,34 +435,59 @@ setButtonEvent('fullscreen', 11, function(key) {
 });
 
 // Support also navigation by keyboard
+window.addEventListener('keydown', function(event) {
 
-/*$(window).on('keydown', function(e) {
+	let key = event.keyCode;
 
-	if(onReading)
+	if(!onReading || key == 8)
 	{
-		if(e.keyCode == 37)
+		if(key == 8 || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
 		{
-			goPrevious();
+			event.preventDefault();
+
+			hasKeyboardNavigation = true;
+
+			if(lastUpdateBrowsableItemsSkiped)
+				updateBrowsableItems(true);
+
+			if(key == 8)
+				goBack();
+			else if(key == 13)
+				goHighlightItem();
+			else if(key == 37)
+				highlightClosestItem(0);
+			else if(key == 38)
+				highlightClosestItem(2);
+			else if(key == 39)
+				highlightClosestItem(1);
+			else if(key == 40)
+				highlightClosestItem(3);
 		}
-		else if(e.keyCode == 38 && !readingViewIs('scroll'))
+		else
 		{
-			goStart();
-		}
-		else if(e.keyCode == 39)
-		{
-			goNext();
-		}
-		else if(e.keyCode == 40 && !readingViewIs('scroll'))
-		{
-			goEnd();
+			console.log(key);
 		}
 	}
 	
-});*/
+});
+
+// Update Browsable Items position if window size its changed
+var gamepadResizeST = false;
+
+window.addEventListener('resize', function() {
+
+	gamepadResizeST = setTimeout(function(){
+
+		updateBrowsableItems();
+
+	}, 500);
+
+});
 
 module.exports = {
 	setButtonEvent: setButtonEvent,
 	setAxesEvent: setAxesEvent,
 	setAxesStepsEvent: setAxesStepsEvent,
 	updateBrowsableItems: updateBrowsableItems,
+	goBack: goBack,
 }

@@ -1033,6 +1033,28 @@ body .preload
 	overflow: hidden;
 }
 
+.continue-reading:after
+{
+	content: '';
+	display: block;
+	background-color: transparent;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	border: 3px solid #888;
+	border-radius: 0px;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.continue-reading.gamepad-highlight:after
+{
+	opacity: 1;
+}
+
 .continue-reading > div
 {
 	background-color: #da4336;
