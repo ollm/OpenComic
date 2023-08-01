@@ -441,6 +441,22 @@
 	}
 }
 
+@keyframes blink
+{
+	0%
+	{
+		border-color: rgba(180, 180, 180, 1);
+	}
+	50%
+	{
+		border-color: rgba(180, 180, 180, 0.2);
+	}
+	100%
+	{
+		border-color: rgba(180, 180, 180, 1);
+	}
+}
+
 /* CSS */
 
 
@@ -835,8 +851,8 @@ body .preload
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
-	border: 3px solid #888;
-	border-radius: 4px;
+	border: 4px solid rgba(180, 180, 180, 1);
+	border-radius: 0px;
 	opacity: 0;
 	transition: opacity 0.2s;
 }
@@ -844,6 +860,7 @@ body .preload
 .simple-list.gamepad-highlight:after
 {
 	opacity: 1;
+	animation: 4s blink normal 1s infinite ease-in-out;
 }
 
 .simple-list .simple-list-image
@@ -891,13 +908,18 @@ body .preload
 	border-radius: 4px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: #fff;
-	overflow: hidden;
 	cursor: pointer;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
 	transition: background-color 0.2s;
 	position: relative;
+	transition: transform 0.2s;
+}
+
+.content-view-module .gamepad-highlight .v-folder
+{
+	transform: scale(1.04);
 }
 
 .content-view-module .v-folder:after
@@ -906,13 +928,13 @@ body .preload
 	display: block;
 	background-color: transparent;
 	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
+	top: -2px;
+	left: -2px;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
 	box-sizing: border-box;
-	border: 3px solid #888;
-	border-radius: 0px;
+	border: 4px solid rgba(180, 180, 180, 1);
+	border-radius: 6px;
 	opacity: 0;
 	transition: opacity 0.2s;
 }
@@ -920,6 +942,7 @@ body .preload
 .content-view-module .gamepad-highlight .v-folder:after
 {
 	opacity: 1;
+	animation: 4s blink normal 1s infinite ease-in-out;
 }
 
 .content-view-module .v-img
@@ -927,17 +950,18 @@ body .preload
 	width: 150px;
 	height: 225px;
 	cursor: pointer;
-	line-height: 225px;
 	text-align: center;
 	position: relative;
+	display: flex;
+	align-items: center;
+    justify-content: center;
 }
 
-.content-view-module .v-img > img
+.content-view-module .v-img img
 {
 	max-width: 150px;
 	max-height: 225px;
-	display: inline-block;
-	vertical-align: middle;
+	display: block;
 	border-radius: 4px;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	background-color: #fff;
@@ -947,29 +971,41 @@ body .preload
 	background-position: 50%;
 }
 
-.content-view-module .v-img:after
+.content-view-module .v-img picture
+{
+	position: relative;
+	transition: 0.2s;
+}
+
+.content-view-module .gamepad-highlight .v-img picture
+{
+	transform: scale(1.04);
+}
+
+.content-view-module .v-img picture:after
 {
 	content: '';
 	display: block;
 	background-color: transparent;
 	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
+	top: -2px;
+	left: -2px;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
 	box-sizing: border-box;
-	border: 3px solid #888;
-	border-radius: 4px;
+	border: 4px solid rgba(180, 180, 180, 1);
+	border-radius: 6px;
 	opacity: 0;
 	transition: opacity 0.2s;
 }
 
-.content-view-module .gamepad-highlight .v-img:after
+.content-view-module .gamepad-highlight .v-img picture:after
 {
 	opacity: 1;
+	animation: 4s blink normal 1s infinite ease-in-out;
 }
 
-.content-view-module .v-img > img.a
+.content-view-module .v-img img.a
 {
 	animation-name: show-in;
 	animation-duration: 0.2s;
@@ -1044,7 +1080,7 @@ body .preload
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
-	border: 3px solid #888;
+	border: 4px solid rgba(180, 180, 180, 1);
 	border-radius: 0px;
 	opacity: 0;
 	transition: opacity 0.2s;
@@ -1053,6 +1089,7 @@ body .preload
 .continue-reading.gamepad-highlight:after
 {
 	opacity: 1;
+	animation: 4s blink normal 1s infinite ease-in-out;
 }
 
 .continue-reading > div

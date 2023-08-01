@@ -256,6 +256,8 @@ function setAxesStepsEvent(key, buttons, callback)
 var currentKey = false;
 var currentScreenItems = [];
 var currentHighlightItem = -1;
+var currentScrollElement = false;
+var currentScrollElementRect = false;
 var highlightItemHistory = {};
 var lastUpdateBrowsableItemsSkiped = false;
 var hasKeyboardNavigation = false;
@@ -280,8 +282,9 @@ function updateBrowsableItems(key = false, force = false)
 
 	// Content right
 	let items = template.contentRight('.gamepad-item').get();
-	let scrollElement = template.contentRight().children().get(0);
+	let scrollElement = currentScrollElement = template.contentRight().children().get(0);
 	let scrollTop = scrollElement.scrollTop;
+	currentScrollElementRect = scrollElement.getBoundingClientRect();
 
 	let toHighlight = false;
 
@@ -295,8 +298,10 @@ function updateBrowsableItems(key = false, force = false)
 
 		currentScreenItems.push({
 			element: item,
-			x: rect.left/* + (rect.width / 2)*/,
-			y: rect.top/* + (rect.height / 2)*/ + scrollTop,
+			x: rect.left,
+			y: rect.top + scrollTop,
+			centerX: rect.left + (rect.width / 2),
+			centerY: rect.top + (rect.height / 2) + scrollTop,
 		});
 	}
 
@@ -322,6 +327,8 @@ function highlightItem(index)
 		item.element.classList.add('gamepad-highlight');
 
 		currentHighlightItem = index;
+
+		scrollToItem(item);
 	}
 	else if(index == -1)
 	{
@@ -332,6 +339,22 @@ function highlightItem(index)
 	}
 
 	highlightItemHistory[currentKey] = currentHighlightItem;
+}
+
+var prevScrollTop = false;
+
+function scrollToItem(item)
+{
+	let top = item.centerY - currentScrollElementRect.top;
+	let scrollTop = Math.round(top - (currentScrollElementRect.height / 2));
+
+	if(scrollTop < 0)
+		scrollTop = 0;
+
+	if(scrollTop !== prevScrollTop)
+		$(currentScrollElement).stop(true).animate({scrollTop: scrollTop+'px'}, 300, $.bez([0.22, 0.6, 0.3, 1]));
+
+	prevScrollTop = scrollTop;
 }
 
 function highlightClosestItem(key)
