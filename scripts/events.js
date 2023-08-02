@@ -158,14 +158,12 @@ function eventRange()
 
 		if(typeof step != 'undefined')
 		{
-
 			var num_v = value_txt.replace(/.*?(\.|$)/, '').length;
 
 			var num_s = step.replace(/.*?(\.|$)/, '').length;
 
 			if(num_s != 0)
 				value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
-
 		}
 
 		var callback = hb.compile(onrange)({
@@ -173,7 +171,10 @@ function eventRange()
 			toEnd: (event.type == 'input' ? 'false' : 'true'),
 		});
 
-		callbackString(callback);
+		if(value != this.dataset.prevValue)
+			callbackString(callback);
+
+		this.dataset.prevValue = value;
 
 		$(this).siblings('.simple-slider-text').find('span').html(value_txt);
 	});

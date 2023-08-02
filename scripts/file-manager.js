@@ -1556,9 +1556,11 @@ var fileCompressed = function(path, _realPath = false) {
 			await page.render({canvasContext: context, viewport: viewport}).promise;
 
 			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width});
+
+			return true;
 		}
 
-		return;
+		return false;
 	}
 
 }

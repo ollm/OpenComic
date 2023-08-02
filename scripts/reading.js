@@ -278,7 +278,7 @@ function calcAspectRatio(first, second)
 	return first;
 }
 
-function disposeImages(data = false)
+function _disposeImages(data = false)
 {
 	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
 	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
@@ -367,16 +367,23 @@ function disposeImages(data = false)
 			let imgHeight0 = (clipVertical > 0 ? (imageHeight0 / (1 - clipVertical)) : imageHeight0);
 			let imgWidth0 = (clipHorizontal > 0 ? (imageWidth0 / (1 - clipHorizontal)) : imageWidth0);
 
-			template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
+			let img = template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight0+'px',
 				'width': imageWidth0+'px',
 				'margin-left': marginLeft0+'px',
 				'margin-top': marginTop0+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
-			}).attr('data-height', imageHeight0).attr('data-width', imageWidth0).find('img').css({
+			}).attr('data-height', imageHeight0).attr('data-width', imgWidth0);
+
+			img.find('img').css({
 				'height': imgHeight0+'px',
 				'width': imgWidth0+'px',
+				'margin-top': -(imgHeight0 * clipTop)+'px',
+				'margin-left': -(imgWidth0 * clipLeft)+'px',
+			});
+
+			img.find('canvas').css({
 				'margin-top': -(imgHeight0 * clipTop)+'px',
 				'margin-left': -(imgWidth0 * clipLeft)+'px',
 			});
@@ -384,19 +391,27 @@ function disposeImages(data = false)
 			let imgHeight1 = (clipVertical > 0 ? (imageHeight1 / (1 - clipVertical)) : imageHeight1);
 			let imgWidth1 = (clipHorizontal > 0 ? (imageWidth1 / (1 - clipHorizontal)) : imageWidth1);
 
-			template.contentRight('.image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
+			img = template.contentRight('.image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
 				'height': imageHeight1+'px',
 				'width': imageWidth1+'px',
 				'margin-left': marginLeft1+'px',
 				'margin-top': marginTop1+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
-			}).attr('data-width', imageHeight1).attr('data-width', imageWidth1).find('img').css({
+			}).attr('data-width', imageHeight1).attr('data-width', imgWidth1);
+
+			img.find('img').css({
 				'height': imgHeight1+'px',
 				'width': imgWidth1+'px',
 				'margin-top': -(imgHeight1 * clipTop)+'px',
 				'margin-left': -(imgWidth1 * clipLeft)+'px',
 			});
+
+			img.find('canvas').css({
+				'margin-top': -(imgHeight1 * clipTop)+'px',
+				'margin-left': -(imgWidth1 * clipLeft)+'px',
+			});
+
 		}
 		else
 		{
@@ -441,16 +456,23 @@ function disposeImages(data = false)
 			let imgHeight = (clipVertical > 0 ? (imageHeight / (1 - clipVertical)) : imageHeight);
 			let imgWidth = (clipHorizontal > 0 ? (imageWidth / (1 - clipHorizontal)) : imageWidth);
 
-			template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
+			let img = template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
 				'height': imageHeight+'px',
 				'width': imageWidth+'px',
 				'margin-left': marginLeft+'px',
 				'margin-top': marginTop+'px',
 				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
 				'margin-right': '0px',
-			}).attr('data-height', imageHeight).attr('data-width', imageWidth).find('img').css({
+			}).attr('data-height', imageHeight).attr('data-width', imgWidth)
+
+			img.find('img').css({
 				'height': imgHeight+'px',
 				'width': imgWidth+'px',
+				'margin-top': -(imgHeight * clipTop)+'px',
+				'margin-left': -(imgWidth * clipLeft)+'px',
+			});
+
+			img.find('canvas').css({
 				'margin-top': -(imgHeight * clipTop)+'px',
 				'margin-left': -(imgWidth * clipLeft)+'px',
 			});
@@ -1377,6 +1399,8 @@ function resetZoom(animation = true, index = false, apply = true)
 			haveZoom = false;
 			zoomMoveData.active = false;
 			currentZoomIndex = false;
+
+			readingRender.setScale(1, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
 		}
 	}
 }
@@ -1450,11 +1474,13 @@ function activeMagnifyingGlass(active)
 	if(active)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
+		readingRender.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom);
 	}
 	else
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', false);
 		magnifyingGlassControl(0);
+		readingRender.setMagnifyingGlassStatus(false);
 	}
 }
 
@@ -1478,6 +1504,8 @@ function changeMagnifyingGlass(mode, value, save)
 		magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}}, {zoom: value});
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassZoom', value);
+
+		readingRender.setScaleMagnifyingGlass(value);
 	}
 	else if(mode == 2) //Set the size
 	{
@@ -1780,9 +1808,8 @@ function changePagesView(mode, value, save)
 		loadReadingPages();
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 1) // Set the scroll mode
 	{
@@ -1802,9 +1829,8 @@ function changePagesView(mode, value, save)
 			template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 2) // Sets the margin of the pages
 	{
@@ -1817,9 +1843,8 @@ function changePagesView(mode, value, save)
 		updateReadingPagesConfig('readingViewAdjustToWidth', value);
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
@@ -1839,27 +1864,24 @@ function changePagesView(mode, value, save)
 		updateReadingPagesConfig('readingDoublePage', value);
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
 		updateReadingPagesConfig('readingDoNotApplyToHorizontals', value);
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
 		updateReadingPagesConfig('readingManga', value);
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
 	{
@@ -1881,9 +1903,8 @@ function changePagesView(mode, value, save)
 		}
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
@@ -1904,23 +1925,21 @@ function changePagesView(mode, value, save)
 		updateReadingPagesConfig('readingBlankPage', value);
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 13) // Set width adjustment
 	{
 		updateReadingPagesConfig('readingHorizontalsMarginActive', value);
 
 		template.loadContentRight('reading.content.right.html', true);
-		addHtmlImages();
 
 		if(value)
 			template.globalElement('.reading-horizontals-margin').removeClass('disable-pointer');
 		else
 			template.globalElement('.reading-horizontals-margin').addClass('disable-pointer');
 
-		read(readingCurrentPath, imageIndex);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
 	}
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
@@ -3321,7 +3340,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	});
 
-	imagesNum = template.contentRight('.reading-body img').length;
+	imagesNum = template.contentRight('.reading-body oc-img').length;
 	contentNum = template.contentRight('.reading-body .r-img:not(.blank)').length;
 
 	readingIsCanvas = isCanvas;
@@ -3329,7 +3348,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	if(isCanvas)
 	{
 		readingFile = fileManager.fileCompressed(path);
-		await readingRender.setFile(readingFile);
+		await readingRender.setFile(readingFile, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
 
 		let _images = template.contentRight('.reading-body oc-img canvas').get();
 

@@ -1,19 +1,24 @@
 var file = false,
 	imagesData = {},
 	rendered = {},
+	renderedMagnifyingGlass = {},
 	maxNext = 10,
 	maxPrev = 5,
 	currentIndex = 0,
 	scale = 1,
-	globalZoom = false;
+	scaleMagnifyingGlass = false,
+	globalZoom = false,
+	doublePage = false;
 
-async function setFile(_file)
+async function setFile(_file, _scaleMagnifyingGlass = false)
 {
 	file = _file;
 	if(file) await file.read(); // Try make this from cache
 
 	rendered = {};
+	renderedMagnifyingGlass = {};
 	scale = 1;
+	scaleMagnifyingGlass = _scaleMagnifyingGlass;
 	globalZoom = false;
 
 	return;
@@ -24,50 +29,93 @@ function setImagesData(_imagesData)
 	imagesData = _imagesData;
 }
 
-var setScaleST = false;
+function setMagnifyingGlassStatus(active = false)
+{
+	if(active)
+	{
+		scaleMagnifyingGlass = active;
+	}
+	else
+	{
+		scaleMagnifyingGlass = false;
+	}
+}
 
-function setScale(_scale = 1, _globalZoom = false, doublePage = false)
+var sendToQueueST = false;
+
+function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 {
 	if(!file) return;
 
-	clearTimeout(setScaleST);
+	clearTimeout(sendToQueueST);
 
+	queue.clean('readingRender');
+
+	scale = _scale;
 	globalZoom = _globalZoom;
+	doublePage = _doublePage;
 
-	if(_globalZoom)
+	if(globalZoom)
 	{
-		scale = _scale;
 		rendered = {};
+		renderedMagnifyingGlass = {};
 
-		setRenderQueue(doublePage ? 2 : 1, 0);
+		setRenderQueue(0, doublePage ? 2 : 1);
 
-		setScaleST = setTimeout(function(){
+		sendToQueueST = setTimeout(function(){
 
-			setRenderQueue(maxNext, maxPrev);
+			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
+			setRenderQueue(maxPrev, maxNext);
 
 		}, 2000);
 	}
 	else
 	{
-		setRenderQueue(doublePage ? 2 : 1, 0, _scale);
+		setRenderQueue(0, doublePage ? 2 : 1, _scale);
+
+		sendToQueueST = setTimeout(function(){
+
+			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
+
+		}, 500);
 	}
 }
 
-var resizedST = false;
+function setScaleMagnifyingGlass(_scale = 1)
+{
+	if(!file || !scaleMagnifyingGlass) return;
+
+	clearTimeout(sendToQueueST);
+
+	queue.clean('readingRender');
+
+	renderedMagnifyingGlass = {};
+	scaleMagnifyingGlass = _scale;
+
+	sendToQueueST = setTimeout(function(){
+
+		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, scale * scaleMagnifyingGlass, true);
+
+	}, 500);
+}
 
 function resized(doublePage = false)
 {
 	if(!file) return;
 
-	clearTimeout(resizedST);
+	clearTimeout(sendToQueueST);
+
+	queue.clean('readingRender');
 
 	rendered = {};
+	renderedMagnifyingGlass = {};
 
-	setRenderQueue(doublePage ? 2 : 1, 0);
+	setRenderQueue(0, doublePage ? 2 : 1);
 
-	resizedST = setTimeout(function(){
+	sendToQueueST = setTimeout(function(){
 
-		setRenderQueue(maxNext, maxPrev);
+		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+		setRenderQueue(maxPrev, maxNext);
 
 	}, 2000);
 }
@@ -76,17 +124,26 @@ async function focusIndex(index)
 {
 	if(!file) return;
 
+	clearTimeout(sendToQueueST);
+
+	queue.clean('readingRender');
+
 	currentIndex = index;
 
-	setRenderQueue(maxNext, maxPrev);
+	setRenderQueue(maxPrev, maxNext);
+
+	sendToQueueST = setTimeout(function(){
+
+		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+
+	}, 100);
 }
 
-async function setRenderQueue(next = 1, prev = 1, scale = false)
+async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false)
 {
-	queue.clean('readingRender');
-	// queue.threads('readingRender', 2);
-
 	console.time('readingRender');
+
+	let _rendered = magnifyingGlass ? renderedMagnifyingGlass : rendered;
 
 	for(let i = 0, len = Math.max(next, prev); i < len; i++)
 	{
@@ -94,21 +151,21 @@ async function setRenderQueue(next = 1, prev = 1, scale = false)
 		let prevI = currentIndex - i;
 
 		// Next pages
-		if(i < next && (!rendered[nextI] || (scale !== false && rendered[nextI] !== scale)) && imagesData[nextI])
+		if(i < next && (!_rendered[nextI] || (scale !== false && _rendered[nextI] !== scale)) && imagesData[nextI])
 		{
 			queue.add('readingRender', async function() {
 
-				return render(nextI, scale);
+				return render(nextI, scale, magnifyingGlass);
 
 			});
 		}
 
 		// Prev pages
-		if(i < prev && nextI != prevI && (!rendered[prevI] || (scale !== false && rendered[prevI] !== scale)) && imagesData[prevI])
+		if(i < prev && nextI != prevI && (!_rendered[prevI] || (scale !== false && _rendered[prevI] !== scale)) && imagesData[prevI])
 		{
 			queue.add('readingRender', async function() {
 
-				return render(prevI, scale);
+				return render(prevI, scale, magnifyingGlass);
 
 			});
 		}
@@ -121,24 +178,39 @@ async function setRenderQueue(next = 1, prev = 1, scale = false)
 	});
 }
 
-async function render(index, _scale = false)
+async function render(index, _scale = false, magnifyingGlass = false)
 {
 	let imageData = imagesData[index] || false;
 
 	if(imageData)
 	{
 		_scale = (_scale || scale);
-		rendered[index] = _scale;
+
+		if(magnifyingGlass)
+			_scale = scale * scaleMagnifyingGlass;
+
+		if(magnifyingGlass)
+			renderedMagnifyingGlass[index] = _scale;
+		else
+			rendered[index] = _scale;
 
 		_scale = _scale * window.devicePixelRatio * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
 
-		let ocImg = template.contentRight('.r-img-i'+index+' oc-img').get(0);
+		let ocImg = template.contentRight(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img').get(0);
 		let originalCanvas = ocImg.querySelector('canvas');
 		let canvas = originalCanvas.cloneNode(true);
 
-		let config = {
-			width: Math.round(+ocImg.dataset.width * _scale),
+		let originalWidth = +ocImg.dataset.width
+
+		let _config = {
+			width: Math.round(originalWidth * _scale),
 		};
+
+		if(_config.width > config.renderMaxWidth)
+		{
+			_config.width = config.renderMaxWidth;
+			_scale = (_config.width / originalWidth);
+		}
 
 		let name = imageData.name;
 		name = (name && !/\.jpg$/.test(name)) ? name+'.jpg' : name;
@@ -146,28 +218,28 @@ async function render(index, _scale = false)
 		canvas.style.transform = 'scale('+(1 / _scale)+')';
 		canvas.style.transformOrigin = 'top left';
 
+		let isRendered = false;
+
 		if(canvas && name)
-			await file.renderCanvas(name, canvas, config);
+			isRendered = await file.renderCanvas(name, canvas, _config);
 
-		ocImg.innerHTML = '';
-		ocImg.appendChild(canvas);
-
+		if(isRendered)
+		{
+			ocImg.innerHTML = '';
+			ocImg.appendChild(canvas);
+		}
 	}
 
 	return;
 }
 
-async function renderMagnifyingGlass(index)
-{
-
-}
-
 module.exports = {
 	setFile: setFile,
 	setImagesData: setImagesData,
+	setMagnifyingGlassStatus: setMagnifyingGlassStatus,
 	setScale: setScale,
+	setScaleMagnifyingGlass: setScaleMagnifyingGlass,
 	//render: render,
-	//renderMagnifyingGlass: renderMagnifyingGlass,
 	focusIndex: focusIndex,
 	resized: resized,
 }

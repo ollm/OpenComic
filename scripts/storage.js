@@ -1,4 +1,4 @@
-var changes = 41; // Update this if readingPagesConfig is updated
+var changes = 42; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -65,6 +65,7 @@ var storageDefault = {
 		readingGlobalZoom: true,
 		controllerDeadZone: 0.06,
 		startInFullScreen: false,
+		renderMaxWidth: 12000,
 		trackingSites: {
 			wildcard: {
 				favorite: false,
