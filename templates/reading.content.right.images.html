@@ -1,7 +1,7 @@
 {{#each folderImages}}
 <div class="r-flex image-position{{key1}}">
 	{{#each distribution}}
-		<div class="r-img r-img-i{{index}} image-position{{key1}}-{{key2}}{{#if folder}} folder{{/if}}{{#if blank}} blank{{/if}}">
+		<div class="r-img r-img-i{{index}} image-position{{key1}}-{{key2}}{{#if folder}} folder{{/if}}{{#if blank}} blank{{/if}}" data-key1="{{key1}}" data-key2="{{key2}}">
 			{{#if folder}}
 			<div class="r-folder" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' fristImage}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')">
 				<div>

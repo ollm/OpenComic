@@ -110,14 +110,18 @@ function resized(doublePage = false)
 	rendered = {};
 	renderedMagnifyingGlass = {};
 
-	setRenderQueue(0, doublePage ? 2 : 1);
-
 	sendToQueueST = setTimeout(function(){
 
-		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
-		setRenderQueue(maxPrev, maxNext);
+		setRenderQueue(0, doublePage ? 2 : 1);
 
-	}, 2000);
+		sendToQueueST = setTimeout(function(){
+
+			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+			setRenderQueue(maxPrev, maxNext);
+
+		}, 800);
+
+	}, 200);
 }
 
 async function focusIndex(index)
@@ -198,6 +202,9 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 		let ocImg = template.contentRight(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img').get(0);
 		let originalCanvas = ocImg.querySelector('canvas');
+
+		if(!originalCanvas) return;
+
 		let canvas = originalCanvas.cloneNode(true);
 
 		let originalWidth = +ocImg.dataset.width
@@ -226,6 +233,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 		if(isRendered)
 		{
 			ocImg.innerHTML = '';
+			canvas.style.width = '';
+			canvas.style.height = '';
 			ocImg.appendChild(canvas);
 		}
 	}

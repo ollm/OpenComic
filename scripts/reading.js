@@ -278,7 +278,7 @@ function calcAspectRatio(first, second)
 	return first;
 }
 
-function _disposeImages(data = false)
+function disposeImages(data = false)
 {
 	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
 	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
@@ -325,10 +325,33 @@ function _disposeImages(data = false)
 	let clipRight = imageClip.right / 100;
 	let clipHorizontal = clipLeft + clipRight;
 
+	let allImages = template.contentRight('.r-img').get();
+
+	let imageElements = {};
+
+	for(let i = 0, len = allImages.length; i < len; i++)
+	{
+		let image = allImages[i];
+
+		let key1 = +image.dataset.key1;
+		let key2 = +image.dataset.key2;
+
+		if(!imageElements[key1]) imageElements[key1] = {};
+		if(!imageElements[key1][key2]) imageElements[key1][key2] = [];
+
+		imageElements[key1][key2].push(image.firstElementChild);
+	}
+
 	for(let key1 in _imagesDistribution)
 	{
-		var first = _imagesDistribution[key1][0];
-		var second = _imagesDistribution[key1][1];
+		if(!imageElements[key1])
+			continue;
+
+		let image0 = imageElements[key1][0] || false;
+		let image1 = imageElements[key1][1] || false;
+
+		let first = _imagesDistribution[key1][0];
+		let second = _imagesDistribution[key1][1];
 
 		first = calcAspectRatio(first, second);
 		second = calcAspectRatio(second, first);
@@ -367,51 +390,72 @@ function _disposeImages(data = false)
 			let imgHeight0 = (clipVertical > 0 ? (imageHeight0 / (1 - clipVertical)) : imageHeight0);
 			let imgWidth0 = (clipHorizontal > 0 ? (imageWidth0 / (1 - clipHorizontal)) : imageWidth0);
 
-			let img = template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
-				'height': imageHeight0+'px',
-				'width': imageWidth0+'px',
-				'margin-left': marginLeft0+'px',
-				'margin-top': marginTop0+'px',
-				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
-				'margin-right': '0px',
-			}).attr('data-height', imageHeight0).attr('data-width', imgWidth0);
+			if(image0)
+			{
+				for(let i = 0, len = image0.length; i < len; i++)
+				{
+					let image = image0[i];
 
-			img.find('img').css({
-				'height': imgHeight0+'px',
-				'width': imgWidth0+'px',
-				'margin-top': -(imgHeight0 * clipTop)+'px',
-				'margin-left': -(imgWidth0 * clipLeft)+'px',
-			});
+					image.style.height = imageHeight0+'px';
+					image.style.width = imageWidth0+'px';
+					image.style.marginLeft = marginLeft0+'px';
+					image.style.marginTop = marginTop0+'px';
+					image.style.marginBottom = ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
+					image.style.marginRight = '0px';
 
-			img.find('canvas').css({
-				'margin-top': -(imgHeight0 * clipTop)+'px',
-				'margin-left': -(imgWidth0 * clipLeft)+'px',
-			});
+					image.dataset.height = imgHeight0;
+					image.dataset.width = imgWidth0;
+
+					let img = image.firstElementChild;
+
+					if(img)
+					{
+						img.style.marginTop = -(imgHeight0 * clipTop)+'px';
+						img.style.marginLeft = -(imgWidth0 * clipLeft)+'px';
+
+						//if(img.tagName == 'IMG')
+						//{
+							img.style.height = imgHeight0+'px';
+							img.style.width = imgWidth0+'px';
+						//}
+					}
+				}
+			}
 
 			let imgHeight1 = (clipVertical > 0 ? (imageHeight1 / (1 - clipVertical)) : imageHeight1);
 			let imgWidth1 = (clipHorizontal > 0 ? (imageWidth1 / (1 - clipHorizontal)) : imageWidth1);
 
-			img = template.contentRight('.image-position'+key1+'-1 oc-img, .image-position'+key1+'-1 > div').css({
-				'height': imageHeight1+'px',
-				'width': imageWidth1+'px',
-				'margin-left': marginLeft1+'px',
-				'margin-top': marginTop1+'px',
-				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
-				'margin-right': '0px',
-			}).attr('data-width', imageHeight1).attr('data-width', imgWidth1);
+			if(image1)
+			{
+				for(let i = 0, len = image1.length; i < len; i++)
+				{
+					let image = image1[i];
 
-			img.find('img').css({
-				'height': imgHeight1+'px',
-				'width': imgWidth1+'px',
-				'margin-top': -(imgHeight1 * clipTop)+'px',
-				'margin-left': -(imgWidth1 * clipLeft)+'px',
-			});
+					image.style.height = imageHeight1+'px';
+					image.style.width = imageWidth1+'px';
+					image.style.marginLeft = marginLeft1+'px';
+					image.style.marginTop = marginTop1+'px';
+					image.style.marginBottom = ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
+					image.style.marginRight = '0px';
 
-			img.find('canvas').css({
-				'margin-top': -(imgHeight1 * clipTop)+'px',
-				'margin-left': -(imgWidth1 * clipLeft)+'px',
-			});
+					image.dataset.height = imgHeight1;
+					image.dataset.width = imgWidth1;
 
+					let img = image.firstElementChild;
+
+					if(img)
+					{
+						img.style.marginTop = -(imgHeight1 * clipTop)+'px';
+						img.style.marginLeft = -(imgWidth1 * clipLeft)+'px';
+
+						//if(img.tagName == 'IMG')
+						//{
+							img.style.height = imgHeight1+'px';
+							img.style.width = imgWidth1+'px';
+						//}
+					}
+				}
+			}
 		}
 		else
 		{
@@ -456,39 +500,55 @@ function _disposeImages(data = false)
 			let imgHeight = (clipVertical > 0 ? (imageHeight / (1 - clipVertical)) : imageHeight);
 			let imgWidth = (clipHorizontal > 0 ? (imageWidth / (1 - clipHorizontal)) : imageWidth);
 
-			let img = template.contentRight('.image-position'+key1+'-0 oc-img, .image-position'+key1+'-0 > div').css({
-				'height': imageHeight+'px',
-				'width': imageWidth+'px',
-				'margin-left': marginLeft+'px',
-				'margin-top': marginTop+'px',
-				'margin-bottom': ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px',
-				'margin-right': '0px',
-			}).attr('data-height', imageHeight).attr('data-width', imgWidth)
+			if(image0)
+			{
+				for(let i = 0, len = image0.length; i < len; i++)
+				{
+					let image = image0[i];
 
-			img.find('img').css({
-				'height': imgHeight+'px',
-				'width': imgWidth+'px',
-				'margin-top': -(imgHeight * clipTop)+'px',
-				'margin-left': -(imgWidth * clipLeft)+'px',
-			});
+					image.style.height = imageHeight+'px';
+					image.style.width = imageWidth+'px';
+					image.style.marginLeft = marginLeft+'px';
+					image.style.marginTop = marginTop+'px';
+					image.style.marginBottom = ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
+					image.style.marginRight = '0px';
 
-			img.find('canvas').css({
-				'margin-top': -(imgHeight * clipTop)+'px',
-				'margin-left': -(imgWidth * clipLeft)+'px',
-			});
+					image.dataset.height = imgHeight;
+					image.dataset.width = imgWidth;
+
+					let img = image.firstElementChild;
+
+					if(img)
+					{
+						img.style.marginTop = -(imgHeight * clipTop)+'px';
+						img.style.marginLeft = -(imgWidth * clipLeft)+'px';
+
+						//if(img.tagName == 'IMG')
+						//{
+							img.style.height = imgHeight+'px';
+							img.style.width = imgWidth+'px';
+						//}
+					}
+				}
+			}
 		}
+	}
 
-		template.contentRight('.image-position'+key1).css({
-			'width': contentWidth+'px',
-			'height': !readingViewIs('scroll') ? contentHeight+'px' : '',
-		});
+	let rFlex = template.contentRight('.r-flex').get();
+
+	for(let i = 0, len = rFlex.length; i < len; i++)
+	{
+		rFlex[i].style.width = contentWidth+'px';
+		rFlex[i].style.height = !readingViewIs('scroll') ? contentHeight+'px' : '';
 	}
 }
 
 function calculateView()
 {
-	var content = template.contentRight().children('div');
-	var contentWidth = template.contentRight().width();
+	let contentRight = template.contentRight().get(0);
+
+	let content = template.contentRight().children('div');
+	let contentWidth = template.contentRight().width();
 
 	if(readingViewIs('slide'))
 	{
@@ -513,16 +573,16 @@ function calculateView()
 		imagesPosition = [];
 		imagesFullPosition = [];
 
-		var scrollTop = content.scrollTop() - content.offset().top;
+		let scrollTop = content.scrollTop() - content.offset().top;
 
-		for(var key1 in imagesDistribution)
+		for(let key1 in imagesDistribution)
 		{
 			if(typeof imagesPosition[key1] === 'undefined') imagesPosition[key1] = [];
 			if(typeof imagesFullPosition[key1] === 'undefined') imagesFullPosition[key1] = [];
 
 			for(let key2 in imagesDistribution[key1])
 			{
-				let image = template.contentRight('.image-position'+key1+'-'+key2).get(0);
+				let image = contentRight.querySelector('.image-position'+key1+'-'+key2);
 				let top = 0, height = 0;
 
 				if(image)
