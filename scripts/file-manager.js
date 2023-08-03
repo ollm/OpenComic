@@ -940,6 +940,8 @@ var fileCompressed = function(path, _realPath = false) {
 
 		if(unzip === false) unzip = require('unzipper');
 
+		console.log(this.realPath);
+
 		this.zip = await unzip.Open.file(this.realPath);
 
 		return this.zip;
@@ -992,7 +994,7 @@ var fileCompressed = function(path, _realPath = false) {
 			for(let i = 0, len = zip.files.length; i < len; i++)
 			{
 				let entry = zip.files[i];
-				let name = entry.path;
+				let name = p.normalize(entry.path);
 
 				files.push({name: name, path: p.join(this.path, name), folder: (entry.type === 'Directory' ? true : false)});
 				this.setFileStatus(name, {extracted: false});
@@ -1029,7 +1031,7 @@ var fileCompressed = function(path, _realPath = false) {
 			for(let i = 0, len = zip.files.length; i < len; i++)
 			{
 				let entry = zip.files[i];
-				let name = entry.path;
+				let name = p.normalize(entry.path);
 
 				let extract = !only || only[name] ? true : false;
 
@@ -1115,7 +1117,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			_7z.on('data', function(data) {
 
-				let name = _this.removeTmp(data.file);
+				let name = _this.removeTmp(p.normalize(data.file));
 
 				files.push({name: name, path: p.join(_this.path, name)});
 				_this.setFileStatus(name, {extracted: false});
@@ -1154,7 +1156,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 				if(extract)
 				{
-					let name = _this.removeTmp(data.file);
+					let name = _this.removeTmp(p.normalize(data.file));
 
 					_this.setFileStatus(name, {extracted: extract});
 					_this.whenExtractFile(p.join(_this.path, name));
@@ -1226,7 +1228,7 @@ var fileCompressed = function(path, _realPath = false) {
 					for(let i = 0, len = entries.length; i < len; i++)
 					{
 						let entry = entries[i];
-						let name = _this.removeTmp(entry.name);
+						let name = _this.removeTmp(p.normalize(entry.name));
 
 						files.push({name: name, path: p.join(_this.path, name), folder: (entry.type === 'Directory' ? true : false)});
 						_this.setFileStatus(name, {extracted: false});
@@ -1270,7 +1272,7 @@ var fileCompressed = function(path, _realPath = false) {
 					for(let i = 0, len = entries.length; i < len; i++)
 					{
 						let entry = entries[i];
-						let name = entry.name;
+						let name = p.normalize(entry.name);
 						let extract = !only || only[name] ? true : false;
 
 						if(extract)
@@ -1356,7 +1358,7 @@ var fileCompressed = function(path, _realPath = false) {
 			tar.pipe(untar.extract(_this.tmp, {
 				ignore (name) {
 
-					name = _this.removeTmp(name);
+					name = _this.removeTmp(p.normalize(name));
 
 					files.push({name: name, path: p.join(_this.path, name)});
 					_this.setFileStatus(name, {extracted: false});
@@ -1395,7 +1397,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			tar.pipe(untar.extract(_this.tmp, {
 				ignore (name) {
-					name = _this.removeTmp(name);
+					name = _this.removeTmp(p.normalize(name));
 
 					let extract = !only || only[name] ? true : false;
 					_this.setFileStatus(name, {extracted: extract});
