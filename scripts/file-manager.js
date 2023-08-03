@@ -1,5 +1,3 @@
-errorDialog = 0;
-
 var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false;
 
 var file = function(path) {
