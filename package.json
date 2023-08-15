@@ -55,7 +55,7 @@
 	},
 	"dependencies": {
 		"7zip-bin": "^5.2.0",
-		"@electron/remote": "^2.0.8",
+		"@electron/remote": "^2.0.10",
 		"animejs": "^3.2.1",
 		"electron-json-storage": "^4.5.0",
 		"electron-window-state": "^5.0.3",
@@ -78,7 +78,7 @@
 		"unzipper": "^0.10.14"
 	},
 	"devDependencies": {
-		"electron": "^19.0.4",
+		"electron": "^25.5.0",
 		"electron-builder": "^23.0.3",
 		"electron-rebuild": "^3.2.7",
 		"js-yaml": "^3.13.1",

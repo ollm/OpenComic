@@ -1067,6 +1067,7 @@ body .preload
 	height: 49px;
 	position: relative;
 	overflow: hidden;
+	cursor: pointer;
 }
 
 .continue-reading:after
@@ -1102,7 +1103,6 @@ body .preload
 	padding: 10px 10px 0px 10px;
 	left: -10px;
 	top: -10px;
-	cursor: pointer;
 }
 
 .continue-reading > div > div
