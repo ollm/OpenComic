@@ -61,7 +61,7 @@
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
 		"fs-extra": "^9.0.1",
-		"gm": "^1.23.1",
+		"gm": "^1.25.0",
 		"handlebars": "^4.7.6",
 		"jimp": "^0.16.1",
 		"jquery": "^3.5.1",
@@ -72,7 +72,7 @@
 		"pdfjs-dist": "^3.8.162",
 		"request": "^2.88.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.30.6",
+		"sharp": "^0.32.4",
 		"tar-fs": "^2.0.0",
 		"unrar": "^0.2.0",
 		"unzipper": "^0.10.14"
