@@ -940,8 +940,6 @@ var fileCompressed = function(path, _realPath = false) {
 
 		if(unzip === false) unzip = require('unzipper');
 
-		console.log(this.realPath);
-
 		this.zip = await unzip.Open.file(this.realPath);
 
 		return this.zip;
@@ -1152,7 +1150,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			_7z.on('data', function(data) {
 
-				let extracted = data.status == 'extracted' ? true : false;
+				let extract = data.status == 'extracted' ? true : false;
 
 				if(extract)
 				{
@@ -1538,8 +1536,6 @@ var fileCompressed = function(path, _realPath = false) {
 		let pages = pdf.numPages;
 
 		let status = this.getFileStatus(file);
-
-		console.log('renderCanvasPdf', file/*, status*/);
 
 		if((status && status.widthRendered !== this.config.width) || this.config.force)
 		{
