@@ -171,10 +171,7 @@ function eventRange()
 			toEnd: (event.type == 'input' ? 'false' : 'true'),
 		});
 
-		if(value != this.dataset.prevValue)
-			callbackString(callback);
-
-		this.dataset.prevValue = value;
+		callbackString(callback);
 
 		$(this).siblings('.simple-slider-text').find('span').html(value_txt);
 	});
