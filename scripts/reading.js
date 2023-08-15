@@ -543,28 +543,39 @@ function disposeImages(data = false)
 	}
 }
 
+var rightSize = {}; // Right content size
+
 function calculateView()
 {
 	let contentRight = template.contentRight().get(0);
 
-	let content = template.contentRight().children('div');
-	let contentWidth = template.contentRight().width();
+	let content = contentRight.firstElementChild;
+	let rect = content.getBoundingClientRect();
+
+	rightSize = {
+		height: rect.height,
+		width: rect.width,
+		top: rect.top,
+		left: rect.left,
+		// readingRect: content.querySelector('.reading-body').getBoundingClientRect(),
+		scrollHeight: content.scrollHeight,
+	};
 
 	if(readingViewIs('slide'))
 	{
-		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-			'width': (contentWidth * indexNum)+'px',
-			'height': content.height(),
+		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div').css({
+			width: (rect.width * indexNum)+'px',
+			height: rect.height,
 		});
 	}
 	else if(readingViewIs('scroll'))
 	{
-		template.contentRight('.reading-body > div').css({
-			'width': '100%',
+		dom.this(contentRight).find('.reading-body > div').css({
+			width: '100%',
 		});
 
-		template.contentRight('.reading-lens > div > div').css({
-			'width': ($('.content-right').width())+'px',
+		dom.this(contentRight).find('.reading-lens > div > div').css({
+			width: rect.width+'px',
 		});
 	}
 
@@ -573,7 +584,7 @@ function calculateView()
 		imagesPosition = [];
 		imagesFullPosition = [];
 
-		let scrollTop = content.scrollTop() - content.offset().top;
+		let scrollTop = content.scrollTop - rect.top;
 
 		for(let key1 in imagesDistribution)
 		{
@@ -859,13 +870,13 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		clearTimeout(disableOnScrollST);
 
-		disableOnScroll(1);
+		disableOnScroll(true);
 
 		disableOnScrollST = setTimeout(function(){
 
-			reading.disableOnScroll(2);
+			reading.disableOnScroll(false);
 
-		}, animationDurationMS);
+		}, animationDurationMS + 200); // Add 200 of margin to avoid errors
 
 		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
@@ -1250,7 +1261,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		if(config.readingGlobalZoom && readingViewIs('scroll'))
 		{
 			zoomingIn = true;
-			disableOnScroll(1);
+			disableOnScroll(true);
 
 			if(originalRect === false)
 			{
@@ -1324,7 +1335,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				scalePrevData.tranY = translateY;
 
 				calculateView();
-				disableOnScroll(2);
+				disableOnScroll(false);
 				zoomingIn = false;
 
 				if(scale == 1)
@@ -1780,12 +1791,9 @@ function readingViewIs(value)
 
 var activeOnScroll = true;
 
-function disableOnScroll(mode)
+function disableOnScroll(disable = true)
 {
-	if(mode == 1)
-		activeOnScroll = false;
-	else
-		activeOnScroll = true;
+	activeOnScroll = !disable;
 }
 
 function setReadingDragScroll(dragScroll)
@@ -3290,7 +3298,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	$(window).on('mousewheel touchstart keydown', function(e) {
 
 		if(!zoomingIn && (e.type != 'keydown' || (e.type == 'keydown' && (e.keyCode == 38 || e.keyCode == 40))))
-			disableOnScroll(2);
+			disableOnScroll(false);
 
 	});
 
@@ -3298,73 +3306,61 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 		if(activeOnScroll && readingViewIs('scroll'))
 		{
-			previousScrollTop = $(this).scrollTop();
-			let contentHeight = template.contentRight().children('div').height();
-			let contentPosition = (previousScrollTop + (contentHeight / 2)),
-				contentPositionTop = previousScrollTop,
-				contentPositionBottom = previousScrollTop + contentHeight;
+			let scrollTop = this.scrollTop;
 
-			let selIndex = false, selPosition = false;
+			let center = 0;
 
-			let lastKey = imagesFullPosition.length - 1;
+			let availableScroll = rightSize.scrollHeight - rightSize.height;
+			let centerOffset = (availableScroll < rightSize.height ? availableScroll : rightSize.height) / 2;
+
+			if(scrollTop < centerOffset)
+				center = scrollTop + (centerOffset * (scrollTop / centerOffset));
+			else if(scrollTop + centerOffset > availableScroll)
+				center = scrollTop + centerOffset + (centerOffset * (1 - (availableScroll - scrollTop) / centerOffset));
+			else
+				center = scrollTop + centerOffset;
+
+			let selIndex = false;
+			let closest = false;
 
 			toBreak:
 			for(let key1 in imagesFullPosition)
 			{
 				for(let key2 in imagesFullPosition[key1])
 				{
-					if(key1 == 0 && imagesFullPosition[key1][key2].center - contentPositionTop > 0)
-					{
-						selIndex = key1;
+					let position = imagesFullPosition[key1][key2];
 
-						break toBreak;
-					}
-					else if(key1 == lastKey && imagesFullPosition[key1][key2].center - contentPositionBottom < 0)
+					if(position.top < center && position.bottom > center)
 					{
-						selIndex = key1;
-
+						selIndex = +key1;
 						break toBreak;
 					}
 					else
 					{
-						var position = 0;
+						let diff = Math.abs(position.center - center);
 
-						if(Math.abs(contentPosition - imagesFullPosition[key1][key2].top) < Math.abs(contentPosition - imagesFullPosition[key1][key2].bottom))
-							position = imagesFullPosition[key1][key2].top// + 16;
-						else
-							position = imagesFullPosition[key1][key2].bottom// - 16;
-
-						position = Math.abs(contentPosition - position);
-
-						if(!selIndex || position < selPosition)
+						if(closest === false || diff < closest.diff)
 						{
-							selIndex = key1;
-							selPosition = position;
-						}
-						else if(selIndex && position > selPosition)
-						{
-							break toBreak;
+							selIndex = +key1;
+							closest = {center: position.center, diff: diff};
 						}
 					}
 				}
 			}
 
-			var imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (_config.readingMargin.top * 2);
+			let imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (_config.readingMargin.top * 2);
 
-			var pageVisibility = Math.floor(imgHeight / contentHeight);
+			let pageVisibility = Math.floor(imgHeight / rightSize.height);
 
 			maxPageVisibility = pageVisibility;
 
-			if(pageVisibility > 0)
-				var contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
-			else
-				var contentHeightRes = 0;
+			let contentHeightRes = pageVisibility > 0 ? ((rightSize.height * pageVisibility) - imgHeight) / pageVisibility : 0;
 
-			scrollPart = ((contentHeight - contentHeightRes) - contentHeight / pageVisibility);
+			scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
 
 			currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - _config.readingMargin.top)) / scrollPart);
 
-			if(currentIndex != (parseInt(selIndex) + 1))
+			if(currentIndex != selIndex + 1)
 			{
 				if(currentScale != 1 && !(config.readingGlobalZoom && readingViewIs('scroll')))
 					reading.resetZoom();
@@ -3394,8 +3390,10 @@ async function read(path, index = 1, end = false, isCanvas = false)
 					goToImageCL(imageIndex, true);
 				}
 
-				currentIndex = parseInt(selIndex) + 1;
+				currentIndex = selIndex + 1;
 			}
+
+			previousScrollTop = scrollTop;
 		}
 
 	});
@@ -3586,4 +3584,5 @@ module.exports = {
 	setShownBarHeader: function(value){shownBarHeader = value},
 	loadReadingMoreOptions: loadReadingMoreOptions,
 	currentScale: function(){return currentScale},
+	rightSize: function(){return rightSize},
 };

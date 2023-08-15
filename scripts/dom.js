@@ -1491,7 +1491,7 @@ module.exports = {
 	addSepToEnd: addSepToEnd,
 	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
 	indexMainPathA: function(){return indexMainPathA},
-	dom: function(_this, string = false, querySelectorAll = false) {
+	this: function(_this, string = false, querySelectorAll = false) {
 		return new _dom(_this, string, querySelectorAll);
 	},
 	query: function(_this) {
