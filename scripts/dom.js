@@ -542,7 +542,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 				addImageToDom(data.sha, data.path);
 
-			});
+			}, file);
 
 			readingProgress[mainPath].sha = sha;
 			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
@@ -1382,7 +1382,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 			addImageToDom(data.sha, data.path);
 
-		});
+		}, file);
 
 		for(let i = 0; i < len; i++)
 		{
@@ -1494,10 +1494,10 @@ module.exports = {
 	dom: function(_this, string = false, querySelectorAll = false) {
 		return new _dom(_this, string, querySelectorAll);
 	},
-	domQuery: function(_this) {
+	query: function(_this) {
 		return new _dom(_this, true, false);
 	},
-	domQueryAll: function(_this) {
+	queryAll: function(_this) {
 		return new _dom(_this, true, true);
 	},
 };
