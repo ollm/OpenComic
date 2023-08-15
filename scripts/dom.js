@@ -1312,16 +1312,16 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
+	// Start reading comic
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
+	currentPath = path;
+
 	// Show loadign page
 	handlebarsContext.comics = [];
 	template.loadContentLeft('reading.content.left.html', true);
 	template.loadContentRight('reading.content.right.html', true);
 	template.loadHeader('reading.header.html', true);
 	headerPath(path, mainPath);
-
-	// Start reading comic
-	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
-	currentPath = path;
 
 	let startImage = false;
 	let imagePath = path;
@@ -1491,6 +1491,7 @@ module.exports = {
 	addSepToEnd: addSepToEnd,
 	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
 	indexMainPathA: function(){return indexMainPathA},
+	currentPathScrollTop: function(){return currentPathScrollTop},
 	this: function(_this, string = false, querySelectorAll = false) {
 		return new _dom(_this, string, querySelectorAll);
 	},
