@@ -1,0 +1,1 @@
+module.exports = {list: ["blue","green","red","yellow"]}

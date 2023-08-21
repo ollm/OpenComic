@@ -1,5 +1,5 @@
 {{#if comicsReadingProgress}}
-<div class="continue-reading gamepad-item" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
+<div class="continue-reading gamepad-item body-medium" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
 	<div>
 		<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
 		<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
@@ -8,9 +8,9 @@
 {{/if}}
 <div class="content-view-list">
 	{{#each comics}}
-	<div class="simple-list{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
-		<div class="{{#if folder}}icon-24 material-icon{{else}}simple-list-image{{/if}} item-image"{{#unless folder}} style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}});"{{/unless}}>{{#if folder}}folder{{/if}}</div>
-		<div class="simple-list-text">{{name}}</div>
+	<div class="medium-list body-medium{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
+		<div class="{{#if folder}}icon-24 material-icon{{else}}medium-list-image{{/if}} item-image"{{#unless folder}} style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}});"{{/unless}}>{{#if folder}}folder{{/if}}</div>
+		<div class="medium-list-text">{{name}}</div>
 	</div>
 	{{else}}
 	<div class="content-empty">{{#if comicsIndex}}{{language.comics.emptyIndex}}{{else}}{{language.comics.emptyFolder}}{{/if}}</div>

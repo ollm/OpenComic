@@ -3,14 +3,13 @@
 	<b>Roboto</b>
 	<span style="font-weight: 500;">Roboto</span>
 	<i class="material-icon">add</i>
-	<i class="material-icon-extras">page_variant</i>
 </div>
-<div class="app{{#if config.nightMode}} night-mode{{/if}}">
+<div class="app {{config.themeColor}}{{#if config.nightMode}} night-mode{{/if}}">
 	<div class="bar-header">
 
 	</div>
 	<div class="global-elements">
-		<div class="hover">
+		<div class="hover body-small">
 			<div></div>
 		</div>
 		<div class="menus">
@@ -22,13 +21,13 @@
 		<div class="snackbars">
 
 		</div>
-		<div class="material-icon floating-action-button floating-action-button-min hover-text" style="bottom: 128px;" onclick="dom.addComicButtons(false); addComic(false);" hover-text="{{language.menu.file.addFile}}">
+		<div class="material-icon floating-action-button floating-action-button-min hover-text elevation-3" style="bottom: 152px;" onclick="dom.addComicButtons(false); addComic(false);" hover-text="{{language.menu.file.addFile}}">
 			<div class="material-icon ">note_add</div>
 		</div>
-		<div class="floating-action-button floating-action-button-min hover-text" style="bottom: 76px;" onclick="dom.addComicButtons(false); addComic(true);" hover-text="{{language.menu.file.addFolder}}">
+		<div class="floating-action-button floating-action-button-min hover-text elevation-3" style="bottom: 96px;" onclick="dom.addComicButtons(false); addComic(true);" hover-text="{{language.menu.file.addFolder}}">
 			<div class="material-icon ">create_new_folder</div>
 		</div>
-		<div class="floating-action-button floating-action-button-add hover-text" hover-text="{{language.global.add}}">
+		<div class="floating-action-button floating-action-button-add hover-text elevation-3" hover-text="{{language.global.add}}">
 			<div class="material-icon">add</div>
 		</div>
 	</div>

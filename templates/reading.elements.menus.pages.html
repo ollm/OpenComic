@@ -1,104 +1,199 @@
-{{#if editReadingShortcutPagesConfig}}
+<div class="menu-simple-content">
+	{{#if editReadingShortcutPagesConfig}}
 
-	<div class="menu-simple-element menu-simple-element-little">
-		<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(); reading.changePagesView(0);">arrow_back</i>
-		<span class="menu-simple-element-icon2">{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
-		<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
-		{{#compare _config.key '!==' 0}}<i class="material-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
+		<div class="menu-simple-element menu-simple-element-little">
+			<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(); reading.changePagesView(0);">arrow_back</i>
+			<span class="menu-simple-element-icon2">{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
+			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
+			{{#compare _config.key '!==' 0}}<i class="material-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
+		</div>
+
+	{{else}}
+		<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-0" onclick="reading.setReadingShortcutPagesConfig(0);">
+			<i class="material-icon menu-simple-icon-first">language</i>
+			<span class="menu-simple-element-icon2">{{readingGlobalConfigName}}</span>
+			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, 0);">edit</i>
+			<i class="material-icon menu-simple-element-icon-select{{#compare _config.key '===' 0}} active{{/compare}}">check</i>
+		</div>
+
+		{{#each readingShortcutPagesConfig}}
+		<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-{{key}}" onclick="reading.setReadingShortcutPagesConfig({{key}});">
+			<i class="material-icon menu-simple-icon-first">palette</i>
+			<span class="menu-simple-element-icon2">{{readingConfigName}}</span>
+			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, {{key}});">edit</i>
+			<i class="material-icon menu-simple-element-icon-select{{#compare @root._config.key '===' key}} active{{/compare}}">check</i>
+		</div>
+		{{/each}}
+		<div class="menu-simple-element menu-simple-element-little" onclick="reading.newReadingShortcutPagesConfig();">
+			<i class="material-icon menu-simple-icon-first">add</i>
+			<span class="menu-simple-element-icon2">{{language.reading.pages.readingConfigNew}}</span>
+		</div>
+	{{/if}}
+	<div class="menu-simple-separator"></div>
+	<div class="menu-simple-element pages-slide{{#compare _config.readingView '==' 'slide'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
+	<div class="menu-simple-element pages-scroll{{#compare _config.readingView '==' 'scroll'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
+	<div class="menu-simple-separator-min"></div>
+	<div class="menu-simple-text reading-reading-manga{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
+		{{language.reading.pages.readingManga}}
+		<div class="switch{{#if _config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="menu-simple-text reading-reading-webtoon">
+		{{language.reading.pages.readingWebtoon}}
+		<div class="switch{{#if _config.readingWebtoon}} a{{/if}}" on="reading.changePagesView(9, true, false)" off="reading.changePagesView(9, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="menu-simple-separator-min"></div>
+	<div class="menu-simple-text reading-double-page{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
+		{{language.reading.pages.doublePage}}
+		<div class="switch{{#if _config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="menu-simple-text reading-do-not-apply-to-horizontals{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
+		{{language.reading.pages.doNotApplyToHorizontals}}
+		<div class="switch{{#if _config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="menu-simple-text reading-blank-page{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
+		{{language.reading.pages.blankPage}}
+		<div class="switch{{#if _config.readingBlankPage}} a{{/if}}" on="reading.changePagesView(12, true, false)" off="reading.changePagesView(12, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="menu-simple-separator-min"></div>
+	<div class="menu-simple-text reading-ajust-to-width{{#compare _config.readingView '==' 'slide'}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/compare}}">
+		{{language.reading.pages.adjustToWidth}}
+		<div class="switch{{#if _config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="simple-slider" style="margin-top: 8px;">
+		<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{_config.readingMargin.left}}</span>px</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
+		</div>
+	</div>
+	<div class="simple-slider">
+		<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{_config.readingMargin.top}}</span>px</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.top}}" onrange="reading.changePagesView(11, \{{value}}, \{{toEnd}})">
+		</div>
 	</div>
 
-{{else}}
-	<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-0" onclick="reading.setReadingShortcutPagesConfig(0);">
-		<i class="material-icon menu-simple-icon-first">language</i>
-		<span class="menu-simple-element-icon2">{{readingGlobalConfigName}}</span>
-		<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, 0);">edit</i>
-		<i class="material-icon menu-simple-element-icon-select{{#compare _config.key '===' 0}} active{{/compare}}">check</i>
+	<div class="menu-simple-text">
+		{{language.reading.pages.differentMarginInHorizontals}}
+		<div class="switch{{#if _config.readingHorizontalsMarginActive}} a{{/if}}" on="reading.changePagesView(13, true, false)" off="reading.changePagesView(13, false, false)">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+	<div class="simple-slider reading-horizontals-margin{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}" style="margin-top: 8px;">
+		<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{_config.readingHorizontalsMargin.left}}</span>px</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.left}}" onrange="reading.changePagesView(14, \{{value}}, \{{toEnd}})">
+		</div>
 	</div>
 
-	{{#each readingShortcutPagesConfig}}
-	<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-{{key}}" onclick="reading.setReadingShortcutPagesConfig({{key}});">
-		<i class="material-icon menu-simple-icon-first">palette</i>
-		<span class="menu-simple-element-icon2">{{readingConfigName}}</span>
-		<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, {{key}});">edit</i>
-		<i class="material-icon menu-simple-element-icon-select{{#compare @root._config.key '===' key}} active{{/compare}}">check</i>
+	<!--<div class="simple-slider reading-horizontals-margin{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}">
+		<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{_config.readingHorizontalsMargin.top}}</span>px</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.top}}" onrange="reading.changePagesView(15, \{{value}}, \{{toEnd}})">
+		</div>
+	</div>-->
+
+	<div class="menu-simple-separator-min"></div>
+
+	<div class="simple-slider reading-horizontals-margin" style="margin-top: 8px;">
+		<div class="simple-slider-text">{{language.reading.pages.clipHorizontal}}<div><span>{{normalizeNumber _config.readingImageClip.left "0.05"}}</span>%</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.left}}" onrange="reading.changePagesView(16, \{{value}}, \{{toEnd}})">
+		</div>
 	</div>
-	{{/each}}
-	<div class="menu-simple-element menu-simple-element-little" onclick="reading.newReadingShortcutPagesConfig();">
-		<i class="material-icon menu-simple-icon-first">add</i>
-		<span class="menu-simple-element-icon2">{{language.reading.pages.readingConfigNew}}</span>
+
+	<div class="simple-slider reading-horizontals-margin" style="margin-top: 8px;">
+		<div class="simple-slider-text">{{language.reading.pages.clipVertical}}<div><span>{{normalizeNumber _config.readingImageClip.top "0.05"}}</span>%</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.top}}" onrange="reading.changePagesView(17, \{{value}}, \{{toEnd}})">
+		</div>
 	</div>
-{{/if}}
-<div class="menu-simple-separator"></div>
-<div class="menu-simple-element pages-slide{{#compare _config.readingView '==' 'slide'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
-<div class="menu-simple-element pages-scroll{{#compare _config.readingView '==' 'scroll'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
-<div class="menu-simple-separator-min"></div>
-<div class="menu-simple-text reading-reading-manga{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
-	{{language.reading.pages.readingManga}}
-	<div class="switch{{#if _config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)"></div>
-</div>
-<div class="menu-simple-text reading-reading-webtoon">
-	{{language.reading.pages.readingWebtoon}}
-	<div class="switch{{#if _config.readingWebtoon}} a{{/if}}" on="reading.changePagesView(9, true, false)" off="reading.changePagesView(9, false, false)"></div>
-</div>
-<div class="menu-simple-separator-min"></div>
-<div class="menu-simple-text reading-double-page{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
-	{{language.reading.pages.doublePage}}
-	<div class="switch{{#if _config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)"></div>
-</div>
-<div class="menu-simple-text reading-do-not-apply-to-horizontals{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
-	{{language.reading.pages.doNotApplyToHorizontals}}
-	<div class="switch{{#if _config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)"></div>
-</div>
-<div class="menu-simple-text reading-blank-page{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
-	{{language.reading.pages.blankPage}}
-	<div class="switch{{#if _config.readingBlankPage}} a{{/if}}" on="reading.changePagesView(12, true, false)" off="reading.changePagesView(12, false, false)"></div>
-</div>
-<div class="menu-simple-separator-min"></div>
-<div class="menu-simple-text reading-ajust-to-width{{#compare _config.readingView '==' 'slide'}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/compare}}">
-	{{language.reading.pages.adjustToWidth}}
-	<div class="switch{{#if _config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)"></div>
-</div>
-<div class="simple-slider" style="margin-top: 8px;">
-	<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{_config.readingMargin.left}}</span>px</div></div>
-	<input class="range" type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
-</div>
-<div class="simple-slider">
-	<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{_config.readingMargin.top}}</span>px</div></div>
-	<input class="range" type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.top}}" onrange="reading.changePagesView(11, \{{value}}, \{{toEnd}})">
-</div>
 
-<div class="menu-simple-text">
-	{{language.reading.pages.differentMarginInHorizontals}}
-	<div class="switch{{#if _config.readingHorizontalsMarginActive}} a{{/if}}" on="reading.changePagesView(13, true, false)" off="reading.changePagesView(13, false, false)"></div>
-</div>
-<div class="simple-slider reading-horizontals-margin{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}" style="margin-top: 8px;">
-	<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{_config.readingHorizontalsMargin.left}}</span>px</div></div>
-	<input class="range" type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.left}}" onrange="reading.changePagesView(14, \{{value}}, \{{toEnd}})">
-</div>
-
-<!--<div class="simple-slider reading-horizontals-margin{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}">
-	<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{_config.readingHorizontalsMargin.top}}</span>px</div></div>
-	<input class="range" type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.top}}" onrange="reading.changePagesView(15, \{{value}}, \{{toEnd}})">
-</div>-->
-
-<div class="menu-simple-separator-min"></div>
-
-<div class="simple-slider reading-horizontals-margin" style="margin-top: 8px;">
-	<div class="simple-slider-text">{{language.reading.pages.clipHorizontal}}<div><span>{{normalizeNumber _config.readingImageClip.left "0.05"}}</span>%</div></div>
-	<input class="range" type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.left}}" onrange="reading.changePagesView(16, \{{value}}, \{{toEnd}})">
-</div>
-
-<div class="simple-slider reading-horizontals-margin" style="margin-top: 8px;">
-	<div class="simple-slider-text">{{language.reading.pages.clipVertical}}<div><span>{{normalizeNumber _config.readingImageClip.top "0.05"}}</span>%</div></div>
-	<input class="range" type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.top}}" onrange="reading.changePagesView(17, \{{value}}, \{{toEnd}})">
-</div>
-
-<div class="menu-simple-separator-min"></div>
-<div class="simple-slider">
-	<div class="simple-slider-text">{{language.reading.pages.readingDelaySkip}}<div><span>{{normalizeNumber _config.readingDelayComicSkip "0.2"}}</span>s</div></div>
-	<input class="range" type="range" max="10" min="0" step="0.1" value="{{_config.readingDelayComicSkip}}" onrange="reading.changePagesView(5, \{{value}}, \{{toEnd}})">
-</div>
-<div class="simple-slider">
-	<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><span>{{normalizeNumber _config.readingViewSpeed "0.05"}}</span>s</div></div>
-	<input class="range" type="range" max="4" min="0" step="0.05" value="{{_config.readingViewSpeed}}" onrange="reading.changePagesView(4, \{{value}}, \{{toEnd}})">
+	<div class="menu-simple-separator-min"></div>
+	<div class="simple-slider">
+		<div class="simple-slider-text">{{language.reading.pages.readingDelaySkip}}<div><span>{{normalizeNumber _config.readingDelayComicSkip "0.2"}}</span>s</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="10" min="0" step="0.1" value="{{_config.readingDelayComicSkip}}" onrange="reading.changePagesView(5, \{{value}}, \{{toEnd}})">
+		</div>
+	</div>
+	<div class="simple-slider">
+		<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><span>{{normalizeNumber _config.readingViewSpeed "0.05"}}</span>s</div></div>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input  type="range" max="4" min="0" step="0.05" value="{{_config.readingViewSpeed}}" onrange="reading.changePagesView(4, \{{value}}, \{{toEnd}})">
+		</div>
+	</div>
 </div>

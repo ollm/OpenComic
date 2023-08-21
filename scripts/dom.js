@@ -577,6 +577,8 @@ var currentPath = false, currentPathScrollTop = [];
 
 async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
 {
+	selectMenuItem('library');
+
 	onReading = false;
 
 	reading.hideContent();
@@ -677,7 +679,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		if(!content)
 		{
-			template.loadContentLeft('index.content.left.html', animation);
+			if(template.contentLeft('.menu-list').length === 0) template.loadContentLeft('index.content.left.html', animation);
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
 			floatingActionButton(true, 'dom.addComicButtons();');
 		}
@@ -989,6 +991,7 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 function loadLanguagesPage(animation = true)
 {
 	indexPathControl(false);
+	selectMenuItem('language');
 
 	onReading = false;
 
@@ -1024,6 +1027,8 @@ function loadLanguagesPage(animation = true)
 	template.loadHeader('languages.header.html', animation);
 	floatingActionButton(false);
 
+	events.events();
+
 	if(readingActive)
 		readingActive = false;
 }
@@ -1045,6 +1050,7 @@ function changeLanguage(lan)
 function loadSettingsPage(animation = true)
 {
 	indexPathControl(false);
+	selectMenuItem('settings');
 
 	onReading = false;
 
@@ -1060,6 +1066,41 @@ function loadSettingsPage(animation = true)
 
 	if(readingActive)
 		readingActive = false;
+}
+
+/* Page - Theme */
+
+function loadThemePage(animation = true)
+{
+	indexPathControl(false);
+	selectMenuItem('theme');
+
+	onReading = false;
+
+	reading.hideContent();
+
+	generateAppMenu();
+
+	//template.loadContentRight('theme.content.right.html', animation);
+	template.loadHeader('theme.header.html', animation);
+	floatingActionButton(false);
+
+	theme.start();
+
+	if(readingActive)
+		readingActive = false;
+}
+
+function selectMenuItem(page)
+{
+	let contentLeft = template.contentLeft().get(0);
+	//let contentLeft = dom.this(contentLeft);
+
+	let active = contentLeft.querySelector('.menu-item.active');
+	if(active) active.classList.remove('active');
+
+	page = contentLeft.querySelector('.menu-item-'+page);
+	if(page) page.classList.add('active');
 }
 
 var addComicButtonsST = false, addComicButtonsActive = false;
@@ -1239,28 +1280,26 @@ function justifyViewModule()
 {
 	if(config.viewIndex == 'module')
 	{
-		var contentWidth = template.contentRight().children().width();
+		let contentRight = template.contentRight().get(0);
+		let rect = contentRight.firstElementChild.getBoundingClientRect();
 
-		var contentPerLine = Math.floor((contentWidth - 16) / (150 + 16));
+		let contentPerLine = Math.floor((rect.width - 16) / (150 + 16));
+		contentPerLine = contentPerLine > 0 ? contentPerLine : 1;
 
-		var marginLeft = ((contentWidth - 16) - (contentPerLine * (150 + 16))) / (contentPerLine - 1);
+		let marginLeft = ((rect.width - 16) - (contentPerLine * (150 + 16))) / (contentPerLine - 1);
 
-		if(contentPerLine > 0)
+		let viewModule = contentRight.querySelectorAll('.content-view-module > div');
+
+		for(let i = 0, len = viewModule.length; i < len; i++)
 		{
-			template.contentRight('.content-view-module > div').each(function(index){
+			let _this = viewModule[i];
 
-				if(contentPerLine == 1)
-					$(this).css('margin-left', ((contentWidth / 2) - (150 / 2))+'px');
-				else if(index % contentPerLine == 0)
-					$(this).css('margin-left', '16px');
-				else
-					$(this).css('margin-left', (marginLeft + 16)+'px');
-
-			});
-		}
-		else
-		{
-			template.contentRight('.content-view-module > div').css('margin-left', '16px');
+			if(contentPerLine == 1)
+				_this.style.marginLeft = ((rect.width / 2) - (150 / 2))+'px';
+			else if(i % contentPerLine == 0)
+				_this.style.marginLeft = '16px';
+			else
+				_this.style.marginLeft = (marginLeft + 16)+'px';
 		}
 	}
 }
@@ -1272,14 +1311,14 @@ function nightMode()
 	if($('.app').hasClass('night-mode'))
 	{
 		$('.app').removeClass('night-mode');
-		$('.button-night-mode').html('sun');
+		$('.button-night-mode').html('light_mode');
 		handlebarsContext.nightMode = false;
 		storage.updateVar('config', 'nightMode', false);
 	}
 	else
 	{
 		$('.app').addClass('night-mode');
-		$('.button-night-mode').html('moon');
+		$('.button-night-mode').html('dark_mode');
 		handlebarsContext.nightMode = true;
 		storage.updateVar('config', 'nightMode', true);
 	}
@@ -1467,6 +1506,7 @@ module.exports = {
 	loadIndexPage: loadIndexPage,
 	loadLanguagesPage: loadLanguagesPage,
 	loadSettingsPage: loadSettingsPage,
+	loadThemePage: loadThemePage,
 	changeLanguage: changeLanguage,
 	floatingActionButton: floatingActionButton,
 	changeView: changeView,

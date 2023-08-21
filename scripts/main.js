@@ -10,6 +10,8 @@ require('@electron/remote/main').initialize();
 // be closed automatically when the JavaScript object is garbage collected.
 var win, appClosing;
 
+process.traceProcessWarnings = true;
+
 function createWindow() {
 	// Create the browser window.
 
@@ -57,7 +59,7 @@ function createWindow() {
 	var menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
 
-	// win.webContents.openDevTools();
+	win.webContents.openDevTools();
 
 	win.removeMenu();
 

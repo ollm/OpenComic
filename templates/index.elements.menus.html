@@ -1,38 +1,50 @@
 <div class="menu" id="index-sort">
-	<div class="menu-simple elevation4" style="width: 256px;">
-		<div class="menu-simple-element sort-name{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
-		<div class="menu-simple-element sort-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
-		<div class="menu-simple-element sort-name-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name-numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name-numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
-		{{#if comicsIndex}}
-		<div class="menu-simple-element sort-last-add{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-add'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-add'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
-		<div class="menu-simple-element sort-last-reading{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-reading'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-reading'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
-		{{else}}
-		<div class="menu-simple-text">
-			{{language.global.sort.foldersFirst}}
-			<div class="switch{{#if config.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)"></div>
-		</div>
-		{{/if}}
-		<div class="menu-simple-text">
-			{{language.global.sort.invert}}
-			<div class="switch{{#if comicsIndex}}{{#if config.sortInvertIndex}} a{{/if}}{{else}}{{#if config.sortInvert}} a{{/if}}{{/if}}" on="dom.changeSort(2, true, {{comicsIndexVar}})" off="dom.changeSort(2, false, {{comicsIndexVar}})"></div>
+	<div class="menu-simple elevation-2" style="width: 256px;">
+		<div class="menu-simple-content">
+			<div class="menu-simple-element sort-name{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
+			<div class="menu-simple-element sort-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
+			<div class="menu-simple-element sort-name-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name-numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name-numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
+			{{#if comicsIndex}}
+			<div class="menu-simple-element sort-last-add{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-add'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-add'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
+			<div class="menu-simple-element sort-last-reading{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-reading'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-reading'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
+			{{else}}
+			<div class="menu-simple-text">
+				{{language.global.sort.foldersFirst}}
+				<div class="switch{{#if config.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			{{/if}}
+			<div class="menu-simple-text">
+				{{language.global.sort.invert}}
+				<div class="switch{{#if comicsIndex}}{{#if config.sortInvertIndex}} a{{/if}}{{else}}{{#if config.sortInvert}} a{{/if}}{{/if}}" on="dom.changeSort(2, true, {{comicsIndexVar}})" off="dom.changeSort(2, false, {{comicsIndexVar}})">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-sort', '.bar-right-buttons .button-sort');"></div>
 </div>
 
 <div class="menu" id="index-view">
-	<div class="menu-simple elevation4" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
-		<div class="menu-simple-element view-module{{#if comicsIndex}}{{#compare config.viewIndex '==' 'module'}} s{{/compare}}{{else}}{{#compare config.view '==' 'module'}} s{{/compare}}{{/if}}" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view.module}}</div>
-		<div class="menu-simple-element view-list{{#if comicsIndex}}{{#compare config.viewIndex '==' 'list'}} s{{/compare}}{{else}}{{#compare config.view '==' 'list'}} s{{/compare}}{{/if}}" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view.list}}</div>
+	<div class="menu-simple elevation-2" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
+		<div class="menu-simple-content">
+			<div class="menu-simple-element view-module{{#if comicsIndex}}{{#compare config.viewIndex '==' 'module'}} s{{/compare}}{{else}}{{#compare config.view '==' 'module'}} s{{/compare}}{{/if}}" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view.module}}</div>
+			<div class="menu-simple-element view-list{{#if comicsIndex}}{{#compare config.viewIndex '==' 'list'}} s{{/compare}}{{else}}{{#compare config.view '==' 'list'}} s{{/compare}}{{/if}}" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view.list}}</div>
+		</div>
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');"></div>
 </div>
 
 <div class="menu" id="index-context-menu">
-	<div class="menu-simple elevation4" style="width: 164px;" onclick="events.desactiveMenu('#index-context-menu');">
-		<div class="menu-simple-element context-menu-remove">
-			<i class="material-icon menu-simple-icon-first">delete</i>
-			{{language.global.contextMenu.remove}}
+	<div class="menu-simple elevation-2" style="width: 164px;" onclick="events.desactiveMenu('#index-context-menu');">
+		<div class="menu-simple-content">
+			<div class="menu-simple-element context-menu-remove">
+				<i class="material-icon menu-simple-icon-first">delete</i>
+				{{language.global.contextMenu.remove}}
+			</div>
 		</div>
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-context-menu');" oncontextmenu="events.desactiveMenu('#index-context-menu');"></div>

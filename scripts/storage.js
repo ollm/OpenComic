@@ -1,4 +1,4 @@
-var changes = 42; // Update this if readingPagesConfig is updated
+var changes = 43; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -40,6 +40,7 @@ var storageDefault = {
 		changes: changes,
 		language: 'en',
 		theme: 'material-design',
+		themeColor: 'red',
 		nightMode: false,
 		zoomFactor: 1,
 		foldersFirst: true,

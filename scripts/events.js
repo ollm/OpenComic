@@ -125,56 +125,119 @@ function eventHover()
 
 }
 
+switchRemoveAnimeST = false;
+
+function switchRemoveAnime()
+{
+	clearTimeout(switchRemoveAnimeST);
+
+	switchRemoveAnimeST = setTimeout(function(){
+
+		let switchs = document.querySelectorAll('.switch.animeOn, .switch.animeOff');
+
+		for(let i = 0, len = switchs.length; i < len; i++)
+		{
+			switchs[i].classList.remove('animeOn', 'animeOff');
+		}
+
+	}, 1000);
+}
+
 function eventSwitch()
 {
-
 	$('.switch').on('click.events', function(){
 
-		if($(this).hasClass('a'))
+		let _this = $(this);
+
+		if(_this.hasClass('a'))
 		{
-			$(this).removeClass('a');
-			callbackString($(this).attr('off'));
+			_this.addClass('animeOff').removeClass('a animeOn');
+			callbackString(_this.attr('off'));
 		}
 		else
 		{
-			$(this).addClass('a');
-			callbackString($(this).attr('on'));
+			_this.addClass('a animeOn').removeClass('animeOff');
+			callbackString(_this.attr('on'));
 		}
 
+		switchRemoveAnime();
+
 	});
+}
+
+function rangePosition(input, range)
+{
+	let value = +input.value;
+	let min = +input.getAttribute('min') || 0;
+	let max = +input.getAttribute('max');
+	let step = input.getAttribute('step');
+
+	let percent = (value - min) / (max - min) * 100;
+
+	range.querySelector('.range-line').style.width = percent+'%';
+	range.querySelector('.range-point').style.left = percent+'%';
+
+	if(step && (max - min) / step < 60) // Only show steps if has less 60
+	{
+		let total = Math.round((max - min) / step);
+		let steps = '';
+
+		for(let i = 0; i <= total; i++)
+		{
+			let stepValue = i * step;
+			steps += '<div'+(stepValue > (value - min) ? '' : ' class="active"')+' style="left: '+(i / total * 100)+'%"></div>';
+		}
+
+		range.querySelector('.range-steps').innerHTML = steps;
+	}
 }
 
 
 function eventRange()
 {
-	$('.range').on('change.events input.events', function(event) {
+	$('.range input').on('change.events input.events', function(event) {
 
-		var onrange = $(this).attr('onrange');
+		let range = $(this).closest('.range');
 
-		var value;
-		var value_txt = value = $(this).val();
+		let onrange = this.getAttribute('onrange');
 
-		var step = $(this).attr('step');
+		let value;
+		let value_txt = value = this.value;
 
-		if(typeof step != 'undefined')
+		let step = this.getAttribute('step');
+
+		rangePosition(this, range.get(0));
+
+		if(step)
 		{
-			var num_v = value_txt.replace(/.*?(\.|$)/, '').length;
+			let num_v = value_txt.replace(/.*?(\.|$)/, '').length;
 
-			var num_s = step.replace(/.*?(\.|$)/, '').length;
+			let num_s = step.replace(/.*?(\.|$)/, '').length;
 
 			if(num_s != 0)
 				value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
 		}
 
-		var callback = hb.compile(onrange)({
+		let callback = hb.compile(onrange)({
 			value: value,
 			toEnd: (event.type == 'input' ? 'false' : 'true'),
 		});
 
 		callbackString(callback);
 
-		$(this).siblings('.simple-slider-text').find('span').html(value_txt);
+		range.siblings('.simple-slider-text').find('span').html(value_txt);
 	});
+
+	let ranges = document.querySelectorAll('.range');
+
+	for(let i = 0, len = ranges.length; i < len; i++)
+	{
+		let range = ranges[i];
+		let input = range.querySelector('input');
+
+		rangePosition(input, range);
+	}
+
 }
 
 function events()

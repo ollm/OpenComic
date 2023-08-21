@@ -1,16 +1,16 @@
-
-
-{{#each bookmarks}}
-	<div class="reading-bookmark menu-simple-text">
-		<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.currentReading}}: {{/if}}{{name}}</span>
-	</div>
+<div class="menu-simple-content">
 	{{#each bookmarks}}
-		<div class="reading-bookmark menu-simple-element" onclick="{{#if ../current}}reading.goToImage({{index}}, true);{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
-			<div class="menu-simple-element-image menu-simple-element-image-{{sha}}" style="background-image: url({{thumbnail}})"></div>
-			<span>{{index}}</span>
-			{{name}}
+		<div class="reading-bookmark menu-simple-text-small">
+			<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.currentReading}}: {{/if}}{{name}}</span>
 		</div>
+		{{#each bookmarks}}
+			<div class="reading-bookmark menu-simple-element" onclick="{{#if ../current}}reading.goToImage({{index}}, true);{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
+				<div class="menu-simple-element-image menu-simple-element-image-{{sha}}" style="background-image: url({{thumbnail}})"></div>
+				<span>{{index}}</span>
+				{{name}}
+			</div>
+		{{/each}}
+	{{else}}
+		<div class="menu-simple-text">{{language.reading.emptyBookmarks}}</div>
 	{{/each}}
-{{else}}
-	<div class="menu-simple-text">{{language.reading.emptyBookmarks}}</div>
-{{/each}}
+</div>

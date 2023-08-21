@@ -1,5 +1,5 @@
 <div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControlGoBack()">arrow_back</div>
-<div class="bar-title" style="max-width: calc(100% - (184px + 68px));">
+<div class="bar-title title-small" style="max-width: calc(100% - (184px + 68px));">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
 			<span class="bar-title-a" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')">{{name}}</span>
@@ -26,6 +26,6 @@
 			{{/if}}
 		</div>
 		<div class="bar-buttons-separator"></div>
-		<div class="material-icon-extras button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode();">{{#if config.nightMode}}moon{{else}}sun{{/if}}</div>
+		<div class="material-icon button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode();">{{#if config.nightMode}}dark_mode{{else}}light_mode{{/if}}</div>
 	</div>
 </div>

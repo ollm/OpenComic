@@ -1,4 +1,9 @@
 <div class="bar-back material-icon button button2 {{bar-back}}">arrow_back</div>
-<div class="bar-title" style="max-width: calc(100% - (68px));">
+<div class="bar-title title-small" style="max-width: calc(100% - (68px));">
 	{{language.global.language}}
+</div>
+<div class="bar-right-buttons">
+	<div>
+		<div class="material-icon button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode();">{{#if config.nightMode}}dark_mode{{else}}light_mode{{/if}}</div>
+	</div>
 </div>

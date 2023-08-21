@@ -1,44 +1,85 @@
 <div class="menu" id="reading-magnifying-glass">
-	<div class="menu-simple menu-simple-header elevation4" style="width: 256px;">
-		<div class="menu-simple-text">
-			{{language.reading.magnifyingGlass.activate}}
-			<div class="switch{{#if config.readingMagnifyingGlass}} a{{/if}}" on="reading.activeMagnifyingGlass(true)" off="reading.activeMagnifyingGlass(false)"></div>
-		</div>
-		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifyingGlass.zoom}}<div><span>{{normalizeNumber config.readingMagnifyingGlassZoom "0.1"}}</span>x</div></div>
-			<input class="range" type="range" max="6" min="1.5" step="0.1" value="{{config.readingMagnifyingGlassZoom}}" onrange="reading.changeMagnifyingGlass(1, \{{value}}, \{{toEnd}})">
-		</div>
-		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifyingGlass.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
-			<input class="range" type="range" max="500" min="100" step="2" value="{{config.readingMagnifyingGlassSize}}" onrange="reading.changeMagnifyingGlass(2, \{{value}}, \{{toEnd}})">
-		</div>
-		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifyingGlass.ratio}}<div><span>{{normalizeNumber config.readingMagnifyingGlassRatio "0.01"}}</span>:1</div></div>
-			<input class="range" type="range" max="2" min="0.5" step="0.01" value="{{config.readingMagnifyingGlassRatio}}" onrange="reading.changeMagnifyingGlass(3, \{{value}}, \{{toEnd}})">
-		</div>
-		<div class="simple-slider">
-			<div class="simple-slider-text">{{language.reading.magnifyingGlass.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
-			<input class="range" type="range" max="250" min="0" step="1" value="{{config.readingMagnifyingGlassRadius}}" onrange="reading.changeMagnifyingGlass(4, \{{value}}, \{{toEnd}})">
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;">
+		<div class="menu-simple-content">
+			<div class="menu-simple-text">
+				{{language.reading.magnifyingGlass.activate}}
+				<div class="switch{{#if config.readingMagnifyingGlass}} a{{/if}}" on="reading.activeMagnifyingGlass(true)" off="reading.activeMagnifyingGlass(false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="simple-slider">
+				<div class="simple-slider-text">{{language.reading.magnifyingGlass.zoom}}<div><span>{{normalizeNumber config.readingMagnifyingGlassZoom "0.1"}}</span>x</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="6" min="1.5" step="0.1" value="{{config.readingMagnifyingGlassZoom}}" onrange="reading.changeMagnifyingGlass(1, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+			<div class="simple-slider">
+				<div class="simple-slider-text">{{language.reading.magnifyingGlass.size}}<div><span>{{config.readingMagnifyingGlassSize}}</span>px</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="500" min="100" step="2" value="{{config.readingMagnifyingGlassSize}}" onrange="reading.changeMagnifyingGlass(2, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+			<div class="simple-slider">
+				<div class="simple-slider-text">{{language.reading.magnifyingGlass.ratio}}<div><span>{{normalizeNumber config.readingMagnifyingGlassRatio "0.01"}}</span>:1</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="2" min="0.5" step="0.01" value="{{config.readingMagnifyingGlassRatio}}" onrange="reading.changeMagnifyingGlass(3, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+			<div class="simple-slider">
+				<div class="simple-slider-text">{{language.reading.magnifyingGlass.radius}}<div><span>{{config.readingMagnifyingGlassRadius}}</span>px</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="250" min="0" step="1" value="{{config.readingMagnifyingGlassRadius}}" onrange="reading.changeMagnifyingGlass(4, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass');"></div>
 </div>
 <div class="menu reading-elements-menus" id="reading-pages">
-	<div class="menu-simple menu-simple-header elevation4" style="width: 300px;">
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 300px;">
 
 	</div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); if(handlebarsContext.editReadingShortcutPagesConfig){reading.changePagesView(0)} events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant');"></div>
 </div>
 <div class="menu" id="collections-bookmark">
-	<div class="menu-simple menu-simple-header elevation4" style="width: 256px;"></div>
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;"></div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');"></div>
 </div>
 <div class="menu" id="tracking-sites">
-	<div class="menu-simple menu-simple-header elevation4" style="width: 256px;"></div>
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;"></div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#tracking-sites', '.bar-right-buttons .button-tracking-sites');"></div>
 </div>
 <div class="menu" id="reading-more-options">
-	<div class="menu-simple menu-simple-header elevation4" style="width: 256px;"></div>
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;"></div>
 	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); events.desactiveMenu('#reading-more-options', '.bar-right-buttons .button-more-options');"></div>
 </div>
 <script type="text/javascript">

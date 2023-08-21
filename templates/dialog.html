@@ -1,11 +1,11 @@
 <div class="dialog elevation24" style="width: {{dialog.width}}px;{{#if dialog.height}}height: {{dialog.height}}px;{{/if}}">
 
 	{{#if dialog.header}}
-	<div class="dialog-header">{{{dialog.header}}}</div>
+	<div class="dialog-header headline-small">{{{dialog.header}}}</div>
 	{{/if}}
 	{{#if dialog.scroll}}<div class="dialog-scroll-header"></div>{{/if}}
 	{{#if dialog.content}}
-	<div class="dialog-text{{#unless dialog.header}} dialog-not-header{{/unless}}{{#if dialog.scroll}} dialog-scroll{{#if dialog.buttons}} dialog-scroll-buttons{{/if}}{{/if}}">{{{dialog.content}}}</div>
+	<div class="dialog-text body-medium{{#unless dialog.header}} dialog-not-header{{/unless}}{{#if dialog.scroll}} dialog-scroll{{#if dialog.buttons}} dialog-scroll-buttons{{/if}}{{/if}}">{{{dialog.content}}}</div>
 	{{/if}}
 	{{#if dialog.buttons}}
 	{{#if dialog.scroll}}<div class="dialog-scroll-bottom"></div>{{/if}}

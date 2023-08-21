@@ -1,5 +1,5 @@
 {{#if comicsReadingProgress}}
-<div class="continue-reading gamepad-item" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
+<div class="continue-reading gamepad-item body-medium" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
 	<div>
 		<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
 		<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
@@ -22,7 +22,7 @@
 			<picture><img class="item-image" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}"></picture>
 		</div>
 		{{/if}}
-		<div class="v-text">{{name}}</div>
+		<div class="v-text body-small">{{name}}</div>
 	</div>
 	{{else}}
 	<div class="content-empty">{{#if comicsIndex}}{{language.comics.emptyIndex}}{{else}}{{language.comics.emptyFolder}}{{/if}}</div>

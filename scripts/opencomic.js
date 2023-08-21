@@ -208,6 +208,7 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')), // New file management
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),
+	theme = require(p.join(appDir, 'scripts/theme.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
@@ -483,6 +484,7 @@ function generateAppMenu(force = false)
 {
 	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading)
 	{
+		let currentWindow = electronRemote.getCurrentWindow();
 		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading};
 
 		var menuTemplate = [
@@ -535,7 +537,8 @@ function generateAppMenu(force = false)
 		];
 
 		var menu = electronRemote.Menu.buildFromTemplate(menuTemplate);
-		electronRemote.getCurrentWindow().setMenu(menu);
+		currentWindow.setMenu(menu);
+		// currentWindow.setMenuBarVisibility(false);
 	}
 }
 

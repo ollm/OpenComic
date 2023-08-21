@@ -1,0 +1,20 @@
+<div class="settings-body body-medium">
+	<h1 class="display-medium">{{language.global.theme}}</h1>
+
+	<div class="theme-page">
+		{{#each themeColors}}
+
+			<div class="theme-page-item{{#if active}} active{{/if}}" onclick="theme.setColor('{{key}}');">
+				<div>
+					<div>
+						{{#each colors}}
+						<div style="background-color: {{@this}};"></div>
+						{{/each}}
+					</div>
+				</div>
+				<span class="headline-small">{{name}}</span>
+			</div>
+
+		{{/each}}
+	</div>
+</div>

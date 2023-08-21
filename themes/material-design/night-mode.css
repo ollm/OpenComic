@@ -112,7 +112,7 @@ body .night-mode
 	border-right: 0px solid #414141;
 }
 
-.night-mode .separator-1
+.night-mode .separator-1, .night-mode .separator-2
 {
 	border-top: 1px solid #414141;
 }
@@ -129,7 +129,8 @@ body .night-mode
 }
 
 .night-mode .menu-simple-element.s,
-.night-mode .content-left .menu-list:hover,
+.night-mode .content-left .menu-item:hover,
+.content-left .menu-item.active,
 .night-mode .reading-left:hover,
 .night-mode .reading-left.s,
 .night-mode .simple-list:hover,

@@ -2048,11 +2048,11 @@ function activeBookmark(mode)
 {
 	if(mode == 1)
 	{
-		template.barHeader('.button-bookmark').html('bookmark').attr('hover-text', language.reading.removeBookmark);
+		template.barHeader('.button-bookmark').addClass('fill').attr('hover-text', language.reading.removeBookmark);
 	}
 	else
 	{
-		template.barHeader('.button-bookmark').html('bookmark_border').attr('hover-text', language.reading.addBookmark);
+		template.barHeader('.button-bookmark').removeClass('fill').attr('hover-text', language.reading.addBookmark);
 	}
 }
 
@@ -3516,6 +3516,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 		});
 	}
+
+	template.contentRight().children('div').css({scrollbarGutter: readingViewIs('scroll') ? '' : 'initial'});
 	
 	tracking.track();
 }
