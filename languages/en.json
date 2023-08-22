@@ -23,7 +23,10 @@
 			"remove": "Remove"
 		},
 		"back": "Back",
+		"open": "Open",
 		"add": "Add",
+		"addToLibrary": "Add to library",
+		"unsupportedFile": "The file is not supported",
 		"language": "Language",
 		"settings": "Settings",
 		"theme": "Theme",

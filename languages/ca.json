@@ -23,7 +23,10 @@
 			"remove": "Retirar"
 		},
 		"back": "Enrere",
+		"open": "Obrir",
 		"add": "Afegir",
+		"addToLibrary": "Afegir a la biblioteca",
+		"unsupportedFile": "L'arxiu no és compatible",
 		"language": "Idioma",
 		"settings": "Configuració",
 		"theme": "Tema",

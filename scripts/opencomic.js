@@ -197,7 +197,8 @@ var compatibleExtensions = [
 
 //console.time('Require time 2');
 
-const storage = require(p.join(appDir, 'scripts/storage.js')),
+const app = require(p.join(appDir, 'scripts/app.js')),
+	storage = require(p.join(appDir, 'scripts/storage.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
 	templates = require(p.join(appDir, 'scripts/builded/templates.js')),
@@ -209,6 +210,7 @@ const storage = require(p.join(appDir, 'scripts/storage.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),
 	theme = require(p.join(appDir, 'scripts/theme.js')),
+	dragAndDrop = require(p.join(appDir, 'scripts/drag-and-drop.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
@@ -251,6 +253,8 @@ function startApp()
 		openComic(electronRemote.process.argv[1], false);
 	else
 		dom.loadIndexPage(false);
+
+	dragAndDrop.start();
 
 	document.fonts.ready.then(function(){
 
@@ -929,82 +933,89 @@ function addComic(folders = false)
 
 	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}]}).then(function(files) {
 
-		var added = false;
-
-		for(let i in files.filePaths)
-		{
-			var filePath = files.filePaths[i];
-
-			if(pathIsSupported(filePath))
-			{
-				if(fs.statSync(filePath).isDirectory())
-				{
-					var name = p.basename(filePath);
-					var path = filePath;
-					var compressed = false;
-				}
-				else
-				{
-					if(inArray(mime.getType(filePath), compatibleMime))
-					{
-						filePath = p.dirname(filePath);
-
-						var name = p.basename(filePath);
-						var path = filePath;
-						var compressed = false;
-					}
-					else
-					{
-						var name = p.basename(filePath).replace(/\.[^\.]*$/, '');
-						var path = filePath;
-						var compressed = true;
-					}
-				}
-
-				var comics = storage.get('comics');
-
-				var exists = false;
-
-				for(var key in comics)
-				{
-					if(comics[key].path == path)
-					{
-						exists = true;
-
-						break;
-					}
-				}
-
-				if(!exists)
-				{
-					storage.push('comics', {
-						name: name,
-						path: path,
-						added: time(),
-						compressed: compressed,
-						folder: true,
-						readingProgress: {
-							path: 'Path',
-							lastReading: 0,
-							progress: 0,
-						},
-					});
-
-					added = true;
-				}
-			}
-		}
-
-		if(added)
-		{
-			if(onReading)
-				reading.saveReadingProgress();
-
-			dom.loadIndexPage(true);
-		}
+		addComicsToLibrary(files.filePaths);
 
 	});
 
+}
+
+function addComicsToLibrary(files)
+{
+	let added = false;
+
+	for(let i in files)
+	{
+		let filePath = files[i];
+
+		if(pathIsSupported(filePath))
+		{
+			let name, path, compressed;
+
+			if(fs.statSync(filePath).isDirectory())
+			{
+				name = p.basename(filePath);
+				path = filePath;
+				compressed = false;
+			}
+			else
+			{
+				if(inArray(mime.getType(filePath), compatibleMime))
+				{
+					filePath = p.dirname(filePath);
+
+					name = p.basename(filePath);
+					path = filePath;
+					compressed = false;
+				}
+				else
+				{
+					name = p.basename(filePath).replace(/\.[^\.]*$/, '');
+					path = filePath;
+					compressed = true;
+				}
+			}
+
+			let comics = storage.get('comics');
+
+			let exists = false;
+
+			for(let key in comics)
+			{
+				if(comics[key].path == path)
+				{
+					exists = true;
+
+					break;
+				}
+			}
+
+			if(!exists)
+			{
+				storage.push('comics', {
+					name: name,
+					path: path,
+					added: time(),
+					compressed: compressed,
+					folder: true,
+					readingProgress: {
+						path: 'Path',
+						lastReading: 0,
+						progress: 0,
+					},
+				});
+
+				added = true;
+			}
+		}
+	}
+
+	if(added)
+	{
+		if(onReading)
+			reading.saveReadingProgress();
+
+		dom.loadIndexPage(true);
+	}
 }
 
 function callCallbacks()
