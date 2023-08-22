@@ -80,7 +80,7 @@ var file = function(path) {
 			this.files = files;
 		}
 
-		return this.config.filtered ? filtered(files) : files;
+		return this.config.filtered ? filtered(files, this.config.specialFiles) : files;
 	}
 
 	this.readDir = function(path = false, _realPath = false) {
@@ -98,12 +98,12 @@ var file = function(path) {
 				let filePath = p.join(path, _files[i]);
 				let retrunPath = filePath;
 
-				if(inArray(mime.getType(filePath), compatibleMime))
-					files.push({name: _files[i], path: retrunPath, folder: false, compressed: false});
-				else if(fs.statSync(filePath).isDirectory())
+				if(!this.config.fastRead && fs.statSync(filePath).isDirectory())
 					files.push({name: _files[i], path: retrunPath, folder: true, compressed: false});
 				else if(inArray(fileExtension(filePath), compressedExtensions.all))
 					files.push({name: _files[i], path: retrunPath, folder: false, compressed: true});
+				else
+					files.push({name: _files[i], path: retrunPath, folder: false, compressed: false});
 			}
 		}
 
@@ -1739,7 +1739,7 @@ function pathType(path)
 		return false;
 }
 
-function filtered(files)
+function filtered(files, specialFiles = false)
 {
 	let filtered = [];
 
@@ -1751,7 +1751,7 @@ function filtered(files)
 
 			if(file.folder || file.compressed)
 				filtered.push(file);
-			else if(inArray(mime.getType(file.path), compatibleMime))
+			else if(inArray(mime.getType(file.path), compatibleMime) || (specialFiles && inArray(app.extname(file.path), compatibleSpecialExtensions)))
 				filtered.push(file);
 		}
 	}

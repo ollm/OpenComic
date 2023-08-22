@@ -415,6 +415,7 @@
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
+	position: relative;
 }
 
 .menu-simple-element i
@@ -458,17 +459,30 @@
 
 .menu-simple-element.s
 {
-	background-color: rgba(0, 0, 0, 0.07);
+	background-color: var(--md-sys-color-secondary-container);
 }
 
-.menu-simple:hover .menu-simple-element.s
+.menu-simple-element:before
 {
-	background-color: rgba(0, 0, 0, 0);
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	transition: 0.2s;
+	z-index: 0;
 }
 
-.menu-simple-element:hover
+.menu-simple-element:hover:before
 {
-	background-color: rgba(0, 0, 0, 0.07) !important;
+	background-color: var(--md-sys-color-on-surface-variant-2);
+}
+
+.menu-simple-element:active:before
+{
+	background-color: var(--md-sys-color-on-surface-variant-4);
 }
 
 .menu-simple-element-image
@@ -534,7 +548,7 @@
 	height: 32px;
 	padding: 0px 24px;
 	line-height: 32px;
-	transition: 0.2s;
+	transition: background-color 0.2s;
 }
 
 .menu-simple-text, .menu-simple-button
@@ -542,7 +556,7 @@
 	height: 52px;
 	padding: 0px 24px;
 	line-height: 52px;
-	transition: 0.2s;
+	transition: background-color 0.2s;
 }
 
 .menu-simple-text .switch
@@ -1043,7 +1057,7 @@
 {
 	min-height: 64px;
 	padding: 0px 24px 15px 24px;
-	transition: 0.2s;
+	transition: background-color 0.2s;
 	box-sizing: border-box;
 }
 
@@ -1051,7 +1065,7 @@
 {
 	min-height: 32px;
 	line-height: 32px;
-	transition: 0.2s;
+	transition: background-color 0.2s;
 	margin-bottom: 15px;
 }
 

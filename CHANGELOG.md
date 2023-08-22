@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated electron to v25.5.0 [`41214a5`](https://github.com/ollm/OpenComic/commit/41214a50bc9b0bce56f12b302d47f6d44f12fd81)
 - Update theme to Material 3 [`0f537fb`](https://github.com/ollm/OpenComic/commit/0f537fb37d9108986f1cdac41cc56e6c51d51428)
 - Settings page to set some default values [`12907bc`](https://github.com/ollm/OpenComic/commit/12907bcb84dccc5c8f0a65c78c65915f55e8cb0f)
+- Drag and Drop support [`91933a9`](https://github.com/ollm/OpenComic/commit/91933a998885a2579592566d7773549085495e4e)
 
 ### 🐛 Bug Fixes
 

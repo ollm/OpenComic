@@ -195,6 +195,10 @@ var compatibleExtensions = [
 	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt', 'pdf',
 ];
 
+var compatibleSpecialExtensions = [
+	'tbn',
+];
+
 //console.time('Require time 2');
 
 const app = require(p.join(appDir, 'scripts/app.js')),

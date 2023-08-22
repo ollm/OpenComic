@@ -1326,6 +1326,28 @@ body .preload
 	animation-fill-mode: forwards;
 }
 
+.content-view-module .folder-poster
+{
+	height: calc(100% - 8px);
+	width: calc(100% - 8px);
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	background-position: center;
+	border-radius: 10px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	/*background-size: contain;
+	background-color: var(--md-sys-color-background);*/
+}
+
+.content-view-module .folder-poster.a
+{
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
 /* Continue reading */
 
 .continue-reading
@@ -1341,6 +1363,30 @@ body .preload
 .continue-reading.gamepad-highlight
 {
 	transform: scale(1.005);
+}
+
+.continue-reading:before
+{
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	transition: 0.2s;
+	z-index: 1;
+	border-radius: 10px;
+}
+
+.continue-reading:hover:before
+{
+	background-color: var(--md-sys-color-on-surface-variant-2);
+}
+
+.continue-reading:active:before
+{
+	background-color: var(--md-sys-color-on-surface-variant-4);
 }
 
 .continue-reading:after

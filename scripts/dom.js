@@ -434,6 +434,7 @@ function addImageToDom(querySelector, path, animation = true)
 		else
 			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'background-image': 'url('+path+')'}).addClass('a');
 
+		$('.pi-sha-'+querySelector).css({'background-image': 'url('+path+')'}).addClass('a');
 		$('.ri-sha-'+querySelector).attr('src', path);
 		$('.continue-reading-sha-'+querySelector).css({'background-image': 'url('+path+')'}).addClass('a');
 	}
@@ -446,6 +447,7 @@ function addImageToDom(querySelector, path, animation = true)
 		else
 			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'transition': '0s', 'background-image': 'url('+path+')'});
 
+		$('.pi-sha-'+querySelector).css({'background-image': 'url('+path+')'});
 		$('.ri-sha-'+querySelector).attr('src', path);
 		$('.continue-reading-sha-'+querySelector).css({'transition': '0s', 'background-image': 'url('+path+')'});
 	}
@@ -504,12 +506,20 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 				else if(file.folder || file.compressed)
 				{
-					let images = await getFolderThumbnails(filePath);
+					let poster = await getFolderPoster(filePath);
+					
+					let images = [];
+
+					if(!poster)
+					{
+						images = await getFolderThumbnails(filePath);
+					}
 
 					pathFiles.push({
 						name: fileName,
 						path: filePath,
 						mainPath: mainPath,
+						poster: poster,
 						images: images,
 						folder: true,
 					});
@@ -655,8 +665,16 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			for(let key in comics)
 			{
-				var images = await getFolderThumbnails(comics[key].path);
+				let poster = await getFolderPoster(comics[key].path);
+				
+				let images = [];
 
+				if(!poster)
+				{
+					images = await getFolderThumbnails(comics[key].path);
+				}
+
+				comics[key].poster = poster;
 				comics[key].images = images;
 				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
 			}
@@ -889,6 +907,65 @@ async function getFolderThumbnails(path)
 	}
 
 	return images;
+}
+
+async function getFolderPoster(path)
+{
+	let dirname = p.dirname(path);
+	let basename = p.basename(path);
+	let name = p.parse(basename).name;
+
+	// console.log(path);
+
+	try
+	{
+		let file = fileManager.file(dirname);
+		file.updateConfig({cacheOnly: true, fastRead: true, specialFiles: true, sha: false});
+		let files = await file.read();
+
+		let regex = new RegExp('^'+pregQuote(name)+'\.[a-z0-9]+');
+		let poster = false;
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			let file = files[i];
+
+			if(!file.folder && !file.compressed && regex.test(file.name))
+			{
+				file.sha = sha1(file.path);
+				poster = file;
+
+				break;
+			}
+		}
+
+		if(poster)
+		{
+			let thumbnail = cache.returnThumbnailsImages({path: poster.path, sha: poster.sha}, function(data){
+
+				addImageToDom(data.sha, data.path);
+
+			}, file);
+
+			console.log(thumbnail);
+
+			return thumbnail;
+		}
+	}
+	catch(error)
+	{
+		if(error.message && error.message === 'notCacheOnly')
+		{
+			// Nothing to do
+		}
+		else
+		{
+			console.error(error);
+			dom.compressedError(error);
+		}
+	}
+
+	return false;
 }
 
 var indexPathControlA = [], indexPathA = false, indexMainPathA = false;

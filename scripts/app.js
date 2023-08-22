@@ -79,8 +79,14 @@ function empty(mixedVar)
 	return false
 }
 
+function extname(path)
+{
+	return p.extname(path).replace(/^.*\./, '').toLowerCase();
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
 	empty: empty,
+	extname: extname,
 };
