@@ -915,8 +915,6 @@ async function getFolderPoster(path)
 	let basename = p.basename(path);
 	let name = p.parse(basename).name;
 
-	// console.log(path);
-
 	try
 	{
 		let file = fileManager.file(dirname);
@@ -946,8 +944,6 @@ async function getFolderPoster(path)
 				addImageToDom(data.sha, data.path);
 
 			}, file);
-
-			console.log(thumbnail);
 
 			return thumbnail;
 		}
