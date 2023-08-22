@@ -40,7 +40,7 @@ var storageDefault = {
 		changes: changes,
 		language: 'en',
 		theme: 'material-design',
-		themeColor: 'red',
+		themeColor: 'blue',
 		nightMode: false,
 		zoomFactor: 1,
 		foldersFirst: true,

@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.2.2](https://github.com/ollm/OpenComic/releases/tag/v0.2.2-beta3) (dd-mm-yyyy)
+## [v1.0.0](https://github.com/ollm/OpenComic/releases/tag/v0.2.2-beta3) (dd-mm-yyyy)
 
 ### 🚀 New Features
 
@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Navigate in the library using the keyboard [`922e6ee`](https://github.com/ollm/OpenComic/commit/922e6ee0fe1509f2dfae0003406e24ce26aa49fb)
 - Clip image option on read [`71fad97`](https://github.com/ollm/OpenComic/commit/71fad9748289af6624256e3c34fde422284fc750)
 - Updated electron to v25.5.0 [`41214a5`](https://github.com/ollm/OpenComic/commit/41214a50bc9b0bce56f12b302d47f6d44f12fd81)
+- Update theme to Material 3 [`0f537fb`](https://github.com/ollm/OpenComic/commit/0f537fb37d9108986f1cdac41cc56e6c51d51428)
 - Settings page to set some default values [`12907bc`](https://github.com/ollm/OpenComic/commit/12907bcb84dccc5c8f0a65c78c65915f55e8cb0f)
 
 ### 🐛 Bug Fixes
