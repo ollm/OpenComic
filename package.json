@@ -54,8 +54,8 @@
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
-		"7zip-bin": "^5.2.0",
 		"@electron/remote": "^2.0.10",
+		"7zip-bin": "^5.2.0",
 		"animejs": "^3.2.1",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
@@ -69,7 +69,6 @@
 		"mime": "^3.0.0",
 		"node-7z": "^3.0.0",
 		"pdfjs-dist": "^3.8.162",
-		"request": "^2.88.2",
 		"sha1": "^1.1.1",
 		"sharp": "^0.32.4",
 		"tar-fs": "^3.0.4",
@@ -77,9 +76,9 @@
 		"unzipper": "^0.10.14"
 	},
 	"devDependencies": {
+		"@electron/rebuild": "^3.2.13",
 		"electron": "^25.5.0",
 		"electron-builder": "^24.6.3",
-		"@electron/rebuild": "^3.2.13",
 		"node-abi": "^3.46.0",
 		"nodemon": "^3.0.1"
 	},

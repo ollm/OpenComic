@@ -1,17 +1,17 @@
-var request = require('request'),
-	site = {};
+var site = {}, controller = false;
 
 function setSiteData(siteData)
 {
 	site = siteData;
 }
 
-var prevSearchRequest = false;
-
 // Search comic/manga in site
 async function searchComic(title, callback = false)
 {
-	var query = `
+	if(controller) controller.abort();
+	controller = new AbortController();
+
+	let query = `
 	query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		Page (page: $page, perPage: $perPage) {
 			pageInfo {
@@ -34,13 +34,13 @@ async function searchComic(title, callback = false)
 	}
 	`;
 
-	var variables = {
+	let variables = {
 		search: title,
 		page: 1,
 		perPage: 10
 	};
 
-	var options = {
+	let options = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -49,16 +49,15 @@ async function searchComic(title, callback = false)
 		body: JSON.stringify({
 			query: query,
 			variables: variables
-		})
+		}),
+		signal: controller.signal,
 	};
 
-	if(prevSearchRequest) prevSearchRequest.abort();
+	fetch('https://graphql.anilist.co', options).then(async function(response) {
 
-	prevSearchRequest = request('https://graphql.anilist.co', options, function(error, response, body) {
-
-		if(!error && response.statusCode == 200)
+		if(response.status == 200)
 		{
-			var json = JSON.parse(body);
+			let json = await response.json();
 		
 			results = [];
 
@@ -82,13 +81,18 @@ async function searchComic(title, callback = false)
 		{
 			callback([]);
 		}
+
+	}).catch(function(){
+
+		callback([]);
+
 	});
 }
 
 // Return data of comic/manga
 async function getComicData(siteId, callback = false)
 {
-	var query = `
+	let query = `
 	query ($id: Int, $type: MediaType) {
 		Media (id: $id, type: $type) {
 			id
@@ -109,12 +113,12 @@ async function getComicData(siteId, callback = false)
 	}
 	`;
 
-	var variables = {
+	let variables = {
 		id: siteId,
 		type: 'MANGA'
 	};
 
-	var options = {
+	let options = {
 		method: 'POST',
 		headers: {
 			'Authorization': 'Bearer '+site.config.session.token,
@@ -127,11 +131,11 @@ async function getComicData(siteId, callback = false)
 		})
 	};
 
-	request('https://graphql.anilist.co', options, function(error, response, body) {
+	fetch('https://graphql.anilist.co', options).then(async function(response) {
 
-		if(!error && response.statusCode == 200)
+		if(response.status == 200)
 		{
-			var json = JSON.parse(body);
+			let json = await response.json();
 		
 			if(json.data && json.data.Media)
 			{
@@ -156,6 +160,10 @@ async function getComicData(siteId, callback = false)
 			callback({});
 		}
 
+	}).catch(function(){
+
+		callback({});
+
 	});
 }
 
@@ -168,28 +176,36 @@ async function login(callback = false)
 
 		if(token)
 		{
-			var options = {
-				uri: 'https://anilist.co/api/v2/oauth/token',
+			let options = {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
 				},
-				json: {
-					'grant_type': 'authorization_code',
-					'client_id': site.auth.clientId,
-					'client_secret': site.auth.clientSecret,
-					'redirect_uri': 'https://anilist.co/api/v2/oauth/pin', 
-					'code': token,
-				}
+				body: JSON.stringify({
+					grant_type: 'authorization_code',
+					client_id: site.auth.clientId,
+					client_secret: site.auth.clientSecret,
+					redirect_uri: 'https://anilist.co/api/v2/oauth/pin', 
+					code: token,
+				})
 			};
 
-			request(options, function(error, response, body) {
+			fetch('https://anilist.co/api/v2/oauth/token', options).then(async function(response) {
 
-				if(!error && response.statusCode == 200)
-					callback({valid: true, token: body.access_token});
+				if(response.status == 200)
+				{
+					let json = await response.json();
+					callback({valid: true, token: json.access_token});
+				}
 				else
+				{
 					callback({valid: false});
+				}
+
+			}).catch(function(){
+
+				callback({valid: false});
 
 			});
 		}
@@ -204,7 +220,7 @@ async function login(callback = false)
 // Track comic/manga
 async function track(toTrack)
 {
-	var query = `
+	let query = `
 	query ($id: Int, $type: MediaType) {
 		Media (id: $id, type: $type) {
 			id
@@ -219,12 +235,12 @@ async function track(toTrack)
 	}
 	`;
 
-	var variables = {
+	let variables = {
 		id: toTrack.id,
 		type: 'MANGA'
 	};
 
-	var options = {
+	let options = {
 		method: 'POST',
 		headers: {
 			'Authorization': 'Bearer '+site.config.session.token,
@@ -237,17 +253,17 @@ async function track(toTrack)
 		})
 	};
 
-	request('https://graphql.anilist.co', options, function(error, response, body) {
+	fetch('https://graphql.anilist.co', options).then(async function(response) {
 
-		if(response.statusCode == 400)
+		if(response.status == 400)
 		{
 			tracking.invalidateSession(site.key, true);
 		}
-		else if(!error && response.statusCode == 200)
+		else if(response.status == 200)
 		{
-			var json = JSON.parse(body).data.Media;
+			let json = (await response.json()).data.Media;
 
-			var aniChapters, aniVolumes, aniUserStatus, aniUserProgress, aniUserProgressVolumes;
+			let aniChapters, aniVolumes, aniUserStatus, aniUserProgress, aniUserProgressVolumes;
 
 			aniChapters = json.chapters;
 			aniVolumes = json.volumes;
@@ -260,7 +276,7 @@ async function track(toTrack)
 			}
 
 
-			var upUserStatus, upUserProgress, upUserProgressVolumes;
+			let upUserStatus, upUserProgress, upUserProgressVolumes;
 
 			if(aniChapters && toTrack.chapters && toTrack.chapters == aniChapters)
 				upUserStatus = 'COMPLETED';
@@ -278,7 +294,7 @@ async function track(toTrack)
 				upUserProgressVolumes = toTrack.volumes;
 
 
-			var variables = {
+			let variables = {
 				mediaId: toTrack.id,
 			};
 
@@ -316,12 +332,16 @@ async function track(toTrack)
 				})
 			};
 
-			request('https://graphql.anilist.co', options, function(error, response, body) {});
+			fetch('https://graphql.anilist.co', options).then(async function(response) {});
 		}
 		else
 		{
-			console.error(error)
+			console.error(error);
 		}
+	}).catch(function(){
+
+		console.error(error);
+
 	});
 }
 

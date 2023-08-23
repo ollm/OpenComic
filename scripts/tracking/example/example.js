@@ -1,5 +1,4 @@
-var request = require('request'),
-	site = {};
+var site = {}, controller = false;
 
 /*
 site
@@ -21,13 +20,15 @@ function setSiteData(siteData)
 	site = siteData;
 }
 
-var prevSearchRequest = false;
-
 // Search comic/manga in site
 async function searchComic(title, callback = false)
 {
-	// https://www.npmjs.com/package/request
-	// request('url', options, function(error, response, body) {});
+
+	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
+	// if(controller) controller.abort();
+	// controller = new AbortController();
+	// options = {signal: controller.signal};
+	// fetch('url', options).then(async function(response){await response.json()});
 
 	results = [];
 
@@ -45,8 +46,8 @@ async function getComicData(siteId, callback = false)
 {
 	// siteId = Comic id in site
 
-	// https://www.npmjs.com/package/request
-	// request('url', options, function(error, response, body) {});
+	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
+	// fetch('url', options).then(async function(response){await response.json()});
 
 	callback({
 		title: 'title', // Comic title
@@ -66,8 +67,8 @@ async function login(callback = false)
 	// Open link to browser, for example to get a token
 	// electron.shell.openExternal('https://open-this-link-in-a-browser.com');
 
-	// https://www.npmjs.com/package/request
-	// request('url', options, function(error, response, body) {});
+	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
+	// fetch('url', options).then(async function(response){await response.json()});
 
 	// Show token dialog
 	// tracking.getTokenDialog(site.key, function(token) { });

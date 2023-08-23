@@ -82,7 +82,18 @@ function handleDrop(event)
 		}
 		else
 		{
-			alert(language.global.unsupportedFile);
+			events.snackbar({
+				key: 'unsupportedFile',
+				text: language.global.unsupportedFile,
+				duration: 6,
+				update: true,
+				buttons: [
+					{
+						text: language.buttons.dismiss,
+						function: 'events.closeSnackbar();',
+					},
+				],
+			});
 		}
 	}
 

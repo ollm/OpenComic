@@ -89,6 +89,38 @@ async function track(chapter = false, volume = false, onlySite = false)
 					allTracked = false;
 			}
 
+			let chapters = '??';
+			let volumes = '??';
+
+			let tracking = storage.getKey('tracking', dom.indexMainPathA());
+
+			for(let site in tracking)
+			{
+				if(!onlySite || onlySite == site)
+				{
+					let data = tracking[site];
+
+					if(data.chapters)
+						chapters = data.chapters;
+
+					if(data.volumes)
+						volumes = data.volumes;
+
+					if(Date.now() - data.lastUpdatedChapters > 604800000) // One week
+					{
+						console.log('Get chapters and volumes number');
+
+						let path = dom.indexMainPathA();
+
+						sitesScripts[site].getComicData(data.id, function(data){
+
+							setTrackingChapters(site, path, data.chapters, data.volumes);
+
+						});
+					}
+				}
+			}
+
 			if(!allTracked)
 			{
 				trackST[trackIndex] = setTimeout(function(vars) {
@@ -142,7 +174,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 
 				events.snackbar({
 					key: 'trackingConfirm',
-					text: language.reading.tracking.marked+': '+(chapter !== false ? language.reading.tracking.chapter+' '+chapter+'/??' : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+': '+volume+'/??' : ''),
+					text: language.reading.tracking.marked+': '+(chapter !== false ? language.reading.tracking.chapter+' '+chapter+'/'+chapters : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+': '+volume+'/'+volumes : ''),
 					duration: 6,
 					update: true,
 					buttons: [
@@ -275,15 +307,19 @@ function currentTrackingDialog(site)
 		events.dialog({
 			header: false,
 			width: 500,
-			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 398 : 470,
+			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 443 : 515,
 			content: template.load('loading.html'),
 			buttons: false,
 		});
+
+		let path = dom.indexMainPathA();
 
 		sitesScripts[site].getComicData(siteData.tracking.id, function(data){
 
 			handlebarsContext.trackingResult = data;
 			handlebarsContext.siteData = siteData;
+
+			setTrackingChapters(site, path, data.chapters, data.volumes);
 
 			$('.dialog-text').html(template.load('dialog.tracking.current.tracking.html'));
 
@@ -428,7 +464,7 @@ function setTrackingId(site, siteId)
 {
 	events.closeDialog();
 
-	var _tracking = storage.getKey('tracking', dom.indexMainPathA());
+	let _tracking = storage.getKey('tracking', dom.indexMainPathA());
 	if(!_tracking) _tracking = {};
 
 	_tracking[site] = {
@@ -444,6 +480,18 @@ function setTrackingId(site, siteId)
 	tracking.track();
 
 	// Snackbar here
+}
+
+function setTrackingChapters(site, path, chapters = false, volumes = false)
+{
+	let _tracking = storage.getKey('tracking', path);
+	if(!_tracking) _tracking = {};
+
+	_tracking[site].chapters = chapters || false;
+	_tracking[site].volumes = volumes || false;
+	_tracking[site].lastUpdatedChapters = Date.now();
+
+	storage.updateVar('tracking', dom.indexMainPathA(), _tracking);
 }
 
 // Others dialogs
@@ -502,6 +550,9 @@ function getTitle()
 	else
 		title = dom.indexMainPathA() ? p.basename(dom.indexMainPathA()) : '';
 
+	// Try detect end of name
+	title = title.replace(/[\.\-_:;].*/, '', title).trim();
+
 	// return only first 4 words to avoid incorrect words from the end of the filename
 	title = title.split(/\s+/).splice(0, 4).join(' ');
 
@@ -510,22 +561,24 @@ function getTitle()
 
 function getChapter()
 {
-	var regexs = [
-		/chapters?|episodes?/, // English
+	let regexs = [
+		/chapters?|episodes?|issues?/, // English
 		/caps?|cap[íi]tulos?|episodios/, // Spanish
 		/cap[íi]tols?|episodis?/, // Catalan
 	];
 
-	var regexsMin = [
+	let regexsMin = [
 		/ch?|ep?/, // English
 	];
 
+	let name;
+
 	if(reading.readingCurrentPath())
-		var name = p.basename(reading.readingCurrentPath());
+		name = p.basename(reading.readingCurrentPath());
 	else
 		return false;
 
-	var chapter = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
+	let chapter = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
 
 	if(chapter.length == 0)
 	{
@@ -535,27 +588,32 @@ function getChapter()
 			chapter = extract(/^\s*([0-9]+)/iu, name, 3);
 	}
 
+	if(chapter.length == 0 && /^\d+$/.test(name)) // the folder name is numeric
+		chapter = name;
+
 	return chapter.length > 0 ? +chapter : false;
 }
 
 function getVolume()
 {
-	var regexs = [
+	let regexs = [
 		/volumes?/, // English
-		/tomos?/, // Spanish
+		/tomos?|volumen|volumenes/, // Spanish
 		/toms?/, // Catalan
 	];
 
-	var regexsMin = [
+	let regexsMin = [
 		/vo?|vol/, // English
 	];
 
+	let name;
+
 	if(reading.readingCurrentPath())
-		var name = p.basename(reading.readingCurrentPath());
+		name = p.basename(reading.readingCurrentPath());
 	else
 		return false;
 
-	var volume = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
+	let volume = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
 
 	if(volume.length == 0)
 		volume = extract(new RegExp(/(^|[\.\-_:;\s])/.source+'('+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 3);
