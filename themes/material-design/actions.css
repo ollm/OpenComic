@@ -773,8 +773,8 @@
 .snackbars .snackbar
 {
 	min-height: 48px;
-	background-color: #323232;
-	border-radius: 4px;
+	background-color: var(--md-sys-color-inverse-surface);
+	border-radius: 8px;
 	position: fixed;
 	bottom: 8px;
 	left: 8px;
@@ -802,12 +802,12 @@
 	animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-.snackbars .snackbarText
+.snackbars .snackbar-text
 {
 	padding: 14px 16px;
 	line-height: 20px;
 	font-size: 14px;
-	color: #fff;
+	color: var(--md-sys-color-inverse-on-surface);
 	box-sizing: border-box;
 	word-wrap: break-word;
 	word-break: break-all;
@@ -824,6 +824,11 @@
 	position: relative;
 	margin: 6px 8px 6px 0px;
 	float: right;
+}
+
+.snackbars .snackbar .simple-button.transparent > div
+{
+	color: var(--md-sys-color-inverse-primary);
 }
 
 /* Input */
@@ -861,6 +866,11 @@
 	float: left;
 	transition: opacity 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
 	cursor: pointer;
+	font-family: var(--md-sys-typescale-label-large-font-family-name);
+	font-style: var(--md-sys-typescale-label-large-font-family-style);
+	font-weight: var(--md-sys-typescale-label-large-font-weight);
+	font-size: var(--md-sys-typescale-label-large-font-size);
+	letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
 }
 
 .simple-button.disable
