@@ -1,7 +1,7 @@
-## Download beta `v0.2.2-beta3`
+## Download beta `v1.0.0-beta.1`
 
 ###### All packages
-* [v0.2.2-beta3](https://github.com/ollm/OpenComic/releases/tag/v0.2.2-beta3)
+* [v1.0.0-beta.1](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.1)
 
 ## Download `v0.2.1`
 ###### Windows
@@ -36,7 +36,7 @@
 * Bookmarks and continue reading
 * Floating magnifying glass
 * Reading in scroll or slide
-<!--- * 🎮 Gamepad navigation  --->
+* 🎮 Gamepad navigation
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM
