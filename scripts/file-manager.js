@@ -285,7 +285,7 @@ var file = function(path) {
 					}
 					else
 					{
-						image = await this._images(reverse ? -1 : 1, _files, from, fromReached);
+						image = await this._images(reverse ? -1 : 1, _files, from, fromReached, poster);
 						fromReached = image.fromReached;
 						image = image.images[0] || false;
 					}
@@ -326,7 +326,7 @@ var file = function(path) {
 	// Get the first images of a folder/compressed
 	this.images = async function(only = 1, from = false, poster = false) {
 
-		this.updateConfig({specialFiles: true});
+		if(poster) this.updateConfig({specialFiles: true});
 		if(!this.alreadyRead) await this.read();
 
 		if(poster)

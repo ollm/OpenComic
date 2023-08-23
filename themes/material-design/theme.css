@@ -1144,7 +1144,7 @@ body .preload
 	background-color: transparent;
 	transition: 0.2s;
 	border-radius: 12px;
-	z-index: 0;
+	z-index: 1;
 }
 
 .content-view-module .v-folder:hover:before
