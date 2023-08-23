@@ -250,7 +250,7 @@ var file = function(path) {
 		return;
 	}
 
-	this._images = async function(num, files, from = false, fromReached = false) {
+	this._images = async function(num, files, from = false, fromReached = false, poster = false) {
 
 		let images = [];
 		let imagesNum = 0;
@@ -270,11 +270,25 @@ var file = function(path) {
 			{
 				if(file.folder || file.compressed)
 				{
-					_files = file.files || await this.read({}, file.path);
+					let _poster = false;
+					let _files = file.files || await this.read({}, file.path);
 
-					image = await this._images(reverse ? -1 : 1, _files, from, fromReached);
-					fromReached = image.fromReached;
-					image = image.images[0] || false;
+					if(poster)
+					{
+						_poster = this._poster(files, file.path);
+						if(!_poster) _poster = this._poster(_files, file.path);
+					}
+
+					if(_poster)
+					{
+						image = _poster.path;
+					}
+					else
+					{
+						image = await this._images(reverse ? -1 : 1, _files, from, fromReached);
+						fromReached = image.fromReached;
+						image = image.images[0] || false;
+					}
 				}
 				else if(inArray(mime.getType(file.name), compatibleMime))
 				{
@@ -310,11 +324,20 @@ var file = function(path) {
 	}
 
 	// Get the first images of a folder/compressed
-	this.images = async function(only = 1, from = false) {
+	this.images = async function(only = 1, from = false, poster = false) {
 
+		this.updateConfig({specialFiles: true});
 		if(!this.alreadyRead) await this.read();
 
-		let images = (await this._images(only, this.files, from)).images;
+		if(poster)
+		{
+			let _poster = await this.poster();
+			if(!_poster) _poster = this._poster(this.files);
+
+			if(_poster) return _poster;
+		}
+
+		let images = (await this._images(only, this.files, from, false, poster)).images;
 
 		for(let i = 0, len = images.length; i < len; i++)
 		{
@@ -325,6 +348,45 @@ var file = function(path) {
 			images = this.sha(images);
 
 		return (Math.abs(only) == 1) ? (images[0] || false) : images;
+	}
+
+	this._poster = function(files, path = false) {
+
+		path = path || this.path;
+
+		let name = p.parse(path).name;
+
+		let regex = new RegExp('^'+pregQuote(name)+'(?:\-[0-9+])?\.[a-z0-9]+');
+		let poster = false;
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			let file = files[i];
+
+			if(!file.folder && !file.compressed && regex.test(file.name))
+			{
+				file.sha = sha1(file.path);
+				poster = file;
+
+				break;
+			}
+		}
+
+		return poster;
+	}
+
+	this.poster = async function() {
+
+		let dirname = p.dirname(this.path);
+
+		let file = fileManager.file(dirname);
+		file.updateConfig({...this.config, ...{fastRead: true, specialFiles: true, sha: false}});
+		let files = await file.read();
+
+		let poster = this._poster(files);
+
+		return poster;
+
 	}
 
 	this.sha = function(files) {

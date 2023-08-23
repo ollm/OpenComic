@@ -8,11 +8,18 @@
 {{/if}}
 <div class="content-view-module">
 	{{#each comics}}
-	<div class="{{#unless folder}}sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
+	<div class="sha-{{sha}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}"{{#if @root.comicsIndex}} oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')"{{/if}}>
 		{{#if folder}}
 		<div class="v-folder item-image">
 			{{#if poster}}
 				<div class="pi-sha-{{poster.sha}} folder-poster" style="background-image: url({{poster.path}})"></div>
+				{{#if images}}
+					{{#each images}}
+					<div class="fi-sha-{{sha}} folder-images">
+						<img src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
+					</div>
+					{{/each}}
+				{{/if}}
 			{{else}}
 				{{#each images}}
 				<div class="fi-sha-{{sha}} folder-images">

@@ -165,6 +165,16 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 			this.removeClass(..._arguments);
 	}
 
+	this.setAttribute = function(name, value) {
+
+		for(let i = 0, len = this._this.length; i < len; i++)
+		{
+			this._this[i].setAttribute(name, value);
+		}
+
+		return this;
+	}
+
 	this.getAttribute = function(attribute) {
 
 		for(let i = 0, len = this._this.length; i < len; i++)
@@ -425,31 +435,24 @@ function calcReadingProgressWD()
 
 function addImageToDom(querySelector, path, animation = true)
 {
+	let backgroundImage = 'url('+path+')';
+
+	let src = dom.queryAll('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
+
+	if(src._this.length > 0)
+		src.setAttribute('src', path);
+	else
+		src = dom.queryAll('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({backgroundImage: backgroundImage});
+
+	let pi = dom.queryAll('.pi-sha-'+querySelector).css({backgroundImage: backgroundImage});
+	let ri = dom.queryAll('.ri-sha-'+querySelector).setAttribute('src', path);
+	let cr = dom.queryAll('.continue-reading-sha-'+querySelector).css({backgroundImage: backgroundImage});
+
 	if(animation)
 	{
-		let src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
-
-		if(src.length > 0)
-			src.attr('src', path).addClass('a');
-		else
-			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'background-image': 'url('+path+')'}).addClass('a');
-
-		$('.pi-sha-'+querySelector).css({'background-image': 'url('+path+')'}).addClass('a');
-		$('.ri-sha-'+querySelector).attr('src', path);
-		$('.continue-reading-sha-'+querySelector).css({'background-image': 'url('+path+')'}).addClass('a');
-	}
-	else
-	{
-		let src = $('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
-
-		if(src.length > 0)
-			src.attr('src', path);
-		else
-			$('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({'transition': '0s', 'background-image': 'url('+path+')'});
-
-		$('.pi-sha-'+querySelector).css({'background-image': 'url('+path+')'});
-		$('.ri-sha-'+querySelector).attr('src', path);
-		$('.continue-reading-sha-'+querySelector).css({'transition': '0s', 'background-image': 'url('+path+')'});
+		src.addClass('a');
+		pi.addClass('a');
+		cr.addClass('a');
 	}
 }
 
@@ -506,21 +509,15 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 				else if(file.folder || file.compressed)
 				{
-					let poster = await getFolderPoster(filePath);
-					
-					let images = [];
-
-					if(!poster)
-					{
-						images = await getFolderThumbnails(filePath);
-					}
+					let images = await getFolderThumbnails(filePath);
 
 					pathFiles.push({
+						sha: file.sha,
 						name: fileName,
 						path: filePath,
 						mainPath: mainPath,
-						poster: poster,
-						images: images,
+						poster: images.poster,
+						images: images.images,
 						folder: true,
 					});
 				}
@@ -670,17 +667,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			for(let key in comics)
 			{
-				let poster = await getFolderPoster(comics[key].path);
-				
-				let images = [];
+				let images = await getFolderThumbnails(comics[key].path);
 
-				if(!poster)
-				{
-					images = await getFolderThumbnails(comics[key].path);
-				}
-
-				comics[key].poster = poster;
-				comics[key].images = images;
+				comics[key].sha = sha1(comics[key].path);
+				comics[key].poster = images.poster;
+				comics[key].images = images.images;
 				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
 			}
 
@@ -831,42 +822,66 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 {
 	let shaIndex = {};
 
-	for(let i = 0, len = _images.length; i < len; i++)
+	let poster = false;
+
+	if(Array.isArray(_images))
 	{
-		_images[i].vars = {i: i};
-		shaIndex[i] = _images[i].sha;
-	}
+		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-poster').remove();
 
-	_images = cache.returnThumbnailsImages(_images,  function(data, vars) {
-
-		addImageToDom(data.sha, data.path);
-		addImageToDom(folderSha+'-'+vars.i, data.path);
-
-	}, file);
-
-	for(let i = 0, len = images.length; i < len; i++)
-	{
-		let imageCache = _images[shaIndex[i]];
-
-		if(imageCache && imageCache.cache)
+		for(let i = 0, len = _images.length; i < len; i++)
 		{
-			images[i].path = imageCache.path;
-			images[i].cache = true;
+			_images[i].vars = {i: i};
+			shaIndex[i] = _images[i].sha;
+		}
 
-			if(isAsync)
+		_images = cache.returnThumbnailsImages(_images,  function(data, vars) {
+
+			addImageToDom(data.sha, data.path);
+			addImageToDom(folderSha+'-'+vars.i, data.path);
+
+		}, file);
+
+		for(let i = 0, len = images.length; i < len; i++)
+		{
+			let imageCache = _images[shaIndex[i]];
+
+			if(imageCache && imageCache.cache)
 			{
-				addImageToDom(imageCache.sha, imageCache.path);
-				addImageToDom(folderSha+'-'+i, imageCache.path);
+				images[i].path = imageCache.path;
+				images[i].cache = true;
+
+				if(isAsync)
+				{
+					addImageToDom(imageCache.sha, imageCache.path);
+					addImageToDom(folderSha+'-'+i, imageCache.path);
+				}
 			}
 		}
 	}
+	else
+	{
+		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-images').remove();
 
-	return images;
+		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha}, function(data){
+
+			addImageToDom(data.sha, data.path);
+			addImageToDom(folderSha+'-0', data.path);
+
+		}, file);
+
+		poster.sha = folderSha+'-0';
+
+		images = false;
+	}
+
+	return {poster: poster, images: images};
 }
 
 async function getFolderThumbnails(path)
 {
 	let folderSha = sha1(path);
+
+	let poster = {cache: false, path: '', sha: folderSha+'-0'};
 
 	let images = [
 		{cache: false, path: '', sha: folderSha+'-0'},
@@ -877,87 +892,27 @@ async function getFolderThumbnails(path)
 	
 	try
 	{
-		try
-		{
-			let file = fileManager.file(path);
-			file.updateConfig({cacheOnly: true});
-			let _images = await file.images(4);
+		let file = fileManager.file(path);
+		file.updateConfig({cacheOnly: true});
+		let _images = await file.images(4, false, true);
 
-			images = await _getFolderThumbnails(file, images, _images, path, folderSha);
-		}
-		catch(error)
-		{
-			if(error.message && error.message === 'notCacheOnly')
-			{
-				queue.add('folderThumbnails', async function(path, folderSha) {
+		_images = await _getFolderThumbnails(file, images, _images, path, folderSha);
 
-					let file = fileManager.file(path);
-					let _images = await file.images(4);
-
-					_getFolderThumbnails(file, images, _images, path, folderSha, true);
-
-				}, path, folderSha);
-			}
-			else
-			{
-				console.error(error);
-				dom.compressedError(error);
-			}
-		}
-	}
-	catch(error)
-	{
-		console.error(error);
-		dom.compressedError(error);
-	}
-
-	return images;
-}
-
-async function getFolderPoster(path)
-{
-	let dirname = p.dirname(path);
-	let basename = p.basename(path);
-	let name = p.parse(basename).name;
-
-	try
-	{
-		let file = fileManager.file(dirname);
-		file.updateConfig({cacheOnly: true, fastRead: true, specialFiles: true, sha: false});
-		let files = await file.read();
-
-		let regex = new RegExp('^'+pregQuote(name)+'\.[a-z0-9]+');
-		let poster = false;
-
-		for(let i = 0, len = files.length; i < len; i++)
-		{
-			let file = files[i];
-
-			if(!file.folder && !file.compressed && regex.test(file.name))
-			{
-				file.sha = sha1(file.path);
-				poster = file;
-
-				break;
-			}
-		}
-
-		if(poster)
-		{
-			let thumbnail = cache.returnThumbnailsImages({path: poster.path, sha: poster.sha}, function(data){
-
-				addImageToDom(data.sha, data.path);
-
-			}, file);
-
-			return thumbnail;
-		}
+		poster = _images.poster;
+		images = _images.poster ? false : _images.images;
 	}
 	catch(error)
 	{
 		if(error.message && error.message === 'notCacheOnly')
 		{
-			// Nothing to do
+			queue.add('folderThumbnails', async function(path, folderSha) {
+
+				let file = fileManager.file(path);
+				let _images = await file.images(4, false, true);
+
+				_getFolderThumbnails(file, images, _images, path, folderSha, true);
+
+			}, path, folderSha);
 		}
 		else
 		{
@@ -966,7 +921,7 @@ async function getFolderPoster(path)
 		}
 	}
 
-	return false;
+	return {poster: poster, images: images};
 }
 
 var indexPathControlA = [], indexPathA = false, indexMainPathA = false;
