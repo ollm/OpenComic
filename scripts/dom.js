@@ -583,6 +583,11 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 }
 
+async function reloadIndex()
+{
+	loadIndexPage(true, indexPathA, true, true, indexMainPathA);
+}
+
 var currentPath = false, currentPathScrollTop = [];
 
 async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
@@ -979,7 +984,7 @@ function indexPathControlGoBack()
 		if(goBack.isComic)
 			openComic(true, goBack.path, goBack.mainPath, false, true);
 		else
-			loadIndexPage(true, goBack.path, false, false,  goBack.mainPath, true);
+			loadIndexPage(true, goBack.path, false, false, goBack.mainPath, true);
 
 
 		indexPathControlA.pop();
@@ -1003,15 +1008,15 @@ var barBackStatus = false;
 // This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
 function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false)
 {
+	indexPathA = path;
+	indexMainPathA = mainPath;
+
 	if(path === false || mainPath === false)
 	{
 		indexPathControlA = [];
 	}
 	else
 	{
-		indexPathA = path;
-		indexMainPathA = mainPath;
-
 		mainPathR = addSepToEnd(p.dirname(mainPath));
 
 		let files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
@@ -1577,6 +1582,7 @@ gamepad.setButtonEvent('reading', 1, function(key, button) {
 
 module.exports = {
 	loadIndexPage: loadIndexPage,
+	reloadIndex: reloadIndex,
 	loadLanguagesPage: loadLanguagesPage,
 	loadSettingsPage: loadSettingsPage,
 	loadThemePage: loadThemePage,

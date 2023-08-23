@@ -27,6 +27,7 @@
 		"add": "Añadir",
 		"addToLibrary": "Añadir a la biblioteca",
 		"unsupportedFile": "El archivo no es compatible",
+		"reload": "Recargar",
 		"language": "Idioma",
 		"settings": "Ajustes",
 		"theme": "Tema",
