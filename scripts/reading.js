@@ -993,9 +993,11 @@ function goEnd(force = false)
 	}
 }
 
-function leftClick(e)
+function leftClick(event)
 {
-	var isTouch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) ? true : false;
+	if(event.target.classList.contains('folder') || event.target.closest('.folder')) return;
+
+	let isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
 	if(!reading.haveZoom() && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
@@ -1008,7 +1010,9 @@ function leftClick(e)
 
 function rightClick(e)
 {
-	var isTouch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) ? true : false;
+	if(event.target.classList.contains('folder') || event.target.closest('.folder')) return;
+
+	let isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
 	if(!reading.haveZoom() && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
@@ -1125,7 +1129,6 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 	if(mode == 1)
 	{
-
 		var transition = _config.readingViewSpeed < _config.readingDelayComicSkip ? _config.readingViewSpeed : _config.readingDelayComicSkip;
 
 		if(_config.readingDelayComicSkip != 0)
@@ -1141,7 +1144,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 				var scale = ((contentWidth - 100) / contentWidth);
 
-				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				template.contentRight('.reading-body, .reading-lens > div').css({
 					'transform-origin': contentWidth+'px center',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -1284,8 +1287,6 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 				//if(addY > 0)
 				//	addY = 0;
-
-				console.log(addY);
 			}
 
 			translateX = (scalePrevData.tranX / scalePrevData.scale * scale) + (addX / scalePrevData.scale * (scale - scalePrevData.scale));

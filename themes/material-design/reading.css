@@ -46,6 +46,8 @@
 	background-repeat: no-repeat;
 	background-position: 50%;
 	margin-left: calc(100% - 80px);
+	transition: 0.2s border;
+	border: 1px solid var(--md-sys-color-surface-variant);
 }
 
 .reading-number
