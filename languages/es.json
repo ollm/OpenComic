@@ -111,6 +111,11 @@
 		"others": {
 			"main": "Otras ajustes",
 			"startInFullScreen": "Inicial OpenComic en pantalla completa"
+		},
+		"releases": {
+			"main": "Comprobar nuevas versiones",
+			"checkReleases": "Comprobar si existe una nueva versión al iniciar OpenComic",
+			"checkPreReleases": "Mostrar versiones preliminares (versiones beta/alfa)"
 		}
 	},
 	"menu": {
@@ -164,6 +169,10 @@
 			"readingConfigName": "Nombre de la configuración",
 			"readingConfigRemoveHeader": "Eliminar configuración",
 			"readingConfigRemove": "¿Seguro que quiere eliminar esta configuración?"
+		},
+		"release": {
+			"title": "Nueva versión disponible <b>{{releaseName}}</b>",
+			"body": "Puede ver los cambios implementados desde la {{{linkStart}}}página de lanzamiento{{{linkEnd}}}"
 		}
 	},
 	"buttons": {
@@ -171,7 +180,8 @@
 		"ok": "Ok",
 		"undo": "Deshacer",
 		"dismiss": "Descartar",
-		"remove": "Eliminar"
+		"remove": "Eliminar",
+		"download": "Descargar"
 	},
 	"error": {
 		"uncompress": {

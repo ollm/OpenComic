@@ -28,6 +28,19 @@ function setStartInFullScreen(value)
 	storage.updateVar('config', 'startInFullScreen', value);
 }
 
+function setCheckReleases(value)
+{
+	storage.updateVar('config', 'checkReleases', value);
+
+	dom.query('.settings-check-prereleases').class(!value, 'disable-pointer');
+}
+
+function setCheckPreReleases(value)
+{
+	storage.updateVar('config', 'checkPreReleases', value);
+}
+
+
 module.exports = {
 	start: start,
 	setMaxMargin: setMaxMargin,
@@ -35,4 +48,6 @@ module.exports = {
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,
 	setStartInFullScreen: setStartInFullScreen,
+	setCheckReleases: setCheckReleases,
+	setCheckPreReleases: setCheckPreReleases,
 };

@@ -9,12 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### 🚀 New Features
 
 - Reload button in file list [`31675a5`](https://github.com/ollm/OpenComic/commit/31675a5a8334abedc056a09a5107f718dc5304e0)
+- Check if there is a new version when starting OpenComic
 
 ### 🐛 Bug Fixes
 
 - Improved local artwork assets support [`f21cccd`](https://github.com/ollm/OpenComic/commit/f21cccd9c2c943f7ad8735e106afff453397cfbf)
 - Some errors on Tracking feature [`50d8487`](https://github.com/ollm/OpenComic/commit/50d84874ea99cdace27f2c3bfc994b3338f23a42)
-- Updated snackbar to Material 3
+- Updated snackbar to Material 3 [`ae8e195`](https://github.com/ollm/OpenComic/commit/ae8e1955dd10b9f54166dddd1af8281c67bb841a)
 
 ## [v1.0.0-beta.1](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.1) (22-08-2023)
 

@@ -215,6 +215,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),
 	theme = require(p.join(appDir, 'scripts/theme.js')),
 	dragAndDrop = require(p.join(appDir, 'scripts/drag-and-drop.js')),
+	checkReleases = require(p.join(appDir, 'scripts/check-releases.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
@@ -248,6 +249,9 @@ window.onload = function() {
 
 function startApp()
 {
+	if(config.checkReleases)
+		checkReleases.check();
+
 	template.loadContentRight('index.content.right.module.html', false);
 	template.loadHeader('index.header.html', false);
 	template.loadContentLeft('index.content.left.html', false);

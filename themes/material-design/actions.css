@@ -1,4 +1,10 @@
 
+.link
+{
+	color: var(--md-sys-color-primary);
+	text-decoration: none;
+}
+
 /* Buttons */
 
 .floating-action-button
@@ -548,7 +554,7 @@
 	height: 32px;
 	padding: 0px 24px;
 	line-height: 32px;
-	transition: background-color 0.2s;
+	transition: background-color 0.2s, opacity 0.2s;
 }
 
 .menu-simple-text, .menu-simple-button
@@ -556,7 +562,7 @@
 	height: 52px;
 	padding: 0px 24px;
 	line-height: 52px;
-	transition: background-color 0.2s;
+	transition: background-color 0.2s, opacity 0.2s;
 }
 
 .menu-simple-text .switch
@@ -1067,7 +1073,7 @@
 {
 	min-height: 64px;
 	padding: 0px 24px 15px 24px;
-	transition: background-color 0.2s;
+	transition: background-color 0.2s, opacity 0.2s;
 	box-sizing: border-box;
 }
 
@@ -1075,7 +1081,7 @@
 {
 	min-height: 32px;
 	line-height: 32px;
-	transition: background-color 0.2s;
+	transition: background-color 0.2s, opacity 0.2s;
 	margin-bottom: 15px;
 }
 
