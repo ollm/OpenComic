@@ -703,9 +703,9 @@ body .preload
 	height: 100%;
 	opacity: 0;
 	transform: scaleX(0.32);
-	transition-duration: 0.15s;
-	transition-property: transform, opacity;
-	transition-timing-function: linear;
+	transition-duration: 0.15s, 0.15s, 0.2s;
+	transition-property: transform, opacity, background;
+	transition-timing-function: linear, linear, ease;
 	border-radius: 100px;
 	background: var(--md-sys-color-secondary-container);
 	z-index: -1;

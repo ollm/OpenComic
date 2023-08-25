@@ -11,7 +11,8 @@ let allColors = `@import url(./colors.module.css);
 @import url(./theme.light.css);
 @import url(./theme.dark.css);
 @import url(./theme.light.missing.css);
-@import url(./theme.dark.missing.css);`;
+@import url(./theme.dark.missing.css);
+`;
 
 for(let key in folders)
 {
@@ -45,11 +46,13 @@ for(let key in folders)
 		if(fs.existsSync(p.join(path, 'theme.light.missing.css'))) fs.unlinkSync(p.join(path, 'theme.light.missing.css'), 'utf8');
 		if(fs.existsSync(p.join(path, 'theme.dark.css'))) fs.unlinkSync(p.join(path, 'theme.dark.css'), 'utf8');
 		if(fs.existsSync(p.join(path, 'theme.dark.missing.css'))) fs.unlinkSync(p.join(path, 'theme.dark.missing.css'), 'utf8');
+		if(fs.existsSync(p.join(path, 'typography.module.css'))) fs.unlinkSync(p.join(path, 'typography.module.css'), 'utf8');
+		if(fs.existsSync(p.join(path, 'colors.module.css'))) fs.unlinkSync(p.join(path, 'colors.module.css'), 'utf8');
 
 		let _tokens = fs.readFileSync(p.join(path, 'tokens.css'), 'utf8');
 		fs.writeFileSync(p.join(path, 'tokens.css'), _tokens.replace(/^\s*[\/.:a-z0-9-]+/iug, '.app.'+color));
 
-		allColors += '@import url(\'./'+color+'/theme.css\');\n';
+		allColors += '@import url(./'+color+'/theme.css);\n';
 		allColorsJs.push(color);
 	}
 }
