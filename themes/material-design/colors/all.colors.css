@@ -1,4 +1,9 @@
-@import url('./blue/theme.css');
+@import url(./colors.module.css);
+@import url(./typography.module.css);
+@import url(./theme.light.css);
+@import url(./theme.dark.css);
+@import url(./theme.light.missing.css);
+@import url(./theme.dark.missing.css);@import url('./blue/theme.css');
 @import url('./green/theme.css');
 @import url('./red/theme.css');
 @import url('./yellow/theme.css');

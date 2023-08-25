@@ -1,4 +1,4 @@
-:root {
+.app.night-mode {
 	/*--md-sys-color-surface-dim: var(--md-ref-palette-neutral6);
 	--md-sys-color-surface-bright: var(--md-ref-palette-neutral24);*/
 	--md-sys-color-surface-container-lowest: var(--md-ref-palette-surface-dark);

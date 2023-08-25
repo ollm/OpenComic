@@ -4,8 +4,14 @@ const p = require('path');
 let basepath = p.dirname(__filename);
 
 let folders = fs.readdirSync(basepath);
-let allColors = '';
 let allColorsJs = [];
+
+let allColors = `@import url(./colors.module.css);
+@import url(./typography.module.css);
+@import url(./theme.light.css);
+@import url(./theme.dark.css);
+@import url(./theme.light.missing.css);
+@import url(./theme.dark.missing.css);`;
 
 for(let key in folders)
 {
@@ -33,24 +39,12 @@ for(let key in folders)
 
 		fs.writeFileSync(p.join(path, 'tokens.missing.css'), tokens); 
 
-		fs.copyFileSync(p.join(basepath, 'theme.light.missing.css'), p.join(path, 'theme.light.missing.css'));
-		fs.copyFileSync(p.join(basepath, 'theme.dark.missing.css'), p.join(path, 'theme.dark.missing.css'));
 		fs.copyFileSync(p.join(basepath, 'theme.css'), p.join(path, 'theme.css'));
 
-		let typography = fs.readFileSync(p.join(path, 'typography.module.css'), 'utf8');
-		fs.writeFileSync(p.join(path, 'typography.module.css'), typography.replace(/-tracking\);/iug, '-letter-spacing\);'));
-
-		let light = fs.readFileSync(p.join(path, 'theme.light.css'), 'utf8');
-		fs.writeFileSync(p.join(path, 'theme.light.css'), light.replace(/^\s*[\/.:a-z0-9-]+/iug, '.app.'+color));
-
-		let lightMissing = fs.readFileSync(p.join(path, 'theme.light.missing.css'), 'utf8');
-		fs.writeFileSync(p.join(path, 'theme.light.missing.css'), lightMissing.replace(/^\s*[\/.:a-z0-9-]+/iug, '.app.'+color));
-
-		let dark = fs.readFileSync(p.join(path, 'theme.dark.css'), 'utf8');
-		fs.writeFileSync(p.join(path, 'theme.dark.css'), dark.replace(/^\s*[\/.:a-z0-9-]+/iug, '.app.'+color+'.night-mode'));
-
-		let darkMissing = fs.readFileSync(p.join(path, 'theme.dark.missing.css'), 'utf8');
-		fs.writeFileSync(p.join(path, 'theme.dark.missing.css'), darkMissing.replace(/^\s*[\/.:a-z0-9-]+/iug, '.app.'+color+'.night-mode'));
+		if(fs.existsSync(p.join(path, 'theme.light.css'))) fs.unlinkSync(p.join(path, 'theme.light.css'), 'utf8');
+		if(fs.existsSync(p.join(path, 'theme.light.missing.css'))) fs.unlinkSync(p.join(path, 'theme.light.missing.css'), 'utf8');
+		if(fs.existsSync(p.join(path, 'theme.dark.css'))) fs.unlinkSync(p.join(path, 'theme.dark.css'), 'utf8');
+		if(fs.existsSync(p.join(path, 'theme.dark.missing.css'))) fs.unlinkSync(p.join(path, 'theme.dark.missing.css'), 'utf8');
 
 		let _tokens = fs.readFileSync(p.join(path, 'tokens.css'), 'utf8');
 		fs.writeFileSync(p.join(path, 'tokens.css'), _tokens.replace(/^\s*[\/.:a-z0-9-]+/iug, '.app.'+color));

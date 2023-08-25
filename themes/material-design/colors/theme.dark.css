@@ -1,4 +1,4 @@
-.app.blue.night-mode {
+.app.night-mode {
  --md-sys-color-primary: var(--md-sys-color-primary-dark);
  --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
  --md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);

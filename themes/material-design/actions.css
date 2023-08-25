@@ -1253,3 +1253,136 @@
 {
 	transform: scale(1);
 }
+
+
+.big-tabs
+{
+	height: 80px;
+	border-radius: 40px;
+	background-color: var(--md-sys-color-surface-container);
+	display: flex;
+	margin: 0px 24px;
+	width: calc(100% - 48px);
+}
+
+.big-tabs > div
+{
+	height: 80px;
+	border-radius: 40px;
+	position: relative;
+	z-index: 2;
+	display: flex;
+	line-height: 80px;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+	cursor: pointer;
+}
+
+.big-tabs > div:before
+{
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transform: scaleX(0.32);
+	transition-duration: 0.2s;
+	transition-property: transform, opacity;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+	border-radius: 100px;
+	background: var(--md-sys-color-secondary-container);
+	z-index: -1;
+}
+
+.big-tabs > div.active
+{
+	color: var(--md-sys-color-on-secondary-container);
+}
+
+.big-tabs > div.active:before
+{
+	opacity: 1;
+	transform: scaleX(1);
+	background-color: var(--md-sys-color-secondary-container);
+	color: var(--md-sys-color-on-secondary-container);
+}
+
+.big-tabs > div .material-icon
+{
+	margin-right: 8px;
+	margin-top: 28px;
+	/*transition: font-variation-settings 0.15s cubic-bezier(0.4, 0, 0.2, 1);*/
+}
+
+.big-tabs > div.active .material-icon
+{
+	color: var(--md-sys-color-on-secondary-container);
+	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+
+.big-tabs-content
+{
+	position: relative;
+}
+
+.big-tabs-content > div
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	display: none;
+}
+
+.big-tabs-content > div.active
+{
+	display: block;
+}
+
+.big-tabs-content > div.show-from-left
+{
+	animation-fill-mode: forwards;
+	animation-name: show-from-left;
+	animation-duration: 0.4s;
+	animation-timing-function: cubic-bezier(0.2, 0, 0.8, 1);
+}
+
+.big-tabs-content > div.show-from-right
+{
+	animation-fill-mode: forwards;
+	animation-name: show-from-left;
+	animation-duration: 0.4s;
+	animation-timing-function: cubic-bezier(0.2, 0, 0.8, 1);
+}
+
+@keyframes show-from-left
+{
+	from
+	{
+		opacity: 0;
+		transform: translate(-50px, 0px);
+	}
+	to
+	{
+		opacity: 1;
+		transform: translate(0px, 0px);
+	}
+}
+
+@keyframes show-from-right
+{
+	from
+	{
+		opacity: 0;
+		transform: translate(50px, 0px);
+	}
+	to
+	{
+		opacity: 1;
+		transform: translate(0px, 0px);
+	}
+}

@@ -912,7 +912,6 @@ body .preload
 	line-height: 48px;
 	transition: 0.2s;
 	cursor: pointer;
-	border-bottom: 1px solid var(--md-sys-color-surface-variant);
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
