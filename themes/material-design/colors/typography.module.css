@@ -1,3 +1,38 @@
+:root .app {
+  /* Fix wrong font weight */
+  /* display - large */
+  --md-sys-typescale-display-large-font-weight: 400 !important;
+  /* display - medium */
+  --md-sys-typescale-display-medium-font-weight: 400 !important;
+  /* display - small */
+  --md-sys-typescale-display-small-font-weight: 400 !important;
+  /* headline - large */
+  --md-sys-typescale-headline-large-font-weight: 400 !important;
+  /* headline - medium */
+  --md-sys-typescale-headline-medium-font-weight: 400 !important;
+  /* headline - small */
+  --md-sys-typescale-headline-small-font-weight: 400 !important;
+  /* body - large */
+  --md-sys-typescale-body-large-font-weight: 400 !important;
+  /* body - medium */
+  --md-sys-typescale-body-medium-font-weight: 400 !important;
+  /* body - small */
+  --md-sys-typescale-body-small-font-weight: 400 !important;
+  /* label - large */
+  --md-sys-typescale-label-large-font-weight: 500 !important;
+  /* label - medium */
+  --md-sys-typescale-label-medium-font-weight: 500 !important;
+  /* label - small */
+  --md-sys-typescale-label-small-font-weight: 500 !important;
+  /* title - large */
+  --md-sys-typescale-title-large-font-weight: 400 !important;
+  /* title - medium */
+  --md-sys-typescale-title-medium-font-weight: 500 !important;
+  /* title - small */
+  --md-sys-typescale-title-small-font-weight: 500 !important;
+}
+
+
 .display-large{
   font-family: var(--md-sys-typescale-display-large-font-family-name);
   font-style: var(--md-sys-typescale-display-large-font-family-style);

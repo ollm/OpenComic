@@ -3,6 +3,7 @@
 	"productName": "OpenComic",
 	"version": "1.0.0-beta.2",
 	"main": "scripts/main.js",
+	"type": "commonjs",
 	"keywords": [
 		"comics",
 		"manga",
@@ -22,7 +23,7 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "npm run prebuild && electron --trace-warnings scripts/main.js",
+		"start": "npm run prebuild && electron --trace-warnings --enable-logging scripts/main.js",
 		"rebuild": "electron-rebuild -f -w sharp",
 		"rebuild2": "electron-builder node-gyp-rebuild",
 		"prebuild": "node scripts/build.js; node themes/material-design/colors/generate-colors.js",
@@ -71,13 +72,14 @@
 		"pdfjs-dist": "^3.8.162",
 		"sha1": "^1.1.1",
 		"sharp": "^0.32.4",
+		"shosho": "^1.4.2",
 		"tar-fs": "^3.0.4",
 		"unrar": "^0.2.0",
 		"unzipper": "^0.10.14"
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^25.5.0",
+		"electron": "^27.0.0-alpha.2",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"nodemon": "^3.0.1"

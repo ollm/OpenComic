@@ -4,7 +4,7 @@
 	<div class="theme-page">
 		{{#each themeColors}}
 
-			<div class="theme-page-item{{#if active}} active{{/if}}" onclick="theme.setColor('{{key}}');">
+			<div class="theme-page-item gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}{{#if active}} active{{/if}}" onclick="theme.setColor('{{key}}');">
 				<div>
 					<div>
 						{{#each colors}}

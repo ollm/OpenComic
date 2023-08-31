@@ -98,6 +98,7 @@
 		"currentReading": "Lectura actual"
 	},
 	"settings": {
+		"general": "General",
 		"reading": {
 			"main": "Preferencias de lectura",
 			"maxMargin": "Margen horizontal y vertical máximo",
@@ -109,13 +110,29 @@
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta"
 		},
 		"others": {
-			"main": "Otras ajustes",
+			"main": "Otros ajustes",
 			"startInFullScreen": "Inicial OpenComic en pantalla completa"
 		},
 		"releases": {
 			"main": "Comprobar nuevas versiones",
 			"checkReleases": "Comprobar si existe una nueva versión al iniciar OpenComic",
 			"checkPreReleases": "Mostrar versiones preliminares (versiones beta/alfa)"
+		},
+		"shortcuts": {
+			"main": "Atajos",
+			"keyboard": "Teclado",
+			"whenReading": "Al leer",
+			"gamepadMenu": "Menú del mando",
+			"useGamepad": "Utiliza un mando para cambiar la acción",
+			"restoreDefaults": "Restaurar valores por defecto",
+			"action": "Acción",
+			"key1": "Tecla 1",
+			"key2": "Tecla 2",
+			"key3": "Tecla 3",
+			"key4": "Tecla 4",
+			"key5": "Tecla 5",
+			"gamepad1": "Botón 1",
+			"gamepad2": "Botón 2"
 		}
 	},
 	"menu": {

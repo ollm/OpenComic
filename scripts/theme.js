@@ -68,6 +68,8 @@ function start()
 	}
 
 	template.loadContentRight('theme.content.right.html', true);
+
+	gamepad.updateBrowsableItems('theme');
 }
 
 module.exports = {

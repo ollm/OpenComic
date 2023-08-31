@@ -1,5 +1,66 @@
 var buttonCancel, buttonPulsed;
 
+function eventsTab()
+{
+	app.event('.big-tabs > div > div', 'click', _eventsTab, {capture: false});
+
+	let tabs = document.querySelectorAll('.big-tabs > div > div');
+
+	for(let i = 0, len = tabs.length; i < len; i++)
+	{
+		tabs[i].dataset.index = i;
+	}
+}
+
+var eventsTabST = false;
+
+function _eventsTab(event)
+{
+	if(!this.classList.contains('active') && !eventsTabST)
+	{
+		let current = this.parentElement.querySelector('.active');
+		let currentIndex = +current.dataset.index;
+		let currentName = current.dataset.name;
+
+		let index = +this.dataset.index;
+		let name = this.dataset.name;
+		let onEndAnimation = this.dataset.onEndAnimation;
+
+		current.classList.remove('active');
+		this.classList.add('active');
+
+
+		let contentRight = template._contentRight();
+
+		let currentContent = contentRight.querySelector('.big-tabs-content .big-tabs-'+currentName);
+		let content = contentRight.querySelector('.big-tabs-content .big-tabs-'+name);
+
+		let classShow = currentIndex > index ? 'show-from-left' : 'show-from-right';
+		let classRemove = currentIndex > index ? 'hide-to-right' : 'hide-to-left';
+
+		currentContent.classList.add(classRemove, 'show');
+		currentContent.classList.remove('active');
+
+		eventsTabST = setTimeout(function(){
+
+			content.classList.add(classShow, 'active');
+
+			eventsTabST = setTimeout(function(){
+
+				content.classList.remove(classShow);
+				currentContent.classList.remove(classRemove, 'show');
+
+				if(onEndAnimation)
+					eval(onEndAnimation);
+
+				eventsTabST = false;
+
+			}, 250);
+
+		}, 250);
+	}
+}
+
 function eventButton()
 {
 
@@ -179,16 +240,32 @@ function rangePosition(input, range)
 
 	if(step && (max - min) / step < 60) // Only show steps if has less 60
 	{
+		let rangeSteps = range.querySelectorAll('.range-steps > div');
+		let len = rangeSteps.length;
+
 		let total = Math.round((max - min) / step);
-		let steps = '';
 
-		for(let i = 0; i <= total; i++)
+		if(len > 0)
 		{
-			let stepValue = i * step;
-			steps += '<div'+(stepValue > (value - min) ? '' : ' class="active"')+' style="left: '+(i / total * 100)+'%"></div>';
+			for(let i = 0; i < len; i++)
+			{
+				if(i * step > (value - min))
+					rangeSteps[i].classList.remove('active');
+				else
+					rangeSteps[i].classList.add('active');
+			}
 		}
+		else
+		{
+			let steps = '';
 
-		range.querySelector('.range-steps').innerHTML = steps;
+			for(let i = 0; i <= total; i++)
+			{
+				steps += '<div'+(i * step > (value - min) ? '' : ' class="active"')+' style="left: '+(i / total * 100)+'%"></div>';
+			}
+
+			range.querySelector('.range-steps').innerHTML = steps;
+		}
 	}
 }
 
@@ -254,6 +331,7 @@ function events()
 	eventButton();
 	eventSwitch();
 	eventRange();
+	eventsTab();
 }
 
 function showHoverText()

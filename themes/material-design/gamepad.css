@@ -1,0 +1,182 @@
+.gamepad-image
+{
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	transition: background-image 0.2s;
+}
+
+.gamepad-image-a
+{
+	background-image: url(./icons/gamepad/button/A_light_dark.png);
+}
+
+.gamepad-image-b
+{
+	background-image: url(./icons/gamepad/button/B_light_dark.png);
+}
+
+.gamepad-image-x
+{
+	background-image: url(./icons/gamepad/button/X_light_dark.png);
+}
+
+.gamepad-image-y
+{
+	background-image: url(./icons/gamepad/button/Y_light_dark.png);
+}
+
+.gamepad-image-left
+{
+	background-image: url(./icons/gamepad/digipad/Left_light.png);
+}
+
+.gamepad-image-right
+{
+	background-image: url(./icons/gamepad/digipad/Right_light.png);
+}
+
+.gamepad-image-up
+{
+	background-image: url(./icons/gamepad/digipad/Up_light.png);
+}
+
+.gamepad-image-down
+{
+	background-image: url(./icons/gamepad/digipad/Down_light.png);
+}
+
+.gamepad-image-lb
+{
+	background-image: url(./icons/gamepad/shoulder-button/LB_light.png);
+}
+
+.gamepad-image-rb
+{
+	background-image: url(./icons/gamepad/shoulder-button/RB_light.png);
+}
+
+.gamepad-image-lt
+{
+	background-image: url(./icons/gamepad/shoulder-button/LT_tall_light.png);
+}
+
+.gamepad-image-rt
+{
+	background-image: url(./icons/gamepad/shoulder-button/RT_tall_light.png);
+}
+
+.gamepad-image-menu
+{
+	background-image: url(./icons/gamepad/special/Menu_light.png);
+}
+
+.gamepad-image-view
+{
+	background-image: url(./icons/gamepad/special/View_light.png);
+}
+
+.gamepad-image-xbox
+{
+	background-image: url(./icons/gamepad/special/Xbox_light.png);
+}
+
+.gamepad-image-l
+{
+	background-image: url(./icons/gamepad/stick/L_light.png);
+}
+
+.gamepad-image-r
+{
+	background-image: url(./icons/gamepad/stick/R_light.png);
+}
+
+/*Night mode*/
+
+.night-mode .gamepad-image-a
+{
+	background-image: url(./icons/gamepad/button/A_dark_light.png);
+}
+
+.night-mode .gamepad-image-b
+{
+	background-image: url(./icons/gamepad/button/B_dark_light.png);
+}
+
+.night-mode .gamepad-image-x
+{
+	background-image: url(./icons/gamepad/button/X_dark_light.png);
+}
+
+.night-mode .gamepad-image-y
+{
+	background-image: url(./icons/gamepad/button/Y_dark_light.png);
+}
+
+.night-mode .gamepad-image-left
+{
+	background-image: url(./icons/gamepad/digipad/Left_dark.png);
+}
+
+.night-mode .gamepad-image-right
+{
+	background-image: url(./icons/gamepad/digipad/Right_dark.png);
+}
+
+.night-mode .gamepad-image-up
+{
+	background-image: url(./icons/gamepad/digipad/Up_dark.png);
+}
+
+.night-mode .gamepad-image-down
+{
+	background-image: url(./icons/gamepad/digipad/Down_dark.png);
+}
+
+.night-mode .gamepad-image-lb
+{
+	background-image: url(./icons/gamepad/shoulder-button/LB_dark.png);
+}
+
+.night-mode .gamepad-image-rb
+{
+	background-image: url(./icons/gamepad/shoulder-button/RB_dark.png);
+}
+
+.night-mode .gamepad-image-lt
+{
+	background-image: url(./icons/gamepad/shoulder-button/LT_tall_dark.png);
+}
+
+.night-mode .gamepad-image-rt
+{
+	background-image: url(./icons/gamepad/shoulder-button/RT_tall_dark.png);
+}
+
+.night-mode .gamepad-image-menu
+{
+	background-image: url(./icons/gamepad/special/Menu_dark.png);
+}
+
+.night-mode .gamepad-image-view
+{
+	background-image: url(./icons/gamepad/special/View_dark.png);
+}
+
+.night-mode .gamepad-image-xbox
+{
+	background-image: url(./icons/gamepad/special/Xbox_dark.png);
+}
+
+.night-mode .gamepad-image-l
+{
+	background-image: url(./icons/gamepad/stick/L_dark.png);
+}
+
+.night-mode .gamepad-image-r
+{
+	background-image: url(./icons/gamepad/stick/R_dark.png);
+}

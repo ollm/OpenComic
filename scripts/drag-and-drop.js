@@ -9,6 +9,8 @@ function showDropZone(event)
 	clearTimeout(hideDropZoneST);
 	clearTimeout(showDropZoneST);
 
+	allowDrag(event);
+
 	let dropZone = document.querySelector('.drop-zone');
 
 	if(!dragAndDropStarted)
@@ -61,10 +63,10 @@ function hideDropZone(event, force = false)
 
 }
 
-function checkDragPosition()
+function allowDrag(event)
 {
-	event.dataTransfer.dropEffect = 'link';
 	event.preventDefault();
+	event.dataTransfer.dropEffect = 'link';
 }
 
 function handleDrop(event)
@@ -106,7 +108,7 @@ function start()
 {
 	app.event(window, 'dragenter', showDropZone);
 	app.event(window, 'dragleave', hideDropZone);
-	app.event(window, 'dragover', checkDragPosition);
+	app.event(window, 'dragover', allowDrag);
 	app.event(window, 'drop', handleDrop);
 
 	app.event(document, 'mouseenter', function(event){

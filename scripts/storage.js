@@ -1,4 +1,4 @@
-var changes = 44; // Update this if readingPagesConfig is updated
+var changes = 45; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -147,6 +147,30 @@ var storageDefault = {
 			},
 		}
 	},
+	shortcuts: {
+		browse: {
+			actionsConfigured: [
+				'',
+			],
+			shortcuts: {
+				wildcard: '',
+			},
+			gamepad: {
+				wildcard: '',
+			},
+		},
+		reading: {
+			actionsConfigured: [
+				'',
+			],
+			shortcuts: {
+				wildcard: '',
+			},
+			gamepad: {
+				wildcard: '',
+			},
+		},
+	},
 	cache: {
 		wildcard: {
 			lastAccess: 0,
@@ -215,26 +239,58 @@ function getLocaleUserLanguage(userLanguage = false)
 	return getLocaleUserLanguageCache[_userLanguage] = 'en';
 }
 
+function parseDefaultObj(defaultObj)
+{
+	let newData;
+
+	if(typeof defaultObj !== 'object')
+	{
+		newData = defaultObj;
+	}
+	else if($.isArray(defaultObj))
+	{
+		newData = updateStorageArrayMD([], defaultObj);
+	}
+	else
+	{
+		newData = {};
+
+		for(let key in defaultObj)
+		{
+			if($.isArray(defaultObj[key]))
+				newData[key] = updateStorageArrayMD([], defaultObj[key]);
+			else if(key !== 'wildcard' && typeof defaultObj[key] == 'object')
+				newData[key] = parseDefaultObj(defaultObj[key]);
+			else if(key !== 'wildcard')
+				newData[key] = defaultObj[key];
+		}
+	}
+
+	return newData;
+}
+
 function updateStorageArrayMD(data, defaultObj)
 {
-	var newData = [];
+	let newData = [];
 
 	if(!isEmpty(data))
 	{
-		for(let index in data)
+		for(let i = 0, len = data.length; i < len; i++)
 		{
-			newData[index] = updateStorageMD(data[index], defaultObj[0]);
+			newData.push(updateStorageMD(data[i], defaultObj[0]));
 		}
 	}
 	else
 	{
-		if(defaultObj.length > 1)
+		let len = defaultObj.length;
+
+		if(len > 1)
 		{
 			newData = [];
 
-			for(var i = 1; i < defaultObj.length; i++)
+			for(let i = 1; i < len; i++)
 			{
-				newData[i-1] = defaultObj[i];
+				newData.push(defaultObj[i]);
 			}
 		}
 	}
@@ -244,15 +300,15 @@ function updateStorageArrayMD(data, defaultObj)
 
 function updateStorageMD(data, defaultObj)
 {
+	let newData;
+
 	if($.isArray(defaultObj))
 	{
-		var newData = [];
-
 		newData = updateStorageArrayMD(data, defaultObj);
 	}
 	else
 	{
-		var newData = {};
+		newData = {};
 
 		for(let key in defaultObj)
 		{
@@ -273,7 +329,7 @@ function updateStorageMD(data, defaultObj)
 			}
 			else if(isEmpty(data) || typeof data[key] === 'undefined')
 			{
-				newData[key] = defaultObj[key];
+				newData[key] = parseDefaultObj(defaultObj[key]);
 			}
 			else if($.isArray(defaultObj[key]))
 			{
@@ -407,6 +463,7 @@ module.exports = {
 	push: push,
 	storageJson: storageJson,
 	updateStorageMD: updateStorageMD,
+	parseDefaultObj: parseDefaultObj,
 	getLocaleUserLanguage: getLocaleUserLanguage,
 	readingPagesConfig: readingPagesConfig,
 	changes: changes,

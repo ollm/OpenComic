@@ -1,9 +1,10 @@
 
 .settings-body
 {
-	max-width: 900px;
+	max-width: 1200px;
 	margin: auto;
-	padding-top: 30px;
+	padding: 30px 0px 0px 0px;
+	width: calc(100% + 12px);
 }
 
 .settings-body h1, .settings-body h2
@@ -19,4 +20,26 @@
 .settings-body .big-tabs-content > div
 {
 	padding-bottom: 60px;
+}
+
+.settings-body .big-tabs-shortcuts h2
+{
+	margin: 40px 0px 40px 0px;
+}
+
+.settings-body table
+{
+	margin: 0px 24px;
+	width: calc(100% - 48px);
+}
+
+.settings-shortcuts-table
+{
+	overflow: auto;
+}
+
+.settings-shortcuts-table .simple-button
+{
+	float: right;
+	margin: 32px 24px 6px 0px;
 }

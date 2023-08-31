@@ -4,6 +4,7 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	padding-bottom: 60px;
+	padding: 0px 24px;
 }
 
 .theme-page-item
@@ -13,9 +14,9 @@
 	background-color: var(--md-sys-color-surface-container-low);
 	transition: 0.2s;
 	margin-bottom: 16px;
-	overflow: hidden;
 	cursor: pointer;
 	float: left;
+	position: relative;
 }
 
 .theme-page-item:hover
@@ -26,7 +27,7 @@
 .theme-page-item > div
 {
 	height: 200px;
-	border-radius: 0px 0px 24px 24px;
+	border-radius: 24px 24px 24px 24px;
 	overflow: hidden;
 }
 
@@ -47,4 +48,32 @@
 	display: block;
 	position: relative;
 	margin: 24px;
+}
+
+.theme-page-item.gamepad-highlight
+{
+	transform: scale(1.02);
+}
+
+.theme-page-item:after
+{
+	content: '';
+	display: block;
+	background-color: transparent;
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	box-sizing: border-box;
+	border: 4px solid rgba(180, 180, 180, 1);
+	border-radius: 26px;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.theme-page-item.gamepad-highlight:after
+{
+	opacity: 1;
+	animation: 4s blink normal 1s infinite ease-in-out;
 }

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Reload button in file list [`31675a5`](https://github.com/ollm/OpenComic/commit/31675a5a8334abedc056a09a5107f718dc5304e0)
 - Check if there is a new version when starting OpenComic [`82f1abd`](https://github.com/ollm/OpenComic/commit/82f1abdac5c1ae6f26e88f5f2374c54edcfcaae7)
+- Custom keyboard and gamepad shortcuts
 
 ### 🐛 Bug Fixes
 

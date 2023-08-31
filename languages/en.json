@@ -98,6 +98,7 @@
 		"currentReading": "Current reading"
 	},
 	"settings": {
+		"general": "General",
 		"reading": {
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",
@@ -116,6 +117,22 @@
 			"main": "Check for new versions",
 			"checkReleases": "Check if there is a new version when starting OpenComic",
 			"checkPreReleases": "Show pre-release versions (beta/alpha versions)"
+		},
+		"shortcuts": {
+			"main": "Shortcuts",
+			"keyboard": "Keyboard",
+			"whenReading": "When reading",
+			"gamepadMenu": "Gamepad menu",
+			"useGamepad": "Use a gamepad to change the action",
+			"restoreDefaults": "Restore default values",
+			"action": "Action",
+			"key1": "Key 1",
+			"key2": "Key 2",
+			"key3": "Key 3",
+			"key4": "Key 4",
+			"key5": "Key 5",
+			"gamepad1": "Button 1",
+			"gamepad2": "Button 2"
 		}
 	},
 	"menu": {

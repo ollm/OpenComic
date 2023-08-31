@@ -735,6 +735,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	justifyViewModule();
 
+	shortcuts.register('browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
 
 	$(window).off('resize').on('resize', function(){
@@ -1061,6 +1062,7 @@ function loadLanguagesPage(animation = true)
 	floatingActionButton(false);
 
 	events.events();
+	gamepad.updateBrowsableItems('languagesPage');
 
 	if(readingActive)
 		readingActive = false;
@@ -1524,13 +1526,14 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	generateAppMenu();
 
+	shortcuts.register('reading');
 	gamepad.updateBrowsableItems('reading-'+sha1(path));
 }
 
 // Gamepad events
 gamepad.setButtonEvent('reading', 1, function(key, button) {
 
-	if(key == 1)
+	if(key == 1 && !onReading)
 		gamepad.goBack();
 
 });

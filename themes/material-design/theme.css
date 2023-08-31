@@ -13,7 +13,7 @@
 @import url('./settings.css');
 @import url('./theme-page.css');
 @import url('./drag-and-drop.css');
-/*@import url('./night-mode.css');*/
+@import url('./gamepad.css');
 @import url('./colors/all.colors.css');
 
 /* Animations */
@@ -688,7 +688,8 @@ body .preload
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
 
-.content-left .menu-item:active
+.content-left .menu-item:active,
+.content-left .menu-item.gamepad-highlight
 {
 	background-color: var(--md-sys-color-on-surface-variant-4);
 }
@@ -1127,9 +1128,8 @@ body .preload
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
-	transition: background-color 0.2s;
 	position: relative;
-	transition: transform 0.2s;
+	transition: transform 0.2s, background-color 0.2s;
 }
 
 .content-view-module .v-folder:before

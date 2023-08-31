@@ -1,0 +1,483 @@
+var shosho = false;
+
+var shortcuts = false;
+
+async function loadShoShoObject()
+{
+	if(shosho) return;
+
+	shosho = new ShoSho({
+		capture: true,
+		target: document,
+	});
+
+	shoshoMouse = new ShoSho({
+		capture: true,
+		target: document.querySelector('.content-right'),
+	});
+
+	return true;
+}
+
+function loadShortcuts()
+{
+	shortcuts = {
+		browse: {
+			actionsOrder: [
+				'reload',
+			],
+			actions: {
+				reload: {
+					name: language.reading.prev,
+					function: function(){
+						dom.reloadIndex();
+						return true;
+					},
+				},
+			},
+			shortcuts: {},
+			_shortcuts: {
+				'F5': 'reload',
+			},
+			gamepad: {},
+			_gamepad: {},
+		},
+		reading: {
+			actionsOrder: [
+				'prev',
+				'next',
+				'start',
+				'end',
+				'magnifyingGlass',
+				'hideBarHeader',
+				'hideContentLeft',
+				'createAndDeleteBookmark',
+				'zoomIn',
+				'zoomOut',
+				'resetZoom',
+				'fullscreen',
+				'goBack',
+				'gamepadMenu',
+			],
+			actions: {
+				prev: {
+					name: language.reading.previous,
+					function: function(event){
+
+						if(event instanceof PointerEvent)
+						{
+							return reading.leftClick(event);
+						}
+						else
+						{
+							reading.goPrev();
+							return true;
+						}
+
+					},
+				},
+				next: {
+					name: language.reading.next,
+					function: function(event){
+
+						if(event instanceof PointerEvent)
+						{
+							if(event.type == 'contextmenu')
+								return reading.rightClick(event);
+							else
+								return false;
+						}
+						else
+						{
+							reading.goNext();
+							return true;
+						}
+
+					},
+				},
+				start: {
+					name: language.reading.firstPage,
+					function: function(){
+
+						if(!reading.readingViewIs('scroll'))
+							reading.goStart();
+						else if(!reading.zoomingIn())
+							reading.disableOnScroll(false);
+
+						return true;
+					},
+				},
+				end: {
+					name: language.reading.lastPage,
+					function: function(){
+
+						if(!reading.readingViewIs('scroll'))
+							reading.goEnd();
+						else if(!reading.zoomingIn())
+							reading.disableOnScroll(false);
+
+						return true;
+					},
+				},
+				magnifyingGlass: {
+					name: language.reading.magnifyingGlass.main,
+					function: function(){
+						reading.activeMagnifyingGlass();
+						return true;
+					},
+				},
+				hideBarHeader: {
+					name: language.reading.moreOptions.hideBarHeader,
+					function: function(){
+						reading.hideBarHeader();
+						return true;
+					},
+				},
+				hideContentLeft: {
+					name: language.reading.moreOptions.hideContentLeft,
+					function: function(){
+						reading.hideContentLeft();
+						return true;
+					},
+				},
+				createAndDeleteBookmark: {
+					name: language.reading.addBookmark,
+					function: function(){
+						reading.createAndDeleteBookmark();
+						return true;
+					},
+				},
+				zoomIn: {
+					name: language.menu.view.zoomIn,
+					function: function(){
+						reading.zoomIn(true, true);
+						return true;
+					},
+				},
+				zoomOut: {
+					name: language.menu.view.zoomOut,
+					function: function(){
+						reading.zoomOut(true, true);
+						return true;
+					},
+				},
+				resetZoom: {
+					name: language.menu.view.resetZoom,
+					function: function(){
+						reading.resetZoom();
+						return true;
+					},
+				},
+				fullscreen: {
+					name: language.menu.view.toggleFullScreen,
+					function: function(){
+
+						let win = electronRemote.getCurrentWindow();
+						let isFullScreen = win.isFullScreen();
+
+						reading.hideContent(!isFullScreen);
+						win.setFullScreen(!isFullScreen);
+						win.setMenuBarVisibility(isFullScreen);
+
+						return true;
+					},
+				},
+				goBack: {
+					name: language.global.back,
+					function: function(){
+						gamepad.goBack();
+						return true;
+					},
+				},
+				gamepadMenu: {
+					name: language.settings.shortcuts.gamepadMenu,
+					function: function(){
+						gamepad.showMenu();
+						return true;
+					},
+				},
+			},
+			shortcuts: {},
+			_shortcuts: {
+				'Left': 'prev',
+				'A': 'prev',
+				'LeftClick': 'prev',
+				'Mouse4': 'prev',
+				'Right': 'next',
+				'D': 'next',
+				'Space': 'next',
+				'RightClick': 'next',
+				'Mouse3': 'next',
+				'Up': 'start',
+				'W': 'start',
+				'Down': 'end',
+				'S': 'end',
+				'M': 'magnifyingGlass',
+				'B': 'hideBarHeader',
+				'H': 'hideBarHeader',
+				'L': 'hideContentLeft',
+				'P': 'hideContentLeft',
+				'B': 'createAndDeleteBookmark',
+				'MiddleClick': 'resetZoom',
+				'Esc': 'goBack',
+				'Backspace': 'goBack',
+				'F11': 'fullscreen',
+			},
+			gamepad: {},
+			_gamepad: {
+				'A': 'createAndDeleteBookmark',
+				'B': 'goBack',
+				'X': 'hideContentLeft',
+				'Y': 'hideBarHeader',
+				'LB': 'prev',
+				'RB': 'next',
+				'LT': 'zoomOut',
+				'RT': 'zoomIn',
+				'View': 'magnifyingGlass',
+				'Menu': 'gamepadMenu',
+				'L': 'resetZoom',
+				'R': 'fullscreen',
+				'Up': 'start',
+				'Down': 'end',
+				'Left': 'prev',
+				'Right': 'next',
+				'Xbox': 'gamepadMenu',
+			},
+		},
+	}
+
+	// Load here from saved
+	let _shortcuts = storage.get('shortcuts');
+
+	for(let section in shortcuts)
+	{
+		// Shortcuts
+		for(let shortcut in _shortcuts[section]?.shortcuts)
+		{
+			shortcuts[section].shortcuts[shortcut] = _shortcuts[section].shortcuts[shortcut];
+		}
+
+		// Set not configured shortcuts
+		for(let shortcut in shortcuts[section]._shortcuts)
+		{
+			let action = shortcuts[section]._shortcuts[shortcut];
+
+			if(!inArray(action, _shortcuts[section]?.actionsConfigured || []) && !_shortcuts[section]?.shortcuts[shortcut])
+				shortcuts[section].shortcuts[shortcut] = action;
+		}
+
+
+		// Gamepad
+		for(let button in _shortcuts[section]?.gamepad)
+		{
+			shortcuts[section].gamepad[button] = _shortcuts[section].gamepad[button];
+		}
+
+		// Set not configured gamepad
+		for(let button in shortcuts[section]._gamepad)
+		{
+			let action = shortcuts[section]._gamepad[button];
+
+			if(!inArray(action, _shortcuts[section]?.actionsConfigured || []) && !_shortcuts[section]?.gamepad[button])
+				shortcuts[section].gamepad[button] = action;
+		}
+	}
+}
+
+var currentlyRegistered = false;
+
+async function register(section = 'reading', force = false)
+{
+	if(currentlyRegistered === reading && !force)
+		return;
+
+	await loadShoSho();
+	loadShoShoObject();
+	loadShortcuts();
+
+	shosho.reset();
+	shoshoMouse.reset();
+
+	for(let shortcut in shortcuts[section].shortcuts)
+	{
+		let actionKey = shortcuts[section].shortcuts[shortcut];
+		let action = shortcuts[section].actions[actionKey];
+
+		if(isMouseShortcut(shortcut))
+			shoshoMouse.register(shortcut, action.function);
+		else
+			shosho.register(shortcut, action.function);
+	}
+
+	shosho.start();
+	shoshoMouse.start();
+
+	// Gamepad
+	gamepad.reset('shortcuts');
+
+	for(let button in shortcuts[section].gamepad)
+	{
+		let actionKey = shortcuts[section].gamepad[button];
+		let action = shortcuts[section].actions[actionKey];
+
+		gamepad.setButtonEvent('shortcuts', gamepad.buttonKey(button), action.function);
+	}
+
+	currentlyRegistered = section;
+}
+
+function unregister(force = false)
+{
+	if(!force || currentlyRegistered !== false)
+	{
+		shosho.reset();
+		shoshoMouse.reset();
+		gamepad.reset('shortcuts');
+		currentRegistered = false;
+	}
+}
+
+var mouse = [
+	'LeftClick',
+	'RightClick',
+	'ClickLeft',
+	'MouseLeft',
+	'ClickMiddle',
+	'MouseMiddle',
+	'ClickRight',
+	'MouseRight',
+];
+
+var mouseRegexp = new RegExp(mouse.join('|'), 'iu');
+
+function isMouseShortcut(shortcut)
+{
+	return mouseRegexp.test(shortcut);
+}
+
+var modifiers = [
+	'Ctrl',
+	'Meta',
+	'§',
+	'OS',
+	'Alt',
+	'Shift',
+];
+
+var modifiersRegexp = new RegExp('(?:'+modifiers.join('|')+')$', 'iu');
+
+var dispose = false;
+
+function record(callback)
+{
+	if(dispose) return;
+
+	dispose = shosho.record(function(shortcut){
+
+		shortcut = ShoSho.format(shortcut, 'short-inflexible-nondirectional');
+
+		if(!modifiersRegexp.test(shortcut))
+		{
+			callback(shortcut);
+			dispose();
+			setTimeout(function(){dispose = false;}, 100);
+		}
+
+	});
+}
+
+function stopRecord()
+{
+	if(dispose)
+	{
+		dispose();
+		dispose = false;
+	}
+}
+
+function change(section, action, current, shortcut)
+{
+	let saved = storage.getKey('shortcuts', section) || {};
+
+	saved.gamepad = shortcuts[section].gamepad;
+
+	saved.actionsConfigured = [];
+
+	for(let key in shortcuts[section].actionsOrder)
+	{
+		saved.actionsConfigured.push(shortcuts[section].actionsOrder[key]);
+	}
+
+	saved.shortcuts = {};
+
+	for(let key in shortcuts[section].shortcuts)
+	{
+		if(key === current && shortcut)
+			saved.shortcuts[shortcut] = action;
+		else if(key !== shortcut && key !== current)
+			saved.shortcuts[key] = shortcuts[section].shortcuts[key];
+	}
+
+	if(!current && shortcut)
+		saved.shortcuts[shortcut] = action;
+
+	storage.setVar('shortcuts', section, saved);
+}
+
+function changeGamepad(section, action, current, button)
+{
+	console.log(section, action, current, button);
+
+	let saved = storage.getKey('shortcuts', section) || {};
+
+	saved.shortcuts = shortcuts[section].shortcuts;
+
+	saved.actionsConfigured = [];
+
+	for(let key in shortcuts[section].actionsOrder)
+	{
+		saved.actionsConfigured.push(shortcuts[section].actionsOrder[key]);
+	}
+
+	saved.gamepad = {};
+
+	for(let key in shortcuts[section].gamepad)
+	{
+		if(key === current && button)
+			saved.gamepad[button] = action;
+		else if(key !== button && key !== current)
+			saved.gamepad[key] = shortcuts[section].gamepad[key];
+	}
+
+	if(!current && button)
+		saved.gamepad[button] = action;
+
+	storage.setVar('shortcuts', section, saved);
+}
+
+function restoreDefaults()
+{
+	storage.set('shortcuts', {
+		browse: {
+			actionsConfigured: [],
+			shortcuts: {},
+			gamepad: {},
+		},
+		reading: {
+			actionsConfigured: [],
+			shortcuts: {},
+			gamepad: {},
+		},
+	});
+}
+
+module.exports = {
+	register: register,
+	unregister: unregister,
+	shortcuts: function(){loadShortcuts(); return shortcuts;},
+	record: record,
+	stopRecord: stopRecord,
+	change: change,
+	changeGamepad: changeGamepad,
+	restoreDefaults: restoreDefaults,
+};

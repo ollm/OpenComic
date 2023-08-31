@@ -169,7 +169,7 @@
 	height: 160px;
 	top: 0px;
 	left: 0px;
-	background-color: #eee;
+	background-color: var(--md-sys-color-background);
 	overflow: hidden;
 	opacity: 0;
 	z-index: 3;

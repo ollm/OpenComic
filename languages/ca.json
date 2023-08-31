@@ -98,6 +98,7 @@
 		"currentReading": "Lectura actual"
 	},
 	"settings": {
+		"general": "General",
 		"reading": {
 			"main": "Preferències de lectura",
 			"maxMargin": "Marge horitzontal i vertical màxim",
@@ -116,6 +117,22 @@
 			"main": "Comprovar noves versions",
 			"checkReleases": "Comprovar si hi ha una nova versió en iniciar OpenComic",
 			"checkPreReleases": "Mostrar versions preliminars (versions beta/alfa)"
+		},
+		"shortcuts": {
+			"main": "Dreceres",
+			"keyboard": "Teclat",
+			"whenReading": "A l'hora de llegir",
+			"gamepadMenu": "Menú del comandament",
+			"useGamepad": "Fes servir un comandament per canviar l'acció",
+			"restoreDefaults": "Restaurar valors per defecte",
+			"action": "Acció",
+			"key1": "Tecla 1",
+			"key2": "Tecla 2",
+			"key3": "Tecla 3",
+			"key4": "Tecla 4",
+			"key5": "Tecla 5",
+			"gamepad1": "Botó 1",
+			"gamepad2": "Botó 2"
 		}
 	},
 	"menu": {

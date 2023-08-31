@@ -13,11 +13,18 @@ document.addEventListener("keydown", event => {
 
 	if(event.key == 'Escape')
 	{
-		if(electronRemote.getCurrentWindow().isFullScreen())
+		let win = electronRemote.getCurrentWindow();
+		let isFullScreen = win.isFullScreen();
+
+		if(isFullScreen)
 		{
 			reading.hideContent(false);
-			electronRemote.getCurrentWindow().setFullScreen(false);
-			electronRemote.getCurrentWindow().setMenuBarVisibility(true)
+			win.setFullScreen(false);
+			win.setMenuBarVisibility(true);
+		}
+		else
+		{
+			gamepad.goBack();
 		}
 	}
 
@@ -216,6 +223,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	theme = require(p.join(appDir, 'scripts/theme.js')),
 	dragAndDrop = require(p.join(appDir, 'scripts/drag-and-drop.js')),
 	checkReleases = require(p.join(appDir, 'scripts/check-releases.js')),
+	shortcuts = require(p.join(appDir, 'scripts/shortcuts.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
@@ -274,8 +282,8 @@ function startApp()
 			if(!isFullScreen)
 			{
 				reading.hideContent(true);
-				win.setMenuBarVisibility(false);
 				win.setFullScreen(true);
+				win.setMenuBarVisibility(false);
 			}
 		}
 
@@ -292,6 +300,18 @@ function startApp()
 
 	});
 
+}
+
+var ShoSho = false;
+
+async function loadShoSho()
+{
+	if(ShoSho) return;
+
+	ShoSho = await import(p.join(appDir, 'node_modules', 'shosho', 'dist', 'index.js'));
+	ShoSho = ShoSho.default;
+
+	return true;
 }
 
 /*Global functions*/
@@ -519,7 +539,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+=', visible: false, acceleratorWorksWhenHidden: true},
 					{label: language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
 					{type: 'separator'},
-					{label: language.menu.view.toggleFullScreen, click: function(){var win = electronRemote.getCurrentWindow(); reading.hideContent(!win.isFullScreen()); win.setMenuBarVisibility(win.isFullScreen()); win.setFullScreen(!win.isFullScreen());}, accelerator: 'F11'},
+					{label: language.menu.view.toggleFullScreen, click: function(){var win = electronRemote.getCurrentWindow(); reading.hideContent(!win.isFullScreen()); win.setFullScreen(!win.isFullScreen()); win.setMenuBarVisibility(!win.isFullScreen());}, accelerator: 'F11'},
 				]
 			},
 			{

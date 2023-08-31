@@ -1,10 +1,13 @@
-<div class="snackbar elevation-3">
-	<div class="snackbar-text body-medium">{{snackbar.text}}</div>
-	<div class="snackbar-buttons">
-		{{#each snackbar.buttons}}
-		<div class="simple-button transparent"{{#if right}} style="right: {{right}}px"{{/if}}>
-			<div class="touch-effect" onclick="{{function}}">{{text}}</div>
+<div class="snackbar">
+	<div class="snackbar-foreground">
+		<div class="snackbar-text body-medium">{{snackbar.text}}</div>
+		<div class="snackbar-buttons">
+			{{#each snackbar.buttons}}
+			<div class="simple-button transparent"{{#if right}} style="right: {{right}}px"{{/if}}>
+				<div class="touch-effect" onclick="{{function}}">{{text}}</div>
+			</div>
+			{{/each}}
 		</div>
-		{{/each}}
 	</div>
+	<div class="snackbar-background elevation-3"></div>
 </div>

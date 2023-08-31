@@ -22,6 +22,7 @@ function loadTemplateFunction(file, functionVar)
 //Control template
 
 var contentLeft = false, contentRight = false, barHeader = false, globalElement = false;
+var _contentLeft = false, _contentRight = false, _barHeader = false, _globalElement = false;
 
 var contentLeftZindex = 1;
 
@@ -32,6 +33,7 @@ function changeContentLeft(html, animation = true)
 	document.querySelector('.content-left').insertAdjacentHTML('beforeend', '<div class="content-left-'+contentLeftZindex+(animation ? ' a' : '')+'" style="z-index: ' + contentLeftZindex + ';"><div>'+html+'</div></div>');
 
 	contentLeft = $('.content-left .content-left-'+contentLeftZindex);
+	_contentLeft = document.querySelector('.content-left .content-left-'+contentLeftZindex);
 	setTimeout('$(\'.content-left-'+(contentLeftZindex-1)+'\').remove(); $(\'.content-left-'+contentLeftZindex+'\').removeClass(\'a\')', 300);
 
 	contentLeftZindex++;
@@ -68,6 +70,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 	}
 
 	contentRight = $('.content-right .content-right-'+contentRightZindex);
+	_contentRight = document.querySelector('.content-right .content-right-'+contentRightZindex);
 	setTimeout('$(\'.content-right-'+(contentRightZindex-1)+'\').remove(); $(\'.content-right-'+contentRightZindex+'\').removeClass(\'a\')', 300);
 
 	contentRightZindex++;
@@ -87,6 +90,7 @@ function changeHeader(html, animation = true)
 	document.querySelector('.bar-header').insertAdjacentHTML('beforeend', '<div class="bar-header-'+headerZindex+(animation ? ' a' : '')+'" style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
 
 	barHeader = $('.bar-header .bar-header-'+headerZindex);
+	_barHeader = document.querySelector('.bar-header .bar-header-'+headerZindex);
 	setTimeout('$(\'.bar-header-'+(headerZindex-1)+'\').remove(); $(\'.bar-header-'+headerZindex+'\').removeClass(\'a\')', 300);
 
 	headerZindex++;
@@ -103,7 +107,10 @@ function changeGlobalElement(html, element)
 	if(element) element.innerHTML = html;
 
 	if(globalElement === false)
+	{
 		globalElement = $('.global-elements');
+		_globalElement = document.querySelector('.global-elements');
+	}
 }
 
 function loadGlobalElement(template, element)
@@ -159,5 +166,11 @@ module.exports = {
 	barHeader: selectBarHeader,
 	globalElement: selectGlobalElement,
 	loadGlobalElement: loadGlobalElement,
-	contentRightZindex: function(){return contentRightZindex - 1}
+	contentRightZindex: function(){return contentRightZindex - 1},
+	contentRightIndex: function(){return contentRightZindex - 1},
+	contentLeftIndex: function(){return contentLeftZindex - 1},
+	_contentLeft: function(){return _contentLeft},
+	_contentRight: function(){return _contentRight},
+	_barHeader: function(){return _barHeader},
+	_globalElement: function(){return _globalElement},
 };

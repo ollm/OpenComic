@@ -8,6 +8,7 @@ let allColorsJs = [];
 
 let allColors = `@import url(./colors.module.css);
 @import url(./typography.module.css);
+@import url(./easing.css);
 @import url(./theme.light.css);
 @import url(./theme.dark.css);
 @import url(./theme.light.missing.css);

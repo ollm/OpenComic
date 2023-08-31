@@ -138,6 +138,7 @@ function calculateImagesDistribution()
 			else
 			{
 				imagesDistribution.push([{index: i, folder: true, blank: false, width: 1}]);
+				foldersPosition[i] = indexNum;
 				indexNum++;
 			}
 		}
@@ -1005,7 +1006,11 @@ function leftClick(event)
 			reading.goNext();
 		else
 			reading.goPrevious();
+
+		return true;
 	}
+
+	return false;
 }
 
 function rightClick(e)
@@ -1020,7 +1025,11 @@ function rightClick(e)
 			reading.goPrevious();
 		else
 			reading.goNext();
+
+		return true;
 	}
+
+	return false;
 }
 
 var showComicSkip;
@@ -1541,8 +1550,11 @@ function dragZoomEnd()
 }
 
 //Turn the magnifying glass on and off
-function activeMagnifyingGlass(active)
+function activeMagnifyingGlass(active = null)
 {
+	// Toggle magnifying glass
+	if(active === null) active = !config.readingMagnifyingGlass;
+
 	if(active)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
@@ -1741,9 +1753,11 @@ function hideContent(fullScreen = false, first = false)
 		resizedWindow();
 }
 
-function hideBarHeader(value = false)
+function hideBarHeader(value = null)
 {
-	var isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
+	let isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
+
+	if(value === null) value = !(isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader);
 
 	if(isFullScreen)
 		storage.updateVar('config', 'readingHideBarHeaderFullScreen', value);
@@ -1753,9 +1767,11 @@ function hideBarHeader(value = false)
 	hideContent(isFullScreen);
 }
 
-function hideContentLeft(value = false)
+function hideContentLeft(value = null)
 {
-	var isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
+	let isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
+
+	if(value === null) value = !(isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft);
 
 	if(isFullScreen)
 		storage.updateVar('config', 'readingHideContentLeftFullScreen', value);
@@ -2781,76 +2797,6 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	});
 
-	$(window).on('keydown', function(e) {
-
-		if(onReading)
-		{
-			if(e.keyCode == 37)
-			{
-				goPrevious();
-			}
-			else if(e.keyCode == 38 && !readingViewIs('scroll'))
-			{
-				goStart();
-			}
-			else if(e.keyCode == 39)
-			{
-				goNext();
-			}
-			else if(e.keyCode == 40 && !readingViewIs('scroll'))
-			{
-				goEnd();
-			}
-		}
-		
-	})
-
-	gamepad.setButtonEvent('reading', [4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15], function(key, button) {
-
-		if(onReading)
-		{
-			if(key == 4 || key ==  14)
-			{
-				goPrevious();
-			}
-			else if(key == 12)
-			{
-				if(!readingViewIs('scroll'))
-					goStart();
-				else
-					goPrevious();
-			}
-			else if(key == 5 || key ==  15)
-			{
-				goNext();
-			}
-			else if(key == 13)
-			{
-				if(!readingViewIs('scroll'))
-					goEnd();
-				else
-					goNext();
-			}
-			else if(key == 6)
-			{
-				reading.zoomOut(true, true);
-			}
-			else if(key == 7)
-			{
-				reading.zoomIn(true, true);
-			}
-			else if(key == 8)
-			{
-				reading.createAndDeleteBookmark();
-			}
-			else if(key == 10)
-			{
-				reading.resetZoom();
-			}
-		}
-
-	});
-
 	gamepad.setAxesEvent('reading', function(axes, status, now) {
 
 		if(onReading)
@@ -3296,9 +3242,9 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	$(window).on('resize', resizedWindow);
 
-	$(window).on('mousewheel touchstart keydown', function(e) {
+	$(window).on('mousewheel touchstart', function(e) {
 
-		if(!zoomingIn && (e.type != 'keydown' || (e.type == 'keydown' && (e.keyCode == 38 || e.keyCode == 40))))
+		if(!zoomingIn)
 			disableOnScroll(false);
 
 	});
@@ -3537,6 +3483,7 @@ module.exports = {
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
 	goStart: goStart,
 	goPrevious: goPrevious,
+	goPrev: goPrevious,
 	goNext: goNext,
 	goEnd: goEnd,
 	leftClick: leftClick,
@@ -3554,6 +3501,7 @@ module.exports = {
 	stayInLine: stayInLine,
 	setCurrentComics: setCurrentComics,
 	currentComics: function(){return currentComics},
+	readingViewIs: readingViewIs,
 	disableOnScroll: disableOnScroll,
 	activeOnScroll: function(){return activeOnScroll},
 	saveReadingProgress: saveReadingProgress,
@@ -3588,4 +3536,5 @@ module.exports = {
 	loadReadingMoreOptions: loadReadingMoreOptions,
 	currentScale: function(){return currentScale},
 	rightSize: function(){return rightSize},
+	zoomingIn: function(){return zoomingIn},
 };
