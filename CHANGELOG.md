@@ -10,13 +10,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Reload button in file list [`31675a5`](https://github.com/ollm/OpenComic/commit/31675a5a8334abedc056a09a5107f718dc5304e0)
 - Check if there is a new version when starting OpenComic [`82f1abd`](https://github.com/ollm/OpenComic/commit/82f1abdac5c1ae6f26e88f5f2374c54edcfcaae7)
-- Custom keyboard and gamepad shortcuts
+- Custom keyboard and gamepad shortcuts [`0a4a459`](https://github.com/ollm/OpenComic/commit/0a4a4597883c7c6c837acdd61e4d80dc8c0a0ec1)
 
 ### 🐛 Bug Fixes
 
 - Improved local artwork assets support [`f21cccd`](https://github.com/ollm/OpenComic/commit/f21cccd9c2c943f7ad8735e106afff453397cfbf)
 - Some errors on Tracking feature [`50d8487`](https://github.com/ollm/OpenComic/commit/50d84874ea99cdace27f2c3bfc994b3338f23a42)
 - Updated snackbar to Material 3 [`ae8e195`](https://github.com/ollm/OpenComic/commit/ae8e1955dd10b9f54166dddd1af8281c67bb841a)
+- Bug in Magnifying glass introduced in version v1.0.0-beta.1
 
 ## [v1.0.0-beta.1](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.1) (22-08-2023)
 

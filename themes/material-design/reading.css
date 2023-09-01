@@ -98,14 +98,25 @@
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img, .reading-body .r-img.blank > div, .reading-lens .r-img.blank > div/*, .reading-body .r-folder, .reading-lens .r-folder*/
 {
 	transition: background-color 0.2s;
-	box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 3px, rgba(0, 0, 0, 0.239216) 0px 1px 2px;
+	box-shadow: var(--md-sys-elevation-level2);
 	background-color: #fff;
 	display: block;
+	position: relative;
 }
 
-.reading-body.reduce-shadow .r-img > oc-img, .reading-lens.reduce-shadow .r-img > oc-img, .reading-body.reduce-shadow .r-img.blank > div, .reading-lens.reduce-shadow .r-img.blank > div
+.reading-body .r-img > oc-img > *, .reading-lens .r-img > oc-img > *
 {
-	box-shadow: rgba(0, 0, 0, 0.117647) 0px 3px 3px, rgba(0, 0, 0, 0.239216) 0px 2px 2px;
+	position: relative;
+	z-index: 2;
+}
+
+.reading-body .r-img.blank > div > *, .reading-lens .r-img.blank > div > *
+{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 2;
+	background-color: #fff;
 }
 
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img
