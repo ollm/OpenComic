@@ -80,11 +80,16 @@
 	position: relative;
 	will-change: auto; /*transform*/
 	overflow: hidden;
+	display: flex;
+}
+
+.reading-lens > div > div
+{
+	display: flex;
 }
 
 .reading-body .r-flex, .reading-lens .r-flex
 {
-	float: left;
 	display: flex;
 	position: relative;
 	will-change: auto; /*transform*/

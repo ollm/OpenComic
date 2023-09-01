@@ -1107,6 +1107,9 @@ body .preload
 {
 	width: 100%;
 	overflow-x: hidden;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .content-view-module > div
@@ -1114,7 +1117,6 @@ body .preload
 	width: 150px;
 	height: 273px;
 	margin: 16px 0px 16px 16px;
-	float: left;
 }
 
 .content-view-module .v-folder
@@ -1130,6 +1132,8 @@ body .preload
 	background-position: 50%;
 	position: relative;
 	transition: transform 0.2s, background-color 0.2s;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .content-view-module .v-folder:before
@@ -1298,7 +1302,6 @@ body .preload
 	border-radius: 4px;
 	/*border: 1px solid rgba(0, 0, 0, 0.1);*/
 	box-sizing: border-box;
-	float: left;
 	background-repeat: no-repeat;
 	display: flex;
     align-items: center;

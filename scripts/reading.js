@@ -554,16 +554,19 @@ function calculateView()
 		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
 			width: (rect.width * indexNum)+'px',
 			height: rect.height,
+			flexDirection: '',
 		});
 	}
 	else if(readingViewIs('scroll'))
 	{
 		dom.this(contentRight).find('.reading-body > div').css({
 			width: '100%',
+			flexDirection: 'column',
 		});
 
 		dom.this(contentRight).find('.reading-lens > div > div').css({
 			width: rect.width+'px',
+			flexDirection: 'column',
 		});
 	}
 
