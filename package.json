@@ -91,7 +91,6 @@
 		"asar": true,
 		"files": [
 			"**/*",
-			"!themes/material-design/icons",
 			"!themes/*/templates",
 			"!templates",
 			"!images/icons",
