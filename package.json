@@ -39,9 +39,10 @@
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis",
-		"build-mac": "npm run prebuild && electron-builder --mac 7z && electron-builder --arm64 --mac 7z",
+		"build-mac": "npm run prebuild && electron-builder --mac 7z dmg && electron-builder --arm64 --mac 7z dmg",
 		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
 		"build-mac-zip": "npm run prebuild && electron-builder --mac zip",
+		"build-mac-dmg": "npm run prebuild && electron-builder --mac dmg && electron-builder --arm64 --mac dmg",
 		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm AppImage 7z",
 		"build-deb-arm": "npm run prebuild && electron-builder --arm64 --linux deb",
 		"build-rpm-arm": "npm run prebuild && electron-builder --arm64 --linux rpm",
@@ -55,7 +56,7 @@
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"dependencies": {
-		"@electron/remote": "^2.0.10",
+		"@electron/remote": "^2.0.11",
 		"7zip-bin": "^5.2.0",
 		"animejs": "^3.2.1",
 		"electron-json-storage": "^4.6.0",
