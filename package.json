@@ -39,7 +39,7 @@
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis",
-		"build-mac": "npm run prebuild && electron-builder --mac 7z",
+		"build-mac": "npm run prebuild && electron-builder --mac 7z && electron-builder --arm64 --mac 7z",
 		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
 		"build-mac-zip": "npm run prebuild && electron-builder --mac zip",
 		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm AppImage 7z",
