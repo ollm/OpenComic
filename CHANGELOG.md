@@ -11,7 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### 🐛 Bug Fixes
 
-- Gamepad icons not showing in distribution version
+- Gamepad icons not showing in distribution version [`249640d`](https://github.com/ollm/OpenComic/commit/249640d57f3d5768661b63c0ddf8525a02e44d25)
+- Go back in gamepad menus
 
 ## [v1.0.0-beta.2](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.2) (03-09-2023)
 

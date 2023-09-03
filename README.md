@@ -37,7 +37,8 @@
 * Floating magnifying glass
 * Reading in scroll or slide
 * 🎮 Gamepad navigation
-* [Changelog](https://github.com/ollm/OpenComic/blob/v1.0.0-beta.2/CHANGELOG.md)
+
+You can see the changes between versions in the [Changelog](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM

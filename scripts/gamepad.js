@@ -591,16 +591,16 @@ function highlightItemContextMenu()
 		new Function(current.element.getAttribute('oncontextmenu')).call(current.element);
 }
 
-function showMenu(index = false)
+function showMenu()
 {
-	let query = index ? '#index-menu-gamepad' : '#reading-menu-gamepad';
+	let query = !onReading ? '#index-menu-gamepad' : '#reading-menu-gamepad';
 
 	if(document.querySelector(query+' .menu-simple.a'))
 		events.desactiveMenu(query);
 	else
-		events.activeMenu(query, false, 'gamepad');
+		events.activeMenu(query, false, 'gamepad', 'gamepad');
 
-	if(index)
+	if(!onReading)
 	{
 		let viewIcon = document.querySelector('.menu-gamepad-view-icon');
 		if(!viewIcon) return;
@@ -709,7 +709,7 @@ setButtonEvent('browsableItems', [0, 2, 3, 9, 12, 13, 14, 15, 16], function(key)
 	else if(key == 15)
 		highlightClosestItem(1);
 	else if(!onReading && (key == 9 || key == 16))
-		showMenu(true);
+		showMenu();
 
 });
 

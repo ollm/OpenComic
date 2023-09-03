@@ -456,6 +456,8 @@ function hideHoverText()
 	}
 }
 
+var fromGamepadMenu = false;
+
 function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 {
 	let menu = document.querySelector(query);
@@ -510,7 +512,7 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 		menuSimple.style.left = '';
 	}
 
-	if(posY == 'top')
+	if(posY == 'top' || posY == 'gamepad')
 	{
 		menuSimple.style.bottom = '';
 		menuSimple.style.top = (top + height + 8)+'px';
@@ -525,6 +527,8 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 		menu.classList.add('menu-gamepad');
 	else
 		menu.classList.remove('menu-gamepad');
+
+	fromGamepadMenu = (posX == 'gamepad' && posY != 'gamepad') ? true : false;
 
 	shortcuts.pause();
 	gamepad.updateBrowsableItems('menu', true);
@@ -575,6 +579,9 @@ function desactiveMenu(query, query2 = false)
 		gamepad.cleanBrowsableItems();
 
 	shortcuts.play();
+
+	if(fromGamepadMenu)
+		gamepad.showMenu();
 }
 
 // Dialogs
