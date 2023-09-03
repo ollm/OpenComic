@@ -121,8 +121,9 @@ function loadShortcuts()
 				},
 				magnifyingGlass: {
 					name: language.reading.magnifyingGlass.main,
-					function: function(){
-						reading.activeMagnifyingGlass();
+					function: function(event, gamepad = false){
+						console.log(gamepad);
+						reading.activeMagnifyingGlass(null, !!gamepad);
 						return true;
 					},
 				},
@@ -333,7 +334,7 @@ function unregister(force = false)
 		shosho.reset();
 		shoshoMouse.reset();
 		gamepad.reset('shortcuts');
-		currentRegistered = false;
+		currentlyRegistered = false;
 	}
 }
 
@@ -426,8 +427,6 @@ function change(section, action, current, shortcut)
 
 function changeGamepad(section, action, current, button)
 {
-	console.log(section, action, current, button);
-
 	let saved = storage.getKey('shortcuts', section) || {};
 
 	saved.shortcuts = shortcuts[section].shortcuts;
@@ -471,6 +470,34 @@ function restoreDefaults()
 	});
 }
 
+var _currentlyRegistered = false, pauseST = false;
+
+function play()
+{
+	clearTimeout(pauseST);
+
+	if(_currentlyRegistered)
+	{
+		register(_currentlyRegistered);
+		currentlyRegistered = _currentlyRegistered;
+	}
+	
+	_currentlyRegistered = false;
+}
+
+function pause()
+{
+	clearTimeout(pauseST);
+
+	_currentlyRegistered = currentlyRegistered;
+
+	pauseST = setTimeout(function(){
+
+		unregister(true);
+
+	}, 50);
+}
+
 module.exports = {
 	register: register,
 	unregister: unregister,
@@ -480,4 +507,6 @@ module.exports = {
 	change: change,
 	changeGamepad: changeGamepad,
 	restoreDefaults: restoreDefaults,
+	play: play,
+	pause: pause,
 };

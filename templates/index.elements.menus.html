@@ -1,14 +1,14 @@
 <div class="menu" id="index-sort">
 	<div class="menu-simple elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
-			<div class="menu-simple-element sort-name{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
-			<div class="menu-simple-element sort-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
-			<div class="menu-simple-element sort-name-numeric{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name-numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name-numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
+			<div class="menu-simple-element sort-name gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
+			<div class="menu-simple-element sort-numeric gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
+			<div class="menu-simple-element sort-name-numeric gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name-numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name-numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
 			{{#if comicsIndex}}
-			<div class="menu-simple-element sort-last-add{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-add'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-add'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
-			<div class="menu-simple-element sort-last-reading{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-reading'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-reading'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
+			<div class="menu-simple-element sort-last-add gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-add'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-add'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
+			<div class="menu-simple-element sort-last-reading gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-reading'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-reading'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
 			{{else}}
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.global.sort.foldersFirst}}
 				<div class="switch{{#if config.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">
 					<div></div>
@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			{{/if}}
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.global.sort.invert}}
 				<div class="switch{{#if comicsIndex}}{{#if config.sortInvertIndex}} a{{/if}}{{else}}{{#if config.sortInvert}} a{{/if}}{{/if}}" on="dom.changeSort(2, true, {{comicsIndexVar}})" off="dom.changeSort(2, false, {{comicsIndexVar}})">
 					<div></div>
@@ -31,8 +31,8 @@
 <div class="menu" id="index-view">
 	<div class="menu-simple elevation-2" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
 		<div class="menu-simple-content">
-			<div class="menu-simple-element view-module{{#if comicsIndex}}{{#compare config.viewIndex '==' 'module'}} s{{/compare}}{{else}}{{#compare config.view '==' 'module'}} s{{/compare}}{{/if}}" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view.module}}</div>
-			<div class="menu-simple-element view-list{{#if comicsIndex}}{{#compare config.viewIndex '==' 'list'}} s{{/compare}}{{else}}{{#compare config.view '==' 'list'}} s{{/compare}}{{/if}}" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view.list}}</div>
+			<div class="menu-simple-element view-module gamepad-item{{#if comicsIndex}}{{#compare config.viewIndex '==' 'module'}} s{{/compare}}{{else}}{{#compare config.view '==' 'module'}} s{{/compare}}{{/if}}" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view.module}}</div>
+			<div class="menu-simple-element view-list gamepad-item{{#if comicsIndex}}{{#compare config.viewIndex '==' 'list'}} s{{/compare}}{{else}}{{#compare config.view '==' 'list'}} s{{/compare}}{{/if}}" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view.list}}</div>
 		</div>
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');"></div>
@@ -48,6 +48,29 @@
 		</div>
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-context-menu');" oncontextmenu="events.desactiveMenu('#index-context-menu');"></div>
+</div>
+
+<div class="menu" id="index-menu-gamepad">
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;">
+		<div class="menu-simple-content">
+
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad');">
+				<i class="material-icon menu-simple-icon-first menu-gamepad-view-icon">view_module</i>
+				{{language.global.view.main}}
+			</div>
+
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad');">
+				<i class="material-icon menu-simple-icon-first">sort</i>
+				{{language.global.sort.main}}
+			</div>
+
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="electronRemote.getCurrentWindow().close();">
+				<i class="material-icon menu-simple-icon-first">exit_to_app</i>
+				{{language.global.contextMenu.closeApp}}
+			</div>
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#index-menu-gamepad');"></div>
 </div>
 
 <script type="text/javascript">

@@ -20,7 +20,8 @@
 			"list": "List"
 		},
 		"contextMenu": {
-			"remove": "Remove"
+			"remove": "Remove",
+			"closeApp": "Close OpenComic"
 		},
 		"back": "Back",
 		"open": "Open",
@@ -46,6 +47,7 @@
 		"lastPage": "Last page",
 		"pages": {
 			"main": "Pages",
+			"pageLayout": "Page layout",
 			"slide": "Slide Reader",
 			"scroll": "Vertical Reader",
 			"adjustToWidth": "Adjust to width",

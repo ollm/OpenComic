@@ -1087,6 +1087,12 @@ body .preload
 	border: 1px solid var(--md-sys-color-surface-variant);
 }
 
+.medium-list > .icon-24
+{
+	float: left;
+	margin: 16px 28px 16px 16px;
+}
+
 .medium-list .medium-list-text
 {
 	text-overflow: ellipsis;
@@ -1095,10 +1101,9 @@ body .preload
 	word-wrap: normal;
 }
 
-.medium-list > .icon-24
+.medium-list .medium-list-text-without-image
 {
-	float: left;
-	margin: 16px 28px 16px 16px;
+	margin-left: 12px;
 }
 
 /*Content View*/

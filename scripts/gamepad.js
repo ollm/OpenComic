@@ -113,7 +113,7 @@ function gamepadLoop()
 			let sendEvent = (!status.lastEvent) ? true : false;
 
 			let speed = 200 - (status.eventNum * 5);
-			if(speed < 100) speed = 100;
+			if(speed < 20) speed = 20;
 
 			if(status.eventNum == 1 && now - status.lastEvent > 800)
 				sendEvent = true;
@@ -269,6 +269,7 @@ function setAxesStepsEvent(key, buttons, callback)
 
 // Use the gamepad to navigate between the items in the content
 var currentKey = false;
+var prevKey = false;
 var currentScreenItems = [];
 var currentHighlightItem = -1;
 var currentScrollElement = false;
@@ -280,6 +281,7 @@ var fromGoBack = false;
 
 function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 {
+	if(key != currentKey) prevKey = currentKey;
 	currentKey = key;
 
 	if(!hasGamepads && !hasKeyboardNavigation && !force)
@@ -295,58 +297,113 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	currentScreenItems = [];
 	currentHighlightItem = -1;
 
-	// Content right
-	let items = template._contentRight().querySelectorAll('.gamepad-item');
-	let scrollElement = currentScrollElement = template.contentRight().children().get(0);
-	let scrollTop = scrollElement.scrollTop;
-	currentScrollElementRect = scrollElement.getBoundingClientRect();
-
 	let toHighlight = false;
 
-	for(let i = 0, len = items.length; i < len; i++)
+	// Menu
+	let menu = template._globalElement().querySelector('.menu-simple.a');
+	let hasMenu = menu ? true : false;
+
+	if(hasMenu)
 	{
-		let item = items[i];
-		let rect = item.getBoundingClientRect();
+		let items = menu.querySelectorAll('.gamepad-item');
+		let scrollElement = currentScrollElement = menu;
+		let scrollTop = scrollElement.scrollTop;
+		currentScrollElementRect = scrollElement.getBoundingClientRect();
 
-		if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
-			toHighlight = i;
-
-		if(rect.height != 0 || rect.width != 0)
+		for(let i = 0, len = items.length; i < len; i++)
 		{
-			currentScreenItems.push({
-				inScroll: true,
-				block: 'right',
-				element: item,
-				x: rect.left,
-				y: rect.top + scrollTop,
-				centerX: rect.left + (rect.width / 2),
-				centerY: rect.top + (rect.height / 2) + scrollTop,
-			});
+			let item = items[i];
+			let rect = item.getBoundingClientRect();
+
+			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
+				toHighlight = i;
+
+			if(rect.height != 0 || rect.width != 0)
+			{
+				currentScreenItems.push({
+					inScroll: true,
+					block: 'top',
+					element: item,
+					x: rect.left,
+					y: rect.top + scrollTop,
+					centerY: rect.top + (rect.height / 2) + scrollTop,
+					onLeft: item.dataset.gamepadLeft,
+					onRight: item.dataset.gamepadRight,
+					left: rect.left,
+					right: rect.right,
+					top: rect.top + scrollTop,
+					bottom: rect.bottom + scrollTop,
+				});
+			}
+		}
+	}
+
+	// Content right
+	if(!hasMenu)
+	{
+		let items = template._contentRight().querySelectorAll('.gamepad-item');
+		let scrollElement = currentScrollElement = template.contentRight().children().get(0);
+		let scrollTop = scrollElement.scrollTop;
+		currentScrollElementRect = scrollElement.getBoundingClientRect();
+
+		for(let i = 0, len = items.length; i < len; i++)
+		{
+			let item = items[i];
+			let rect = item.getBoundingClientRect();
+
+			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
+				toHighlight = i;
+
+			if(rect.height != 0 || rect.width != 0)
+			{
+				currentScreenItems.push({
+					inScroll: true,
+					block: 'right',
+					element: item,
+					x: rect.left,
+					y: rect.top + scrollTop,
+					centerY: rect.top + (rect.height / 2) + scrollTop,
+					onLeft: item.dataset.gamepadLeft,
+					onRight: item.dataset.gamepadRight,
+					left: rect.left,
+					right: rect.right,
+					top: rect.top + scrollTop,
+					bottom: rect.bottom + scrollTop,
+				});
+			}
 		}
 	}
 
 	// Content left
-	items = template._contentLeft().querySelectorAll('.gamepad-item');
-
-	for(let i = 0, len = items.length; i < len; i++)
+	if(!hasMenu)
 	{
-		let item = items[i];
-		let rect = item.getBoundingClientRect();
+		let items = template._contentLeft().querySelectorAll('.gamepad-item');
 
-		if(item.classList.contains('gamepad-highlight'))
-			item.classList.remove('gamepad-highlight');
-
-		if(rect.height != 0 || rect.width != 0)
+		for(let i = 0, len = items.length; i < len; i++)
 		{
-			currentScreenItems.push({
-				inScroll: false,
-				block: 'left',
-				element: item,
-				x: rect.left,
-				y: rect.top + scrollTop,
-				centerX: rect.left + (rect.width / 2),
-				centerY: rect.top + (rect.height / 2) + scrollTop,
-			});
+			let item = items[i];
+			let rect = item.getBoundingClientRect();
+
+			if(item.classList.contains('gamepad-highlight'))
+				item.classList.remove('gamepad-highlight');
+
+			if(rect.height != 0 || rect.width != 0)
+			{
+				currentScreenItems.push({
+					inScroll: false,
+					block: 'left',
+					element: item,
+					rect: rect,
+					x: rect.left,
+					y: rect.top,
+					centerX: rect.left + (rect.width / 2),
+					centerY: rect.top + (rect.height / 2),
+					left: rect.left,
+					right: rect.right,
+					top: rect.top,
+					bottom: rect.bottom,
+				});
+			}
 		}
 	}
 
@@ -357,6 +414,16 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 		highlightItem(toHighlight ? toHighlight : 0);
 
 	fromGoBack = false;
+}
+
+function updateBrowsableItemsPrevKey()
+{
+	if(prevKey) updateBrowsableItems(prevKey);
+}
+
+function cleanBrowsableItems()
+{
+	currentScreenItems = [];
 }
 
 function highlightItem(index)
@@ -413,52 +480,79 @@ function highlightClosestItem(key)
 
 		if(current)
 		{
-			let closest = false;
-
-			for(let i = 0, len = currentScreenItems.length; i < len; i++)
+			if((current.onLeft && key == 0) || (current.onRight && key == 1))
 			{
-				let item = currentScreenItems[i];
-				let d = Math.sqrt((current.x - item.x) ** 2 + (current.y - item.y) ** 2); // Distance
-
-				item.i = i;
-				item.d = d;
-
-				if(key == 0) // Left
-				{
-					if(item.x < current.x && (item.block == current.block || item.block == 'left'))
-					{
-						if(!closest || (closest.d > d))
-							closest = item;
-					}
-				}
-				else if(key == 1) // Right
-				{
-					if(item.x > current.x && (item.block == current.block || item.block == 'right'))
-					{
-						if(!closest || (closest.d > d))
-							closest = item;
-					}
-				}
-				else if(key == 2) // Top
-				{
-					if(item.y < current.y && (item.block == current.block || item.block == 'top'))
-					{
-						if(!closest || (closest.d > d))
-							closest = item;
-					}
-				}
-				else if(key == 3) // Bottom
-				{
-					if(item.y > current.y && (item.block == current.block || item.block == 'bottom'))
-					{
-						if(!closest || (closest.d > d))
-							closest = item;
-					}
-				}
+				if(key == 0)
+					new Function(current.onLeft).call(current.element);
+				else
+					new Function(current.onRight).call(current.element);
 			}
+			else
+			{
+				let closest = false;
 
-			if(closest)
-				highlightItem(closest.i);
+				for(let i = 0, len = currentScreenItems.length; i < len; i++)
+				{
+					let item = currentScreenItems[i];
+
+					let x, y;
+
+					if(key == 0)
+						x = current.left - item.right;
+					else if(key == 1)
+						x = current.right - item.left;
+					else
+						x = current.x - item.x;
+
+					if(key == 2)
+						y = current.top - item.bottom;
+					else if(key == 3)
+						y = current.bottom - item.top;
+					else
+						y = current.y - item.y;
+
+					let d = Math.sqrt(x ** 2 + y ** 2); // Distance
+					
+					item.d = d;
+					item.i = i;
+
+					if(key == 0) // Left
+					{
+						if(item.right <= current.left && (item.block == current.block || item.block == 'left'))
+						{
+							if((!closest || (closest.d > d)) && !item.element.classList.contains('disable-pointer'))
+								closest = item;
+						}
+					}
+					else if(key == 1) // Right
+					{
+						if(item.left >= current.right && (item.block == current.block || item.block == 'right'))
+						{
+							if((!closest || (closest.d > d)) && !item.element.classList.contains('disable-pointer'))
+								closest = item;
+						}
+					}
+					else if(key == 2) // Top
+					{
+						if(item.bottom <= current.top && (item.block == current.block || item.block == 'top'))
+						{
+							if((!closest || (closest.d > d)) && !item.element.classList.contains('disable-pointer'))
+								closest = item;
+						}
+					}
+					else if(key == 3) // Bottom
+					{
+						if(item.top >= current.bottom && (item.block == current.block || item.block == 'bottom'))
+						{
+							if((!closest || (closest.d > d)) && !item.element.classList.contains('disable-pointer'))
+								closest = item;
+						}
+					}
+				}
+
+				if(closest)
+					highlightItem(closest.i);
+			}
 		}
 		else
 		{
@@ -471,10 +565,22 @@ function goHighlightItem()
 {
 	let current = currentScreenItems[currentHighlightItem] || false;
 
-	if(current && current.element.getAttribute('onclick'))
-		new Function(current.element.getAttribute('onclick')).call(current.element);
-	else
-		$(current.element).trigger('click');
+	if(current)
+	{
+		if(current.element.getAttribute('onclick'))
+		{
+			new Function(current.element.getAttribute('onclick')).call(current.element);
+		}
+		else
+		{
+			let _switch = current.element.querySelector('.switch');
+
+			if(_switch)
+				$(_switch).trigger('click');
+			else
+				$(current.element).trigger('click');
+		}
+	}
 }
 
 function highlightItemContextMenu()
@@ -485,9 +591,29 @@ function highlightItemContextMenu()
 		new Function(current.element.getAttribute('oncontextmenu')).call(current.element);
 }
 
-function showMenu()
+function showMenu(index = false)
 {
+	let query = index ? '#index-menu-gamepad' : '#reading-menu-gamepad';
 
+	if(document.querySelector(query+' .menu-simple.a'))
+		events.desactiveMenu(query);
+	else
+		events.activeMenu(query, false, 'gamepad');
+
+	if(index)
+	{
+		let viewIcon = document.querySelector('.menu-gamepad-view-icon');
+		if(!viewIcon) return;
+
+		let icon = '';
+
+		if(handlebarsContext.comicsIndex)
+			icon = (config.viewIndex == 'module') ? 'view_module' : 'view_list';
+		else
+			icon = (config.view == 'module') ? 'view_module' : 'view_list';
+
+		viewIcon.innerHTML = icon;
+	}
 }
 
 var buttonNames = {
@@ -548,6 +674,15 @@ function buttonKey(button = false)
 
 function goBack()
 {
+	let menuActive = document.querySelector('.menu-close.a');
+
+	if(menuActive)
+	{
+		eval(menuActive.getAttribute('onclick'));
+
+		return;
+	}
+
 	let barBack = document.querySelector('.bar-back.active, .bar-back.show');
 
 	if(barBack)
@@ -557,7 +692,7 @@ function goBack()
 	}
 }
 
-setButtonEvent('browsableItems', [0, 2, 3, 12, 13, 14, 15], function(key) {
+setButtonEvent('browsableItems', [0, 2, 3, 9, 12, 13, 14, 15, 16], function(key) {
 
 	if(key == 0)
 		goHighlightItem();
@@ -573,6 +708,8 @@ setButtonEvent('browsableItems', [0, 2, 3, 12, 13, 14, 15], function(key) {
 		highlightClosestItem(0);
 	else if(key == 15)
 		highlightClosestItem(1);
+	else if(!onReading && (key == 9 || key == 16))
+		showMenu(true);
 
 });
 
@@ -601,7 +738,7 @@ window.addEventListener('keydown', function(event) {
 
 	let key = event.keyCode;
 
-	if(!onReading || key == 8)
+	if((!onReading || document.querySelector('.menu-simple.a')) || key == 8)
 	{
 		if(key == 8 || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
 		{
@@ -652,6 +789,8 @@ module.exports = {
 	setAxesEvent: setAxesEvent,
 	setAxesStepsEvent: setAxesStepsEvent,
 	updateBrowsableItems: updateBrowsableItems,
+	updateBrowsableItemsPrevKey: updateBrowsableItemsPrevKey,
+	cleanBrowsableItems: cleanBrowsableItems,
 	goBack: goBack,
 	buttonName: buttonName,
 	buttonKey: buttonKey,

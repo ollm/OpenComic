@@ -226,6 +226,33 @@ function eventSwitch()
 	});
 }
 
+var rangeMoveStepST = false;
+
+function rangeMoveStep(This, stepToSum = 1)
+{
+	clearTimeout(rangeMoveStepST);
+
+	let range = This.querySelector('input[type="range"]');
+
+	if(range)
+	{
+		let value = +range.value;
+		let step = +range.getAttribute('step') || 1;
+
+		range.value = value + (step * stepToSum);
+
+		_eventRange.call(range, {type: 'gamepad'});
+	}
+
+	rangeClipPath(range.closest('.simple-slider'), true)
+
+	rangeMoveStepST = setTimeout(function(){
+
+		rangeRemoveClipPath(range.closest('.simple-slider'))
+
+	}, 1000);
+}
+
 function rangePosition(input, range)
 {
 	let value = +input.value;
@@ -269,41 +296,44 @@ function rangePosition(input, range)
 	}
 }
 
+function _eventRange(event)
+{
+	let range = $(this).closest('.range');
+
+	let onrange = this.getAttribute('onrange');
+
+	let value;
+	let value_txt = value = this.value;
+
+	let step = this.getAttribute('step');
+
+	rangePosition(this, range.get(0));
+
+	if(step)
+	{
+		let num_v = value_txt.replace(/.*?(\.|$)/, '').length;
+
+		let num_s = step.replace(/.*?(\.|$)/, '').length;
+
+		if(num_s != 0)
+			value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
+	}
+
+	let callback = hb.compile(onrange)({
+		value: value,
+		toEnd: (event.type == 'input' ? 'false' : 'true'),
+	});
+
+	callbackString(callback);
+
+	range.siblings('.simple-slider-text').find('span').html(value_txt);
+}
 
 function eventRange()
 {
-	$('.range input').on('change.events input.events', function(event) {
-
-		let range = $(this).closest('.range');
-
-		let onrange = this.getAttribute('onrange');
-
-		let value;
-		let value_txt = value = this.value;
-
-		let step = this.getAttribute('step');
-
-		rangePosition(this, range.get(0));
-
-		if(step)
-		{
-			let num_v = value_txt.replace(/.*?(\.|$)/, '').length;
-
-			let num_s = step.replace(/.*?(\.|$)/, '').length;
-
-			if(num_s != 0)
-				value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
-		}
-
-		let callback = hb.compile(onrange)({
-			value: value,
-			toEnd: (event.type == 'input' ? 'false' : 'true'),
-		});
-
-		callbackString(callback);
-
-		range.siblings('.simple-slider-text').find('span').html(value_txt);
-	});
+	$('.range input').on('change.events input.events', _eventRange);
+	$('.range input').on('touchstart mousedown', function(){rangeClipPath(this.closest('.simple-slider'))});
+	$('.range input').on('touchend mouseup', function(){rangeRemoveClipPath(this.closest('.simple-slider'))});
 
 	let ranges = document.querySelectorAll('.range');
 
@@ -314,7 +344,63 @@ function eventRange()
 
 		rangePosition(input, range);
 	}
+}
 
+function rangeClipPath(range, moveToTop = false)
+{
+	let menu = range.closest('.menu');
+	let menuSimple = range.closest('.menu-simple');
+
+	if(menuSimple && !menuSimple.dataset.clipPath)
+	{
+		let menuGamepad = menu.classList.contains('menu-gamepad');
+
+		let rect = menuSimple.getBoundingClientRect();
+		let _rectRange = range.getBoundingClientRect();
+
+		let rectRange = {
+			left: _rectRange.left + (menuGamepad ? 0 : 12),
+			right: _rectRange.right - (menuGamepad ? 0 : 13),
+			top: _rectRange.top - 6,
+			bottom: _rectRange.bottom - 6,
+			width: _rectRange.width - (menuGamepad ? 0 : 25),
+			height: _rectRange.height,
+		};
+
+		let left = rectRange.left - rect.left;
+		let right = rect.right - rectRange.right;
+		let top = rectRange.top - rect.top;
+		let bottom = rect.bottom - rectRange.bottom;
+
+		// if(moveToTop) menu.style.transform = 'translateY(-'+(rectRange.top - 56)+'px)';
+		menuSimple.dataset.clipPath = '1';
+		menuSimple.style.clipPath = 'inset('+top+'px '+right+'px '+bottom+'px '+left+'px round 14px)';
+
+		dom.this(menuSimple).siblings('.menu-close').css({cssText: 'opacity: 0 !important'});
+
+		dom.this(menuSimple).siblings('.menu-clip-path-shadow').css({
+			opacity: 1,
+			left: rectRange.left+'px',
+			top: rectRange.top+'px',
+			width: rectRange.width+'px',
+			height: rectRange.height+'px',
+		});
+	}
+}
+
+function rangeRemoveClipPath(range)
+{
+	let menu = range.closest('.menu');
+	let menuSimple = range.closest('.menu-simple');
+
+	if(menuSimple)
+	{
+		menu.style.transform = '';
+		menuSimple.dataset.clipPath = '';
+		menuSimple.style.clipPath = '';
+
+		dom.this(menuSimple).siblings('.menu-close, .menu-clip-path-shadow', true).css({opacity: ''});
+	}
 }
 
 function events()
@@ -370,62 +456,78 @@ function hideHoverText()
 	}
 }
 
-function activeMenu(query, query2, pos, pos2)
+function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 {
-	var menu = $(query);
+	let menu = document.querySelector(query);
+	let menuSimple = document.querySelector(query+' .menu-simple');
 
-	var pos2 = pos2 || 'top'; 
+	let top = 0,
+		left = 0,
+		height = 0,
+		width = 0;
 
-	var button = $(query2);
-
-	var top = button.offset().top;
-	var left = button.offset().left;
-	var height = button.outerHeight();
-	var width = button.outerWidth()
-
-	menu.children().removeClass('d').addClass('a');
-
-	if(pos == 'auto')
+	if(query2)
 	{
-		if(left + (width / 2) < $(window).width() / 2)
-		{
-			pos = 'left';
-		}
-		else
-		{
-			pos = 'right';
-		}
+		let button = document.querySelector(query2);
+		let rect = button.getBoundingClientRect();
+
+		top = rect.top;
+		left = rect.left;
+		height = rect.height;
+		width = rect.width;
 	}
 
-	if(pos2 == 'auto')
+	for(let i = 0, len = menu.children.length; i < len; i++)
 	{
-		if(top + (height / 2) < $(window).height() / 2)
-		{
-			pos2 = 'top';
-		}
-		else
-		{
-			pos2 = 'bottom';
-		}
+		menu.children[i].classList.remove('d');
+		menu.children[i].classList.add('a');
 	}
 
-	if(pos == 'left')
+	if(posX == 'auto')
 	{
-		menu.find('.menu-simple').css('right', '').css('left', (left - 8)+'px');
+		if(left + (width / 2) < window.innerWidth / 2)
+			posX = 'left';
+		else
+			posX = 'right';
+	}
+
+	if(posY == 'auto')
+	{
+		if(top + (height / 2) < window.innerHeight / 2)
+			posY = 'top';
+		else
+			posY = 'bottom';
+	}
+
+	if(posX == 'left')
+	{
+		menuSimple.style.right = '';
+		menuSimple.style.left = (left - 8)+'px';
 	}
 	else
 	{
-		menu.find('.menu-simple').css('left', '').css('right', (($(window).width() - left) - width)+'px');
+		menuSimple.style.right = ((window.innerWidth - left) - width)+'px';
+		menuSimple.style.left = '';
 	}
 
-	if(pos2 == 'top')
+	if(posY == 'top')
 	{
-		menu.find('.menu-simple').css('bottom', '').css('top', (top+height+8)+'px');
+		menuSimple.style.bottom = '';
+		menuSimple.style.top = (top + height + 8)+'px';
 	}
 	else
 	{
-		menu.find('.menu-simple').css('top', '').css('bottom', (($(window).height() - top))+'px');
+		menuSimple.style.bottom = ((window.innerHeight - top))+'px';
+		menuSimple.style.top = '';
 	}
+
+	if(posX == 'gamepad')
+		menu.classList.add('menu-gamepad');
+	else
+		menu.classList.remove('menu-gamepad');
+
+	shortcuts.pause();
+	gamepad.updateBrowsableItems('menu', true);
 }
 
 
@@ -459,13 +561,20 @@ function activeContextMenu(query)
 		menuSimple.css({'top': '', 'bottom': (($(window).height() - currentPageY) + 4)+'px'});
 }
 
-function desactiveMenu(query, query2)
+function desactiveMenu(query, query2 = false)
 {
 	var menu = $(query);
 
 	menu.children().removeClass('a').addClass('d');
 
-	$(query2+'.p, '+query2+'.c, '+query2+'.a').removeClass('p c a').addClass('d');
+	if(query2) $(query2+'.p, '+query2+'.c, '+query2+'.a').removeClass('p c a').addClass('d');
+
+	if(!onReading)
+		gamepad.updateBrowsableItemsPrevKey();
+	else
+		gamepad.cleanBrowsableItems();
+
+	shortcuts.play();
 }
 
 // Dialogs
@@ -605,4 +714,5 @@ module.exports = {
 	closeDialog: closeDialog,
 	snackbar: snackbar,
 	closeSnackbar: closeSnackbar,
+	rangeMoveStep: rangeMoveStep,
 };

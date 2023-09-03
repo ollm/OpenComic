@@ -67,8 +67,14 @@ function generateShortcutsTable(highlightItem = false)
 	if(highlightItem !== false) gamepad.highlightItem(highlightItem);
 }
 
+var recording= false;
+
 function changeShortcut(action, current, This)
 {
+	if(recording) return;
+
+	recording = true;
+
 	dom.this(template._contentRight()).find('table tbody td').removeClass('active');
 	This.classList.add('active');
 
@@ -77,6 +83,8 @@ function changeShortcut(action, current, This)
 		shortcuts.change('reading', action, current, shortcut);
 
 		generateShortcutsTable(gamepad.currentHighlightItem());
+
+		setTimeout(function(){recording = false}, 100);
 
 	});
 }
@@ -90,6 +98,10 @@ function removeShortcut(action, current)
 
 function changeButton(action, current, This)
 {
+	if(recording) return;
+
+	recording = true;
+
 	dom.this(template._contentRight()).find('table tbody td').removeClass('active');
 	This.classList.add('active');
 
@@ -97,6 +109,7 @@ function changeButton(action, current, This)
 
 		gamepad.reset('record');
 
+		console.log(This);
 		This.classList.remove('active');
 
 		events.snackbar({
@@ -112,6 +125,8 @@ function changeButton(action, current, This)
 			],
 		});
 
+		setTimeout(function(){recording = false}, 100);
+
 	});
 
 	console.log(action, current);
@@ -126,6 +141,8 @@ function changeButton(action, current, This)
 		shortcuts.changeGamepad('reading', action, current, gamepad.buttonName(key));
 
 		generateShortcutsTable(gamepad.currentHighlightItem());
+
+		setTimeout(function(){recording = false}, 100);
 
 	});
 }

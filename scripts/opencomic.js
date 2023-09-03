@@ -308,7 +308,7 @@ async function loadShoSho()
 {
 	if(ShoSho) return;
 
-	ShoSho = await import(p.join(appDir, 'node_modules', 'shosho', 'dist', 'index.js'));
+	ShoSho = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/shosho/dist/index.js')));
 	ShoSho = ShoSho.default;
 
 	return true;

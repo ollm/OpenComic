@@ -1,7 +1,7 @@
-<div class="settings-body body-medium">
+<div class="languages-body body-medium">
 	{{#each languagesList}}
-	<div class="simple-list language-list language-list-{{code}} {{#compare code '==' @root.config.language}} active{{/compare}}" onclick="dom.changeLanguage('{{code}}')">
-		{{nativeName}}
+	<div class="medium-list body-medium gamepad-item language-list language-list-{{code}} {{#compare code '==' @root.config.language}} active{{/compare}}" onclick="dom.changeLanguage('{{code}}')">
+		<div class="medium-list-text medium-list-text-without-image">{{nativeName}}</div>
 	</div>
 	{{/each}}
 </div>

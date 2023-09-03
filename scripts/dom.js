@@ -1059,6 +1059,7 @@ function loadLanguagesPage(animation = true)
 
 	template.loadContentRight('languages.content.right.html', animation);
 	template.loadHeader('languages.header.html', animation);
+	template.loadGlobalElement('general.elements.menus.html', 'menus');
 	floatingActionButton(false);
 
 	events.events();
@@ -1095,6 +1096,7 @@ function loadSettingsPage(animation = true)
 
 	template.loadContentRight('settings.content.right.html', animation);
 	template.loadHeader('settings.header.html', animation);
+	template.loadGlobalElement('general.elements.menus.html', 'menus');
 	floatingActionButton(false);
 
 	settings.start();
@@ -1118,6 +1120,7 @@ function loadThemePage(animation = true)
 
 	//template.loadContentRight('theme.content.right.html', animation);
 	template.loadHeader('theme.header.html', animation);
+	template.loadGlobalElement('general.elements.menus.html', 'menus');
 	floatingActionButton(false);
 
 	theme.start();
@@ -1533,7 +1536,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 // Gamepad events
 gamepad.setButtonEvent('reading', 1, function(key, button) {
 
-	if(key == 1 && !onReading)
+	if(key == 1 && (!onReading || document.querySelector('.menu-simple.a')))
 		gamepad.goBack();
 
 });

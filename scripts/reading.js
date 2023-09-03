@@ -1540,7 +1540,7 @@ function dragZoomEnd()
 }
 
 //Turn the magnifying glass on and off
-function activeMagnifyingGlass(active = null)
+function activeMagnifyingGlass(active = null, gamepad = false)
 {
 	// Toggle magnifying glass
 	if(active === null) active = !config.readingMagnifyingGlass;
@@ -1549,6 +1549,17 @@ function activeMagnifyingGlass(active = null)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
 		readingRender.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom);
+	
+		if(gamepad)
+		{
+			let contentRight = template._contentRight();
+			let rect = contentRight.getBoundingClientRect();
+
+			let pageX = (rect.width / 2) + rect.left;
+			let pageY = (rect.height / 2) + rect.top;
+
+			magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}});
+		}
 	}
 	else
 	{
@@ -1561,17 +1572,11 @@ function activeMagnifyingGlass(active = null)
 //Magnifying glass settings
 function changeMagnifyingGlass(mode, value, save)
 {
-	var contentRight = template.contentRight();
+	let contentRight = template._contentRight();
+	let rect = contentRight.getBoundingClientRect();
 
-	var paddingTop = parseInt(contentRight.css('padding-top'), 10);
-	if(!paddingTop) paddingTop = 0;
-
-	var width = contentRight.width(),
-	height = contentRight.height(),
-	offset = contentRight.offset();
-
-	var pageX = (width / 2) + offset.left;
-	var pageY = (height / 2) + offset.top + paddingTop;
+	let pageX = (rect.width / 2) + rect.left;
+	let pageY = (rect.height / 2) + rect.top;
 
 	if(mode == 1) //Set the zoom
 	{
@@ -1601,15 +1606,15 @@ function changeMagnifyingGlass(mode, value, save)
 	}
 }
 
-var magnifyingGlassView = false;
+var magnifyingGlassView = false, magnifyingGlassPosition = {x: false, y: false};
 
 //Magnifying glass control
 function magnifyingGlassControl(mode, e = false, lensData = false)
 {
 	if(e)
 	{
-		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
-		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX || !e.clientX ? e.pageX : e.clientX);
+		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY || !e.clientY ? e.pageY : e.clientY);
 	}
 
 	if(mode == 1)
@@ -1659,6 +1664,10 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 		magnifyingGlassView = true;
 
+		magnifyingGlassPosition = {
+			x: x,
+			y: y,
+		};
 	}
 	else
 	{
@@ -2685,7 +2694,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false;
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false)
@@ -2789,8 +2798,11 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	gamepad.setAxesEvent('reading', function(axes, status, now) {
 
-		if(onReading)
+		if(onReading && !document.querySelector('.menu-simple.a'))
 		{
+			if(status == 'start')
+				gamepadAxesNow = 0;
+
 			if(haveZoom)
 			{
 				if(status == 'start')
@@ -2798,7 +2810,6 @@ async function read(path, index = 1, end = false, isCanvas = false)
 					zoomMoveData = {
 						x: 0,
 						y: 0,
-						now: 0,
 						active: true,
 					};
 				}
@@ -2813,13 +2824,13 @@ async function read(path, index = 1, end = false, isCanvas = false)
 						x = axes[0];
 						y = axes[1];
 					}
-					else
+					else if(!config.readingMagnifyingGlass)
 					{
 						x = axes[2];
 						y = axes[3];
 					}
 
-					let speed = zoomMoveData.now ? now - zoomMoveData.now : 16;
+					let speed = gamepadAxesNow ? now - gamepadAxesNow : 16;
 
 					x = zoomMoveData.x = zoomMoveData.x + -(x * speed);
 					y = zoomMoveData.y = zoomMoveData.y + -(y * speed);
@@ -2829,6 +2840,28 @@ async function read(path, index = 1, end = false, isCanvas = false)
 				else // status == 'end'
 				{
 					dragZoomEnd();
+				}
+			}
+
+			if(config.readingMagnifyingGlass)
+			{
+				if(axes[2] || axes[3])
+				{
+					let speed = gamepadAxesNow ? now - gamepadAxesNow : 16;
+
+					if(magnifyingGlassPosition.x === false)
+					{
+						let contentRight = template._contentRight();
+						let rect = contentRight.getBoundingClientRect();
+
+						magnifyingGlassPosition.x = (rect.width / 2) + rect.left;
+						magnifyingGlassPosition.y = (rect.height / 2) + rect.top;
+					}
+
+					let x = magnifyingGlassPosition.x + (axes[2] * speed / 2);
+					let y = magnifyingGlassPosition.y + (axes[3] * speed / 2);
+
+					reading.magnifyingGlassControl(1, {pageX: x, pageY: y, originalEvent: {touches: false}});
 				}
 			}
 			
@@ -2852,12 +2885,12 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 				if(axes[1])
 					y = axes[1];
-				else
+				else if(!config.readingMagnifyingGlass)
 					y = axes[3];
 
 				if(status == 'start' || status == 'move')
 				{
-					let speed = (zoomMoveData.now ? now - zoomMoveData.now : 16) * (haveZoom ? 1 : 2);
+					let speed = (gamepadAxesNow ? now - gamepadAxesNow : 16) * (haveZoom ? 1 : 2);
 
 					y = gamepadScroll.y = gamepadScroll.y + (y * speed);
 
@@ -2868,19 +2901,23 @@ async function read(path, index = 1, end = false, isCanvas = false)
 					gamepadScroll = false;
 				}
 			}
+
+			gamepadAxesNow = now;
 		}
 		
 	});
 
 	gamepad.setAxesStepsEvent('reading', [0, 1], function(key, axes) {
 
-		if(onReading)
+		if(onReading && !document.querySelector('.menu-simple.a'))
 		{
 			if(!haveZoom && !readingViewIs('scroll'))
 			{
-				if(key == 0)
+				console.log(axes);
+
+				if(key == 0 && (axes[0] < 0 || (axes[2] < 0 && !config.readingMagnifyingGlass)))
 					goPrevious();
-				else if(key == 1)
+				else if(key == 1 && (axes[0] > 0|| (axes[2] > 0 && !config.readingMagnifyingGlass)))
 					goNext();
 			}
 		}

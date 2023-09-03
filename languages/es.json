@@ -20,7 +20,8 @@
 			"list": "Lista"
 		},
 		"contextMenu": {
-			"remove": "Retirar"
+			"remove": "Retirar",
+			"closeApp": "Cerrar OpenComic"
 		},
 		"back": "Atrás",
 		"open": "Abrir",
@@ -46,6 +47,7 @@
 		"lastPage": "Última página",
 		"pages": {
 			"main": "Páginas",
+			"pageLayout": "Maquetación de las páginas",
 			"slide": "Lectura horizontal",
 			"scroll": "Lectura vertical",
 			"adjustToWidth": "Ajustar a lo ancho",

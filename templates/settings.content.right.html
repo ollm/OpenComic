@@ -18,7 +18,7 @@
 
 			<h2 class="headline-small">{{language.settings.reading.main}}</h2>
 
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.settings.reading.globalZoom}}
 				<div class="switch{{#if config.readingGlobalZoom}} a{{/if}}" on="settings.setGlobalZoom(true)" off="settings.setGlobalZoom(false)">
 					<div></div>
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 
-			<div class="simple-slider">
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
 				<div class="simple-slider-text">{{language.settings.reading.maxMargin}}<div><span>{{config.readingMaxMargin}}</span>px</div></div>
 				<div class="range">
 					<div class="range-position">
@@ -42,7 +42,7 @@
 
 			<h2 class="headline-small">{{language.settings.navigation.main}}</h2>
 
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.settings.navigation.showFullPathLibrary}}
 				<div class="switch{{#if config.showFullPathLibrary}} a{{/if}}" on="settings.setShowFullPathLibrary(true)" off="settings.setShowFullPathLibrary(false)">
 					<div></div>
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.settings.navigation.showFullPathOpened}}
 				<div class="switch{{#if config.showFullPathOpened}} a{{/if}}" on="settings.setShowFullPathOpened(true)" off="settings.setShowFullPathOpened(false)">
 					<div></div>
@@ -60,7 +60,7 @@
 
 			<h2 class="headline-small">{{language.settings.others.main}}</h2>
 
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.settings.others.startInFullScreen}}
 				<div class="switch{{#if config.startInFullScreen}} a{{/if}}" on="settings.setStartInFullScreen(true)" off="settings.setStartInFullScreen(false)">
 					<div></div>
@@ -70,7 +70,7 @@
 
 			<h2 class="headline-small">{{language.settings.releases.main}}</h2>
 
-			<div class="menu-simple-text">
+			<div class="menu-simple-text gamepad-item">
 				{{language.settings.releases.checkReleases}}
 				<div class="switch{{#if config.checkReleases}} a{{/if}}" on="settings.setCheckReleases(true)" off="settings.setCheckReleases(false)">
 					<div></div>
@@ -78,7 +78,7 @@
 				</div>
 			</div>
 
-			<div class="menu-simple-text settings-check-prereleases{{#unless config.checkReleases}} disable-pointer{{/unless}}">
+			<div class="menu-simple-text gamepad-item settings-check-prereleases{{#unless config.checkReleases}} disable-pointer{{/unless}}">
 				{{language.settings.releases.checkPreReleases}}
 				<div class="switch{{#if config.checkPreReleases}} a{{/if}}" on="settings.setCheckPreReleases(true)" off="settings.setCheckPreReleases(false)">
 					<div></div>
