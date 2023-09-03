@@ -79,7 +79,7 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^27.0.0-alpha.2",
+		"electron": "^27.0.0-alpha.5",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"nodemon": "^3.0.1"
