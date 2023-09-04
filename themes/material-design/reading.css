@@ -321,22 +321,27 @@
 .reading-bookmark, .menu-tracking-sites, .menu-tracking-sites-empty
 {
 	padding: 0px 24px;
-	color: #777;
+	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
 }
 
+.reading-bookmark
+{
+	padding: 4px 24px;
+}
+
 .menu-tracking-sites
 {
-	padding: 8px 24px;
+	padding: 6px 24px;
 }
 
 .reading-bookmark > span, .menu-tracking-sites > span, .menu-tracking-sites-empty > span
 {
 	padding-right: 6px;
-	color: #333;
+	color: var(--md-sys-color-on-surface);
 }
 
 .menu-tracking-sites > span
@@ -363,6 +368,11 @@
 {
 	padding: 4px 8px 0px 0px;
 	float: left;
+}
+
+.menu-tracking-sites.favorite i.menu-simple-icon-last
+{
+	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 /* Tracking */

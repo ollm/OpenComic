@@ -882,7 +882,7 @@ body .preload
 .menu-simple-separator-min
 {
 	margin-left: 24px;
-	width: calc(100% - 24px)
+	width: calc(100% - 48px)
 }
 
 .dialog-text .menu-simple-separator

@@ -21,6 +21,7 @@
 		},
 		"contextMenu": {
 			"remove": "Retirar",
+			"openFileLocation": "Obre la ubicació del fitxer",
 			"closeApp": "Tancar OpenComic"
 		},
 		"back": "Enrere",

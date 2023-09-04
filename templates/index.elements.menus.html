@@ -39,9 +39,15 @@
 </div>
 
 <div class="menu" id="index-context-menu">
-	<div class="menu-simple elevation-2" style="width: 164px;" onclick="events.desactiveMenu('#index-context-menu');">
+	<div class="menu-simple elevation-2" onclick="events.desactiveMenu('#index-context-menu');">
 		<div class="menu-simple-content">
-			<div class="menu-simple-element context-menu-remove">
+
+			<div class="menu-simple-element menu-simple-element-little context-menu-open-file-location">
+				<i class="material-icon menu-simple-icon-first">folder_open</i>
+				{{language.global.contextMenu.openFileLocation}}
+			</div>
+
+			<div class="menu-simple-element menu-simple-element-little context-menu-remove">
 				<i class="material-icon menu-simple-icon-first">delete</i>
 				{{language.global.contextMenu.remove}}
 			</div>

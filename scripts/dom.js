@@ -1079,6 +1079,8 @@ function changeLanguage(lan)
 	template.loadContentLeft('index.content.left.html', false);
 	template.loadHeader('languages.header.html', false);
 	storage.updateVar('config', 'language', lan);
+
+	gamepad.updateBrowsableItems(gamepad.currentKey());
 }
 
 /* Page - Settings */
@@ -1363,9 +1365,22 @@ function nightMode()
 }
 
 // Show the comic contet menu
-function comicContextMenu(path)
+function comicContextMenu(path, fromIndex = true)
 {	
-	$('#index-context-menu .context-menu-remove').attr('onclick', 'dom.removeComic(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+	// Remove
+	let remove = document.querySelector('#index-context-menu .context-menu-remove');
+
+	if(fromIndex)
+		remove.style.display = 'block';
+	else
+		remove.style.display = 'none';
+
+	remove.setAttribute('onclick', 'dom.removeComic(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+
+	// Open file location
+	let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
+	openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
+
 	events.activeContextMenu('#index-context-menu');
 }
 

@@ -21,6 +21,7 @@
 		},
 		"contextMenu": {
 			"remove": "Remove",
+			"openFileLocation": "Open file location",
 			"closeApp": "Close OpenComic"
 		},
 		"back": "Back",
