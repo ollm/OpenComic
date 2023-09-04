@@ -528,7 +528,7 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 	else
 		menu.classList.remove('menu-gamepad');
 
-	fromGamepadMenu = (posX == 'gamepad' && posY != 'gamepad') ? true : false;
+	fromGamepadMenu = (posX == 'gamepad' && posY == 'gamepad') ? true : false;
 
 	shortcuts.pause();
 	gamepad.updateBrowsableItems('menu', true);
@@ -563,6 +563,8 @@ function activeContextMenu(query)
 		menuSimple.css({'bottom': '', 'top': (currentPageY + 4)+'px'});
 	else
 		menuSimple.css({'top': '', 'bottom': (($(window).height() - currentPageY) + 4)+'px'});
+
+	menu.removeClass('menu-gamepad');
 }
 
 function desactiveMenu(query, query2 = false)

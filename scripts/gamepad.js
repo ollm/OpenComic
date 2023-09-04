@@ -588,7 +588,7 @@ function highlightItemContextMenu()
 	let current = currentScreenItems[currentHighlightItem] || false;
 
 	if(current && current.element.getAttribute('oncontextmenu'))
-		new Function(current.element.getAttribute('oncontextmenu')).call(current.element);
+		new Function('let fromGamepad = true;'+current.element.getAttribute('oncontextmenu')).call(current.element);
 }
 
 function showMenu()
@@ -598,7 +598,7 @@ function showMenu()
 	if(document.querySelector(query+' .menu-simple.a'))
 		events.desactiveMenu(query);
 	else
-		events.activeMenu(query, false, 'gamepad', 'gamepad');
+		events.activeMenu(query, false, 'gamepad');
 
 	if(!onReading)
 	{

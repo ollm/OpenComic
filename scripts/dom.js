@@ -1365,7 +1365,7 @@ function nightMode()
 }
 
 // Show the comic contet menu
-function comicContextMenu(path, fromIndex = true)
+function comicContextMenu(path, fromIndex = true, gamepad = false)
 {	
 	// Remove
 	let remove = document.querySelector('#index-context-menu .context-menu-remove');
@@ -1381,7 +1381,10 @@ function comicContextMenu(path, fromIndex = true)
 	let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 	openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
 
-	events.activeContextMenu('#index-context-menu');
+	if(gamepad)
+		events.activeMenu('#index-context-menu', false, 'gamepad');
+	else
+		events.activeContextMenu('#index-context-menu');
 }
 
 // Remove the comic from OpenComic

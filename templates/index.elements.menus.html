@@ -42,12 +42,12 @@
 	<div class="menu-simple elevation-2" onclick="events.desactiveMenu('#index-context-menu');">
 		<div class="menu-simple-content">
 
-			<div class="menu-simple-element menu-simple-element-little context-menu-open-file-location">
+			<div class="menu-simple-element menu-simple-element-little context-menu-open-file-location gamepad-item">
 				<i class="material-icon menu-simple-icon-first">folder_open</i>
 				{{language.global.contextMenu.openFileLocation}}
 			</div>
 
-			<div class="menu-simple-element menu-simple-element-little context-menu-remove">
+			<div class="menu-simple-element menu-simple-element-little context-menu-remove gamepad-item">
 				<i class="material-icon menu-simple-icon-first">delete</i>
 				{{language.global.contextMenu.remove}}
 			</div>
@@ -60,12 +60,12 @@
 	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 
-			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad');">
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad', 'gamepad');">
 				<i class="material-icon menu-simple-icon-first menu-gamepad-view-icon">view_module</i>
 				{{language.global.view.main}}
 			</div>
 
-			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad');">
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad', 'gamepad');">
 				<i class="material-icon menu-simple-icon-first">sort</i>
 				{{language.global.sort.main}}
 			</div>

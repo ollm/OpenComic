@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### 🚀 New Features
 
-- Open file location in context menu
+- Open file location in context menu [`339bcc0`](https://github.com/ollm/OpenComic/commit/339bcc0b21eab52228b7762c92c993d06489aa48)
 
 ### 🐛 Bug Fixes
 

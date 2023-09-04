@@ -741,6 +741,11 @@
 	width: 100%;
 }
 
+.menu-gamepad .menu-simple-element i
+{
+	padding: 14px 0px 14px 8px;
+}
+
 /* Dialog */
 
 @keyframes dialog-show

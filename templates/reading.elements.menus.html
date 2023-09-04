@@ -90,22 +90,22 @@
 		<div class="menu-simple-content">
 
 
-			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadBookmarks(); events.activeMenu('#collections-bookmark', false, 'gamepad');">
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadBookmarks(); events.activeMenu('#collections-bookmark', false, 'gamepad', 'gamepad');">
 				<i class="material-icon menu-simple-icon-first">collections_bookmark</i>
 				{{language.reading.viewBookmarks}}
 			</div>
 
-			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadTrackigSites(); events.activeMenu('#tracking-sites', false, 'gamepad');">
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadTrackigSites(); events.activeMenu('#tracking-sites', false, 'gamepad', 'gamepad');">
 				<i class="material-icon menu-simple-icon-first">sync</i>
 				{{language.reading.tracking.main}}
 			</div>
 
-			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); events.activeMenu('#reading-magnifying-glass', false, 'gamepad');">
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); events.activeMenu('#reading-magnifying-glass', false, 'gamepad', 'gamepad');">
 				<i class="material-icon menu-simple-icon-first">search</i>
 				{{language.reading.magnifyingGlass.main}}
 			</div>
 
-			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(); events.activeMenu('#reading-pages', false, 'gamepad');">
+			<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');">
 				<i class="material-icon menu-simple-icon-first">auto_stories</i>
 				{{language.reading.pages.pageLayout}}
 			</div>

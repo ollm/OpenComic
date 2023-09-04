@@ -234,6 +234,8 @@ fileManager.removeTmpVector();
 
 //console.timeEnd('Require time 2');
 
+var fromGamepad = false;
+
 window.onload = function() {
 
 	storage.start(function() {
