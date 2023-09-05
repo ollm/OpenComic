@@ -250,7 +250,9 @@ var file = function(path) {
 		return;
 	}
 
-	this._images = async function(num, files, from = false, fromReached = false, poster = false) {
+	this._images = async function(num, files, from = false, fromReached = false, poster = false, deep = 0) {
+
+		console.log(deep);
 
 		let images = [];
 		let imagesNum = 0;
@@ -260,6 +262,8 @@ var file = function(path) {
 
 		let stop = len == 0 ? true : false;
 		let i = reverse ? len - 1 : 0;
+
+		let index = 0;
 
 		while(!stop)
 		{
@@ -285,7 +289,7 @@ var file = function(path) {
 					}
 					else
 					{
-						image = await this._images(reverse ? -1 : 1, _files, from, fromReached, poster);
+						image = await this._images(reverse ? -1 : 1, _files, from, fromReached, poster, deep + 1);
 						fromReached = image.fromReached;
 						image = image.images[0] || false;
 					}
@@ -318,6 +322,11 @@ var file = function(path) {
 				i++;
 				stop = i >= len ? true : false;
 			}
+
+			if(this.config.cacheOnly && index > 16 && deep > 0)
+				throw new Error('notCacheOnly');
+
+			index++;
 		}
 
 		return {images: images, fromReached: fromReached};
