@@ -363,7 +363,7 @@ var file = function(path) {
 		{
 			let file = files[i];
 
-			if(!file.folder && !file.compressed && regex.test(file.name))
+			if(!file.folder && !file.compressed && regex.test(file.name) && (inArray(mime.getType(file.path), compatibleMime) || inArray(app.extname(file.path), compatibleSpecialExtensions)))
 			{
 				file.sha = sha1(file.path);
 				poster = file;
