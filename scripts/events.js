@@ -531,7 +531,7 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 	fromGamepadMenu = (posX == 'gamepad' && posY == 'gamepad') ? true : false;
 
 	shortcuts.pause();
-	gamepad.updateBrowsableItems('menu', true);
+	gamepad.updateBrowsableItems('menu');
 }
 
 

@@ -2,10 +2,10 @@ setInterval(pollGamepads, 500);
 
 var hasGamepads = false;
 var gamepadAF = false;
+var firstGamepadEvent = true;
 
 function pollGamepads()
 {
-
 	let gamepads = navigator.getGamepads();
 	let _hasGamepads = false;
 
@@ -28,6 +28,8 @@ function pollGamepads()
 			gamepadAF = requestAnimationFrame(gamepadLoop);
 
 			updateBrowsableItems(currentKey, true);
+
+			firstGamepadEvent = true;
 		}
 
 		hasGamepads = true;
@@ -120,7 +122,7 @@ function gamepadLoop()
 			else if(status.eventNum > 1 && now - status.lastEvent > speed)
 				sendEvent = true;
 
-			if(sendEvent)
+			if(sendEvent && !firstGamepadEvent)
 			{
 				status.eventNum++;
 				status.lastEvent = now;
@@ -182,7 +184,7 @@ function gamepadLoop()
 			else if(status.eventNum > 1 && now - status.lastEvent > speed)
 				sendEvent = true;
 
-			if(sendEvent)
+			if(sendEvent && !firstGamepadEvent)
 			{
 				console.log('sendEvent');
 
@@ -216,6 +218,8 @@ function gamepadLoop()
 	}
 
 	gamepadAF = requestAnimationFrame(gamepadLoop);
+
+	firstGamepadEvent = false;
 }
 
 function reset(key = false)
@@ -746,9 +750,6 @@ window.addEventListener('keydown', function(event) {
 
 			hasKeyboardNavigation = true;
 
-			if(lastUpdateBrowsableItemsSkiped)
-				updateBrowsableItems(currentKey, true);
-
 			if(key == 8)
 				goBack();
 			else if(key == 13)
@@ -761,6 +762,9 @@ window.addEventListener('keydown', function(event) {
 				highlightClosestItem(1);
 			else if(key == 40)
 				highlightClosestItem(3);
+
+			if(lastUpdateBrowsableItemsSkiped)
+				updateBrowsableItems(currentKey, true);
 		}
 		else
 		{

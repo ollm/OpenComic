@@ -252,8 +252,6 @@ var file = function(path) {
 
 	this._images = async function(num, files, from = false, fromReached = false, poster = false, deep = 0) {
 
-		console.log(deep);
-
 		let images = [];
 		let imagesNum = 0;
 
