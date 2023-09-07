@@ -1,0 +1,31 @@
+name: Generate Sponsors
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 30 15 * * 0-6
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Generate Sponsors 💖 in README.md
+        uses: JamesIves/github-sponsors-readme-action@v1
+        with:
+          token: ${{ secrets.PAT }}
+          file: 'README.md'
+          template: '<a href="https://github.com/{{{ login }}}"><img src="https://github.com/{{{ login }}}.png" width="50px" style="border-radius: 50px;" alt="{{{ login }}}" /></a>&nbsp;&nbsp;'
+
+      - name: Generate Sponsors 💖 in FUNDING.md
+        uses: JamesIves/github-sponsors-readme-action@v1
+        with:
+          token: ${{ secrets.PAT }}
+          file: 'FUNDING.md'
+          template: '<a href="https://github.com/{{{ login }}}"><img src="https://github.com/{{{ login }}}.png" width="50px" style="border-radius: 50px;" alt="{{{ login }}}" /></a>&nbsp;&nbsp;'
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: main
+          folder: '.'

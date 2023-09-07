@@ -172,7 +172,8 @@
 		},
 		"help": {
 			"main": "Ajuda",
-			"about": "Sobre OpenComic"
+			"about": "Sobre OpenComic",
+			"funding": "Finançar!"
 		}
 	},
 	"dialog": {

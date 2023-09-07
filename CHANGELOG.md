@@ -6,12 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## v1.0.0-beta.3 (dd-mm-yyyy)
 
-### 🚀 New Features
+##### 🚀 New Features
 
 - Open file location in context menu [`339bcc0`](https://github.com/ollm/OpenComic/commit/339bcc0b21eab52228b7762c92c993d06489aa48)
-- Option in the context menu to add and remove posters using local artwork assets
+- Option in the context menu to add and remove posters using local artwork assets [`e8a1745`](https://github.com/ollm/OpenComic/commit/e8a1745904cd563336e1e27c02841a33e9cdc536)
 
-### 🐛 Bug Fixes
+##### 🐛 Bug Fixes
 
 - Gamepad icons not showing in distribution version [`249640d`](https://github.com/ollm/OpenComic/commit/249640d57f3d5768661b63c0ddf8525a02e44d25)
 - Go back in gamepad menus [`b2719e5`](https://github.com/ollm/OpenComic/commit/b2719e5e782659f249ce7a6ba6c8b94fe40a3407)
@@ -20,14 +20,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [v1.0.0-beta.2](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.2) (03-09-2023)
 
-### 🚀 New Features
+##### 🚀 New Features
 
 - Reload button in file list [`31675a5`](https://github.com/ollm/OpenComic/commit/31675a5a8334abedc056a09a5107f718dc5304e0)
 - Check if there is a new version when starting OpenComic [`82f1abd`](https://github.com/ollm/OpenComic/commit/82f1abdac5c1ae6f26e88f5f2374c54edcfcaae7)
 - Custom keyboard and gamepad shortcuts [`0a4a459`](https://github.com/ollm/OpenComic/commit/0a4a4597883c7c6c837acdd61e4d80dc8c0a0ec1)
 - Navigation via gamepad/keyboard has been improved, you can navigate in settings, theme, language, menus in reading, etc. [`d1290f5`](https://github.com/ollm/OpenComic/commit/d1290f53fc99af0dc660052568c827d07dab74ca)
 
-### 🐛 Bug Fixes
+##### 🐛 Bug Fixes
 
 - Improved local artwork assets support [`f21cccd`](https://github.com/ollm/OpenComic/commit/f21cccd9c2c943f7ad8735e106afff453397cfbf)
 - Some errors on Tracking feature [`50d8487`](https://github.com/ollm/OpenComic/commit/50d84874ea99cdace27f2c3bfc994b3338f23a42)
@@ -36,7 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [v1.0.0-beta.1](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.1) (22-08-2023)
 
-### 🚀 New Features
+##### 🚀 New Features
 
 - AVIF support [`8a0d274`](https://github.com/ollm/OpenComic/commit/8a0d2741793598f3728a52ba1e24f90c34100375)
 - Improved PDF rendering performance and quality [`a55312d`](https://github.com/ollm/OpenComic/commit/a55312d0ba46c9773b405f6528bd0b4f055e17b9)
@@ -51,7 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Drag and Drop support [`91933a9`](https://github.com/ollm/OpenComic/commit/91933a998885a2579592566d7773549085495e4e)
 - Local Artwork Assets [`f774ed4`](https://github.com/ollm/OpenComic/commit/f774ed41eaa459c69f1b7d5a9f82ef83c067ceb2)
 
-### 🐛 Bug Fixes
+##### 🐛 Bug Fixes
 
 - Error on scrolling in vertical reading [`9a34df4`](https://github.com/ollm/OpenComic/commit/9a34df43be9fee21cda115b5729cfd72c6bd3fb5)
 - Detect signature 0x21726152 as a rar file [`aa39a6a`](https://github.com/ollm/OpenComic/commit/aa39a6a8b2e9d37d6ea5572d283d615c64d8250f)
