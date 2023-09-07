@@ -9,13 +9,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### 🚀 New Features
 
 - Open file location in context menu [`339bcc0`](https://github.com/ollm/OpenComic/commit/339bcc0b21eab52228b7762c92c993d06489aa48)
+- Option in the context menu to add and remove posters using local artwork assets
 
 ### 🐛 Bug Fixes
 
 - Gamepad icons not showing in distribution version [`249640d`](https://github.com/ollm/OpenComic/commit/249640d57f3d5768661b63c0ddf8525a02e44d25)
 - Go back in gamepad menus [`b2719e5`](https://github.com/ollm/OpenComic/commit/b2719e5e782659f249ce7a6ba6c8b94fe40a3407)
 - Wrong detection of folder images in some cases [`425a137`](https://github.com/ollm/OpenComic/commit/425a137333114739cb4f0b1e92e4606f2c9da87c)
-- Ignore first gamepad and keyboard event in browsing
+- Ignore first gamepad and keyboard event in browsing [`9347fbe`](https://github.com/ollm/OpenComic/commit/9347fbe628143e688f956ed0950510a2265c02e2)
 
 ## [v1.0.0-beta.2](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.2) (03-09-2023)
 

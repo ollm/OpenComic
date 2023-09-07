@@ -370,12 +370,20 @@ var file = function(path) {
 		{
 			let file = files[i];
 
-			if(!file.folder && !file.compressed && regex.test(file.name) && (inArray(mime.getType(file.path), compatibleMime) || inArray(app.extname(file.path), compatibleSpecialExtensions)))
+			if(!file.folder && !file.compressed && regex.test(file.name))
 			{
-				file.sha = sha1(file.path);
-				poster = file;
+				if(!poster && inArray(mime.getType(file.path), compatibleMime))
+				{
+					file.sha = sha1(file.path);
+					poster = file;
+				}
+				else if(inArray(app.extname(file.path), compatibleSpecialExtensions)) // prioritize tbn poster
+				{
+					file.sha = sha1(file.path);
+					poster = file;
 
-				break;
+					break;
+				}
 			}
 		}
 

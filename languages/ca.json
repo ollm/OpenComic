@@ -4,6 +4,8 @@
 		"and": "i",
 		"comics": "Còmics",
 		"collection": "Col·lecció",
+		"library": "Biblioteca",
+		"images": "Imatges",
 		"sort": {
 			"main": "Ordenar",
 			"name": "Nom",
@@ -22,6 +24,11 @@
 		"contextMenu": {
 			"remove": "Retirar",
 			"openFileLocation": "Obre la ubicació del fitxer",
+			"addPoster": "Afegeix pòster",
+			"changePoster": "Canviar el pòster",
+			"deletePoster": "Esborrar pòster",
+			"cannotAddPoster": "No es pot afegir el pòster si la carpeta és dins d'un fitxer comprimit, haurà d'editar el fitxer mitjançant 7-zip, unrar, etc",
+			"cannotDeletePoster": "No es pot esborrar el pòster si està dins d'un fitxer comprimit, haurà d'editar el fitxer mitjançant 7-zip, unrar, etc",
 			"closeApp": "Tancar OpenComic"
 		},
 		"back": "Enrere",

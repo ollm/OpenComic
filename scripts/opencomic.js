@@ -190,7 +190,7 @@ var compressedExtensions = {
 	],
 };
 
-var compatibleExtensions = [
+var compatibleImageExtensions = [
 	/*jpeg*/'jpg', 'jpeg', 'jif', 'jfi', 'jfif', 'jfif-tbnl', 'jpe', 
 	/*png*/'png', 'x-png', 'apng',
 	/*svg*/'svg', 'svgz',
@@ -199,7 +199,15 @@ var compatibleExtensions = [
 	/*ico*/'ico',
 	/*webp*/'webp',
 	/*avif*/'avif', 'avifs',
+];
+
+var compatibleCompressedExtensions = [
 	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt', 'pdf',
+];
+
+var compatibleExtensions = [
+	...compatibleImageExtensions,
+	...compatibleCompressedExtensions,
 ];
 
 var compatibleSpecialExtensions = [
@@ -210,6 +218,7 @@ var compatibleSpecialExtensions = [
 
 const app = require(p.join(appDir, 'scripts/app.js')),
 	storage = require(p.join(appDir, 'scripts/storage.js')),
+	image = require(p.join(appDir, 'scripts/image.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
 	templates = require(p.join(appDir, 'scripts/builded/templates.js')),

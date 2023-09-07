@@ -1030,7 +1030,9 @@
 .snackbars .snackbar .simple-button
 {
 	position: relative;
-	margin: 6px 8px 6px 0px;
+	margin: 0px 8px 0px 0px;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .snackbars .snackbar .simple-button.transparent > div

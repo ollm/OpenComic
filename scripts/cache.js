@@ -8,142 +8,54 @@ if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 
 function processTheImageQueue()
 {
-	if(sharp === false) sharp = require('sharp');
-
 	let img = queuedImages[0];
 	let sha = img.sha;
 
 	let realPath = fileManager.realPath(img.file);
+	let toImage = p.join(cacheFolder, sha+'.jpg');
 
-	sharp(realPath).jpeg({quality: 95}).resize({width: img.size, background: 'white'}).toFile(p.join(cacheFolder, sha+'.jpg'), function(error) {
-	
-		if(error)
+	image.resize(realPath, toImage, {width: img.size, quality: 95}).then(function(){
+
+		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
+
+		data[sha].size = img.size;
+
+		img.callback({cache: true, path: escapeBackSlash(addCacheVars(toImage, img.size, img.sha)), sha: sha}, img.vars);
+
+		queuedImages.splice(0, 1);
+
+		if(queuedImages.length > 0)
 		{
-
-			if(!imageLibrary) imageLibrary = require('gm').subClass({imageMagick: true});
-
-			imageLibrary(realPath).resize(img.size, null).quality(95).noProfile().write(p.join(cacheFolder, sha+'.jpg'), function(error){
-
-				if(error)
-				{
-					if(imageUse !== 'gm')
-					{
-						imageLibrary = require('gm').subClass({imageMagick: false});
-						imageUse = 'gm';
-
-						process.nextTick(function() {
-							processTheImageQueue();
-						});
-					}
-					else
-					{
-						imageLibrary = require('gm').subClass({imageMagick: true});
-						imageUse = 'im';
-
-						if(jimp === false) jimp = require('jimp');
-
-						jimp.read(realPath, function(error, lenna) {
-
-							if(error)
-							{
-								img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
-
-								queuedImages.splice(0, 1);
-
-								if(queuedImages.length > 0)
-								{
-									process.nextTick(function() {
-										processTheImageQueue();
-									});
-								}
-								else
-								{
-									processingTheImageQueue = false;
-
-									storage.set('cache', data);
-								}
-							}
-							else
-							{
-								lenna.resize(img.size, jimp.AUTO).quality(95).background(0xFFFFFFFF).write(p.join(cacheFolder, sha+'.jpg'), function(){
-
-									if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
-
-									data[sha].size = img.size;
-
-									img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha}, img.vars);
-
-									queuedImages.splice(0, 1);
-
-									if(queuedImages.length > 0)
-									{
-										process.nextTick(function() {
-											processTheImageQueue();
-										});
-									}
-									else
-									{
-										processingTheImageQueue = false;
-
-										storage.set('cache', data);
-									}
-
-								});
-							}
-
-						});
-
-					}
-
-				}
-				else
-				{
-					if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
-
-					data[sha].size = img.size;
-
-					img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha}, img.vars);
-
-					queuedImages.splice(0, 1);
-
-					if(queuedImages.length > 0)
-					{
-						process.nextTick(function() {
-							processTheImageQueue();
-						});
-					}
-					else
-					{
-						processingTheImageQueue = false;
-
-						storage.set('cache', data);
-					}
-				}
+			process.nextTick(function() {
+				processTheImageQueue();
 			});
 		}
 		else
 		{
-			if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
+			processingTheImageQueue = false;
 
-			data[sha].size = img.size;
-
-			img.callback({cache: true, path: escapeBackSlash(p.join(cacheFolder, sha+'.jpg?size='+img.size)), sha: sha}, img.vars);
-
-			queuedImages.splice(0, 1);
-
-			if(queuedImages.length > 0)
-			{
-				process.nextTick(function() {
-					processTheImageQueue();
-				});
-			}
-			else
-			{
-				processingTheImageQueue = false;
-
-				storage.set('cache', data);
-			}
+			storage.set('cache', data);
 		}
+
+	}).catch(function(){
+
+		img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
+
+		queuedImages.splice(0, 1);
+
+		if(queuedImages.length > 0)
+		{
+			process.nextTick(function() {
+				processTheImageQueue();
+			});
+		}
+		else
+		{
+			processingTheImageQueue = false;
+
+			storage.set('cache', data);
+		}
+
 	});
 }
 
@@ -193,7 +105,7 @@ function returnThumbnailsImages(images, callback, file = false)
 		let sha = image.sha || sha1(image.path);
 		let imgCache = data[sha];
 
-		let path = p.join(cacheFolder, sha+'.jpg?size='+size);
+		let path = addCacheVars(p.join(cacheFolder, sha+'.jpg'), size, sha);
 
 		if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(cacheFolder, sha+'.jpg')))
 		{
@@ -248,12 +160,40 @@ function readFile(name)
 		return false;
 }
 
+function addCacheVars(path, size, sha)
+{
+	return path+'?size='+size+(cacheImagesDeleted[sha] ? '&a='+cacheImagesDeleted[sha] : '');
+}
+
+var cacheImagesDeleted = [];
+
+async function deleteInCache(path)
+{
+	let sha = sha1(path);
+	let cachePath = p.join(cacheFolder, sha+'.jpg');
+
+	if(data[sha])
+		delete data[sha];
+
+	if(fs.existsSync(cachePath))
+	{
+		fs.unlinkSync(cachePath);
+	
+		let size = Math.round(window.devicePixelRatio * 150);
+	}
+
+	cacheImagesDeleted[sha] = cacheImagesDeleted[sha] ? cacheImagesDeleted[sha] + 1 : 1;
+		
+	return;
+}
+
 module.exports = {
 	folder: cacheFolder,
 	returnThumbnailsImages: returnThumbnailsImages,
 	cleanQueue: cleanQueue,
 	writeFile: writeFile,
 	readFile: readFile,
+	deleteInCache: deleteInCache,
 	queuedImages: function(){return queuedImages},
 	processingTheImageQueue: function(){return processingTheImageQueue},
 };

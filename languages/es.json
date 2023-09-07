@@ -4,6 +4,8 @@
 		"and": "y",
 		"comics": "Cómics",
 		"collection": "Colección",
+		"library": "Biblioteca",
+		"images": "Imágenes",
 		"sort": {
 			"main": "Ordenar",
 			"name": "Nombre",
@@ -22,6 +24,11 @@
 		"contextMenu": {
 			"remove": "Retirar",
 			"openFileLocation": "Abrir localización de archivo",
+			"addPoster": "Añadir póster",
+			"changePoster": "Cambiar póster",
+			"deletePoster": "Eliminar póster",
+			"cannotAddPoster": "No es posible añadir el póster si la carpeta está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc",
+			"cannotDeletePoster": "No es posible eliminar el póster si está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc",
 			"closeApp": "Cerrar OpenComic"
 		},
 		"back": "Atrás",

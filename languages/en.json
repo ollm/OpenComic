@@ -4,6 +4,8 @@
 		"and": "and",
 		"comics": "Comics",
 		"collection": "Collection",
+		"library": "Library",
+		"images": "Images",
 		"sort": {
 			"main": "Sort",
 			"name": "Name",
@@ -22,6 +24,11 @@
 		"contextMenu": {
 			"remove": "Remove",
 			"openFileLocation": "Open file location",
+			"addPoster": "Add poster",
+			"changePoster": "Change poster",
+			"deletePoster": "Delete poster",
+			"cannotAddPoster": "It is not possible to add the poster if the folder is inside a compressed file, you will have to edit the file using 7-zip, unrar, etc",
+			"cannotDeletePoster": "It is not possible to delete the poster if is inside a compressed file, you will have to edit the file using 7-zip, unrar, etc",
 			"closeApp": "Close OpenComic"
 		},
 		"back": "Back",
