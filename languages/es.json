@@ -49,10 +49,12 @@
 		"emptyFolder": "No hay ningún archivo compatible en esta carpeta."
 	},
 	"reading": {
+		"prevChapter": "Capítulo anterior",
 		"firstPage": "Primera página",
 		"previous": "Anterior",
 		"next": "Siguiente",
 		"lastPage": "Última página",
+		"nextChapter": "Siguiente capítulo",
 		"pages": {
 			"main": "Páginas",
 			"pageLayout": "Maquetación de las páginas",

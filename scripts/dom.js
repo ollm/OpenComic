@@ -1185,6 +1185,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	template.loadHeader('reading.header.html', true);
 	headerPath(path, mainPath);
 
+	let now = Date.now();
+
 	let startImage = false;
 	let imagePath = path;
 	let indexStart = 1;
@@ -1300,9 +1302,19 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	headerPath(path, mainPath);
 	reading.setCurrentComics(comics);
 
-	template.loadContentLeft('reading.content.left.html', true);
-	template.loadContentRight('reading.content.right.html', true);
-	template.loadHeader('reading.header.html', true);
+	if(Date.now() - now < 300)
+	{
+		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
+		template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
+		template._barHeader().firstElementChild.innerHTML = template.load('reading.header.html');
+	}
+	else
+	{
+		template.loadContentLeft('reading.content.left.html', true);
+		template.loadContentRight('reading.content.right.html', true);
+		template.loadHeader('reading.header.html', true);
+	}
+
 	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
 
 	floatingActionButton(false);

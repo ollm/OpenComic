@@ -49,10 +49,12 @@
 		"emptyFolder": "There is no compatible file in this folder."
 	},
 	"reading": {
+		"prevChapter": "Previous chapter",
 		"firstPage": "First page",
 		"previous": "Previous",
 		"next": "Next",
 		"lastPage": "Last page",
+		"nextChapter": "Next chapter",
 		"pages": {
 			"main": "Pages",
 			"pageLayout": "Page layout",

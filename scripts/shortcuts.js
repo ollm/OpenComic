@@ -99,24 +99,40 @@ function loadShortcuts()
 					name: language.reading.firstPage,
 					function: function(){
 
-						if(!reading.readingViewIs('scroll'))
-							reading.goStart();
-						else if(!reading.zoomingIn())
-							reading.disableOnScroll(false);
+						console.log('start', event);
 
-						return true;
+						if(!reading.readingViewIs('scroll') || event.key !== 'ArrowUp')
+						{
+							reading.goStart();
+							return true;
+						}
+						else if(!reading.zoomingIn())
+						{
+							reading.disableOnScroll(false);
+							if(reading.scrollNextOrPrevComic(true)) return true;
+						}
+
+						return false;
 					},
 				},
 				end: {
 					name: language.reading.lastPage,
-					function: function(){
+					function: function(event){
 
-						if(!reading.readingViewIs('scroll'))
+						console.log('end', event);
+
+						if(!reading.readingViewIs('scroll') || event.key !== 'ArrowDown')
+						{
 							reading.goEnd();
+							return true;
+						}
 						else if(!reading.zoomingIn())
+						{
 							reading.disableOnScroll(false);
+							if(reading.scrollNextOrPrevComic(false)) return true;
+						}
 
-						return true;
+						return false;
 					},
 				},
 				magnifyingGlass: {
@@ -213,8 +229,10 @@ function loadShortcuts()
 				'Mouse3': 'next',
 				'Up': 'start',
 				'W': 'start',
+				'Home': 'start',
 				'Down': 'end',
 				'S': 'end',
+				'End': 'end',
 				'M': 'magnifyingGlass',
 				'B': 'hideBarHeader',
 				'H': 'hideBarHeader',

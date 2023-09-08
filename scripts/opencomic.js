@@ -68,7 +68,7 @@ const electron = require('electron'),
 	mime = require('mime'),
 	sha1 = require('sha1'),
 	p = require('path'),
-	anime = require('animejs'),
+	isEqual = require('lodash.isequal'),
 	$ = require('jquery');
 
 require('jquery-bez');
@@ -556,11 +556,11 @@ function generateAppMenu(force = false)
 			{
 				label: language.menu.goto.main,
 				submenu: [
-					{label: language.reading.firstPage, enabled: onReading, click: function(){reading.goStart();}, accelerator: 'Home'},
-					{label: language.reading.previous, enabled: onReading, click: function(){reading.goPrevious();}, accelerator: 'Backspace'},
-					{label: language.reading.next, enabled: onReading, click: function(){reading.goNext();}, accelerator: 'Space'},
-					{label: language.reading.lastPage, enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'End'},
-					{label: 'Next chapter', enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'Ctrl+End'},
+					{label: language.reading.firstPage, enabled: onReading, click: function(){reading.goStart();}},
+					{label: language.reading.previous, enabled: onReading, click: function(){reading.goPrevious();}},
+					{label: language.reading.next, enabled: onReading, click: function(){reading.goNext();}},
+					{label: language.reading.lastPage, enabled: onReading, click: function(){reading.goEnd();}},
+					// {label: 'Next chapter', enabled: onReading, click: function(){reading.goEnd();}, accelerator: 'Ctrl+End'},
 				]
 			},
 			{

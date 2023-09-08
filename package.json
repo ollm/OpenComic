@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "1.0.0-beta.2",
+	"version": "1.0.0-beta.3",
 	"main": "scripts/main.js",
 	"type": "commonjs",
 	"keywords": [
@@ -59,7 +59,6 @@
 	"dependencies": {
 		"@electron/remote": "^2.0.11",
 		"7zip-bin": "^5.2.0",
-		"animejs": "^3.2.1",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"fs": "0.0.1-security",
@@ -69,6 +68,7 @@
 		"jimp": "^0.22.10",
 		"jquery": "^3.7.0",
 		"jquery-bez": "^1.0.11",
+		"lodash.isequal": "^4.5.0",
 		"mime": "^3.0.0",
 		"mv": "^2.1.1",
 		"node-7z": "^3.0.0",
@@ -82,7 +82,7 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^27.0.0-alpha.5",
+		"electron": "^27.0.0-alpha.6",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"nodemon": "^3.0.1"

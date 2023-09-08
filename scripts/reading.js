@@ -568,6 +568,17 @@ function calculateView()
 			width: rect.width+'px',
 			flexDirection: 'column',
 		});
+
+		rect = content.getBoundingClientRect();
+
+		rightSize = {
+			height: rect.height,
+			width: rect.width,
+			top: rect.top,
+			left: rect.left,
+			// readingRect: content.querySelector('.reading-body').getBoundingClientRect(),
+			scrollHeight: content.scrollHeight,
+		};
 	}
 
 	if(readingViewIs('scroll'))
@@ -631,8 +642,58 @@ function stayInLine()
 	}
 }
 
+let prevChangeHeaderButtons = {};
+
+function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
+{
+	let canGoPrev = true, canGoNext = true, prevIsPrevComic = false, nextIsNextComic = false;
+
+	let barHeader = template._barHeader();
+
+	let lastPage = barHeader.querySelector('.button-last-page');
+	let next = barHeader.querySelector('.button-next');
+	let prev = barHeader.querySelector('.button-prev');
+	let firstPage = barHeader.querySelector('.button-first-page');
+
+	if((scrollInStart === null || scrollInStart) && currentIndex == 1 && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
+	{
+		prevIsPrevComic = true;
+		canGoPrev = dom.previousComic();
+	}
+	
+	if((scrollInEnd === null || scrollInEnd) && currentIndex == indexNum && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
+	{
+		nextIsNextComic = true;
+		canGoNext = dom.nextComic();
+	}
+
+	let currentChangeHeaderButtons = {
+		prevIsPrevComic: prevIsPrevComic,
+		nextIsNextComic: nextIsNextComic,
+		canGoPrev: canGoPrev,
+		canGoNext: canGoNext,
+	};
+
+	if(!isEqual(prevChangeHeaderButtons, currentChangeHeaderButtons))
+	{
+		changeHeaderButtonsDelay = false;
+
+		dom.this([prev, firstPage]).class(!canGoPrev, 'disable-pointer');
+		dom.this([next, lastPage]).class(!canGoNext, 'disable-pointer');
+
+		firstPage.innerHTML = prevIsPrevComic ? 'skip_previous' : 'first_page';
+		firstPage.setAttribute('hover-text', prevIsPrevComic ? language.reading.prevChapter : language.reading.firstPage);
+
+		lastPage.innerHTML = nextIsNextComic ? 'skip_next' : 'last_page';
+		lastPage.setAttribute('hover-text', nextIsNextComic ? language.reading.nextChapter : language.reading.lastPage);
+
+		prevChangeHeaderButtons = currentChangeHeaderButtons;
+		changeHeaderButtonsDelayed = false;
+	}
+}
+
 //Go to a specific comic image (Left menu)
-function goToImageCL(index, animation = true)
+function goToImageCL(index, animation = true, fromScroll = false)
 {
 	readingRender.focusIndex(index);
 
@@ -658,6 +719,10 @@ function goToImageCL(index, animation = true)
 	{
 		leftScroll.stop(true).animate({scrollTop: 0+'px'}, animationDurationMS);
 	}
+
+	// Change header buttons
+	if(!readingViewIs('scroll') || !fromScroll)
+		changeHeaderButtons();
 }
 
 //Go to a specific comic image
@@ -877,6 +942,9 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	if(_config.readingManga && !readingViewIs('scroll'))
 		newIndex = (indexNum - newIndex) - 1;
 
+	if(updateCurrentIndex)
+		currentIndex = index;
+
 	eachImagesDistribution(newIndex, ['image', 'folder'], function(image){
 
 		goToImageCL(image.index, animation);
@@ -884,9 +952,6 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}, false, false, true);
 
 	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
-
-	if(updateCurrentIndex)
-		currentIndex = index;
 
 	var isBookmarkTrue = false;
 
@@ -981,6 +1046,144 @@ function goEnd(force = false)
 	else
 	{
 		goStart(true);
+	}
+}
+
+var scrollNextOrPrevComicDelayed = false, scrollNextOrPrevComicST = false;
+
+function scrollNextOrPrevComic(prev = false, delay = false)
+{
+	if(delay && !scrollNextOrPrevComicDelayed && ((prev && scrollInStart) || (!prev && scrollInEnd)))
+	{
+		if(scrollNextOrPrevComicST) return;
+
+		scrollNextOrPrevComicST = setTimeout(function(){
+
+			scrollNextOrPrevComicDelayed = true;
+			scrollNextOrPrevComicST = false;
+
+		}, 500);
+
+		return;
+	}
+
+	scrollNextOrPrevComicDelayed = false;
+
+	if(prev && (scrollInStart || currentIndex == indexNum + 1))
+	{
+		if(currentIndex != 0)
+			reading.goPrev();
+
+		return true;
+	}
+	else if(!prev && (scrollInEnd || currentIndex == 0))
+	{	
+		if(currentIndex != indexNum + 1)
+			reading.goNext();
+
+		return true;
+	}
+
+	return false;
+}
+
+function onScroll(event)
+{
+	if(activeOnScroll && readingViewIs('scroll'))
+	{
+		let scrollTop = this.scrollTop;
+
+		let center = 0;
+
+		let availableScroll = rightSize.scrollHeight - rightSize.height;
+		let centerOffset = (availableScroll < rightSize.height ? availableScroll : rightSize.height) / 2;
+
+		if(scrollTop < centerOffset)
+			center = scrollTop + (centerOffset * (scrollTop / centerOffset));
+		else if(scrollTop + centerOffset > availableScroll)
+			center = scrollTop + centerOffset + (centerOffset * (1 - (availableScroll - scrollTop) / centerOffset));
+		else
+			center = scrollTop + centerOffset;
+
+		let selIndex = false;
+		let closest = false;
+
+		toBreak:
+		for(let key1 in imagesFullPosition)
+		{
+			for(let key2 in imagesFullPosition[key1])
+			{
+				let position = imagesFullPosition[key1][key2];
+
+				if(position.top < center && position.bottom > center)
+				{
+					selIndex = +key1;
+					break toBreak;
+				}
+				else
+				{
+					let diff = Math.abs(position.center - center);
+
+					if(closest === false || diff < closest.diff)
+					{
+						selIndex = +key1;
+						closest = {center: position.center, diff: diff};
+					}
+				}
+			}
+		}
+
+		let imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (_config.readingMargin.top * 2);
+
+		let pageVisibility = Math.floor(imgHeight / rightSize.height);
+
+		maxPageVisibility = pageVisibility;
+
+		let contentHeightRes = pageVisibility > 0 ? ((rightSize.height * pageVisibility) - imgHeight) / pageVisibility : 0;
+
+		scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
+
+		currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - _config.readingMargin.top)) / scrollPart);
+
+		if(currentIndex != selIndex + 1)
+		{
+			if(currentScale != 1 && !(config.readingGlobalZoom && readingViewIs('scroll')))
+				reading.resetZoom();
+
+			var isBookmarkTrue = false;
+
+			eachImagesDistribution(selIndex, ['image'], function(image){
+
+				if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
+					isBookmarkTrue = true;
+
+			});
+
+			var imageIndex = false;
+
+			eachImagesDistribution(selIndex, ['image', 'folder'], function(image){
+
+				if(!imageIndex)
+					imageIndex = image.index
+
+			});
+
+			currentIndex = selIndex + 1;
+
+			if(imageIndex)
+			{
+				saveReadingProgressA = true;
+
+				goToImageCL(imageIndex, true, true);
+			}
+		}
+
+		previousScrollTop = scrollTop;
+
+		scrollInStart = scrollTop <= 1 ? true : false;
+		scrollInEnd = scrollTop >= availableScroll - 1 ? true : false;
+
+		changeHeaderButtons(scrollInStart, scrollInEnd, true);
 	}
 }
 
@@ -1453,12 +1656,13 @@ function resetZoom(animation = true, index = false, apply = true, center = true)
 
 	if(currentScale == 1) // Show current image in original size
 	{
-		let first = imagesDistribution[currentIndex - 1][0];
+		let _image = imagesDistribution[currentIndex - 1][0];
+		if(_image.folder || _image.blank) _image = imagesDistribution[currentIndex - 1][1] || false;
 
-		if(!first.folder && !first.blank)
+		if(_image && !_image.folder && !_image.blank)
 		{
-			let image = imagesData[first.index] || [];
-			let img = template._contentRight().querySelector('.r-img-i'+first.index+' oc-img img, .r-img-i'+first.index+' oc-img canvas');
+			let image = imagesData[_image.index] || [];
+			let img = template._contentRight().querySelector('.r-img-i'+_image.index+' oc-img img, .r-img-i'+_image.index+' oc-img canvas');
 
 			if(img)
 			{
@@ -2718,12 +2922,12 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0;
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false;
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false;
 
 	loadReadingConfig(currentReadingConfigKey);
 
@@ -2751,14 +2955,22 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	template.contentRight().on('mousewheel', function(e) {
 
-		if(onReading && (e.originalEvent.ctrlKey || !readingViewIs('scroll')))
+		if(onReading)
 		{
-			e.preventDefault();
+			if(e.originalEvent.ctrlKey || !readingViewIs('scroll'))
+			{
+				e.preventDefault();
 
-			if(e.originalEvent.wheelDelta / 120 > 0)
-				reading.zoomIn();
+				if(e.originalEvent.wheelDelta / 120 > 0)
+					reading.zoomIn();
+				else
+					reading.zoomOut();
+			}
 			else
-				reading.zoomOut();
+			{
+				if(reading.scrollNextOrPrevComic(e.originalEvent.wheelDelta / 120 > 0))
+					e.preventDefault();
+			}
 		}
 
 	});
@@ -2919,6 +3131,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 					y = gamepadScroll.y = gamepadScroll.y + (y * speed);
 
 					gamepadScroll.content.scrollTop(gamepadScroll.scrollTop + y);
+
+					reading.scrollNextOrPrevComic(y < 0 ? true : false, true);
 				}
 				else // status == 'end'
 				{
@@ -3298,101 +3512,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	});
 
-	template.contentRight().children('div').on('scroll', function(e) {
-
-		if(activeOnScroll && readingViewIs('scroll'))
-		{
-			let scrollTop = this.scrollTop;
-
-			let center = 0;
-
-			let availableScroll = rightSize.scrollHeight - rightSize.height;
-			let centerOffset = (availableScroll < rightSize.height ? availableScroll : rightSize.height) / 2;
-
-			if(scrollTop < centerOffset)
-				center = scrollTop + (centerOffset * (scrollTop / centerOffset));
-			else if(scrollTop + centerOffset > availableScroll)
-				center = scrollTop + centerOffset + (centerOffset * (1 - (availableScroll - scrollTop) / centerOffset));
-			else
-				center = scrollTop + centerOffset;
-
-			let selIndex = false;
-			let closest = false;
-
-			toBreak:
-			for(let key1 in imagesFullPosition)
-			{
-				for(let key2 in imagesFullPosition[key1])
-				{
-					let position = imagesFullPosition[key1][key2];
-
-					if(position.top < center && position.bottom > center)
-					{
-						selIndex = +key1;
-						break toBreak;
-					}
-					else
-					{
-						let diff = Math.abs(position.center - center);
-
-						if(closest === false || diff < closest.diff)
-						{
-							selIndex = +key1;
-							closest = {center: position.center, diff: diff};
-						}
-					}
-				}
-			}
-
-			let imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (_config.readingMargin.top * 2);
-
-			let pageVisibility = Math.floor(imgHeight / rightSize.height);
-
-			maxPageVisibility = pageVisibility;
-
-			let contentHeightRes = pageVisibility > 0 ? ((rightSize.height * pageVisibility) - imgHeight) / pageVisibility : 0;
-
-			scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
-
-			currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - _config.readingMargin.top)) / scrollPart);
-
-			if(currentIndex != selIndex + 1)
-			{
-				if(currentScale != 1 && !(config.readingGlobalZoom && readingViewIs('scroll')))
-					reading.resetZoom();
-
-				var isBookmarkTrue = false;
-
-				eachImagesDistribution(selIndex, ['image'], function(image){
-
-					if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
-						isBookmarkTrue = true;
-
-				});
-
-				var imageIndex = false;
-
-				eachImagesDistribution(selIndex, ['image', 'folder'], function(image){
-
-					if(!imageIndex)
-						imageIndex = image.index
-
-				});
-
-				if(imageIndex)
-				{
-					saveReadingProgressA = true;
-
-					goToImageCL(imageIndex, true);
-				}
-
-				currentIndex = selIndex + 1;
-			}
-
-			previousScrollTop = scrollTop;
-		}
-
-	});
+	template.contentRight().children('div').on('scroll', onScroll);
 
 	imagesNum = template.contentRight('.reading-body oc-img').length;
 	contentNum = template.contentRight('.reading-body .r-img:not(.blank)').length;
@@ -3439,6 +3559,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 		if(readingViewIs('scroll'))
 			previousContentHeight = template.contentRight().children('div').children('div').height();
 
+		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 	}
 	else
 	{
@@ -3475,6 +3596,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 					if(readingViewIs('scroll'))
 						previousContentHeight = template.contentRight().children('div').children('div').height();
+
+					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 				}
 
 			}
@@ -3502,6 +3625,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 					if(readingViewIs('scroll'))
 						previousContentHeight = template.contentRight().children('div').children('div').height();
+
+					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 				}
 
 			}
@@ -3578,6 +3703,7 @@ module.exports = {
 	imagesFullPosition: function(){return imagesFullPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
 	setReadingDragScroll: setReadingDragScroll,
+	scrollNextOrPrevComic: scrollNextOrPrevComic,
 	hideContent: hideContent,
 	hideContentLeft: hideContentLeft,
 	hideBarHeader: hideBarHeader,
