@@ -1782,7 +1782,7 @@ table tbody td
 	border-top: 1px solid var(--md-sys-color-surface-variant);
 	border-right: 1px solid var(--md-sys-color-surface-variant);
 	text-align: center;
-	padding: 0px 24px;
+	padding: 12px 24px;
 	cursor: pointer;
 	position: relative;
 	transition: 0.2s border-color;
@@ -1827,4 +1827,9 @@ table tbody td:not(:first-child):active:before,
 table tbody td:not(:first-child).gamepad-highlight:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-4);
+}
+
+table tbody td.lh0
+{
+	line-height: 0px;
 }

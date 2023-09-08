@@ -1222,11 +1222,11 @@ function applyScaleScrollAndHeight()
 
 }
 
-function applyScale(animation = true, scale = 1, center = false, zoomOut = false)
+function applyScale(animation = true, scale = 1, center = false, zoomOut = false, round = true)
 {
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 
-	scale = Math.round(scale * 100) / 100;
+	if(round) scale = Math.round(scale * 100) / 100;
 
 	if(currentZoomIndex === false)
 	{
@@ -1257,6 +1257,11 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 	if(scale != scalePrevData.scale)
 	{
+		if(scale == 1)
+			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.originalSize).html('aspect_ratio');
+		else
+			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.resetZoom).html('zoom_out_map');
+
 		let content = template.contentRight().children();
 		content.stop(true);
 
@@ -1441,10 +1446,36 @@ function zoomOut(animation = true, center = false)
 }
 
 
-// Reset zoom
-function resetZoom(animation = true, index = false, apply = true)
+// Reset zoom or show in original size if is current in 1 scale
+function resetZoom(animation = true, index = false, apply = true, center = true)
 {
 	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
+
+	if(currentScale == 1) // Show current image in original size
+	{
+		let first = imagesDistribution[currentIndex - 1][0];
+
+		if(!first.folder && !first.blank)
+		{
+			let image = imagesData[first.index] || [];
+			let img = template._contentRight().querySelector('.r-img-i'+first.index+' oc-img img, .r-img-i'+first.index+' oc-img canvas');
+
+			if(img)
+			{
+				if(zoomMoveData.active)
+					return;
+
+				let rect = img.getBoundingClientRect();
+
+				currentScale = (image.width / rect.width + image.height / rect.height) / 2;
+
+				if(apply)
+					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false, false);
+
+				return;
+			}
+		}
+	}
 
 	currentScale = 1;
 
@@ -1456,14 +1487,7 @@ function resetZoom(animation = true, index = false, apply = true)
 		}
 		else
 		{
-			template.contentRight('.image-position'+currentZoomIndex).css({
-				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-				transform: 'translateX(0px) translateY(0px) scale('+currentScale+')',
-				transformOrigin: 'center center',
-				zIndex: 1,
-				height: '',
-				willChange: '',
-			});
+			applyScale(animation, currentScale, true);
 
 			originalRect = false;
 			scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0};
@@ -2913,8 +2937,6 @@ async function read(path, index = 1, end = false, isCanvas = false)
 		{
 			if(!haveZoom && !readingViewIs('scroll'))
 			{
-				console.log(axes);
-
 				if(key == 0 && (axes[0] < 0 || (axes[2] < 0 && !config.readingMagnifyingGlass)))
 					goPrevious();
 				else if(key == 1 && (axes[0] > 0|| (axes[2] > 0 && !config.readingMagnifyingGlass)))
@@ -3518,6 +3540,7 @@ module.exports = {
 	zoomIn: zoomIn,
 	zoomOut: zoomOut,
 	resetZoom: resetZoom,
+	applyScale: applyScale,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	changePagesView: changePagesView,

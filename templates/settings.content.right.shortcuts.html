@@ -14,14 +14,14 @@
 	<tbody>
 		{{#each shortcuts}}
 		<tr>
-			<td>{{name}}</td>
+			<td>{{{name}}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key1}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key1}}')">{{key1}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key2}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key2}}')">{{key2}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key3}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key3}}')">{{key3}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key4}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key4}}')">{{key4}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key5}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key5}}')">{{key5}}</td>
-			<td class="gamepad-item{{#if @first}} gamepad-to-hightlight{{/if}}" onclick="settings.changeButton('{{action}}', '{{gamepad1_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad1_}}')">{{#if gamepad1}}<span class="gamepad-image gamepad-image-{{gamepad1}}">{{/if}}</td>
-			<td class="gamepad-item" onclick="settings.changeButton('{{action}}', '{{gamepad2_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad2_}}')">{{#if gamepad2}}<span class="gamepad-image gamepad-image-{{gamepad2}}">{{/if}}</td>
+			<td class="gamepad-item lh0{{#if @first}} gamepad-to-hightlight{{/if}}" onclick="settings.changeButton('{{action}}', '{{gamepad1_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad1_}}')">{{#if gamepad1}}<span class="gamepad-image gamepad-image-{{gamepad1}}">{{/if}}</td>
+			<td class="gamepad-item lh0" onclick="settings.changeButton('{{action}}', '{{gamepad2_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad2_}}')">{{#if gamepad2}}<span class="gamepad-image gamepad-image-{{gamepad2}}">{{/if}}</td>
 		</tr>
 		{{/each}}
 	</tbody>

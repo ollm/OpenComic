@@ -157,6 +157,7 @@
 		"view": {
 			"main": "Veure",
 			"resetZoom": "Restablir zoom",
+			"originalSize": "Mida original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reduir zoom",
 			"toggleFullScreen": "Pantalla completa"

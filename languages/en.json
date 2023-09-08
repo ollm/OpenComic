@@ -157,6 +157,7 @@
 		"view": {
 			"main": "View",
 			"resetZoom": "Reset zoom",
+			"originalSize": "Original size",
 			"zoomIn": "Zoom in",
 			"zoomOut": "Zoom out",
 			"toggleFullScreen": "Full screen"

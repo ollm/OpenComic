@@ -163,9 +163,11 @@ function loadShortcuts()
 					},
 				},
 				resetZoom: {
-					name: language.menu.view.resetZoom,
+					name: language.menu.view.resetZoom+'<br>'+language.menu.view.originalSize,
 					function: function(){
-						reading.resetZoom();
+						let center = true;
+						if(event instanceof PointerEvent) center = false;
+						reading.resetZoom(true, false, true, center);
 						return true;
 					},
 				},
