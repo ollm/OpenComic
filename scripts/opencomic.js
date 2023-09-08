@@ -574,6 +574,8 @@ function generateAppMenu(force = false)
 			{
 				label: language.menu.help.main,
 				submenu: [
+					{label: language.menu.help.bug, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/issues');}},
+					{type: 'separator'},
 					{label: language.menu.help.funding, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/blob/master/FUNDING.md');}},
 					{label: language.menu.help.about, click: function(){showAboutWindow();}},
 				]

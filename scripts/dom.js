@@ -666,6 +666,9 @@ function indexPathControlGoBack()
 
 
 		indexPathControlA.pop();
+
+		indexPathA = goBack.path;
+		indexMainPathA = goBack.mainPath;
 	}
 }
 

@@ -173,7 +173,8 @@
 		"help": {
 			"main": "Help",
 			"about": "About OpenComic",
-			"funding": "Funding!"
+			"funding": "Funding!",
+			"bug": "Report a bug"
 		}
 	},
 	"dialog": {
