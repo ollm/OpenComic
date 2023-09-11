@@ -792,23 +792,24 @@ var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, r
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
-	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
-	var animationDurationMS = animationDurationS * 1000;
+	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
+	let animationDurationMS = animationDurationS * 1000;
 
 	if(currentScale != 1 && animation && !(config.readingGlobalZoom && readingViewIs('scroll')))
 		reading.resetZoom();
 
-	var content = template.contentRight().children('div');
-	var contentWidth = content.width();
-	var contentHeight = content.height();
+	let content = template._contentRight().firstElementChild;
+	let rect = content.getBoundingClientRect();
+	let contentWidth = rect.width;
+	let contentHeight = rect.height;
 
-	var updateCurrentIndex = true;
+	let updateCurrentIndex = true;
 
-	var eIndex = index;
+	let eIndex = index;
 
-	var pageVisibilityIndex = 0;
+	let pageVisibilityIndex = 0;
 
-	var imgHeight = false;
+	let imgHeight = false;
 
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 	{
@@ -895,7 +896,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	if(readingViewIs('slide'))
 	{
-		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+		template.contentRigt('.reading-body > div, .reading-lens > div > div').css({
 			'transition': animationDurationS+'s',
 			'transform': 'translate(-'+(contentWidth * (eIndex - 1))+'px, 0)',
 		});
@@ -904,7 +905,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	{
 		var image = returnLargerImage(eIndex-1);
 
-		var scrollTop = (image.offset().top - content.offset().top) + content.scrollTop();
+		var scrollTop = (image.offset().top - rect.top) + content.scrollTop;
 
 		var scrollSum = 0;
 
@@ -934,7 +935,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		}, animationDurationMS + 200); // Add 200 of margin to avoid errors
 
-		content.stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
+		$(content).stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
 	var newIndex = (eIndex - 1);
