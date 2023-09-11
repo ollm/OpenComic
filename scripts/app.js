@@ -84,9 +84,39 @@ function extname(path)
 	return p.extname(path).replace(/^.*\./, '').toLowerCase();
 }
 
+function round(number, precision = 0) {
+
+	multipler = Math.pow(10, precision);
+
+	return Math.round(number * multipler) / multipler;
+
+}
+
+function roundDPR(number) {
+
+	return Math.round(number * window.devicePixelRatio) / window.devicePixelRatio;
+
+}
+
+function floorDPR(number) {
+
+	return Math.floor(number * window.devicePixelRatio) / window.devicePixelRatio;
+
+}
+
+function invertedDPR(number) {
+
+	return 1 / window.devicePixelRatio;
+
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
 	empty: empty,
 	extname: extname,
+	round: round,
+	roundDPR: roundDPR,
+	floorDPR: floorDPR,
+	invertedDPR: invertedDPR,
 };

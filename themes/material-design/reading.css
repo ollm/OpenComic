@@ -104,7 +104,7 @@
 {
 	transition: background-color 0.2s;
 	box-shadow: var(--md-sys-elevation-level2);
-	background-color: #fff;
+	background-color: var(--md-sys-color-background);
 	display: block;
 	position: relative;
 }
@@ -113,6 +113,7 @@
 {
 	position: relative;
 	z-index: 2;
+	transform-origin: top left;
 }
 
 .reading-body .r-img.blank > div > *, .reading-lens .r-img.blank > div > *

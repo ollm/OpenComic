@@ -386,26 +386,26 @@ function disposeImages(data = false)
 
 					image.style.height = imageHeight0+'px';
 					image.style.width = imageWidth0+'px';
-					image.style.marginLeft = marginLeft0+'px';
-					image.style.marginTop = marginTop0+'px';
-					image.style.marginBottom = ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
+					image.style.marginLeft = app.roundDPR(marginLeft0)+'px';
+					image.style.marginTop = app.roundDPR(marginTop0)+'px';
+					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
 					image.style.marginRight = '0px';
 
 					image.dataset.height = imgHeight0;
 					image.dataset.width = imgWidth0;
+					image.dataset.left = app.roundDPR(marginLeft0);
+					image.dataset.top = app.roundDPR(marginTop0);
 
 					let img = image.firstElementChild;
 
 					if(img)
 					{
-						img.style.marginTop = -(imgHeight0 * clipTop)+'px';
-						img.style.marginLeft = -(imgWidth0 * clipLeft)+'px';
+						img.style.marginTop = -app.roundDPR(imgHeight0 * clipTop)+'px';
+						img.style.marginLeft = -app.roundDPR(imgWidth0 * clipLeft)+'px';
 
-						//if(img.tagName == 'IMG')
-						//{
-							img.style.height = imgHeight0+'px';
-							img.style.width = imgWidth0+'px';
-						//}
+						img.style.height = imgHeight0+'px';
+						img.style.width = imgWidth0+'px';
+						img.style.transform = '';
 					}
 				}
 			}
@@ -421,26 +421,26 @@ function disposeImages(data = false)
 
 					image.style.height = imageHeight1+'px';
 					image.style.width = imageWidth1+'px';
-					image.style.marginLeft = marginLeft1+'px';
-					image.style.marginTop = marginTop1+'px';
-					image.style.marginBottom = ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
+					image.style.marginLeft = app.roundDPR(marginLeft1)+'px';
+					image.style.marginTop = app.roundDPR(marginTop1)+'px';
+					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
 					image.style.marginRight = '0px';
 
 					image.dataset.height = imgHeight1;
 					image.dataset.width = imgWidth1;
+					image.dataset.left = app.roundDPR(marginLeft1);
+					image.dataset.top = app.roundDPR(marginTop1);
 
 					let img = image.firstElementChild;
 
 					if(img)
 					{
-						img.style.marginTop = -(imgHeight1 * clipTop)+'px';
-						img.style.marginLeft = -(imgWidth1 * clipLeft)+'px';
+						img.style.marginTop = -app.roundDPR(imgHeight1 * clipTop)+'px';
+						img.style.marginLeft = -app.roundDPR(imgWidth1 * clipLeft)+'px';
 
-						//if(img.tagName == 'IMG')
-						//{
-							img.style.height = imgHeight1+'px';
-							img.style.width = imgWidth1+'px';
-						//}
+						img.style.height = imgHeight1+'px';
+						img.style.width = imgWidth1+'px';
+						img.style.transform = '';
 					}
 				}
 			}
@@ -496,26 +496,26 @@ function disposeImages(data = false)
 
 					image.style.height = imageHeight+'px';
 					image.style.width = imageWidth+'px';
-					image.style.marginLeft = marginLeft+'px';
-					image.style.marginTop = marginTop+'px';
-					image.style.marginBottom = ((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
+					image.style.marginLeft = app.roundDPR(marginLeft)+'px';
+					image.style.marginTop = app.roundDPR(marginTop)+'px';
+					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
 					image.style.marginRight = '0px';
 
 					image.dataset.height = imgHeight;
 					image.dataset.width = imgWidth;
+					image.dataset.left = app.roundDPR(marginLeft);
+					image.dataset.top = app.roundDPR(marginTop);
 
 					let img = image.firstElementChild;
 
 					if(img)
 					{
-						img.style.marginTop = -(imgHeight * clipTop)+'px';
-						img.style.marginLeft = -(imgWidth * clipLeft)+'px';
+						img.style.marginTop = -app.roundDPR(imgHeight * clipTop)+'px';
+						img.style.marginLeft = -app.roundDPR(imgWidth * clipLeft)+'px';
 
-						//if(img.tagName == 'IMG')
-						//{
-							img.style.height = imgHeight+'px';
-							img.style.width = imgWidth+'px';
-						//}
+						img.style.height = imgHeight+'px';
+						img.style.width = imgWidth+'px';
+						img.style.transform = '';
 					}
 				}
 			}
@@ -1468,6 +1468,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		let content = template.contentRight().children();
 		content.stop(true);
 
+		clearTimeout(applyScaleST);
+
 		if(config.readingGlobalZoom && readingViewIs('scroll'))
 		{
 			zoomingIn = true;
@@ -1515,13 +1517,11 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			template.contentRight('.reading-body > div').css({
 				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-				transform: 'translateX('+translateX+'px) translateY('+translateY+'px) scale('+scale+')',
+				transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 				transformOrigin: 'center center',
 				zIndex: 1,
 				// willChange: scale == 1 ? '' : 'transform',
 			});
-
-			clearTimeout(applyScaleST);
 
 			applyScaleST = setTimeout(function() {
 
@@ -1535,7 +1535,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 				template.contentRight('.reading-body > div').css({
 					transition: 'transform 0s, z-index 0s',
-					transform: 'translateX('+scalePrevData.tranX+'px) translateY('+translateY+'px) scale('+scale+')',
+					transform: 'translateX('+app.roundDPR(scalePrevData.tranX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 				});
 
 				content.scrollTop(scrollTop + (translateY - scalePrevData.tranY));
@@ -1552,7 +1552,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 					currentZoomIndex = false;
 				}
 
-			}, animationDurationS * 1000);
+				fixBlurOnZoom(scale);
+
+			}, animationDurationS * 1000 + 100);
 		}
 		else
 		{
@@ -1598,7 +1600,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			template.contentRight('.image-position'+currentZoomIndex).css({
 				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-				transform: 'translateX('+(translateX)+'px) translateY('+(translateY)+'px) scale('+scale+')',
+				transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 				transformOrigin: 'center center',
 				zIndex: scale == 1 ? 1 : 2,
 				// willChange: scale == 1 ? '' : 'transform',
@@ -1609,6 +1611,12 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				originalRect = false;
 				currentZoomIndex = false;
 			}
+
+			applyScaleST = setTimeout(function() {
+
+				fixBlurOnZoom(scale, currentZoomIndex);
+
+			}, animationDurationS * 1000 + 100);
 		}
 
 		scalePrevData = {
@@ -1662,16 +1670,17 @@ function resetZoom(animation = true, index = false, apply = true, center = true)
 		if(_image && !_image.folder && !_image.blank)
 		{
 			let image = imagesData[_image.index] || [];
-			let img = template._contentRight().querySelector('.r-img-i'+_image.index+' oc-img img, .r-img-i'+_image.index+' oc-img canvas');
+			let img = template._contentRight().querySelector('.r-img-i'+_image.index+' oc-img');
 
 			if(img)
 			{
 				if(zoomMoveData.active)
 					return;
 
-				let rect = img.getBoundingClientRect();
+				let width = +img.dataset.width;
+				let height = +img.dataset.height;
 
-				currentScale = (image.width / rect.width + image.height / rect.height) / 2;
+				currentScale = ((image.width / width + image.height / height) / 2) / window.devicePixelRatio;
 
 				if(apply)
 					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false, false);
@@ -1702,6 +1711,55 @@ function resetZoom(animation = true, index = false, apply = true, center = true)
 			readingRender.setScale(1, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
 		}
 	}
+}
+
+// Fix blur on zoom cause by tranform scale, still happening in vertical reader in some conditions
+function fixBlurOnZoom(scale = 1, index = false)
+{
+	let _scale = 1 / scale;
+
+	let contentRight = template._contentRight();
+	let images = index !== false ? contentRight.querySelectorAll('.image-position'+index+' oc-img img, .image-position'+index+' oc-img canvas') : contentRight.querySelectorAll('.r-img oc-img img, .r-img oc-img canvas');
+
+	for(let i = 0, len = images.length; i < len; i++)
+	{
+		let img = images[i];
+		let image = imagesData[+img.dataset.index] || [];
+
+		let ocImg = img.parentElement;
+
+		let width = +ocImg.dataset.width;
+		let height = +ocImg.dataset.height;
+
+		img.style.width = (width * scale)+'px';
+		img.style.height = (height * scale)+'px';
+		img.style.transform = 'scale('+_scale+')';
+	}
+
+	if(_scale == 1)
+		return;
+
+	window.requestAnimationFrame(function(){
+
+		window.requestAnimationFrame(function(){
+
+			for(let i = 0, len = images.length; i < len; i++)
+			{
+				let img = images[i];
+				let rect = img.getBoundingClientRect();
+
+				let left = -(rect.left - app.floorDPR(rect.left));
+				let top = -(rect.top - app.floorDPR(rect.top));
+
+				if(left < -0.5) left++;
+				if(top < -0.5) top++;
+
+				img.style.transform = 'scale('+_scale+') translate('+(left)+'px, '+(top)+'px)';
+			}
+
+		});
+	});
+
 }
 
 // Drag zoom
@@ -1736,7 +1794,7 @@ function dragZoom(x, y)
 
 		template.contentRight('.reading-body > div').css({
 			transition: 'transform 0s, z-index 0s',
-			transform: 'translateX('+(x)+'px) translateY('+scalePrevData.tranY+'px) scale('+scalePrevData.scale+')',
+			transform: 'translateX('+app.roundDPR(x)+'px) translateY('+app.roundDPR(scalePrevData.tranY)+'px) scale('+scalePrevData.scale+')',
 			transformOrigin: 'center center',
 		});
 	}
@@ -1747,7 +1805,7 @@ function dragZoom(x, y)
 
 		template.contentRight('.image-position'+currentZoomIndex).css({
 			transition: 'transform 0s, z-index 0s',
-			transform: 'translateX('+(x)+'px) translateY('+(y)+'px) scale('+scalePrevData.scale+')',
+			transform: 'translateX('+app.roundDPR(x)+'px) translateY('+app.roundDPR(y)+'px) scale('+scalePrevData.scale+')',
 			transformOrigin: 'center center',
 		});
 	}
@@ -2927,7 +2985,7 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false;
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false;
 
 	loadReadingConfig(currentReadingConfigKey);
 

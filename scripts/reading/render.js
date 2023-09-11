@@ -198,7 +198,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 		else
 			rendered[index] = _scale;
 
-		_scale = _scale * window.devicePixelRatio * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
+		_scale = _scale * window.devicePixelRatio// * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
 
 		let ocImg = template.contentRight(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img').get(0);
 		let originalCanvas = ocImg.querySelector('canvas');
