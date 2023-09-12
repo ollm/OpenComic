@@ -319,6 +319,12 @@ function currentTrackingDialog(site)
 			handlebarsContext.trackingResult = data;
 			handlebarsContext.siteData = siteData;
 
+			if(!handlebarsContext.trackingResult.chapters)
+				handlebarsContext.trackingResult.chapters = '??';
+
+			if(!handlebarsContext.trackingResult.volumes)
+				handlebarsContext.trackingResult.volumes = '??';
+
 			setTrackingChapters(site, path, data.chapters, data.volumes);
 
 			$('.dialog-text').html(template.load('dialog.tracking.current.tracking.html'));

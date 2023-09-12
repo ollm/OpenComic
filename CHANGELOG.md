@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option in the context menu to add and remove posters using local artwork assets [`e8a1745`](https://github.com/ollm/OpenComic/commit/e8a1745904cd563336e1e27c02841a33e9cdc536)
 - Show image in its original size [`30df2fc`](https://github.com/ollm/OpenComic/commit/30df2fc70dbaefecfe1942bc8032686e083e7d53)
 - Show in first/last page buttons if has next/prev comic and go to next/prev comics scrolling [`2a3796e`](https://github.com/ollm/OpenComic/commit/2a3796eb82cdc86c70c69cae62e48da9baf41aa0)
-- Improve the detection of the type of compressed files if the file extension is not correct
+- Improve the detection of the type of compressed files if the file extension is not correct [`b39605c`](https://github.com/ollm/OpenComic/commit/b39605c5d5ab72742cf32f14a23004976cccec7c)
 
 ##### 🐛 Bug Fixes
 
