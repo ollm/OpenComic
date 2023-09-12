@@ -61,6 +61,7 @@
 		"7zip-bin": "^5.2.0",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
+		"file-type": "^16.5.4",
 		"fs": "0.0.1-security",
 		"fs-extra": "^11.1.1",
 		"gm": "^1.25.0",
@@ -82,7 +83,7 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^27.0.0-alpha.6",
+		"electron": "^27.0.0-beta.1",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"nodemon": "^3.0.1"

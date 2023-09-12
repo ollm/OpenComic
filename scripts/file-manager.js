@@ -1,4 +1,4 @@
-var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false;
+var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, fileType = false;
 
 var file = function(path) {
 
@@ -533,7 +533,7 @@ var fileCompressed = function(path, _realPath = false) {
 	this.tmpPartialExtraction = p.join(this.tmp, this.sha+'-opencomic-partial-extraction.txt');
 	this.tmpIsVector = p.join(this.tmp, this.sha+'-opencomic-is-vector.txt');
 
-	this.contentRightZindex = template.contentRightZindex();
+	this.contentRightIndex = template.contentRightIndex();
 
 	this.fullExtracted = false;
 
@@ -645,9 +645,23 @@ var fileCompressed = function(path, _realPath = false) {
 		}
 
 		this.features = this._features[force];
+		this.features.ext = force;
 		this.features[force] = true;
 
 		return this.features;
+
+	}
+
+	this.detectFileTypeFromBinary = async function() {
+
+		if(fileType === false) fileType = require('file-type').fromFile;
+
+		let type = await fileType(this.path);
+
+		if(inArray(type.ext, compressedExtensions.all))
+			return type.ext;
+
+		return this.features.ext;
 
 	}
 
@@ -663,6 +677,11 @@ var fileCompressed = function(path, _realPath = false) {
 
 		this.readWithoutCache = true;
 
+		return this.readCurrent();
+	}
+
+	this.readCurrent = function() {
+
 		if(this.features.zip)
 			return this.readZip();
 		else if(this.features['7z'])
@@ -675,6 +694,28 @@ var fileCompressed = function(path, _realPath = false) {
 			return this.readPdf();
 
 		return false;
+	}
+
+	this.readIfTypeFromBinaryIsDifferent = async function(error = false) {
+
+		let _this = this;
+
+		return new Promise(async function(resolve, reject) {
+
+			let type = await _this.detectFileTypeFromBinary();
+
+			if(type && type !== _this.features.ext)
+			{
+				_this.getFeatures(type);
+				resolve(_this.readCurrent());
+			}
+			else
+			{
+				reject(error);
+			}
+
+		});
+
 	}
 
 	this.callbackWhenFileExtracted = false;
@@ -715,6 +756,11 @@ var fileCompressed = function(path, _realPath = false) {
 		if(this.features.progress)
 			this.setProgress(0);
 
+		return this.extractCurrent();
+	}
+
+	this.extractCurrent = function() {
+
 		if(this.features.zip)
 			return this.extractZip();
 		else if(this.features['7z'])
@@ -727,6 +773,28 @@ var fileCompressed = function(path, _realPath = false) {
 			return this.extractPdf();
 
 		return false;
+	}
+
+	this.extractIfTypeFromBinaryIsDifferent = async function(error = false) {
+
+		let _this = this;
+
+		return new Promise(async function(resolve, reject) {
+
+			let type = await _this.detectFileTypeFromBinary();
+
+			if(type && type !== _this.features.ext)
+			{
+				_this.getFeatures(type);
+				resolve(_this.extractCurrent());
+			}
+			else
+			{
+				reject(error);
+			}
+
+		});
+
 	}
 
 	this.checkIfAlreadyExtracted = async function() {
@@ -981,7 +1049,7 @@ var fileCompressed = function(path, _realPath = false) {
 		if(!progress)
 			this.progressPrev = false;
 
-		let svg = document.querySelector('.content-right .content-right-'+this.contentRightZindex+' .loading.loading96 svg');
+		let svg = document.querySelector('.content-right .content-right-'+this.contentRightIndex+' .loading.loading96 svg');
 
 		if(svg)
 		{
@@ -989,7 +1057,7 @@ var fileCompressed = function(path, _realPath = false) {
 			svg.style.transform = 'rotate(-90deg)';
 		}
 
-		let circle = document.querySelector('.content-right .content-right-'+this.contentRightZindex+' .loading.loading96 circle');
+		let circle = document.querySelector('.content-right .content-right-'+this.contentRightIndex+' .loading.loading96 circle');
 
 		if(circle)
 		{
@@ -1046,7 +1114,7 @@ var fileCompressed = function(path, _realPath = false) {
 					}
 					else
 					{
-						reject(error);
+						resolve(extract ? _this.extractIfTypeFromBinaryIsDifferent(error) : _this.readIfTypeFromBinaryIsDifferent(error));
 					}
 					
 				})
@@ -1206,7 +1274,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			}).on('error', function(error){
 
-				reject(error);
+				resolve(_this.readIfTypeFromBinaryIsDifferent(error));
 
 			});
 
@@ -1251,7 +1319,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			}).on('error', function(error) {
 
-				reject(error);
+				resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
 
 			});
 
@@ -1296,7 +1364,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 		return new Promise(function(resolve, reject) {
 
-			rar.list(function(error, entries) {
+			rar.list(async function(error, entries) {
 
 				if(!error)
 				{
@@ -1316,7 +1384,7 @@ var fileCompressed = function(path, _realPath = false) {
 				}
 				else
 				{
-					reject(error);
+					resolve(_this.readIfTypeFromBinaryIsDifferent(error));
 				}
 
 			});
@@ -1393,7 +1461,7 @@ var fileCompressed = function(path, _realPath = false) {
 				}
 				else
 				{
-					reject(error);
+					resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
 				}
 
 			});
@@ -1449,7 +1517,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			}).on('error', function(error) {
 
-				reject(error);
+				resolve(_this.readIfTypeFromBinaryIsDifferent(error));
 
 			});
 
@@ -1495,7 +1563,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 			}).on('error', function(error) {
 
-				reject(error);
+				resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
 
 			});
 
