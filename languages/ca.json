@@ -123,7 +123,8 @@
 		},
 		"others": {
 			"main": "Altres configuracions",
-			"startInFullScreen": "Inicia OpenComic a pantalla completa"
+			"startInFullScreen": "Inicia OpenComic a pantalla completa",
+			"startOnStartup": "Iniciar OpenComic a l'inici",
 		},
 		"releases": {
 			"main": "Comprovar noves versions",

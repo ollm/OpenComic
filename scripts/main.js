@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, nativeImage} = require('electron');
+const {app, ipcMain, BrowserWindow, Menu, nativeImage} = require('electron');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
@@ -137,6 +137,14 @@ app.on('activate', () => {
 		createWindow()
 	}
 })
+
+ipcMain.on('open-at-login', function(event, active = false){
+
+	app.setLoginItemSettings({
+		openAtLogin: active,
+	})
+
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

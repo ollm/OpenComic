@@ -66,6 +66,7 @@ var storageDefault = {
 		readingGlobalZoom: true,
 		controllerDeadZone: 0.06,
 		startInFullScreen: false,
+		startOnStartup: false,
 		renderMaxWidth: 12000,
 		checkReleases: true,
 		checkPreReleases: true,

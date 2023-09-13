@@ -186,6 +186,12 @@ function setStartInFullScreen(value)
 	storage.updateVar('config', 'startInFullScreen', value);
 }
 
+function setStartOnStartup(value)
+{
+	storage.updateVar('config', 'startOnStartup', value);
+	electron.ipcRenderer.send('open-at-login', value);
+}
+
 function setCheckReleases(value)
 {
 	storage.updateVar('config', 'checkReleases', value);
@@ -206,6 +212,7 @@ module.exports = {
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,
 	setStartInFullScreen: setStartInFullScreen,
+	setStartOnStartup: setStartOnStartup,
 	setCheckReleases: setCheckReleases,
 	setCheckPreReleases: setCheckPreReleases,
 	changeShortcut: changeShortcut,
