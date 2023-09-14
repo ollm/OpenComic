@@ -27,6 +27,13 @@
 		</div>
 		<div class="bar-buttons-separator"></div>
 		<div class="material-icon button button2 hover-text" hover-text="{{language.global.reload}}" onclick="dom.reloadIndex();">refresh</div>
+		{{#unless comicsIndex}}
+		{{#if comicsDeep2}}
+		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button2 button-next-comic hover-text disable-pointer" hover-text="{{language.reading.nextChapter}}" onclick="dom.goNextComic();">navigate_next</div>
+		<div class="material-icon button button2 button-prev-comic hover-text disable-pointer" hover-text="{{language.reading.prevChapter}}" onclick="dom.goPrevComic();">navigate_before</div>
+		{{/if}}
+		{{/unless}}
 		<div class="bar-buttons-separator"></div>
 		<div class="material-icon button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode();">{{#if config.nightMode}}dark_mode{{else}}light_mode{{/if}}</div>
 	</div>

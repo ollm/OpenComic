@@ -430,6 +430,10 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsIndexVar = 'false';
+		handlebarsContext.comicsDeep2 = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep).length >= 2 ? true : false;
+
+		if(handlebarsContext.comicsDeep2)
+			showIfHasPrevOrNext(path, mainPath);
 
 		headerPath(path, mainPath);
 		template.loadHeader('index.header.html', animation);
@@ -539,6 +543,49 @@ async function previousComic(path, mainPath)
 	let image = await file.images(-1, path);
 
 	return image && image.path ? image.path : false;
+}
+
+async function goNextComic(path, mainPath)
+{
+	let _nextComic = await nextComic(indexPathA, indexMainPathA);
+
+	if(_nextComic)
+	{
+		dom.loadIndexPage(true, p.dirname(_nextComic), false, false, indexMainPathA);
+	}
+}
+
+async function goPrevComic(path, mainPath)
+{
+	let prevComic = await previousComic(indexPathA, indexMainPathA);
+
+	if(prevComic)
+	{
+		dom.loadIndexPage(true, p.dirname(prevComic), false, false, indexMainPathA);
+	}
+}
+
+async function showIfHasPrevOrNext(path, mainPath)
+{
+	let _nextComic = await nextComic(path, mainPath);
+	let prevComic = await previousComic(path, mainPath);
+
+	let barHeader = template._barHeader();
+
+	let buttonNext = barHeader.querySelector('.button-next-comic');
+	let buttonPrev = barHeader.querySelector('.button-prev-comic');
+
+	if(buttonNext)
+	{
+		if(_nextComic)
+			buttonNext.classList.remove('disable-pointer');
+	}
+
+	if(buttonPrev)
+	{
+		if(prevComic)
+			buttonPrev.classList.remove('disable-pointer');
+	}
 }
 
 async function _getFolderThumbnails(file, images, _images, path, folderSha, isAsync = false)
@@ -1355,6 +1402,8 @@ module.exports = {
 	openComic: openComic,
 	nextComic: function(){return skipNextComic},
 	previousComic: function(){return skipPreviousComic},
+	goNextComic: goNextComic,
+	goPrevComic: goPrevComic,
 	orderBy: orderBy,
 	nightMode: nightMode,
 	addComicButtons: addComicButtons,
