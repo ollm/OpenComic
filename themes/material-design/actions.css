@@ -728,6 +728,11 @@
 	position: relative;
 }
 
+.menu-grey
+{
+		color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
+}
+
 .menu-simple-text .switch
 {
 	margin-top: 16px;
@@ -2303,4 +2308,83 @@ table tbody td.lh0
 {
 	transform: rotate(180deg);
 	color: var(--md-sys-color-primary);
+}
+
+/* Chip */
+
+.chip
+{
+	border-radius: 8px;
+	border: 1px solid var(--md-sys-color-outline);
+	padding: 5px 12px;
+	margin: 0px 8px 8px 0px;
+	background-color: var(--md-sys-color-surface-container-low);
+	color: var(--md-sys-color-on-surface);
+	display: inline-block;
+	transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+	cursor: pointer;
+}
+
+.chip > div
+{
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 4px 4px 0px 0px;
+	z-index: 1;
+	transition: 0.2s background-color;
+	background-color: transparent;
+}
+
+.chip > div:hover
+{
+	background-color: var(--md-sys-color-on-surface-variant-2);
+}
+
+.chip > div:active,
+.chip.gamepad-highlight > div
+{
+	background-color: var(--md-sys-color-on-surface-variant-4);
+}
+
+.chip.active
+{
+	background-color: var(--md-sys-color-primary);
+	color: var(--md-sys-color-on-primary);
+}
+
+.chip-icon-right
+{
+	padding-right: 0px;
+}
+
+.chip i
+{
+	margin: -2px 5px;
+}
+
+.chip i.right
+{
+	float: right;
+	cursor: pointer;
+	height: 24px;
+	width: 24px;
+	border-radius: 24px;
+	line-height: 24px;
+	text-align: center;
+	transition: 0.2s background-color;
+	position: relative;
+	z-index: 2;
+}
+
+.chip i.right:hover,
+.chip i.gamepad-highlight
+{
+	background-color: var(--md-sys-color-on-surface-variant-2);
 }

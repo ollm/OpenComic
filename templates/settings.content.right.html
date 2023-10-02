@@ -16,6 +16,23 @@
 	<div class="tabs-content">
 		<div class="tabs-general active">
 
+			<h2 class="headline-small">{{language.settings.masterFolders.main}}</h2>
+
+			<div class="settings-master-folders">
+				
+				<div class="menu-simple-text menu-grey settings-master-folders-empty"{{#if masterFolders}} style="display: none;"{{/if}}>
+					<span>{{language.settings.masterFolders.noFolders}}</span>
+				</div>
+
+				<div class="settings-master-folders-list"{{#unless masterFolders}} style="display: none;"{{/unless}}>
+				</div>
+
+				<div class="simple-button filled-tonal gamepad-item" onclick="settings.addMasterFolder();">
+					<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.menu.file.addFolder}}</div>
+				</div>
+				<cb></cb>
+			</div>
+
 			<h2 class="headline-small">{{language.settings.reading.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">

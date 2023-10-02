@@ -3,6 +3,68 @@ function start()
 	events.events();
 
 	generateShortcutsTable();
+
+	updateMasterFolders();
+}
+
+function removeMasterFolder(key)
+{
+	let masterFolders = storage.get('masterFolders');
+
+	if(masterFolders[key])
+	{
+		masterFolders.splice(key, 1);
+		storage.set('masterFolders', masterFolders);
+
+		updateMasterFolders();
+	}
+}
+
+function addMasterFolder()
+{
+	let dialog = electronRemote.dialog;
+
+	dialog.showOpenDialog({properties: ['openDirectory'], filters: [{name: language.settings.masterFolders.folder}]}).then(async function (files) {
+
+		if(files.filePaths && files.filePaths[0])
+		{
+			let folder = files.filePaths[0];
+			let masterFolders = storage.get('masterFolders');
+
+			if(!inArray(folder, masterFolders))
+			{
+				masterFolders.push(folder);
+				storage.set('masterFolders', masterFolders);
+
+				updateMasterFolders();
+			}
+		}
+
+	});
+}
+
+function updateMasterFolders()
+{
+	let masterFolders = storage.get('masterFolders');
+	handlebarsContext.masterFolders = masterFolders;
+
+	let contentRight = template._contentRight();
+
+	let empty = contentRight.querySelector('.settings-master-folders-empty');
+	let list = contentRight.querySelector('.settings-master-folders-list');
+
+	if(masterFolders.length)
+	{
+		empty.style.display = 'none';
+		list.style.display = '';
+	}
+	else
+	{
+		empty.style.display = '';
+		list.style.display = 'none';
+	}
+
+	list.innerHTML = template.load('settings.content.right.master.folders.list.html');
 }
 
 function generateShortcutsTable(highlightItem = false)
@@ -220,4 +282,6 @@ module.exports = {
 	changeButton: changeButton,
 	removeButton: removeButton,
 	resoreShortcuts: resoreShortcuts,
+	removeMasterFolder: removeMasterFolder,
+	addMasterFolder: addMasterFolder,
 };

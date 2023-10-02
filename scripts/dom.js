@@ -246,17 +246,6 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		handlebarsContext.comics = pathFiles;
 
 		// Comic reading progress
-		let comic = false, _comics = storage.get('comics');
-
-		for(let i in _comics)
-		{
-			if(_comics[i].path == mainPath)
-			{
-				comic = _comics[i];
-				break;
-			}
-		}
-
 		let readingProgress = storage.get('readingProgress');
 
 		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
@@ -366,22 +355,56 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			sortInvert = !sortInvert;
 		}
 
-		var comicsStorage = storage.get('comics');
-		var comics = [];
+		let comics = [];
+
+		// Get comics in master folders
+		let masterFolders = storage.get('masterFolders');
+		let pathInMasterFolder = {};
+
+		if(!isEmpty(masterFolders))
+		{
+			for(let key in masterFolders)
+			{
+				let file = fileManager.file(masterFolders[key]);
+				let files = await file.readDir();
+
+				for(let i = 0, len = files.length; i < len; i++)
+				{
+					let folder = files[i];
+
+					if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
+					{
+						comics.push({
+							name: folder.name,
+							path: folder.path,
+							added: Math.round(fs.statSync(folder.path).mtimeMs / 1000),
+							folder: true,
+							compressed: folder.compressed,
+							fromMasterFolder: true,
+						});
+
+						pathInMasterFolder[folder.path] = true;
+					}
+				}
+			}
+		}
+
+		// Get comics in library
+		let comicsStorage = storage.get('comics');
 
 		if(!isEmpty(comicsStorage))
 		{
 			for(let key in comicsStorage)
 			{
-				if(fs.existsSync(comicsStorage[key].path))
-				{
+				if(!pathInMasterFolder[comicsStorage[key].path] && fs.existsSync(comicsStorage[key].path))
 					comics.push(comicsStorage[key]);
-				}
-				else
-				{
-					//console.log(comicsStorage[key]);
-				}
 			}
+		}
+
+		if(comics.length > 0)
+		{
+			// Comic reading progress
+			let readingProgress = storage.get('readingProgress');
 
 			for(let key in comics)
 			{
@@ -391,6 +414,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[key].poster = images.poster;
 				comics[key].images = images.images;
 				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
+				comics[key].readingProgress = readingProgress[comics[key].path] || {};
 			}
 
 			comics.sort(function (a, b) {

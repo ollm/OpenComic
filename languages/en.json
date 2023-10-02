@@ -130,6 +130,11 @@
 	},
 	"settings": {
 		"general": "General",
+		"masterFolders": {
+			"main": "Master folders",
+			"folder": "Folder",
+			"noFolders": "No folders"
+		},
 		"reading": {
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",

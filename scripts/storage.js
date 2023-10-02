@@ -1,4 +1,4 @@
-var changes = 48; // Update this if readingPagesConfig is updated
+var changes = 49; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -108,9 +108,9 @@ var storageDefault = {
 		path: 'Files path',
 		added: 0,
 		compressed: false,
-		bookmark: false,
+		bookmark: false,  // I think this is no longer used now, but I not sure
 		folder: true,
-		readingProgress: {
+		readingProgress: { // I think this is no longer used now, but I not sure
 			path: 'Path',
 			lastReading: 0,
 			progress: 0,
@@ -130,6 +130,9 @@ var storageDefault = {
 			progress: 0,
 		},
 	}],
+	masterFolders: [
+		'',
+	],
 	bookmarks: {
 		wildcard: [{
 			index: 0,

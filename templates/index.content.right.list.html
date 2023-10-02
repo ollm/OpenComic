@@ -8,7 +8,7 @@
 {{/if}}
 <div class="content-view-list">
 	{{#each comics}}
-	<div class="medium-list body-medium{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{#if @root.comicsIndex}}true{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">
+	<div class="medium-list body-medium{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">
 		<div class="{{#if folder}}icon-24 material-icon{{else}}medium-list-image{{/if}} item-image"{{#unless folder}} style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}});"{{/unless}}>{{#if folder}}folder{{/if}}</div>
 		<div class="medium-list-text">{{name}}</div>
 	</div>

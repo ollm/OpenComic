@@ -651,6 +651,12 @@ body .preload
 	display: block;
 }
 
+cb
+{
+	display: block;
+	clear: both;
+}
+
 .dragging, .dragging *
 {
 	cursor: grabbing !important;
@@ -1062,6 +1068,16 @@ body .preload
 	width: 24px;
 	background-size: 24px;
 	background-repeat: no-repeat;
+}
+
+.icon-18
+{
+	height: 18px;
+	width: 18px;
+	background-size: 18px;
+	background-repeat: no-repeat;
+	font-size: 18px;
+	line-height: 18px;
 }
 
 /* Lists */
