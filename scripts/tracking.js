@@ -307,7 +307,7 @@ function currentTrackingDialog(site)
 		events.dialog({
 			header: false,
 			width: 500,
-			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 443 : 515,
+			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 443 : 517,
 			content: template.load('loading.html'),
 			buttons: false,
 		});

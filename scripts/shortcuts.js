@@ -551,4 +551,5 @@ module.exports = {
 	restoreDefaults: restoreDefaults,
 	play: play,
 	pause: pause,
+	inputIsFocused: inputIsFocused,
 };

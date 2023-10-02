@@ -1,0 +1,56 @@
+<div>
+
+	{{#if userPresets}}
+
+		<div class="menu-simple-text">
+			<span>{{language.reading.pages.savedPresets}}</span>
+		</div>
+
+		{{#each userPresets}}
+			<div class="menu-presets menu-presets--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.filters.colorizePreset('{{key}}', true); events.hideSelect(true);">
+				<div class="menu-simple-element-image"><!--<div></div>--><span style="filter: url(#presets{{key}});"></span></div>
+				<span>{{name}}</span>
+				<i class="material-icon menu-simple-icon-last" onclick="reading.filters.editPreset('{{key}}'); events.hideSelect(true); event.stopPropagation();">edit</i>
+			</div>
+		{{/each}}
+
+	{{/if}}
+
+	{{#each presets}}
+		<div class="menu-simple-text">
+			<span>{{name}}</span>
+		</div>
+
+		{{#each colors}}
+			<div class="menu-presets menu-presets--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.filters.colorizePreset('{{key}}', true); events.hideSelect(true);">
+				<div class="menu-simple-element-image"><!--<div></div>--><span style="filter: url(#presets{{key}});"></span></div>
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/each}}
+
+</div>
+<svg width="0" height="0">
+	<defs>
+		{{#each userPresets}}
+		<filter id="presets{{key}}">
+			<feComponentTransfer color-interpolation-filters="sRGB">>
+				<feFuncR type="table" tableValues="{{feFuncR}}"/>
+				<feFuncG type="table" tableValues="{{feFuncG}}"/>
+				<feFuncB type="table" tableValues="{{feFuncB}}"/>
+			</feComponentTransfer>
+		</filter>
+		{{/each}}
+		{{#each presets}}
+		{{#each colors}}
+		<filter id="presets{{key}}">
+			<feComponentTransfer color-interpolation-filters="sRGB">>
+				<feFuncR type="table" tableValues="{{feFuncR}}"/>
+				<feFuncG type="table" tableValues="{{feFuncG}}"/>
+				<feFuncB type="table" tableValues="{{feFuncB}}"/>
+			</feComponentTransfer>
+		</filter>
+		{{/each}}
+		{{/each}}
+	</defs>
+</svg>

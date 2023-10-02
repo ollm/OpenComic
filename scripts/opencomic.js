@@ -300,7 +300,6 @@ function startApp()
 
 		$('body .app').css('display', 'block');
 		$('body .preload').css('display', 'none');
-		dom.justifyViewModule();
 
 		if(onReading)
 		{

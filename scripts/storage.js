@@ -1,4 +1,4 @@
-var changes = 45; // Update this if readingPagesConfig is updated
+var changes = 48; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -32,6 +32,22 @@ var readingPagesConfig = {
 	readingBlankPage: false,
 	readingManga: false,
 	readingWebtoon: false,
+	readingFilters: {
+		brightness: 100,
+		saturation: 100,
+		contrast: 100,
+		sepia: 0,
+		hueRotate: 0,
+		invert: false,
+		colorize: false,
+		onlyBlackAndWhite: true,
+		colorPreset: 'redAndBlueGray',
+		colors: [{
+			h: 0,
+			s: 0,
+			m: 1,
+		}],
+	},
 };
 
 var storageDefault = {
@@ -172,6 +188,14 @@ var storageDefault = {
 			},
 		},
 	},
+	colorPresets: [{
+		name: '',
+		colors: [{
+			h: 0,
+			s: 0,
+			m: 1,
+		}],
+	}],
 	cache: {
 		wildcard: {
 			lastAccess: 0,

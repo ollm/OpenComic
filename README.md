@@ -36,6 +36,8 @@
 - 🔖 Bookmarks and continue reading
 - 🔍 Floating magnifying glass
 - 🖱 Reading in scroll or slide
+- ⚪ Adjust the brightness, saturation, contrast, sepia and invert colors
+- 🎨 Colorize black and white images
 - 🎮 Gamepad navigation
 
 You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)

@@ -1,8 +1,8 @@
-<div class="menu-simple-content">
+<div>
 	{{#if editReadingShortcutPagesConfig}}
 
 		<div class="menu-simple-element menu-simple-element-little gamepad-item">
-			<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(); reading.changePagesView(0);">arrow_back</i>
+			<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(false, false, document.querySelector('#reading-pages .tabs > div > div.active').dataset.name); reading.changePagesView(0);">arrow_back</i>
 			<span class="menu-simple-element-icon2">{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
 			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
 			{{#compare _config.key '!==' 0}}<i class="material-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
@@ -30,170 +30,328 @@
 		</div>
 	{{/if}}
 	<div class="menu-simple-separator"></div>
-	<div class="menu-simple-element pages-slide gamepad-item{{#compare _config.readingView '==' 'slide'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
-	<div class="menu-simple-element pages-scroll gamepad-item{{#compare _config.readingView '==' 'scroll'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
-	<div class="menu-simple-separator-min"></div>
-	<div class="menu-simple-text reading-reading-manga gamepad-item{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
-		{{language.reading.pages.readingManga}}
-		<div class="switch{{#if _config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="menu-simple-text reading-reading-webtoon gamepad-item">
-		{{language.reading.pages.readingWebtoon}}
-		<div class="switch{{#if _config.readingWebtoon}} a{{/if}}" on="reading.changePagesView(9, true, false)" off="reading.changePagesView(9, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="menu-simple-separator-min"></div>
-	<div class="menu-simple-text reading-double-page gamepad-item{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
-		{{language.reading.pages.doublePage}}
-		<div class="switch{{#if _config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="menu-simple-text reading-do-not-apply-to-horizontals gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
-		{{language.reading.pages.doNotApplyToHorizontals}}
-		<div class="switch{{#if _config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="menu-simple-text reading-blank-page gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
-		{{language.reading.pages.blankPage}}
-		<div class="switch{{#if _config.readingBlankPage}} a{{/if}}" on="reading.changePagesView(12, true, false)" off="reading.changePagesView(12, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="menu-simple-separator-min"></div>
-	<div class="menu-simple-text reading-ajust-to-width gamepad-item{{#compare _config.readingView '==' 'slide'}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/compare}}">
-		{{language.reading.pages.adjustToWidth}}
-		<div class="switch{{#if _config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
-		<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{_config.readingMargin.left}}</span>px</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
-				</div>
+
+
+
+	<div class="tabs outline-tabs" style="margin: 16px 24px;">
+		<div>
+			<div class="label-large gamepad-item{{#compare readingPagesTab '==' 'page-layout'}} gamepad-to-highlight active{{/compare}}" data-name="page-layout" data-on-end-animation="gamepad.updateBrowsableItems(gamepad.currentKey())">
+				<span class="material-icon">auto_stories</span>{{language.reading.pages.pageLayout}}
 			</div>
-			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
-		</div>
-	</div>
-	<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
-		<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{_config.readingMargin.top}}</span>px</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
-				</div>
+
+			<div class="label-large gamepad-item{{#compare readingPagesTab '==' 'filters'}} gamepad-to-highlight active{{/compare}}" data-name="filters" data-on-end-animation="gamepad.updateBrowsableItems(gamepad.currentKey())">
+				<span class="material-icon">invert_colors</span>{{language.reading.pages.colorFilters}}
 			</div>
-			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.top}}" onrange="reading.changePagesView(11, \{{value}}, \{{toEnd}})">
 		</div>
 	</div>
 
-	<div class="menu-simple-text gamepad-item">
-		{{language.reading.pages.differentMarginInHorizontals}}
-		<div class="switch{{#if _config.readingHorizontalsMarginActive}} a{{/if}}" on="reading.changePagesView(13, true, false)" off="reading.changePagesView(13, false, false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
-	</div>
-	<div class="simple-slider reading-horizontals-margin gamepad-item{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
-		<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><span>{{_config.readingHorizontalsMargin.left}}</span>px</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
-				</div>
-			</div>
-			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.left}}" onrange="reading.changePagesView(14, \{{value}}, \{{toEnd}})">
-		</div>
-	</div>
+	<div class="tabs-content">
+		<div class="tabs-page-layout{{#compare readingPagesTab '==' 'page-layout'}} active{{/compare}}">
 
-	<!--<div class="simple-slider reading-horizontals-margin gamepad-item{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
-		<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><span>{{_config.readingHorizontalsMargin.top}}</span>px</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			<div class="menu-simple-element pages-slide gamepad-item{{#compare _config.readingView '==' 'slide'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
+			<div class="menu-simple-element pages-scroll gamepad-item{{#compare _config.readingView '==' 'scroll'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
+			<div class="menu-simple-separator-min"></div>
+			<div class="menu-simple-text reading-reading-manga gamepad-item{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
+				{{language.reading.pages.readingManga}}
+				<div class="switch{{#if _config.readingManga}} a{{/if}}" on="reading.changePagesView(8, true, false)" off="reading.changePagesView(8, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 				</div>
 			</div>
-			<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.top}}" onrange="reading.changePagesView(15, \{{value}}, \{{toEnd}})">
-		</div>
-	</div>-->
+			<div class="menu-simple-text reading-reading-webtoon gamepad-item">
+				{{language.reading.pages.readingWebtoon}}
+				<div class="switch{{#if _config.readingWebtoon}} a{{/if}}" on="reading.changePagesView(9, true, false)" off="reading.changePagesView(9, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="menu-simple-separator-min"></div>
+			<div class="menu-simple-text reading-double-page gamepad-item{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
+				{{language.reading.pages.doublePage}}
+				<div class="switch{{#if _config.readingDoublePage}} a{{/if}}" on="reading.changePagesView(6, true, false)" off="reading.changePagesView(6, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="menu-simple-text reading-do-not-apply-to-horizontals gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
+				{{language.reading.pages.doNotApplyToHorizontals}}
+				<div class="switch{{#if _config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="menu-simple-text reading-blank-page gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
+				{{language.reading.pages.blankPage}}
+				<div class="switch{{#if _config.readingBlankPage}} a{{/if}}" on="reading.changePagesView(12, true, false)" off="reading.changePagesView(12, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="menu-simple-separator-min"></div>
+			<div class="menu-simple-text reading-ajust-to-width gamepad-item{{#compare _config.readingView '==' 'slide'}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/compare}}">
+				{{language.reading.pages.adjustToWidth}}
+				<div class="switch{{#if _config.readingViewAdjustToWidth}} a{{/if}}" on="reading.changePagesView(3, true, false)" off="reading.changePagesView(3, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="16">undo</i><span>{{_config.readingMargin.left}}</span>px</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+				<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="16">undo</i><span>{{_config.readingMargin.top}}</span>px</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.top}}" onrange="reading.changePagesView(11, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
 
-	<div class="menu-simple-separator-min"></div>
+			<div class="menu-simple-text gamepad-item">
+				{{language.reading.pages.differentMarginInHorizontals}}
+				<div class="switch{{#if _config.readingHorizontalsMarginActive}} a{{/if}}" on="reading.changePagesView(13, true, false)" off="reading.changePagesView(13, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="simple-slider reading-horizontals-margin gamepad-item{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.marginHorizontal}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="16">undo</i><span>{{_config.readingHorizontalsMargin.left}}</span>px</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.left}}" onrange="reading.changePagesView(14, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
 
-	<div class="simple-slider reading-horizontals-margin gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
-		<div class="simple-slider-text">{{language.reading.pages.clipHorizontal}}<div><span>{{normalizeNumber _config.readingImageClip.left "0.05"}}</span>%</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			<!--<div class="simple-slider reading-horizontals-margin gamepad-item{{#unless _config.readingHorizontalsMarginActive}} disable-pointer{{/unless}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+				<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="16">remove_circle</i><span>{{_config.readingHorizontalsMargin.top}}</span>px</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingHorizontalsMargin.top}}" onrange="reading.changePagesView(15, \{{value}}, \{{toEnd}})">
 				</div>
-			</div>
-			<input type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.left}}" onrange="reading.changePagesView(16, \{{value}}, \{{toEnd}})">
-		</div>
-	</div>
+			</div>-->
 
-	<div class="simple-slider reading-horizontals-margin gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
-		<div class="simple-slider-text">{{language.reading.pages.clipVertical}}<div><span>{{normalizeNumber _config.readingImageClip.top "0.05"}}</span>%</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
-				</div>
-			</div>
-			<input type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.top}}" onrange="reading.changePagesView(17, \{{value}}, \{{toEnd}})">
-		</div>
-	</div>
+			<div class="menu-simple-separator-min"></div>
 
-	<div class="menu-simple-separator-min"></div>
-	<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
-		<div class="simple-slider-text">{{language.reading.pages.readingDelaySkip}}<div><span>{{normalizeNumber _config.readingDelayComicSkip "0.2"}}</span>s</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			<div class="simple-slider reading-horizontals-margin gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.clipHorizontal}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0">undo</i><span>{{normalizeNumber _config.readingImageClip.left "0.05"}}</span>%</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.left}}" onrange="reading.changePagesView(16, \{{value}}, \{{toEnd}})">
 				</div>
 			</div>
-			<input type="range" max="10" min="0" step="0.1" value="{{_config.readingDelayComicSkip}}" onrange="reading.changePagesView(5, \{{value}}, \{{toEnd}})">
+
+			<div class="simple-slider reading-horizontals-margin gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.clipVertical}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0">undo</i><span>{{normalizeNumber _config.readingImageClip.top "0.05"}}</span>%</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="15" min="0" step="0.05" value="{{_config.readingImageClip.top}}" onrange="reading.changePagesView(17, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="menu-simple-separator-min"></div>
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+				<div class="simple-slider-text">{{language.reading.pages.readingDelaySkip}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="1">undo</i><span>{{normalizeNumber _config.readingDelayComicSkip "0.2"}}</span>s</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="10" min="0" step="0.1" value="{{_config.readingDelayComicSkip}}" onrange="reading.changePagesView(5, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+				<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0.3">undo</i><span>{{normalizeNumber _config.readingViewSpeed "0.05"}}</span>s</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input  type="range" max="4" min="0" step="0.05" value="{{_config.readingViewSpeed}}" onrange="reading.changePagesView(4, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
-		<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><span>{{normalizeNumber _config.readingViewSpeed "0.05"}}</span>s</div></div>
-		<div class="range">
-			<div class="range-position">
-				<span class="range-line" style="width: 100%"></span>
-				<span class="range-steps"></span>
-				<div>
-					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+
+		<div class="tabs-filters{{#compare readingPagesTab '==' 'filters'}} active{{/compare}}">
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.brightness}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="100">format_color_reset</i><span>{{_config.readingFilters.brightness}}</span>%</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="400" min="0" value="{{_config.readingFilters.brightness}}" onrange="reading.filters.change('brightness', \{{value}}, \{{toEnd}})">
 				</div>
 			</div>
-			<input  type="range" max="4" min="0" step="0.05" value="{{_config.readingViewSpeed}}" onrange="reading.changePagesView(4, \{{value}}, \{{toEnd}})">
+
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.saturation}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="100">format_color_reset</i><span>{{_config.readingFilters.saturation}}</span>%</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="400" min="0" value="{{_config.readingFilters.saturation}}" onrange="reading.filters.change('saturation', \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.contrast}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="100">format_color_reset</i><span>{{_config.readingFilters.contrast}}</span>%</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="400" min="0" value="{{_config.readingFilters.contrast}}" onrange="reading.filters.change('contrast', \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.sepia}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0">format_color_reset</i><span>{{_config.readingFilters.sepia}}</span>%</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="100" min="0" value="{{_config.readingFilters.sepia}}" onrange="reading.filters.change('sepia', \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+				<div class="simple-slider-text">{{language.reading.pages.hueRotate}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0">format_color_reset</i><span>{{_config.readingFilters.hueRotate}}</span>°</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="360" min="0" value="{{_config.readingFilters.hueRotate}}" onrange="reading.filters.change('hueRotate', \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="menu-simple-text reading-invert gamepad-item">
+				{{language.reading.pages.invert}}
+				<div class="switch{{#if _config.readingFilters.invert}} a{{/if}}" on="reading.filters.change('invert', true, true)" off="reading.filters.change('invert', false, true)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-separator-min"></div>
+
+
+			<div class="menu-simple-text reading-colorize gamepad-item">
+				{{language.reading.pages.colorize}}
+				<div class="switch{{#if _config.readingFilters.colorize}} a{{/if}}" on="reading.filters.change('colorize', true, true)" off="reading.filters.change('colorize', false, true)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text reading-only-black-and-white gamepad-item{{#unless _config.readingFilters.colorize}} disable-pointer{{/unless}}">
+				{{language.reading.pages.onlyBlackAndWhite}}
+				<div class="switch{{#if _config.readingFilters.onlyBlackAndWhite}} a{{/if}}" on="reading.filters.change('onlyBlackAndWhite', true, true)" off="reading.filters.change('onlyBlackAndWhite', false, true)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+			<div class="filters-colors {{#unless _config.readingFilters.colorize}}disable-pointer{{/unless}}">
+
+				<div class="select reading-filters-presets body-large gamepad-item" onclick="reading.filters.loadFiltersPresets(); events.showSelect(this, 'reading-filters-presets', true);">
+					<div>
+						<div class="select-border">
+							<div class="bottom"><div></div></div>
+						</div>
+						<div class="text">{{readingFiltersPreset}}</div>
+						<div class="placeholder">{{language.reading.pages.colorPreset}}</div>
+						<i class="material-icon">arrow_drop_down</i>
+					</div>
+				</div>
+
+				<div class="filters-colorize-gradient">
+					<div></div>
+					<span style="filter: {{readingFiltersCss}}"></span>
+				</div>
+				<div class="filters-colors-list">
+					{{> reading.elements.menus.pages.filters.html}}
+				</div>
+
+				<div class="filters-buttons">
+					<div class="simple-button filled-tonal gamepad-item" onclick="reading.filters.add();">
+						<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.reading.pages.addColor}}</div>
+					</div>
+
+					<div class="simple-button filled-tonal gamepad-item" onclick="reading.filters.fromImage();">
+						<div class="touch-effect"><i class="icon-24 material-icon">image</i>{{language.reading.pages.fromImage}}</div>
+					</div>
+
+					<div class="simple-button filled-tonal gamepad-item" onclick="reading.filters.saveAsPreset();">
+						<div class="touch-effect"><i class="icon-24 material-icon">save</i>{{language.reading.pages.saveAsPreset}}</div>
+					</div>
+
+				</div>
+			</div>
+
 		</div>
 	</div>
 </div>

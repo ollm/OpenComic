@@ -225,12 +225,17 @@
 	visibility: hidden;
 }
 
+.reading-filters
+{
+	display: none;
+}
+
 .reading-skip > div
 {
 	background-color: var(--md-sys-color-surface-variant);
 	position: absolute;
 	z-index: 1;
-	box-shadow: inset 0px 0px 4px 2px rgba(0, 0, 0, 0.1), inset 0px 0px 2px 1px rgba(0, 0, 0, 0.1), inset 0px 0px 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: var(--md-sys-elevation-inset-level1);
 	transition: background-color 0.2s, box-shadow 0.2s;
 }
 
@@ -367,7 +372,7 @@
 
 .menu-tracking-sites-problem i
 {
-	padding: 4px 8px 0px 0px;
+	padding: 8px 8px 0px 0px;
 	float: left;
 }
 
@@ -448,6 +453,105 @@
 {
 	font-size: 15px;
 	font-weight: normal;
-	color: #333;
 	padding: 8px 0px 4px 0px;
+}
+
+/* Filters  */
+
+.filters-colors
+{
+	transition: 0.2s;
+}
+
+.filters-colorize-gradient
+{
+	width: calc(100% - 48px);
+	height: 36px;
+	overflow: hidden;
+	border: 1px solid var(--md-sys-color-surface-variant);
+	border-radius: 12px;
+	margin-left: 24px;
+}
+
+.filters-colorize-gradient > *
+{
+	height: 18px;
+	background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%);
+	display: block;
+}
+
+.filters-colorize
+{
+	display: flex;
+	padding: 0px 24px;
+	margin: 16px 0px -10px 0px;
+	position: relative;
+}
+
+.filters-colorize .filters-colorize-hidden
+{
+	position: absolute;
+	opacity: 0;
+	transition: 0.3s;
+	padding: 24px 0px 0px 0px;
+	background-color: var(--md-sys-color-surface-container);
+	z-index: 6;
+	width: 100%;
+	left: 0px;
+	box-sizing: border-box;
+	top: -78px;
+	pointer-events: none;
+}
+
+.filters-colorize.clip-path .filters-colorize-hidden
+{
+	opacity: 1;
+}
+
+.filters-colorize .filters-colorize-gradient
+{
+	/*border-radius: 8px;*/
+}
+
+.filters-colorize .simple-slider
+{
+	width: 40%;
+}
+
+.filters-colorize-color
+{
+	height: 32px;
+	width: 32px;
+	border-radius: 36px;
+	border: 1px solid var(--md-sys-color-surface-variant);
+	overflow: hidden;
+	margin-top: 15px;
+}
+
+.filters-colorize-color > div
+{
+	height: 100%;
+	width: 100%;
+}
+
+.filters-colorize-buttons
+{
+	width: 24px;
+	cursor: pointer;
+	margin-top: -7px;
+	margin-bottom: -3px;
+}
+
+.filters-buttons
+{
+	padding: 16px 24px 16px 24px;
+	display: flex;
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
+}
+
+.filters-buttons > div
+{
+	margin-left: 8px;
+	margin-bottom: 8px;
 }

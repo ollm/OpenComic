@@ -1,0 +1,73 @@
+{{#each readingFiltersColors}}
+
+	{{#if @last}}
+	<div class="menu-simple-separator-min menu-simple-separator-dashed"></div>
+	{{/if}}
+
+	<div class="filters-colorize" data-margin="60,3,0,0">
+
+		<div class="filters-colorize-hidden">
+			<div class="filters-colorize-gradient">
+				<div></div>
+				<span style="filter: {{@root.readingFiltersCss}}"></span>
+			</div>
+		</div>
+
+		<div class="filters-colorize-color"><div style="background-color: rgb({{color}}, {{color}}, {{color}}); filter: {{@root.readingFiltersCss}}"></div></div>
+
+		<div style="width: 100px; margin-right: -24px;" class="simple-slider gamepad-item" data-clip-path=".filters-colorize" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+			<div class="simple-slider-text">{{@root.language.reading.pages.multiplier}}<div><span>{{multiplier}}</span></div></div>
+			<div class="range">
+				<div class="range-position">
+					<span class="range-line" style="width: 100%"></span>
+					<span class="range-steps"></span>
+					<div>
+						<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+					</div>
+				</div>
+				<input class="precise-range" data-precision="2" type="range" max="10" min="1" value="{{multiplier}}" name="multiplier" onrange="reading.filters.changeColorize('multiplier', {{@key}}, \{{value}}, \{{toEnd}})">
+			</div>
+		</div>
+
+		<div style="margin-right: -24px;" class="simple-slider gamepad-item" data-clip-path=".filters-colorize" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+			<div class="simple-slider-text">{{@root.language.reading.pages.tone}}<div><span>{{hue}}</span>°</div></div>
+			<div class="range">
+				<div class="range-position">
+					<span class="range-line" style="width: 100%"></span>
+					<span class="range-steps"></span>
+					<div>
+						<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+					</div>
+				</div>
+				<input class="precise-range" data-precision="4" type="range" max="360" min="0" value="{{hue}}" name="hue" onrange="reading.filters.changeColorize('hue', {{@key}}, \{{value}}, \{{toEnd}})">
+			</div>
+		</div>
+
+		<div class="simple-slider gamepad-item" data-clip-path=".filters-colorize" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+			<div class="simple-slider-text">{{@root.language.reading.pages.saturation}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="100">format_color_reset</i><span>{{saturation}}</span>%</div></div>
+			<div class="range">
+				<div class="range-position">
+					<span class="range-line" style="width: 100%"></span>
+					<span class="range-steps"></span>
+					<div>
+						<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+					</div>
+				</div>
+				<input class="precise-range" data-precision="4" type="range" max="400" min="0" value="{{saturation}}" name="saturation" onrange="reading.filters.changeColorize('saturation', {{@key}}, \{{value}}, \{{toEnd}})">
+			</div>
+		</div>
+
+		<div class="filters-colorize-buttons{{#if @first}} disable-pointer{{/if}}{{#if @last}} disable-pointer{{/if}}">
+			<i class="material-icon" onclick="reading.filters.up({{@key}});">keyboard_arrow_up</i>
+			<i class="material-icon" onclick="reading.filters.remove({{@key}});">close</i>
+			<i class="material-icon" onclick="reading.filters.down({{@key}});">keyboard_arrow_down</i>
+		</div>
+
+	</div>
+
+	{{#if @first}}
+	<div class="menu-simple-separator-min menu-simple-separator-dashed"></div>
+	{{/if}}
+
+
+{{/each}}

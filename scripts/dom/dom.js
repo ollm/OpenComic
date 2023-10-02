@@ -71,6 +71,21 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 		return this;
 	}
 
+	this.filter = function(query) {
+
+		let newThis = [];
+
+		for(let i = 0, len = this._this.length; i < len; i++)
+		{
+			if(this._this[i].matches(query))
+				newThis.push(this._this[i]);
+		}
+
+		this._this = newThis;
+
+		return this;
+	}
+
 	this.getParents = function(element) {
 
 		let result = [];
@@ -83,7 +98,7 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 		return result;
 	}
 
-	this.parents = function(query, all = false)
+	this.parents = function(query = false, all = false)
 	{
 		let newThis = [];
 
@@ -93,7 +108,7 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 
 			for(let i2 = 0, len2 = parents.length; i2 < len2; i2++)
 			{
-				if(parents[i2].matches(query))
+				if(query === false || parents[i2].matches(query))
 				{
 					newThis.push(parents[i2]);
 				
@@ -101,6 +116,23 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 						break;
 				}
 			}
+		}
+
+		this._this = newThis;
+
+		return this;
+	}
+
+	this.closest = function(query = false)
+	{
+		let newThis = [];
+
+		for(let i = 0, len = this._this.length; i < len; i++)
+		{
+			let _this = this._this[i].closest(query);
+
+			if(_this)
+				newThis.push(_this);
 		}
 
 		this._this = newThis;
@@ -121,6 +153,32 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 				if((query === false || parentChildren[i2].matches(query)) && parentChildren[i2] !== this._this[i])
 				{
 					newThis.push(parentChildren[i2]);
+
+					if(!all)
+						break;
+				}
+			}
+		}
+
+		this._this = newThis;
+
+		return this;
+
+	}
+
+	this.children = function(query = false, all = false) {
+
+		let newThis = [];
+
+		for(let i = 0, len = this._this.length; i < len; i++)
+		{
+			let children = this._this[i].children;
+
+			for(let i2 = 0, len2 = children.length; i2 < len2; i2++)
+			{
+				if(query === false || children[i2].matches(query))
+				{
+					newThis.push(children[i2]);
 
 					if(!all)
 						break;
@@ -163,6 +221,8 @@ var _dom = function(_this, string = false, querySelectorAll = false) {
 			this.addClass(..._arguments);
 		else
 			this.removeClass(..._arguments);
+
+		return this;
 	}
 
 	this.setAttribute = function(name, value) {

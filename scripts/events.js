@@ -1,15 +1,35 @@
 var buttonCancel, buttonPulsed;
 
-function eventsTab()
+function eventsTab(activeTab = false)
 {
-	app.event('.big-tabs > div > div', 'click', _eventsTab, {capture: false});
+	/*if(activeTab)
+	{
+		let tabsContent = dom.query('.tabs-content .tabs-'+activeTab);
+		console.log(tabsContent._this)
+		tabsContent.addClass('active');
+		tabsContent.siblings('.active').removeClass('active');
 
-	let tabs = document.querySelectorAll('.big-tabs > div > div');
+		let tabs = dom.query('.tabs > div > div[data-name="'+activeTab+'"]');
+		tabs.addClass('active');
+		tabs.siblings('.active').removeClass('active');
+	}*/
+
+	app.event('.tabs > div > div', 'click', _eventsTab, {capture: false});
+
+	let tabs = document.querySelectorAll('.tabs > div > div');
 
 	for(let i = 0, len = tabs.length; i < len; i++)
 	{
 		tabs[i].dataset.index = i;
 	}
+
+	let tabsContent = document.querySelectorAll('.tabs-content > .active');
+
+	for(let i = 0, len = tabsContent.length; i < len; i++)
+	{
+		tabsContent[i].parentElement.style.height = tabsContent[i].getBoundingClientRect().height+'px';
+	}
+
 }
 
 var eventsTabST = false;
@@ -18,6 +38,8 @@ function _eventsTab(event)
 {
 	if(!this.classList.contains('active') && !eventsTabST)
 	{
+		gamepad.cleanBrowsableItems(gamepad.currentKey());
+
 		let current = this.parentElement.querySelector('.active');
 		let currentIndex = +current.dataset.index;
 		let currentName = current.dataset.name;
@@ -29,11 +51,11 @@ function _eventsTab(event)
 		current.classList.remove('active');
 		this.classList.add('active');
 
+		let parent = current.parentElement.parentElement.parentElement;
 
-		let contentRight = template._contentRight();
-
-		let currentContent = contentRight.querySelector('.big-tabs-content .big-tabs-'+currentName);
-		let content = contentRight.querySelector('.big-tabs-content .big-tabs-'+name);
+		let tabsContent = parent.querySelector('.tabs-content');
+		let currentContent = parent.querySelector('.tabs-content .tabs-'+currentName);
+		let content = parent.querySelector('.tabs-content .tabs-'+name);
 
 		let classShow = currentIndex > index ? 'show-from-left' : 'show-from-right';
 		let classRemove = currentIndex > index ? 'hide-to-right' : 'hide-to-left';
@@ -44,6 +66,8 @@ function _eventsTab(event)
 		eventsTabST = setTimeout(function(){
 
 			content.classList.add(classShow, 'active');
+
+			tabsContent.style.height = content.getBoundingClientRect().height+'px';
 
 			eventsTabST = setTimeout(function(){
 
@@ -61,129 +85,141 @@ function _eventsTab(event)
 	}
 }
 
+function buttonDown()
+{
+	this.classList.remove('p', 'c', 'd');
+	this.classList.add('a');
+	clearTimeout(eventHoverTimeout);
+	buttonCancel = false;
+	buttonPulsed = true;
+}
+
+function buttonUp()
+{
+	if(!buttonCancel)
+	{
+		this.classList.remove('a', 'c', 'd');
+		this.classList.add('p');
+	}
+
+	buttonPulsed = false;
+}
+
+function buttonOut()
+{
+	if(buttonPulsed)
+	{
+		buttonCancel = true;
+		this.classList.remove('a', 'p', 'd');
+		this.classList.add('c');
+		buttonPulsed = false;
+	}
+}
+
+function floatingActionButtonDown()
+{
+	this.classList.remove('p', 'c', 'd');
+	this.classList.add('a');
+	clearTimeout(eventHoverTimeout);
+	buttonCancel = false;
+	buttonPulsed = true;
+}
+
+function floatingActionButtonUp()
+{
+	if(!buttonCancel)
+	{
+		this.classList.remove('a', 'c', 'd');
+		this.classList.add('p');
+	}
+
+	buttonPulsed = false;
+}
+
+function floatingActionButtonOut()
+{
+	if(buttonPulsed)
+	{
+		buttonCancel = true;
+
+		this.classList.remove('a', 'p', 'd');
+		this.classList.add('c');
+
+		buttonPulsed = false;
+	}
+}
+
 function eventButton()
 {
+	let buttons = document.querySelectorAll('.button');
 
-	$('.button').on('mousedown.events touchstart.events', function(e){
+	app.event(buttons, 'mousedown touchstart', buttonDown);
+	app.event(buttons, 'mouseup touchend', buttonUp);
+	app.event(buttons, 'mouseout', buttonOut);
 
-		$(this).removeClass('p c d').addClass('a');
-		clearTimeout(eventHoverTimeout);
+	let floatingActionButton = document.querySelectorAll('.floating-action-button');
 
-		buttonCancel = false;
-		buttonPulsed = true;
-
-	});
-
-	$('.button').on('mouseup.events touchend.events', function(e){
-
-		if(!buttonCancel)
-		{
-			$(this).removeClass('a c d').addClass('p');
-		}
-
-		buttonPulsed = false;
-
-	});
-
-	$('.button').on('mouseout.events', function(){
-
-		if(buttonPulsed)
-		{
-			buttonCancel = true;
-			$(this).removeClass('a p d').addClass('c');
-
-			buttonPulsed = false;
-		}
-
-	});
-
-	$('.floating-action-button').on('mousedown.events touchstart.events', function(e){
-
-		$(this).removeClass('p c d').addClass('a');
-		clearTimeout(eventHoverTimeout);
-		buttonCancel = false;
-		buttonPulsed = true;
-
-	});
-
-	$('.floating-action-button').on('mouseup.events touchend.events', function(e){
-
-		if(!buttonCancel)
-		{
-			$(this).removeClass('a c d').addClass('p');
-		}
-
-		buttonPulsed = false;
-
-	});
-
-	$('.floating-action-button').on('mouseleave.events', function(){
-
-		if(buttonPulsed)
-		{
-			buttonCancel = true;
-			$(this).removeClass('a p d').addClass('c');
-
-			buttonPulsed = false;
-		}
-
-	});
-
+	app.event(floatingActionButton, 'mousedown touchstart', floatingActionButtonDown);
+	app.event(floatingActionButton, 'mouseup touchend', floatingActionButtonUp);
+	app.event(floatingActionButton, 'mouseleave', floatingActionButtonOut);
 }
 
 var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, showedHoverText = false, currentPageX, currentPageY;
 
+function hoverEnter()
+{
+	eventHoverTimeoutActive = true;
+
+	eventHoverTimeoutThis = this;
+
+	//eventHoverTimeout = setTimeout('events.showHoverText()', 300);
+}
+
+function hoverLeave()
+{
+	hideHoverText();
+}
+
+function documentLeave()
+{
+	hideHoverText();
+
+	clearTimeout(eventHoverTimeout);
+}
+
+function windowDown()
+{
+	hideHoverText();
+}
+
+function windowMove1()
+{
+	clearTimeout(eventHoverTimeout);
+
+	if(eventHoverTimeoutActive)
+		eventHoverTimeout = setTimeout('events.showHoverText()', 300);
+	else
+		hideHoverText();
+}
+
+function windowMove2(event)
+{
+	currentPageX = app.pageX(event);
+	currentPageY = app.pageY(event);
+}
+
 function eventHover()
 {
+	let hoverText = document.querySelectorAll('.hover-text');
 
-	$('.hover-text').on('mouseenter', function(){
+	app.event(hoverText, 'mouseenter', hoverEnter);
+	app.event(hoverText, 'mouseleave', hoverLeave);
 
-		eventHoverTimeoutActive = true;
+	app.event(document, 'mouseleave', documentLeave);
 
-		eventHoverTimeoutThis = this;
-
-		//eventHoverTimeout = setTimeout('events.showHoverText()', 300);
-
-	});
-
-	$('.hover-text').on('mouseleave.events', function(){
-
-		hideHoverText();
-
-	});
-
-	$(document).on('mouseleave.events', function(){
-
-		hideHoverText();
-
-		clearTimeout(eventHoverTimeout);
-
-	});
-
-	$(window).on('mousedown.events touchstart.events', function(){
-
-		hideHoverText();
-
-	});
-
-	$(window).on('mousemove.events', function(e){
-
-		clearTimeout(eventHoverTimeout);
-
-		if(eventHoverTimeoutActive)
-			eventHoverTimeout = setTimeout('events.showHoverText()', 300);
-		else
-			hideHoverText();
-
-	});
-
-	$(window).on('mousemove.events touchstart.events touchmove', function(e){
-
-		currentPageX = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : e.pageX;
-		currentPageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : e.pageY;
-
-	});
-
+	app.event(window, 'mousedown touchstart', windowDown);
+	app.event(window, 'mousemove', windowMove1);
+	app.event(window, 'mousemove touchstart touchmove', windowMove2);
 }
 
 switchRemoveAnimeST = false;
@@ -204,26 +240,27 @@ function switchRemoveAnime()
 	}, 1000);
 }
 
+function swiftClick()
+{
+	if(this.classList.contains('a'))
+	{
+		this.classList.add('animeOff');
+		this.classList.remove('a', 'animeOn');
+		callbackString(this.getAttribute('off'));
+	}
+	else
+	{
+		this.classList.add('a', 'animeOn');
+		this.classList.remove('animeOff');
+		callbackString(this.getAttribute('on'));
+	}
+
+	switchRemoveAnime();
+}
+
 function eventSwitch()
 {
-	$('.switch').on('click.events', function(){
-
-		let _this = $(this);
-
-		if(_this.hasClass('a'))
-		{
-			_this.addClass('animeOff').removeClass('a animeOn');
-			callbackString(_this.attr('off'));
-		}
-		else
-		{
-			_this.addClass('a animeOn').removeClass('animeOff');
-			callbackString(_this.attr('on'));
-		}
-
-		switchRemoveAnime();
-
-	});
+	app.event('.switch', 'click', swiftClick);
 }
 
 var rangeMoveStepST = false;
@@ -253,14 +290,37 @@ function rangeMoveStep(This, stepToSum = 1)
 	}, 1000);
 }
 
-function rangePosition(input, range)
+function hasRangeReset(input, range)
+{
+	let sliderReset = dom.this(range).siblings('.simple-slider-text').find('.slider-reset')._this[0];
+
+	if(sliderReset)
+	{
+		let value = input.value;
+
+		if(value != sliderReset.dataset.default)
+			sliderReset.classList.add('active');
+		else
+			sliderReset.classList.remove('active');
+	}
+}
+
+function resetRange(This)
+{
+	let input = dom.this(This).closest('.simple-slider-text').siblings('.range').find('input')._this[0];
+	input.value = This.dataset.default;
+	if(input) _eventRange.call(input, {type: 'change'});
+}
+
+function rangePosition(input, range, percent = false)
 {
 	let value = +input.value;
 	let min = +input.getAttribute('min') || 0;
 	let max = +input.getAttribute('max');
-	let step = input.getAttribute('step');
+	let step = input.getAttribute('step') || 1;
 
-	let percent = (value - min) / (max - min) * 100;
+	if(percent === false)
+		percent = (value - min) / (max - min) * 100;
 
 	range.querySelector('.range-line').style.width = percent+'%';
 	range.querySelector('.range-point').style.left = percent+'%';
@@ -296,7 +356,7 @@ function rangePosition(input, range)
 	}
 }
 
-function _eventRange(event)
+function _eventRange(event, percent = false)
 {
 	let range = $(this).closest('.range');
 
@@ -307,7 +367,10 @@ function _eventRange(event)
 
 	let step = this.getAttribute('step');
 
-	rangePosition(this, range.get(0));
+	let _range = range.get(0);
+
+	rangePosition(this, _range, percent);
+	hasRangeReset(this, _range);
 
 	if(step)
 	{
@@ -329,13 +392,125 @@ function _eventRange(event)
 	range.siblings('.simple-slider-text').find('span').html(value_txt);
 }
 
-function eventRange()
+function rangeStart(event)
 {
-	$('.range input').on('change.events input.events', _eventRange);
-	$('.range input').on('touchstart mousedown', function(){rangeClipPath(this.closest('.simple-slider'))});
-	$('.range input').on('touchend mouseup', function(){rangeRemoveClipPath(this.closest('.simple-slider'))});
+	rangeClipPath(this.closest('.simple-slider'));
+}
 
-	let ranges = document.querySelectorAll('.range');
+function rangeEnd(event)
+{
+	rangeRemoveClipPath(this.closest('.simple-slider'));
+}
+
+var rangePrecise = {active: false};
+
+function rangePreciseStart(event)
+{
+	event.preventDefault();
+
+	let list = false;
+	let _list = this.getAttribute('list');
+
+	if(_list)
+	{
+		list = [];
+		_list = document.querySelectorAll('#'+_list+' > option');
+
+		for(let i = 0, len = _list.length; i < len; i++)
+		{
+			list.push(+_list[i].value);
+		}
+	}
+
+	let rect = this.getBoundingClientRect();
+
+	rect = {
+		width: rect.width - 20,
+		left: rect.left + 10,
+		right: rect.left + 10,
+	};
+
+	let startPercent = (app.pageX(event) - rect.left) / rect.width * 100;
+
+	rangePrecise = {
+		active: true,
+		this: this,
+		value: this.value,
+		precision: +this.dataset.precision,
+		max: +this.getAttribute('max'),
+		min: +this.getAttribute('min'),
+		steps: +this.getAttribute('steps'),
+		rect: rect,
+		startPercent: startPercent,
+		pageX: app.pageX(event),
+		pageY: app.pageY(event),
+		list: list,
+	};
+
+	rangePreciseMove(event);
+}
+
+function rangePreciseMove(event)
+{
+	if(rangePrecise.active)
+	{
+		let pageX = app.pageX(event);
+
+		let percent = rangePrecise.startPercent + (((pageX - rangePrecise.pageX) / rangePrecise.rect.width * 100) / rangePrecise.precision);
+
+		if(percent > 100) percent = 100;
+		else if(percent < 0) percent = 0;
+
+		let _percent = percent / 100;
+
+		let value = rangePrecise.value;
+
+		if(rangePrecise.list)
+		{
+			let len = rangePrecise.list.length;
+			value = rangePrecise.list[Math.round((len-1)*_percent)];
+			percent = Math.round((len-1)*_percent) / (len - 1) * 100;
+		}
+		else
+		{
+			value = rangePrecise.min + ((rangePrecise.max - rangePrecise.min) * _percent);
+			percent = false;
+		}
+
+		if(rangePrecise.this.value != value)
+		{
+			rangePrecise.this.value = value;
+
+			_eventRange.call(rangePrecise.this, event, percent);
+		}
+	}
+}
+
+function rangePreciseEnd(event)
+{
+	if(rangePrecise.active)
+	{
+		rangeRemoveClipPath(rangePrecise.this.closest('.simple-slider'));
+
+		rangePrecise = {active: false};
+	}
+}
+
+function eventRange(query = '')
+{
+	let inputs = document.querySelectorAll(query+' .range input');
+
+	app.event(inputs, 'change input', _eventRange);
+	app.event(inputs, 'touchstart mousedown', rangeStart);
+	app.event(inputs, 'touchend mouseup', rangeEnd);
+
+	let inputsPrecise = document.querySelectorAll(query+' .range input.precise-range');
+
+	app.event(inputsPrecise, 'touchstart mousedown', rangePreciseStart);
+	app.event(window, 'touchmove mousemove', rangePreciseMove);
+	app.event(window, 'touchend mouseup', rangePreciseEnd);
+
+	let ranges = document.querySelectorAll(query+' .range');
 
 	for(let i = 0, len = ranges.length; i < len; i++)
 	{
@@ -343,28 +518,41 @@ function eventRange()
 		let input = range.querySelector('input');
 
 		rangePosition(input, range);
+		hasRangeReset(input, range);
 	}
 }
 
 function rangeClipPath(range, moveToTop = false)
 {
 	let menu = range.closest('.menu');
-	let menuSimple = range.closest('.menu-simple');
+	let toClipPath = range.closest('.menu-simple, .dialog');
 
-	if(menuSimple && !menuSimple.dataset.clipPath)
+	if(toClipPath && !toClipPath.dataset.clipPath)
 	{
-		let menuGamepad = menu.classList.contains('menu-gamepad');
+		let menuGamepad = menu ? menu.classList.contains('menu-gamepad') : false;
 
-		let rect = menuSimple.getBoundingClientRect();
-		let _rectRange = range.getBoundingClientRect();
+		let clipPath = range.dataset.clipPath ? range.closest(range.dataset.clipPath) : range;
+		clipPath.classList.add('clip-path');
+
+		let margin = clipPath.dataset.margin ? clipPath.dataset.margin.split(',') : [0, 0, 0, 0];
+
+		margin = {
+			top: +margin[0],
+			right: +margin[1],
+			bottom: +margin[2],
+			left: +margin[3],
+		};
+
+		let rect = toClipPath.getBoundingClientRect();
+		let rectClipPath = clipPath.getBoundingClientRect();
 
 		let rectRange = {
-			left: _rectRange.left + (menuGamepad ? 0 : 12),
-			right: _rectRange.right - (menuGamepad ? 0 : 13),
-			top: _rectRange.top - 6,
-			bottom: _rectRange.bottom - 6,
-			width: _rectRange.width - (menuGamepad ? 0 : 25),
-			height: _rectRange.height,
+			left: rectClipPath.left + (menuGamepad ? 0 : 12) - margin.left,
+			right: rectClipPath.right - (menuGamepad ? 0 : 13) + margin.right,
+			top: rectClipPath.top - 6 - margin.top,
+			bottom: rectClipPath.bottom - 6 + margin.bottom,
+			width: rectClipPath.width - (menuGamepad ? 0 : 25) + margin.left + margin.right,
+			height: rectClipPath.height + margin.top + margin.bottom,
 		};
 
 		let left = rectRange.left - rect.left;
@@ -373,12 +561,12 @@ function rangeClipPath(range, moveToTop = false)
 		let bottom = rect.bottom - rectRange.bottom;
 
 		// if(moveToTop) menu.style.transform = 'translateY(-'+(rectRange.top - 56)+'px)';
-		menuSimple.dataset.clipPath = '1';
-		menuSimple.style.clipPath = 'inset('+top+'px '+right+'px '+bottom+'px '+left+'px round 14px)';
+		toClipPath.dataset.clipPath = '1';
+		toClipPath.style.clipPath = 'inset('+top+'px '+right+'px '+bottom+'px '+left+'px round 14px)';
 
-		dom.this(menuSimple).siblings('.menu-close').css({cssText: 'opacity: 0 !important'});
+		dom.this(toClipPath).siblings('.menu-close, .dialog-close').css({cssText: 'opacity: 0 !important'});
 
-		dom.this(menuSimple).siblings('.menu-clip-path-shadow').css({
+		dom.this(toClipPath).siblings('.menu-clip-path-shadow, .dialog-clip-path-shadow').css({
 			opacity: 1,
 			left: rectRange.left+'px',
 			top: rectRange.top+'px',
@@ -390,34 +578,30 @@ function rangeClipPath(range, moveToTop = false)
 
 function rangeRemoveClipPath(range)
 {
+	let clipPath = range.dataset.clipPath ? range.closest(range.dataset.clipPath) : range;
+	clipPath.classList.remove('clip-path');
+
 	let menu = range.closest('.menu');
-	let menuSimple = range.closest('.menu-simple');
+	let toClipPath = range.closest('.menu-simple, .dialog');
 
-	if(menuSimple)
+	if(toClipPath)
 	{
-		menu.style.transform = '';
-		menuSimple.dataset.clipPath = '';
-		menuSimple.style.clipPath = '';
+		if(menu) menu.style.transform = '';
+		toClipPath.dataset.clipPath = '';
+		toClipPath.style.clipPath = '';
 
-		dom.this(menuSimple).siblings('.menu-close, .menu-clip-path-shadow', true).css({opacity: ''});
+		dom.this(toClipPath).siblings('.menu-close, .menu-clip-path-shadow, .dialog-close, .dialog-clip-path-shadow', true).css({opacity: ''});
 	}
 }
 
 function events()
 {
-	$('.button').off('mousedown.events mouseup.events touchstart.events touchend.events mouseout.events');
-	$(window).off('mouseleave.events mousedown.events mousemove.events');
-	$(document).off('mouseleave.events');
-	$('.hover-text').off('mousemove.events');
-	$('.floating-action-button').off('mousedown.events mouseup.events touchstart.events touchend.events');
-	$('.switch').off('click.events');
-	$('.range').off('change.events input.events');
-
 	eventHover();
 	eventButton();
 	eventSwitch();
 	eventRange();
 	eventsTab();
+	eventSelect(false);
 }
 
 function showHoverText()
@@ -456,25 +640,109 @@ function hideHoverText()
 	}
 }
 
+function eventSelect(animation = true)
+{
+	let selects = document.querySelectorAll('.select');
+
+	for(let i = 0, len = selects.length; i < len; i++)
+	{
+		let select = selects[i];
+
+		let text = select.querySelector('.text');
+
+		if(text)
+		{
+			let _text = text.innerHTML.trim();
+
+			if(_text && !select.classList.contains('not-placeholder'))
+			{
+				text.style.opacity = 1;
+				select.classList.add(animation ? 'have-select' : 'have-select-wa');
+			}
+			else
+			{
+				text.style.opacity = 0;
+				select.classList.remove('have-select', 'have-select-wa');
+			}
+		}
+	}
+}
+
+let currentSelect = {};
+
+function showSelect(This, menu = false, insideMenu = false)
+{
+	selectThis = This;
+	This.classList.add('active');
+
+	let text = This.querySelector('.text');
+
+	if(text)
+	{
+		let _text = text.innerHTML.trim();
+
+		if(!_text)
+		{
+			text.style.opacity = 1;
+			text.innerHTML = '...';
+		}
+	}
+
+	if(menu)
+		activeMenu('#'+menu, This.firstElementChild, 'autoExact', 'autoExact', insideMenu);
+
+	currentSelect = {
+		this: This,
+		menu: menu,
+	};
+}
+
+function hideSelect(insideMenu = false)
+{
+	let This = currentSelect.this;
+	This.classList.remove('active');
+
+	let text = This.querySelector('.text');
+
+	if(text)
+	{
+		let _text = text.innerHTML.trim();
+
+		if(_text == '...')
+		{
+			text.style.opacity = 0;
+			text.innerHTML = '';
+		}
+	}
+
+	if(currentSelect.menu)
+		desactiveMenu('#'+currentSelect.menu, This.firstElementChild, insideMenu);
+}
+
 var fromGamepadMenu = false;
 
-function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
+function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMenu = false)
 {
 	let menu = document.querySelector(query);
-	let menuSimple = document.querySelector(query+' .menu-simple');
+	let menuSimple = menu.querySelector('.menu-simple');
+	let menuSimpleContent = menu.querySelector('.menu-simple-content');
 
 	let top = 0,
 		left = 0,
+		right = 0,
+		bottom = 0,
 		height = 0,
 		width = 0;
 
 	if(query2)
 	{
-		let button = document.querySelector(query2);
+		let button = (typeof query2 === 'string' ? document.querySelector(query2) : query2);
 		let rect = button.getBoundingClientRect();
 
 		top = rect.top;
 		left = rect.left;
+		right = rect.right;
+		bottom = rect.bottom;
 		height = rect.height;
 		width = rect.width;
 	}
@@ -485,43 +753,80 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 		menu.children[i].classList.add('a');
 	}
 
-	if(posX == 'auto')
+	let pos = {
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+	};
+
+	// X
+	if(posX == 'auto' || posX == 'autoExact')
 	{
 		if(left + (width / 2) < window.innerWidth / 2)
-			posX = 'left';
+			posX = (posX == 'autoExact' ? 'leftExact' : 'left');
 		else
-			posX = 'right';
+			posX = (posX == 'autoExact' ? 'rightExact' : 'right');
 	}
 
-	if(posY == 'auto')
+	if(posX == 'left' || posX == 'leftExact')
+	{
+		pos.right = '';
+		pos.left = (left - (posX == 'leftExact' ? 0 : 8));
+	}
+	else
+	{
+		pos.right = window.innerWidth - right;
+		pos.left = '';
+	}
+
+	// Y
+	let autoY = false;
+
+	if(posY == 'auto' || posY == 'autoExact')
 	{
 		if(top + (height / 2) < window.innerHeight / 2)
-			posY = 'top';
+			posY = (posY == 'autoExact' ? 'topExact' : 'top');
 		else
-			posY = 'bottom';
+			posY = (posY == 'autoExact' ? 'bottomExact' : 'bottom');
+
+		autoY = true;
 	}
 
-	if(posX == 'left')
+	if(posY == 'top' || posY == 'topExact' || posY == 'gamepad')
 	{
-		menuSimple.style.right = '';
-		menuSimple.style.left = (left - 8)+'px';
+		pos.bottom = '';
+		pos.top = (bottom + (posY == 'topExact' ? 0 : 8));
 	}
 	else
 	{
-		menuSimple.style.right = ((window.innerWidth - left) - width)+'px';
-		menuSimple.style.left = '';
+		pos.bottom = window.innerHeight - top;
+		pos.top = '';
 	}
 
-	if(posY == 'top' || posY == 'gamepad')
+	dom.this(menuSimple).css({
+		left: pos.left ? pos.left+'px' : '',
+		right: pos.right ? pos.right+'px' : '',
+		top: pos.top ? pos.top+'px' : '',
+		bottom: pos.bottom ? pos.bottom+'px' : '',
+	});
+
+	if(autoY)
 	{
-		menuSimple.style.bottom = '';
-		menuSimple.style.top = (top + height + 8)+'px';
+		let menuHeight = pos.top ? (window.innerHeight - pos.top - 24) : (window.innerHeight - pos.bottom - 16 - 48);
+
+		menuSimple.style.maxHeight = menuHeight+'px';
+		menuSimpleContent.style.maxHeight = (menuHeight - 16)+'px';
 	}
 	else
 	{
-		menuSimple.style.bottom = ((window.innerHeight - top))+'px';
-		menuSimple.style.top = '';
+		menuSimple.style.maxHeight = '';
+		menuSimpleContent.style.maxHeight = '';
 	}
+
+	// Transform origin
+	menuSimple.classList.remove('bottom', 'top', 'center');
+	menuSimple.classList.add((posY == 'gamepad' || posX == 'gamepad' ? 'center' : (posY == 'top' || posY == 'topExact') ? 'top' : 'bottom'));
 
 	if(posX == 'gamepad')
 		menu.classList.add('menu-gamepad');
@@ -530,57 +835,76 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top')
 
 	fromGamepadMenu = (posX == 'gamepad' && posY == 'gamepad') ? true : false;
 
-	shortcuts.pause();
+	if(!insideMenu) shortcuts.pause();
 	gamepad.updateBrowsableItems('menu');
 }
 
 
 function activeContextMenu(query)
 {
-	var menu = $(query);
+	let menu = (typeof query === 'string' ? document.querySelector(query) : query);
+	dom.this(menu).children(false, true).removeClass('d').addClass('a');
 
-	menu.children().removeClass('d').addClass('a');
-	var menuSimple = menu.find('.menu-simple');
+	let menuSimple = menu.querySelector('.menu-simple');
+	let rect = menuSimple.getBoundingClientRect();
 
-	var rect = menuSimple.get(0).getBoundingClientRect();
+	let pos, pos2;
 
-	if(currentPageX + rect.width + 16 < $(window).width())
-		var pos = 'left';
+	if(currentPageX + rect.width + 16 < window.innerWidth)
+		pos = 'left';
 	else
-		var pos = 'right';
+		pos = 'right';
 
-	if(currentPageY + rect.height + 16 < $(window).height())
-		var pos2 = 'top';
+	if(currentPageY + rect.height + 16 < window.innerHeight)
+		pos2 = 'top';
 	else
-		var pos2 = 'bottom';
+		pos2 = 'bottom';
 
-	if(pos == 'left')
-		menuSimple.css({'right': '', 'left': (currentPageX + 4)+'px'});
-	else
-		menuSimple.css({'left': '', 'right': (($(window).width() - currentPageX) + 4)+'px'});
+	let _menuSimple = dom.this(menuSimple);
 
-	if(pos2 == 'top')
-		menuSimple.css({'bottom': '', 'top': (currentPageY + 4)+'px'});
-	else
-		menuSimple.css({'top': '', 'bottom': (($(window).height() - currentPageY) + 4)+'px'});
+	_menuSimple.css({
+		right: (pos == 'left') ? '' : ((window.innerWidth - currentPageX) + 4)+'px',
+		left: (pos == 'left') ? (currentPageX + 4)+'px' : '',
+		bottom: (pos2 == 'top') ? '' : ((window.innerHeight - currentPageY) + 4)+'px',
+		top: (pos2 == 'top') ? (currentPageY + 4)+'px' : '',
+	}).class((pos2 == 'top') ? true : false, 'top').class((pos2 == 'top') ? false : true, 'bottom');
 
-	menu.removeClass('menu-gamepad');
+	menu.classList.remove('menu-gamepad');
 }
 
-function desactiveMenu(query, query2 = false)
+function desactiveMenu(query, query2 = false, insideMenu = false)
 {
-	var menu = $(query);
+	dom.queryAll(query).children(false, true).removeClass('a').addClass('d')
 
-	menu.children().removeClass('a').addClass('d');
+	if(query2)
+	{
+		let elements = (typeof query2 === 'string' ? document.querySelectorAll(query2) : [query2]);
 
-	if(query2) $(query2+'.p, '+query2+'.c, '+query2+'.a').removeClass('p c a').addClass('d');
+		for(let i = 0, len = elements.length; i < len; i++)
+		{
+			let element = elements[i];
 
-	if(!onReading)
-		gamepad.updateBrowsableItemsPrevKey();
+			if(element.classList.contains('p') || element.classList.contains('c') || element.classList.contains('a'))
+			{
+				element.classList.remove('p', 'c', 'a');
+				element.classList.add('d');
+			}
+		}
+	}
+
+	if(insideMenu)
+	{
+		gamepad.updateBrowsableItems('menu');
+	}
 	else
-		gamepad.cleanBrowsableItems();
+	{
+		if(!onReading)
+			gamepad.updateBrowsableItemsPrevKey();
+		else
+			gamepad.cleanBrowsableItems();
 
-	shortcuts.play();
+		shortcuts.play();
+	}
 
 	if(fromGamepadMenu)
 		gamepad.showMenu();
@@ -595,6 +919,7 @@ function dialog(config)
 
 	config.width = (config.width) ? config.width : 280;
 	config.buttonsInNewLine = config.buttonsInNewLine;
+	config.onClose = config.onClose || '';
 
 	handlebarsContext.dialog = config;
 
@@ -612,7 +937,7 @@ function closeDialog()
 
 	closeDialogST = setTimeout(function(){
 
-		$('.dialogs .dialog, .dialogs .dialog-close').remove();
+		$('.dialogs .dialog, .dialogs .dialog-close, .dialogs .dialog-clip-path-shadow').remove();
 
 	}, 150);
 
@@ -713,9 +1038,14 @@ function closeSnackbar()
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
+	eventRange: eventRange,
+	eventSelect: eventSelect,
+	eventsTab: eventsTab,
 	events: events,
 	showHoverText: showHoverText,
 	hideHoverText: hideHoverText,
+	showSelect: showSelect,
+	hideSelect: hideSelect,
 	activeMenu: activeMenu,
 	activeContextMenu: activeContextMenu,
 	desactiveMenu: desactiveMenu,
@@ -724,4 +1054,5 @@ module.exports = {
 	snackbar: snackbar,
 	closeSnackbar: closeSnackbar,
 	rangeMoveStep: rangeMoveStep,
+	resetRange: resetRange,
 };

@@ -202,6 +202,164 @@
 	}
 }
 
+@keyframes expand-in
+{
+	0%
+	{
+		opacity: 1;
+		transform: scaleY(0.2);
+		display: block;
+	}
+	100%
+	{
+		opacity: 1;
+		transform: scaleY(1);
+		display: block;
+	}
+}
+
+@keyframes expand-out
+{
+	0%
+	{
+		opacity: 1;
+		transform: scaleY(1);
+	}
+	100%
+	{
+		opacity: 1;
+		transform: scaleY(0.2);
+		visibility: hidden;
+	}
+}
+
+@keyframes expand-in-clip-path
+{
+	0%
+	{
+		clip-path: inset(0px 0px 80% 0px);
+	}
+	100%
+	{
+		clip-path: inset(0px 0px 0px 0px);
+	}
+}
+
+@keyframes expand-out-clip-path
+{
+	0%
+	{
+		clip-path: inset(0px 0px 0px 0px);
+	}
+	100%
+	{
+		clip-path: inset(0px 0px 80% 0px);
+	}
+}
+
+@keyframes expand-in-clip-path-bottom
+{
+	0%
+	{
+		clip-path: inset(80% 0px 0px 0px);
+	}
+	100%
+	{
+		clip-path: inset(0px 0px 0px 0px);
+	}
+}
+
+@keyframes expand-out-clip-path-bottom
+{
+	0%
+	{
+		clip-path: inset(0px 0px 0px 0px);
+	}
+	100%
+	{
+		clip-path: inset(80% 0px 0px 0px);
+	}
+}
+
+@keyframes expand-in-clip-path-center
+{
+	0%
+	{
+		clip-path: inset(40% 0px 40% 0px);
+	}
+	100%
+	{
+		clip-path: inset(0px 0px 0px 0px);
+	}
+}
+
+@keyframes expand-out-clip-path-center
+{
+	0%
+	{
+		clip-path: inset(0px 0px 0px 0px);
+	}
+	100%
+	{
+		clip-path: inset(40% 0px 40% 0px);
+	}
+}
+
+@keyframes expand-in-children
+{
+	0%
+	{
+		margin-bottom: -16px;
+	}
+	100%
+	{
+		margin-bottom: 0px;
+	}
+}
+
+@keyframes expand-out-children
+{
+	0%
+	{
+		margin-bottom: 0px;
+	}
+	100%
+	{
+		margin-bottom: -16px;
+	}
+}
+
+@keyframes expand-in-foreground
+{
+	0%
+	{
+		opacity: 0;
+		display: block;
+	}
+	70%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		opacity: 1;
+		display: block;
+	}
+}
+
+@keyframes expand-out-foreground
+{
+	0%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
 @keyframes button-pulse
 {
 	0%
@@ -885,6 +1043,11 @@ body .preload
 	width: calc(100% - 48px)
 }
 
+.menu-simple-separator-dashed
+{
+	border-top: 1px dashed var(--md-sys-color-surface-variant);
+}
+
 .dialog-text .menu-simple-separator
 {
 	width: calc(100% + 48px);
@@ -1110,11 +1273,19 @@ body .preload
 
 .content-view-module
 {
-	width: 100%;
+	width: calc(100% - 4px);
 	overflow-x: hidden;
-	display: flex;
-	justify-content: flex-start;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 166px);
+	justify-content: space-between;
+}
+
+@media(max-width: 540px)
+{
+	.content-view-module
+	{
+		justify-content: center;
+	}
 }
 
 .content-view-module > div
@@ -1340,15 +1511,26 @@ body .preload
 	position: absolute;
 	top: 4px;
 	left: 4px;
-	background-position: center;
 	border-radius: 10px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	/*background-size: contain;
-	background-color: var(--md-sys-color-background);*/
 }
 
-.content-view-module .folder-poster.a
+.content-view-module .folder-poster > img
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	border-radius: 10px;
+	display: none;
+}
+
+.content-view-module .folder-poster > img.a,
+.content-view-module .folder-poster > img.has-poster
+{
+	display: block;
+}
+
+.content-view-module .folder-poster > img.a
 {
 	animation-name: show-in;
 	animation-duration: 0.2s;
@@ -1598,11 +1780,6 @@ body .preload
 	transition: background-color 0.2s, border-color 0.2s;
 }
 
-.bar-right-buttons::-webkit-scrollbar
-{
-	border-left: 0px;
-}
-
 ::-webkit-scrollbar-thumb
 {
 	border-radius: 12px;
@@ -1627,4 +1804,47 @@ body .preload
 ::-webkit-scrollbar-thumb:window-inactive
 {
 	background-color: rgba(0, 0, 0, 0.06);
+}
+
+.bar-right-buttons::-webkit-scrollbar,
+.bar-title::-webkit-scrollbar
+{
+	width: 10px;
+	height: 10px;
+	border-left: 0px solid transparent;
+	background-color: transparent;
+	transition: background-color 0.2s, border-color 0.2s;
+}
+
+.bar-right-buttons::-webkit-scrollbar-thumb,
+.bar-title::-webkit-scrollbar-thumb
+{
+	border-radius: 12px;
+	width: 10px;
+	height: 10px;
+	background-clip: padding-box;
+	background-color: rgba(0, 0, 0, 0.06);
+	border: 4px solid transparent;
+	border-left: 0px;
+	border-right: 0px;
+	transition: background-color 0.2s, border-color 0.2s;
+	transition: 0.2s;
+}
+
+.bar-right-buttons::-webkit-scrollbar-thumb:hover,
+.bar-title::-webkit-scrollbar-thumb:hover
+{
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.bar-right-buttons::-webkit-scrollbar-thumb:active,
+.bar-title::-webkit-scrollbar-thumb:active
+{
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.bar-right-buttons::-webkit-scrollbar-thumb:window-inactive,
+.bar-title::-webkit-scrollbar-thumb:window-inactive
+{
+	background-color: rgba(0, 0, 0, 0.03);
 }

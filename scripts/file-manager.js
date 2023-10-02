@@ -278,7 +278,7 @@ var file = function(path) {
 					if(poster)
 					{
 						_poster = this._poster(files, file.path);
-						if(!_poster) _poster = this._poster(_files, file.path);
+						if(!_poster) _poster = this._poster(_files, file.path, true);
 					}
 
 					if(_poster)
@@ -339,7 +339,7 @@ var file = function(path) {
 		if(poster)
 		{
 			let _poster = await this.poster();
-			if(!_poster) _poster = this._poster(this.files);
+			if(!_poster) _poster = this._poster(this.files, false, true);
 
 			if(_poster) return _poster;
 		}
@@ -357,13 +357,13 @@ var file = function(path) {
 		return (Math.abs(only) == 1) ? (images[0] || false) : images;
 	}
 
-	this._poster = function(files, path = false) {
+	this._poster = function(files, path = false, inside = false) {
 
 		path = path || this.path;
 
 		let name = p.parse(path).name;
 
-		let regex = new RegExp('^'+pregQuote(name)+'(?:\-[0-9+])?\.[a-z0-9]+');
+		let regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+(inside ? '|cover|default|folder|series|poster' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+');
 		let poster = false;
 
 		for(let i = 0, len = files.length; i < len; i++)

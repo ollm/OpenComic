@@ -58,6 +58,7 @@
 		"pages": {
 			"main": "Pages",
 			"pageLayout": "Page layout",
+			"colorFilters": "Color filters",
 			"slide": "Slide Reader",
 			"scroll": "Vertical Reader",
 			"adjustToWidth": "Adjust to width",
@@ -75,7 +76,25 @@
 			"readingGlobal": "Global configuration",
 			"readingConfigNew": "New configuration",
 			"clipHorizontal": "Clip horizontal",
-			"clipVertical": "Clip vertical"
+			"clipVertical": "Clip vertical",
+			"colors": "Colors",
+			"brightness": "Brightness",
+			"saturation": "Saturation",
+			"contrast": "Contrast",
+			"sepia": "Sepia",
+			"invert": "Invert",
+			"hueRotate": "Hue rotate",
+			"tone": "Tone",
+			"colorize": "Colorize",
+			"onlyBlackAndWhite": "Only in black and white images",
+			"colorPreset": "Color preset",
+			"multiplier": "Mult.",
+			"saveAsPreset": "Save as preset",
+			"addColor": "Add color",
+			"fromImage": "Color from an image",
+			"savedPresets": "Saved presets",
+			"multipleTonePresets": "Multiple tone presets",
+			"oneTonePresets": "One tone presets"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",
@@ -201,7 +220,9 @@
 			"readingConfigEditHeader": "Edit configuration",
 			"readingConfigName": "Configuration name",
 			"readingConfigRemoveHeader": "Remove configuration",
-			"readingConfigRemove": "Are you sure you want to remove this configuration?"
+			"readingConfigRemove": "Are you sure you want to remove this configuration?",
+			"readingNumColorsGenerate": "Number of colors to generate",
+			"readingPresetName": "Preset name"
 		},
 		"release": {
 			"title": "New version available <b>{{releaseName}}</b>",
@@ -211,6 +232,7 @@
 	"buttons": {
 		"cancel": "Cancel",
 		"ok": "Ok",
+		"save": "Save",
 		"undo": "Undo",
 		"dismiss": "Dismiss",
 		"remove": "Remove",

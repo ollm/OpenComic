@@ -23,7 +23,8 @@
 		},
 		"contextMenu": {
 			"remove": "Retirar",
-			"openFileLocation": "Abrir localización de archivo",
+			"openFileLocation": "Abrir ubicación del archivo",
+			"openFolderLocation": "Abrir ubicación de la carpeta",
 			"addPoster": "Añadir póster",
 			"changePoster": "Cambiar póster",
 			"deletePoster": "Eliminar póster",
@@ -57,7 +58,8 @@
 		"nextChapter": "Siguiente capítulo",
 		"pages": {
 			"main": "Páginas",
-			"pageLayout": "Maquetación de las páginas",
+			"pageLayout": "Diseño de página",
+			"colorFilters": "Filtros de color",
 			"slide": "Lectura horizontal",
 			"scroll": "Lectura vertical",
 			"adjustToWidth": "Ajustar a lo ancho",
@@ -75,7 +77,22 @@
 			"readingGlobal": "Configuración global",
 			"readingConfigNew": "Nueva configuración",
 			"clipHorizontal": "Recortar horizontalmente",
-			"clipVertical": "Recortar verticalmente"
+			"clipVertical": "Recortar verticalmente",
+			"colors": "Colores",
+			"brightness": "Brillo",
+			"saturation": "Saturación",
+			"contrast": "Contraste",
+			"sepia": "Sepia",
+			"invert": "Invertir",
+			"hueRotate": "Rotación de tono",
+			"tone": "Tono",
+			"colorize": "Colorear",
+			"onlyBlackAndWhite": "Sólo en imágenes en blanco y negro",
+			"colorPreset": "Preajuste de color",
+			"multiplier": "Mult.",
+			"saveAsPreset": "Guardar como preajuste",
+			"addColor": "Añadir color",
+			"fromImage": "Color desde una imagen"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -201,7 +218,9 @@
 			"readingConfigEditHeader": "Editar configuración",
 			"readingConfigName": "Nombre de la configuración",
 			"readingConfigRemoveHeader": "Eliminar configuración",
-			"readingConfigRemove": "¿Seguro que quiere eliminar esta configuración?"
+			"readingConfigRemove": "¿Seguro que quiere eliminar esta configuración?",
+			"readingNumColorsGenerate": "Número de colores a generar",
+			"readingPresetName": "Nombre del preajuste"
 		},
 		"release": {
 			"title": "Nueva versión disponible <b>{{releaseName}}</b>",
@@ -211,6 +230,7 @@
 	"buttons": {
 		"cancel": "Cancelar",
 		"ok": "Ok",
+		"save": "Guardar",
 		"undo": "Deshacer",
 		"dismiss": "Descartar",
 		"remove": "Eliminar",

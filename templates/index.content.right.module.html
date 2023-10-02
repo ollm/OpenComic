@@ -12,7 +12,9 @@
 		{{#if folder}}
 		<div class="v-folder item-image">
 			{{#if poster}}
-				<div class="pi-sha-{{poster.sha}} folder-poster" style="background-image: url({{poster.path}})"></div>
+				<div class="fi-sha-{{poster.sha}} folder-poster">
+					<img{{#if poster.path}} class="has-poster" src="{{poster.path}}"{{else}} class="folder-poster-img"{{/if}}>
+				</div>
 				{{#if images}}
 					{{#each images}}
 					<div class="fi-sha-{{sha}} folder-images">

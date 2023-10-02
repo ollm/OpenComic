@@ -159,22 +159,19 @@ function addImageToDom(querySelector, path, animation = true)
 {
 	let backgroundImage = 'url('+path+')';
 
-	let src = dom.queryAll('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector);
+	let src = dom.queryAll('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).setAttribute('src', path);
 
-	if(src._this.length > 0)
-		src.setAttribute('src', path);
-	else
-		src = dom.queryAll('.fi-sha-'+querySelector+', .sha-'+querySelector+' .item-image').css({backgroundImage: backgroundImage});
-
-	let pi = dom.queryAll('.pi-sha-'+querySelector).css({backgroundImage: backgroundImage});
 	let ri = dom.queryAll('.ri-sha-'+querySelector).setAttribute('src', path);
 	let cr = dom.queryAll('.continue-reading-sha-'+querySelector).css({backgroundImage: backgroundImage});
 
 	if(animation)
 	{
 		src.addClass('a');
-		pi.addClass('a');
 		cr.addClass('a');
+	}
+	else
+	{
+		src.filter('.folder-poster-img').addClass('has-poster');
 	}
 }
 
@@ -291,7 +288,6 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 		//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 		events.events();
-		justifyViewModule();
 
 	}).catch(function(error){
 
@@ -313,7 +309,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 {
 	selectMenuItem('library');
 
-	onReading = false;
+	onReading = _onReading = false;
 
 	reading.hideContent();
 
@@ -459,15 +455,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	if(readingActive)
 		readingActive = false;
 
-	justifyViewModule();
 
 	shortcuts.register('browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
-
-	$(window).off('resize').on('resize', function(){
-		justifyViewModule();
-	});
-
 }
 
 function compressedError(error)
@@ -799,7 +789,7 @@ function loadLanguagesPage(animation = true)
 	indexPathControl(false);
 	selectMenuItem('language');
 
-	onReading = false;
+	onReading = _onReading = false;
 
 	reading.hideContent();
 
@@ -862,7 +852,7 @@ function loadSettingsPage(animation = true)
 	indexPathControl(false);
 	selectMenuItem('settings');
 
-	onReading = false;
+	onReading = _onReading = false;
 
 	reading.hideContent();
 
@@ -886,7 +876,7 @@ function loadThemePage(animation = true)
 	indexPathControl(false);
 	selectMenuItem('theme');
 
-	onReading = false;
+	onReading = _onReading = false;
 
 	reading.hideContent();
 
@@ -1088,34 +1078,6 @@ function selectElement(element)
 	$(element).addClass('s');
 }
 
-function justifyViewModule()
-{
-	if(config.viewIndex == 'module')
-	{
-		let contentRight = template.contentRight().get(0);
-		let rect = contentRight.firstElementChild.getBoundingClientRect();
-
-		let contentPerLine = Math.floor((rect.width - 16) / (150 + 16));
-		contentPerLine = contentPerLine > 0 ? contentPerLine : 1;
-
-		let marginLeft = ((rect.width - 16) - (contentPerLine * (150 + 16))) / (contentPerLine - 1);
-
-		let viewModule = contentRight.querySelectorAll('.content-view-module > div');
-
-		for(let i = 0, len = viewModule.length; i < len; i++)
-		{
-			let _this = viewModule[i];
-
-			if(contentPerLine == 1)
-				_this.style.marginLeft = ((rect.width / 2) - (150 / 2))+'px';
-			else if(i % contentPerLine == 0)
-				_this.style.marginLeft = '16px';
-			else
-				_this.style.marginLeft = (marginLeft + 16)+'px';
-		}
-	}
-}
-
 //Enable/Disable night mode
 
 function nightMode()
@@ -1136,7 +1098,7 @@ function nightMode()
 	}
 }
 
-// Show the comic contet menu
+// Show the comic context menu
 async function comicContextMenu(path, fromIndex = true, folder = false, gamepad = false)
 {	
 	// Remove
@@ -1152,11 +1114,6 @@ async function comicContextMenu(path, fromIndex = true, folder = false, gamepad 
 	// Open file location
 	let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 	openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
-
-	if(gamepad)
-		events.activeMenu('#index-context-menu', false, 'gamepad');
-	else
-		events.activeContextMenu('#index-context-menu');
 
 	// Add poster and delete
 	let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
@@ -1183,12 +1140,21 @@ async function comicContextMenu(path, fromIndex = true, folder = false, gamepad 
 		{
 			deletePoster.style.display = 'none';
 		}
+
+		openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFolderLocation;
 	}
 	else
 	{
 		addPoster.style.display = 'none';
 		deletePoster.style.display = 'none';
+
+		openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFileLocation;
 	}
+
+	if(gamepad)
+		events.activeMenu('#index-context-menu', false, 'gamepad');
+	else
+		events.activeContextMenu('#index-context-menu');
 }
 
 function addPoster(fromIndex = false, path = false, currentPoster = false)
@@ -1225,13 +1191,6 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
 	currentPath = path;
 
-	// Show loadign page
-	handlebarsContext.comics = [];
-	template.loadContentLeft('reading.content.left.html', true);
-	template.loadContentRight('reading.content.right.html', true);
-	template.loadHeader('reading.header.html', true);
-	headerPath(path, mainPath);
-
 	let now = Date.now();
 
 	let startImage = false;
@@ -1244,6 +1203,15 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		path = p.dirname(path);
 	}
 
+	// Show loadign page
+	headerPath(path, mainPath);
+
+	handlebarsContext.comics = [];
+	template.loadContentLeft('reading.content.left.html', true);
+	template.loadContentRight('reading.content.right.html', true);
+	template.loadHeader('reading.header.html', true);
+
+	// Load files
 	let file = fileManager.file(path);
 	let files = await file.read();
 
@@ -1346,20 +1314,17 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	handlebarsContext.comics = comics;
 	handlebarsContext.previousComic = skipPreviousComic;
 	handlebarsContext.nextComic = skipNextComic;
-	headerPath(path, mainPath);
 	reading.setCurrentComics(comics);
 
 	if(Date.now() - now < 300)
 	{
 		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
 		template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
-		template._barHeader().firstElementChild.innerHTML = template.load('reading.header.html');
 	}
 	else
 	{
 		template.loadContentLeft('reading.content.left.html', true);
 		template.loadContentRight('reading.content.right.html', true);
-		template.loadHeader('reading.header.html', true);
 	}
 
 	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
@@ -1411,7 +1376,6 @@ module.exports = {
 	removeComic: removeComic,
 	calcReadingProgress: calcReadingProgress,
 	calcReadingProgressWD: calcReadingProgressWD,
-	justifyViewModule: justifyViewModule,
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
 	addSepToEnd: addSepToEnd,

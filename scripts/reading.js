@@ -1,4 +1,5 @@
-const readingRender = require(p.join(appDir, 'scripts/reading/render.js'));
+const render = require(p.join(appDir, 'scripts/reading/render.js')),
+	filters = require(p.join(appDir, 'scripts/reading/filters.js'));
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
 
@@ -695,29 +696,36 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 //Go to a specific comic image (Left menu)
 function goToImageCL(index, animation = true, fromScroll = false)
 {
-	readingRender.focusIndex(index);
+	render.focusIndex(index);
+	filters.focusIndex(index);
 
-	var animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
+	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
 
-	var leftScroll = template.contentLeft('.r-l-i'+index).parent();
-	var leftImg = template.contentLeft('.r-l-i'+index);
+	let contentLeft = template._contentLeft();
 
-	template.contentLeft('.reading-left').removeClass('s');
-	leftImg.addClass('s');
+	let leftImg = contentLeft.querySelector('.r-l-i'+index);
+	let leftScroll = leftImg.parentElement;
 
-	var scrollTop = (((leftImg.offset().top + leftScroll.scrollTop()) - leftScroll.offset().top) + (leftImg.outerHeight() / 2)) - (leftScroll.height() / 2);
+	dom.this(contentLeft).find('.reading-left.s', true).removeClass('s');
+	leftImg.classList.add('s');
 
-	if(scrollTop > 0 && scrollTop < (leftScroll[0].scrollHeight - leftScroll.height()))
+	let rectImg = leftImg.getBoundingClientRect();
+	let rectScroll = leftScroll.getBoundingClientRect();
+
+	let scrollTop = (((rectImg.top + leftScroll.scrollTop) - rectScroll.top) + (rectImg.height / 2)) - (rectScroll.height / 2);
+	let scrollHeight = leftScroll.scrollHeight;
+
+	if(scrollTop > 0 && scrollTop < (scrollHeight - rectScroll.height))
 	{
-		leftScroll.stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+		$(leftScroll).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
 	}
 	else if(scrollTop > 0)
 	{
-		leftScroll.stop(true).animate({scrollTop: (leftScroll[0].scrollHeight - leftScroll.height())+'px'}, animationDurationMS);
+		$(leftScroll).stop(true).animate({scrollTop: (scrollHeight - rectScroll.height)+'px'}, animationDurationMS);
 	}
 	else
 	{
-		leftScroll.stop(true).animate({scrollTop: 0+'px'}, animationDurationMS);
+		$(leftScroll).stop(true).animate({scrollTop: '0px'}, animationDurationMS);
 	}
 
 	// Change header buttons
@@ -735,7 +743,7 @@ function goToImage(imageIndex, bookmarks = false)
 
 		readingDirection = true;
 
-		var newIndex = imagesData[imageIndex].position + 1;
+		let newIndex = imagesData[imageIndex].position + 1;
 
 		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
@@ -752,7 +760,7 @@ function goToFolder(folderIndex)
 	{
 		readingDirection = true;
 
-		var newIndex = foldersPosition[folderIndex] + 1;
+		let newIndex = foldersPosition[folderIndex] + 1;
 
 		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
@@ -896,7 +904,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	if(readingViewIs('slide'))
 	{
-		template.contentRigt('.reading-body > div, .reading-lens > div > div').css({
+		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'transition': animationDurationS+'s',
 			'transform': 'translate(-'+(contentWidth * (eIndex - 1))+'px, 0)',
 		});
@@ -1629,7 +1637,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			scrollTop: scrollTop,
 		};
 
-		readingRender.setScale(scale, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
+		render.setScale(scale, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
 	}
 }
 
@@ -1709,7 +1717,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true)
 			zoomMoveData.active = false;
 			currentZoomIndex = false;
 
-			readingRender.setScale(1, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
+			render.setScale(1, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
 		}
 	}
 }
@@ -1835,7 +1843,7 @@ function activeMagnifyingGlass(active = null, gamepad = false)
 	if(active)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
-		readingRender.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom);
+		render.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom);
 	
 		if(gamepad)
 		{
@@ -1852,7 +1860,7 @@ function activeMagnifyingGlass(active = null, gamepad = false)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', false);
 		magnifyingGlassControl(0);
-		readingRender.setMagnifyingGlassStatus(false);
+		render.setMagnifyingGlassStatus(false);
 	}
 }
 
@@ -1871,7 +1879,7 @@ function changeMagnifyingGlass(mode, value, save)
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassZoom', value);
 
-		readingRender.setScaleMagnifyingGlass(value);
+		render.setScaleMagnifyingGlass(value);
 	}
 	else if(mode == 2) //Set the size
 	{
@@ -1967,13 +1975,13 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 function resizedWindow()
 {
-	if(onReading)
+	if(onReading || _onReading)
 	{
 		disposeImages();
 		calculateView();
 		stayInLine();
 
-		readingRender.resized(_config.readingDoublePage);
+		render.resized(_config.readingDoublePage);
 	}
 
 	previousContentHeight = template.contentRight().children('div').children('div').height();
@@ -2176,7 +2184,8 @@ function changePagesView(mode, value, save)
 
 	if(mode == 0)
 	{
-		loadReadingPages();
+		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
+		loadReadingPages(false, false, selectTab);
 
 		template.loadContentRight('reading.content.right.html', true);
 
@@ -2472,13 +2481,13 @@ function saveReadingProgress(path = false)
 	if(!saveReadingProgressA)
 		return;
 
-	var mainPath = dom.indexMainPathA();
+	let mainPath = dom.indexMainPathA();
 
 	if(!path)
 	{
 		let imageIndex = false;
 
-		var newIndex = (currentIndex - 1);
+		let newIndex = (currentIndex - 1);
 
 		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) - 1;
@@ -2496,7 +2505,7 @@ function saveReadingProgress(path = false)
 		path = p.normalize(images[imageIndex].path);
 	}
 
-	var comic = false, comicIndex = 0, comics = storage.get('comics');
+	let comic = false, comicIndex = 0, comics = storage.get('comics');
 
 	for(let i in comics)
 	{
@@ -2508,7 +2517,7 @@ function saveReadingProgress(path = false)
 		}
 	}
 
-	storage.updateVar('readingProgress', dom.indexMainPathA(), {
+	storage.updateVar('readingProgress', mainPath, {
 		index: imagesPath[path],
 		path: path,
 		lastReading: +new Date(),
@@ -2527,6 +2536,15 @@ function saveReadingProgress(path = false)
 		storage.updateVar('comics', comicIndex, comic);
 	}
 	return true;
+}
+
+var saveReadingProgressSI = false;
+
+function startSaveReadingProgressSI()
+{
+	clearTimeout(saveReadingProgressSI);
+
+	saveReadingProgressSI = setInterval(saveReadingProgress, 60 * 2 * 1000); // Save every 2 minutes
 }
 
 //Load the bookmarks in the current directory
@@ -2673,9 +2691,11 @@ function loadReadingConfig(key = false)
 	handlebarsContext._config = _config;
 }
 
-function loadReadingPages(key = false, edit = false)
+function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 {
 	loadReadingConfig(key);
+
+	handlebarsContext.readingPagesTab = tab;
 
 	handlebarsContext.readingGlobalConfigName = config.readingConfigName ? config.readingConfigName : language.reading.pages.readingGlobal;
 
@@ -2683,7 +2703,10 @@ function loadReadingPages(key = false, edit = false)
 
 	handlebarsContext.editReadingShortcutPagesConfig = edit;
 
-	$('#reading-pages .menu-simple').html(template.load('reading.elements.menus.pages.html'));
+	filters.processContext();
+
+	let menuSimpleContent = document.querySelector('#reading-pages .menu-simple-content');
+	menuSimpleContent.innerHTML = template.load('reading.elements.menus.pages.html');
 
 	events.events();
 }
@@ -2707,18 +2730,22 @@ function setReadingShortcutPagesConfig(key = 0, desactiveMenu = true)
 	changePagesView(0);
 
 	if(desactiveMenu)
-		events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-book-open-page-variant');
+		events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-page-layout, .bar-right-buttons .button-filters');
 }
 
 function editReadingShortcutPagesConfig(event, key = 0)
 {
 	event.stopPropagation();
 
-	loadReadingPages(key, true);
+	let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
+
+	loadReadingPages(key, true, selectTab);
 
 	reading.changePagesView(0);
 
-	loadReadingPages(key, true);
+	loadReadingPages(key, true, selectTab);
+
+	filters.apply();
 }
 
 function editReadingShortcutPagesConfigName(key = 0, save = false)
@@ -2760,7 +2787,9 @@ function editReadingShortcutPagesConfigName(key = 0, save = false)
 				}
 			}
 
-			loadReadingPages(key, true);
+			let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
+
+			loadReadingPages(key, true, selectTab);
 		}
 	}
 	else
@@ -2787,7 +2816,7 @@ function editReadingShortcutPagesConfigName(key = 0, save = false)
 					function: 'events.closeDialog();',
 				},
 				{
-					text: language.buttons.ok,
+					text: language.buttons.save,
 					function: 'events.closeDialog(); reading.editReadingShortcutPagesConfigName('+key+', true);',
 				}
 			],
@@ -2838,6 +2867,8 @@ function newReadingShortcutPagesConfig(save = false)
 			storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
 
 			reading.setReadingShortcutPagesConfig(newKey, false);
+
+			events.closeDialog();
 		}
 	}
 	else
@@ -2855,8 +2886,8 @@ function newReadingShortcutPagesConfig(save = false)
 					function: 'events.closeDialog();',
 				},
 				{
-					text: language.buttons.ok,
-					function: 'events.closeDialog(); reading.newReadingShortcutPagesConfig(true);',
+					text: language.buttons.save,
+					function: 'reading.newReadingShortcutPagesConfig(true);',
 				}
 			],
 		});
@@ -2885,8 +2916,10 @@ function removeReadingShortcutPagesConfig(key, confirm = false)
 
 		storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
 
+
 		// Reload
-		reading.loadReadingPages();
+		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
+		reading.loadReadingPages(false, false, selectTab);
 		reading.changePagesView(0);
 	}
 	else
@@ -2986,7 +3019,7 @@ var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, mag
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false;
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {};
 
 	loadReadingConfig(currentReadingConfigKey);
 
@@ -3581,7 +3614,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	if(isCanvas)
 	{
 		readingFile = fileManager.fileCompressed(path);
-		await readingRender.setFile(readingFile, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
+		await render.setFile(readingFile, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
 
 		let _images = template.contentRight('.reading-body oc-img canvas').get();
 
@@ -3599,7 +3632,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 			imagesData[index] = {width: width, height: height, aspectRatio: (width / height), name: image.dataset.name};
 		}
 
-		readingRender.setImagesData(imagesData);
+		render.setImagesData(imagesData);
+		filters.setImagesPath(imagesPath, readingCurrentPath);
 
 		template.contentRight('.reading-body').css('display', 'block');
 		addHtmlImages();
@@ -3623,7 +3657,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	else
 	{
 		readingFile = false;
-		readingRender.setFile(false);
+		render.setFile(false);
 
 		template.contentRight('.reading-body img').each(function() {
 
@@ -3639,6 +3673,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 				if(imagesNumLoad == imagesNum)
 				{
+					filters.setImagesPath(imagesPath, readingCurrentPath);
+
 					template.contentRight('.reading-body').css('display', 'block');
 					addHtmlImages();
 					disposeImages();
@@ -3668,6 +3704,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 				if(imagesNumLoad == imagesNum)
 				{
+					filters.setImagesPath(imagesPath, readingCurrentPath);
+
 					template.contentRight('.reading-body').css('display', 'block');
 					addHtmlImages();
 					disposeImages();
@@ -3700,6 +3738,10 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	template.contentRight().children('div').css({scrollbarGutter: readingViewIs('scroll') ? '' : 'initial'});
 	
 	tracking.track();
+
+	filters.apply();
+
+	startSaveReadingProgressSI();
 }
 
 module.exports = {
@@ -3772,4 +3814,6 @@ module.exports = {
 	currentScale: function(){return currentScale},
 	rightSize: function(){return rightSize},
 	zoomingIn: function(){return zoomingIn},
+	updateReadingPagesConfig: updateReadingPagesConfig,
+	filters: filters,
 };

@@ -1,20 +1,20 @@
 <div class="settings-body body-medium">
 	<h1 class="display-medium">{{language.global.settings}}</h1>
 
-	<div class="big-tabs">
+	<div class="tabs big-tabs">
 		<div>
-			<div class="title-medium gamepad-item gamepad-to-highlight active" data-name="general" data-on-end-animation="gamepad.updateBrowsableItems(gamepad.currentKey(), true, false)">
+			<div class="title-medium gamepad-item gamepad-to-highlight active" data-name="general" data-on-end-animation="gamepad.updateBrowsableItems(gamepad.currentKey())">
 				<span class="material-icon">tune</span>{{language.settings.general}}
 			</div>
 
-			<div class="title-medium gamepad-item" data-name="shortcuts" data-on-end-animation="gamepad.updateBrowsableItems(gamepad.currentKey(), true, false)">
+			<div class="title-medium gamepad-item" data-name="shortcuts" data-on-end-animation="gamepad.updateBrowsableItems(gamepad.currentKey())">
 				<span class="material-icon">keyboard</span>{{language.settings.shortcuts.main}}
 			</div>
 		</div>
 	</div>
 
-	<div class="big-tabs-content">
-		<div class="big-tabs-general active">
+	<div class="tabs-content">
+		<div class="tabs-general active">
 
 			<h2 class="headline-small">{{language.settings.reading.main}}</h2>
 
@@ -95,7 +95,7 @@
 			</div>
 		</div>
 
-		<div class="big-tabs-shortcuts">
+		<div class="tabs-shortcuts">
 
 			<h2 class="headline-small">{{language.settings.shortcuts.whenReading}}</h2>
 

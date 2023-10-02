@@ -38,10 +38,6 @@ function add(fromIndex = false, path = false, currentPoster = false)
 	if(addPosterInside || canAddPosterOutside(path))
 		canAddPoster = true;
 
-	console.log(fromIndex, path, currentPoster);
-	console.log('addPosterInside', addPosterInside);
-	console.log('canAddPoster', canAddPoster);
-
 	if(canAddPoster)
 	{
 		openDialog(path);

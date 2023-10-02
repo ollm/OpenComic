@@ -110,6 +110,52 @@ function invertedDPR(number) {
 
 }
 
+function pageY(e) {
+
+	return e.touches ? e.touches[0].pageY : e.pageY;
+
+}
+
+function pageX(e) {
+
+	return e.touches ? e.touches[0].pageX : e.pageX;
+
+}
+
+function clientY(e) {
+
+	if(e.touches && e.touches[0].clientY !== undefined)
+		return e.touches[0].clientY;
+	else if(e.clientY !== undefined)
+		return e.clientY;
+
+	return pageY(e);
+
+}
+
+function clientX(e) {
+
+	if(e.touches && e.touches[0].clientX !== undefined)
+		return e.touches[0].clientX;
+	else if(e.clientX !== undefined)
+		return e.clientX;
+
+	return pageX(e);
+
+}
+
+function rand(min = 0, max = 10000000)
+{
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function sleep(ms)
+{
+	return new Promise(function(resolve){
+		setTimeout(resolve, ms)
+	});
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
@@ -119,4 +165,10 @@ module.exports = {
 	roundDPR: roundDPR,
 	floorDPR: floorDPR,
 	invertedDPR: invertedDPR,
+	pageY: pageY,
+	pageX: pageX,
+	clientY: clientY,
+	clientX: clientX,
+	rand: rand,
+	sleep: sleep,
 };

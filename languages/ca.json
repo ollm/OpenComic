@@ -24,6 +24,7 @@
 		"contextMenu": {
 			"remove": "Retirar",
 			"openFileLocation": "Obre la ubicació del fitxer",
+			"openFolderLocation": "Obre la ubicació de la carpeta",
 			"addPoster": "Afegeix pòster",
 			"changePoster": "Canviar el pòster",
 			"deletePoster": "Esborrar pòster",
@@ -57,7 +58,8 @@
 		"nextChapter": "Següent capítol",
 		"pages": {
 			"main": "Pàgines",
-			"pageLayout": "Maquetació de les pàgines",
+			"pageLayout": "Disseny de pàgina",
+			"colorFilters": "Filtres de color",
 			"slide": "Lectura horitzontal",
 			"scroll": "Lectura vertical",
 			"adjustToWidth": "Ajustar a l'ample",
@@ -75,7 +77,22 @@
 			"readingGlobal": "Configuració global",
 			"readingConfigNew": "Nova configuració",
 			"clipHorizontal": "Retallar horitzontalment",
-			"clipVertical": "Retallar verticalment"
+			"clipVertical": "Retallar verticalment",
+			"colors": "Colors",
+			"brightness": "Lluminositat",
+			"saturation": "Saturació",
+			"contrast": "Contrast",
+			"sepia": "Sèpia",
+			"invert": "Invertir",
+			"hueRotate": "Rotació de tonalitat",
+			"tone": "To",
+			"colorize": "Coloritzar",
+			"onlyBlackAndWhite": "Només en imatges en blanc i negre",
+			"colorPreset": "Preajust de color",
+			"multiplier": "Mult.",
+			"saveAsPreset": "Guardar com a preajustament",
+			"addColor": "Afegeix color",
+			"fromImage": "Color des d'una imatge"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -201,7 +218,9 @@
 			"readingConfigEditHeader": "Editar configuració",
 			"readingConfigName": "Nom de la configuració",
 			"readingConfigRemoveHeader": "Eliminar la configuració",
-			"readingConfigRemove": "Esteu segur que voleu eliminar aquesta configuració?"
+			"readingConfigRemove": "Esteu segur que voleu eliminar aquesta configuració?",
+			"readingNumColorsGenerate": "Número de colors a generar",
+			"readingPresetName": "Nom del preajustament"
 		},
 		"release": {
 			"title": "Nova versió disponible <b>{{releaseName}}</b>",
@@ -211,6 +230,7 @@
 	"buttons": {
 		"cancel": "Cancel·lar",
 		"ok": "Ok",
+		"save": "Guardar",
 		"undo": "Desfer",
 		"dismiss": "Descarta",
 		"remove": "Eliminar",

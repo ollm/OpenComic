@@ -301,7 +301,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	currentScreenItems = [];
 	currentHighlightItem = -1;
 
-	let toHighlight = false;
+	let toHighlight = false, index = 0;
 
 	// Menu
 	let menu = template._globalElement().querySelector('.menu-simple.a');
@@ -310,7 +310,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	if(hasMenu)
 	{
 		let items = menu.querySelectorAll('.gamepad-item');
-		let scrollElement = currentScrollElement = menu;
+		let scrollElement = currentScrollElement = menu.querySelector('.menu-simple-content');
 		let scrollTop = scrollElement.scrollTop;
 		currentScrollElementRect = scrollElement.getBoundingClientRect();
 
@@ -320,7 +320,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 			let rect = item.getBoundingClientRect();
 
 			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
-				toHighlight = i;
+				toHighlight = index;
 
 			if(rect.height != 0 || rect.width != 0)
 			{
@@ -338,6 +338,8 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 					top: rect.top + scrollTop,
 					bottom: rect.bottom + scrollTop,
 				});
+
+				index++;
 			}
 		}
 	}
@@ -356,7 +358,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 			let rect = item.getBoundingClientRect();
 
 			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
-				toHighlight = i;
+				toHighlight = index;
 
 			if(rect.height != 0 || rect.width != 0)
 			{
@@ -374,6 +376,8 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 					top: rect.top + scrollTop,
 					bottom: rect.bottom + scrollTop,
 				});
+
+				index++;
 			}
 		}
 	}
@@ -407,6 +411,8 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 					top: rect.top,
 					bottom: rect.bottom,
 				});
+
+				index++;
 			}
 		}
 	}
@@ -678,6 +684,17 @@ function buttonKey(button = false)
 
 function goBack()
 {
+	// Close dialog
+	let dialogActive = document.querySelector('.dialogs .dialog');
+
+	if(dialogActive)
+	{
+		events.closeDialog();
+
+		return;
+	}
+
+	// Close menu
 	let menuActive = document.querySelector('.menu-close.a');
 
 	if(menuActive)
@@ -687,6 +704,7 @@ function goBack()
 		return;
 	}
 
+	// Go back
 	let barBack = document.querySelector('.bar-back.active, .bar-back.show');
 
 	if(barBack)
@@ -744,31 +762,34 @@ window.addEventListener('keydown', function(event) {
 
 	if((!onReading || document.querySelector('.menu-simple.a')) || key == 8)
 	{
-		if(key == 8 || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
+		if(!shortcuts.inputIsFocused())
 		{
-			event.preventDefault();
+			if(key == 8 || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
+			{
+				event.preventDefault();
 
-			hasKeyboardNavigation = true;
+				hasKeyboardNavigation = true;
 
-			if(key == 8)
-				goBack();
-			else if(key == 13)
-				goHighlightItem();
-			else if(key == 37)
-				highlightClosestItem(0);
-			else if(key == 38)
-				highlightClosestItem(2);
-			else if(key == 39)
-				highlightClosestItem(1);
-			else if(key == 40)
-				highlightClosestItem(3);
+				if(key == 8)
+					goBack();
+				else if(key == 13)
+					goHighlightItem();
+				else if(key == 37)
+					highlightClosestItem(0);
+				else if(key == 38)
+					highlightClosestItem(2);
+				else if(key == 39)
+					highlightClosestItem(1);
+				else if(key == 40)
+					highlightClosestItem(3);
 
-			if(lastUpdateBrowsableItemsSkiped)
-				updateBrowsableItems(currentKey, true);
-		}
-		else
-		{
-			// console.log(key);
+				if(lastUpdateBrowsableItemsSkiped)
+					updateBrowsableItems(currentKey, true);
+			}
+			else
+			{
+				// console.log(key);
+			}
 		}
 	}
 	
@@ -777,7 +798,7 @@ window.addEventListener('keydown', function(event) {
 // Update Browsable Items position if window size its changed
 var gamepadResizeST = false;
 
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function(){
 
 	gamepadResizeST = setTimeout(function(){
 

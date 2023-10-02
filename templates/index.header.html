@@ -1,5 +1,5 @@
 <div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControlGoBack()">arrow_back</div>
-<div class="bar-title title-small" style="max-width: calc(100% - (184px + 68px));">
+<div class="bar-title title-small" style="max-width: calc(100% - ({{#if comicsDeep2}}392px{{else}}268px{{/if}} + 68px));">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
 			<span class="bar-title-a" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}')">{{name}}</span>

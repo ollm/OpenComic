@@ -41,7 +41,7 @@ for(let i = 0, len = themes.length; i < len; i++)
 	}
 }
 
-templatesJs += 'module.exports = {templatesCacheTheme: templatesCacheTheme, templatesCache: templatesCache};';
+templatesJs += 'hb.partials = hb.templates = templatesCache; module.exports = {templatesCacheTheme: templatesCacheTheme, templatesCache: templatesCache};';
 
 if(!fs.existsSync(p.join(__dirname, '../scripts/builded/')))
 	fs.mkdirSync(p.join(__dirname, '../scripts/builded/'));

@@ -99,6 +99,9 @@ function changeHeader(html, animation = true)
 function loadHeader(template, animation)
 {
 	changeHeader(loadTemplate(template), animation);
+
+	let barTitle = _barHeader.querySelector('.bar-title');
+	if(barTitle) barTitle.scrollLeft = barTitle.scrollWidth;
 }
 
 function changeGlobalElement(html, element)
@@ -166,7 +169,6 @@ module.exports = {
 	barHeader: selectBarHeader,
 	globalElement: selectGlobalElement,
 	loadGlobalElement: loadGlobalElement,
-	contentRightZindex: function(){return contentRightZindex - 1},
 	contentRightIndex: function(){return contentRightZindex - 1},
 	contentLeftIndex: function(){return contentLeftZindex - 1},
 	_contentLeft: function(){return _contentLeft},
