@@ -5,20 +5,18 @@ const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 
 function orderBy(a, b, mode, key = false, key2 = false)
 {
+	let aValue = a;
+	let bValue = b;
+
 	if(key2)
 	{
-		var aValue = a[key][key2];
-		var bValue = b[key][key2];
+		aValue = a[key][key2];
+		bValue = b[key][key2];
 	}
 	else if(key)
 	{
-		var aValue = a[key];
-		var bValue = b[key];
-	}
-	else
-	{
-		var aValue = a;
-		var bValue = b;
+		aValue = a[key];
+		bValue = b[key];
 	}
 
 	if(mode != 'real-numeric')
@@ -45,42 +43,42 @@ function orderBy(a, b, mode, key = false, key2 = false)
 	}
 	else if(mode == 'numeric')
 	{
-		var matchA = aValue.match(/([0-9]+)/g);
-		var matchB = bValue.match(/([0-9]+)/g);
+		let matchA = aValue.match(/([0-9]+)/g);
+		let matchB = bValue.match(/([0-9]+)/g);
 
 		if(!matchA) return 1;
 
 		if(!matchB) return -1;
 
-		for (var i = 0; i < matchA.length && i < matchB.length; i++)
+		for(let i = 0, len1 = matchA.length, len2 = matchB.length; i < len1 && i < len2; i++)
 		{
-			if (parseInt(matchA[i]) > parseInt(matchB[i])) return 1;
+			if(+matchA[i] > +matchB[i]) return 1;
 
-			if (parseInt(matchA[i]) < parseInt(matchB[i])) return -1;
+			if(+matchA[i] < +matchB[i]) return -1;
 		}
 
-		if (matchA.length > matchB.length) return 1;
+		if(matchA.length > matchB.length) return 1;
 
-		if (matchA.length < matchB.length) return -1;
+		if(matchA.length < matchB.length) return -1;
 
-		if (aValue > bValue) return 1;
+		if(aValue > bValue) return 1;
 
-		if (aValue < bValue) return -1;
+		if(aValue < bValue) return -1;
 
 		return 0;
 	}
 	else if(mode == 'simple-numeric')
 	{
-		var matchA = aValue.match(/([0-9]+|.?)/g);
-		var matchB = bValue.match(/([0-9]+|.?)/g);
+		let matchA = aValue.match(/([0-9]+|.?)/g);
+		let matchB = bValue.match(/([0-9]+|.?)/g);
 
 		if(!matchA) return 1;
 
 		if(!matchB) return -1;
 
-		for (var i = 0; i < matchA.length && i < matchB.length; i++)
+		for (let i = 0, len1 = matchA.length, len2 = matchB.length; i < len1 && i < len2; i++)
 		{
-			if(!$.isNumeric(matchA[i]) || !$.isNumeric(matchB[i]))
+			if(isNaN(matchA[i]) || isNaN(matchB[i]))
 			{
 				if (matchA[i] > matchB[i]) return 1;
 
@@ -88,9 +86,9 @@ function orderBy(a, b, mode, key = false, key2 = false)
 			}
 			else
 			{
-				if (parseInt(matchA[i]) > parseInt(matchB[i])) return 1;
+				if (+matchA[i] > +matchB[i]) return 1;
 
-				if (parseInt(matchA[i]) < parseInt(matchB[i])) return -1;
+				if (+matchA[i] < +matchB[i]) return -1;
 			}
 		}
 

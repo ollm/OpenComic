@@ -4,6 +4,8 @@
 		"and": "and",
 		"comics": "本",
 		"collection": "コレクション",
+		"library": "",
+		"images": "",
 		"sort": {
 			"main": "並び替え",
 			"name": "名前",
@@ -20,12 +22,26 @@
 			"list": "一覧"
 		},
 		"contextMenu": {
-			"remove": "削除"
+			"remove": "削除",
+			"openFileLocation": "",
+			"openFolderLocation": "",
+			"addPoster": "",
+			"changePoster": "",
+			"deletePoster": "",
+			"cannotAddPoster": "",
+			"cannotDeletePoster": "",
+			"closeApp": ""
 		},
 		"back": "戻る",
+		"open": "",
 		"add": "追加",
+		"addToLibrary": "",
+		"unsupportedFile": "",
+		"reload": "",
 		"language": "言語",
+		"settings": "",
 		"theme": "テーマ",
+		"valueCannotBeEmpty": "",
 		"nightMode": "ナイトモード"
 	},
 	"comics": {
@@ -34,25 +50,52 @@
 		"emptyFolder": "このフォルダには閲覧可能なファイルがありません"
 	},
 	"reading": {
+		"prevChapter": "",
 		"firstPage": "最初のページ",
 		"previous": "前",
 		"next": "次",
 		"lastPage": "最後のページ",
-
+		"nextChapter": "",
 		"pages": {
 			"main": "ページ",
+			"pageLayout": "",
+			"colorFilters": "",
 			"slide": "スライドリーダー",
 			"scroll": "垂直方向リーダー",
 			"adjustToWidth": "幅に合わせる",
 			"margin": "マージン",
 			"marginHorizontal": "横方向のマージン",
 			"marginVertical": "縦方向のマージン",
+			"differentMarginInHorizontals": "",
 			"doublePage": "見開きページ",
 			"doNotApplyToHorizontals": "水平方向には適用しない",
+			"blankPage": "",
 			"readingDelaySkip": "本を変更する際の遅延速度",
 			"animationSpeed": "アニメーションの速度",
 			"readingManga": "マンガ閲覧モード",
-			"readingWebtoon": "ウェブトゥーンモード"
+			"readingWebtoon": "ウェブトゥーンモード",
+			"readingGlobal": "",
+			"readingConfigNew": "",
+			"clipHorizontal": "",
+			"clipVertical": "",
+			"colors": "",
+			"brightness": "",
+			"saturation": "",
+			"contrast": "",
+			"sepia": "",
+			"invert": "",
+			"hueRotate": "",
+			"tone": "",
+			"colorize": "",
+			"onlyBlackAndWhite": "",
+			"colorPreset": "",
+			"multiplier": "",
+			"saveAsPreset": "",
+			"addColor": "",
+			"fromImage": "",
+			"savedPresets": "",
+			"multipleTonePresets": "",
+			"oneTonePresets": ""
 		},
 		"magnifyingGlass": {
 			"main": "拡大鏡",
@@ -75,11 +118,60 @@
 			"volumes": "巻",
 			"volume": "巻"
 		},
+		"moreOptions": {
+			"main": "",
+			"hideBarHeader": "",
+			"hideContentLeft": ""
+		},
 		"viewBookmarks": "しおりを見る",
 		"addBookmark": "しおりの追加",
 		"removeBookmark": "しおりの削除",
 		"emptyBookmarks": "しおりがありません",
 		"currentReading": "現在読んでいる位置"
+	},
+	"settings": {
+		"general": "",
+		"reading": {
+			"main": "",
+			"maxMargin": "",
+			"globalZoom": ""
+		},
+		"navigation": {
+			"main": "",
+			"showFullPathLibrary": "",
+			"showFullPathOpened": ""
+		},
+		"others": {
+			"main": "",
+			"startInFullScreen": "",
+			"startOnStartup": ""
+		},
+		"releases": {
+			"main": "",
+			"checkReleases": "",
+			"checkPreReleases": ""
+		},
+		"shortcuts": {
+			"main": "",
+			"keyboard": "",
+			"whenReading": "",
+			"gamepadMenu": "",
+			"useGamepad": "",
+			"restoreDefaults": "",
+			"action": "",
+			"key1": "",
+			"key2": "",
+			"key3": "",
+			"key4": "",
+			"key5": "",
+			"gamepad1": "",
+			"gamepad2": ""
+		},
+		"masterFolders": {
+			"main": "",
+			"folder": "",
+			"noFolders": ""
+		}
 	},
 	"menu": {
 		"file": {
@@ -93,6 +185,7 @@
 		"view": {
 			"main": "閲覧",
 			"resetZoom": "ズームをリセット",
+			"originalSize": "",
 			"zoomIn": "縮小",
 			"zoomOut": "拡大",
 			"toggleFullScreen": "全画面"
@@ -108,7 +201,9 @@
 		},
 		"help": {
 			"main": "ヘルプ",
-			"about": "OpenComicについて"
+			"about": "OpenComicについて",
+			"funding": "",
+			"bug": ""
 		}
 	},
 	"dialog": {
@@ -125,13 +220,29 @@
 			"setChapterNumber": "次の章までマークする",
 			"setVolumeNumber": "次の巻までマークする",
 			"activate": "追跡を有効にする"
+		},
+		"pages": {
+			"readingConfigNewHeader": "",
+			"readingConfigEditHeader": "",
+			"readingConfigName": "",
+			"readingConfigRemoveHeader": "",
+			"readingConfigRemove": "",
+			"readingNumColorsGenerate": "",
+			"readingPresetName": ""
+		},
+		"release": {
+			"title": "",
+			"body": ""
 		}
 	},
 	"buttons": {
 		"cancel": "キャンセル",
 		"ok": "Ok",
+		"save": "",
 		"undo": "やり直し",
-		"dismiss": "閉じる"
+		"dismiss": "閉じる",
+		"remove": "",
+		"download": ""
 	},
 	"error": {
 		"uncompress": {

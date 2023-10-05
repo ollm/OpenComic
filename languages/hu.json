@@ -4,6 +4,8 @@
 		"and": "és",
 		"comics": "Képregények",
 		"collection": "Gyűjtemény",
+		"library": "",
+		"images": "",
 		"sort": {
 			"main": "Rendezés",
 			"name": "Név",
@@ -20,12 +22,26 @@
 			"list": "Lista"
 		},
 		"contextMenu": {
-			"remove": "Töröl"
+			"remove": "Töröl",
+			"openFileLocation": "",
+			"openFolderLocation": "",
+			"addPoster": "",
+			"changePoster": "",
+			"deletePoster": "",
+			"cannotAddPoster": "",
+			"cannotDeletePoster": "",
+			"closeApp": ""
 		},
 		"back": "Vissza",
+		"open": "",
 		"add": "Hozzáadás",
+		"addToLibrary": "",
+		"unsupportedFile": "",
+		"reload": "",
 		"language": "Nyelv",
+		"settings": "",
 		"theme": "Téma",
+		"valueCannotBeEmpty": "",
 		"nightMode": "Sötét téma"
 	},
 	"comics": {
@@ -34,25 +50,52 @@
 		"emptyFolder": "Ebben a mappában nincsenek megfelelő fájlok."
 	},
 	"reading": {
+		"prevChapter": "",
 		"firstPage": "Első oldal",
 		"previous": "Előző",
 		"next": "Következő",
 		"lastPage": "Utolsó oldal",
-
+		"nextChapter": "",
 		"pages": {
 			"main": "Nézet",
+			"pageLayout": "",
+			"colorFilters": "",
 			"slide": "Lapozás",
 			"scroll": "Görgetés",
 			"adjustToWidth": "Teljes szélesség",
 			"margin": "Margó",
 			"marginHorizontal": "Vízszintes margó",
 			"marginVertical": "Függőlges margó",
+			"differentMarginInHorizontals": "",
 			"doublePage": "Kétoldalas elrendezés",
 			"doNotApplyToHorizontals": "Fekvő tájolású oldalnál ne",
+			"blankPage": "",
 			"readingDelaySkip": "Lapozás késleltetése",
 			"animationSpeed": "Animáció sebessége",
 			"readingManga": "Manga nézet (Tükrözött)",
-			"readingWebtoon": "Webtoon nézet"
+			"readingWebtoon": "Webtoon nézet",
+			"readingGlobal": "",
+			"readingConfigNew": "",
+			"clipHorizontal": "",
+			"clipVertical": "",
+			"colors": "",
+			"brightness": "",
+			"saturation": "",
+			"contrast": "",
+			"sepia": "",
+			"invert": "",
+			"hueRotate": "",
+			"tone": "",
+			"colorize": "",
+			"onlyBlackAndWhite": "",
+			"colorPreset": "",
+			"multiplier": "",
+			"saveAsPreset": "",
+			"addColor": "",
+			"fromImage": "",
+			"savedPresets": "",
+			"multipleTonePresets": "",
+			"oneTonePresets": ""
 		},
 		"magnifyingGlass": {
 			"main": "Nagyító",
@@ -75,11 +118,60 @@
 			"volumes": "Volumes",
 			"volume": "Volume"
 		},
+		"moreOptions": {
+			"main": "",
+			"hideBarHeader": "",
+			"hideContentLeft": ""
+		},
 		"viewBookmarks": "Könyvjelzők megtekintése",
 		"addBookmark": "Könyvjelző hozzáadása",
 		"removeBookmark": "Könyvjelző törlése",
 		"emptyBookmarks": "Nincsenek könyvjelzők",
 		"currentReading": "Most olvasott"
+	},
+	"settings": {
+		"general": "",
+		"reading": {
+			"main": "",
+			"maxMargin": "",
+			"globalZoom": ""
+		},
+		"navigation": {
+			"main": "",
+			"showFullPathLibrary": "",
+			"showFullPathOpened": ""
+		},
+		"others": {
+			"main": "",
+			"startInFullScreen": "",
+			"startOnStartup": ""
+		},
+		"releases": {
+			"main": "",
+			"checkReleases": "",
+			"checkPreReleases": ""
+		},
+		"shortcuts": {
+			"main": "",
+			"keyboard": "",
+			"whenReading": "",
+			"gamepadMenu": "",
+			"useGamepad": "",
+			"restoreDefaults": "",
+			"action": "",
+			"key1": "",
+			"key2": "",
+			"key3": "",
+			"key4": "",
+			"key5": "",
+			"gamepad1": "",
+			"gamepad2": ""
+		},
+		"masterFolders": {
+			"main": "",
+			"folder": "",
+			"noFolders": ""
+		}
 	},
 	"menu": {
 		"file": {
@@ -93,6 +185,7 @@
 		"view": {
 			"main": "Nézet",
 			"resetZoom": "Nagyítás alaphelyzetbe",
+			"originalSize": "",
 			"zoomIn": "Nagyítás",
 			"zoomOut": "Kicsinyítés",
 			"toggleFullScreen": "Teljes képernyő"
@@ -108,7 +201,9 @@
 		},
 		"help": {
 			"main": "Súgó",
-			"about": "Névjegy"
+			"about": "Névjegy",
+			"funding": "",
+			"bug": ""
 		}
 	},
 	"dialog": {
@@ -125,13 +220,29 @@
 			"setChapterNumber": "Mark until the chapter",
 			"setVolumeNumber": "Mark until the volume",
 			"activate": "Activate tracking"
+		},
+		"pages": {
+			"readingConfigNewHeader": "",
+			"readingConfigEditHeader": "",
+			"readingConfigName": "",
+			"readingConfigRemoveHeader": "",
+			"readingConfigRemove": "",
+			"readingNumColorsGenerate": "",
+			"readingPresetName": ""
+		},
+		"release": {
+			"title": "",
+			"body": ""
 		}
 	},
 	"buttons": {
 		"cancel": "Cancel",
 		"ok": "Ok",
+		"save": "",
 		"undo": "Undo",
-		"dismiss": "Dismiss"
+		"dismiss": "Dismiss",
+		"remove": "",
+		"download": ""
 	},
 	"error": {
 		"uncompress": {

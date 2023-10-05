@@ -4,6 +4,8 @@
 		"and": "и",
 		"comics": "Комиксы",
 		"collection": "Коллекция",
+		"library": "",
+		"images": "",
 		"sort": {
 			"main": "Сортировка",
 			"name": "По названию",
@@ -20,11 +22,24 @@
 			"list": "Список"
 		},
 		"contextMenu": {
-			"remove": "Удалить"
+			"remove": "Удалить",
+			"openFileLocation": "",
+			"openFolderLocation": "",
+			"addPoster": "",
+			"changePoster": "",
+			"deletePoster": "",
+			"cannotAddPoster": "",
+			"cannotDeletePoster": "",
+			"closeApp": ""
 		},
 		"back": "Назад",
+		"open": "",
 		"add": "Добавить",
+		"addToLibrary": "",
+		"unsupportedFile": "",
+		"reload": "",
 		"language": "Язык",
+		"settings": "",
 		"theme": "Тема",
 		"valueCannotBeEmpty": "Значение не может быть пустым",
 		"nightMode": "Ночной режим"
@@ -35,12 +50,16 @@
 		"emptyFolder": "В этой папке нет совместимых файлов."
 	},
 	"reading": {
+		"prevChapter": "",
 		"firstPage": "Первая страница",
 		"previous": "Предыдущая",
 		"next": "Следующая",
 		"lastPage": "Последняя страница",
+		"nextChapter": "",
 		"pages": {
 			"main": "Страницы",
+			"pageLayout": "",
+			"colorFilters": "",
 			"slide": "Слайд-ридер",
 			"scroll": "Вертикальный ридер",
 			"adjustToWidth": "Отрегулировать по ширине",
@@ -56,7 +75,27 @@
 			"readingManga": "Чтение манги (Перевёрнуто)",
 			"readingWebtoon": "Чтение Webtoon",
 			"readingGlobal": "Глобальная конфигурация",
-			"readingConfigNew": "Новая конфигурация"
+			"readingConfigNew": "Новая конфигурация",
+			"clipHorizontal": "",
+			"clipVertical": "",
+			"colors": "",
+			"brightness": "",
+			"saturation": "",
+			"contrast": "",
+			"sepia": "",
+			"invert": "",
+			"hueRotate": "",
+			"tone": "",
+			"colorize": "",
+			"onlyBlackAndWhite": "",
+			"colorPreset": "",
+			"multiplier": "",
+			"saveAsPreset": "",
+			"addColor": "",
+			"fromImage": "",
+			"savedPresets": "",
+			"multipleTonePresets": "",
+			"oneTonePresets": ""
 		},
 		"magnifyingGlass": {
 			"main": "Увеличительное стекло",
@@ -90,6 +129,50 @@
 		"emptyBookmarks": "Нет закладок",
 		"currentReading": "Текущее чтение"
 	},
+	"settings": {
+		"general": "",
+		"reading": {
+			"main": "",
+			"maxMargin": "",
+			"globalZoom": ""
+		},
+		"navigation": {
+			"main": "",
+			"showFullPathLibrary": "",
+			"showFullPathOpened": ""
+		},
+		"others": {
+			"main": "",
+			"startInFullScreen": "",
+			"startOnStartup": ""
+		},
+		"releases": {
+			"main": "",
+			"checkReleases": "",
+			"checkPreReleases": ""
+		},
+		"shortcuts": {
+			"main": "",
+			"keyboard": "",
+			"whenReading": "",
+			"gamepadMenu": "",
+			"useGamepad": "",
+			"restoreDefaults": "",
+			"action": "",
+			"key1": "",
+			"key2": "",
+			"key3": "",
+			"key4": "",
+			"key5": "",
+			"gamepad1": "",
+			"gamepad2": ""
+		},
+		"masterFolders": {
+			"main": "",
+			"folder": "",
+			"noFolders": ""
+		}
+	},
 	"menu": {
 		"file": {
 			"main": "Файл",
@@ -102,6 +185,7 @@
 		"view": {
 			"main": "Вид",
 			"resetZoom": "Сбросить масштаб",
+			"originalSize": "",
 			"zoomIn": "Приблизить",
 			"zoomOut": "Отдалить",
 			"toggleFullScreen": "На весь экран"
@@ -117,7 +201,9 @@
 		},
 		"help": {
 			"main": "Помощь",
-			"about": "О OpenComic"
+			"about": "О OpenComic",
+			"funding": "",
+			"bug": ""
 		}
 	},
 	"dialog": {
@@ -140,15 +226,23 @@
 			"readingConfigEditHeader": "Изменить конфигурацию",
 			"readingConfigName": "Название конфигурации",
 			"readingConfigRemoveHeader": "Удалить конфигурацию",
-			"readingConfigRemove": "Вы уверены, что хотите удалить эту конфигурацию?"
+			"readingConfigRemove": "Вы уверены, что хотите удалить эту конфигурацию?",
+			"readingNumColorsGenerate": "",
+			"readingPresetName": ""
+		},
+		"release": {
+			"title": "",
+			"body": ""
 		}
 	},
 	"buttons": {
 		"cancel": "Отмена",
 		"ok": "ОК",
+		"save": "",
 		"undo": "Отменить",
 		"dismiss": "Отклонить",
-		"remove": "Удалить"
+		"remove": "Удалить",
+		"download": ""
 	},
 	"error": {
 		"uncompress": {

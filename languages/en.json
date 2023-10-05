@@ -24,6 +24,7 @@
 		"contextMenu": {
 			"remove": "Remove",
 			"openFileLocation": "Open file location",
+			"openFolderLocation": "Open folder location",
 			"addPoster": "Add poster",
 			"changePoster": "Change poster",
 			"deletePoster": "Delete poster",
@@ -130,11 +131,6 @@
 	},
 	"settings": {
 		"general": "General",
-		"masterFolders": {
-			"main": "Master folders",
-			"folder": "Folder",
-			"noFolders": "No folders"
-		},
 		"reading": {
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",
@@ -170,6 +166,11 @@
 			"key5": "Key 5",
 			"gamepad1": "Button 1",
 			"gamepad2": "Button 2"
+		},
+		"masterFolders": {
+			"main": "Master folders",
+			"folder": "Folder",
+			"noFolders": "No folders"
 		}
 	},
 	"menu": {

@@ -92,7 +92,10 @@
 			"multiplier": "Mult.",
 			"saveAsPreset": "Guardar como preajuste",
 			"addColor": "Añadir color",
-			"fromImage": "Color desde una imagen"
+			"fromImage": "Color desde una imagen",
+			"savedPresets": "Preajustes guardados",
+			"multipleTonePresets": "Preajustes de múltiples tonos",
+			"oneTonePresets": "Preajustes de un solo tono"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -163,6 +166,11 @@
 			"key5": "Tecla 5",
 			"gamepad1": "Botón 1",
 			"gamepad2": "Botón 2"
+		},
+		"masterFolders": {
+			"main": "Carpetas maestras",
+			"folder": "Carpeta",
+			"noFolders": "Sin carpetas"
 		}
 	},
 	"menu": {

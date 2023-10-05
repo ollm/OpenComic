@@ -4,6 +4,8 @@
 		"and": "a",
 		"comics": "Komiksy",
 		"collection": "Sbírka",
+		"library": "",
+		"images": "",
 		"sort": {
 			"main": "Seřadit",
 			"name": "Podle názvu",
@@ -20,11 +22,24 @@
 			"list": "Jako seznam"
 		},
 		"contextMenu": {
-			"remove": "Odstranit"
+			"remove": "Odstranit",
+			"openFileLocation": "",
+			"openFolderLocation": "",
+			"addPoster": "",
+			"changePoster": "",
+			"deletePoster": "",
+			"cannotAddPoster": "",
+			"cannotDeletePoster": "",
+			"closeApp": ""
 		},
 		"back": "Zpět",
+		"open": "",
 		"add": "Přidat",
+		"addToLibrary": "",
+		"unsupportedFile": "",
+		"reload": "",
 		"language": "Jazyk",
+		"settings": "",
 		"theme": "Vzhled",
 		"valueCannotBeEmpty": "Hodnota nesmí být prázdná",
 		"nightMode": "Noční režim"
@@ -35,12 +50,16 @@
 		"emptyFolder": "V této složce nejsou žádné kompatibilní soubory."
 	},
 	"reading": {
+		"prevChapter": "",
 		"firstPage": "První strana",
 		"previous": "Předchozí",
 		"next": "Další",
 		"lastPage": "Poslední stránka",
+		"nextChapter": "",
 		"pages": {
 			"main": "Stránky",
+			"pageLayout": "",
+			"colorFilters": "",
 			"slide": "Režim Prezentace",
 			"scroll": "Režim Vertikální Čtečka",
 			"adjustToWidth": "Přizpůsobit šířce",
@@ -56,7 +75,27 @@
 			"readingManga": "Manga režim (Převrácené)",
 			"readingWebtoon": "Webtoon režim",
 			"readingGlobal": "Globální nastavení",
-			"readingConfigNew": "Nové nastavení"
+			"readingConfigNew": "Nové nastavení",
+			"clipHorizontal": "",
+			"clipVertical": "",
+			"colors": "",
+			"brightness": "",
+			"saturation": "",
+			"contrast": "",
+			"sepia": "",
+			"invert": "",
+			"hueRotate": "",
+			"tone": "",
+			"colorize": "",
+			"onlyBlackAndWhite": "",
+			"colorPreset": "",
+			"multiplier": "",
+			"saveAsPreset": "",
+			"addColor": "",
+			"fromImage": "",
+			"savedPresets": "",
+			"multipleTonePresets": "",
+			"oneTonePresets": ""
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -90,6 +129,50 @@
 		"emptyBookmarks": "Žádné záložky",
 		"currentReading": "Rozečtené"
 	},
+	"settings": {
+		"general": "",
+		"reading": {
+			"main": "",
+			"maxMargin": "",
+			"globalZoom": ""
+		},
+		"navigation": {
+			"main": "",
+			"showFullPathLibrary": "",
+			"showFullPathOpened": ""
+		},
+		"others": {
+			"main": "",
+			"startInFullScreen": "",
+			"startOnStartup": ""
+		},
+		"releases": {
+			"main": "",
+			"checkReleases": "",
+			"checkPreReleases": ""
+		},
+		"shortcuts": {
+			"main": "",
+			"keyboard": "",
+			"whenReading": "",
+			"gamepadMenu": "",
+			"useGamepad": "",
+			"restoreDefaults": "",
+			"action": "",
+			"key1": "",
+			"key2": "",
+			"key3": "",
+			"key4": "",
+			"key5": "",
+			"gamepad1": "",
+			"gamepad2": ""
+		},
+		"masterFolders": {
+			"main": "",
+			"folder": "",
+			"noFolders": ""
+		}
+	},
 	"menu": {
 		"file": {
 			"main": "Soubor",
@@ -102,6 +185,7 @@
 		"view": {
 			"main": "Zobrazit",
 			"resetZoom": "Obnovit přiblížení",
+			"originalSize": "",
 			"zoomIn": "Přiblížit",
 			"zoomOut": "Oddálit",
 			"toggleFullScreen": "Na celou obrazovku"
@@ -117,7 +201,9 @@
 		},
 		"help": {
 			"main": "Pomoc",
-			"about": "O Aplikaci OpenComic"
+			"about": "O Aplikaci OpenComic",
+			"funding": "",
+			"bug": ""
 		}
 	},
 	"dialog": {
@@ -140,15 +226,23 @@
 			"readingConfigEditHeader": "Upravit nastavení",
 			"readingConfigName": "Název nastavení",
 			"readingConfigRemoveHeader": "Odstranit nastavení",
-			"readingConfigRemove": "Opravdu chcete toto nastavení odstranit?"
+			"readingConfigRemove": "Opravdu chcete toto nastavení odstranit?",
+			"readingNumColorsGenerate": "",
+			"readingPresetName": ""
+		},
+		"release": {
+			"title": "",
+			"body": ""
 		}
 	},
 	"buttons": {
 		"cancel": "Zrušit",
 		"ok": "Ok",
+		"save": "",
 		"undo": "Vrátit",
 		"dismiss": "Dobře",
-		"remove": "Odstranit"
+		"remove": "Odstranit",
+		"download": ""
 	},
 	"error": {
 		"uncompress": {

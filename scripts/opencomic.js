@@ -85,7 +85,7 @@ var readingTouchEvent = false;
 
 var appDir = p.join(__dirname, '../');
 
-var _package = $.parseJSON(readFileApp('package.json'));
+var _package = JSON.parse(readFileApp('package.json'));
 
 handlebarsContext.packageJson = _package;
 
@@ -410,7 +410,7 @@ function loadLanguageMD(hbc, obj)
 
 			loadLanguageMD(hbc[key], obj[key]);
 		}
-		else
+		else if(obj[key])
 		{
 			hbc[key] = obj[key];
 		}
@@ -424,14 +424,14 @@ function time()
 
 function loadLanguage(lan = false)
 {
-	language = $.parseJSON(readFileApp('./languages/es.json'));
-	loadLanguageMD(language, $.parseJSON(readFileApp('./languages/en.json')));
+	language = JSON.parse(readFileApp('./languages/es.json'));
+	loadLanguageMD(language, JSON.parse(readFileApp('./languages/en.json')));
 
 	handlebarsContext.language = language;
 
 	if(lan && existsFileApp('./languages/'+lan+'.json'))
 	{
-		loadLanguageMD(language, $.parseJSON(readFileApp('./languages/'+lan+'.json')));
+		loadLanguageMD(language, JSON.parse(readFileApp('./languages/'+lan+'.json')));
 
 		generateAppMenu(true);
 		generateAppMenuShortcut();

@@ -4,6 +4,8 @@
 		"and": "et",
 		"comics": "Comics",
 		"collection": "Collection",
+		"library": "",
+		"images": "",
 		"sort": {
 			"main": "Trier",
 			"name": "Nom",
@@ -20,12 +22,26 @@
 			"list": "Liste"
 		},
 		"contextMenu": {
-			"remove": "Retirer"
+			"remove": "Retirer",
+			"openFileLocation": "",
+			"openFolderLocation": "",
+			"addPoster": "",
+			"changePoster": "",
+			"deletePoster": "",
+			"cannotAddPoster": "",
+			"cannotDeletePoster": "",
+			"closeApp": ""
 		},
 		"back": "Retour",
+		"open": "",
 		"add": "Ajouter",
+		"addToLibrary": "",
+		"unsupportedFile": "",
+		"reload": "",
 		"language": "Langues",
+		"settings": "",
 		"theme": "Theme",
+		"valueCannotBeEmpty": "",
 		"nightMode": "Mode nuit"
 	},
 	"comics": {
@@ -34,25 +50,52 @@
 		"emptyFolder": "Il n'y a aucun fichier compatible dans ce dossier."
 	},
 	"reading": {
+		"prevChapter": "",
 		"firstPage": "Première page",
 		"previous": "Précédent",
 		"next": "Suivant",
 		"lastPage": "Dernière page",
-
+		"nextChapter": "",
 		"pages": {
 			"main": "Pages",
+			"pageLayout": "",
+			"colorFilters": "",
 			"slide": "Lecture horizontale",
 			"scroll": "Lecture verticale",
 			"adjustToWidth": "Ajuster à la largeur",
 			"margin": "Marges",
 			"marginHorizontal": "Marge horizontale",
 			"marginVertical": "Marge verticale",
+			"differentMarginInHorizontals": "",
 			"doublePage": "Double page",
 			"doNotApplyToHorizontals": "Ne pas appliquer aux horizontaux",
+			"blankPage": "",
 			"readingDelaySkip": "Délai de changement de comics",
 			"animationSpeed": "Vitesse d'animation",
 			"readingManga": "Lecture de manga (Inversé)",
-			"readingWebtoon": "Lecture de webtoon"
+			"readingWebtoon": "Lecture de webtoon",
+			"readingGlobal": "",
+			"readingConfigNew": "",
+			"clipHorizontal": "",
+			"clipVertical": "",
+			"colors": "",
+			"brightness": "",
+			"saturation": "",
+			"contrast": "",
+			"sepia": "",
+			"invert": "",
+			"hueRotate": "",
+			"tone": "",
+			"colorize": "",
+			"onlyBlackAndWhite": "",
+			"colorPreset": "",
+			"multiplier": "",
+			"saveAsPreset": "",
+			"addColor": "",
+			"fromImage": "",
+			"savedPresets": "",
+			"multipleTonePresets": "",
+			"oneTonePresets": ""
 		},
 		"magnifyingGlass": {
 			"main": "Loupe",
@@ -75,11 +118,60 @@
 			"volumes": "Volumes",
 			"volume": "Volume"
 		},
+		"moreOptions": {
+			"main": "",
+			"hideBarHeader": "",
+			"hideContentLeft": ""
+		},
 		"viewBookmarks": "Afficher signets",
 		"addBookmark": "Ajouter signet",
 		"removeBookmark": "Retirer signet",
 		"emptyBookmarks": "Aucun signet",
 		"currentReading": "Lecture en cours"
+	},
+	"settings": {
+		"general": "",
+		"reading": {
+			"main": "",
+			"maxMargin": "",
+			"globalZoom": ""
+		},
+		"navigation": {
+			"main": "",
+			"showFullPathLibrary": "",
+			"showFullPathOpened": ""
+		},
+		"others": {
+			"main": "",
+			"startInFullScreen": "",
+			"startOnStartup": ""
+		},
+		"releases": {
+			"main": "",
+			"checkReleases": "",
+			"checkPreReleases": ""
+		},
+		"shortcuts": {
+			"main": "",
+			"keyboard": "",
+			"whenReading": "",
+			"gamepadMenu": "",
+			"useGamepad": "",
+			"restoreDefaults": "",
+			"action": "",
+			"key1": "",
+			"key2": "",
+			"key3": "",
+			"key4": "",
+			"key5": "",
+			"gamepad1": "",
+			"gamepad2": ""
+		},
+		"masterFolders": {
+			"main": "",
+			"folder": "",
+			"noFolders": ""
+		}
 	},
 	"menu": {
 		"file": {
@@ -93,6 +185,7 @@
 		"view": {
 			"main": "Vue",
 			"resetZoom": "Réinitialiser zoom",
+			"originalSize": "",
 			"zoomIn": "Agrandir",
 			"zoomOut": "Réduire",
 			"toggleFullScreen": "Plein écran"
@@ -108,7 +201,9 @@
 		},
 		"help": {
 			"main": "Aide",
-			"about": "À propos de OpenComic"
+			"about": "À propos de OpenComic",
+			"funding": "",
+			"bug": ""
 		}
 	},
 	"dialog": {
@@ -125,13 +220,29 @@
 			"setChapterNumber": "Marquer jusqu'au chapitre",
 			"setVolumeNumber": "Marquer jusqu'au volume",
 			"activate": "Activer le suivi"
+		},
+		"pages": {
+			"readingConfigNewHeader": "",
+			"readingConfigEditHeader": "",
+			"readingConfigName": "",
+			"readingConfigRemoveHeader": "",
+			"readingConfigRemove": "",
+			"readingNumColorsGenerate": "",
+			"readingPresetName": ""
+		},
+		"release": {
+			"title": "",
+			"body": ""
 		}
 	},
 	"buttons": {
 		"cancel": "Annuler",
 		"ok": "Ok",
+		"save": "",
 		"undo": "Retour",
-		"dismiss": "Abandonner"
+		"dismiss": "Abandonner",
+		"remove": "",
+		"download": ""
 	},
 	"error": {
 		"uncompress": {

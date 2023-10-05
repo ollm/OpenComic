@@ -92,7 +92,10 @@
 			"multiplier": "Mult.",
 			"saveAsPreset": "Guardar com a preajustament",
 			"addColor": "Afegeix color",
-			"fromImage": "Color des d'una imatge"
+			"fromImage": "Color des d'una imatge",
+			"savedPresets": "Preajustaments guardats",
+			"multipleTonePresets": "Preajustaments de múltiples tons",
+			"oneTonePresets": "Preajustaments d'un sol to"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
@@ -110,8 +113,8 @@
 			"favoriteSites": "Llocs favorits",
 			"emptyFavoriteSites": "Cap lloc a favorits",
 			"problemChapter": "Capítol no detectat",
-			"chapters": "Capítols",
 			"chapters": "Capítol",
+			"chapter": "",
 			"volumes": "Toms",
 			"volume": "Tom"
 		},
@@ -141,7 +144,7 @@
 		"others": {
 			"main": "Altres configuracions",
 			"startInFullScreen": "Inicia OpenComic a pantalla completa",
-			"startOnStartup": "Iniciar OpenComic a l'inici",
+			"startOnStartup": "Iniciar OpenComic a l'inici"
 		},
 		"releases": {
 			"main": "Comprovar noves versions",
@@ -163,6 +166,11 @@
 			"key5": "Tecla 5",
 			"gamepad1": "Botó 1",
 			"gamepad2": "Botó 2"
+		},
+		"masterFolders": {
+			"main": "Carpetes mestres",
+			"folder": "Carpeta",
+			"noFolders": "Sense carpetes"
 		}
 	},
 	"menu": {

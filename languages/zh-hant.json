@@ -4,6 +4,8 @@
 		"and": "和",
 		"comics": "漫畫",
 		"collection": "收藏夾",
+		"library": "",
+		"images": "",
 		"sort": {
 			"main": "排序",
 			"name": "名稱",
@@ -20,12 +22,26 @@
 			"list": "列表"
 		},
 		"contextMenu": {
-			"remove": "移除"
+			"remove": "移除",
+			"openFileLocation": "",
+			"openFolderLocation": "",
+			"addPoster": "",
+			"changePoster": "",
+			"deletePoster": "",
+			"cannotAddPoster": "",
+			"cannotDeletePoster": "",
+			"closeApp": ""
 		},
 		"back": "返回",
+		"open": "",
 		"add": "新增",
+		"addToLibrary": "",
+		"unsupportedFile": "",
+		"reload": "",
 		"language": "語言",
+		"settings": "",
 		"theme": "圖形介面",
+		"valueCannotBeEmpty": "",
 		"nightMode": "夜間模式"
 	},
 	"comics": {
@@ -34,22 +50,52 @@
 		"emptyFolder": "這個檔案夾裡沒有可讀檔案。"
 	},
 	"reading": {
+		"prevChapter": "",
 		"firstPage": "第一頁",
 		"previous": "前一頁",
 		"next": "後一頁",
 		"lastPage": "最後頁",
-
+		"nextChapter": "",
 		"pages": {
 			"main": "页面設定",
+			"pageLayout": "",
+			"colorFilters": "",
 			"slide": "水平翻頁",
 			"scroll": "垂直翻頁",
 			"adjustToWidth": "適應寬度",
 			"margin": "邊際",
+			"marginHorizontal": "",
+			"marginVertical": "",
+			"differentMarginInHorizontals": "",
 			"doublePage": "雙頁展覽",
 			"doNotApplyToHorizontals": "不應用於橫構圖畫面",
+			"blankPage": "",
 			"readingDelaySkip": "漫畫切換延遲",
 			"animationSpeed": "動畫效果速度",
-			"readingManga": "閱讀方向（倒轉）"
+			"readingManga": "閱讀方向（倒轉）",
+			"readingWebtoon": "",
+			"readingGlobal": "",
+			"readingConfigNew": "",
+			"clipHorizontal": "",
+			"clipVertical": "",
+			"colors": "",
+			"brightness": "",
+			"saturation": "",
+			"contrast": "",
+			"sepia": "",
+			"invert": "",
+			"hueRotate": "",
+			"tone": "",
+			"colorize": "",
+			"onlyBlackAndWhite": "",
+			"colorPreset": "",
+			"multiplier": "",
+			"saveAsPreset": "",
+			"addColor": "",
+			"fromImage": "",
+			"savedPresets": "",
+			"multipleTonePresets": "",
+			"oneTonePresets": ""
 		},
 		"magnifyingGlass": {
 			"main": "放大鏡",
@@ -59,11 +105,73 @@
 			"ratio": "比例",
 			"radius": "半徑"
 		},
+		"tracking": {
+			"main": "",
+			"tracking": "",
+			"marked": "",
+			"sites": "",
+			"favoriteSites": "",
+			"emptyFavoriteSites": "",
+			"problemChapter": "",
+			"chapters": "",
+			"chapter": "",
+			"volumes": "",
+			"volume": ""
+		},
+		"moreOptions": {
+			"main": "",
+			"hideBarHeader": "",
+			"hideContentLeft": ""
+		},
 		"viewBookmarks": "檢視書籤",
 		"addBookmark": "新增書籤",
 		"removeBookmark": "移除書籤",
 		"emptyBookmarks": "暫無書籤",
 		"currentReading": "正在閱讀"
+	},
+	"settings": {
+		"general": "",
+		"reading": {
+			"main": "",
+			"maxMargin": "",
+			"globalZoom": ""
+		},
+		"navigation": {
+			"main": "",
+			"showFullPathLibrary": "",
+			"showFullPathOpened": ""
+		},
+		"others": {
+			"main": "",
+			"startInFullScreen": "",
+			"startOnStartup": ""
+		},
+		"releases": {
+			"main": "",
+			"checkReleases": "",
+			"checkPreReleases": ""
+		},
+		"shortcuts": {
+			"main": "",
+			"keyboard": "",
+			"whenReading": "",
+			"gamepadMenu": "",
+			"useGamepad": "",
+			"restoreDefaults": "",
+			"action": "",
+			"key1": "",
+			"key2": "",
+			"key3": "",
+			"key4": "",
+			"key5": "",
+			"gamepad1": "",
+			"gamepad2": ""
+		},
+		"masterFolders": {
+			"main": "",
+			"folder": "",
+			"noFolders": ""
+		}
 	},
 	"menu": {
 		"file": {
@@ -77,6 +185,7 @@
 		"view": {
 			"main": "顯示",
 			"resetZoom": "重置圖像變比",
+			"originalSize": "",
 			"zoomIn": "放大",
 			"zoomOut": "縮小",
 			"toggleFullScreen": "全螢幕"
@@ -92,8 +201,48 @@
 		},
 		"help": {
 			"main": "支援",
-			"about": "關於 OpenComic"
+			"about": "關於 OpenComic",
+			"funding": "",
+			"bug": ""
 		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "",
+			"getTokenInput": "",
+			"invalidTokenHeader": "",
+			"resendToken": "",
+			"serachIn": "",
+			"emptySearch": "",
+			"setHeader": "",
+			"setMessage": "",
+			"setWaitMessage": "",
+			"setChapterNumber": "",
+			"setVolumeNumber": "",
+			"activate": ""
+		},
+		"pages": {
+			"readingConfigNewHeader": "",
+			"readingConfigEditHeader": "",
+			"readingConfigName": "",
+			"readingConfigRemoveHeader": "",
+			"readingConfigRemove": "",
+			"readingNumColorsGenerate": "",
+			"readingPresetName": ""
+		},
+		"release": {
+			"title": "",
+			"body": ""
+		}
+	},
+	"buttons": {
+		"cancel": "",
+		"ok": "",
+		"save": "",
+		"undo": "",
+		"dismiss": "",
+		"remove": "",
+		"download": ""
 	},
 	"error": {
 		"uncompress": {

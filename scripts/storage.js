@@ -226,7 +226,7 @@ function getLocaleUserLanguage(userLanguage = false)
 	var _userLanguage = userLanguage;
 
 	if(languagesList === false)
-		languagesList = $.parseJSON(readFileApp('/languages/languagesList.json'));
+		languagesList = JSON.parse(readFileApp('/languages/languagesList.json'));
 
 	var codes = [];
 
