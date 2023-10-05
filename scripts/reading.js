@@ -3466,7 +3466,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 		if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 		{
-			if(y < 48)
+			if(y < 96)
 			{
 				if(hiddenBarHeader && !shownBarHeader && !shownContentLeft && !hideContentRunningST)
 				{
@@ -3480,7 +3480,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 					hideContentRunningST = true;
 				}
 			}
-			else if(x < 48)
+			else if(x < 96)
 			{
 				if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && !hideContentRunningST)
 				{
