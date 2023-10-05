@@ -335,46 +335,58 @@ var files = [], indexFinished = false;
 
 async function _indexFiles(file, mainPath)
 {
-	if(!filesHas[file.path])
-	{
-		filesHas[file.path] = true;
+	return new Promise(async function(resolve) {
 
-		files.push({
-			name: file.name,
-			_name: removeDiacritics(file.name),
-			path: file.path,
-			_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
-			mainPath: mainPath,
-			folder: file.folder,
-			compressed: file.compressed,
-		});
-
-		if(file.folder || file.compressed)
+		if(!filesHas[file.path])
 		{
-			let _files;
+			filesHas[file.path] = true;
 
-			if(file.files)
+			files.push({
+				name: file.name,
+				_name: removeDiacritics(file.name),
+				path: file.path,
+				_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
+				mainPath: mainPath,
+				folder: file.folder,
+				compressed: file.compressed,
+			});
+
+			if(file.folder || file.compressed)
 			{
-				_files = file.files;
+				let _files;
+
+				if(file.files)
+				{
+					_files = file.files;
+				}
+				else
+				{
+					let _file = fileManager.file(file.path);
+					_files = await _file.read({sha: false});
+					delete _file;
+				}
+
+				let promises = [];
+
+				for(let i = 0, len = _files.length; i < len; i++)
+				{
+					let _file = _files[i];
+					promises.push(_indexFiles(_file, mainPath));
+				}
+
+				Promise.all(promises).then(resolve);
 			}
 			else
 			{
-				let _file = fileManager.file(file.path);
-				_files = await _file.read({sha: false});
-				delete _file;
+				resolve();
 			}
-
-			let promises = [];
-
-			for(let i = 0, len = _files.length; i < len; i++)
-			{
-				let _file = _files[i];
-				promises.push(_indexFiles(_file, mainPath));
-			}
-
-			return Promise.all(promises);
 		}
-	}
+		else
+		{
+			resolve();
+		}
+
+	});
 }
 
 async function indexFiles()
@@ -457,7 +469,7 @@ function showHide(_filterCurrentPage = false)
 	else
 	{
 		indexFiles();
-		document.querySelector('.search-bar > span').style.display = 'block';
+		document.querySelector('.search-bar > span').style.display = '';
 	}
 
 	app.event(window, 'click', searchClick, {capture: true});
