@@ -361,14 +361,18 @@ async function _indexFiles(file, mainPath)
 			{
 				let _file = fileManager.file(file.path);
 				_files = await _file.read({sha: false});
-				delete file;
+				delete _file;
 			}
+
+			let promises = [];
 
 			for(let i = 0, len = _files.length; i < len; i++)
 			{
 				let _file = _files[i];
-				await _indexFiles(_file, mainPath);
+				promises.push(_indexFiles(_file, mainPath));
 			}
+
+			return Promise.all(promises);
 		}
 	}
 }
@@ -382,16 +386,22 @@ async function indexFiles()
 	files = [];
 	filesHas = {};
 
+	let promises = [];
+
 	for(let i = 0, len = currentFiles.length; i < len; i++)
 	{
 		let file = currentFiles[i];
-		await _indexFiles(file, file.mainPath);
+		promises.push(_indexFiles(file, file.mainPath));
 	}
 
-	indexFinished = true;
+	Promise.all(promises).then(function(){
 
-	if(searchPending)
-		search(searchPending);
+		indexFinished = true;
+
+		if(searchPending)
+			search(searchPending);
+
+	});
 }
 
 async function indexFilesDom()
