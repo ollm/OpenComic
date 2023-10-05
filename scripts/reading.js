@@ -536,7 +536,7 @@ var rightSize = {}; // Right content size
 
 function calculateView()
 {
-	let contentRight = template.contentRight().get(0);
+	let contentRight = template._contentRight();
 
 	let content = contentRight.firstElementChild;
 	let rect = content.getBoundingClientRect();
@@ -554,7 +554,7 @@ function calculateView()
 	{
 		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
 			width: (rect.width * indexNum)+'px',
-			height: rect.height,
+			height: rect.height+'px',
 			flexDirection: '',
 		});
 	}
