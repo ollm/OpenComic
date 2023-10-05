@@ -1,4 +1,4 @@
-var changes = 49; // Update this if readingPagesConfig is updated
+var changes = 50; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -83,6 +83,7 @@ var storageDefault = {
 		controllerDeadZone: 0.06,
 		startInFullScreen: false,
 		startOnStartup: false,
+		ignoreSingleFoldersLibrary: true,
 		renderMaxWidth: 12000,
 		checkReleases: true,
 		checkPreReleases: true,
@@ -334,6 +335,10 @@ function updateStorageMD(data, defaultObj)
 	{
 		newData = updateStorageArrayMD(data, defaultObj);
 	}
+	else if(defaultObj !== 'object')
+	{
+		newData = data;
+	}
 	else
 	{
 		newData = {};
@@ -420,6 +425,9 @@ function start(callback)
 		if(!isEmpty(data))
 			var config = data.config;
 
+		let _appVersion = config.appVersion;
+		let _changes = config.changes;
+
 		for(let i in storageKeys)
 		{
 			var key = storageKeys[i];
@@ -429,7 +437,7 @@ function start(callback)
 				if(key == 'config')
 					storageDefault[key].language = getLocaleUserLanguage();
 
-				var storageNew = updateStorageMD(false, storageDefault[key]);
+				let storageNew = updateStorageMD(false, storageDefault[key]);
 
 				ejs.set(key, storageNew, function(error){});
 
@@ -437,15 +445,17 @@ function start(callback)
 			}
 			else
 			{
-				if(config.appVersion != _package.version || config.changes != changes)
+				if(_appVersion != _package.version || _changes != changes)
 				{
 					if(key == 'config')
 						storageDefault[key].language = getLocaleUserLanguage();
 
-					if(config.changes != changes)
-						var newData = updateStorageMD(data[key], storageDefault[key]);
+					let newData;
+
+					if(_changes != changes)
+						newData = updateStorageMD(data[key], storageDefault[key]);
 					else
-						var newData = data[key];
+						newData = data[key];
 
 					if(key == 'config')
 					{

@@ -363,25 +363,28 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			for(let key in masterFolders)
 			{
-				let file = fileManager.file(masterFolders[key]);
-				let files = await file.readDir();
-
-				for(let i = 0, len = files.length; i < len; i++)
+				if(fs.existsSync(masterFolders[key]))
 				{
-					let folder = files[i];
+					let file = fileManager.file(masterFolders[key]);
+					let files = await file.readDir();
 
-					if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
+					for(let i = 0, len = files.length; i < len; i++)
 					{
-						comics.push({
-							name: folder.name,
-							path: folder.path,
-							added: Math.round(fs.statSync(folder.path).mtimeMs / 1000),
-							folder: true,
-							compressed: folder.compressed,
-							fromMasterFolder: true,
-						});
+						let folder = files[i];
 
-						pathInMasterFolder[folder.path] = true;
+						if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
+						{
+							comics.push({
+								name: folder.name,
+								path: folder.path,
+								added: Math.round(fs.statSync(folder.path).mtimeMs / 1000),
+								folder: true,
+								compressed: folder.compressed,
+								fromMasterFolder: true,
+							});
+
+							pathInMasterFolder[folder.path] = true;
+						}
 					}
 				}
 			}
