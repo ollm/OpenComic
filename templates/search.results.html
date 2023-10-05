@@ -1,0 +1,12 @@
+{{#each searchResults}}
+<div class="search-bar-result gamepad-item{{#if @first}} gamepad-highlight{{/if}}" onclick="{{click}}">
+	<div>
+		{{#if icon}}
+		<i class="icon-24 material-icon">{{icon}}</i>
+		{{else}}
+		<div class="search-result-sha-{{image.sha}}" style="background-image: url({{image.thumbnail}});"></div>
+		{{/if}}
+	</div>
+	<span class="body-large">{{text}}</span>
+</div>
+{{/each}}

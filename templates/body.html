@@ -21,6 +21,21 @@
 		<div class="snackbars">
 
 		</div>
+		<div class="search-bar">
+			<div class="elevation-3">
+				<div class="search-bar-input">
+					<i class="icon-24 material-icon">search</i>
+					<input class="body-large search-input" type="text" onkeyup="dom.search.keyup.call(this, event)" placeholder="{{language.global.search}}">
+					<i class="icon-24 material-icon" onclick="dom.search.hide()">close</i>
+				</div>
+				<div class="search-bar-results">
+
+
+
+				</div>
+			</div>
+			<span onclick="dom.search.hide()"></span>
+		</div>
 		<div class="material-icon floating-action-button floating-action-button-min hover-text elevation-3" style="bottom: 152px;" onclick="dom.addComicButtons(false); addComic(false);" hover-text="{{language.menu.file.addFile}}">
 			<div class="material-icon ">note_add</div>
 		</div>

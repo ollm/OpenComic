@@ -282,6 +282,7 @@ function startApp()
 		dom.loadIndexPage(false);
 
 	dragAndDrop.start();
+	dom.search.start();
 
 	document.fonts.ready.then(function(){
 

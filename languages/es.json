@@ -38,6 +38,8 @@
 		"addToLibrary": "Añadir a la biblioteca",
 		"unsupportedFile": "El archivo no es compatible",
 		"reload": "Recargar",
+		"search": "Buscar",
+		"filterCurrentPage": "Filtrar la página actual",
 		"language": "Idioma",
 		"settings": "Ajustes",
 		"theme": "Tema",

@@ -304,10 +304,51 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	let toHighlight = false, index = 0;
 
 	// Menu
+	let search = template._globalElement().querySelector('.search-bar.active');
+	let hasSearch = search ? true : false;
+
+	if(hasSearch)
+	{
+		let items = search.querySelectorAll('.gamepad-item');
+		let scrollElement = currentScrollElement = search.querySelector('.search-bar-results');
+		let scrollTop = scrollElement.scrollTop;
+		currentScrollElementRect = scrollElement.getBoundingClientRect();
+
+		for(let i = 0, len = items.length; i < len; i++)
+		{
+			let item = items[i];
+			let rect = item.getBoundingClientRect();
+
+			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
+				toHighlight = index;
+
+			if(rect.height != 0 || rect.width != 0)
+			{
+				currentScreenItems.push({
+					inScroll: true,
+					block: 'top',
+					element: item,
+					x: rect.left,
+					y: rect.top + scrollTop,
+					centerY: rect.top + (rect.height / 2) + scrollTop,
+					onLeft: item.dataset.gamepadLeft,
+					onRight: item.dataset.gamepadRight,
+					left: rect.left,
+					right: rect.right,
+					top: rect.top + scrollTop,
+					bottom: rect.bottom + scrollTop,
+				});
+
+				index++;
+			}
+		}
+	}
+
+	// Menu
 	let menu = template._globalElement().querySelector('.menu-simple.a');
 	let hasMenu = menu ? true : false;
 
-	if(hasMenu)
+	if(hasMenu && !hasSearch)
 	{
 		let items = menu.querySelectorAll('.gamepad-item');
 		let scrollElement = currentScrollElement = menu.querySelector('.menu-simple-content');
@@ -345,7 +386,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	}
 
 	// Content right
-	if(!hasMenu)
+	if(!hasMenu && !hasSearch)
 	{
 		let items = template._contentRight().querySelectorAll('.gamepad-item');
 		let scrollElement = currentScrollElement = template.contentRight().children().get(0);
@@ -383,7 +424,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	}
 
 	// Content left
-	if(!hasMenu)
+	if(!hasMenu && !hasSearch)
 	{
 		let items = template._contentLeft().querySelectorAll('.gamepad-item');
 
@@ -762,9 +803,11 @@ window.addEventListener('keydown', function(event) {
 
 	if((!onReading || document.querySelector('.menu-simple.a')) || key == 8)
 	{
-		if(!shortcuts.inputIsFocused())
+		let inputIsFocused = shortcuts.inputIsFocused();
+
+		if(!inputIsFocused || inputIsFocused.classList.contains('search-input'))
 		{
-			if(key == 8 || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
+			if((key == 8 && !inputIsFocused) || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
 			{
 				event.preventDefault();
 

@@ -38,6 +38,8 @@
 		"addToLibrary": "Add to library",
 		"unsupportedFile": "The file is not supported",
 		"reload": "Reload",
+		"search": "Search",
+		"filterCurrentPage": "Filter current page",
 		"language": "Language",
 		"settings": "Settings",
 		"theme": "Theme",

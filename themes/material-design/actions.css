@@ -2388,3 +2388,165 @@ table tbody td.lh0
 {
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
+
+
+/* Search Bar */
+
+.search-bar > span
+{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+	z-index: 3;
+	display: none;
+}
+
+.search-bar.active > span
+{
+	display: block;
+}
+
+.search-bar > div
+{
+	position: fixed;
+	min-height: 56px;
+	border-radius: 28px;
+	width: 600px;
+	max-width: calc(100% - 192px - 32px);
+	right: calc(50% - 400px);
+	top: 64px;
+	z-index: 4;
+	background-color: var(--md-sys-color-surface-container-high);
+	color: var(--md-sys-color-on-surface);
+	pointer-events: none;
+	transform: translate(0px, -10px);
+	transition: 0.3s var(--md-sys-motion-easing-emphasized-decelerate);
+	opacity: 0;
+	overflow: hidden;
+}
+
+.search-bar.active > div
+{
+	pointer-events: initial;
+	transform: translate(0px, 0px);
+	opacity: 1;
+}
+
+
+.search-bar.active > div
+{
+	animation-name: cascading-in;
+	animation-duration: 0.4s;
+	animation-fill-mode: forwards;
+	animation-timing-function: var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.search-bar.disable > div
+{
+	animation-name: cascading-out;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	animation-timing-function: var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+.search-bar-input
+{
+	height: 56px;
+}
+
+.search-bar-input > *
+{
+	float: left;
+}
+
+.search-bar-input i
+{
+	padding: 16px;
+}
+
+.search-bar-input i:last-child
+{
+	float: right;
+	cursor: pointer;
+}
+
+.search-bar-input input
+{
+	width: calc(100% - 112px);
+	border: 0px;
+	box-sizing: border-box;
+	outline: none;
+	background-color: transparent;
+	color: var(--md-sys-color-on-surface);
+	padding: 0px;
+	margin: 16px 0px;
+}
+
+.search-bar-results
+{
+	transition: height 0.3s var(--md-sys-motion-easing-emphasized-decelerate);
+	height: 0px;
+	overflow: auto;
+	border-top: 1px solid var(--md-sys-color-outline);
+	transform: translate(0px, 1px);
+}
+
+.search-bar-results.active
+{
+	transform: translate(0px);
+}
+
+.search-bar-result
+{
+	height: 56px;
+	display: flex;
+	cursor: pointer;
+	transition: 0.2s background-color;
+}
+
+.search-bar-result:hover
+{
+	background-color: var(--md-sys-color-on-surface-variant-2);
+}
+
+.search-bar-result:active,
+.search-bar-result.gamepad-highlight
+{
+	background-color: var(--md-sys-color-on-surface-variant-4);
+}
+
+.search-bar-result > div
+{
+	height: 56px;
+	width: 56px;
+}
+
+.search-bar-result > div i
+{
+	padding: 16px;
+}
+
+.search-bar-result > div > div
+{
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	background-size: cover;
+	background-position: 50%;
+	background-color: rgba(0, 0, 0, 0.1);
+	transition: 0.3s;
+	margin: 12px;
+}
+
+.search-bar-result > span
+{
+	display: block;
+	line-height: 56px;
+	width: calc(100% - 56px);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+}

@@ -1,4 +1,4 @@
-var changes = 50; // Update this if readingPagesConfig is updated
+var changes = 51; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -131,6 +131,9 @@ var storageDefault = {
 			progress: 0,
 		},
 	}],
+	recentlySearched: [
+		'',
+	],
 	masterFolders: [
 		'',
 	],

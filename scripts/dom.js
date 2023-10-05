@@ -1,5 +1,6 @@
 const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
-	domManager = require(p.join(appDir, 'scripts/dom/dom.js'));
+	domManager = require(p.join(appDir, 'scripts/dom/dom.js')),
+	search = require(p.join(appDir, 'scripts/dom/search.js'));
 
 /*Page - Index*/
 
@@ -160,7 +161,7 @@ function addImageToDom(querySelector, path, animation = true)
 	let src = dom.queryAll('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).setAttribute('src', path);
 
 	let ri = dom.queryAll('.ri-sha-'+querySelector).setAttribute('src', path);
-	let cr = dom.queryAll('.continue-reading-sha-'+querySelector).css({backgroundImage: backgroundImage});
+	let cr = dom.queryAll('.continue-reading-sha-'+querySelector+', .search-result-sha-'+querySelector).css({backgroundImage: backgroundImage});
 
 	if(animation)
 	{
@@ -1433,6 +1434,7 @@ module.exports = {
 	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
 	indexMainPathA: function(){return indexMainPathA},
 	currentPathScrollTop: function(){return currentPathScrollTop},
+	search: search,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

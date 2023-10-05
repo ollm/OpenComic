@@ -22,7 +22,7 @@ async function loadShoShoObject()
 function inputIsFocused()
 {
 	if(document.activeElement.tagName === 'INPUT')
-		return true;
+		return document.activeElement;
 
 	return false;
 }
@@ -33,6 +33,8 @@ function loadShortcuts()
 		browse: {
 			actionsOrder: [
 				'reload',
+				'search',
+				'searchFilter',
 			],
 			actions: {
 				reload: {
@@ -42,10 +44,26 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				search: {
+					name: language.global.search,
+					function: function(){
+						dom.search.showHide();
+						return true;
+					},
+				},
+				searchFilter: {
+					name: language.global.search,
+					function: function(){
+						dom.search.showHide(true);
+						return true;
+					},
+				},
 			},
 			shortcuts: {},
 			_shortcuts: {
 				'F5': 'reload',
+				'Ctrl+F': 'search',
+				'Ctrl+G': 'searchFilter',
 			},
 			gamepad: {},
 			_gamepad: {},
