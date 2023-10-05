@@ -807,7 +807,7 @@ window.addEventListener('keydown', function(event) {
 
 		if(!inputIsFocused || inputIsFocused.classList.contains('search-input'))
 		{
-			if((key == 8 && !inputIsFocused) || key == 13 || key == 37 || key == 38 || key == 39 || key == 40)
+			if(((key == 8 || key == 37 || key == 39) && !inputIsFocused) || key == 13 || key == 38 || key == 40)
 			{
 				event.preventDefault();
 

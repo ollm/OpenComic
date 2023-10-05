@@ -203,7 +203,7 @@ function search(text)
 
 				if(file.folder || file.compressed)
 				{
-					click = 'dom.loadIndexPage(true, \''+escapeQuotes(file.path)+'\', false, false, \''+escapeQuotes(file.mainPath)+'\', false, true)';
+					click = 'dom.loadIndexPage(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', false, false, \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\', false, true)';
 				}
 				else
 				{
@@ -218,7 +218,7 @@ function search(text)
 					image.sha = sha;
 					image.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
 
-					click = 'dom.openComic(true, \''+escapeQuotes(file.path)+'\', \''+escapeQuotes(file.mainPath)+'\')';
+					click = 'dom.openComic(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\')';
 				}
 
 				let text = file.matchPath ? file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '') : file.name;
@@ -286,7 +286,7 @@ function showRecentlySearched()
 		results.push({
 			icon: 'history',
 			text: recentlySearched[key],
-			click: 'dom.search.fillInput(\''+escapeQuotes(recentlySearched[key], 'simples')+'\')',
+			click: 'dom.search.fillInput(\''+escapeQuotes(escapeBackSlash(recentlySearched[key]), 'simples')+'\')',
 		});
 	}
 
