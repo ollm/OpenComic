@@ -26,8 +26,8 @@ function loadLanguageMD(hbc, obj, onlyStructure = false)
 function fillLanguages()
 {
 	let base = {};
-	loadLanguageMD(base, JSON.parse(fs.readFileSync('./languages/es.json', 'utf8')), true);
 	loadLanguageMD(base, JSON.parse(fs.readFileSync('./languages/en.json', 'utf8')), true);
+	loadLanguageMD(base, JSON.parse(fs.readFileSync('./languages/es.json', 'utf8')), true);
 
 	let files = fs.readdirSync('./languages');
 

@@ -233,6 +233,11 @@ function setGlobalZoom(value)
 	storage.updateVar('config', 'readingGlobalZoom', value);
 }
 
+function setIgnoreSingleFoldersLibrary(value)
+{
+	storage.updateVar('config', 'ignoreSingleFoldersLibrary', value);
+}
+
 function setShowFullPathLibrary(value)
 {
 	storage.updateVar('config', 'showFullPathLibrary', value);

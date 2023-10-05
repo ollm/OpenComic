@@ -48,30 +48,38 @@ var contentRightZindex = 1;
 
 function changeContentRight(html, animation = true, keepScroll = false)
 {
-	$('.content-right > div.to-remove').remove();
-	$('.content-right > div').addClass('to-remove');
+	dom.queryAll('.content-right > div.to-remove').remove();
+	dom.queryAll('.content-right > div').addClass('to-remove');
+
+	let scroll;
 
 	if(keepScroll && keepScroll < 2)
 	{
-		var previous = $('.content-right > div > div').last();
-		var scroll = (previous.scrollTop() / (previous.prop('scrollHeight') - previous.height()));
+		let previous = document.querySelector('.content-right > div > div:last-child');
+		scroll = (previous.scrollTop / (previous.scrollHeight - previous.getBoundingClientRect().height));
 	}
 
 	document.querySelector('.content-right').insertAdjacentHTML('beforeend', '<div class="content-right-'+contentRightZindex+(animation ? ' a' : '')+'" style="z-index: ' + contentRightZindex + ';"><div>'+html+'</div></div>');
 
 	if(keepScroll)
 	{
-		var current = $('.content-right > div > div').last();
+		let current = document.querySelector('.content-right > div > div:last-child');
 
 		if(keepScroll > 1)
-			current.scrollTop(keepScroll);
+			current.scrollTop = keepScroll;
 		else
-			current.scrollTop((current.prop('scrollHeight') - current.height()) * scroll);
+			current.scrollTop = (current.scrollHeight - current.getBoundingClientRect().height) * scroll;
 	}
 
-	contentRight = $('.content-right .content-right-'+contentRightZindex);
 	_contentRight = document.querySelector('.content-right .content-right-'+contentRightZindex);
-	setTimeout('$(\'.content-right-'+(contentRightZindex-1)+'\').remove(); $(\'.content-right-'+contentRightZindex+'\').removeClass(\'a\')', 300);
+	contentRight = $(_contentRight);
+
+	setTimeout(function(zIndex){
+
+		dom.queryAll('.content-right-'+(zIndex-1)).remove();
+		dom.queryAll('.content-right-'+zIndex).removeClass('a')
+
+	}, 300, contentRightZindex);
 
 	contentRightZindex++;
 }
@@ -85,13 +93,19 @@ var headerZindex = 1;
 
 function changeHeader(html, animation = true)
 {
-	$('.bar-header > div.to-remove').remove();
-	$('.bar-header > div').addClass('to-remove');
+	dom.queryAll('.bar-header > div.to-remove').remove();
+	dom.queryAll('.bar-header > div').addClass('to-remove');
 	document.querySelector('.bar-header').insertAdjacentHTML('beforeend', '<div class="bar-header-'+headerZindex+(animation ? ' a' : '')+'" style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
 
-	barHeader = $('.bar-header .bar-header-'+headerZindex);
 	_barHeader = document.querySelector('.bar-header .bar-header-'+headerZindex);
-	setTimeout('$(\'.bar-header-'+(headerZindex-1)+'\').remove(); $(\'.bar-header-'+headerZindex+'\').removeClass(\'a\')', 300);
+	barHeader = $(_barHeader);
+
+	setTimeout(function(zIndex){
+
+		dom.queryAll('.bar-header-'+(zIndex-1)).remove();
+		dom.queryAll('.bar-header-'+zIndex).removeClass('a');
+
+	}, 300, headerZindex);
 
 	headerZindex++;
 }

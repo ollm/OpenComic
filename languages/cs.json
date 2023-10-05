@@ -138,6 +138,7 @@
 		},
 		"navigation": {
 			"main": "",
+			"ignoreSingleFoldersLibrary": "",
 			"showFullPathLibrary": "",
 			"showFullPathOpened": ""
 		},

@@ -138,6 +138,7 @@
 		},
 		"navigation": {
 			"main": "Navigation",
+			"ignoreSingleFoldersLibrary": "Ignore single folders (Open automatically)",
 			"showFullPathLibrary": "Show full path when opening library comics",
 			"showFullPathOpened": "Show full path when opening a file or folder"
 		},

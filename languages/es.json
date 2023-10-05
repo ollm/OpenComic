@@ -138,6 +138,7 @@
 		},
 		"navigation": {
 			"main": "Navegación",
+			"ignoreSingleFoldersLibrary": "Ignorar carpetas individuales (Se abren automáticamente)",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los comics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta"
 		},

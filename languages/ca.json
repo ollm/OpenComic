@@ -113,8 +113,8 @@
 			"favoriteSites": "Llocs favorits",
 			"emptyFavoriteSites": "Cap lloc a favorits",
 			"problemChapter": "Capítol no detectat",
-			"chapters": "Capítol",
-			"chapter": "",
+			"chapters": "Capítols",
+			"chapter": "Capítol",
 			"volumes": "Toms",
 			"volume": "Tom"
 		},
@@ -138,6 +138,7 @@
 		},
 		"navigation": {
 			"main": "Navegación",
+			"ignoreSingleFoldersLibrary": "Ignorar carpetes individuals (S'obren automàticament)",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta"
 		},

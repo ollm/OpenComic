@@ -60,6 +60,14 @@
 			<h2 class="headline-small">{{language.settings.navigation.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
+				{{language.settings.navigation.ignoreSingleFoldersLibrary}}
+				<div class="switch{{#if config.ignoreSingleFoldersLibrary}} a{{/if}}" on="settings.setIgnoreSingleFoldersLibrary(true)" off="settings.setIgnoreSingleFoldersLibrary(false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text gamepad-item">
 				{{language.settings.navigation.showFullPathLibrary}}
 				<div class="switch{{#if config.showFullPathLibrary}} a{{/if}}" on="settings.setShowFullPathLibrary(true)" off="settings.setShowFullPathLibrary(false)">
 					<div></div>

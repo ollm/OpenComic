@@ -276,10 +276,14 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 		events.events();
 
+		return pathFiles;
+
 	}).catch(function(error){
 
 		console.error(error);
 		dom.compressedError(error);
+
+		return [];
 
 	});
 
@@ -290,9 +294,9 @@ async function reloadIndex()
 	loadIndexPage(true, indexPathA, true, true, indexMainPathA);
 }
 
-var currentPath = false, currentPathScrollTop = [];
+var currentPath = false, currentPathScrollTop = [], fromIgnoreSingleFoldersNow = 0;
 
-async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false)
+async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, disableIgnoreSingleFolders = false, fromIgnoreSingleFolders = false)
 {
 	selectMenuItem('library');
 
@@ -458,7 +462,17 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		headerPath(path, mainPath);
 		template.loadHeader('index.header.html', animation);
-		template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+
+		if(fromIgnoreSingleFolders && Date.now() - fromIgnoreSingleFoldersNow < 300)
+		{
+			template._barHeader().firstElementChild.innerHTML = template.load('index.header.html');
+			template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
+		}
+		else
+		{
+			template.loadHeader('index.header.html', animation);
+			template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+		}
 
 		if(!content)
 		{
@@ -474,12 +488,22 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		cache.cleanQueue();
 
 		let file = fileManager.file(path);
-		await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+		let files = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+
+		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && files.length == 1)
+		{
+			fromIgnoreSingleFoldersNow = Date.now();
+
+			indexPathControlA.pop();
+
+			dom.loadIndexPage(true, files[0].path, false, false, files[0].mainPath, false, false, true);
+
+			return;
+		}
 	}
 
 	if(readingActive)
 		readingActive = false;
-
 
 	shortcuts.register('browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
