@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Adjust the brightness, saturation, contrast, sepia and colorize black and white images [`04b1caa`](https://github.com/ollm/OpenComic/commit/04b1caa5d28a468df6e94893bd943518da762030)
 - Master folder support from settings [`9edd70e`](https://github.com/ollm/OpenComic/commit/9edd70ec871855cf2b43fa5cebea4bdf83baae7f)
 - Ignore single folders in browsing [`7507563`](https://github.com/ollm/OpenComic/commit/75075631fcad5fb269427c178e9bac86bc352971)
-- Search and filter in library/browsing
+- Search and filter in library/browsing [`8393903`](https://github.com/ollm/OpenComic/commit/8393903117981bea2b8a79e2e50b77d02334aa05)
 
 ##### 🐛 Bug Fixes
 

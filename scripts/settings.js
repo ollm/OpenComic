@@ -276,6 +276,7 @@ module.exports = {
 	start: start,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
+	setIgnoreSingleFoldersLibrary: setIgnoreSingleFoldersLibrary,
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,
 	setStartInFullScreen: setStartInFullScreen,

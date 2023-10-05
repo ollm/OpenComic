@@ -343,7 +343,7 @@ async function _indexFiles(file, mainPath)
 			name: file.name,
 			_name: removeDiacritics(file.name),
 			path: file.path,
-			_path: removeDiacritics(file.path),
+			_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
 			mainPath: mainPath,
 			folder: file.folder,
 			compressed: file.compressed,
@@ -409,7 +409,7 @@ async function indexFilesDom()
 		files.push({
 			index: i,
 			_name: removeDiacritics(file.name),
-			_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '')),
+			_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
 		});
 	}
 
