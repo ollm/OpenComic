@@ -28,7 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Wrong detection of folder images in some cases [`425a137`](https://github.com/ollm/OpenComic/commit/425a137333114739cb4f0b1e92e4606f2c9da87c)
 - Ignore first gamepad and keyboard event in browsing [`9347fbe`](https://github.com/ollm/OpenComic/commit/9347fbe628143e688f956ed0950510a2265c02e2)
 - Blurry image when zooming [`0732f3f`](https://github.com/ollm/OpenComic/commit/0732f3f76923f2a50541139e58fb8343e7c20083)
-- Progress was not saved in some cases
+- Progress was not saved in some cases [`964bb64`](https://github.com/ollm/OpenComic/commit/964bb64ee765d3830615e78413bf520b17549b0c)
 
 ## [v1.0.0-beta.2](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.2) (03-09-2023)
 

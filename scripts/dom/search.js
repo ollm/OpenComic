@@ -441,7 +441,7 @@ async function indexFilesDom()
 		files.push({
 			index: i,
 			_name: removeDiacritics(file.name),
-			_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
+			_path: '',
 		});
 	}
 
