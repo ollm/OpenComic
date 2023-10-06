@@ -306,8 +306,12 @@ function saveRecentlySearched()
 	storage.set('recentlySearched', recentlySearched);
 }
 
+var updateBrowsableItemsST = false;
+
 function setResults(results)
 {
+	clearTimeout(updateBrowsableItemsST);
+
 	handlebarsContext.searchResults = results;
 
 	let len = results.length;
@@ -328,7 +332,13 @@ function setResults(results)
 		searchBarResults.classList.remove('active');
 
 	if(document.querySelector('.search-bar.active'))
-		gamepad.updateBrowsableItems('search', true);
+	{
+		updateBrowsableItemsST = setTimeout(function(){
+
+			gamepad.updateBrowsableItems('search', true);
+
+		}, 300);
+	}
 }
 
 var files = [], indexFinished = false;
@@ -447,6 +457,7 @@ function showHide(_filterCurrentPage = false)
 {
 	if(showed) return hide();
 
+	clearTimeout(updateBrowsableItemsST);
 	clearTimeout(hideST);
 
 	filterCurrentPage = _filterCurrentPage;
@@ -459,7 +470,11 @@ function showHide(_filterCurrentPage = false)
 	input.value = '';
 	input.focus();
 
-	gamepad.updateBrowsableItems('search', true);
+	updateBrowsableItemsST = setTimeout(function(){
+
+		gamepad.updateBrowsableItems('search', true);
+
+	}, 300);
 
 	if(filterCurrentPage)
 	{
@@ -483,6 +498,7 @@ async function hide(fromSearchClick = false)
 {
 	if(!showed) return;
 
+	clearTimeout(updateBrowsableItemsST);
 	clearTimeout(hideST);
 
 	let search = document.querySelector('.search-bar');

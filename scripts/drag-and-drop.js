@@ -71,6 +71,8 @@ function allowDrag(event)
 
 function handleDrop(event)
 {
+	event.preventDefault();
+
 	if(dragAndDropFocus && event.dataTransfer.files && event.dataTransfer.files[0] && event.dataTransfer.files[0].path)
 	{
 		let type = dragAndDropFocus.dataset.type;
