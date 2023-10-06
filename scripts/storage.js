@@ -1,4 +1,4 @@
-var changes = 51; // Update this if readingPagesConfig is updated
+var changes = 52; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -80,6 +80,7 @@ var storageDefault = {
 		readingHideBarHeaderFullScreen: true,
 		readingMaxMargin: 400,
 		readingGlobalZoom: true,
+		readingTrackingAtTheEnd: true,
 		controllerDeadZone: 0.06,
 		startInFullScreen: false,
 		startOnStartup: false,
@@ -338,7 +339,7 @@ function updateStorageMD(data, defaultObj)
 	{
 		newData = updateStorageArrayMD(data, defaultObj);
 	}
-	else if(defaultObj !== 'object')
+	else if(typeof defaultObj !== 'object')
 	{
 		newData = data;
 	}

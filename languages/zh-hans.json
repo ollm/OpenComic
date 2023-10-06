@@ -136,7 +136,8 @@
 		"reading": {
 			"main": "",
 			"maxMargin": "",
-			"globalZoom": ""
+			"globalZoom": "",
+			"trackingAtTheEnd": ""
 		},
 		"navigation": {
 			"main": "",

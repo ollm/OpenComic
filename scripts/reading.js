@@ -688,6 +688,12 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 		lastPage.innerHTML = nextIsNextComic ? 'skip_next' : 'last_page';
 		lastPage.setAttribute('hover-text', nextIsNextComic ? language.reading.nextChapter : language.reading.lastPage);
 
+		if(config.readingTrackingAtTheEnd && !trackingCurrent && ((_config.readingManga && prevIsPrevComic) || (!_config.readingManga && nextIsNextComic)))
+		{
+			trackingCurrent = true;
+			tracking.track();
+		}
+
 		prevChangeHeaderButtons = currentChangeHeaderButtons;
 		changeHeaderButtonsDelayed = false;
 	}
@@ -3014,12 +3020,12 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false;
+var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {};
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false;
 
 	loadReadingConfig(currentReadingConfigKey);
 
@@ -3737,7 +3743,11 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	template.contentRight().children('div').css({scrollbarGutter: readingViewIs('scroll') ? '' : 'initial'});
 	
-	tracking.track();
+	if(!config.readingTrackingAtTheEnd)
+	{
+		trackingCurrent = true;
+		tracking.track();
+	}
 
 	filters.apply();
 

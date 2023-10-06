@@ -233,6 +233,11 @@ function setGlobalZoom(value)
 	storage.updateVar('config', 'readingGlobalZoom', value);
 }
 
+function setTrackingAtTheEnd(value)
+{
+	storage.updateVar('config', 'readingTrackingAtTheEnd', value);
+}
+
 function setIgnoreSingleFoldersLibrary(value)
 {
 	storage.updateVar('config', 'ignoreSingleFoldersLibrary', value);
@@ -276,6 +281,7 @@ module.exports = {
 	start: start,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
+	setTrackingAtTheEnd: setTrackingAtTheEnd,
 	setIgnoreSingleFoldersLibrary: setIgnoreSingleFoldersLibrary,
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,

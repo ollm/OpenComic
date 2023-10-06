@@ -136,7 +136,8 @@
 		"reading": {
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",
-			"globalZoom": "Applies a global zoom instead of image by image (Only in vertical reading)"
+			"globalZoom": "Applies a global zoom instead of image by image (Only in vertical reading)",
+			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
 		},
 		"navigation": {
 			"main": "Navigation",
@@ -174,7 +175,8 @@
 			"main": "Master folders",
 			"folder": "Folder",
 			"noFolders": "No folders"
-		}
+		},
+		"tracking": {}
 	},
 	"menu": {
 		"file": {
