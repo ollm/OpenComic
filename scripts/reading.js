@@ -1298,9 +1298,9 @@ function showNextComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -1392,9 +1392,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -2476,7 +2476,12 @@ function createAndDeleteBookmark(index = false)
 	}
 }
 
-var saveReadingProgressA = false;
+var saveReadingProgressA = false, fromSkip = false;
+
+function setFromSkip()
+{
+	fromSkip = true;
+}
 
 //Save current reading progress
 function saveReadingProgress(path = false)
@@ -3029,7 +3034,10 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	loadReadingConfig(currentReadingConfigKey);
 
-	saveReadingProgressA = false;
+	if(!fromSkip)
+		saveReadingProgressA = false;
+
+	fromSkip = false;
 
 	readingCurrentPath = path;
 
@@ -3792,6 +3800,7 @@ module.exports = {
 	activeOnScroll: function(){return activeOnScroll},
 	saveReadingProgress: saveReadingProgress,
 	saveReadingProgressA: function(){return saveReadingProgressA},
+	setFromSkip: setFromSkip,
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentIndex: function(){return currentIndex},
 	currentPageVisibility: function(){return currentPageVisibility},

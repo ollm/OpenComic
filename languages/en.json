@@ -175,8 +175,7 @@
 			"main": "Master folders",
 			"folder": "Folder",
 			"noFolders": "No folders"
-		},
-		"tracking": {}
+		}
 	},
 	"menu": {
 		"file": {

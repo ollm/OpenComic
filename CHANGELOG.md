@@ -19,7 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Master folder support from settings [`9edd70e`](https://github.com/ollm/OpenComic/commit/9edd70ec871855cf2b43fa5cebea4bdf83baae7f)
 - Ignore single folders in browsing [`7507563`](https://github.com/ollm/OpenComic/commit/75075631fcad5fb269427c178e9bac86bc352971)
 - Search and filter in library/browsing [`8393903`](https://github.com/ollm/OpenComic/commit/8393903117981bea2b8a79e2e50b77d02334aa05)
-- Tracking at the end of the chapter/volume setting option
+- Tracking at the end of the chapter/volume setting option [`39f1954`](https://github.com/ollm/OpenComic/commit/39f19546b2fd363d321f9c423e706c3dc773aa4f)
 
 ##### 🐛 Bug Fixes
 
@@ -27,7 +27,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Go back in gamepad menus [`b2719e5`](https://github.com/ollm/OpenComic/commit/b2719e5e782659f249ce7a6ba6c8b94fe40a3407)
 - Wrong detection of folder images in some cases [`425a137`](https://github.com/ollm/OpenComic/commit/425a137333114739cb4f0b1e92e4606f2c9da87c)
 - Ignore first gamepad and keyboard event in browsing [`9347fbe`](https://github.com/ollm/OpenComic/commit/9347fbe628143e688f956ed0950510a2265c02e2)
-- Blurry image when zooming
+- Blurry image when zooming [`0732f3f`](https://github.com/ollm/OpenComic/commit/0732f3f76923f2a50541139e58fb8343e7c20083)
+- Progress was not saved in some cases
 
 ## [v1.0.0-beta.2](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.2) (03-09-2023)
 
