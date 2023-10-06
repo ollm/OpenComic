@@ -10,7 +10,7 @@ function loadTemplate(file)
 
 function loadTemplateQuery(querySelector, file)
 {
-	var element = document.querySelector(querySelector);
+	let element = document.querySelector(querySelector);
 	if(element) element.innerHTML = loadTemplate(file);
 }
 
@@ -28,13 +28,20 @@ var contentLeftZindex = 1;
 
 function changeContentLeft(html, animation = true)
 {
-	$('.content-left > div.to-remove').remove();
-	$('.content-left > div').addClass('to-remove');
+	dom.query('.content-left > div.to-remove').remove();
+	dom.query('.content-left > div').addClass('to-remove');
+
 	document.querySelector('.content-left').insertAdjacentHTML('beforeend', '<div class="content-left-'+contentLeftZindex+(animation ? ' a' : '')+'" style="z-index: ' + contentLeftZindex + ';"><div>'+html+'</div></div>');
 
-	contentLeft = $('.content-left .content-left-'+contentLeftZindex);
 	_contentLeft = document.querySelector('.content-left .content-left-'+contentLeftZindex);
-	setTimeout('$(\'.content-left-'+(contentLeftZindex-1)+'\').remove(); $(\'.content-left-'+contentLeftZindex+'\').removeClass(\'a\')', 300);
+	contentLeft = $(_contentLeft);
+
+	setTimeout(function(zIndex){
+
+		dom.query('.content-left-'+(zIndex-1)).remove();
+		dom.query('.content-left-'+zIndex).removeClass('a')
+
+	}, 300, contentLeftZindex);
 
 	contentLeftZindex++;
 }
@@ -48,8 +55,8 @@ var contentRightZindex = 1;
 
 function changeContentRight(html, animation = true, keepScroll = false)
 {
-	dom.queryAll('.content-right > div.to-remove').remove();
-	dom.queryAll('.content-right > div').addClass('to-remove');
+	dom.query('.content-right > div.to-remove').remove();
+	dom.query('.content-right > div').addClass('to-remove');
 
 	let scroll;
 
@@ -76,8 +83,8 @@ function changeContentRight(html, animation = true, keepScroll = false)
 
 	setTimeout(function(zIndex){
 
-		dom.queryAll('.content-right-'+(zIndex-1)).remove();
-		dom.queryAll('.content-right-'+zIndex).removeClass('a')
+		dom.query('.content-right-'+(zIndex-1)).remove();
+		dom.query('.content-right-'+zIndex).removeClass('a')
 
 	}, 300, contentRightZindex);
 
@@ -93,8 +100,9 @@ var headerZindex = 1;
 
 function changeHeader(html, animation = true)
 {
-	dom.queryAll('.bar-header > div.to-remove').remove();
-	dom.queryAll('.bar-header > div').addClass('to-remove');
+	dom.query('.bar-header > div.to-remove').remove();
+	dom.query('.bar-header > div').addClass('to-remove');
+
 	document.querySelector('.bar-header').insertAdjacentHTML('beforeend', '<div class="bar-header-'+headerZindex+(animation ? ' a' : '')+'" style="z-index: ' + headerZindex + ';"><div>'+html+'</div></div>');
 
 	_barHeader = document.querySelector('.bar-header .bar-header-'+headerZindex);
@@ -102,8 +110,8 @@ function changeHeader(html, animation = true)
 
 	setTimeout(function(zIndex){
 
-		dom.queryAll('.bar-header-'+(zIndex-1)).remove();
-		dom.queryAll('.bar-header-'+zIndex).removeClass('a');
+		dom.query('.bar-header-'+(zIndex-1)).remove();
+		dom.query('.bar-header-'+zIndex).removeClass('a');
 
 	}, 300, headerZindex);
 
@@ -120,13 +128,13 @@ function loadHeader(template, animation)
 
 function changeGlobalElement(html, element)
 {
-	var element = document.querySelector('.global-elements .'+element);
+	element = document.querySelector('.global-elements .'+element);
 	if(element) element.innerHTML = html;
 
 	if(globalElement === false)
 	{
-		globalElement = $('.global-elements');
 		_globalElement = document.querySelector('.global-elements');
+		globalElement = $(_globalElement);
 	}
 }
 

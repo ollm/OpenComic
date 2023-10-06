@@ -60,7 +60,7 @@ var file = function(path) {
 		else
 		{
 			if(fs.statSync(_realPath).isDirectory())
-				files = this.readDir(path, _realPath);
+				files = await this.readDir(path, _realPath);
 			else if(inArray(fileExtension(path), compressedExtensions.all))
 				files = await this.readCompressed(path, _realPath);
 		}
@@ -88,26 +88,32 @@ var file = function(path) {
 		path = path || this.path;
 		_realPath = _realPath || realPath(path, -1);
 
-		let files = [];
-		let _files = fs.readdirSync(_realPath);
+		let _this = this;
 
-		if(_files)
-		{
-			for(let i = 0, len = _files.length; i < len; i++)
+		return fs.promises.readdir(_realPath).then(function(_files){
+
+			let files = [];
+
+			if(_files)
 			{
-				let filePath = p.join(path, _files[i]);
-				let retrunPath = filePath;
+				for(let i = 0, len = _files.length; i < len; i++)
+				{
+					let filePath = p.join(path, _files[i]);
+					let retrunPath = filePath;
 
-				if(!this.config.fastRead && fs.statSync(filePath).isDirectory())
-					files.push({name: _files[i], path: retrunPath, folder: true, compressed: false});
-				else if(inArray(fileExtension(filePath), compressedExtensions.all))
-					files.push({name: _files[i], path: retrunPath, folder: false, compressed: true});
-				else
-					files.push({name: _files[i], path: retrunPath, folder: false, compressed: false});
+					if(!_this.config.fastRead && fs.statSync(filePath).isDirectory())
+						files.push({name: _files[i], path: retrunPath, folder: true, compressed: false});
+					else if(inArray(fileExtension(filePath), compressedExtensions.all))
+						files.push({name: _files[i], path: retrunPath, folder: false, compressed: true});
+					else
+						files.push({name: _files[i], path: retrunPath, folder: false, compressed: false});
+				}
 			}
-		}
 
-		return files;
+			return files;
+
+		});
+
 	}
 
 	this.compressedOpened = {};

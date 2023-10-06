@@ -271,7 +271,7 @@ function startApp()
 	if(config.checkReleases)
 		checkReleases.check();
 
-	template.loadContentRight('index.content.right.module.html', false);
+	template.loadContentRight('index.content.right.empty.html', false);
 	template.loadHeader('index.header.html', false);
 	template.loadContentLeft('index.content.left.html', false);
 	template.loadGlobalElement('index.elements.menus.html', 'menus');

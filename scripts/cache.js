@@ -1,4 +1,4 @@
-var queuedImages = [], processingTheImageQueue = false, imageLibrary = false, imageUse = 'im', sharp = false, jimp = false;
+var queuedImages = [], processingTheImageQueue = false;
 
 var cacheFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic');
 
@@ -63,7 +63,7 @@ function addImageToQueue(file, size, sha, callback, vars)
 {
 	queuedImages.push({file: file, size: size, sha: sha, callback: callback, vars: vars});
 
-	if(!processingTheImageQueue)
+	if(!processingTheImageQueue && !stopTheImageQueue)
 	{
 		processingTheImageQueue = true;
 
@@ -76,6 +76,32 @@ function addImageToQueue(file, size, sha, callback, vars)
 		}, 0);
 	}
 }
+
+var stopTheImageQueue = false;
+
+function stopQueue()
+{
+	stopTheImageQueue = true;
+}
+
+function resumeQueue()
+{
+	stopTheImageQueue = false;
+
+	if(!processingTheImageQueue && queuedImages.length > 0)
+	{
+		processingTheImageQueue = true;
+
+		setTimeout(function(){
+
+			process.nextTick(function() {
+				processTheImageQueue();
+			});
+
+		}, 0);
+	}
+}
+
 
 function cleanQueue()
 {
@@ -196,4 +222,6 @@ module.exports = {
 	deleteInCache: deleteInCache,
 	queuedImages: function(){return queuedImages},
 	processingTheImageQueue: function(){return processingTheImageQueue},
+	stopQueue: stopQueue,
+	resumeQueue: resumeQueue,
 };

@@ -407,6 +407,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			}
 		}
 
+		cache.cleanQueue();
+		cache.stopQueue();
+
 		if(comics.length > 0)
 		{
 			// Comic reading progress
@@ -427,6 +430,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
 			});
 		}
+
+		cache.resumeQueue();
 
 		handlebarsContext.comics = comics;
 		handlebarsContext.comicsIndex = true;
@@ -487,6 +492,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 
 		cache.cleanQueue();
+		cache.stopQueue();
 
 		let file = fileManager.file(path);
 		let files = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
@@ -501,6 +507,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			return;
 		}
+
+		cache.resumeQueue();
 	}
 
 	if(readingActive)
