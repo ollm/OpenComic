@@ -721,7 +721,7 @@
 
 .menu-simple-text, .menu-simple-button
 {
-	min-height: 52px;
+	height: 52px;
 	padding: 0px 24px;
 	line-height: 52px;
 	transition: background-color 0.2s, opacity 0.2s;
@@ -730,6 +730,8 @@
 
 .menu-simple-supporting-text
 {
+	height: initial;
+	min-height: 52px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

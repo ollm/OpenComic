@@ -177,13 +177,13 @@
 			"noFolders": "Sense carpetes"
 		},
 		"storage": {
-			"main": "",
-			"cache": "",
-			"cacheDescription": "",
-			"clearCache": "",
-			"temporaryFiles": "",
-			"temporaryFilesDescription": "",
-			"removeTemporaryFiles": ""
+			"main": "Emmagatzematge",
+			"cache": "Memòria cau",
+			"cacheDescription": "Les miniatures i l'índex dels fitxers comprimits s'emmagatzemen aquí, no es recomana netejar-la tret que sigui molt gran o hi hagi algun error relacionat amb ella",
+			"clearCache": "Netejar memòria cau",
+			"temporaryFiles": "Arxius temporals",
+			"temporaryFilesDescription": "Aquí es descomprimeixen els fitxers comprimits a mesura que es van necessitant, això s'elimina automàticament en tancar OpenComic",
+			"removeTemporaryFiles": "Eliminar fitxers temporals"
 		}
 	},
 	"menu": {

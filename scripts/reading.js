@@ -2963,7 +2963,7 @@ function loadTrackigSites()
 	handlebarsContext.trackingSites = trackingSites.list(true);
 	handlebarsContext.favoriteTrackingSites = trackingSites.listFavorite(true);
 
-	$('#tracking-sites .menu-simple').html(template.load('reading.elements.menus.tracking.sites.html'));
+	$('#tracking-sites .menu-simple-content').html(template.load('reading.elements.menus.tracking.sites.html'));
 }
 
 function trackingSiteToFavorite(site = '')

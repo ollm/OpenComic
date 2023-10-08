@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Ignore single folders in browsing [`7507563`](https://github.com/ollm/OpenComic/commit/75075631fcad5fb269427c178e9bac86bc352971)
 - Search and filter in library/browsing [`8393903`](https://github.com/ollm/OpenComic/commit/8393903117981bea2b8a79e2e50b77d02334aa05)
 - Tracking at the end of the chapter/volume setting option [`39f1954`](https://github.com/ollm/OpenComic/commit/39f19546b2fd363d321f9c423e706c3dc773aa4f)
-- View size and remove cache and temporary files from settings
+- View size and remove cache and temporary files from settings [`8114336`](https://github.com/ollm/OpenComic/commit/8114336ef2c70748e3b1d87618903ef34cb58f0a)
 
 ##### 🐛 Bug Fixes
 
