@@ -1,11 +1,63 @@
 function start()
 {
-	events.events();
-
 	generateShortcutsTable();
 
 	updateMasterFolders();
+
+	getStorageSize();
+
+	events.events();
 }
+
+async function getStorageSize()
+{
+	// Cache size
+	let cacheSize = await fileManager.dirSize(cache.folder);
+
+	cacheSize = cacheSize / 1000 / 1000;
+
+	if(cacheSize > 1000)
+		cacheSize = app.round(cacheSize / 1000, 1)+'GB';
+	else
+		cacheSize = app.round(cacheSize, 1)+'MB';
+
+	dom.queryAll('.cacheSize').html('&nbsp;('+cacheSize+')');
+
+	// Temp size
+	let tmpSize = await fileManager.dirSize(tempFolder);
+
+	tmpSize = tmpSize / 1000 / 1000;
+
+	if(tmpSize > 1000)
+		tmpSize = app.round(tmpSize / 1000, 1)+'GB';
+	else
+		tmpSize = app.round(tmpSize, 1)+'MB';
+
+	dom.queryAll('.temporaryFilesSize').html('&nbsp;('+tmpSize+')');
+}
+
+async function clearCache()
+{
+	await fse.emptyDir(cache.folder);
+
+	getStorageSize();
+}
+
+function removeTemporaryFiles(onClose = false)
+{
+	try
+	{
+		fse.emptyDirSync(tempFolder);
+	}
+	catch(error)
+	{
+		console.error(error);
+	}
+
+	if(!onClose)
+		getStorageSize();
+}
+
 
 function removeMasterFolder(key)
 {
@@ -296,4 +348,6 @@ module.exports = {
 	resoreShortcuts: resoreShortcuts,
 	removeMasterFolder: removeMasterFolder,
 	addMasterFolder: addMasterFolder,
+	clearCache: clearCache,
+	removeTemporaryFiles: removeTemporaryFiles,
 };

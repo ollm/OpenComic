@@ -631,18 +631,6 @@ function showAboutWindow()
 	});
 }
 
-function removeTemporaryFiles()
-{
-	try
-	{
-		fse.emptyDirSync(tempFolder);
-	}
-	catch(error)
-	{
-		console.error(error);
-	}
-}
-
 function escapeBackSlash(string)
 {
 	return string.replace(/\\+/g, '\\\\');

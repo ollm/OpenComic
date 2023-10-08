@@ -175,6 +175,15 @@
 			"main": "Carpetas maestras",
 			"folder": "Carpeta",
 			"noFolders": "Sin carpetas"
+		},
+		"storage": {
+			"main": "Almacenamiento",
+			"cache": "Caché",
+			"cacheDescription": "Las miniaturas y el índice de los archivos comprimidos se almacenan aquí, no se recomienda limpiarla a no ser que sea muy grande o haya algún error relacionado con ella",
+			"clearCache": "Limpiar caché",
+			"temporaryFiles": "Archivos temporales",
+			"temporaryFilesDescription": "Aquí se descomprimen los archivos comprimidos a medida que se van necesitando, esto se elimina automáticamente al cerrar OpenComic",
+			"removeTemporaryFiles": "Eliminar archivos temporales"
 		}
 	},
 	"menu": {

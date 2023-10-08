@@ -30,10 +30,10 @@ var file = function(path) {
 
 		if(fs.existsSync(path))
 		{
-			if(fs.statSync(path).isDirectory())
-				this.isFolder = true;
-			else if(inArray(fileExtension(path), compressedExtensions.all))
+			if(inArray(fileExtension(path), compressedExtensions.all))
 				this.isCompressed = true;
+			else if(fs.statSync(path).isDirectory())
+				this.isFolder = true;
 		}
 
 		return {folder: this.isFolder, compressed: this.isCompressed};
@@ -59,10 +59,10 @@ var file = function(path) {
 		}
 		else
 		{
-			if(fs.statSync(_realPath).isDirectory())
-				files = await this.readDir(path, _realPath);
-			else if(inArray(fileExtension(path), compressedExtensions.all))
+			if(inArray(fileExtension(path), compressedExtensions.all))
 				files = await this.readCompressed(path, _realPath);
+			else if(fs.statSync(_realPath).isDirectory())
+				files = await this.readDir(path, _realPath);
 		}
 
 		if(this.config.sort)
@@ -90,7 +90,7 @@ var file = function(path) {
 
 		let _this = this;
 
-		return fs.promises.readdir(_realPath).then(function(_files){
+		return fs.promises.readdir(_realPath, {withFileTypes: !_this.config.fastRead}).then(function(_files){
 
 			let files = [];
 
@@ -98,15 +98,17 @@ var file = function(path) {
 			{
 				for(let i = 0, len = _files.length; i < len; i++)
 				{
-					let filePath = p.join(path, _files[i]);
+					let name = _this.config.fastRead ? _files[i] : _files[i].name;
+
+					let filePath = p.join(path, name);
 					let retrunPath = filePath;
 
-					if(!_this.config.fastRead && fs.statSync(filePath).isDirectory())
-						files.push({name: _files[i], path: retrunPath, folder: true, compressed: false});
+					if(!_this.config.fastRead && _files[i].isDirectory())
+						files.push({name: name, path: retrunPath, folder: true, compressed: false});
 					else if(inArray(fileExtension(filePath), compressedExtensions.all))
-						files.push({name: _files[i], path: retrunPath, folder: false, compressed: true});
+						files.push({name: name, path: retrunPath, folder: false, compressed: true});
 					else
-						files.push({name: _files[i], path: retrunPath, folder: false, compressed: false});
+						files.push({name: name, path: retrunPath, folder: false, compressed: false});
 				}
 			}
 
@@ -1882,10 +1884,10 @@ function pathType(path)
 {
 	if(inArray(mime.getType(path), compatibleMime))
 		return {folder: false, compressed: false};
-	else if(fs.statSync(path).isDirectory())
-		return {folder: true, compressed: false};
 	else if(inArray(fileExtension(path), compressedExtensions.all))
 		return {folder: false, compressed: true};
+	else if(fs.statSync(path).isDirectory())
+		return {folder: true, compressed: false};
 	else
 		return false;
 }
@@ -1937,6 +1939,25 @@ function sort(files)
 	}
 }
 
+async function dirSize(dir)
+{
+	let files = await fs.promises.readdir(dir, {withFileTypes: true});
+	let size = 0;
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		let file = files[i];
+		let path = p.join(dir, file.name);
+
+		if(file.isDirectory())
+			size += await dirSize(path);
+		else if(file.isFile())
+			size += (await fs.promises.stat(path)).size;
+	}
+
+	return size;
+}
+
 var prevDevicePixelRatio = window.devicePixelRatio;
 
 window.addEventListener('resize', function() {
@@ -1965,4 +1986,5 @@ module.exports = {
 	firstCompressedFile: firstCompressedFile,
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
+	dirSize: dirSize,
 }

@@ -175,6 +175,15 @@
 			"main": "Carpetes mestres",
 			"folder": "Carpeta",
 			"noFolders": "Sense carpetes"
+		},
+		"storage": {
+			"main": "",
+			"cache": "",
+			"cacheDescription": "",
+			"clearCache": "",
+			"temporaryFiles": "",
+			"temporaryFilesDescription": "",
+			"removeTemporaryFiles": ""
 		}
 	},
 	"menu": {

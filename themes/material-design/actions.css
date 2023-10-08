@@ -721,11 +721,33 @@
 
 .menu-simple-text, .menu-simple-button
 {
-	height: 52px;
+	min-height: 52px;
 	padding: 0px 24px;
 	line-height: 52px;
 	transition: background-color 0.2s, opacity 0.2s;
 	position: relative;
+}
+
+.menu-simple-supporting-text
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.menu-simple-supporting-text > span
+{
+	line-height: 44px;
+	max-width: calc(100% - 450px);
+}
+
+.menu-simple-supporting-text > span > span
+{
+	color: var(--md-sys-color-on-surface-variant);
+	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
+	margin-top: -12px;
+	display: block;
+	padding-bottom: 12px;
 }
 
 .menu-grey

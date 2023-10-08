@@ -175,6 +175,15 @@
 			"main": "Master folders",
 			"folder": "Folder",
 			"noFolders": "No folders"
+		},
+		"storage": {
+			"main": "Storage",
+			"cache": "Cache",
+			"cacheDescription": "The thumbnails and index of the compressed files are stored here, it is not recommended to clean it unless it is very large or there is an error related to it",
+			"clearCache": "Clear cache",
+			"temporaryFiles": "Temporary files",
+			"temporaryFilesDescription": "Here the compressed files are decompressed as they are needed, this is automatically deleted when closing OpenComic",
+			"removeTemporaryFiles": "Remove temporary files"
 		}
 	},
 	"menu": {

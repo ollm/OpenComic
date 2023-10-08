@@ -175,6 +175,15 @@
 			"main": "",
 			"folder": "",
 			"noFolders": ""
+		},
+		"storage": {
+			"main": "",
+			"cache": "",
+			"cacheDescription": "",
+			"clearCache": "",
+			"temporaryFiles": "",
+			"temporaryFilesDescription": "",
+			"removeTemporaryFiles": ""
 		}
 	},
 	"menu": {
