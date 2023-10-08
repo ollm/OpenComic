@@ -181,6 +181,10 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		queue.clean('folderThumbnails');
 
 		let pathFiles = [];
+		let thumbnails = [];
+
+		// Get comic reading progress image
+		let readingProgress = storage.get('readingProgress');
 
 		if(files)
 		{
@@ -196,7 +200,17 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 			}
 
-			let thumbnails = cache.returnThumbnailsImages(images, function(data){
+			if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+			{
+				let path = readingProgress[mainPath].path;
+				let sha = sha1(path);
+
+				images.push({path: path, sha: sha});
+
+				readingProgress[mainPath].sha = sha;
+			}
+
+			thumbnails = cache.returnThumbnailsImages(images, function(data){
 
 				addImageToDom(data.sha, data.path);
 
@@ -242,22 +256,33 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 			}
 		}
+		else
+		{
+			if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+			{
+				let path = readingProgress[mainPath].path;
+				let sha = sha1(path);
+
+				let thumbnail = cache.returnThumbnailsImages({path: path, sha: sha}, function(data){
+
+					addImageToDom(data.sha, data.path);
+
+				}, file);
+
+				readingProgress[mainPath].sha = sha;
+				thumbnails[sha] = thumbnail;
+			}
+		}
 
 		handlebarsContext.comics = pathFiles;
 
 		// Comic reading progress
-		let readingProgress = storage.get('readingProgress');
-
 		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
 		{
 			let path = readingProgress[mainPath].path;
-			let sha = sha1(path);
+			let sha = readingProgress[mainPath].sha;
 
-			let thumbnail = cache.returnThumbnailsImages({path: path, sha: sha}, function(data){
-
-				addImageToDom(data.sha, data.path);
-
-			}, file);
+			let thumbnail = thumbnails[sha];
 
 			readingProgress[mainPath].sha = sha;
 			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
@@ -432,14 +457,14 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			});
 		}
 
-		cache.resumeQueue();
-
 		handlebarsContext.comics = comics;
 		handlebarsContext.comicsIndex = true;
 		handlebarsContext.comicsIndexVar = 'true';
 		handlebarsContext.comicsReadingProgress = false;
 
 		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
+
+		cache.resumeQueue();
 
 		handlebarsContext.headerTitle = false;
 		handlebarsContext.headerTitlePath = false;

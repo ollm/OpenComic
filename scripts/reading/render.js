@@ -145,7 +145,7 @@ async function focusIndex(index)
 
 async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false)
 {
-	console.time('readingRender');
+	//console.time('readingRender');
 
 	let _rendered = magnifyingGlass ? renderedMagnifyingGlass : rendered;
 
@@ -177,7 +177,7 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 
 	queue.end('readingRender', function() {
 
-		console.timeEnd('readingRender');
+		//console.timeEnd('readingRender');
 
 	});
 }
@@ -200,14 +200,15 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 		_scale = _scale * window.devicePixelRatio// * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
 
-		let ocImg = template.contentRight(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img').get(0);
+		let ocImg = template._contentRight().querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img');
 		let originalCanvas = ocImg.querySelector('canvas');
 
 		if(!originalCanvas) return;
 
 		let canvas = originalCanvas.cloneNode(true);
 
-		let originalWidth = +ocImg.dataset.width
+		let originalWidth = +ocImg.dataset.width;
+		let originalHeight = +ocImg.dataset.height;
 
 		let _config = {
 			width: Math.round(originalWidth * _scale),
@@ -232,10 +233,9 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 		if(isRendered)
 		{
-			ocImg.innerHTML = '';
-			canvas.style.width = '';
-			canvas.style.height = '';
-			ocImg.appendChild(canvas);
+			canvas.style.width = _config.width+'px';
+			canvas.style.height = Math.round(originalHeight * _scale)+'px';
+			ocImg.replaceChildren(canvas);
 		}
 	}
 
