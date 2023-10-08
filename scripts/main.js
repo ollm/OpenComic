@@ -94,7 +94,7 @@ function createWindow() {
 	});
 
 	// Emitted when the window is closed.
-	win.on('closed',	function() {
+	win.on('closed', function() {
 		// Dereference the window object, usually you would store windows
 		// in an array if your app supports multi windows, this is the time
 		// when you should delete the corresponding element.
@@ -102,7 +102,13 @@ function createWindow() {
 		win = null
 	});
 
-	win.once('ready-to-show', () => {
+	win.webContents.on('crashed', function(error) {
+
+		console.log('renderer process crashed', error); // this will be called
+
+	});
+
+	win.once('ready-to-show', function() {
 		
 		win.show();
 

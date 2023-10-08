@@ -188,55 +188,78 @@ function search(text)
 		}
 		else
 		{
+			cache.cleanQueue();
+			cache.stopQueue();
+
 			let totalResults = 0;
 
 			let results = [];
 
-			let _file = fileManager.file();
+			let len = matches.length;
 
-			for(let i = 0, len = matches.length; i < len; i++)
+			if(len > 0)
 			{
-				let file = matches[i];
+				let images = [];
 
-				let click = '';
-				let image = {};
-
-				if(file.folder || file.compressed)
+				for(let i = 0; i < len; i++)
 				{
-					click = 'dom.loadIndexPage(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', false, false, \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\', false, true)';
-				}
-				else
-				{
-					let sha = sha1(file.path);
+					let file = matches[i];
 
-					let thumbnail = cache.returnThumbnailsImages({path: file.path, sha: sha}, function(data){
+					if(!file.folder && !file.compressed)
+					{
+						let sha = sha1(file.path);
+						matches[i].sha = sha;
 
-						dom.addImageToDom(data.sha, data.path);
+						images.push(matches[i]);
+					}
 
-					}, _file);
-
-					image.sha = sha;
-					image.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-
-					click = 'dom.openComic(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\')';
 				}
 
-				let text = file.matchPath ? file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '') : file.name;
+				let thumbnails = cache.returnThumbnailsImages(images, function(data){
 
-				results.push({
-					icon: file.folder ? 'folder' : (file.compressed ? 'folder_zip' : ''),
-					image: image,
-					text: text,
-					click: 'dom.search.saveRecentlySearched(); dom.search.hide(); '+click,
-				});
+					dom.addImageToDom(data.sha, data.path);
 
-				totalResults++;
+				}, fileManager.file());
 
-				if(totalResults > 20)
-					break;
+				for(let i = 0, len = matches.length; i < len; i++)
+				{
+					let file = matches[i];
+
+					let click = '';
+					let image = {};
+
+					if(file.folder || file.compressed)
+					{
+						click = 'dom.loadIndexPage(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', false, false, \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\', false, true)';
+					}
+					else
+					{
+						let thumbnail = thumbnails[file.sha];
+
+						image.sha = file.sha;
+						image.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+
+						click = 'dom.openComic(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\')';
+					}
+
+					let text = file.matchPath ? file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '') : file.name;
+
+					results.push({
+						icon: file.compressed ? 'folder_zip' : (file.folder ? 'folder' : ''),
+						image: image,
+						text: text,
+						click: 'dom.search.saveRecentlySearched(); dom.search.hide(); '+click,
+					});
+
+					totalResults++;
+
+					if(totalResults > 20)
+						break;
+				}
 			}
 
 			setResults(results);
+			cache.resumeQueue();
 		}
 	}
 	else
@@ -297,6 +320,8 @@ function saveRecentlySearched()
 {
 	let input = document.querySelector('.search-bar > div input');
 	let text = input.value;
+
+	if(!text.trim()) return;
 
 	let recentlySearched = storage.get('recentlySearched');
 	recentlySearched.unshift(text);

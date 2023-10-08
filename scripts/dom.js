@@ -237,6 +237,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 						poster: images.poster,
 						images: images.images,
 						folder: true,
+						compressed: file.compressed,
 					});
 				}
 			}
