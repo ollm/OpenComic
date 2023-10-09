@@ -144,6 +144,7 @@ var file = function(path) {
 			for(let i = 10; i < len; i++)
 			{
 				let path = compressed[i].path;
+				this.compressedOpened[path].compressed.destroy();
 				delete this.compressedOpened[path];
 			}
 		}
@@ -526,6 +527,16 @@ var file = function(path) {
 
 		return;
 	}
+
+	this.destroy = function() {
+
+		for(let path in this.compressedOpened)
+		{
+			this.compressedOpened[path].compressed.destroy();
+			delete this.compressedOpened[path];
+		}
+
+	};
 }
 
 
@@ -1710,6 +1721,19 @@ var fileCompressed = function(path, _realPath = false) {
 		}
 
 		return false;
+	}
+
+	this.destroy = function() {
+
+		if(this.tar) this.tar.destroy();
+		if(this.pdf) this.pdf.destroy();
+
+		delete this.zip;
+		delete this._7z;
+		delete this.rar;
+		delete this.tar;
+		delete this.pdf;
+
 	}
 
 }

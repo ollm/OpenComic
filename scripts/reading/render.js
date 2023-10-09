@@ -12,6 +12,8 @@ var file = false,
 
 async function setFile(_file, _scaleMagnifyingGlass = false)
 {
+	if(file) file.destroy();
+
 	file = _file;
 	if(file) await file.read(); // Try make this from cache
 

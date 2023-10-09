@@ -398,6 +398,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				{
 					let file = fileManager.file(masterFolders[key]);
 					let files = await file.readDir();
+					file.destroy();
 
 					for(let i = 0, len = files.length; i < len; i++)
 					{
@@ -522,6 +523,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		let file = fileManager.file(path);
 		let files = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+		file.destroy();
 
 		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && files.length == 1)
 		{
@@ -607,6 +609,7 @@ async function nextComic(path, mainPath)
 {
 	let file = fileManager.file(mainPath);
 	let image = await file.images(1, path);
+	file.destroy();
 
 	return image && image.path ? image.path : false;
 }
@@ -615,6 +618,7 @@ async function previousComic(path, mainPath)
 {
 	let file = fileManager.file(mainPath);
 	let image = await file.images(-1, path);
+	file.destroy();
 
 	return image && image.path ? image.path : false;
 }
@@ -742,6 +746,8 @@ async function getFolderThumbnails(path)
 
 		_images = await _getFolderThumbnails(file, images, _images, path, folderSha);
 
+		file.destroy();
+
 		poster = _images.poster;
 		images = _images.poster ? false : _images.images;
 	}
@@ -754,7 +760,11 @@ async function getFolderThumbnails(path)
 				let file = fileManager.file(path);
 				let _images = await file.images(4, false, true);
 
-				_getFolderThumbnails(file, images, _images, path, folderSha, true);
+				await _getFolderThumbnails(file, images, _images, path, folderSha, true);
+
+				file.destroy();
+
+				return;
 
 			}, path, folderSha);
 		}
@@ -1209,6 +1219,7 @@ async function comicContextMenu(path, fromIndex = true, folder = false, gamepad 
 
 		let file = fileManager.file(path);
 		let images = await file.images(2, false, true);
+		file.destroy();
 
 		poster = !Array.isArray(images) ? images.path : false;
 
@@ -1318,6 +1329,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		}
 	}
 
+	file.destroy();
+
 	skipNextComic = await nextComic(path, mainPath);
 	skipPreviousComic = await previousComic(path, mainPath);
 
@@ -1355,6 +1368,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 			{
 				let fileImage = fileManager.file(file.path);
 				let images = await fileImage.images(4);
+				file.destroy();
 
 				if(images.length > 0)
 				{
