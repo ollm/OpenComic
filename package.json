@@ -75,7 +75,7 @@
 		"node-7z": "^3.0.0",
 		"pdfjs-dist": "^3.8.162",
 		"sha1": "^1.1.1",
-		"sharp": "^0.32.4",
+		"sharp": "^0.30.7",
 		"shosho": "^1.4.2",
 		"tar-fs": "^3.0.4",
 		"unrar": "^0.2.0",
@@ -126,7 +126,7 @@
 			"target": [
 				"dmg"
 			],
-			"icon": "images/icon.png",
+			"icon": "images/icon-mac.png",
 			"category": "public.app-category.graphics-design"
 		},
 		"linux": {

@@ -486,6 +486,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		if(!fromGoBack)
 			indexPathControl(path, mainPath);
 
+		handlebarsContext.comics = [];
 		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsIndexVar = 'false';
 		handlebarsContext.comicsDeep2 = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep).length >= 2 ? true : false;
@@ -494,12 +495,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			showIfHasPrevOrNext(path, mainPath);
 
 		headerPath(path, mainPath);
-		template.loadHeader('index.header.html', animation);
 
 		if(fromIgnoreSingleFolders && Date.now() - fromIgnoreSingleFoldersNow < 300)
 		{
 			template._barHeader().firstElementChild.innerHTML = template.load('index.header.html');
-			template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
+			template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
 		}
 		else
 		{
@@ -525,7 +525,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let files = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 		file.destroy();
 
-		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && files.length == 1)
+		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && files.length == 1 && (files[0].folder || files[0].compressed))
 		{
 			fromIgnoreSingleFoldersNow = Date.now();
 
