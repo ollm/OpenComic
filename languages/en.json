@@ -43,6 +43,7 @@
 		"language": "Language",
 		"settings": "Settings",
 		"theme": "Theme",
+		"days": "Days",
 		"valueCannotBeEmpty": "Value cannot be empty",
 		"nightMode": "Night mode"
 	},
@@ -180,9 +181,13 @@
 			"main": "Storage",
 			"cache": "Cache",
 			"cacheDescription": "The thumbnails and index of the compressed files are stored here, it is not recommended to clean it unless it is very large or there is an error related to it",
+			"cacheMaxSize": "Maximum cache size",
+			"cacheMaxSizeDescription": "Files will be removed from the cache when it exceeds this size, prioritizing older unused files",
+			"cacheMaxOld": "Maximum cache time",
+			"cacheMaxOldDescription": "Files will be removed from the cache when they have not been used for more than this time",
 			"clearCache": "Clear cache",
 			"temporaryFiles": "Temporary files",
-			"temporaryFilesDescription": "Here the compressed files are decompressed as they are needed, this is automatically deleted when closing OpenComic",
+			"temporaryFilesDescription": "Here the compressed files are decompressed as they are needed, this is automatically removed when closing OpenComic",
 			"removeTemporaryFiles": "Remove temporary files"
 		}
 	},

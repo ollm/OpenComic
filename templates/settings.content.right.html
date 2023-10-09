@@ -130,6 +130,38 @@
 
 			<h2 class="headline-small">{{language.settings.storage.main}}</h2>
 
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+				<div class="simple-slider-text">{{language.settings.storage.cacheMaxSize}}<div><span>{{config.cacheMaxSize}}</span>MB</div></div>
+				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.cacheMaxSizeDescription}}</span>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="1024" min="32" step="32" list="marginlist" value="{{config.cacheMaxSize}}" onrange="settings.setCacheMaxSize(\{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+				<div class="simple-slider-text">{{language.settings.storage.cacheMaxOld}}<div><span>{{config.cacheMaxOld}}</span> {{language.global.days}}</div></div>
+				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.cacheMaxOldDescription}}</span>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="365" min="2" step="1" list="marginlist" value="{{config.cacheMaxOld}}" onrange="settings.setCacheMaxOld(\{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
 			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">
 				<span>
 					<div>{{language.settings.storage.cache}}</div>

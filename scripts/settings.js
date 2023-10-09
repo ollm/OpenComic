@@ -38,6 +38,7 @@ async function getStorageSize()
 
 async function clearCache()
 {
+	storage.set('cache', {});
 	await fse.emptyDir(cache.folder);
 
 	getStorageSize();
@@ -280,6 +281,16 @@ function setMaxMargin(value, save = false)
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
 }
 
+function setCacheMaxSize(value, save = false)
+{
+	if(save) storage.updateVar('config', 'cacheMaxSize', value);
+}
+
+function setCacheMaxOld(value, save = false)
+{
+	if(save) storage.updateVar('config', 'cacheMaxOld', value);
+}
+
 function setGlobalZoom(value)
 {
 	storage.updateVar('config', 'readingGlobalZoom', value);
@@ -348,6 +359,8 @@ module.exports = {
 	resoreShortcuts: resoreShortcuts,
 	removeMasterFolder: removeMasterFolder,
 	addMasterFolder: addMasterFolder,
+	setCacheMaxSize: setCacheMaxSize,
+	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,
 	removeTemporaryFiles: removeTemporaryFiles,
 };

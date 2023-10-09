@@ -43,6 +43,7 @@
 		"language": "Linguagem",
 		"settings": "",
 		"theme": "Tema",
+		"days": "",
 		"valueCannotBeEmpty": "",
 		"nightMode": "Modo Noturno"
 	},
@@ -180,6 +181,10 @@
 			"main": "",
 			"cache": "",
 			"cacheDescription": "",
+			"cacheMaxSize": "",
+			"cacheMaxSizeDescription": "",
+			"cacheMaxOld": "",
+			"cacheMaxOldDescription": "",
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",

@@ -43,6 +43,7 @@
 		"language": "语言",
 		"settings": "",
 		"theme": "主题",
+		"days": "",
 		"valueCannotBeEmpty": "",
 		"nightMode": "夜间模式"
 	},
@@ -180,6 +181,10 @@
 			"main": "",
 			"cache": "",
 			"cacheDescription": "",
+			"cacheMaxSize": "",
+			"cacheMaxSizeDescription": "",
+			"cacheMaxOld": "",
+			"cacheMaxOldDescription": "",
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",

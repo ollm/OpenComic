@@ -1958,6 +1958,25 @@ async function dirSize(dir)
 	return size;
 }
 
+function dirSizeSync(dir)
+{
+	let files = fs.readdirSync(dir, {withFileTypes: true});
+	let size = 0;
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		let file = files[i];
+		let path = p.join(dir, file.name);
+
+		if(file.isDirectory())
+			size += dirSizeSync(path);
+		else if(file.isFile())
+			size += fs.statSync(path).size;
+	}
+
+	return size;
+}
+
 var prevDevicePixelRatio = window.devicePixelRatio;
 
 window.addEventListener('resize', function() {
@@ -1987,4 +2006,5 @@ module.exports = {
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
 	dirSize: dirSize,
+	dirSizeSync: dirSizeSync,
 }

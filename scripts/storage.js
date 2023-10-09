@@ -1,4 +1,4 @@
-var changes = 52; // Update this if readingPagesConfig is updated
+var changes = 53; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -90,6 +90,8 @@ var storageDefault = {
 		checkPreReleases: true,
 		lastCheckedRelease: '',
 		lastCheckedReleaseTime: 0,
+		cacheMaxSize: 256,
+		cacheMaxOld: 60,
 		trackingSites: {
 			wildcard: {
 				favorite: false,

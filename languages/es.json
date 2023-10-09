@@ -43,6 +43,7 @@
 		"language": "Idioma",
 		"settings": "Ajustes",
 		"theme": "Tema",
+		"days": "Días",
 		"valueCannotBeEmpty": "El valor no puede estar vació",
 		"nightMode": "Modo noche"
 	},
@@ -180,6 +181,10 @@
 			"main": "Almacenamiento",
 			"cache": "Caché",
 			"cacheDescription": "Las miniaturas y el índice de los archivos comprimidos se almacenan aquí, no se recomienda limpiarla a no ser que sea muy grande o haya algún error relacionado con ella",
+			"cacheMaxSize": "Tamaño máximo de la caché",
+			"cacheMaxSizeDescription": "Se eliminarán archivos de la caché cuando supere este tamaño, priorizando los archivos más antiguos sin uso",
+			"cacheMaxOld": "Tiempo máximo de la caché",
+			"cacheMaxOldDescription": "Se eliminarán archivos de la caché cuando lleven más de este tiempo sin usarse",
 			"clearCache": "Limpiar caché",
 			"temporaryFiles": "Archivos temporales",
 			"temporaryFilesDescription": "Aquí se descomprimen los archivos comprimidos a medida que se van necesitando, esto se elimina automáticamente al cerrar OpenComic",

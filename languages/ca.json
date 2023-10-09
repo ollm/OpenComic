@@ -43,6 +43,7 @@
 		"language": "Idioma",
 		"settings": "Configuració",
 		"theme": "Tema",
+		"days": "Dies",
 		"valueCannotBeEmpty": "El valor no pot estar buit",
 		"nightMode": "Mode nit"
 	},
@@ -180,6 +181,10 @@
 			"main": "Emmagatzematge",
 			"cache": "Memòria cau",
 			"cacheDescription": "Les miniatures i l'índex dels fitxers comprimits s'emmagatzemen aquí, no es recomana netejar-la tret que sigui molt gran o hi hagi algun error relacionat amb ella",
+			"cacheMaxSize": "Tamany màxim de la memòria cau",
+			"cacheMaxSizeDescription": "S'eliminaran fitxers de la memòria cau quan superi aquesta mida, prioritzant els fitxers més antics sense ús",
+			"cacheMaxOld": "Temps màxim de la memòria cau",
+			"cacheMaxOldDescription": "S'eliminaran fitxers de la memòria cau quan portin més d'aquest temps sense fer-se servir",
 			"clearCache": "Netejar memòria cau",
 			"temporaryFiles": "Arxius temporals",
 			"temporaryFilesDescription": "Aquí es descomprimeixen els fitxers comprimits a mesura que es van necessitant, això s'elimina automàticament en tancar OpenComic",

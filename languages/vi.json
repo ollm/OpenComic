@@ -43,6 +43,7 @@
 		"language": "Ngôn ngữ",
 		"settings": "",
 		"theme": "Chủ đề",
+		"days": "",
 		"valueCannotBeEmpty": "Giá trị không được để trống",
 		"nightMode": "Chế độ tối"
 	},
@@ -180,6 +181,10 @@
 			"main": "",
 			"cache": "",
 			"cacheDescription": "",
+			"cacheMaxSize": "",
+			"cacheMaxSizeDescription": "",
+			"cacheMaxOld": "",
+			"cacheMaxOldDescription": "",
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",

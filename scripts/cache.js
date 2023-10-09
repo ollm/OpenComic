@@ -213,6 +213,83 @@ async function deleteInCache(path)
 	return;
 }
 
+function deleteInCacheSha(sha, returnFileSize = false)
+{
+	let cachePath = p.join(cacheFolder, sha+'.jpg');
+
+	if(data[sha])
+		delete data[sha];
+
+	let fileSize = 0;
+
+	if(fs.existsSync(cachePath))
+	{
+		if(returnFileSize)
+			fileSize = fs.statSync(cachePath).size;
+
+		fs.unlinkSync(cachePath);
+	}
+
+	return fileSize;
+}
+
+function purge()
+{
+	let _time = time();
+
+	let cacheMaxSize = config.cacheMaxSize * 1000 * 1000;
+	let cacheMaxOld = config.cacheMaxOld * 60 * 60 * 24;
+
+	let dataArray = [];
+
+	// Remove not usage files
+	for(let sha in data)
+	{
+		if(_time - data[sha].lastAccess > cacheMaxOld)
+		{
+			deleteInCacheSha(sha);
+		}
+		else
+		{
+			dataArray.push({
+				sha: sha,
+				lastAccess: data[sha].lastAccess,
+			});
+		}
+	}
+
+	// Remove if exede cache max size
+	let cacheSize = fileManager.dirSizeSync(cache.folder);
+
+	if(cacheSize > cacheMaxSize)
+	{
+		let cacheMaxSizeMargin = cacheMaxSize * 0.8; // Remove 20% if cache exceeds maximum size to avoid running this every time
+
+		dataArray.sort(function(a, b) {
+
+			if(a.lastAccess === b.lastAccess)
+				return 0;
+
+			return a.lastAccess > b.lastAccess ? 1 : -1;
+
+		});
+
+		for(let i = 0, len = dataArray.length; i < len; i++)
+		{
+			let size = deleteInCacheSha(dataArray[i].sha, true);
+
+			cacheSize -= size;
+
+			if(cacheSize < cacheMaxSizeMargin)
+				break;
+		}
+	}
+
+	storage.set('cache', data);
+
+	return;
+}
+
 module.exports = {
 	folder: cacheFolder,
 	returnThumbnailsImages: returnThumbnailsImages,
@@ -224,4 +301,5 @@ module.exports = {
 	processingTheImageQueue: function(){return processingTheImageQueue},
 	stopQueue: stopQueue,
 	resumeQueue: resumeQueue,
+	purge: purge,
 };

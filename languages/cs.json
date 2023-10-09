@@ -43,6 +43,7 @@
 		"language": "Jazyk",
 		"settings": "",
 		"theme": "Vzhled",
+		"days": "",
 		"valueCannotBeEmpty": "Hodnota nesmí být prázdná",
 		"nightMode": "Noční režim"
 	},
@@ -180,6 +181,10 @@
 			"main": "",
 			"cache": "",
 			"cacheDescription": "",
+			"cacheMaxSize": "",
+			"cacheMaxSizeDescription": "",
+			"cacheMaxOld": "",
+			"cacheMaxOldDescription": "",
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",

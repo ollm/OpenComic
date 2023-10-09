@@ -43,6 +43,7 @@
 		"language": "Nyelv",
 		"settings": "",
 		"theme": "Téma",
+		"days": "",
 		"valueCannotBeEmpty": "",
 		"nightMode": "Sötét téma"
 	},
@@ -180,6 +181,10 @@
 			"main": "",
 			"cache": "",
 			"cacheDescription": "",
+			"cacheMaxSize": "",
+			"cacheMaxSizeDescription": "",
+			"cacheMaxOld": "",
+			"cacheMaxOldDescription": "",
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",

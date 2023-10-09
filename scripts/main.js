@@ -79,7 +79,7 @@ function createWindow() {
 		{
 			appClosing = true;
 
-			win.webContents.executeJavaScript('var saved = reading.saveReadingProgress(); settings.removeTemporaryFiles(true); saved;', false).then(function(value) {
+			win.webContents.executeJavaScript('var saved = reading.saveReadingProgress(); settings.removeTemporaryFiles(true); cache.purge(); saved;', false).then(function(value) {
 
 				if(!value)
 					win.close();
@@ -100,12 +100,6 @@ function createWindow() {
 		// when you should delete the corresponding element.
 
 		win = null
-	});
-
-	win.webContents.on('crashed', function(error) {
-
-		console.log('renderer process crashed', error); // this will be called
-
 	});
 
 	win.once('ready-to-show', function() {

@@ -43,6 +43,7 @@
 		"language": "Язык",
 		"settings": "",
 		"theme": "Тема",
+		"days": "",
 		"valueCannotBeEmpty": "Значение не может быть пустым",
 		"nightMode": "Ночной режим"
 	},
@@ -180,6 +181,10 @@
 			"main": "",
 			"cache": "",
 			"cacheDescription": "",
+			"cacheMaxSize": "",
+			"cacheMaxSizeDescription": "",
+			"cacheMaxOld": "",
+			"cacheMaxOldDescription": "",
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",

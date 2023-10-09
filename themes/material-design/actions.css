@@ -1547,6 +1547,14 @@
 	margin-bottom: 15px;
 }
 
+.simple-slider-supporting-text
+{
+	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
+	margin-bottom: 21px;
+	margin-top: -21px;
+	display: block;
+}
+
 .simple-slider-text > div
 {
 	float: right;
