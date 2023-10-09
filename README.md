@@ -1,7 +1,7 @@
-## Download beta `v1.0.0-beta.2`
+## Download beta `v1.0.0-beta.3`
 
 ###### All packages
-- [v1.0.0-beta.2](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.2)
+- [v1.0.0-beta.3](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.3)
 
 ## Download `v0.2.1`
 ###### Windows
