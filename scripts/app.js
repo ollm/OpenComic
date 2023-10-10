@@ -156,6 +156,13 @@ function sleep(ms)
 	});
 }
 
+function setImmediate(ms)
+{
+	return new Promise(function(resolve){
+		window.setImmediate(resolve);
+	});
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
@@ -171,4 +178,5 @@ module.exports = {
 	clientX: clientX,
 	rand: rand,
 	sleep: sleep,
+	setImmediate: setImmediate,
 };

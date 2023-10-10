@@ -1350,19 +1350,9 @@ var fileCompressed = function(path, _realPath = false) {
 
 		if(this.rar) return this.rar;
 
-		if(unrar === false) unrar = require('unrar');
+		if(unrar === false) unrar = require('node-unrar-js');
 
-		let bin = false;
-
-		if(process.platform == 'win32' || process.platform == 'win64')
-			bin = asarToAsarUnpacked(p.join(appDir, 'unrar/UnRAR.exe'));
-		else if(process.platform == 'darwin')
-			bin = asarToAsarUnpacked(p.join(appDir, 'unrar/unrar_MacOSX_10.13.2_64bit'));
-
-		this.rar = new unrar({
-			path: this.realPath,
-			bin: bin,
-		});
+		this.rar = await unrar.createExtractorFromFile({filepath: this.realPath, targetPath: this.tmp});
 
 		return this.rar;
 
@@ -1375,36 +1365,30 @@ var fileCompressed = function(path, _realPath = false) {
 		console.time('readRar');
 		let _this = this;
 
-		let rar = await this.openRar();
+		try
+		{
+			let rar = await this.openRar();
+			let list = rar.getFileList();
+			list = [...list.fileHeaders];
 
-		return new Promise(function(resolve, reject) {
+			for(let i = 0, len = list.length; i < len; i++)
+			{
+				let file = list[i];
+				let name = _this.removeTmp(p.normalize(file.name));
 
-			rar.list(async function(error, entries) {
+				files.push({name: name, path: p.join(_this.path, name), folder: !!file.flags.directory});
+				_this.setFileStatus(name, {extracted: false});
+			}
 
-				if(!error)
-				{
-					for(let i = 0, len = entries.length; i < len; i++)
-					{
-						let entry = entries[i];
-						let name = _this.removeTmp(p.normalize(entry.name));
+			console.timeEnd('readRar');
 
-						files.push({name: name, path: p.join(_this.path, name), folder: (entry.type === 'Directory' ? true : false)});
-						_this.setFileStatus(name, {extracted: false});
-					}
-
-					console.timeEnd('readRar');
-
-					_this.files = _this.filesToMultidimension(files);
-					resolve(_this.files);
-				}
-				else
-				{
-					resolve(_this.readIfTypeFromBinaryIsDifferent(error));
-				}
-
-			});
-
-		});
+			_this.files = _this.filesToMultidimension(files);
+			return _this.files;
+		}
+		catch(error)
+		{
+			return _this.readIfTypeFromBinaryIsDifferent(error);
+		}
 		
 	}
 
@@ -1417,68 +1401,38 @@ var fileCompressed = function(path, _realPath = false) {
 		let only = this.config.only; 
 		let _this = this;
 
-		let rar = await this.openRar();
+		try
+		{
+			let rar = await this.openRar();
 
-		return new Promise(function(resolve, reject) {
+			let regexp = new RegExp(pregQuote(p.sep, '/'), 'g');
 
-			rar.list(async function(error, entries) {
+			for(let i = 0, len = this.config._only.length; i < len; i++)
+			{
+				let _name = this.config._only[i];
 
-				if(!error)
-				{
-					for(let i = 0, len = entries.length; i < len; i++)
-					{
-						let entry = entries[i];
-						let name = p.normalize(entry.name);
-						let extract = !only || only[name] ? true : false;
+				let extracted = rar.extract({files: [_name.replace(regexp, '/')]});
+				extracted = [...extracted.files];
 
-						if(extract)
-						{
-							let path = p.join(_this.tmp, name);
-							let virtualPath = p.join(_this.path, name);
+				await app.setImmediate();
 
-							if(entry.type === 'Directory')
-							{
-								if(!fs.existsSync(path))
-									fs.mkdirSync(path);
-							}
-							else
-							{
-								let folderPath = _this.folderPath(path);
+				let virtualPath = p.join(this.path, _name);
 
-								if(!fs.existsSync(folderPath))
-									fs.mkdirSync(folderPath, {recursive: true});
+				this.setProgress(_this.progressIndex++ / len);
+				this.setFileStatus(_name, {extracted: true});
+				this.whenExtractFile(virtualPath);
+			}
 
-								_this.setFileStatus(name, {extracted: true});
+			_this.setProgress(1);
 
-								await new Promise(function(resolve, reject) {
-									rar.stream(name).on('error', reject).on('end', function() {
+			console.timeEnd('extractRar');
 
-										_this.setProgress(_this.progressIndex++ / len);
-										_this.whenExtractFile(virtualPath);
-
-										resolve();
-
-									}).pipe(fs.createWriteStream(path));
-								});
-							}
-						}
-					}
-
-					_this.setProgress(1);
-
-					console.timeEnd('extractRar');
-
-					resolve();
-				}
-				else
-				{
-					resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
-				}
-
-			});
-
-		});
-		
+			return;
+		}
+		catch(error)
+		{
+			return _this.readIfTypeFromBinaryIsDifferent(error);
+		}
 	}
 
 
