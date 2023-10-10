@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.0.0-beta.4 (dd-mm-yyyy)
+
+##### 🚀 New Features
+
+
+##### 🐛 Bug Fixes
+
+- Error opening some images [`8b97435`](https://github.com/ollm/OpenComic/commit/8b974356dfcbb7222bdef5ace604caeda93e4663)
+
 ## [v1.0.0-beta.3](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.3) (09-10-2023)
 
 ##### 🚀 New Features
@@ -21,7 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Search and filter in library/browsing [`8393903`](https://github.com/ollm/OpenComic/commit/8393903117981bea2b8a79e2e50b77d02334aa05)
 - Tracking at the end of the chapter/volume setting option [`39f1954`](https://github.com/ollm/OpenComic/commit/39f19546b2fd363d321f9c423e706c3dc773aa4f)
 - View size and remove cache and temporary files from settings [`8114336`](https://github.com/ollm/OpenComic/commit/8114336ef2c70748e3b1d87618903ef34cb58f0a)
-- Max cache size and max cache old  [`fe679d4`](https://github.com/ollm/OpenComic/commit/fe679d43b290c809b79125cbaf31a362531aa555)
+- Max cache size and max cache old [`fe679d4`](https://github.com/ollm/OpenComic/commit/fe679d43b290c809b79125cbaf31a362531aa555)
 
 ##### 🐛 Bug Fixes
 
