@@ -38,6 +38,7 @@
 		"build-tar": "npm run prebuild && electron-builder --x64 --linux tar.gz",
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z",
+		"build-win": "npm run prebuild && electron-builder --win nsis portable",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis",
 		"build-portable": "npm run prebuild && electron-builder --win portable",
 		"build-mac": "npm run prebuild && electron-builder --mac 7z dmg pkg && electron-builder --arm64 --mac 7z dmg pkg",
