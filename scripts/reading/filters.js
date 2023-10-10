@@ -34,6 +34,12 @@ var presetColors = {
 		{h: 200, s: 0.79, m: 1},
 		{h: 206, s: 0.84, m: 1}
 	],
+	blueAndCarnation: [
+		{h: 223, s: 0.93, m: 1},
+		{h: 199, s: 0.4, m: 3},
+		{h: 6, s: 0.23, m: 2},
+		{h: 6, s: 1.25, m: 1}
+	],
 	blueViolet: [
 		{h: 268, s: 0.78, m: 1},
 		{h: 283, s: 0.94, m: 1},
@@ -420,14 +426,12 @@ function colorize(colors = [], _apply = false, _return = false)
 		let b = _color.b;
 		let s = typeof color.s !== 'undefined' ? color.s : 1;
 
+		//s = s > 1 ? s + ((s - 1) * (center * 5)) : s;
+
 		let _r = r;
 		let _g = g;
 		let _b = b;
-		//_r = r == 0 ? -((g + b) / 4) : r;
-		//_g = g == 0 ? -((r + b) / 4) : g;
-		//_b = b == 0 ? -((r + g) / 4) : b;
 
-		//let m = 1 - (((r + g + b) - 2) / 1);
 		let m = 1 - (((r + g + b) - 1) / 2);
 
 		_r = s * _r;
@@ -438,7 +442,12 @@ function colorize(colors = [], _apply = false, _return = false)
 		let fG = _g > 0 ? center + up * (_g * m) : (center + (_g * m) * center);
 		let fB = _b > 0 ? center + up * (_b * m) : (center + (_b * m) * center);
 
-		let lP = (3 - (r + g + b)) / 3;
+		if(center == 1 && s > 1)
+		{
+			fR = fR + (_r * (s - 1));
+			fG = fG + (_g * (s - 1));
+			fB = fB + (_b * (s - 1));
+		}
 
 		_color = keepLuminance(center, fR, fG, fB, s);
 
@@ -1121,6 +1130,7 @@ function loadFiltersPresets()
 				'redAndBlueGray',
 				'redAndBlueGraySharp',
 				'blueSky',
+				'blueAndCarnation',
 				'blueViolet',
 				'paleYellowAndBrown',
 				'purpleAndCarnation',
