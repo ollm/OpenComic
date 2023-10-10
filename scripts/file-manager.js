@@ -1188,8 +1188,6 @@ var fileCompressed = function(path, _realPath = false) {
 			let _this = this;
 			let only = this.config.only;
 
-			let promises = [];
-
 			for(let i = 0, len = zip.files.length; i < len; i++)
 			{
 				let entry = zip.files[i];
@@ -1216,7 +1214,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 						this.setFileStatus(name, {extracted: true});
 
-						promises.push(new Promise(function(resolve, reject) {
+						await new Promise(function(resolve, reject) {
 							entry.stream().pipe(fs.createWriteStream(path)).on('error', reject).on('finish', function() {
 
 								_this.setProgress(_this.progressIndex++ / len);
@@ -1224,12 +1222,10 @@ var fileCompressed = function(path, _realPath = false) {
 
 								resolve();
 							});
-						}));
+						});
 					}
 				}
 			}
-
-			await Promise.all(promises);
 		}
 		catch(error)
 		{
@@ -1429,8 +1425,6 @@ var fileCompressed = function(path, _realPath = false) {
 
 				if(!error)
 				{
-					let promises = [];
-
 					for(let i = 0, len = entries.length; i < len; i++)
 					{
 						let entry = entries[i];
@@ -1456,7 +1450,7 @@ var fileCompressed = function(path, _realPath = false) {
 
 								_this.setFileStatus(name, {extracted: true});
 
-								promises.push(new Promise(function(resolve, reject) {
+								await new Promise(function(resolve, reject) {
 									rar.stream(name).on('error', reject).on('end', function() {
 
 										_this.setProgress(_this.progressIndex++ / len);
@@ -1465,12 +1459,10 @@ var fileCompressed = function(path, _realPath = false) {
 										resolve();
 
 									}).pipe(fs.createWriteStream(path));
-								}));
+								});
 							}
 						}
 					}
-
-					await Promise.all(promises);
 
 					_this.setProgress(1);
 
