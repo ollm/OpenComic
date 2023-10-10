@@ -1368,7 +1368,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 			{
 				let fileImage = fileManager.file(file.path);
 				let images = await fileImage.images(4);
-				file.destroy();
+				fileImage.destroy();
 
 				if(images.length > 0)
 				{
