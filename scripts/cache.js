@@ -2,6 +2,9 @@ var queuedImages = [], processingTheImageQueue = false;
 
 var cacheFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic');
 
+if(process.platform == 'win32' || process.platform == 'win64')
+	cacheFolder = cacheFolder.replace(/AppData\\Roaming/, 'AppData\\Local');
+
 if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 cacheFolder = p.join(cacheFolder, 'cache');
 if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
