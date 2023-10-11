@@ -148,9 +148,11 @@
 			"showFullPathLibrary": "",
 			"showFullPathOpened": ""
 		},
-		"others": {
+		"startupBehavior": {
 			"main": "",
 			"startInFullScreen": "",
+			"startInContinueReading": "",
+			"startOnlyFromLibrary": "",
 			"startOnStartup": ""
 		},
 		"releases": {

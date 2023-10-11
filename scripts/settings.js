@@ -332,6 +332,18 @@ function setStartInFullScreen(value)
 	storage.updateVar('config', 'startInFullScreen', value);
 }
 
+function setStartInContinueReading(value)
+{
+	storage.updateVar('config', 'startInContinueReading', value);
+
+	dom.query('.settings-start-only-from-library').class(!value, 'disable-pointer');
+}
+
+function setStartOnlyFromLibrary(value)
+{
+	storage.updateVar('config', 'startOnlyFromLibrary', value);
+}
+
 function setStartOnStartup(value)
 {
 	storage.updateVar('config', 'startOnStartup', value);
@@ -362,6 +374,8 @@ module.exports = {
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,
 	setStartInFullScreen: setStartInFullScreen,
+	setStartInContinueReading: setStartInContinueReading,
+	setStartOnlyFromLibrary: setStartOnlyFromLibrary,
 	setStartOnStartup: setStartOnStartup,
 	setCheckReleases: setCheckReleases,
 	setCheckPreReleases: setCheckPreReleases,

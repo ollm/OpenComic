@@ -148,9 +148,11 @@
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta"
 		},
-		"others": {
-			"main": "Altres configuracions",
+		"startupBehavior": {
+			"main": "Comportament d'inici",
 			"startInFullScreen": "Inicia OpenComic a pantalla completa",
+			"startInContinueReading": "Iniciar directament a l'última lectura",
+			"startOnlyFromLibrary": "Només si l'última lectura és de la biblioteca.",
 			"startOnStartup": "Iniciar OpenComic a l'inici"
 		},
 		"releases": {

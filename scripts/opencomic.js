@@ -110,7 +110,7 @@ var compressedMime = {
 	'all': [
 		'application/zip',
 		'application/x-cbz',
-		'application/x-zip',
+		'applicatpdomion/x-zip',
 		'application/x-zip-compressed',
 		'application/rar',
 		'application/x-cbr',
@@ -266,7 +266,7 @@ window.onload = function() {
 
 }
 
-function startApp()
+async function startApp()
 {
 	if(config.checkReleases)
 		checkReleases.check();
@@ -277,9 +277,80 @@ function startApp()
 	template.loadGlobalElement('index.elements.menus.html', 'menus');
 
 	if(electronRemote.process.argv && electronRemote.process.argv[1] && !inArray(electronRemote.process.argv[1], ['--no-sandbox', 'scripts/main.js', '.']) && fs.existsSync(electronRemote.process.argv[1]))
+	{
 		openComic(electronRemote.process.argv[1], false);
+	}
 	else
-		dom.loadIndexPage(false);
+	{
+		let lastReading = false;
+
+		if(config.startInContinueReading)
+		{
+			let readingProgress = storage.get('readingProgress');
+			let highest = 0;
+
+			for(let key in readingProgress)
+			{
+				if(readingProgress[key].lastReading > highest)
+				{
+					lastReading = {
+						mainPath: key,
+						path: readingProgress[key].path,
+					};
+
+					highest = readingProgress[key].lastReading;
+				}
+			}
+
+			if(lastReading && config.startOnlyFromLibrary)
+			{
+				let mainPaths = {};
+
+				// Comics in master folders
+				let masterFolders = storage.get('masterFolders');
+
+				if(!isEmpty(masterFolders))
+				{
+					for(let key in masterFolders)
+					{
+						if(fs.existsSync(masterFolders[key]))
+						{
+							let file = fileManager.file(masterFolders[key]);
+							let files = await file.readDir();
+							file.destroy();
+
+							for(let i = 0, len = files.length; i < len; i++)
+							{
+								let folder = files[i];
+
+								if(folder.folder || folder.compressed)
+									mainPaths[folder.path] = true;
+							}
+						}
+					}
+				}
+
+				// Comics in library
+				let comicsStorage = storage.get('comics');
+
+				if(!isEmpty(comicsStorage))
+				{
+					for(let key in comicsStorage)
+					{
+						mainPaths[comicsStorage[key].path] = true;
+					}
+				}
+
+				if(!mainPaths[lastReading.mainPath])
+					lastReading = false;
+			}
+		}
+
+		if(lastReading && fs.existsSync(lastReading.mainPath))
+			dom.openComic(false, lastReading.path, lastReading.mainPath);
+		else
+			dom.loadIndexPage(false);
+	}
 
 	dragAndDrop.start();
 	dom.search.start();
@@ -914,7 +985,7 @@ function openComic(filePath, animation = true)
 {
 	if(pathIsSupported(filePath))
 	{
-		var selectImage = false, path = false, mainPath = false;
+		let selectImage = false, path = false, mainPath = false;
 
 		if(fs.statSync(filePath).isDirectory())
 		{

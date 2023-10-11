@@ -1,4 +1,4 @@
-var changes = 54; // Update this if readingPagesConfig is updated
+var changes = 55; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -84,6 +84,8 @@ var storageDefault = {
 		readingTrackingAtTheEnd: true,
 		controllerDeadZone: 0.06,
 		startInFullScreen: false,
+		startInContinueReading: false,
+		startOnlyFromLibrary: true,
 		startOnStartup: false,
 		ignoreSingleFoldersLibrary: true,
 		whenOpenFolderContinueReading: false,

@@ -138,7 +138,7 @@
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",
 			"globalZoom": "Applies a global zoom instead of image by image (Only in vertical reading)",
-			"startReadingInFullScreen": "Empieza a leer en pantalla completa",
+			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
 		},
 		"navigation": {
@@ -148,9 +148,11 @@
 			"showFullPathLibrary": "Show full path when opening library comics",
 			"showFullPathOpened": "Show full path when opening a file or folder"
 		},
-		"others": {
-			"main": "Others settings",
+		"startupBehavior": {
+			"main": "Startup behavior",
 			"startInFullScreen": "Start OpenComic in full screen",
+			"startInContinueReading": "Start directly in last reading",
+			"startOnlyFromLibrary": "Only if last reading is from the library",
 			"startOnStartup": "Start OpenComic on startup"
 		},
 		"releases": {
