@@ -143,6 +143,7 @@
 		"navigation": {
 			"main": "",
 			"ignoreSingleFoldersLibrary": "",
+			"whenOpenFolderContinueReading": "",
 			"showFullPathLibrary": "",
 			"showFullPathOpened": ""
 		},

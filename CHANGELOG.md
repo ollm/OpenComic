@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
+- Option to open directly in continue reading instead of the file list
 
 ##### 🐛 Bug Fixes
 

@@ -143,6 +143,7 @@
 		"navigation": {
 			"main": "Navigation",
 			"ignoreSingleFoldersLibrary": "Ignore single folders (Open automatically)",
+			"whenOpenFolderContinueReading": "Open directly in continue reading instead of the file list",
 			"showFullPathLibrary": "Show full path when opening library comics",
 			"showFullPathOpened": "Show full path when opening a file or folder"
 		},

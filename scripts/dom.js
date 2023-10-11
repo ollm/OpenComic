@@ -303,14 +303,14 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 		events.events();
 
-		return pathFiles;
+		return {files: pathFiles, readingProgress: readingProgress[mainPath] || {}};
 
 	}).catch(function(error){
 
 		console.error(error);
 		dom.compressedError(error);
 
-		return [];
+		return {files: [], readingProgress: {}};
 
 	});
 
@@ -321,9 +321,9 @@ async function reloadIndex()
 	loadIndexPage(true, indexPathA, true, true, indexMainPathA);
 }
 
-var currentPath = false, currentPathScrollTop = [], fromIgnoreSingleFoldersNow = 0;
+var currentPath = false, currentPathScrollTop = [], fromDeepLoadNow = 0;
 
-async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, disableIgnoreSingleFolders = false, fromIgnoreSingleFolders = false)
+async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, disableIgnoreSingleFolders = false, fromDeepLoad = false)
 {
 	selectMenuItem('library');
 
@@ -498,7 +498,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		headerPath(path, mainPath);
 
-		if(fromIgnoreSingleFolders && Date.now() - fromIgnoreSingleFoldersNow < 300)
+		if(fromDeepLoad && Date.now() - fromDeepLoadNow < 300)
 		{
 			template._barHeader().firstElementChild.innerHTML = template.load('index.header.html');
 			template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
@@ -525,16 +525,24 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		queue.stop('folderThumbnails');
 
 		let file = fileManager.file(path);
-		let files = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 		file.destroy();
 
-		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && files.length == 1 && (files[0].folder || files[0].compressed))
+		if(config.whenOpenFolderContinueReading && !fromGoBack && !disableIgnoreSingleFolders && indexData.readingProgress && indexData.readingProgress.lastReading > 0)
 		{
-			fromIgnoreSingleFoldersNow = Date.now();
-
+			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
 
-			dom.loadIndexPage(true, files[0].path, false, false, files[0].mainPath, false, false, true);
+			dom.openComic(true, indexData.readingProgress.path, indexData.readingProgress.mainPath, false, false, false, true);
+
+			return;
+		}
+		else if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
+		{
+			fromDeepLoadNow = Date.now();
+			indexPathControlA.pop();
+
+			dom.loadIndexPage(true, indexData.files[0].path, false, false, indexData.files[0].mainPath, false, false, true);
 
 			return;
 		}
@@ -1284,7 +1292,7 @@ function removeComic(path, confirm = false)
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
-async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
+async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false, fromDeepLoad = false)
 {
 	// Start reading comic
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
@@ -1306,9 +1314,19 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	headerPath(path, mainPath);
 
 	handlebarsContext.comics = [];
-	template.loadContentLeft('reading.content.left.html', true);
-	template.loadContentRight('reading.content.right.html', true);
-	template.loadHeader('reading.header.html', true);
+
+	if(fromDeepLoad && Date.now() - fromDeepLoadNow < 300)
+	{
+		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
+		template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
+		template._barHeader().firstElementChild.innerHTML = template.load('reading.header.html');
+	}
+	else
+	{
+		template.loadContentLeft('reading.content.left.html', true);
+		template.loadContentRight('reading.content.right.html', true);
+		template.loadHeader('reading.header.html', true);
+	}
 
 	// Load files
 	let file = fileManager.file(path);
@@ -1342,6 +1360,9 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		indexPathControl(imagePath, mainPath, true, fromNextAndPrev);
 
 	readingActive = true;
+
+	cache.cleanQueue();
+	cache.stopQueue();
 
 	let comics = [];
 
@@ -1440,6 +1461,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	generateAppMenu();
 
+	cache.resumeQueue();
 	shortcuts.register('reading');
 	gamepad.updateBrowsableItems('reading-'+sha1(path));
 }

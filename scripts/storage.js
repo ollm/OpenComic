@@ -85,6 +85,7 @@ var storageDefault = {
 		startInFullScreen: false,
 		startOnStartup: false,
 		ignoreSingleFoldersLibrary: true,
+		whenOpenFolderContinueReading: false,
 		renderMaxWidth: 12000,
 		checkReleases: true,
 		checkPreReleases: true,

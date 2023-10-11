@@ -143,6 +143,7 @@
 		"navigation": {
 			"main": "Navegación",
 			"ignoreSingleFoldersLibrary": "Ignorar carpetes individuals (S'obren automàticament)",
+			"whenOpenFolderContinueReading": "Obrir directament en continuar llegint en lloc de la llista de fitxers",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta"
 		},
