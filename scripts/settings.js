@@ -296,6 +296,11 @@ function setGlobalZoom(value)
 	storage.updateVar('config', 'readingGlobalZoom', value);
 }
 
+function setStartReadingInFullScreen(value)
+{
+	storage.updateVar('config', 'readingStartReadingInFullScreen', value);
+}
+
 function setTrackingAtTheEnd(value)
 {
 	storage.updateVar('config', 'readingTrackingAtTheEnd', value);
@@ -350,6 +355,7 @@ module.exports = {
 	start: start,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
+	setStartReadingInFullScreen: setStartReadingInFullScreen,
 	setTrackingAtTheEnd: setTrackingAtTheEnd,
 	setIgnoreSingleFoldersLibrary: setIgnoreSingleFoldersLibrary,
 	setWhenOpenFolderContinueReading: setWhenOpenFolderContinueReading,

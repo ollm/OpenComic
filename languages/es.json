@@ -138,6 +138,7 @@
 			"main": "Preferencias de lectura",
 			"maxMargin": "Margen horizontal y vertical máximo",
 			"globalZoom": "Aplica un zoom global en vez de imagen a imagen (Solo en lectura vertical)",
+			"startReadingInFullScreen": "Empieza la lectura en pantalla completa",
 			"trackingAtTheEnd": "Seguimiento al final del capítulo/tomo"
 		},
 		"navigation": {

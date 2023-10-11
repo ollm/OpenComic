@@ -138,6 +138,7 @@
 			"main": "Preferències de lectura",
 			"maxMargin": "Marge horitzontal i vertical màxim",
 			"globalZoom": "Aplica un zoom global en comptes d'imatge a imatge (Només en lectura vertical)",
+			"startReadingInFullScreen": "Comença la lectura a pantalla completa",
 			"trackingAtTheEnd": "Seguiment al final del capítol/tom"
 		},
 		"navigation": {

@@ -781,24 +781,27 @@ function returnLargerImage(index)
 {
 	if(_config.readingDoublePage && !_config.readingWebtoon)
 	{
-		var imageHeight0 = template.contentRight('.image-position'+(index)+'-0').height();
-		var imageHeight1 = template.contentRight('.image-position'+(index)+'-1').height();
+		let image0 = template._contentRight().querySelector('.image-position'+(index)+'-0');
+		let image1 = template._contentRight().querySelector('.image-position'+(index)+'-1');
 
-		if(imageHeight1 === undefined || imageHeight0 >= imageHeight1)
-		{
-			var image = template.contentRight('.image-position'+(index)+'-0');
-		}
+		let rect0 = image0 ? image0.getBoundingClientRect() : false;
+		let rect1 = image1 ? image1.getBoundingClientRect() : false;
+
+		let imageHeight0 = rect0.height || 0;
+		let imageHeight1 = rect1.height || 0;
+
+		if(imageHeight0 >= imageHeight1)
+			return {image: image0, height: imageHeight0, top: rect0.top || 0};
 		else
-		{
-			var image = template.contentRight('.image-position'+(index)+'-1');
-		}
+			return {image: image1, height: imageHeight1, top: rect1.top || 0};
 	}
 	else
 	{
-		var image = template.contentRight('.image-position'+(index)+'-0');
-	}
+		let image = template._contentRight().querySelector('.image-position'+(index)+'-0');
+		let rect = image ? image.getBoundingClientRect() : false;
 
-	return image;
+		return {image: image, height: rect.height || 0, top: rect.top || 0};
+	}
 }
 
 var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, disableOnScrollST = false;
@@ -827,13 +830,12 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 	{
-		image = returnLargerImage(eIndex-1);
-
-		imgHeight = image.height() + _config.readingMargin.top;
+		let largerImage = returnLargerImage(eIndex-1);
+		imgHeight = largerImage.height + _config.readingMargin.top;
 
 		if(imgHeight > contentHeight)
 		{
-			var pageVisibility = Math.floor(imgHeight / contentHeight)
+			let pageVisibility = Math.floor(imgHeight / contentHeight)
 
 			maxPageVisibility = pageVisibility;
 
@@ -856,9 +858,8 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	{
 		eIndex = currentIndex;
 
-		image = returnLargerImage(eIndex-1);
-
-		imgHeight = image.height() + _config.readingMargin.top;
+		let largerImage = returnLargerImage(eIndex-1);
+		imgHeight = largerImage.height + _config.readingMargin.top;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -868,7 +869,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		if(nextPrevious !== false && nextPrevious !== true) currentPageVisibility = nextPrevious;
 		pageVisibilityIndex = currentPageVisibility;
 
-		var pageVisibility = Math.floor(imgHeight / contentHeight);
+		let pageVisibility = Math.floor(imgHeight / contentHeight);
 
 		maxPageVisibility = pageVisibility;
 
@@ -880,9 +881,8 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		{
 			eIndex = index;
 
-			image = returnLargerImage(eIndex-1);
-
-			imgHeight = image.height() + _config.readingMargin.top;
+			let largerImage = returnLargerImage(eIndex-1);
+			imgHeight = largerImage.height + _config.readingMargin.top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -917,11 +917,10 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	}
 	else if(readingViewIs('scroll'))
 	{
-		var image = returnLargerImage(eIndex-1);
+		let largerImage = returnLargerImage(eIndex-1);
+		let scrollTop = (largerImage.top - rect.top) + content.scrollTop;
 
-		var scrollTop = (image.offset().top - rect.top) + content.scrollTop;
-
-		var scrollSum = 0;
+		let scrollSum = 0;
 
 		if((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && pageVisibilityIndex !== false)
 		{
@@ -929,11 +928,11 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 			if(imgHeight > contentHeight)
 			{
-				var pageVisibility = Math.floor(imgHeight / contentHeight);
+				let pageVisibility = Math.floor(imgHeight / contentHeight);
 
 				maxPageVisibility = pageVisibility;
 
-				var contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
+				let contentHeightRes = ((contentHeight * pageVisibility) - imgHeight) / pageVisibility;
 
 				scrollSum = ((contentHeight - contentHeightRes) - contentHeight / pageVisibility) * pageVisibilityIndex;
 			}		
@@ -952,7 +951,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		$(content).stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
 	}
 
-	var newIndex = (eIndex - 1);
+	let newIndex = (eIndex - 1);
 
 	if(_config.readingManga && !readingViewIs('scroll'))
 		newIndex = (indexNum - newIndex) - 1;
