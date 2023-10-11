@@ -436,6 +436,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		cache.cleanQueue();
 		cache.stopQueue();
+		queue.stop('folderThumbnails');
 
 		if(comics.length > 0)
 		{
@@ -466,6 +467,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
 
 		cache.resumeQueue();
+		queue.resume('folderThumbnails');
 
 		handlebarsContext.headerTitle = false;
 		handlebarsContext.headerTitlePath = false;
@@ -520,6 +522,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		cache.cleanQueue();
 		cache.stopQueue();
+		queue.stop('folderThumbnails');
 
 		let file = fileManager.file(path);
 		let files = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
@@ -537,6 +540,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 
 		cache.resumeQueue();
+		queue.resume('folderThumbnails');
 	}
 
 	if(readingActive)

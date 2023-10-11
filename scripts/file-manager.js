@@ -372,7 +372,7 @@ var file = function(path) {
 
 		let name = p.parse(path).name;
 
-		let regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+(inside ? '|cover|default|folder|series|poster' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+');
+		let regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+(inside ? '|cover|default|folder|series|poster' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+$');
 		let poster = false;
 
 		for(let i = 0, len = files.length; i < len; i++)
@@ -1352,7 +1352,8 @@ var fileCompressed = function(path, _realPath = false) {
 
 		if(unrar === false) unrar = require('node-unrar-js');
 
-		this.rar = await unrar.createExtractorFromFile({filepath: this.realPath, targetPath: this.tmp});
+		let wasmBinary = fs.readFileSync(require.resolve('node-unrar-js/esm/js/unrar.wasm'));
+		this.rar = await unrar.createExtractorFromFile({wasmBinary: wasmBinary, filepath: this.realPath, targetPath: this.tmp});
 
 		return this.rar;
 
@@ -1398,14 +1399,23 @@ var fileCompressed = function(path, _realPath = false) {
 
 		this.progressIndex = 0;
 
-		let only = this.config.only; 
-		let _this = this;
-
 		try
 		{
 			let rar = await this.openRar();
-
 			let regexp = new RegExp(pregQuote(p.sep, '/'), 'g');
+
+			if(!this.config._only || !this.config._only.length)
+			{
+				let files = await this.read();
+				files = this.filesToOnedimension(files);
+
+				this.config._only = [];
+
+				for(let i = 0, len = files.length; i < len; i++)
+				{
+					this.config._only.push(files[i].pathInCompressed);
+				}
+			}
 
 			for(let i = 0, len = this.config._only.length; i < len; i++)
 			{
@@ -1418,12 +1428,12 @@ var fileCompressed = function(path, _realPath = false) {
 
 				let virtualPath = p.join(this.path, _name);
 
-				this.setProgress(_this.progressIndex++ / len);
+				this.setProgress(this.progressIndex++ / len);
 				this.setFileStatus(_name, {extracted: true});
 				this.whenExtractFile(virtualPath);
 			}
 
-			_this.setProgress(1);
+			this.setProgress(1);
 
 			console.timeEnd('extractRar');
 
@@ -1431,7 +1441,7 @@ var fileCompressed = function(path, _realPath = false) {
 		}
 		catch(error)
 		{
-			return _this.readIfTypeFromBinaryIsDifferent(error);
+			return this.readIfTypeFromBinaryIsDifferent(error);
 		}
 	}
 

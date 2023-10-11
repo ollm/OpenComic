@@ -85,7 +85,7 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^27.0.0-beta.9",
+		"electron": "^27.0.0",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"node-yaml": "^4.0.1",
@@ -110,7 +110,6 @@
 			"node_modules/node-7z",
 			"node_modules/7zip-bin",
 			"node_modules/shosho",
-			"unrar",
 			"Pepper & Carrot"
 		],
 		"win": {

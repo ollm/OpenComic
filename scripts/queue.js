@@ -1,6 +1,6 @@
-var queued = {}, threads = {}, onEnd = {};
+var processingTheQueue = {}, queued = {}, onEnd = {}, queueIsStop = {};
 
-async function processTheQueue(key, thread = 0)
+async function processTheQueue(key)
 {
 	if(queued[key])
 	{
@@ -20,13 +20,11 @@ async function processTheQueue(key, thread = 0)
 				console.error(error);
 			}
 
-			if(queued[key].length > 0 && threads[key][thread])
+			if(queued[key].length > 0)
 			{
-				threads[key][thread]++;
+				process.nextTick(function() {
 
-				process.nextTick(function(){
-
-					processTheQueue(key, thread);
+					processTheQueue(key);
 
 				});
 
@@ -35,24 +33,33 @@ async function processTheQueue(key, thread = 0)
 		}
 	}
 
-	threads[key][thread] = null;
+	processingTheQueue[key] = false;
 
 	checkEnd(key);
 
 	return;
 }
 
-function processTheQueueThreads(key)
+function startProcessTheQueue(key)
 {
-	for(let i = 0, len = threads[key].length; i < len; i++)
-	{
-		if(threads[key][i] === null)
-		{
-			threads[key][i] = 1;
-			processTheQueue(key, i);
+	if(queueIsStop[key]) return;
 
-			break;
-		}
+	if(!processingTheQueue[key])
+	{
+		processingTheQueue[key] = true;
+
+		process.nextTick(function() {
+
+			processTheQueue(key).catch(function(error){
+
+				//if(key == 'folderThumbnails')
+				//	dom.compressedError(error);
+
+				//console.error(error);
+
+			});
+
+		});
 	}
 }
 
@@ -65,12 +72,10 @@ async function addToQueue(key, callback)
 		_arguments.push(arguments[i]);
 	}
 
-	if(!threads[key]) threads[key] = [null];
-
 	if(!queued[key]) queued[key] = [];
 	queued[key].push({key: key, callback: callback, arguments: _arguments});
 
-	processTheQueueThreads(key);
+	startProcessTheQueue(key);
 }
 
 function cleanQueue(key = false)
@@ -78,37 +83,12 @@ function cleanQueue(key = false)
 	queued[key] = [];
 }
 
-function setThreads(key, num = 1)
-{
-	if(!threads[key]) threads[key] = [null];
-
-	let _threads = [];
-
-	for(let i = 0; i < num; i++)
-	{
-		_threads.push(threads[key][i] || null);
-	}
-
-	threads[key] = _threads;
-}
-
 function checkEnd(key)
 {
 	if(onEnd[key])
 	{
-		let allNull = true;
-
-		for(let i = 0, len = threads[key].length; i < len; i++)
-		{
-			if(threads[key][i] !== null)
-				allNull = false;
-		}
-
-		if(allNull)
-		{
-			onEnd[key]();
-			onEnd[key] = false;
-		}
+		onEnd[key]();
+		onEnd[key] = false;
 	}
 }
 
@@ -117,11 +97,24 @@ function end(key, callback)
 	onEnd[key] = callback;
 }
 
+function stop(key)
+{
+	queueIsStop[key] = true;
+}
+
+function resume(key)
+{
+	queueIsStop[key] = false;
+
+	startProcessTheQueue(key);
+}
+
 module.exports = {
 	add: addToQueue,
 	queued: function(){return queued},
 	clean: cleanQueue,
-	threads: setThreads,
-	end: end,
 	process: processTheQueue,
+	end: end,
+	stop: stop,
+	resume: resume,
 };

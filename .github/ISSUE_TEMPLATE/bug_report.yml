@@ -1,0 +1,59 @@
+name: Bug Report
+description: Report an OpenComic bug
+title: "[Bug]: "
+labels: "bug"
+body:
+- type: checkboxes
+  attributes:
+    label: Preflight Checklist
+    description: Please ensure you've completed all of the following.
+    options:
+      - label: I have searched the [issue tracker](https://www.github.com/ollm/OpenComic/issues) for a bug report that matches the one I want to file, without success.
+        required: true
+- type: input
+  attributes:
+    label: OpenComic Version
+    description: |
+      What version of OpenComic are you using?
+
+      Note: Please only report issues for the latest versions of OpenComic.
+    placeholder: 1.0.0
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Operating System
+    description: What operating system version are you using? On Windows, click Start button > Settings > System > About. On macOS, click the Apple Menu > About This Mac. On Linux, use lsb_release or uname -a.
+    placeholder: "e.g. Windows 10 version 1909, macOS Catalina 10.15.7, or Ubuntu 20.04"
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: Provide an example of the issue.
+    placeholder: |
+      1. First step
+      2. Second step
+      3. Issue here
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: A clear and concise description of what you expected to happen.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Actual Behavior
+    description: A clear description of what actually happens.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Error message
+    description: Error that appear in a dialog or in the console.
+- type: textarea
+  attributes:
+    label: Additional Information
+    description: If your problem needs further explanation, or if the issue you're seeing cannot be reproduced in a gist, please add more information here.
