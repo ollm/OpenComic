@@ -52,8 +52,8 @@ body:
 - type: textarea
   attributes:
     label: Error message
-    description: Error that appear in a dialog or in the console.
+    description: Any error message that appears in the DevTools Console or in an Error Dialog.
 - type: textarea
   attributes:
     label: Additional Information
-    description: If your problem needs further explanation, or if the issue you're seeing cannot be reproduced in a gist, please add more information here.
+    description: If your problem needs further explanation, please add more information here.
