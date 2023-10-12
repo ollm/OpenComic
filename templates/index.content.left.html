@@ -2,7 +2,12 @@
 <div class="menu-list">
 	<div class="menu-item menu-item-library body-medium gamepad-item active" onclick="dom.loadIndexPage(true);">
 		<div class="icon-24 material-icon">book</div>
-		{{language.global.comics}}
+		{{language.global.library}}
+	</div>
+
+	<div class="menu-item menu-item-recently-opened body-medium gamepad-item" onclick="dom.loadRecentlyOpened();">
+		<div class="icon-24 material-icon">history</div>
+		{{language.global.recents}}
 	</div>
 
 	<div class="separator-2" style="width: calc(100% + 12px);"></div>

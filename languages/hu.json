@@ -5,6 +5,8 @@
 		"comics": "Képregények",
 		"collection": "Gyűjtemény",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "Rendezés",
@@ -13,6 +15,7 @@
 			"nameNumber": "Név / Sorszám",
 			"lastAdd": "Utoljára hozzáadva",
 			"lastReading": "Utoljára olvasott",
+			"lastOpened": "",
 			"foldersFirst": "Mappák előre",
 			"invert": "Megfordít"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "Folytatás",
 		"emptyIndex": "Ebben a gyűjteményben nincsenek képregények.",
-		"emptyFolder": "Ebben a mappában nincsenek megfelelő fájlok."
+		"emptyFolder": "Ebben a mappában nincsenek megfelelő fájlok.",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

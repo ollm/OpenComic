@@ -5,6 +5,8 @@
 		"comics": "Còmics",
 		"collection": "Col·lecció",
 		"library": "Biblioteca",
+		"recents": "Recents",
+		"recentlyOpened": "Obert recentment",
 		"images": "Imatges",
 		"sort": {
 			"main": "Ordenar",
@@ -13,6 +15,7 @@
 			"nameNumber": "Nom / Numèric",
 			"lastAdd": "Últim agregat",
 			"lastReading": "Última lectura",
+			"lastOpened": "Últim obert",
 			"foldersFirst": "Carpetes primer",
 			"invert": "Invertir"
 		},
@@ -49,8 +52,9 @@
 	},
 	"comics": {
 		"continueReading": "Continuar llegint",
-		"emptyIndex": "No hi ha cap còmic en aquesta col·lecció.",
-		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta."
+		"emptyIndex": "No hi ha cap còmic en la biblioteca.",
+		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta.",
+		"emptyRecentlyOpened": "No hi ha fitxers oberts recentment."
 	},
 	"reading": {
 		"prevChapter": "Capítol anterior",

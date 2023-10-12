@@ -228,6 +228,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
+	recentlyOpened = require(p.join(appDir, 'scripts/recently-opened.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),
 	theme = require(p.join(appDir, 'scripts/theme.js')),
 	dragAndDrop = require(p.join(appDir, 'scripts/drag-and-drop.js')),
@@ -1015,6 +1016,8 @@ function openComic(filePath, animation = true)
 
 		if(onReading)
 			reading.saveReadingProgress();
+
+		recentlyOpened.set(mainPath);
 
 		if(selectImage)
 			dom.openComic(animation, path, mainPath);

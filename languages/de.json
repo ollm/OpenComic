@@ -5,6 +5,8 @@
 		"comics": "Comics",
 		"collection": "Kollektion",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "Sortieren",
@@ -13,6 +15,7 @@
 			"nameNumber": "Name / Nummer",
 			"lastAdd": "Zuletzt hinzugefügt",
 			"lastReading": "Zuletzt gelesen",
+			"lastOpened": "",
 			"foldersFirst": "Ordner zuerst",
 			"invert": "Invertieren"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "Lesen fortsetzen",
 		"emptyIndex": "In dieser Kollektion gibt es keine Comics.",
-		"emptyFolder": "In diesem Ordner gibt es keine kompatiblen Dateien."
+		"emptyFolder": "In diesem Ordner gibt es keine kompatiblen Dateien.",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

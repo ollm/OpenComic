@@ -5,6 +5,8 @@
 		"comics": "Truyện",
 		"collection": "Bộ sưu tập",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "Lọc",
@@ -13,6 +15,7 @@
 			"nameNumber": "Tên / Số",
 			"lastAdd": "Mới nhất",
 			"lastReading": "Đọc gần đây",
+			"lastOpened": "",
 			"foldersFirst": "Thư mục trước",
 			"invert": "Đảo ngược"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "Tiếp tục đọc",
 		"emptyIndex": "Chưa có truyện trong bộ sưu tập.",
-		"emptyFolder": "Không có tệp tương thích trong thư mục."
+		"emptyFolder": "Không có tệp tương thích trong thư mục.",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

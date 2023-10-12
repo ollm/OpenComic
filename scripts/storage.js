@@ -1,4 +1,4 @@
-var changes = 55; // Update this if readingPagesConfig is updated
+var changes = 56; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -60,12 +60,15 @@ var storageDefault = {
 		nightMode: false,
 		zoomFactor: 1,
 		foldersFirst: true,
-		viewIndex: 'module',
 		view: 'module',
-		sortIndex: 'name',
+		viewIndex: 'module',
+		viewRecentlyOpened: 'module',
 		sort: 'name-numeric',
-		sortInvertIndex: false,
+		sortIndex: 'name',
+		sortRecentlyOpened: 'last-opened',
 		sortInvert: false,
+		sortInvertIndex: false,
+		sortInvertRecentlyOpened: false,
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
 		...readingPagesConfig,
@@ -169,6 +172,12 @@ var storageDefault = {
 			lastReading: 0,
 			progress: 0,
 		}
+	},
+	recentlyOpened: {
+		wildcard: {
+			path: '',
+			lastOpened: 0,
+		},
 	},
 	tracking: {
 		wildcard: {

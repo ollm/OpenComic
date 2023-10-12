@@ -325,8 +325,6 @@ var currentPath = false, currentPathScrollTop = [], fromDeepLoadNow = 0;
 
 async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, disableIgnoreSingleFolders = false, fromDeepLoad = false)
 {
-	selectMenuItem('library');
-
 	onReading = _onReading = false;
 
 	reading.hideContent();
@@ -352,7 +350,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		let sort = config.sortIndex;
 		let sortInvert = config.sortInvertIndex;
-		let foldersFirst = config.foldersFirstIndex;
 
 		let order = '';
 		let orderKey = 'name';
@@ -451,7 +448,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[key].poster = images.poster;
 				comics[key].images = images.images;
 				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
-				comics[key].readingProgress = readingProgress[comics[key].path] || {};
+				comics[key].readingProgress = readingProgress[comics[key].path] || {lastReading: 0};
 			}
 
 			comics.sort(function (a, b) {
@@ -460,9 +457,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 
 		handlebarsContext.comics = comics;
-		handlebarsContext.comicsIndex = true;
-		handlebarsContext.comicsIndexVar = 'true';
 		handlebarsContext.comicsReadingProgress = false;
+		dom.setCurrentPageVars('index');
 
 		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
 
@@ -489,9 +485,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			indexPathControl(path, mainPath);
 
 		handlebarsContext.comics = [];
-		handlebarsContext.comicsIndex = false;
-		handlebarsContext.comicsIndexVar = 'false';
 		handlebarsContext.comicsDeep2 = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep).length >= 2 ? true : false;
+		dom.setCurrentPageVars('browsing');
 
 		if(handlebarsContext.comicsDeep2)
 			showIfHasPrevOrNext(path, mainPath);
@@ -553,6 +548,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	if(readingActive)
 		readingActive = false;
+
+	if(!isFromRecentlyOpened)
+		selectMenuItem('library');
+	else
+		selectMenuItem('recently-opened');
 
 	shortcuts.register('browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
@@ -796,7 +796,10 @@ function indexPathControlGoBack()
 {
 	if(indexPathControlA.length == 1)
 	{
-		loadIndexPage(true, false);
+		if(isFromRecentlyOpened)
+			recentlyOpened.load(true);
+		else
+			loadIndexPage(true, false);
 	}
 	else if(indexPathControlA.length > 0)
 	{
@@ -806,7 +809,6 @@ function indexPathControlGoBack()
 			openComic(true, goBack.path, goBack.mainPath, false, true);
 		else
 			loadIndexPage(true, goBack.path, false, false, goBack.mainPath, true);
-
 
 		indexPathControlA.pop();
 
@@ -827,10 +829,10 @@ function indexPathControlUpdateLastComic(path = false)
 	}
 }
 
-var barBackStatus = false; 
+var barBackStatus = false, isFromRecentlyOpened = false;
 
 // This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
-function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false)
+function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false, fromRecentlyOpened = false)
 {
 	indexPathA = path;
 	indexMainPathA = mainPath;
@@ -838,6 +840,8 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 	if(path === false || mainPath === false)
 	{
 		indexPathControlA = [];
+
+		isFromRecentlyOpened = fromRecentlyOpened;
 	}
 	else
 	{
@@ -887,6 +891,32 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 		barBackStatus = false;
 	}
 }
+
+/* Page - Settings */
+
+function loadRecentlyOpened(animation = true)
+{
+	indexPathControl(false);
+	selectMenuItem('recently-opened');
+
+	onReading = _onReading = false;
+
+	reading.hideContent();
+
+	generateAppMenu();
+
+	template.loadContentRight('index.content.right.loading.html', animation);
+	template.loadHeader('recently.opened.header.html', animation);
+	template.loadGlobalElement('general.elements.menus.html', 'menus');
+	floatingActionButton(false);
+
+	recentlyOpened.load(animation);
+
+	if(readingActive)
+		readingActive = false;
+}
+
+/* Page - Theme */
 
 /*Page - Languages*/
 
@@ -1092,88 +1122,118 @@ function floatingActionButton(active, callback)
 	}
 }
 
-function changeView(mode, index)
+function setCurrentPageVars(page)
 {
-	var icon = '';
+	let extraKey = '';
+
+	if(page == 'recently-opened')
+		extraKey = 'RecentlyOpened';
+	else if(page == 'index')
+		extraKey = 'Index';
+
+	handlebarsContext.page = {
+		name: page,
+		view: config['view'+extraKey],
+		sort: config['sort'+extraKey],
+		sortInvert: config['sortInvert'+extraKey],
+		foldersFirst: config['foldersFirst'+extraKey] || false,
+	};
+}
+
+function changeView(mode, page)
+{
+	let extraKey = '';
+
+	if(page == 'recently-opened')
+		extraKey = 'RecentlyOpened';
+	else if(page == 'index')
+		extraKey = 'Index';
+
+	let icon = '';
 
 	if(mode == 'module')
 		icon = 'view_module';
 	else
 		icon = 'sort';
 
-	if(index)
+	if(mode != config['view'+extraKey])
 	{
-		if(mode != config.viewIndex)
+		storage.updateVar('config', 'view'+extraKey, mode);
+		selectElement('.view-'+mode);
+		changed = true;
+	}
+
+	if(changed)
+	{
+		if(page == 'recently-opened')
 		{
-			storage.updateVar('config', 'viewIndex', mode);
-			//$('.button-view').html(icon);
-			selectElement('.view-'+mode);
+			recentlyOpened.reload();
+		}
+		else if(page == 'index')
+		{
 			loadIndexPage(true, false, true, true);
 		}
-	}
-	else
-	{
-		if(mode != config.view)
+		else
 		{
-			storage.updateVar('config', 'view', mode);
-			//$('.button-view').html(icon);
-			selectElement('.view-'+mode);
 			loadIndexPage(true, indexPathA, true, true, indexMainPathA);
+			indexPathControlA.pop();
 		}
 	}
 }
 
-function changeSort(type, mode, index)
+function changeSort(type, mode, page)
 {
+	let extraKey = '';
+
+	if(page == 'recently-opened')
+		extraKey = 'RecentlyOpened';
+	else if(page == 'index')
+		extraKey = 'Index';
+
+	let changed = false;
+
 	if(type == 1)
 	{
-		if(index)
+		if(mode != config['sort'+extraKey])
 		{
-			if(mode != config.sortIndex)
-			{
-				storage.updateVar('config', 'sortIndex', mode);
-				selectElement('.sort-'+mode);
-				loadIndexPage(true, false, true, true);
-			}
-		}
-		else
-		{
-			if(mode != config.sort)
-			{
-				storage.updateVar('config', 'sort', mode);
-				selectElement('.sort-'+mode);
-				loadIndexPage(true, indexPathA, true, true, indexMainPathA);
-			}
+			storage.updateVar('config', 'sort'+extraKey, mode);
+			selectElement('.sort-'+mode);
+			changed = true;
 		}
 	}
 	else if(type == 2)
 	{
-		if(index)
+		if(mode != config['sortInvert'+extraKey])
 		{
-			if(mode != config.sortInvertIndex)
-			{
-				storage.updateVar('config', 'sortInvertIndex', mode);
-				selectElement('.sort-'+mode);
-				loadIndexPage(true, false, true, true);
-			}
-		}
-		else
-		{
-			if(mode != config.sortInvert)
-			{
-				storage.updateVar('config', 'sortInvert', mode);
-				selectElement('.sort-'+mode);
-				loadIndexPage(true, indexPathA, true, true, indexMainPathA);
-			}
+			storage.updateVar('config', 'sortInvert'+extraKey, mode);
+			selectElement('.sort-'+mode);
+			changed = true;
 		}
 	}
 	else if(type == 3)
 	{
-		if(mode != config.foldersFirst)
+		if(mode != config['foldersFirst'+extraKey])
 		{
-			storage.updateVar('config', 'foldersFirst', mode);
+			storage.updateVar('config', 'foldersFirst'+extraKey, mode);
 			selectElement('.sort-'+mode);
+			changed = true;
+		}
+	}
+
+	if(changed)
+	{
+		if(page == 'recently-opened')
+		{
+			recentlyOpened.reload();
+		}
+		else if(page == 'index')
+		{
+			loadIndexPage(true, false, true, true);
+		}
+		else
+		{
 			loadIndexPage(true, indexPathA, true, true, indexMainPathA);
+			indexPathControlA.pop();
 		}
 	}
 }
@@ -1490,11 +1550,13 @@ gamepad.setButtonEvent('reading', 1, function(key, button) {
 module.exports = {
 	loadIndexPage: loadIndexPage,
 	reloadIndex: reloadIndex,
+	loadRecentlyOpened: loadRecentlyOpened,
 	loadLanguagesPage: loadLanguagesPage,
 	loadSettingsPage: loadSettingsPage,
 	loadThemePage: loadThemePage,
 	changeLanguage: changeLanguage,
 	floatingActionButton: floatingActionButton,
+	setCurrentPageVars: setCurrentPageVars,
 	changeView: changeView,
 	changeSort: changeSort,
 	indexPathControl: indexPathControl,
@@ -1521,6 +1583,7 @@ module.exports = {
 	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
 	indexMainPathA: function(){return indexMainPathA},
 	currentPathScrollTop: function(){return currentPathScrollTop},
+	getFolderThumbnails: getFolderThumbnails,
 	search: search,
 	this: domManager.this,
 	query: domManager.query,

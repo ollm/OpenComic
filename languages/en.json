@@ -5,6 +5,8 @@
 		"comics": "Comics",
 		"collection": "Collection",
 		"library": "Library",
+		"recents": "Recents",
+		"recentlyOpened": "Recently opened",
 		"images": "Images",
 		"sort": {
 			"main": "Sort",
@@ -13,6 +15,7 @@
 			"nameNumber": "Name / Number",
 			"lastAdd": "Last add",
 			"lastReading": "Last reading",
+			"lastOpened": "Last opened",
 			"foldersFirst": "Folders first",
 			"invert": "Invert"
 		},
@@ -49,8 +52,9 @@
 	},
 	"comics": {
 		"continueReading": "Continue reading",
-		"emptyIndex": "There are no comics in this collection.",
-		"emptyFolder": "There is no compatible file in this folder."
+		"emptyIndex": "There are no comics in the library.",
+		"emptyFolder": "There is no compatible file in this folder.",
+		"emptyRecentlyOpened": "No recently opened files."
 	},
 	"reading": {
 		"prevChapter": "Previous chapter",

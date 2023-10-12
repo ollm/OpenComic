@@ -1748,6 +1748,16 @@ function realPath(path, index = 0)
 	return newPath;
 }
 
+function isCompressed(name)
+{
+	let ext = fileExtension(name);
+
+	if(inArray(ext, compressedExtensions.all))
+		return true;
+
+	return false;
+}
+
 function firstCompressedFile(path, index = 0)
 {
 	let segments = path.split(p.sep);
@@ -1982,6 +1992,7 @@ module.exports = {
 	sort: sort,
 	realPath: realPath,
 	pathType: pathType,
+	isCompressed: isCompressed,
 	firstCompressedFile: firstCompressedFile,
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,

@@ -5,6 +5,8 @@
 		"comics": "Komiksy",
 		"collection": "Sbírka",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "Seřadit",
@@ -13,6 +15,7 @@
 			"nameNumber": "Podle názvu nebo čísla",
 			"lastAdd": "Podle data přidání",
 			"lastReading": "Podle data přečtení",
+			"lastOpened": "",
 			"foldersFirst": "Složky první",
 			"invert": "Převrátit"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "Pokračovat ve čtení",
 		"emptyIndex": "V této sbírce nejsou žádné komiksy.",
-		"emptyFolder": "V této složce nejsou žádné kompatibilní soubory."
+		"emptyFolder": "V této složce nejsou žádné kompatibilní soubory.",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

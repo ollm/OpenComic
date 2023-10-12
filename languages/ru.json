@@ -5,6 +5,8 @@
 		"comics": "Комиксы",
 		"collection": "Коллекция",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "Сортировка",
@@ -13,6 +15,7 @@
 			"nameNumber": "По названию/номер",
 			"lastAdd": "По последнему добавленному",
 			"lastReading": "По последнему читавшему",
+			"lastOpened": "",
 			"foldersFirst": "Сначала папки",
 			"invert": "Инвертировать"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "Продолжить чтение",
 		"emptyIndex": "В этом сборнике нет комиксов.",
-		"emptyFolder": "В этой папке нет совместимых файлов."
+		"emptyFolder": "В этой папке нет совместимых файлов.",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

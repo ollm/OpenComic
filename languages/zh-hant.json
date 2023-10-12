@@ -5,6 +5,8 @@
 		"comics": "漫畫",
 		"collection": "收藏夾",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "排序",
@@ -13,6 +15,7 @@
 			"nameNumber": "名稱 / 頁數",
 			"lastAdd": "最後添加時間",
 			"lastReading": "最後閱讀時間",
+			"lastOpened": "",
 			"foldersFirst": "資料夾前置",
 			"invert": "倒置"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "繼續閱讀",
 		"emptyIndex": "收藏夾裡還沒有漫畫。",
-		"emptyFolder": "這個檔案夾裡沒有可讀檔案。"
+		"emptyFolder": "這個檔案夾裡沒有可讀檔案。",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

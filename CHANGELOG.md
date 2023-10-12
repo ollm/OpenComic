@@ -10,7 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Option to open directly in continue reading instead of the file list [`78646fe`](https://github.com/ollm/OpenComic/commit/78646fe6f4a17be6fc9fd0c940fd97d438c812c1)
 - Option to start reading in full screen [`cf3de6e`](https://github.com/ollm/OpenComic/commit/cf3de6ed737189b53474a30e277245b988ee5d99)
-- Option to start OpenComic directly in last reading
+- Option to start OpenComic directly in last reading [`00cb8c7`](https://github.com/ollm/OpenComic/commit/00cb8c7da9eb8345aaec8faa3b5c91953c2350dd)
+- Recently opened page
 
 ##### 🐛 Bug Fixes
 

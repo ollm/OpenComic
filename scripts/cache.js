@@ -115,7 +115,7 @@ var data = false;
 
 function returnThumbnailsImages(images, callback, file = false)
 {
-	if(!data) data = storage.get('cache');
+	if(!data) data = storage.get('cache') || {};
 
 	let single = images.length === undefined ? true : false;
 	images = single ? [images] : images;
@@ -238,6 +238,8 @@ function deleteInCacheSha(sha, returnFileSize = false)
 
 function purge()
 {
+	if(!data) data = storage.get('cache') || {};
+
 	let _time = time();
 
 	let cacheMaxSize = config.cacheMaxSize * 1000 * 1000;
@@ -259,6 +261,19 @@ function purge()
 				lastAccess: data[sha].lastAccess,
 			});
 		}
+	}
+
+	// Remove unreferenced files
+	let files = fs.readdirSync(cache.folder);
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		let file = files[i];
+
+		let sha = extract(/^([a-z0-9]+)\.jpg/iu, file, 1);
+
+		if(sha && !data[sha])
+			deleteInCacheSha(sha);
 	}
 
 	// Remove if exede cache max size

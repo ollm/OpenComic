@@ -2,24 +2,27 @@
 	<div class="menu-simple elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element sort-name gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name', {{comicsIndexVar}})">{{language.global.sort.name}}</div>
-				<div class="menu-simple-element sort-numeric gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'numeric', {{comicsIndexVar}})">{{language.global.sort.number}}</div>
-				<div class="menu-simple-element sort-name-numeric gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'name-numeric'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'name-numeric'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'name-numeric', {{comicsIndexVar}})">{{language.global.sort.nameNumber}}</div>
-				{{#if comicsIndex}}
-				<div class="menu-simple-element sort-last-add gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-add'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-add'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-add', {{comicsIndexVar}})">{{language.global.sort.lastAdd}}</div>
-				<div class="menu-simple-element sort-last-reading gamepad-item{{#if comicsIndex}}{{#compare config.sortIndex '==' 'last-reading'}} s{{/compare}}{{else}}{{#compare config.sort '==' 'last-reading'}} s{{/compare}}{{/if}}" onclick="dom.changeSort(1, 'last-reading', {{comicsIndexVar}})">{{language.global.sort.lastReading}}</div>
+				<div class="menu-simple-element sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', '{{page.name}}')">{{language.global.sort.name}}</div>
+				<div class="menu-simple-element sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', '{{page.name}}')">{{language.global.sort.number}}</div>
+				<div class="menu-simple-element sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', '{{page.name}}')">{{language.global.sort.nameNumber}}</div>
+				{{#compare page.name '==' 'recently-opened'}}
+				<div class="menu-simple-element sort-last-opened gamepad-item{{#compare page.sort '==' 'last-opened'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-opened', '{{page.name}}')">{{language.global.sort.lastOpened}}</div>
+				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
+				{{else compare page.name '==' 'index'}}
+				<div class="menu-simple-element sort-last-add gamepad-item{{#compare page.sort '==' 'last-add'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-add', '{{page.name}}')">{{language.global.sort.lastAdd}}</div>
+				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
 				{{else}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.foldersFirst}}
-					<div class="switch{{#if config.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">
+					<div class="switch{{#if page.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">
 						<div></div>
 						<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 					</div>
 				</div>
-				{{/if}}
+				{{/compare}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.invert}}
-					<div class="switch{{#if comicsIndex}}{{#if config.sortInvertIndex}} a{{/if}}{{else}}{{#if config.sortInvert}} a{{/if}}{{/if}}" on="dom.changeSort(2, true, {{comicsIndexVar}})" off="dom.changeSort(2, false, {{comicsIndexVar}})">
+					<div class="switch{{#if page.sortInvert}} a{{/if}}" on="dom.changeSort(2, true, '{{page.name}}')" off="dom.changeSort(2, false, '{{page.name}}')">
 						<div></div>
 						<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 					</div>
@@ -34,8 +37,8 @@
 	<div class="menu-simple elevation-2" style="width: 164px;" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element view-module gamepad-item{{#if comicsIndex}}{{#compare config.viewIndex '==' 'module'}} s{{/compare}}{{else}}{{#compare config.view '==' 'module'}} s{{/compare}}{{/if}}" onclick="dom.changeView('module', {{comicsIndexVar}});">{{language.global.view.module}}</div>
-				<div class="menu-simple-element view-list gamepad-item{{#if comicsIndex}}{{#compare config.viewIndex '==' 'list'}} s{{/compare}}{{else}}{{#compare config.view '==' 'list'}} s{{/compare}}{{/if}}" onclick="dom.changeView('list', {{comicsIndexVar}});">{{language.global.view.list}}</div>
+				<div class="menu-simple-element view-module gamepad-item{{#compare page.view '==' 'module'}} s{{/compare}}" onclick="dom.changeView('module', '{{page.name}}');">{{language.global.view.module}}</div>
+				<div class="menu-simple-element view-list gamepad-item{{#compare page.view '==' 'list'}} s{{/compare}}" onclick="dom.changeView('list', '{{page.name}}');">{{language.global.view.list}}</div>
 			</div>
 		</div>
 	</div>
@@ -96,6 +99,6 @@
 </div>
 
 <script type="text/javascript">
-	dom.selectElement('.sort-{{#if comicsIndex}}{{config.sortIndex}}{{else}}{{config.sort}}{{/if}}');
-	dom.selectElement('.view-{{#if comicsIndex}}{{config.viewIndex}}{{else}}{{config.view}}{{/if}}');	
+	dom.selectElement('.sort-{{page.sort}}');
+	dom.selectElement('.view-{{page.view}}');	
 </script>

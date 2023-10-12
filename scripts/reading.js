@@ -205,17 +205,17 @@ function addHtmlImages()
 	calculateImagesDataWithClip();
 	calculateImagesDistribution();
 
-	var _imagesDistribution = applyMangaReading(imagesDistribution);
+	let _imagesDistribution = applyMangaReading(imagesDistribution);
 
-	var folderImages = [];
+	let folderImages = [];
 
 	for(let key1 in _imagesDistribution)
 	{
-		var distribution = [];
+		let distribution = [];
 
 		for(let key2 in _imagesDistribution[key1])
 		{
-			var image = _imagesDistribution[key1][key2];
+			let image = _imagesDistribution[key1][key2];
 
 			image.key1 = key1;
 			image.key2 = key2;
@@ -246,11 +246,12 @@ function addHtmlImages()
 
 	handlebarsContext.folderImages = folderImages;
 
-	var html = template.load('reading.content.right.images.html');
+	let html = template.load('reading.content.right.images.html');
 
-	template.contentRight('.loading').remove();
-	template.contentRight('.reading-body > div').html(html);
-	template.contentRight('.reading-lens > div > div').html(html);
+	let contentRight = template._contentRight();
+
+	dom.this(contentRight).find('.loading').remove();
+	dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).html(html);
 
 }
 
@@ -282,28 +283,29 @@ function calcAspectRatio(first, second)
 
 function disposeImages(data = false)
 {
-	var margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
-	var marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
-	var marginVertical = (data && typeof data.top !== 'undefined') ? data.top : _config.readingMargin.top;
-	var marginHorizontalsHorizontal = (data && typeof data.horizontalsLeft !== 'undefined') ? data.horizontalsLeft : _config.readingHorizontalsMargin.left;
-	//var marginHorizontalsVertical = (data && typeof data.horizontalsTop !== 'undefined') ? data.horizontalsTop : _config.readingHorizontalsMargin.top;
+	let margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
+	let marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
+	let marginVertical = (data && typeof data.top !== 'undefined') ? data.top : _config.readingMargin.top;
+	let marginHorizontalsHorizontal = (data && typeof data.horizontalsLeft !== 'undefined') ? data.horizontalsLeft : _config.readingHorizontalsMargin.left;
 
-	var contentHeight = template.contentRight().children('div').height();
+	let contentRight = template._contentRight();
+	let rect = contentRight.firstElementChild.getBoundingClientRect();
+
+	let contentHeight = rect.height;
+	let contentWidth = rect.width;
 
 	if(readingViewIs('scroll'))
-		var contentWidth = template.contentRight('.reading-body').width();
-	else
-		var contentWidth = template.contentRight().width();
+		contentWidth = contentRight.querySelector('.reading-body').getBoundingClientRect().width;
 
 	//Width 0
-	var contentWidth0 = contentWidth - (marginHorizontal * 2);
-	var aspectRatio0 = contentWidth0 / (contentHeight - marginVertical * 2);
+	let contentWidth0 = contentWidth - (marginHorizontal * 2);
+	let aspectRatio0 = contentWidth0 / (contentHeight - marginVertical * 2);
 
 	//Width horizontals 0
-	var contentWidthHorizontals0 = contentWidth - (marginHorizontalsHorizontal * 2);
-	var aspectRatioHorizontals0 = contentWidthHorizontals0 / (contentHeight - marginVertical * 2);
+	let contentWidthHorizontals0 = contentWidth - (marginHorizontalsHorizontal * 2);
+	let aspectRatioHorizontals0 = contentWidthHorizontals0 / (contentHeight - marginVertical * 2);
 
-	var _imagesDistribution = applyMangaReading(imagesDistribution);
+	let _imagesDistribution = applyMangaReading(imagesDistribution);
 
 	let imageClip = _config.readingImageClip;
 
@@ -314,7 +316,7 @@ function disposeImages(data = false)
 	let clipRight = imageClip.right / 100;
 	let clipHorizontal = clipLeft + clipRight;
 
-	let allImages = template.contentRight('.r-img').get();
+	let allImages = contentRight.querySelectorAll('.reading-body .r-img');
 
 	let imageElements = {};
 
@@ -347,14 +349,14 @@ function disposeImages(data = false)
 
 		if(second)
 		{
-			var imageHeight0, imageWidth0, marginLeft0, marginTop0, imageHeight1, imageWidth1, marginLeft1, marginTop1;
+			let imageHeight0, imageWidth0, marginLeft0, marginTop0, imageHeight1, imageWidth1, marginLeft1, marginTop1;
 
-			var imageHeight = imageHeight0 = imageHeight1 = (contentHeight - marginVertical * 2);
+			let imageHeight = imageHeight0 = imageHeight1 = (contentHeight - marginVertical * 2);
 
 			imageWidth0 = imageHeight0 * first.aspectRatio;
 			imageWidth1 = imageHeight1 * second.aspectRatio;
 
-			var joinWidth = imageWidth0 + imageWidth1 + marginHorizontal;
+			let joinWidth = imageWidth0 + imageWidth1 + marginHorizontal;
 
 			if(joinWidth < contentWidth0 && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 			{
@@ -367,7 +369,7 @@ function disposeImages(data = false)
 				imageWidth0 = (first.aspectRatio / (first.aspectRatio + second.aspectRatio)) * (contentWidth0 - marginHorizontal);
 				imageWidth1 = (second.aspectRatio / (second.aspectRatio + first.aspectRatio)) * (contentWidth0 - marginHorizontal);
 
-				var imageHeight = imageHeight0 = imageHeight1 = imageWidth0 / first.aspectRatio;
+				let imageHeight = imageHeight0 = imageHeight1 = imageWidth0 / first.aspectRatio;
 
 				marginLeft0 = marginLeft1 = marginHorizontal;
 				marginTop0 = marginTop1 = contentHeight / 2 - imageHeight / 2;
@@ -448,38 +450,40 @@ function disposeImages(data = false)
 		}
 		else
 		{
+			let imageHeight, imageWidth, marginLeft, marginTop;
+
 			if(_config.readingHorizontalsMarginActive && first.aspectRatio > 1)
 			{
 				if(aspectRatioHorizontals0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 				{
-					var imageHeight = (contentHeight - marginVertical * 2);
-					var imageWidth = imageHeight * first.aspectRatio;
-					var marginLeft = contentWidth / 2 - imageWidth / 2;
-					var marginTop = marginVertical;
+					imageHeight = (contentHeight - marginVertical * 2);
+					imageWidth = imageHeight * first.aspectRatio;
+					marginLeft = contentWidth / 2 - imageWidth / 2;
+					marginTop = marginVertical;
 				}
 				else
 				{
-					var imageWidth = (contentWidth - marginHorizontalsHorizontal * 2);
-					var imageHeight = imageWidth / first.aspectRatio;
-					var marginLeft = marginHorizontalsHorizontal;
-					var marginTop = contentHeight / 2 - imageHeight / 2;
+					imageWidth = (contentWidth - marginHorizontalsHorizontal * 2);
+					imageHeight = imageWidth / first.aspectRatio;
+					marginLeft = marginHorizontalsHorizontal;
+					marginTop = contentHeight / 2 - imageHeight / 2;
 				}
 			}
 			else
 			{
 				if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 				{
-					var imageHeight = (contentHeight - marginVertical * 2);
-					var imageWidth = imageHeight * first.aspectRatio;
-					var marginLeft = contentWidth / 2 - imageWidth / 2;
-					var marginTop = marginVertical;
+					imageHeight = (contentHeight - marginVertical * 2);
+					imageWidth = imageHeight * first.aspectRatio;
+					marginLeft = contentWidth / 2 - imageWidth / 2;
+					marginTop = marginVertical;
 				}
 				else
 				{
-					var imageWidth = (contentWidth - marginHorizontal * 2);
-					var imageHeight = imageWidth / first.aspectRatio;
-					var marginLeft = marginHorizontal;
-					var marginTop = contentHeight / 2 - imageHeight / 2;
+					imageWidth = (contentWidth - marginHorizontal * 2);
+					imageHeight = imageWidth / first.aspectRatio;
+					marginLeft = marginHorizontal;
+					marginTop = contentHeight / 2 - imageHeight / 2;
 				}
 			}
 
@@ -523,7 +527,7 @@ function disposeImages(data = false)
 		}
 	}
 
-	let rFlex = template.contentRight('.r-flex').get();
+	let rFlex = contentRight.querySelectorAll('.r-flex');
 
 	for(let i = 0, len = rFlex.length; i < len; i++)
 	{
@@ -2591,7 +2595,7 @@ function loadBookmarks()
 		}
 	}
 
-	var bookmarks = [];
+	let bookmarks = [];
 
 	for(let path in bookmarksPath)
 	{

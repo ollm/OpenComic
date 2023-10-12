@@ -5,6 +5,8 @@
 		"comics": "Quadrinhos",
 		"collection": "Coleção",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "Classificar",
@@ -13,6 +15,7 @@
 			"nameNumber": "Nome / Número",
 			"lastAdd": "Último adicionado",
 			"lastReading": "Última leitura",
+			"lastOpened": "",
 			"foldersFirst": "Pastas primeiro",
 			"invert": "Inverter"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "Continue lendo",
 		"emptyIndex": "Não há quadrinhos nesta coleção.",
-		"emptyFolder": "Não há arquivo compatível nesta pasta."
+		"emptyFolder": "Não há arquivo compatível nesta pasta.",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

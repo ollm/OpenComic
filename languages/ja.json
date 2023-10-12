@@ -5,6 +5,8 @@
 		"comics": "本",
 		"collection": "コレクション",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "並び替え",
@@ -13,6 +15,7 @@
 			"nameNumber": "名前 / 番号",
 			"lastAdd": "最後に追加された本",
 			"lastReading": "最後に読んだ本",
+			"lastOpened": "",
 			"foldersFirst": "フォルダのリスト",
 			"invert": "逆順"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "続きを読む",
 		"emptyIndex": "このコレクションには本がありません",
-		"emptyFolder": "このフォルダには閲覧可能なファイルがありません"
+		"emptyFolder": "このフォルダには閲覧可能なファイルがありません",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

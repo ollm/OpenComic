@@ -5,6 +5,8 @@
 		"comics": "漫画",
 		"collection": "收藏夹",
 		"library": "",
+		"recents": "",
+		"recentlyOpened": "",
 		"images": "",
 		"sort": {
 			"main": "排列",
@@ -13,6 +15,7 @@
 			"nameNumber": "名称 / 页数",
 			"lastAdd": "最后添加时间",
 			"lastReading": "最后阅读时间",
+			"lastOpened": "",
 			"foldersFirst": "文件夹置前",
 			"invert": "倒序"
 		},
@@ -50,7 +53,8 @@
 	"comics": {
 		"continueReading": "继续阅读",
 		"emptyIndex": "收藏夹里还没有漫画。",
-		"emptyFolder": "这个文件夹里没有可读文件。"
+		"emptyFolder": "这个文件夹里没有可读文件。",
+		"emptyRecentlyOpened": ""
 	},
 	"reading": {
 		"prevChapter": "",

@@ -1,0 +1,18 @@
+<div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.back}}" onclick="dom.indexPathControlGoBack()">arrow_back</div>
+<div class="bar-title title-small" style="max-width: calc(100% - ({{#if comicsDeep2}}488px{{else}}364px{{/if}} + 68px));">
+	{{language.global.recentlyOpened}}
+</div>
+<div class="bar-right-buttons">
+	<div>
+		<div class="material-icon button button1 button-sort hover-text" hover-text="{{language.global.sort.main}}" onclick="events.activeMenu('#index-sort', '.bar-right-buttons .button-sort', 'right');">sort</div>
+		<div class="material-icon button button1 button-view hover-text" hover-text="{{language.global.view.main}}" onclick="events.activeMenu('#index-view', '.bar-right-buttons .button-view', 'right');">
+			{{#compare config.viewRecentlyOpened '==' 'module'}}view_module{{else}}view_list{{/compare}}
+		</div>
+		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.global.reload}}" onclick="recentlyOpened.reload();">refresh</div>
+		<div class="material-icon button button2 button-search hover-text" hover-text="{{language.global.filterCurrentPage}}" onclick="dom.search.showHide(true);">filter_list</div>
+		<div class="material-icon button button2 button-search hover-text" hover-text="{{language.global.search}}" onclick="dom.search.showHide();">search</div>
+		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode();">{{#if config.nightMode}}dark_mode{{else}}light_mode{{/if}}</div>
+	</div>
+</div>
