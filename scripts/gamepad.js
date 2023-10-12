@@ -283,7 +283,7 @@ var lastUpdateBrowsableItemsSkiped = false;
 var hasKeyboardNavigation = false;
 var fromGoBack = false;
 
-function updateBrowsableItems(key = false, force = false, _highlightItem = true)
+function updateBrowsableItems(key = false, force = false, _highlightItem = true, ignore = {})
 {
 	if(key != currentKey) prevKey = currentKey;
 	currentKey = key;
@@ -303,9 +303,9 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 
 	let toHighlight = false, index = 0;
 
-	// Menu
+	// Search
 	let search = template._globalElement().querySelector('.search-bar.active');
-	let hasSearch = search ? true : false;
+	let hasSearch = search && !ignore.search ? true : false;
 
 	if(hasSearch)
 	{
@@ -346,7 +346,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 
 	// Menu
 	let menu = template._globalElement().querySelector('.menu-simple.a');
-	let hasMenu = menu ? true : false;
+	let hasMenu = menu && !ignore.menu ? true : false;
 
 	if(hasMenu && !hasSearch)
 	{
@@ -386,7 +386,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	}
 
 	// Content right
-	if(!hasMenu && !hasSearch)
+	if(!hasMenu && !hasSearch && !ignore.right)
 	{
 		let items = template._contentRight().querySelectorAll('.gamepad-item');
 		let scrollElement = currentScrollElement = template.contentRight().children().get(0);
@@ -424,7 +424,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true)
 	}
 
 	// Content left
-	if(!hasMenu && !hasSearch)
+	if(!hasMenu && !hasSearch && !ignore.left)
 	{
 		let items = template._contentLeft().querySelectorAll('.gamepad-item');
 

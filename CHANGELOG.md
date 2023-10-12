@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to open directly in continue reading instead of the file list [`78646fe`](https://github.com/ollm/OpenComic/commit/78646fe6f4a17be6fc9fd0c940fd97d438c812c1)
 - Option to start reading in full screen [`cf3de6e`](https://github.com/ollm/OpenComic/commit/cf3de6ed737189b53474a30e277245b988ee5d99)
 - Option to start OpenComic directly in last reading [`00cb8c7`](https://github.com/ollm/OpenComic/commit/00cb8c7da9eb8345aaec8faa3b5c91953c2350dd)
-- Recently opened page
+- Recently opened page [`d2f3065`](https://github.com/ollm/OpenComic/commit/d2f30653f506993a45e49ad5e7e5e8434c33a9be)
 
 ##### 🐛 Bug Fixes
 
@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Wrong cache folder in windows causing some bugs [`8b97435`](https://github.com/ollm/OpenComic/commit/dd6facaf67343185fa06b2377fdc64e66ad9090d)
 - Extract large RAR and ZIP files blocks the app for a while [`adbdced`](https://github.com/ollm/OpenComic/commit/adbdceda278e6184bc477581be9a25b8fc0f166b)
 - RAR error on extract with files some special chars (Changed unrar to node-unrar-js) [`694fe27`](https://github.com/ollm/OpenComic/commit/694fe274982c0a9ad2421c6b226abceae1602c3a)
+- Cannot open filtered files with the keyboard
 
 ## [v1.0.0-beta.3](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.3) (09-10-2023)
 

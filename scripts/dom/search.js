@@ -294,8 +294,17 @@ function keyup(event)
 {
 	let text = this.value;
 
-	if(event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40)
+	if(event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40 && event.keyCode != 13)
+	{
 		search(text);
+	}
+	else if(text && filterCurrentPage && (event.keyCode == 13 || event.keyCode == 40))
+	{
+		hide(true);
+		saveRecentlySearched();
+
+		gamepad.updateBrowsableItems('search', true);
+	}
 }
 
 function showRecentlySearched()
@@ -326,7 +335,7 @@ function saveRecentlySearched()
 	let recentlySearched = storage.get('recentlySearched');
 	recentlySearched.unshift(text);
 
-	recentlySearched = recentlySearched.slice(0, 10);
+	recentlySearched = recentlySearched.slice(0, 30);
 
 	storage.set('recentlySearched', recentlySearched);
 }
