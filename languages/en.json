@@ -142,6 +142,8 @@
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",
 			"globalZoom": "Applies a global zoom instead of image by image (Only in vertical reading)",
+			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
+			"scrollWithMouse": "Scroll by moving the cursor along the edges of the screen (Disables drag and drop scrolling)",
 			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
 		},

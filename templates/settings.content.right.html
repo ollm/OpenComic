@@ -36,7 +36,7 @@
 			<h2 class="headline-small">{{language.settings.reading.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.reading.globalZoom}}
+				<span>{{language.settings.reading.globalZoom}}</span>
 				<div class="switch{{#if config.readingGlobalZoom}} a{{/if}}" on="settings.setGlobalZoom(true)" off="settings.setGlobalZoom(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -44,7 +44,23 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.reading.startReadingInFullScreen}}
+				<span>{{language.settings.reading.moveZoomWithMouse}}</span>
+				<div class="switch{{#if config.readingMoveZoomWithMouse}} a{{/if}}" on="settings.setMoveZoomWithMouse(true)" off="settings.setMoveZoomWithMouse(false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text gamepad-item">
+				<span>{{language.settings.reading.scrollWithMouse}}</span>
+				<div class="switch{{#if config.readingScrollWithMouse}} a{{/if}}" on="settings.setScrollWithMouse(true)" off="settings.setScrollWithMouse(false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text gamepad-item">
+				<span>{{language.settings.reading.startReadingInFullScreen}}</span>
 				<div class="switch{{#if config.readingStartReadingInFullScreen}} a{{/if}}" on="settings.setStartReadingInFullScreen(true)" off="settings.setStartReadingInFullScreen(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -52,7 +68,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.reading.trackingAtTheEnd}}
+				<span>{{language.settings.reading.trackingAtTheEnd}}</span>
 				<div class="switch{{#if config.readingTrackingAtTheEnd}} a{{/if}}" on="settings.setTrackingAtTheEnd(true)" off="settings.setTrackingAtTheEnd(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -76,7 +92,7 @@
 			<h2 class="headline-small">{{language.settings.navigation.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.navigation.ignoreSingleFoldersLibrary}}
+				<span>{{language.settings.navigation.ignoreSingleFoldersLibrary}}</span>
 				<div class="switch{{#if config.ignoreSingleFoldersLibrary}} a{{/if}}" on="settings.setIgnoreSingleFoldersLibrary(true)" off="settings.setIgnoreSingleFoldersLibrary(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -84,7 +100,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.navigation.whenOpenFolderContinueReading}}
+				<span>{{language.settings.navigation.whenOpenFolderContinueReading}}</span>
 				<div class="switch{{#if config.whenOpenFolderContinueReading}} a{{/if}}" on="settings.setWhenOpenFolderContinueReading(true)" off="settings.setWhenOpenFolderContinueReading(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -92,7 +108,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.navigation.showFullPathLibrary}}
+				<span>{{language.settings.navigation.showFullPathLibrary}}</span>
 				<div class="switch{{#if config.showFullPathLibrary}} a{{/if}}" on="settings.setShowFullPathLibrary(true)" off="settings.setShowFullPathLibrary(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -100,7 +116,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.navigation.showFullPathOpened}}
+				<span>{{language.settings.navigation.showFullPathOpened}}</span>
 				<div class="switch{{#if config.showFullPathOpened}} a{{/if}}" on="settings.setShowFullPathOpened(true)" off="settings.setShowFullPathOpened(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -110,7 +126,7 @@
 			<h2 class="headline-small">{{language.settings.startupBehavior.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.startupBehavior.startInFullScreen}}
+				<span>{{language.settings.startupBehavior.startInFullScreen}}</span>
 				<div class="switch{{#if config.startInFullScreen}} a{{/if}}" on="settings.setStartInFullScreen(true)" off="settings.setStartInFullScreen(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -118,7 +134,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.startupBehavior.startInContinueReading}}
+				<span>{{language.settings.startupBehavior.startInContinueReading}}</span>
 				<div class="switch{{#if config.startInContinueReading}} a{{/if}}" on="settings.setStartInContinueReading(true)" off="settings.setStartInContinueReading(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -126,7 +142,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item settings-start-only-from-library{{#unless config.startInContinueReading}} disable-pointer{{/unless}}">
-				{{language.settings.startupBehavior.startOnlyFromLibrary}}
+				<span>{{language.settings.startupBehavior.startOnlyFromLibrary}}</span>
 				<div class="switch{{#if config.startOnlyFromLibrary}} a{{/if}}" on="settings.setStartOnlyFromLibrary(true)" off="settings.setStartOnlyFromLibrary(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -134,7 +150,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.startupBehavior.startOnStartup}} (Windows and macOS)
+				<span>{{language.settings.startupBehavior.startOnStartup}} (Windows and macOS)</span>
 				<div class="switch{{#if config.startOnStartup}} a{{/if}}" on="settings.setStartOnStartup(true)" off="settings.setStartOnStartup(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -144,7 +160,7 @@
 			<h2 class="headline-small">{{language.settings.releases.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
-				{{language.settings.releases.checkReleases}}
+				<span>{{language.settings.releases.checkReleases}}</span>
 				<div class="switch{{#if config.checkReleases}} a{{/if}}" on="settings.setCheckReleases(true)" off="settings.setCheckReleases(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
@@ -152,7 +168,7 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item settings-check-prereleases{{#unless config.checkReleases}} disable-pointer{{/unless}}">
-				{{language.settings.releases.checkPreReleases}}
+				<span>{{language.settings.releases.checkPreReleases}}</span>
 				<div class="switch{{#if config.checkPreReleases}} a{{/if}}" on="settings.setCheckPreReleases(true)" off="settings.setCheckPreReleases(false)">
 					<div></div>
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>

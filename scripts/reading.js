@@ -1,7 +1,7 @@
 const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	filters = require(p.join(appDir, 'scripts/reading/filters.js'));
 
-var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0};
+var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -1658,6 +1658,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			}, animationDurationS * 1000 + 100);
 		}
 
+		zoomMoveData.x = currentPageXY.x;
+		zoomMoveData.y = currentPageXY.y;
+
 		scalePrevData = {
 			tranX: translateX,
 			tranX2: translateX,
@@ -1855,7 +1858,7 @@ function dragZoom(x, y)
 
 function dragZoomEnd()
 {
-	if(zoomMoveData.active)
+	if(zoomMoveData.active || force)
 	{
 		if(typeof zoomMoveData.tranX !== 'undefined')
 		{
@@ -1865,6 +1868,78 @@ function dragZoomEnd()
 
 		zoomMoveData.active = false;
 	}
+}
+
+// Move scroll whit mouse
+var scrollWithMouseStatus = {};
+
+function startScrollWithMouse()
+{
+	if(config.readingScrollWithMouse)
+	{
+		let content = template._contentRight().firstElementChild;
+
+		scrollWithMouseStatus = {
+			active: true,
+			content: content,
+			scrollTop: content.scrollTop,
+			headerHeight: template._barHeader().getBoundingClientRect().height,
+		};
+
+		scrollWithMouse();
+	}
+	else
+	{
+		scrollWithMouseStatus = {};
+	}
+}
+
+function scrollWithMouse()
+{
+	if(!scrollWithMouseStatus.active) return;
+
+	if(onReading && readingViewIs('scroll'))
+	{
+		let contentScrollTop = scrollWithMouseStatus.content.scrollTop;
+		let scrollTop = scrollWithMouseStatus.scrollTop;
+
+		if(Math.abs(contentScrollTop - scrollTop) > 5)
+			scrollTop = contentScrollTop;
+
+		let pageY = currentMousePosition.pageY;
+		let pageX = currentMousePosition.pageX;
+
+		let height = window.innerHeight;
+		let zone = height / 4;
+
+		let width = window.innerWidth;
+		let zoneWidth = width / 4;
+
+		let offset = 0;
+
+		if(pageY < zone)
+			offset = pageY - zone;
+		else if(pageY > height - zone)
+			offset = pageY - (height - zone);
+
+		offset = offset / zone * 15;
+
+		if(offset != 0 && pageY > scrollWithMouseStatus.headerHeight && pageX > zoneWidth && pageX < width - zoneWidth && isMouseenter.document)
+		{
+			let scrollHeight = scrollWithMouseStatus.content.scrollHeight;
+			scrollTop = scrollTop + offset;
+
+			if(scrollTop < 0)
+				scrollTop = 0;
+			else if(scrollTop > scrollHeight)
+				scrollTop = scrollHeight;
+
+			scrollWithMouseStatus.scrollTop = scrollTop;
+			scrollWithMouseStatus.content.scrollTop = scrollTop;
+		}
+	}
+
+	window.requestAnimationFrame(scrollWithMouse);
 }
 
 //Turn the magnifying glass on and off
@@ -3052,7 +3127,144 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-var touchTimeout, mouseOut = {lens: false, body: false}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
+// Events functions
+
+var contentLeftRect = false, barHeaderRect = false;
+
+function mousemove(event)
+{
+	let pageX = app.pageX(event);
+	let pageY = app.pageY(event);
+
+	currentMousePosition = {
+		pageX: pageX,
+		pageY: pageY,
+	};
+
+	if(haveZoom) // Drag Image zoom
+	{
+		if(config.readingMoveZoomWithMouse && (!readingViewIs('scroll') || config.readingScrollWithMouse) && !(event instanceof PointerEvent))
+		{
+			event.preventDefault();
+
+			let x = -(pageX - zoomMoveData.x) * (scalePrevData.scale - 0.8);
+			let y = -(pageY - zoomMoveData.y) * (scalePrevData.scale - 0.8);
+
+			dragZoom(x, y);
+
+			scalePrevData.tranX = zoomMoveData.tranX;
+			scalePrevData.tranY = zoomMoveData.tranY;
+
+		}
+		else if(zoomMoveData.active)
+		{
+			event.preventDefault();
+
+			let x = pageX - zoomMoveData.x;
+			let y = pageY - zoomMoveData.y;
+
+			dragZoom(x, y);
+		}
+	}
+
+	if(readingDragScroll) // Drag to scroll
+	{
+		event.preventDefault();
+
+		if(!readingDragScroll.start)
+		{
+			readingDragScroll.start = true;
+
+			dom.query('body').addClass('dragging');
+		}
+
+		if(readingDragScroll.speed.length > 2)
+			readingDragScroll.speed.shift();
+
+		readingDragScroll.speed.push({
+			time: performance.now(),
+			pageY: pageY,
+		});
+
+		readingDragScroll.content.scrollTop(readingDragScroll.scrollTop - (pageY - readingDragScroll.pageY));
+	}
+
+	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
+	{
+		if(pageY < 96)
+		{
+			if(hiddenBarHeader && !shownBarHeader && !shownContentLeft && !hideContentRunningST)
+			{
+				hideContentST = setTimeout(function(){
+
+					dom.query('.bar-header').addClass('show');
+					reading.setShownBarHeader(true);
+
+				}, 300);
+
+				hideContentRunningST = true;
+			}
+		}
+		else if(pageX < 96)
+		{
+			if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && !hideContentRunningST)
+			{
+				hideContentST = setTimeout(function(){
+
+					dom.query('.content-left').addClass('show');
+					reading.setShownContentLeft(true);
+
+				}, 300);
+
+				hideContentRunningST = true;
+			}
+		}
+		else
+		{
+			clearTimeout(hideContentST);
+
+			hideContentRunningST = false;
+		}
+
+		if(contentLeftRect === false)
+		{
+			barHeaderRect = template._barHeader().getBoundingClientRect();
+			contentLeftRect = template._contentLeft().getBoundingClientRect();
+		}
+
+		if(shownBarHeader && pageY > barHeaderRect.height + 48)
+		{
+			clearTimeout(hideContentST);
+
+			dom.query('.bar-header').removeClass('show');
+			reading.setShownBarHeader(false);
+
+			hideContentRunningST = false;
+		}
+
+		if(shownContentLeft && pageX > contentLeftRect.width + 48)
+		{
+			clearTimeout(hideContentST);
+
+			dom.query('.content-left').removeClass('show');
+			reading.setShownContentLeft(false);
+
+			hideContentRunningST = false;
+		}
+	}
+}
+
+function mouseenter()
+{
+	isMouseenter.document = true;
+}
+
+function mouseleave()
+{
+	isMouseenter.document = false;
+}
+
+var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false)
@@ -3138,7 +3350,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	template.contentRight('.reading-body, .reading-lens').on('pointerdown', function(e) {
 
-		if(onReading && (!haveZoom || config.readingGlobalZoom) && readingViewIs('scroll'))
+		if(onReading && (!haveZoom || config.readingGlobalZoom) && !config.readingScrollWithMouse && readingViewIs('scroll'))
 		{
 			if(e.originalEvent.pointerType != 'touch')
 			{
@@ -3323,6 +3535,9 @@ async function read(path, index = 1, end = false, isCanvas = false)
 		
 	});*/
 
+	app.event(document, 'mouseenter', mouseenter);
+	app.event(document, 'mouseleave', mouseleave);
+
 	$(window).on('touchstart', function(e) {
 
 		if(onReading && config.readingMagnifyingGlass)
@@ -3368,33 +3583,33 @@ async function read(path, index = 1, end = false, isCanvas = false)
 			}
 		}
 
-	})
+	});
 
 	template.contentRight('.reading-body').on('mouseout', function(e) {
 
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseOut['body'] = true;
+			mouseout.body = true;
 
-			if(mouseOut['lens'] == true) magnifyingGlassControl(0, e);
+			if(mouseout.lens) magnifyingGlassControl(0, e);
 		}
 
-	})
+	});
 
 	template.contentRight('.reading-body').on('mouseenter', function(e) {
 
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseOut['body'] = false;
+			mouseout.body = false;
 		}
 
-	})
+	});
 
 	$(window).on('mouseout', function(e) {
 
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseOut['lens'] = true;
+			mouseout.lens = true;
 
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
@@ -3410,13 +3625,13 @@ async function read(path, index = 1, end = false, isCanvas = false)
 			}
 		}
 
-	})
+	});
 
 	template.contentRight('.reading-lens').on('mouseenter', function(e) {
 
 		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseOut['lens'] = false;
+			mouseout.lens = false;
 		}
 
 	})
@@ -3453,117 +3668,23 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 		if(haveZoom)
 		{
-			e.preventDefault();
-
-			zoomMoveData = {
-				x: e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX),
-				y: e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY),
-				active: true,
-			};
-
-			$('body').addClass('dragging');
-		}
-
-	});
-
-	$(window).on('mousemove touchmove', function(e) {
-
-		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
-		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
-
-		if(haveZoom && zoomMoveData.active) // Drag Image zoom
-		{
-			e.preventDefault();
-
-			x = x - zoomMoveData.x;
-			y = y - zoomMoveData.y;
-
-			dragZoom(x, y);
-		}
-		
-		if(readingDragScroll) // Drag to scroll
-		{
-			e.preventDefault();
-
-			if(!readingDragScroll.start)
+			if(!config.readingMoveZoomWithMouse || (readingViewIs('scroll') && !config.readingScrollWithMouse))
 			{
-				readingDragScroll.start = true;
+				e.preventDefault();
 
-				$('body').addClass('dragging');
-			}
+				zoomMoveData = {
+					x: e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX),
+					y: e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY),
+					active: true,
+				};
 
-			var pageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
-
-			if(readingDragScroll.speed.length > 2)
-				readingDragScroll.speed.shift();
-
-			readingDragScroll.speed.push({
-				time: performance.now(),
-				pageY: pageY,
-			});
-
-			readingDragScroll.content.scrollTop(readingDragScroll.scrollTop - (pageY - readingDragScroll.pageY));
-		}
-
-		if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
-		{
-			if(y < 96)
-			{
-				if(hiddenBarHeader && !shownBarHeader && !shownContentLeft && !hideContentRunningST)
-				{
-					hideContentST = setTimeout(function(){
-
-						$('.bar-header').addClass('show');
-						reading.setShownBarHeader(true);
-
-					}, 300);
-
-					hideContentRunningST = true;
-				}
-			}
-			else if(x < 96)
-			{
-				if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && !hideContentRunningST)
-				{
-					hideContentST = setTimeout(function(){
-
-						$('.content-left').addClass('show');
-						reading.setShownContentLeft(true);
-
-					}, 300);
-
-					hideContentRunningST = true;
-				}
-			}
-			else
-			{
-				clearTimeout(hideContentST);
-
-				hideContentRunningST = false;
-			}
-
-			if(shownBarHeader && y > template.barHeader().height() + 48)
-			{
-				clearTimeout(hideContentST);
-
-				$('.bar-header').removeClass('show');
-				reading.setShownBarHeader(false);
-
-				hideContentRunningST = false;
-			}
-
-			if(shownContentLeft && x > template.contentLeft().width() + 48)
-			{
-				clearTimeout(hideContentST);
-
-				$('.content-left').removeClass('show');
-				reading.setShownContentLeft(false);
-
-				hideContentRunningST = false;
+				dom.query('body').addClass('dragging');
 			}
 		}
 
 	});
+
+	app.event(window, 'mousemove touchmove', mousemove);
 
 	$(window).on('mouseup touchend', function(e) {
 
@@ -3783,6 +3904,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 		trackingCurrent = true;
 		tracking.track();
 	}
+
+	startScrollWithMouse();
 
 	filters.apply();
 

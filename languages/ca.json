@@ -142,6 +142,8 @@
 			"main": "Preferències de lectura",
 			"maxMargin": "Marge horitzontal i vertical màxim",
 			"globalZoom": "Aplica un zoom global en comptes d'imatge a imatge (Només en lectura vertical)",
+			"moveZoomWithMouse": "Moure el zoom mitjançant el cursor (Desactiva moure mitjançant arrossegar i deixar anar)",
+			"scrollWithMouse": "Realitzar desplaçament movent el cursor per les vores de la pantalla (Desactiva desplaçament mitjançant arrossegar i deixar anar)",
 			"startReadingInFullScreen": "Comença la lectura a pantalla completa",
 			"trackingAtTheEnd": "Seguiment al final del capítol/tom"
 		},

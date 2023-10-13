@@ -142,6 +142,8 @@
 			"main": "",
 			"maxMargin": "",
 			"globalZoom": "",
+			"moveZoomWithMouse": "",
+			"scrollWithMouse": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

@@ -728,6 +728,16 @@
 	position: relative;
 }
 
+.menu-simple-text > span
+{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	max-width: calc(100% - 80px);
+	display: inline-block;
+}
+
 .menu-simple-supporting-text
 {
 	height: initial;

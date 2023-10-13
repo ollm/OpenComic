@@ -296,6 +296,16 @@ function setGlobalZoom(value)
 	storage.updateVar('config', 'readingGlobalZoom', value);
 }
 
+function setMoveZoomWithMouse(value)
+{
+	storage.updateVar('config', 'readingMoveZoomWithMouse', value);
+}
+
+function setScrollWithMouse(value)
+{
+	storage.updateVar('config', 'readingScrollWithMouse', value);
+}
+
 function setStartReadingInFullScreen(value)
 {
 	storage.updateVar('config', 'readingStartReadingInFullScreen', value);
@@ -367,6 +377,8 @@ module.exports = {
 	start: start,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
+	setMoveZoomWithMouse: setMoveZoomWithMouse,
+	setScrollWithMouse: setScrollWithMouse,
 	setStartReadingInFullScreen: setStartReadingInFullScreen,
 	setTrackingAtTheEnd: setTrackingAtTheEnd,
 	setIgnoreSingleFoldersLibrary: setIgnoreSingleFoldersLibrary,

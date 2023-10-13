@@ -1222,7 +1222,8 @@ cb
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
 
-.medium-list:active:before
+.medium-list:active:before,
+.medium-list.active:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-4);
 }
