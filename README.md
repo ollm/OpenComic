@@ -70,7 +70,7 @@ Available builds types:
 - Linux `deb`, `rpm`, `snap`, `flatpak`, `appimage`, `7z`
 - Linux Arm: `deb-arm`, `rpm-arm`, `snap-arm`, `flatpak-arm`, `appimage-arm`, `7z-arm`
 
-Now the `snap` file is located in `dist` folder.
+Now the build files are located in `dist` folder.
 
 ## Pepper & Carrot
 
