@@ -51,10 +51,27 @@ __Requirements__: Git, Node and NPM
 git clone https://github.com/ollm/OpenComic.git
 cd OpenComic
 npm install
-npm install --only=dev
 npm run rebuild
 npm start
 ```
+
+## Build from source
+
+```shell
+npm pull origin master
+npm install
+npm run build-<buildType>
+```
+
+Available builds types:
+
+- Windows: `nsis` , `portable`
+- macOS: `mac-dmg`, `mac-pkg` (Both include `arm`)
+- Linux `deb`, `rpm`, `snap`, `flatpak`, `appimage`, `7z`
+- Linux Arm: `deb-arm`, `rpm-arm`, `snap-arm`, `flatpak-arm`, `appimage-arm`, `7z-arm`
+
+Now the `snap` file is located in `dist` folder.
+
 ## Pepper & Carrot
 
 This application contains as example the webcomic [Pepper&Carrot](https://www.peppercarrot.com) by David Revoy
@@ -64,6 +81,6 @@ Based on the universe of Hereva created by David Revoy with contributions by Cra
 Corrections by Willem Sonke, Moini, Hali, CGand and Alex Gryson.
 Translated into Spanish by TheFaico
 
-## Sponsors
+## GitHub Sponsors
 
 <!-- sponsors --><!-- sponsors -->
