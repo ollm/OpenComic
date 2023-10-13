@@ -12,6 +12,11 @@ async function load(animation = true, content = false)
 {
 	dom.indexPathControl(false, false, false, false, true);
 
+	template.loadContentRight('index.content.right.loading.html', animation);
+	template.loadHeader('recently.opened.header.html', animation);
+
+	let now = Date.now();
+
 	let sort = config.sortRecentlyOpened;
 	let sortInvert = config.sortInvertRecentlyOpened;
 	let foldersFirst = config.foldersFirstRecentlyOpened;
@@ -96,7 +101,7 @@ async function load(animation = true, content = false)
 			comics[key].readingProgress = readingProgress[comics[key].path] || {lastReading: 0};
 		}
 
-		comics.sort(function (a, b) {
+		comics.sort(function(a, b) {
 			return (sortInvert) ? -(dom.orderBy(a, b, order, orderKey, orderKey2)) : dom.orderBy(a, b, order, orderKey, orderKey2);
 		});
 	}
@@ -105,14 +110,16 @@ async function load(animation = true, content = false)
 	handlebarsContext.comicsReadingProgress = false;
 	dom.setCurrentPageVars('recently-opened');
 
-	template.loadContentRight('index.content.right.'+config.viewRecentlyOpened+'.html', animation);
+	if(Date.now() - now < 300)
+		template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.'+config.viewRecentlyOpened+'.html');
+	else
+		template.loadContentRight('index.content.right.'+config.viewRecentlyOpened+'.html', animation);
 
 	cache.resumeQueue();
 	queue.resume('folderThumbnails');
 
 	handlebarsContext.headerTitle = false;
 	handlebarsContext.headerTitlePath = false;
-	template.loadHeader('recently.opened.header.html', animation);
 
 	if(!content)
 	{

@@ -905,11 +905,6 @@ function loadRecentlyOpened(animation = true)
 
 	generateAppMenu();
 
-	template.loadContentRight('index.content.right.loading.html', animation);
-	template.loadHeader('recently.opened.header.html', animation);
-	template.loadGlobalElement('general.elements.menus.html', 'menus');
-	floatingActionButton(false);
-
 	recentlyOpened.load(animation);
 
 	if(readingActive)

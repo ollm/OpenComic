@@ -19,7 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Wrong cache folder in windows causing some bugs [`8b97435`](https://github.com/ollm/OpenComic/commit/dd6facaf67343185fa06b2377fdc64e66ad9090d)
 - Extract large RAR and ZIP files blocks the app for a while [`adbdced`](https://github.com/ollm/OpenComic/commit/adbdceda278e6184bc477581be9a25b8fc0f166b)
 - RAR error on extract with files some special chars (Changed unrar to node-unrar-js) [`694fe27`](https://github.com/ollm/OpenComic/commit/694fe274982c0a9ad2421c6b226abceae1602c3a)
-- Cannot open filtered files with the keyboard
+- Cannot open filtered files with the keyboard [`f831749`](https://github.com/ollm/OpenComic/commit/f8317499a40e6fa45a75988ee1bea31a9135c9bf)
+- Some display errors when applying global zoom
 
 ## [v1.0.0-beta.3](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.3) (09-10-2023)
 
