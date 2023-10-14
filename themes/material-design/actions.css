@@ -1571,6 +1571,14 @@
 	color: #666;
 }
 
+.simple-slider-text > i
+{
+	margin-right: 8px;
+	margin-bottom: -10px;
+	margin-top: -10px;
+	transform: translate(-4px, 8px);
+}
+
 .simple-slider .range
 {
 	display: block;

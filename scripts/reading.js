@@ -316,7 +316,7 @@ function disposeImages(data = false)
 	let clipRight = imageClip.right / 100;
 	let clipHorizontal = clipLeft + clipRight;
 
-	let allImages = contentRight.querySelectorAll('.reading-body .r-img');
+	let allImages = contentRight.querySelectorAll('.r-img');
 
 	let imageElements = {};
 
@@ -1205,6 +1205,9 @@ function onScroll(event)
 
 		changeHeaderButtons(scrollInStart, scrollInEnd, true);
 	}
+
+	if(onReading && config.readingMagnifyingGlass)
+		magnifyingGlassControlPrev();
 }
 
 function leftClick(event)
@@ -2009,60 +2012,54 @@ function changeMagnifyingGlass(mode, value, save)
 	}
 }
 
-var magnifyingGlassView = false, magnifyingGlassPosition = {x: false, y: false};
+var magnifyingGlassView = false, magnifyingGlassPosition = {x: false, y: false, mode: false};
+
+function magnifyingGlassControlPrev()
+{
+	if(magnifyingGlassPosition.mode !== false)
+		magnifyingGlassControl(magnifyingGlassPosition.mode, {pageX: magnifyingGlassPosition.x, pageY: magnifyingGlassPosition.y, originalEvent: {touches: false}});
+}
 
 //Magnifying glass control
 function magnifyingGlassControl(mode, e = false, lensData = false)
 {
+	let x = 0, y = 0;
+
 	if(e)
 	{
-		var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX || !e.clientX ? e.pageX : e.clientX);
-		var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY || !e.clientY ? e.pageY : e.clientY);
+		x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX || !e.clientX ? e.pageX : e.clientX);
+		y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY || !e.clientY ? e.pageY : e.clientY);
 	}
+
+	let contentRight = template._contentRight();
 
 	if(mode == 1)
 	{
-		if(lensData && typeof lensData.ratio != 'undefined')
-			var ratio = 1 / lensData.ratio;
-		else
-			var ratio = 1 / config.readingMagnifyingGlassRatio;
+		let ratio = lensData?.ratio ? lensData.ratio : config.readingMagnifyingGlassRatio;
+		let zoom = lensData?.zoom ? lensData.zoom : config.readingMagnifyingGlassZoom;
+		let lensWidth = lensData?.size ? lensData.size : config.readingMagnifyingGlassSize;
+		let lensHeight = Math.round(lensWidth * ratio);
 
-		if(lensData && typeof lensData.size != 'undefined')
-		{
-			var lensWidth = lensData.size;
-			var lensHeight = parseInt(lensData.size * ratio);
-		}
-		else
-		{
-			var lensWidth = config.readingMagnifyingGlassSize;
-			var lensHeight = parseInt(config.readingMagnifyingGlassSize * ratio);
-		}
+		let lensHeightM = Math.round(lensHeight / 2);
+		let lensWidthM = Math.round(lensWidth / 2);
 
-		if(lensData && typeof lensData.zoom != 'undefined')
-			var zoom = lensData.zoom;
-		else
-			var zoom = config.readingMagnifyingGlassZoom;
+		let top = (y - lensHeightM);
+		let left = (x - (lensWidth / 2));
 
-		var lensHeightM = parseInt(lensHeight / 2);
-		var lensWidthM = parseInt(lensWidth / 2);
+		let rect = contentRight.querySelector('.reading-body').getBoundingClientRect();
 
-		var top = (y - lensHeightM);
-		var left = (x - (lensWidth / 2));
+		let topLens = y - rect.top - (lensHeightM / zoom);
+		let leftLens = x - rect.left - lensWidthM;
 
-		var offset = template.contentRight('.reading-body').offset();
+		dom.this(contentRight).find('.reading-lens').css({
+			transform: 'translate('+left+'px, '+top+'px)',
+			width: lensWidth+'px',
+			height: lensHeight+'px',
+			borderRadius: ((lensData && typeof lensData.radius != 'undefined') ? lensData.radius : config.readingMagnifyingGlassRadius)+'px'
+		}).removeClass('d', 'h').addClass('a');
 
-		var topLens = y - offset.top - (lensHeightM / zoom);
-		var leftLens = x - offset.left - lensWidthM;
-
-		template.contentRight('.reading-lens').css({
-			'transform': 'translate('+left+'px, '+top+'px)',
-			'width': lensWidth+'px',
-			'height': lensHeight+'px',
-			'border-radius': ((lensData && typeof lensData.radius != 'undefined') ? lensData.radius : config.readingMagnifyingGlassRadius)+'px'
-		}).removeClass('d h').addClass('a');
-
-		template.contentRight('.reading-lens > div').css({
-			'transform': ' scale('+zoom+') translate(' + (-(leftLens)) + 'px, ' + (-(topLens)) + 'px)'
+		dom.this(contentRight).find('.reading-lens > div').css({
+			transform: ' scale('+zoom+') translate(' + (-(leftLens)) + 'px, ' + (-(topLens)) + 'px)'
 		});
 
 		magnifyingGlassView = true;
@@ -2070,12 +2067,14 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		magnifyingGlassPosition = {
 			x: x,
 			y: y,
+			mode: mode,
 		};
 	}
 	else
 	{
-		template.contentRight('.reading-lens').removeClass('a').addClass('d');
+		dom.this(contentRight).find('.reading-lens').removeClass('a').addClass('d');
 		magnifyingGlassView = false;
+		magnifyingGlassPosition.mode = mode;
 	}
 
 	//calculateView();
