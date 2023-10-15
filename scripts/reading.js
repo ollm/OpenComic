@@ -930,7 +930,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		if((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && pageVisibilityIndex !== false)
 		{
-			imgHeight = image.height() + _config.readingMargin.top;
+			imgHeight = largerImage.height + _config.readingMargin.top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -1559,6 +1559,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				haveZoom = true;
 			}
 
+			let withLimits = notCrossZoomLimits(translateX, translateY, scale);
+			translateX = withLimits.x;
+
 			dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
 				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
 				transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
@@ -1600,6 +1603,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				scalePrevData._scale = scale;
 
 				fixBlurOnZoom(scale);
+
+				applyScaleST = false;
 
 			}, animationDurationS * 1000 + 100);
 		}
@@ -1645,6 +1650,11 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				haveZoom = true;
 			}
 
+			let withLimits = notCrossZoomLimits(translateX, translateY, scale);
+
+			translateX = withLimits.x;
+			translateY = withLimits.y;
+
 			dom.this(contentRight).find('.image-position'+currentZoomIndex, true).css({
 				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
 				transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
@@ -1663,11 +1673,21 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 				fixBlurOnZoom(scale, currentZoomIndex);
 
+				applyScaleST = false;
+
 			}, animationDurationS * 1000 + 100);
 		}
 
-		zoomMoveData.x = currentPageXY.x;
-		zoomMoveData.y = currentPageXY.y;
+		if(center)
+		{
+			zoomMoveData.x = (originalRect.left + originalRect.width / 2) - (translateX / scale);
+			zoomMoveData.y = (originalRect.top + originalRect.height / 2) - (translateY / scale);
+		}
+		else
+		{
+			zoomMoveData.x = currentPageXY.x;
+			zoomMoveData.y = currentPageXY.y;
+		}
 
 		scalePrevData = {
 			tranX: translateX,
@@ -1813,20 +1833,65 @@ function fixBlurOnZoom(scale = 1, index = false)
 
 }
 
-// Drag zoom
-function dragZoom(x, y)
+function getIndexImagesSize(index)
 {
-	x = scalePrevData.tranX2 + x;
-	y = scalePrevData.tranY2 + y;
+	let contentRight = template._contentRight();
 
-	let maxX = originalRect.width * 0.5 * scalePrevData.scale - originalRect.width * 0.5;
-	let minX = originalRect.width * -0.5 * scalePrevData.scale - originalRect.width * -0.5;
+	let width = 0;
+	let height = 0;
+
+	let images = contentRight.querySelectorAll('.reading-body .image-position'+index+' .r-img > *');
+
+	let len = images.length;
+
+	if(len == 1)
+		width += _config.readingMargin.left * 2;
+
+	for(let i = 0; i < len; i++)
+	{
+		let img = images[i];
+
+		width += +img.dataset.width;
+
+		if(i > 0)
+		{
+			if(i == 1)
+				width += +img.dataset.left * 3;
+			else
+				width += +img.dataset.left;
+		}
+
+		let _height = +img.dataset.height + (_config.readingMargin.top * 2);
+
+		if(_height > height) height = _height;
+	}
+
+	return {
+		width: width,
+		height: height,
+	};
+}
+
+function notCrossZoomLimits(x, y, scale = false)
+{
+	scale = scale !== false ? scale : scalePrevData.scale;
+
+	let indexSize = getIndexImagesSize((config.readingGlobalZoom && readingViewIs('scroll')) ? (currentIndex - 1) : currentZoomIndex);
+
+	let maxX = indexSize.width * 0.5 * scale - originalRect.width * 0.5;
+	let minX = indexSize.width * -0.5 * scale - originalRect.width * -0.5;
+
+	if(maxX < 0) maxX = 0;
+	if(minX > 0) minX = 0;
 
 	let maxDiff = readingViewIs('scroll') ? ((originalRect.top + originalRect.height) - (originalRectReadingBody.top + originalRectReadingBody.height)) : 0;
 	let minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
 
-	let maxY = (originalRect.height * 0.5 * scalePrevData.scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
-	let minY = (originalRect.height * -0.5 * scalePrevData.scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + _config.readingMargin.top : 0);
+	let maxY = (indexSize.height * 0.5 * scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
+	let minY = (indexSize.height * -0.5 * scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + _config.readingMargin.top : 0);
+
+	if(maxY < 0) maxY = 0;
+	if(minY > 0) minY = 0;
 
 	if(x > maxX)
 		x = maxX;
@@ -1837,6 +1902,17 @@ function dragZoom(x, y)
 		y = maxY;
 	else if(y < minY)
 		y = minY;
+
+	return {x: x, y: y, maxX: maxX, maxY: maxY};
+}
+
+// Drag zoom
+function dragZoom(x, y)
+{
+	let withLimits = notCrossZoomLimits(scalePrevData.tranX2 + x, scalePrevData.tranY2 + y);
+
+	x = withLimits.x;
+	y = withLimits.y;
 
 	let contentRight = template._contentRight();
 
@@ -2102,6 +2178,14 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 function resizedWindow()
 {
+	originalRect = false;
+	originalRectReadingBody = false;
+	originalRect2 = false;
+	originalRectReadingBody2 = false;
+	contentLeftRect = false;
+	contentRightRect = false;
+	barHeaderRect = false;
+	
 	if(onReading || _onReading)
 	{
 		disposeImages();
@@ -3175,13 +3259,15 @@ function mousemove(event)
 			{
 				event.preventDefault();
 
-				let _pageX = pageX - contentRightRect.left;
-				let _pageY = pageY - contentRightRect.top;
+				let withLimits = notCrossZoomLimits(0, 0);
 
-				let x = -(_pageX - contentRightRect.width / 2) * (scalePrevData.scale - 1);
-				let y = -(_pageY - contentRightRect.height / 2) * (scalePrevData.scale - 1);
+				let widthM = contentRightRect.width / 2;
+				let heightM = contentRightRect.height / 2;
 
-				dragZoom(x - scalePrevData.tranX2, y - scalePrevData.tranY2);
+				let x = -(pageX - zoomMoveData.x) * (withLimits.maxX / widthM * 1.2);
+				let y = -(pageY - zoomMoveData.y) * (withLimits.maxY / heightM * 1.2);
+
+				dragZoom(x, y);
 
 				scalePrevData.tranX = zoomMoveData.tranX;
 				scalePrevData.tranY = zoomMoveData.tranY;
