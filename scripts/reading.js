@@ -1453,11 +1453,6 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
 
-function applyScaleScrollAndHeight()
-{
-
-}
-
 function applyScale(animation = true, scale = 1, center = false, zoomOut = false, round = true)
 {
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
@@ -3153,7 +3148,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 
 // Events functions
 
-var contentLeftRect = false, barHeaderRect = false;
+var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'};
 
 function mousemove(event)
 {
@@ -3167,20 +3162,32 @@ function mousemove(event)
 
 	if(haveZoom) // Drag Image zoom
 	{
-		if(config.readingMoveZoomWithMouse && (!readingViewIs('scroll') || config.readingScrollWithMouse) && !(event instanceof PointerEvent))
+		if(contentRightRect === false)
 		{
-			event.preventDefault();
-
-			let x = -(pageX - zoomMoveData.x) * (scalePrevData.scale - 0.8);
-			let y = -(pageY - zoomMoveData.y) * (scalePrevData.scale - 0.8);
-
-			dragZoom(x, y);
-
-			scalePrevData.tranX = zoomMoveData.tranX;
-			scalePrevData.tranY = zoomMoveData.tranY;
-
+			contentRightRect = template._contentRight().getBoundingClientRect();
+			let _contentRightRect = template._contentRight().firstElementChild.firstElementChild.getBoundingClientRect();
+			contentRightRect.width = _contentRightRect.width;
 		}
-		else if(zoomMoveData.active)
+
+		if(config.readingMoveZoomWithMouse && (!readingViewIs('scroll') || config.readingScrollWithMouse) && event instanceof MouseEvent)
+		{
+			if(pageX > contentRightRect.left && pageY > contentRightRect.top)
+			{
+				event.preventDefault();
+
+				let _pageX = pageX - contentRightRect.left;
+				let _pageY = pageY - contentRightRect.top;
+
+				let x = -(_pageX - contentRightRect.width / 2) * (scalePrevData.scale - 1);
+				let y = -(_pageY - contentRightRect.height / 2) * (scalePrevData.scale - 1);
+
+				dragZoom(x - scalePrevData.tranX2, y - scalePrevData.tranY2);
+
+				scalePrevData.tranX = zoomMoveData.tranX;
+				scalePrevData.tranY = zoomMoveData.tranY;
+			}
+		}
+		else if(zoomMoveData.active && !(event instanceof TouchEvent))
 		{
 			event.preventDefault();
 
@@ -3189,6 +3196,108 @@ function mousemove(event)
 
 			dragZoom(x, y);
 		}
+	}
+
+	if(touchevents.active && event instanceof TouchEvent)
+	{
+		let touches = event.touches;
+
+		// Simulate touch with 2 fingers
+		if(event.ctrlKey)
+			touches = [event.touches[0], touchevents.touches[1] || touchevents.touches[0]];
+
+		let numTouches = touches.length;
+
+		if(numTouches > touchevents.maxTouches)
+			touchevents.maxTouches = numTouches;
+
+		if(!touchevents.start)
+		{
+			let touchesXY = app.touchesXY(event);
+			let maxDiff = Math.max(...app.touchesDiff(touchevents.touchesXY, touchesXY));
+
+			if(maxDiff > 20)
+			{
+				let content = template._contentRight().firstElementChild;
+				let rect = content.getBoundingClientRect();
+
+				touchevents.start = true;
+				touchevents.type = numTouches > 1 || haveZoom || readingViewIs('scroll') ? 'zoom' : 'move';
+				touchevents.touches = touches;
+				touchevents.numTouches = numTouches;
+				touchevents.contentRect = rect;
+				touchevents.distance = numTouches > 1 ? app.distance(touches[0].pageX, touches[0].pageY, touches[1].pageX, touches[1].pageY) : 0;
+
+				touchevents.speed = [{
+					time: performance.now(),
+					pageX: app.pageX(event),
+				}];
+			}
+		}
+
+		if(touchevents.start)
+		{
+			let contentRight = template._contentRight();
+
+			if(touchevents.type == 'move')
+			{
+				let pageX = app.pageX(event);
+
+				let left = (touchevents.contentRect.width * (currentIndex - 1));
+				left = left - (pageX - app.pageX(touchevents));
+
+				if(left < 0)
+					left = 0;
+				else if(left > (contentNum - 1) * touchevents.contentRect.width)
+					left = (contentNum - 1) * touchevents.contentRect.width;
+
+				dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
+					transition: '0s',
+					transform: 'translate('+(-left)+'px, 0)',
+				});
+
+				if(touchevents.speed.length > 2)
+					touchevents.speed.shift();
+
+				touchevents.speed.push({
+					time: performance.now(),
+					pageX: pageX,
+				});
+			}
+			else if(touchevents.type == 'zoom')
+			{
+				if(numTouches > 1 && touchevents.numTouches > 1)
+				{
+					let distance = app.distance(touches[0].pageX, touches[0].pageY, touches[1].pageX, touches[1].pageY);
+
+					let scale = distance / touchevents.distance * currentScale;
+					touchevents.scale = scale;
+
+					let pageX = (touches[0].pageX - touches[1].pageX) + touches[0].pageX;
+					let pageY = (touches[0].pageY - touches[1].pageY) + touches[0].pageY;
+
+					currentPageXY.x = pageX;
+					currentPageXY.y = pageY;
+
+					//x = pageX - ((touchevents.touches[0].pageX - touchevents.touches[1].pageX) + touchevents.touches[0].pageX);
+					//y = pageY - ((touchevents.touches[0].pageY - touchevents.touches[1].pageY) + touchevents.touches[0].pageY);
+
+					//dragZoom(x, y);
+					applyScale(false, scale);
+				}
+				else if(touchevents.numTouches == 1 && haveZoom)
+				{
+					let x = app.pageX(event) - app.pageX(touchevents);
+					let y = app.pageY(event) - app.pageY(touchevents);
+
+					dragZoom(x, y);
+				}
+			}
+		}
+
+		contentLeftRect = false;
+		contentRightRect = false;
+		barHeaderRect = false;
 	}
 
 	if(readingDragScroll) // Drag to scroll
@@ -3274,6 +3383,41 @@ function mousemove(event)
 			reading.setShownContentLeft(false);
 
 			hideContentRunningST = false;
+		}
+	}
+}
+
+function mousedown(event)
+{
+	if(haveZoom)
+	{
+		if((!config.readingMoveZoomWithMouse || !(event instanceof MouseEvent)) || (readingViewIs('scroll') && !config.readingScrollWithMouse))
+		{
+			if(!(event instanceof TouchEvent))
+				event.preventDefault();
+
+			zoomMoveData = {
+				x: app.pageX(event),
+				y: app.pageY(event),
+				active: true,
+			};
+
+			dom.query('body').addClass('dragging');
+		}
+	}
+
+	if(event instanceof TouchEvent)
+	{
+		if(!event.target.closest('.reading-lens'))
+		{
+			if(!touchevents.active)
+			{
+				touchevents.active = true;
+				touchevents.start = false;
+				touchevents.touches = event.touches;
+				touchevents.touchesXY = app.touchesXY(event);
+				touchevents.maxTouches = event.touches.length;
+			}
 		}
 	}
 }
@@ -3690,29 +3834,65 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	});
 
-	template.contentRight('.reading-body, .reading-lens').on('mousedown touchstart', function(e) {
-
-		if(haveZoom)
-		{
-			if(!config.readingMoveZoomWithMouse || (readingViewIs('scroll') && !config.readingScrollWithMouse))
-			{
-				e.preventDefault();
-
-				zoomMoveData = {
-					x: e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX),
-					y: e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY),
-					active: true,
-				};
-
-				dom.query('body').addClass('dragging');
-			}
-		}
-
-	});
-
+	app.event('.reading-body, .reading-lens', 'mousedown touchstart', mousedown);
 	app.event(window, 'mousemove touchmove', mousemove);
 
 	$(window).on('mouseup touchend', function(e) {
+
+		if(e.originalEvent instanceof TouchEvent)
+		{
+			if(e.originalEvent.touches.length == 0)
+			{
+				if(touchevents.active)
+				{
+					if(touchevents.start)
+					{
+						if(touchevents.type == 'move')
+						{
+							let first = touchevents.speed[0];
+							let last = touchevents.speed[touchevents.speed.length-1];
+
+							let dragSpeed = (first.pageX - last.pageX) / ((performance.now() - first.time) / 1000);
+
+							if(Math.abs(dragSpeed) > 120)
+							{
+								if(dragSpeed > 0)
+									reading.goNext();
+								else
+									reading.goPrev();
+							}
+							else
+							{
+								let diff = app.pageX(touchevents) - last.pageX;
+
+								if(Math.abs(diff) > touchevents.contentRect.width / 2)
+								{
+									if(diff > 0)
+										reading.goNext();
+									else
+										reading.goPrev();
+								}
+								else
+								{
+									goToIndex(currentIndex, true);
+								}
+							}
+						}
+						else if(touchevents.type == 'zoom')
+						{
+							currentScale = touchevents.scale;
+						}
+					}
+					else if(touchevents.maxTouches > 1)
+					{
+						reading.resetZoom();
+					}
+				}
+
+				touchevents.start = false;
+				touchevents.active = false;
+			}
+		}
 
 		if(haveZoom && zoomMoveData.active)
 		{
@@ -3960,6 +4140,7 @@ module.exports = {
 	zoomIn: zoomIn,
 	zoomOut: zoomOut,
 	resetZoom: resetZoom,
+	dragZoom: dragZoom,
 	applyScale: applyScale,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,

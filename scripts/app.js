@@ -144,6 +144,37 @@ function clientX(e) {
 
 }
 
+function touchesXY(e)
+{
+	let touches = [];
+
+	for(let i = 0, len = e.touches.length; i < len; i++)
+	{
+		touches.push(e.touches[i].pageX);
+		touches.push(e.touches[i].pageY);
+	}
+
+	return touches;
+}
+
+function touchesDiff(touches0, touches1)
+{
+	let touches = [];
+
+	for(let i = 0, len = touches0.length; i < len; i++)
+	{
+		if(touches1[i] !== undefined)
+			touches.push(Math.abs(touches0[i] - touches1[i]));
+	}
+
+	return touches;
+}
+
+function distance(x1, y1, x2, y2)
+{
+	return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+}
+
 function rand(min = 0, max = 10000000)
 {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -176,6 +207,9 @@ module.exports = {
 	pageX: pageX,
 	clientY: clientY,
 	clientX: clientX,
+	touchesXY: touchesXY,
+	touchesDiff: touchesDiff,
+	distance: distance,
 	rand: rand,
 	sleep: sleep,
 	setImmediate: setImmediate,

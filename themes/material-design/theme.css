@@ -632,6 +632,8 @@ body
 	cursor: default;
 	overflow: hidden;
 	transition: color 0.2s;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
 }
 
 body .app
