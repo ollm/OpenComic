@@ -1214,9 +1214,14 @@ function leftClick(event)
 {
 	if(event.target.classList.contains('folder') || event.target.closest('.folder')) return;
 
+	let pageX = app.pageX(event);
+	let pageY = app.pageY(event);
+
+	let maxDiff = Math.max(Math.abs(pageX - zoomMoveData.x), Math.abs(pageY - zoomMoveData.y));
+
 	let isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if(!reading.haveZoom() && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
+	if((!reading.haveZoom() || config.readingMoveZoomWithMouse || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
 		if(isTouch)
 			reading.goNext();
@@ -1233,9 +1238,14 @@ function rightClick(e)
 {
 	if(event.target.classList.contains('folder') || event.target.closest('.folder')) return;
 
+	let pageX = app.pageX(event);
+	let pageY = app.pageY(event);
+
+	let maxDiff = Math.max(Math.abs(pageX - zoomMoveData.x), Math.abs(pageY - zoomMoveData.y));
+
 	let isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if(!reading.haveZoom() && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
+	if((!reading.haveZoom() || config.readingMoveZoomWithMouse || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
 		if(isTouch)
 			reading.goPrevious();
@@ -1554,7 +1564,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				haveZoom = true;
 			}
 
-			dom.this(contentRight).find('.reading-body > div').css({
+			dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
 				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
 				transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 				transformOrigin: 'top center',
@@ -1571,7 +1581,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 					height: (scale == 1 ? '' : (originalRect.height * scale)+'px'),
 				});
 
-				dom.this(contentRight).find('.reading-body > div').css({
+				dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
 					transition: 'transform 0s, z-index 0s',
 					transform: 'translateX('+app.roundDPR(scalePrevData.tranX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 				});
@@ -2021,6 +2031,8 @@ function magnifyingGlassControlPrev()
 }
 
 //Magnifying glass control
+var magnifyingGlassControlST = false;
+
 function magnifyingGlassControl(mode, e = false, lensData = false)
 {
 	let x = 0, y = 0;
@@ -2035,6 +2047,9 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 	if(mode == 1)
 	{
+		if(mode !== magnifyingGlassPosition.mode)
+			clearTimeout(magnifyingGlassControlST);
+
 		let ratio = lensData?.ratio ? lensData.ratio : config.readingMagnifyingGlassRatio;
 		let zoom = lensData?.zoom ? lensData.zoom : config.readingMagnifyingGlassZoom;
 		let lensWidth = lensData?.size ? lensData.size : config.readingMagnifyingGlassSize;
@@ -2052,6 +2067,7 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		let leftLens = x - rect.left - lensWidthM;
 
 		dom.this(contentRight).find('.reading-lens').css({
+			display: 'block',
 			transform: 'translate('+left+'px, '+top+'px)',
 			width: lensWidth+'px',
 			height: lensHeight+'px',
@@ -2072,6 +2088,15 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 	}
 	else
 	{
+		if(mode !== magnifyingGlassPosition.mode)
+		{
+			magnifyingGlassControlST = setTimeout(function(){
+
+				dom.this(contentRight).find('.reading-lens').css({display: 'none'});
+
+			}, 300);
+		}
+
 		dom.this(contentRight).find('.reading-lens').removeClass('a').addClass('d');
 		magnifyingGlassView = false;
 		magnifyingGlassPosition.mode = mode;
@@ -3270,6 +3295,8 @@ async function read(path, index = 1, end = false, isCanvas = false)
 {
 	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false;
 
+	magnifyingGlassPosition.mode = false;
+
 	loadReadingConfig(currentReadingConfigKey);
 
 	if(!fromSkip)
@@ -3321,7 +3348,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 
 	template.contentRight('.reading-lens').on('mousewheel', function(e) {
 
-		if(onReading && !haveZoom && readingViewIs('scroll'))
+		if(onReading && (!haveZoom || !e.originalEvent.ctrlKey) && readingViewIs('scroll'))
 		{
 			e.preventDefault();
 
@@ -3333,9 +3360,9 @@ async function read(path, index = 1, end = false, isCanvas = false)
 				var scrollTop = content.scrollTop();
 
 			if(e.originalEvent.wheelDelta / 120 > 0)
-				scrollTop -= 62;
+				scrollTop -= 120;
 			else
-				scrollTop += 62;
+				scrollTop += 120;
 
 			magnifyingGlassScroll = {
 				scrollTop: scrollTop,
