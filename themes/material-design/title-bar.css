@@ -125,13 +125,13 @@
 
 .title-bar-menus > div > div:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background-color: var(--md-sys-color-secondary-container);
 }
 
 .title-bar-menus > div > div:active,
 .title-bar-menus > div > div.active
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background-color: var(--md-sys-color-secondary-container);
 }
 
 .title-bar-menus > div > div > span
