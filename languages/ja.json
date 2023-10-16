@@ -47,6 +47,7 @@
 		"settings": "",
 		"theme": "テーマ",
 		"days": "",
+		"pageAndNumber": "",
 		"valueCannotBeEmpty": "",
 		"nightMode": "ナイトモード"
 	},

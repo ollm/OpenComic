@@ -47,6 +47,7 @@
 		"settings": "",
 		"theme": "主题",
 		"days": "",
+		"pageAndNumber": "",
 		"valueCannotBeEmpty": "",
 		"nightMode": "夜间模式"
 	},

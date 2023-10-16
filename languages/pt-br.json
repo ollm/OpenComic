@@ -47,6 +47,7 @@
 		"settings": "",
 		"theme": "Tema",
 		"days": "",
+		"pageAndNumber": "",
 		"valueCannotBeEmpty": "",
 		"nightMode": "Modo Noturno"
 	},

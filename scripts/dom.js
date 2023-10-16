@@ -116,44 +116,6 @@ function getReadingProgress(path, callback)
 	return false;
 }
 
-function calcReadingProgress(path, mainPath, callback)
-{
-	(function(path, mainPath, callback){
-
-		process.nextTick(function() {
-
-			var progress = calcReadingProgressWD(path, mainPath, callback);
-
-			if(checkError(progress))
-			{
-				(function(error, path, mainPath, callback){
-
-					fileCompressed.addCompressedFilesQueue(error.compressedPath, false, function(files){
-
-						if(!checkError(files))
-							dom.calcReadingProgress(path, mainPath, callback);
-						else
-							callback(files);
-
-					});
-
-				})(progress, path, mainPath, callback)
-			}
-			else
-			{
-				if(callback)
-					callback(progress);
-			}
-		});
-
-	})(path, mainPath, callback);
-}
-
-function calcReadingProgressWD()
-{
-
-}
-
 function addImageToDom(querySelector, path, animation = true)
 {
 	let backgroundImage = 'url('+path+')';
@@ -172,6 +134,11 @@ function addImageToDom(querySelector, path, animation = true)
 	{
 		src.filter('.folder-poster-img').addClass('has-poster');
 	}
+}
+
+function translatePageName(name)
+{
+	return name.replace(/^page\-([0-9]+)/, language.global.pageAndNumber);
 }
 
 async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
@@ -232,7 +199,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 					pathFiles.push({
 						sha: sha,
-						name: fileName.replace(/\.[^\.]*$/, ''),
+						name: translatePageName(fileName.replace(/\.[^\.]*$/, '')),
 						path: filePath,
 						mainPath: mainPath,
 						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
@@ -1570,8 +1537,6 @@ module.exports = {
 	addComicButtons: addComicButtons,
 	comicContextMenu: comicContextMenu,
 	removeComic: removeComic,
-	calcReadingProgress: calcReadingProgress,
-	calcReadingProgressWD: calcReadingProgressWD,
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
 	addSepToEnd: addSepToEnd,
@@ -1581,6 +1546,7 @@ module.exports = {
 	indexMainPathA: function(){return indexMainPathA},
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,
+	translatePageName: translatePageName,
 	search: search,
 	this: domManager.this,
 	query: domManager.query,

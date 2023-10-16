@@ -47,6 +47,7 @@
 		"settings": "",
 		"theme": "Тема",
 		"days": "",
+		"pageAndNumber": "",
 		"valueCannotBeEmpty": "Значение не может быть пустым",
 		"nightMode": "Ночной режим"
 	},

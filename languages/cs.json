@@ -47,6 +47,7 @@
 		"settings": "",
 		"theme": "Vzhled",
 		"days": "",
+		"pageAndNumber": "",
 		"valueCannotBeEmpty": "Hodnota nesmí být prázdná",
 		"nightMode": "Noční režim"
 	},

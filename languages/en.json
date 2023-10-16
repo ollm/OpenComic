@@ -47,6 +47,7 @@
 		"settings": "Settings",
 		"theme": "Theme",
 		"days": "Days",
+		"pageAndNumber": "Page $1",
 		"valueCannotBeEmpty": "Value cannot be empty",
 		"nightMode": "Night mode"
 	},

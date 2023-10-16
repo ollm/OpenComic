@@ -2788,7 +2788,7 @@ function loadBookmarks()
 			});
 
 			bookmarksPath[bookmarkDirname].push({
-				name: decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, '')),
+				name: dom.translatePageName(decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, ''))),
 				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
 				sha: sha,
 				mainPath: mainPath,
@@ -2840,7 +2840,7 @@ function loadBookmarks()
 			path: bookmarkDirname,
 			name: p.basename(bookmarkDirname),
 			bookmarks: [{
-				name: decodeURI(p.basename(readingProgress.path).replace(/\.[^\.]*$/, '')),
+				name: dom.translatePageName(decodeURI(p.basename(readingProgress.path).replace(/\.[^\.]*$/, ''))),
 				index: readingProgress.index,
 				sha: sha,
 				mainPath: readingProgress.mainPath,
