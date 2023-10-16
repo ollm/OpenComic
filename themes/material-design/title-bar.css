@@ -54,6 +54,7 @@
 	box-sizing: border-box;
 	display: flex;
 	-webkit-app-region: no-drag;
+	margin-left: env(titlebar-area-x);
 }
 
 .title-bar-menu.label-medium

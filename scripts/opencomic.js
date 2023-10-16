@@ -669,7 +669,16 @@ function generateAppMenu(force = false)
 
 		var menu = electronRemote.Menu.buildFromTemplate(menuTemplate);
 		currentWindow.setMenu(menu);
-		currentWindow.setMenuBarVisibility(false);
+
+		if(process.platform == 'darwin')
+		{
+			electronRemote.Menu.setApplicationMenu(menu);
+		}
+		else
+		{
+			currentWindow.setMenuBarVisibility(false);
+		}
+		
 		titleBar.setMenu(menuTemplate);
 	}
 }

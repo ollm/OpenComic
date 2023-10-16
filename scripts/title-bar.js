@@ -47,6 +47,9 @@ function setMenu(_menu)
 {
 	let cmdOrCtrl = (process.platform == 'darwin' ? '⌘' : 'Ctrl');
 
+	if(process.platform == 'darwin') // Keep native menu in macOS
+		_menu = [];
+
 	for(let i = 0, len = _menu.length; i < len; i++)
 	{
 		let m = _menu[i];
@@ -151,10 +154,13 @@ function setColors()
 		height: 29,
 	};
 
-	if(first)
-		win.setTitleBarOverlay(colors);
-	else
-		animateSetTitleBarOverlay(win);
+	if(process.platform == 'win32' || process.platform == 'win64')
+	{
+		if(first)
+			win.setTitleBarOverlay(colors);
+		else
+			animateSetTitleBarOverlay(win);
+	}
 
 	first = false;
 }
