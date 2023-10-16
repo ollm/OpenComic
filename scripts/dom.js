@@ -1257,6 +1257,8 @@ function nightMode()
 		handlebarsContext.nightMode = true;
 		storage.updateVar('config', 'nightMode', true);
 	}
+
+	titleBar.setColors();
 }
 
 // Show the comic context menu

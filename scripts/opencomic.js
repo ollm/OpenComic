@@ -9,6 +9,21 @@ window.onerror = function(msg, url, linenumber) {
 
 }*/
 
+function fullScreen(force = null)
+{
+	if(force === null)
+	{
+		win = electronRemote.getCurrentWindow();
+		force = !win.isFullScreen();
+	}
+
+	titleBar.setFullScreen(force);
+
+	reading.hideContent(force);
+	win.setFullScreen(force);
+	// win.setMenuBarVisibility(!force);
+}
+
 document.addEventListener("keydown", event => {
 
 	if(event.key == 'Escape')
@@ -18,9 +33,7 @@ document.addEventListener("keydown", event => {
 
 		if(isFullScreen)
 		{
-			reading.hideContent(false);
-			win.setFullScreen(false);
-			win.setMenuBarVisibility(true);
+			fullScreen(false);
 		}
 		else
 		{
@@ -223,6 +236,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
 	templates = require(p.join(appDir, 'scripts/builded/templates.js')),
 	template = require(p.join(appDir, 'scripts/template.js')),
+	titleBar = require(p.join(appDir, 'scripts/title-bar.js')),
 	gamepad = require(p.join(appDir, 'scripts/gamepad.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
@@ -260,6 +274,9 @@ window.onload = function() {
 		loadLanguage(config.language);
 
 		template.loadInQuery('body', 'body.html');
+
+		titleBar.start();
+		titleBar.setColors();
 
 		startApp();
 
@@ -364,11 +381,7 @@ async function startApp()
 			let isFullScreen = win.isFullScreen();
 
 			if(!isFullScreen)
-			{
-				reading.hideContent(true);
-				win.setFullScreen(true);
-				win.setMenuBarVisibility(false);
-			}
+				fullScreen(true);
 		}
 
 		$('body .app').css('display', 'block');
@@ -611,7 +624,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
-					{role: 'quit', label: language.menu.file.quit},
+					{role: 'quit', label: language.menu.file.quit, click: function(){electronRemote.getCurrentWindow().close();}},
 				]
 			},
 			{
@@ -622,7 +635,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.view.zoomIn, click: function(){zoomIn(); generateAppMenu();}, accelerator: 'CmdOrCtrl+=', visible: false, acceleratorWorksWhenHidden: true},
 					{label: language.menu.view.zoomOut, click: function(){zoomOut(); generateAppMenu();}, accelerator: 'CmdOrCtrl+-'},
 					{type: 'separator'},
-					{label: language.menu.view.toggleFullScreen, click: function(){var win = electronRemote.getCurrentWindow(); reading.hideContent(!win.isFullScreen()); win.setFullScreen(!win.isFullScreen()); win.setMenuBarVisibility(!win.isFullScreen());}, accelerator: 'F11'},
+					{label: language.menu.view.toggleFullScreen, click: function(){fullScreen();}, accelerator: 'F11'},
 				]
 			},
 			{
@@ -638,9 +651,9 @@ function generateAppMenu(force = false)
 			{
 				label: language.menu.debug.main,
 				submenu: [
-					{role: 'reload', label: language.menu.debug.reload},
-					{role: 'forceReload', label: language.menu.debug.forceReload},
-					{role: 'toggleDevTools', label: language.menu.debug.toggleDevTools},
+					{label: language.menu.debug.reload, click: function(){electronRemote.getCurrentWindow().webContents.reload();}, accelerator: 'CmdOrCtrl+R'},
+					{label: language.menu.debug.forceReload, click: function(){electronRemote.getCurrentWindow().webContents.reloadIgnoringCache();}, accelerator: 'CmdOrCtrl+Shift+R'},
+					{label: language.menu.debug.toggleDevTools, click: function(){electronRemote.getCurrentWindow().webContents.toggleDevTools();}, accelerator: 'CmdOrCtrl+Shift+I'},
 				]
 			},
 			{
@@ -656,7 +669,8 @@ function generateAppMenu(force = false)
 
 		var menu = electronRemote.Menu.buildFromTemplate(menuTemplate);
 		currentWindow.setMenu(menu);
-		// currentWindow.setMenuBarVisibility(false);
+		currentWindow.setMenuBarVisibility(false);
+		titleBar.setMenu(menuTemplate);
 	}
 }
 

@@ -40,6 +40,13 @@ function createWindow() {
 			backgroundThrottling: false,
 			nativeWindowOpen: false,
 		},
+		titleBarStyle: 'hidden',
+		titleBarOverlay: {
+			color: '#242a3000',
+			symbolColor: '#c2c7cf',
+			height: 29,
+		},
+		backgroundColor: '#242a30',
 		//icon: __dirname + '/icon.svg',
 	});
 
@@ -58,8 +65,6 @@ function createWindow() {
 
 	var menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
-
-	// win.webContents.openDevTools();
 
 	win.removeMenu();
 

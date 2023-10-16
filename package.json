@@ -23,7 +23,7 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "npm run prebuild && electron --trace-warnings --enable-logging scripts/main.js",
+		"start": "npm run prebuild && electron scripts/main.js",
 		"rebuild": "electron-rebuild -f -w sharp",
 		"rebuild2": "electron-builder node-gyp-rebuild",
 		"prebuild": "node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
@@ -87,7 +87,7 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^27.0.0",
+		"electron": "^25.9.1",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"node-yaml": "^4.0.1",

@@ -226,16 +226,8 @@ function loadShortcuts()
 				fullscreen: {
 					name: language.menu.view.toggleFullScreen,
 					function: function(){
-
 						if(inputIsFocused()) return false;
-
-						let win = electronRemote.getCurrentWindow();
-						let isFullScreen = win.isFullScreen();
-
-						reading.hideContent(!isFullScreen);
-						win.setFullScreen(!isFullScreen);
-						win.setMenuBarVisibility(isFullScreen);
-
+						fullScreen();
 						return true;
 					},
 				},

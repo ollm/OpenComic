@@ -27,6 +27,8 @@ function setColor(color)
 	app.classList.add(color);
 
 	storage.updateVar('config', 'themeColor', color);
+
+	titleBar.setColors();
 }
 
 function start()

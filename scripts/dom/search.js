@@ -354,8 +354,8 @@ function setResults(results)
 
 	let height = (len * 56);
 
-	if(height > window.innerHeight - 136)
-		height = window.innerHeight - 136;
+	if(height > window.innerHeight - 136 - titleBar.height())
+		height = window.innerHeight - 136 - titleBar.height();
 
 	searchBarResults.style.height = height+'px';
 	searchBarResults.innerHTML = template.load('search.results.html');

@@ -14,6 +14,7 @@
 @import url('./theme-page.css');
 @import url('./drag-and-drop.css');
 @import url('./gamepad.css');
+@import url('./title-bar.css');
 @import url('./colors/all.colors.css');
 
 /* Animations */
@@ -675,7 +676,7 @@ cb
 {
 	height: 48px;
 	position: fixed;
-	top: 0px;
+	top: var(--title-var-height);
 	left: 0px;
 	width: 100%;
 	padding: 0px 50px;
@@ -684,11 +685,12 @@ cb
 	z-index: 10;
 	overflow: hidden;
 	transition: background-color 0.2s, transform 0.2s;
+	/*-webkit-app-region: drag;*/
 }
 
 .hide-bar-header .bar-header
 {
-	top: -64px;
+	top: calc(-64px + var(--title-var-height));
 	box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.26);
 }
 
@@ -731,6 +733,7 @@ cb
 	float: left;
 	cursor: default !important;
 	position: relative;
+	-webkit-app-region: no-drag;
 }
 
 .bar-back.show
@@ -759,10 +762,10 @@ cb
 .content-left
 {
 	position: fixed;
-	top: 48px;
+	top: calc(48px + var(--title-var-height));
 	left: 0px;
 	width: 192px;
-	height: calc(100% - 48px);
+	height: calc(100% - 48px - var(--title-var-height));
 	padding: 50px 0px;
 	margin-top: -50px;
 	background-color: var(--md-sys-color-surface-container);
@@ -897,7 +900,6 @@ cb
 
 .content-left .menu-item .material-icon
 {
-	color: var(--md-sys-color-on-secondary-container);
 	transition: font-variation-settings 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -918,10 +920,10 @@ cb
 .content-right
 {
 	position: absolute;
-	top: 48px;
+	top: calc(48px + var(--title-var-height));
 	left: 192px;
 	width: calc(100% - 192px);
-	height: calc(100% - 48px);
+	height: calc(100% - 48px - var(--title-var-height));
 	z-index: 1;
 	background-color: var(--md-sys-color-surface-container);
 	transition: background-color 0.2s;
@@ -935,8 +937,8 @@ cb
 
 .hide-bar-header .content-right
 {
-	height: 100%;
-	top: 0px;
+	height: calc(100% - var(--title-var-height));
+	top: var(--title-var-height);
 }
 
 .content-right > div.a
@@ -961,6 +963,11 @@ cb
     border-top-left-radius: 16px;
 }
 
+.hide-content-left .content-right > div
+{
+	border-top-left-radius: 0px;
+}
+
 .content-right > div > div
 {
 	overflow: auto;
@@ -978,6 +985,7 @@ cb
 	overflow-x: auto;
 	overflow-y: hidden;
 	height: 48px;
+	-webkit-app-region: no-drag;
 }
 
 .bar-right-buttons > div
@@ -994,6 +1002,7 @@ cb
 	position: relative;
 	margin: 0px 0px 0px 1px;
 	transition: font-variation-settings 0.15s cubic-bezier(0.4, 0, 0.2, 1), all 0.2s;
+	-webkit-app-region: no-drag;
 }
 
 .bar-right-buttons > div > div.button.fill

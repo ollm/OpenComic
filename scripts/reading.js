@@ -1903,7 +1903,7 @@ function notCrossZoomLimits(x, y, scale = false)
 	else if(y < minY)
 		y = minY;
 
-	return {x: x, y: y, maxX: maxX, maxY: maxY};
+	return {x: x, y: y, maxX: maxX, maxY: maxY, height: indexSize.height, width: indexSize.width};
 }
 
 // Drag zoom
@@ -1962,12 +1962,13 @@ function startScrollWithMouse()
 	if(config.readingScrollWithMouse)
 	{
 		let content = template._contentRight().firstElementChild;
+		let rect = template._barHeader().getBoundingClientRect();
 
 		scrollWithMouseStatus = {
 			active: true,
 			content: content,
 			scrollTop: content.scrollTop,
-			headerHeight: template._barHeader().getBoundingClientRect().height,
+			headerHeight: rect.height + rect.top,
 		};
 
 		scrollWithMouse();
@@ -3264,6 +3265,7 @@ function pointermove(event)
 				let widthM = contentRightRect.width / 2;
 				let heightM = contentRightRect.height / 2;
 
+				// Calculate multipler (1.5) from withLimits.height and withLimits.width
 				let x = -(pageX - zoomMoveData.x) * (withLimits.maxX / widthM * 1.5);
 				let y = -(pageY - zoomMoveData.y) * (withLimits.maxY / heightM * 1.5);
 
@@ -3451,7 +3453,7 @@ function pointermove(event)
 			contentLeftRect = template._contentLeft().getBoundingClientRect();
 		}
 
-		if(shownBarHeader && pageY > barHeaderRect.height + 48)
+		if(shownBarHeader && pageY > barHeaderRect.height + titleBar.height() + 48 && !document.querySelector('.menu-simple.a'))
 		{
 			clearTimeout(hideContentST);
 

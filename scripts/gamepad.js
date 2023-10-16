@@ -786,12 +786,7 @@ setButtonEvent('fullscreen', 11, function(key) {
 
 	if(!onReading)
 	{
-		let win = electronRemote.getCurrentWindow();
-		let isFullScreen = win.isFullScreen();
-
-		reading.hideContent(!isFullScreen);
-		win.setFullScreen(!isFullScreen);
-		win.setMenuBarVisibility(isFullScreen);
+		fullScreen();
 	}
 
 });
