@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Recently opened page [`d2f3065`](https://github.com/ollm/OpenComic/commit/d2f30653f506993a45e49ad5e7e5e8434c33a9be)
 - Option to move zoom and scroll whit mouse [`e8cc79c`](https://github.com/ollm/OpenComic/commit/e8cc79cbddd23ff7d47b7046190cecbad199d3c2)
 - Improved touch screen navigation (swipe gesture, 2 finger zoom and reset zoom with 2 finger click) [`f848463`](https://github.com/ollm/OpenComic/commit/f84846399f1521c736b9b6e048f204513ac304da)
-- Improved detection of image border when zoom is applied
+- Improved detection of image edges when zoom is applied [`e7ec771`](https://github.com/ollm/OpenComic/commit/e7ec77104360b1e2ac2aa96d97b6c1d2cc2d6d01)
 
 ##### 🐛 Bug Fixes
 

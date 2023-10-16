@@ -3264,8 +3264,8 @@ function pointermove(event)
 				let widthM = contentRightRect.width / 2;
 				let heightM = contentRightRect.height / 2;
 
-				let x = -(pageX - zoomMoveData.x) * (withLimits.maxX / widthM * 1.2);
-				let y = -(pageY - zoomMoveData.y) * (withLimits.maxY / heightM * 1.2);
+				let x = -(pageX - zoomMoveData.x) * (withLimits.maxX / widthM * 1.5);
+				let y = -(pageY - zoomMoveData.y) * (withLimits.maxY / heightM * 1.5);
 
 				dragZoom(x, y);
 
