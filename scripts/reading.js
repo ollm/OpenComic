@@ -3234,7 +3234,7 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 
 var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'};
 
-function mousemove(event)
+function pointermove(event)
 {
 	let pageX = app.pageX(event);
 	let pageY = app.pageY(event);
@@ -3253,7 +3253,7 @@ function mousemove(event)
 			contentRightRect.width = _contentRightRect.width;
 		}
 
-		if(config.readingMoveZoomWithMouse && (!readingViewIs('scroll') || config.readingScrollWithMouse) && event instanceof MouseEvent)
+		if(config.readingMoveZoomWithMouse && (!readingViewIs('scroll') || config.readingScrollWithMouse) && event instanceof PointerEvent)
 		{
 			if(pageX > contentRightRect.left && pageY > contentRightRect.top)
 			{
@@ -3289,8 +3289,8 @@ function mousemove(event)
 		let touches = event.touches;
 
 		// Simulate touch with 2 fingers
-		if(event.ctrlKey)
-			touches = [event.touches[0], touchevents.touches[1] || touchevents.touches[0]];
+		//if(event.ctrlKey)
+		//	touches = [event.touches[0], touchevents.touches[1] || touchevents.touches[0]];
 
 		let numTouches = touches.length;
 
@@ -3302,7 +3302,7 @@ function mousemove(event)
 			let touchesXY = app.touchesXY(event);
 			let maxDiff = Math.max(...app.touchesDiff(touchevents.touchesXY, touchesXY));
 
-			if(maxDiff > 20)
+			if(maxDiff > 10)
 			{
 				let content = template._contentRight().firstElementChild;
 				let rect = content.getBoundingClientRect();
@@ -3359,8 +3359,8 @@ function mousemove(event)
 					let scale = distance / touchevents.distance * currentScale;
 					touchevents.scale = scale;
 
-					let pageX = (touches[0].pageX - touches[1].pageX) + touches[0].pageX;
-					let pageY = (touches[0].pageY - touches[1].pageY) + touches[0].pageY;
+					let pageX = ((touches[0].pageX - touches[1].pageX) / 2) + touches[1].pageX;
+					let pageY = ((touches[0].pageY - touches[1].pageY) / 2) + touches[1].pageY;
 
 					currentPageXY.x = pageX;
 					currentPageXY.y = pageY;
@@ -3503,6 +3503,29 @@ function mousedown(event)
 				touchevents.touches = event.touches;
 				touchevents.touchesXY = app.touchesXY(event);
 				touchevents.maxTouches = event.touches.length;
+			}
+			else
+			{
+				let len = event.touches.length;
+
+				if(len > touchevents.maxTouches)
+				{
+					let touches = [];
+
+					for(let i = 0, _len = touchevents.touches.length; i < _len; i++)
+					{
+						touches.push(touchevents.touches[i]);
+					}
+
+					for(let i = touchevents.touches.length; i < len; i++)
+					{
+						touches.push(event.touches[i]);
+					}
+
+					touchevents.touchesXY = app.touchesXY({touches: touches});
+					touchevents.touches = touches;
+					touchevents.maxTouches = len;
+				}
 			}
 		}
 	}
@@ -3921,7 +3944,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	});
 
 	app.event('.reading-body, .reading-lens', 'mousedown touchstart', mousedown);
-	app.event(window, 'mousemove touchmove', mousemove);
+	app.event(window, 'pointermove touchmove', pointermove);
 
 	$(window).on('mouseup touchend', function(e) {
 
@@ -3971,7 +3994,13 @@ async function read(path, index = 1, end = false, isCanvas = false)
 					}
 					else if(touchevents.maxTouches > 1)
 					{
-						reading.resetZoom();
+						let pageX = ((touchevents.touches[0].pageX - touchevents.touches[1].pageX) / 2) + touchevents.touches[1].pageX;
+						let pageY = ((touchevents.touches[0].pageY - touchevents.touches[1].pageY) / 2) + touchevents.touches[1].pageY;
+
+						currentPageXY.x = pageX;
+						currentPageXY.y = pageY;
+
+						reading.resetZoom(true, false, true, false);
 					}
 				}
 
