@@ -2,13 +2,6 @@ var visible = true;
 
 function start()
 {
-	if(false)
-	{
-
-
-		hide();
-	}
-
 	document.querySelector('.title-bar').innerHTML = template.load('title.bar.html');
 
 	app.event(window, 'mousedown touchstart', mousedown);
@@ -149,7 +142,7 @@ function setColors()
 	win.setBackgroundColor(backgroundColor);
 
 	colors = {
-		//color: backgroundColor,
+		color: backgroundColor+'00', // Add transparency
 		symbolColor: symbolColor,
 		height: 29,
 	};
@@ -172,12 +165,10 @@ function _animateSetTitleBarOverlay(win)
 	let elapsed = Date.now() - animateSetTitleBarOverlayData;
 
 	let computedStyle = getComputedStyle(document.querySelector('.title-bar'));
-
 	let symbolColor = computedStyle.getPropertyValue('color');
-	//let backgroundColor = computedStyle.getPropertyValue('background-color');
 
 	win.setTitleBarOverlay({
-		//color: elapsed >= 200 ? colors.color : backgroundColor,
+		color: colors.color,
 		symbolColor: elapsed >= 200 ? colors.symbolColor : symbolColor,
 		height: 29,
 	});
