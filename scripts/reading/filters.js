@@ -85,6 +85,13 @@ var presetColors = {
 		{h: 18, s: 0.72, m: 3},
 		{h: 28, s: 0.83, m: 1}
 	],
+	violetAndBrownSaturated: [
+		{h: 323, s: 0.7, m: 1},
+		{h: 321, s: 0.8, m: 1},
+		{h: 314, s: 1, m: 10},
+		{h: 18, s: 1.4, m: 5},
+		{h: 28, s: 0.8, m: 1}
+	],
 
 	// One tone colors
 	red: [
@@ -1137,6 +1144,7 @@ function loadFiltersPresets()
 				'violetAndCarnation',
 				'violetAndCarnationGray',
 				'violetAndBrown',
+				'violetAndBrownSaturated',
 			],
 		},
 		{
