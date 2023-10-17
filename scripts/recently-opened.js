@@ -10,6 +10,7 @@ async function reload()
 
 async function load(animation = true, content = false)
 {
+	dom.fromLibrary(false);
 	dom.indexPathControl(false, false, false, false, true);
 
 	template.loadContentRight('index.content.right.loading.html', animation);

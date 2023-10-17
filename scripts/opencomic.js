@@ -1005,6 +1005,8 @@ function openComicDialog(folders = false)
 
 }
 
+var fromLibrary = true;
+
 function openComic(filePath, animation = true)
 {
 	if(pathIsSupported(filePath))
@@ -1035,12 +1037,12 @@ function openComic(filePath, animation = true)
 		if(mainPath === false)
 			mainPath = path;
 
-		mainPath = config.showFullPathOpened ? p.parse(mainPath).root : mainPath;
-
 		if(onReading)
 			reading.saveReadingProgress();
 
 		recentlyOpened.set(mainPath);
+
+		dom.fromLibrary(false);
 
 		if(selectImage)
 			dom.openComic(animation, path, mainPath);

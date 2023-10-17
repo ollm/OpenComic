@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improved touch screen navigation (swipe gesture, 2 finger zoom and reset zoom with 2 finger click) [`f848463`](https://github.com/ollm/OpenComic/commit/f84846399f1521c736b9b6e048f204513ac304da)
 - Improved detection of image edges when zoom is applied [`e7ec771`](https://github.com/ollm/OpenComic/commit/e7ec77104360b1e2ac2aa96d97b6c1d2cc2d6d01)
 - Frameless window (Full only in Windows and macOS)	[`9c7346c`](https://github.com/ollm/OpenComic/commit/9c7346cb37fe3c7aed9200d49e27ed4c5bdbfc96)
-- Translate page names in PDFs
+- Translate page names in PDFs [`8855fbe`](https://github.com/ollm/OpenComic/commit/8855fbefd498352cc86e014677b19c160fcc8da5)
 
 ##### 🐛 Bug Fixes
 
@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - RAR error on extract with files some special chars (Changed unrar to node-unrar-js) [`694fe27`](https://github.com/ollm/OpenComic/commit/694fe274982c0a9ad2421c6b226abceae1602c3a)
 - Cannot open filtered files with the keyboard [`f831749`](https://github.com/ollm/OpenComic/commit/f8317499a40e6fa45a75988ee1bea31a9135c9bf)
 - Some display errors when applying global zoom [`92b28c2`](https://github.com/ollm/OpenComic/commit/92b28c24f1a00544264fac03a336ad8268553fd5)
+- Reading progress was saved in different location when activating show full path
 
 ## [v1.0.0-beta.3](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.3) (09-10-2023)
 

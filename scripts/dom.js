@@ -313,6 +313,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	if(!path)
 	{
+		dom.fromLibrary(true);
+
 		indexPathControl(false);
 
 		let sort = config.sortIndex;
@@ -414,7 +416,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[key].sha = sha1(comics[key].path);
 				comics[key].poster = images.poster;
 				comics[key].images = images.images;
-				comics[key].mainPath = config.showFullPathLibrary ? p.parse(comics[key].path).root : comics[key].path;
+				comics[key].mainPath = comics[key].path;
 				comics[key].readingProgress = readingProgress[comics[key].path] || {lastReading: 0};
 			}
 
@@ -561,9 +563,21 @@ function returnTextPath(path, mainPath, image = false)
 	return path.join(image ? '<i class="material-icon navegation">chevron_right</i>' : ' / '); 
 }
 
+var isFromLibrary = true;
+
+function fromLibrary(value)
+{
+	isFromLibrary = value;
+}
+
 function headerPath(path, mainPath)
 {
-	mainPathR = addSepToEnd(p.dirname(mainPath));
+	let _mainPath = mainPath;
+
+	if((config.showFullPathLibrary && isFromLibrary) || (config.showFullPathOpened && !isFromLibrary))
+		_mainPath = p.parse(path).root;
+
+	mainPathR = addSepToEnd(p.dirname(_mainPath));
 
 	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 
@@ -1547,6 +1561,7 @@ module.exports = {
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,
 	translatePageName: translatePageName,
+	fromLibrary: fromLibrary,
 	search: search,
 	this: domManager.this,
 	query: domManager.query,
