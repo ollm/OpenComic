@@ -1,0 +1,294 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "และ",
+		"comics": "คอมมิกส์",
+		"collection": "เรื่องที่ชอบ",
+		"library": "ห้องสมุด",
+		"recents": "ล่าสุด",
+		"recentlyOpened": "ที่อ่านค้างไว้",
+		"images": "รูปภาพ",
+		"sort": {
+			"main": "เรียงตาม",
+			"name": "ชื่อ",
+			"number": "ตัวเลข",
+			"nameNumber": "ชื่อ / ตัวเลข",
+			"lastAdd": "เพิ่มล่าสุด",
+			"lastReading": "อ่านล่าสุด",
+			"lastOpened": "เปิดล่าสุด",
+			"foldersFirst": "โฟลเดอร์ขึ้นก่อน",
+			"invert": "กลับกัน"
+		},
+		"view": {
+			"main": "มุมมอง",
+			"module": "ตาราง",
+			"list": "รายการ"
+		},
+		"contextMenu": {
+			"remove": "นำออก",
+			"openFileLocation": "เปิดตำแหน่งไฟล์",
+			"openFolderLocation": "เปิดตำแหน่งโฟลเดอร์",
+			"addPoster": "เพิ่มปก",
+			"changePoster": "เปลี่ยนปก",
+			"deletePoster": "ลบปก",
+			"cannotAddPoster": "ไม่สามารถเพิ่มรูปภาพปกกรณีที่โฟลเดอร์อยู่ในไฟล์บีบอัดได้ คุณจะต้องแก้ไขไฟล์โดยใช้ 7-zip, unrar เป็นต้น",
+			"cannotDeletePoster": "ไม่สามารถนำรูปภาพปกกรณีที่โฟลเดอร์อยู่ในไฟล์บีบอัดออกได้ คุณจะต้องแก้ไขไฟล์โดยใช้ 7-zip, unrar เป็นต้น",
+			"closeApp": "ปิด OpenComic"
+		},
+		"back": "กลับ",
+		"open": "เปิด",
+		"add": "เพิ่ม",
+		"addToLibrary": "เพิ่มไปห้องสมุด",
+		"unsupportedFile": "ไม่รองรับไฟล์ประเภทนี้",
+		"reload": "รีโหลด",
+		"search": "ค้นหา",
+		"filterCurrentPage": "ตัวกรองหน้าปัจจุบัน",
+		"language": "ภาษา",
+		"settings": "การตั้งค่า",
+		"theme": "ธีม",
+		"days": "วัน",
+		"pageAndNumber": "หน้า $1",
+		"valueCannotBeEmpty": "ค่าต้องไม่ว่าง",
+		"nightMode": "โหมดมืด"
+	},
+	"comics": {
+		"continueReading": "อ่านต่อ",
+		"emptyIndex": "ไม่มีคอมมิกส์ในห้องสมุด",
+		"emptyFolder": "ไม่มีไฟล์ที่รองรับในโฟลเดอร์นี้",
+		"emptyRecentlyOpened": "ไม่มีไฟล์ที่เปิดล่าสุด"
+	},
+	"reading": {
+		"prevChapter": "ตอนก่อนหน้า",
+		"firstPage": "หน้าแรก",
+		"previous": "ก่อนหน้า",
+		"next": "ถัดไป",
+		"lastPage": "หน้าสุดท้าย",
+		"nextChapter": "ตอนถัดไป",
+		"pages": {
+			"main": "หน้า",
+			"pageLayout": "เค้าโครงหน้า",
+			"colorFilters": "ฟิลเตอร์สี",
+			"slide": "อ่านแบบเลื่อนข้าง",
+			"scroll": "อ่านแบบเลื่อนลง",
+			"adjustToWidth": "ปรับตามความกว้าง",
+			"margin": "ระยะขอบ",
+			"marginHorizontal": "ขอบแนวนอน",
+			"marginVertical": "ขอบแนวตั้ง",
+			"differentMarginInHorizontals": "ต่างจากแนวนอน",
+			"doublePage": "หน้าคู่",
+			"doNotApplyToHorizontals": "ไม่ใช้กับแนวนอน",
+			"blankPage": "หน้าว่างเมื่อเริ่มต้น",
+			"readingDelaySkip": "หน่วงเวลาการเปลี่ยนเรื่อง",
+			"animationSpeed": "ความเร็วอะนิเมชั่น",
+			"readingManga": "อ่านมังงะ (กลับด้าน)",
+			"readingWebtoon": "อ่านเว็บตูน",
+			"readingGlobal": "กำหนดค่าทั้งหมด",
+			"readingConfigNew": "กำหนดค่าใหม่",
+			"clipHorizontal": "คลิปแนวนอน",
+			"clipVertical": "คลิปแนวตั้ง",
+			"colors": "สี",
+			"brightness": "ความสว่าง",
+			"saturation": "ความอิ่มตัว",
+			"contrast": "ความชัด",
+			"sepia": "ซีเปีย",
+			"invert": "กลับกัน",
+			"hueRotate": "กลับสี",
+			"tone": "โทน",
+			"colorize": "แต่งสี",
+			"onlyBlackAndWhite": "สำหรับรูปภาพขาวดำเท่านั้น",
+			"colorPreset": "สีที่ตั้งไว้",
+			"multiplier": "หลายสี",
+			"saveAsPreset": "จัดเก็บการตั้งค่า",
+			"addColor": "เพิ่มสี",
+			"fromImage": "สีจากรูปภาพ",
+			"savedPresets": "จัดเก็บการตั้งค่าแล้ว",
+			"multipleTonePresets": "การตั้งค่าหลายโทน",
+			"oneTonePresets": "การตั้งค่าโทนเดียว"
+		},
+		"magnifyingGlass": {
+			"main": "แว่นขยาย",
+			"activate": "เปิดใช้งาน",
+			"zoom": "ขยาย",
+			"size": "ขนาด",
+			"ratio": "อัตราส่วน",
+			"radius": "รัศมี"
+		},
+		"tracking": {
+			"main": "ติดตามผ่านเว็บ",
+			"tracking": "การติดตาม",
+			"marked": "กำหนดไว้",
+			"sites": "เว็บทั้งหมด",
+			"favoriteSites": "เว็บที่ชอบ",
+			"emptyFavoriteSites": "ไม่มีเว็บที่ชอบ",
+			"problemChapter": "ไม่พบตอน",
+			"chapters": "ตอน",
+			"chapter": "ตอน",
+			"volumes": "เล่ม",
+			"volume": "เล่ม"
+		},
+		"moreOptions": {
+			"main": "ตัวเลือกเพิ่มเติม",
+			"hideBarHeader": "ซ่อนแถบส่วนบน",
+			"hideContentLeft": "ซ่อนแถบด้านข้าง"
+		},
+		"viewBookmarks": "ดูบุ๊คมาร์ก",
+		"addBookmark": "เพิ่มบุ๊คมาร์ก",
+		"removeBookmark": "นำบุ๊คมาร์กออก",
+		"emptyBookmarks": "ไม่มีบุ๊คมาร์ก",
+		"currentReading": "กำลังอ่านอยู่"
+	},
+	"settings": {
+		"general": "ทั่วไป",
+		"reading": {
+			"main": "กำหนดค่าการอ่าน",
+			"maxMargin": "ขยายระยะขอบแนวนอนแนวตั้งให้สุด",
+			"globalZoom": "ใช้การซูมที่ตั้งไว้แทนการซูมแบบหนึ่งต่อหนึ่ง (เฉพาะการอ่านแนวตั้งเท่านั้น)",
+			"moveZoomWithMouse": "ย้ายซูมโดยใช้เคอร์เซอร์ (ปิดการย้ายโดยลากวาง)",
+			"scrollWithMouse": "เลื่อนโดยย้ายเคอร์เซอร์ไปตามขอบจอ (ปิดการเลื่อนแบบลากและวาง)",
+			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
+			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
+		},
+		"navigation": {
+			"main": "การนำทาง",
+			"ignoreSingleFoldersLibrary": "ละเว้นโฟลเดอร์เดี่ยว (เปิดอัตโนมัติ)",
+			"whenOpenFolderContinueReading": "เปิดไปอ่านต่อโดยตรงแทนที่จะเป็นรายการไฟล์",
+			"showFullPathLibrary": "แสดงที่ตั้งแบบเต็มเมื่อเปิดห้องสมุดคอมมิกส์",
+			"showFullPathOpened": "แสดงที่ตั้งแบบเต็มเมื่อเปิดไฟล์หรือโฟลเดอร์"
+		},
+		"startupBehavior": {
+			"main": "การกระทำเมื่อเริ่มต้น",
+			"startInFullScreen": "เปิด OpenComic แบบเต็มจอ",
+			"startInContinueReading": "เปิดที่อ่านล่าสุดโดยตรง",
+			"startOnlyFromLibrary": "เฉพาะการอ่านล่าสุดจากห้องสมุด",
+			"startOnStartup": "เปิด OpenComic เมื่อเริ่มต้นระบบ"
+		},
+		"releases": {
+			"main": "ตรวจหาเวอร์ชั่นใหม่",
+			"checkReleases": "ตรวจหาเวอร์ชั่นใหม่เมื่อเปิด OpenComic",
+			"checkPreReleases": "แสดงเวอร์ชั่นปล่อยให้ใช้ก่อน (เวอร์ชั่นเบต้า/อัลฟ่า)"
+		},
+		"shortcuts": {
+			"main": "ทางลัด",
+			"keyboard": "คีย์บอร์ด",
+			"whenReading": "เมื่ออ่าน",
+			"gamepadMenu": "เมนูเกมแพด",
+			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
+			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
+			"action": "การกระทำ",
+			"key1": "คีย์ 1",
+			"key2": "คีย์ 2",
+			"key3": "คีย์ 3",
+			"key4": "คีย์ 4",
+			"key5": "คีย์ 5",
+			"gamepad1": "ปุ่ม 1",
+			"gamepad2": "ปุ่ม 2"
+		},
+		"masterFolders": {
+			"main": "โฟลเดอร์ตั้งต้น",
+			"folder": "โฟลเดอร์",
+			"noFolders": "ไม่มีโฟลเดอร์"
+		},
+		"storage": {
+			"main": "พื้นที่จัดเก็บ",
+			"cache": "แคช",
+			"cacheDescription": "ไฟล์ภาพย่อและดัชนีไฟล์บีบอัดจะถูกจัดเก็บไว้ที่นี่ ซึ่งไม่แนะนำให้ทำความสะอาดนอกจากจะมีขนาดใหญ่เกินไปหรือมีข้อผิดพลาดเกิดขึ้น",
+			"cacheMaxSize": "ขนาดแคชสูงสุด",
+			"cacheMaxSizeDescription": "ไฟล์จะถูกนำออกจากแคชหากขนาดเกินนี้ โดยเรียงตามอายุไฟล์ที่ไม่ได้ใช้งาน",
+			"cacheMaxOld": "เวลาแคชสูงสุด",
+			"cacheMaxOldDescription": "ไฟล์จะถูกนำออกจากแคชเมื่อไม่ใช้ใช้งานมากกว่าเวลาที่กำหนดไว้นี้",
+			"clearCache": "ล้างแคช",
+			"temporaryFiles": "ไฟล์ชั่วคราว",
+			"temporaryFilesDescription": "ที่ที่ไฟล์บีบอัดจำเป็นต้นใช้ในการคลายไฟล์ โดยจะมีการนำไฟล์ออกโดยอัตโนมัติเมื่อปิด OpenComic",
+			"removeTemporaryFiles": "นำไฟล์ชั่วคราวออก"
+		}
+	},
+	"menu": {
+		"file": {
+			"main": "ไฟล์",
+			"openFile": "เปิดไฟล์",
+			"openFolder": "เปิดโฟลเดอร์",
+			"addFile": "เพิ่มไฟล์",
+			"addFolder": "เปิดโฟลเดอร์",
+			"quit": "ออก"
+		},
+		"view": {
+			"main": "มุมมอง",
+			"resetZoom": "คืนค่าซูม",
+			"originalSize": "ขนาดเดิม",
+			"zoomIn": "ซูมเข้า",
+			"zoomOut": "ซูมออก",
+			"toggleFullScreen": "เต็มจอ"
+		},
+		"goto": {
+			"main": "ไปยัง"
+		},
+		"debug": {
+			"main": "ดีบั๊ก",
+			"reload": "รีโหลด",
+			"forceReload": "บังคับรีโหลด",
+			"toggleDevTools": "เครื่องมือนักพัฒนา"
+		},
+		"help": {
+			"main": "ช่วยเหลือ",
+			"about": "เกี่ยวกับ OpenComic",
+			"funding": "ระดมทุน!",
+			"bug": "รายงานบั๊ก"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "เข้าสู่ระบบเว็บ {{siteName}} ผ่านโทเค็น",
+			"getTokenInput": "โทเค็นเว็บ {{siteName}}",
+			"invalidTokenHeader": "โทเค็นเว็บ {{siteName}} ไม่ถูกต้อง",
+			"resendToken": "คุณต้องการเพิ่มโทเค็นเว็บ {{siteName}} อีกครั้งหรือไม่?",
+			"serachIn": "ค้นหาในเว็บ {{siteName}}",
+			"emptySearch": "ไม่พบผลลัพธ์",
+			"setHeader": "ทำเครื่องหมายเอง",
+			"setMessage": "หากคุณต้องการทำเครื่องหมายตอนด้วยตนเอง",
+			"setWaitMessage": "คุณสามารถทำตอนนี้หรือรอให้ตรวจพบโดยอัตโนมัติจากตอนอื่น",
+			"setChapterNumber": "ทำเครื่องหมายจนถึงตอน",
+			"setVolumeNumber": "ทำเครื่องหมายจนถึงเล่ม",
+			"activate": "เปิดใช้งานการติดตาม"
+		},
+		"pages": {
+			"readingConfigNewHeader": "สร้างการกำหนดค่าใหม่",
+			"readingConfigEditHeader": "แก้ไขการกำหนดค่า",
+			"readingConfigName": "ชื่อการกำหนดค่า",
+			"readingConfigRemoveHeader": "นำการกำหนดค่าออก",
+			"readingConfigRemove": "คุณต้องการนำการกำหนดค่านี้ออกหรือไม่?",
+			"readingNumColorsGenerate": "จำนวนสีที่จะสร้าง",
+			"readingPresetName": "ชื่อการตั้งค่า"
+		},
+		"release": {
+			"title": "มีเวอร์ชั่นใหม่พร้อมใช้งาน <b>{{releaseName}}</b>",
+			"body": "คุณสามารถดูการเปลี่ยนแปลงจาก {{{linkStart}}}หน้าปล่อยซอฟแวร์{{{linkEnd}}}"
+		}
+	},
+	"buttons": {
+		"cancel": "ยกเลิก",
+		"ok": "ตกลง",
+		"save": "จัดเก็บ",
+		"undo": "้ย้อนกลับ",
+		"dismiss": "ปิด",
+		"remove": "นำออก",
+		"download": "ดาวน์โหลด"
+	},
+	"error": {
+		"uncompress": {
+			"title": "ข้อผิดพลาดขณะคลายการบีบอัด",
+			"message": "เกิดข้อผิดพลาดขณะพยายามทำการคลายไฟล์บีบอัด"
+		}
+	},
+	"about": {
+		"version": "เวอร์ชั่น",
+		"translatedBy": "แปลเป็นภาษาไทยโดย",
+		"contributedBy": "เข้ามีส่วนร่วมโดย",
+		"translators": [
+			{
+				"name": "Yutthaphon Inchaiya",
+				"email": "admin@nay-noi.com",
+				"url": "https://github.com/SubMaRk"
+			}
+		]
+	}
+}
