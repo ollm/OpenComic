@@ -428,6 +428,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 
 		handlebarsContext.comics = comics;
+		handlebarsContext.comicsIndex = true;
 		handlebarsContext.comicsReadingProgress = false;
 		dom.setCurrentPageVars('index');
 
@@ -456,6 +457,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			indexPathControl(path, mainPath);
 
 		handlebarsContext.comics = [];
+		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsDeep2 = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep).length >= 2 ? true : false;
 		dom.setCurrentPageVars('browsing');
 
