@@ -138,6 +138,8 @@ function addImageToDom(querySelector, path, animation = true)
 
 function translatePageName(name)
 {
+	name = name.replace(/^[0-9]+:sortonly - /, '');
+
 	return name.replace(/^page\-([0-9]+)/, language.global.pageAndNumber);
 }
 
@@ -497,6 +499,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
 
+			if(indexData.readingProgress.ebook)
+				reading.setNextOpenChapterProgress(indexData.readingProgress.chapterIndex, indexData.readingProgress.chapterProgress);
+
 			dom.openComic(true, indexData.readingProgress.path, indexData.readingProgress.mainPath, false, false, false, true);
 
 			return;
@@ -557,7 +562,7 @@ function returnTextPath(path, mainPath, image = false)
 
 	for(let index in files)
 	{
-		path.push(image ? htmlEntities(files[index]) : files[index]);
+		path.push(translatePageName(image ? htmlEntities(files[index]) : files[index]));
 	}
 
 	return path.join(image ? '<i class="material-icon navegation">chevron_right</i>' : ' / '); 
@@ -1384,6 +1389,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	let files = await file.read();
 
 	let isCanvas = false;
+	let isEbook = false;
 	let compressedFile = fileManager.lastCompressedFile(path);
 
 	if(compressedFile)
@@ -1395,6 +1401,12 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		{
 			await file.makeAvailable([{path: compressedFile}]);
 			isCanvas = true;
+		}
+		else if(features.ebook)
+		{
+			await file.makeAvailable([{path: compressedFile}]);
+			isEbook = true;
+			files = [];
 		}
 		else
 		{
@@ -1471,6 +1483,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 					size: file.size || false,
 					canvas: isCanvas,
+					ebook: isEbook,
 					folder: false,
 				});		
 			}
@@ -1507,7 +1520,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	
 	events.events();
 
-	reading.read(path, indexStart, end, isCanvas);
+	reading.read(path, indexStart, end, isCanvas, isEbook, imagePath);
 	reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
 
 	generateAppMenu();

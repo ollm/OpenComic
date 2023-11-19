@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "1.0.0-beta.4",
+	"version": "1.0.0-beta.5",
 	"main": "scripts/main.js",
 	"type": "commonjs",
 	"keywords": [
@@ -65,7 +65,9 @@
 		"7zip-bin": "^5.2.0",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
+		"epubjs": "^0.3.93",
 		"file-type": "^16.5.4",
+		"font-list": "^1.5.1",
 		"fs": "0.0.1-security",
 		"fs-extra": "^11.1.1",
 		"gm": "^1.25.0",
@@ -77,17 +79,18 @@
 		"mime": "^3.0.0",
 		"mv": "^2.1.1",
 		"node-7z": "^3.0.0",
+		"node-unrar-js": "^2.0.0",
 		"pdfjs-dist": "^3.8.162",
+		"sanitize-html": "^2.11.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.30.7",
 		"shosho": "^1.4.2",
 		"tar-fs": "^3.0.4",
-		"node-unrar-js": "^2.0.0",
 		"unzipper": "^0.10.14"
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.2.13",
-		"electron": "^25.9.1",
+		"electron": "^25.9.4",
 		"electron-builder": "^24.6.3",
 		"node-abi": "^3.46.0",
 		"node-yaml": "^4.0.1",
@@ -166,8 +169,7 @@
 				"libnotify4",
 				"libappindicator1",
 				"libxtst6",
-				"libnss3",
-				"unrar"
+				"libnss3"
 			]
 		},
 		"rpm": {
@@ -176,17 +178,13 @@
 				"libnotify",
 				"libappindicator",
 				"libXtst",
-				"nss",
-				"unrar"
+				"nss"
 			]
 		},
 		"snap": {
-			"buildPackages": [
-				"unrar"
-			],
+			"buildPackages": [],
 			"stagePackages": [
-				"default",
-				"unrar"
+				"default"
 			],
 			"plugs": [
 				"default",

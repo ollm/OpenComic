@@ -58,6 +58,20 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				prevChapter: {
+					name: language.reading.prevChapter,
+					function: function(){
+						dom.goPrevComic();
+						return true;
+					},
+				},
+				nextChapter: {
+					name: language.reading.nextChapter,
+					function: function(){
+						dom.goNextComic();
+						return true;
+					},
+				},
 			},
 			shortcuts: {},
 			_shortcuts: {
@@ -66,7 +80,11 @@ function loadShortcuts()
 				'Ctrl+G': 'searchFilter',
 			},
 			gamepad: {},
-			_gamepad: {},
+			_gamepad: {
+				'X': 'reload',
+				'LB': 'prevChapter',
+				'RB': 'nextChapter',
+			},
 		},
 		reading: {
 			actionsOrder: [

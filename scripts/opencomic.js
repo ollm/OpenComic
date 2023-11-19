@@ -74,6 +74,7 @@ window.addEventListener('error', function(evt) {
 const electron = require('electron'),
 	electronRemote = require('@electron/remote'),
 	fs = require('fs'),
+	fsp = fs.promises,
 	fse = require('fs-extra'),
 	hb = require('handlebars'),
 	os = require('os'),
@@ -137,6 +138,7 @@ var compressedMime = {
 		'application/x-cbt',
 		'application/x-tar',
 		'application/x-tar-compressed',
+		'application/epub+zip',
 	],
 	'zip': [
 		'application/zip',
@@ -167,6 +169,9 @@ var compressedMime = {
 		'application/x-bzpdf',
 		'application/x-gzpdf',
 	],
+	'epub': [
+		'application/epub+zip',
+	],
 };
 
 
@@ -181,6 +186,8 @@ var compressedExtensions = {
 		'tar',
 		'cbt',
 		'pdf',
+		'epub',
+		'epub3',
 	],
 	'zip': [
 		'zip',
@@ -201,6 +208,10 @@ var compressedExtensions = {
 	'pdf': [
 		'pdf',
 	],
+	'epub': [
+		'epub',
+		'epub3',
+	],
 };
 
 var compatibleImageExtensions = [
@@ -215,7 +226,9 @@ var compatibleImageExtensions = [
 ];
 
 var compatibleCompressedExtensions = [
-	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt', 'pdf',
+	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt',
+	/*pdf*/'pdf',
+	/*epub*/'epub', 'epub3',
 ];
 
 var compatibleExtensions = [
@@ -240,6 +253,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	gamepad = require(p.join(appDir, 'scripts/gamepad.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
+	ebook = require(p.join(appDir, 'scripts/ebook.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	recentlyOpened = require(p.join(appDir, 'scripts/recently-opened.js')),
@@ -624,7 +638,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
-					{role: 'quit', label: language.menu.file.quit, click: function(){electronRemote.getCurrentWindow().close();}},
+					{role: 'quit', label: language.menu.file.quit, click: function(){electronRemote.app.quit();}},
 				]
 			},
 			{
@@ -882,6 +896,12 @@ hb.registerHelper('for', function(from, to, incr, options) {
 		accum += options.fn(i);
 
 	return accum;
+
+});
+
+hb.registerHelper('round', function(number) {
+
+	return Math.round(+number);
 
 });
 

@@ -177,6 +177,15 @@ function change(key, value, save = false)
 				dom.queryAll('.reading-only-black-and-white, .filters-colors').addClass('disable-pointer');
 
 			break;
+
+		case 'negative':
+
+			if(value)
+				dom.queryAll('.reading-negative .switch').addClass('a');
+			else
+				dom.queryAll('.reading-negative .switch').removeClass('a');
+
+			break;
 	}
 
 	let readingFilters = structuredClone(_config.readingFilters);
@@ -231,7 +240,7 @@ function saveColorize(colors, force = false)
 	if(_colorPreset !== sameAsPreset || force)
 	{
 		let text = document.querySelector('.reading-filters-presets .text');
-		if(text) text.innerHTML = getColorsPresetName()
+		if(text) text.innerHTML = getColorsPresetName();
 		events.eventSelect();
 	}
 }
@@ -317,6 +326,7 @@ function apply(readingFilters = false)
 	if(readingFilters.sepia != 0) filters.push('sepia('+readingFilters.sepia+'%)');
 	if(readingFilters.hueRotate != 0) filters.push('hue-rotate('+readingFilters.hueRotate+'deg)');
 	if(readingFilters.invert) filters.push('invert(100%)');
+	if(readingFilters.negative) filters.push('invert(100%) hue-rotate(180deg)');
 
 	let readingFiltersStyle = contentRight.querySelector('.reading-filters style');
 
@@ -1086,11 +1096,11 @@ async function processIsBlackAndWhiteQueue()
 	}
 }
 
-async function focusIndex(index)
+async function focusIndex(index, notBlackAndWhite = false)
 {
 	currentIndex = index;
 
-	if(!_config.readingFilters.colorize || !_config.readingFilters.onlyBlackAndWhite) return;
+	if(!_config.readingFilters.colorize || !_config.readingFilters.onlyBlackAndWhite || notBlackAndWhite) return;
 
 	let contentRight = template._contentRight();
 

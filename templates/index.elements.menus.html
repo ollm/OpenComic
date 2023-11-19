@@ -78,17 +78,27 @@
 	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); dom.search.showHide();">
+					<i class="material-icon menu-simple-icon-first">search</i>
+					{{language.global.search}}
+				</div>
+
+				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); dom.search.showHide(true);">
+					<i class="material-icon menu-simple-icon-first">filter_list</i>
+					{{language.global.filterCurrentPage}}
+				</div>
+
+				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad', 'gamepad');">
 					<i class="material-icon menu-simple-icon-first menu-gamepad-view-icon">view_module</i>
 					{{language.global.view.main}}
 				</div>
 
-				<div class="menu-simple-element context-menu-remove gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad', 'gamepad');">
 					<i class="material-icon menu-simple-icon-first">sort</i>
 					{{language.global.sort.main}}
 				</div>
 
-				<div class="menu-simple-element context-menu-remove gamepad-item" onclick="electronRemote.getCurrentWindow().close();">
+				<div class="menu-simple-element gamepad-item" onclick="electronRemote.app.quit();">
 					<i class="material-icon menu-simple-icon-first">exit_to_app</i>
 					{{language.global.contextMenu.closeApp}}
 				</div>

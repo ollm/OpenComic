@@ -7,7 +7,7 @@
 		</div>
 
 		{{#each userPresets}}
-			<div class="menu-presets menu-presets--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.filters.colorizePreset('{{key}}', true); events.hideSelect(true);">
+			<div class="menu-presets menu-presets--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.filters.colorizePreset('{{key}}', true);/* events.hideSelect(true);*/ events.select(this);">
 				<div class="menu-simple-element-image"><!--<div></div>--><span style="filter: url(#presets{{key}});"></span></div>
 				<span>{{name}}</span>
 				<i class="material-icon menu-simple-icon-last" onclick="reading.filters.editPreset('{{key}}'); events.hideSelect(true); event.stopPropagation();">edit</i>
@@ -22,7 +22,7 @@
 		</div>
 
 		{{#each colors}}
-			<div class="menu-presets menu-presets--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.filters.colorizePreset('{{key}}', true); events.hideSelect(true);">
+			<div class="menu-presets menu-presets--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.filters.colorizePreset('{{key}}', true);/* events.hideSelect(true);*/ events.select(this);">
 				<div class="menu-simple-element-image"><!--<div></div>--><span style="filter: url(#presets{{key}});"></span></div>
 				<span>{{name}}</span>
 			</div>

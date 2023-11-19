@@ -85,12 +85,12 @@ function createWindow() {
 		{
 			appClosing = true;
 
-			win.webContents.executeJavaScript('var saved = reading.saveReadingProgress(); settings.removeTemporaryFiles(true); cache.purge(); saved;', false).then(function(value) {
+			win.webContents.executeJavaScript('var saved = reading.saveReadingProgress(); settings.removeTemporaryFiles(true); cache.purge(); ebook.closeAllRenders(); saved;', false).then(function(value) {
 
 				if(!value)
-					win.close();
+					app.quit();
 				else // Wait for it to save
-					setTimeout(function(win){win.close();}, 200, win);
+					setTimeout(function(win){app.quit();}, 200, win);
 
 			});
 

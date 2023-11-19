@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.0.0-beta.5 (dd-mm-yyyy)
+
+##### 🚀 New Features
+
+- Preliminary support for the `EPUB` format (Alpha)
+
+##### 🐛 Bug Fixes
+
 ## [v1.0.0-beta.4](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.4) (17-10-2023)
 
 ##### 🚀 New Features
@@ -26,7 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - RAR error on extract with files some special chars (Changed unrar to node-unrar-js) [`694fe27`](https://github.com/ollm/OpenComic/commit/694fe274982c0a9ad2421c6b226abceae1602c3a)
 - Cannot open filtered files with the keyboard [`f831749`](https://github.com/ollm/OpenComic/commit/f8317499a40e6fa45a75988ee1bea31a9135c9bf)
 - Some display errors when applying global zoom [`92b28c2`](https://github.com/ollm/OpenComic/commit/92b28c24f1a00544264fac03a336ad8268553fd5)
-- Reading progress was saved in different location when activating show full path
+- Reading progress was saved in different location when activating show full path [`72e8cc1`](https://github.com/ollm/OpenComic/commit/72e8cc146b364d7772d6494a1e2390900505de7a)
 
 ## [v1.0.0-beta.3](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.3) (09-10-2023)
 

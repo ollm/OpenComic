@@ -57,3 +57,9 @@ body:
   attributes:
     label: Additional Information
     description: If your problem needs further explanation, please add more information here.
+- type: textarea
+  attributes:
+    label: Sample file
+    description: If it is related to the bug report.
+  validations:
+    required: false

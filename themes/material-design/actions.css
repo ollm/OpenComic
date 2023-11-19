@@ -712,6 +712,15 @@
 	background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%);
 }
 
+.menu-fonts .menu-simple-element-image
+{
+	margin-right: 12px;
+	border-radius: 32px;
+	border: 1px solid var(--md-sys-color-surface-variant);
+	text-align: center;
+	line-height: 32px;
+}
+
 .menu-simple-text-small
 {
 	height: 32px;
@@ -2408,6 +2417,17 @@ table tbody td.lh0
 {
 	background-color: var(--md-sys-color-primary);
 	color: var(--md-sys-color-on-primary);
+	border-color: var(--md-sys-color-primary);
+}
+
+.chip.active i
+{
+	color: var(--md-sys-color-on-primary);
+}
+
+.chip-icon-left
+{
+	padding-left: 0px;
 }
 
 .chip-icon-right
@@ -2417,21 +2437,22 @@ table tbody td.lh0
 
 .chip i
 {
+	float: left;
 	margin: -2px 5px;
+	height: 24px;
+	width: 24px;
+	border-radius: 24px;
+	line-height: 24px;
+	text-align: center;
+	transition: 0.2s background-color, 0.2s color;
+	position: relative;
+	z-index: 2;
 }
 
 .chip i.right
 {
 	float: right;
 	cursor: pointer;
-	height: 24px;
-	width: 24px;
-	border-radius: 24px;
-	line-height: 24px;
-	text-align: center;
-	transition: 0.2s background-color;
-	position: relative;
-	z-index: 2;
 }
 
 .chip i.right:hover,
@@ -2440,6 +2461,10 @@ table tbody td.lh0
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
 
+.reading-chips .chip
+{
+	float: left;
+}
 
 /* Search Bar */
 

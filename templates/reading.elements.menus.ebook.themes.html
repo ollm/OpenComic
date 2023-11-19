@@ -1,0 +1,11 @@
+<div>
+
+	{{#each ebookThemes}}
+		<div class="menu-fonts menu-fonts--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.ebook.change('colorsTheme', '{{key}}', true, false);/* events.hideSelect(true);*/events.select(this);">
+			{{#compare key '!=' 'ebook'}}<div class="menu-simple-element-image" style="background-color: {{colors.background}};"><span style="color: {{colors.text}};">{{letter}}</span></div>{{/compare}}
+			<span>{{name}}</span>
+			{{#if custom}}<i class="material-icon menu-simple-icon-last" onclick="reading.ebook.editTheme('{{key}}'); events.hideSelect(true); event.stopPropagation();">edit</i>{{/if}}
+		</div>
+	{{/each}}
+
+</div>

@@ -1,0 +1,16 @@
+{{#each subitems}}
+<div class="reading-toc-subitem reading-toc-page-{{page}}">
+	<div class="reading-toc-title label-medium" onclick="reading.goToIndex({{page}})">
+		{{#if image}}<img class="ri-sha-{{image.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' image.thumbnail}}">{{/if}}
+		<div>{{name}}</div>
+	</div>
+	{{#if subitems}}
+	<div class="reading-toc-subitems">
+		{{> reading.content.left.ebook.subitems.html}}
+	</div>
+	{{/if}}
+	{{#each pages}}
+	<div class="reading-toc-page label-large" onclick="reading.goToIndex({{page}})">{{name}}</div>
+	{{/each}}
+</div>
+{{/each}}

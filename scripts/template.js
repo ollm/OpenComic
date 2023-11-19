@@ -62,7 +62,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 
 	if(keepScroll && keepScroll < 2)
 	{
-		let previous = document.querySelector('.content-right > div > div:last-child');
+		let previous = document.querySelector('.content-right > div:last-child > div');
 		scroll = (previous.scrollTop / (previous.scrollHeight - previous.getBoundingClientRect().height));
 	}
 
@@ -70,7 +70,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 
 	if(keepScroll)
 	{
-		let current = document.querySelector('.content-right > div > div:last-child');
+		let current = document.querySelector('.content-right > div:last-child > div');
 
 		if(keepScroll > 1)
 			current.scrollTop = keepScroll;

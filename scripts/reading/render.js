@@ -1,4 +1,9 @@
 var file = false,
+	ebook = false,
+	ebookConfigChanged = false,
+	renderType = 'canvas',
+	renderCanvas = false,
+	renderEbook = false,	
 	imagesData = {},
 	rendered = {},
 	renderedMagnifyingGlass = {},
@@ -10,12 +15,33 @@ var file = false,
 	globalZoom = false,
 	doublePage = false;
 
-async function setFile(_file, _scaleMagnifyingGlass = false)
+async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'canvas')
 {
 	if(file) file.destroy();
 
+	renderType = _renderType;
+
+	renderCanvas = (renderType == 'canvas') ? true : false;
+	renderEbook = (renderType == 'ebook') ? true : false;
+
 	file = _file;
-	if(file) await file.read(); // Try make this from cache
+	if(file && !renderEbook) await file.read(); // Try make this from cache
+
+	ebook = renderEbook ? await file.ebook() : false;
+	ebookConfigChanged = false;
+
+	rendered = {};
+	renderedMagnifyingGlass = {};
+	scale = 1;
+	scaleMagnifyingGlass = _scaleMagnifyingGlass;
+	globalZoom = false;
+
+	return;
+}
+
+async function reset(_scaleMagnifyingGlass = false)
+{
+	ebook = renderEbook ? await file.ebook() : false;
 
 	rendered = {};
 	renderedMagnifyingGlass = {};
@@ -48,6 +74,7 @@ var sendToQueueST = false;
 function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 {
 	if(!file) return;
+	if(renderEbook) return;
 
 	clearTimeout(sendToQueueST);
 
@@ -86,6 +113,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 function setScaleMagnifyingGlass(_scale = 1)
 {
 	if(!file || !scaleMagnifyingGlass) return;
+	if(renderEbook) return;
 
 	clearTimeout(sendToQueueST);
 
@@ -104,6 +132,7 @@ function setScaleMagnifyingGlass(_scale = 1)
 function resized(doublePage = false)
 {
 	if(!file) return;
+	if(renderEbook) return; // Reset function is used
 
 	clearTimeout(sendToQueueST);
 
@@ -124,6 +153,14 @@ function resized(doublePage = false)
 		}, 800);
 
 	}, 200);
+}
+
+async function setEbookConfigChanged(ebookConfig)
+{
+	ebookConfigChanged = true;
+
+	if(renderEbook && ebook)
+		ebook.updateConfig(ebookConfig);
 }
 
 async function focusIndex(index)
@@ -159,21 +196,35 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 		// Next pages
 		if(i < next && (!_rendered[nextI] || (scale !== false && _rendered[nextI] !== scale)) && imagesData[nextI])
 		{
-			queue.add('readingRender', async function() {
+			if(renderEbook) // Render ebook instantly
+			{
+				await render(nextI, scale, magnifyingGlass);
+			}
+			else
+			{
+				queue.add('readingRender', async function() {
 
-				return render(nextI, scale, magnifyingGlass);
+					return render(nextI, scale, magnifyingGlass);
 
-			});
+				});
+			}
 		}
 
 		// Prev pages
 		if(i < prev && nextI != prevI && (!_rendered[prevI] || (scale !== false && _rendered[prevI] !== scale)) && imagesData[prevI])
 		{
-			queue.add('readingRender', async function() {
+			if(renderEbook) // Render ebook instantly
+			{
+				await render(prevI, scale, magnifyingGlass);
+			}
+			else
+			{
+				queue.add('readingRender', async function() {
 
-				return render(prevI, scale, magnifyingGlass);
+					return render(prevI, scale, magnifyingGlass);
 
-			});
+				});
+			}
 		}
 	}
 
@@ -190,54 +241,85 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 	if(imageData)
 	{
-		_scale = (_scale || scale);
+		let contentRight = template._contentRight();
 
-		if(magnifyingGlass)
-			_scale = scale * scaleMagnifyingGlass;
-
-		if(magnifyingGlass)
-			renderedMagnifyingGlass[index] = _scale;
-		else
-			rendered[index] = _scale;
-
-		_scale = _scale * window.devicePixelRatio// * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
-
-		let ocImg = template._contentRight().querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img');
-		let originalCanvas = ocImg.querySelector('canvas');
-
-		if(!originalCanvas) return;
-
-		let canvas = originalCanvas.cloneNode(true);
-
-		let originalWidth = +ocImg.dataset.width;
-		let originalHeight = +ocImg.dataset.height;
-
-		let _config = {
-			width: Math.round(originalWidth * _scale),
-		};
-
-		if(_config.width > config.renderMaxWidth)
+		if(renderCanvas)
 		{
-			_config.width = config.renderMaxWidth;
-			_scale = (_config.width / originalWidth);
+			_scale = (_scale || scale);
+
+			if(magnifyingGlass)
+				_scale = scale * scaleMagnifyingGlass;
+
+			if(magnifyingGlass)
+				renderedMagnifyingGlass[index] = _scale;
+			else
+				rendered[index] = _scale;
+
+			_scale = _scale * window.devicePixelRatio// * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
+
+			let ocImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img');
+			let originalCanvas = ocImg.querySelector('canvas');
+
+			if(!originalCanvas) return;
+
+			let canvas = originalCanvas.cloneNode(true);
+
+			let originalWidth = +ocImg.dataset.width;
+			let originalHeight = +ocImg.dataset.height;
+
+			let _config = {
+				width: Math.round(originalWidth * _scale),
+			};
+
+			if(_config.width > config.renderMaxWidth)
+			{
+				_config.width = config.renderMaxWidth;
+				_scale = (_config.width / originalWidth);
+			}
+
+			let name = imageData.name;
+			name = (name && !/\.jpg$/.test(name)) ? name+'.jpg' : name;
+
+			canvas.style.transform = 'scale('+(1 / _scale)+')';
+			canvas.style.transformOrigin = 'top left';
+
+			let isRendered = false;
+
+			if(canvas && name)
+				isRendered = await file.renderCanvas(name, canvas, _config);
+
+			if(isRendered)
+			{
+				canvas.style.width = _config.width+'px';
+				canvas.style.height = Math.round(originalHeight * _scale)+'px';
+				ocImg.replaceChildren(canvas);
+			}
 		}
-
-		let name = imageData.name;
-		name = (name && !/\.jpg$/.test(name)) ? name+'.jpg' : name;
-
-		canvas.style.transform = 'scale('+(1 / _scale)+')';
-		canvas.style.transformOrigin = 'top left';
-
-		let isRendered = false;
-
-		if(canvas && name)
-			isRendered = await file.renderCanvas(name, canvas, _config);
-
-		if(isRendered)
+		else if(renderEbook)
 		{
-			canvas.style.width = _config.width+'px';
-			canvas.style.height = Math.round(originalHeight * _scale)+'px';
-			ocImg.replaceChildren(canvas);
+			rendered[index] = 1;
+			renderedMagnifyingGlass[index] = 1;
+
+			let iframe = ebook.pageToIframe(ebook.page(index - 1).html);
+			let iframeMG = iframe.cloneNode(true);
+
+			let ocImg = contentRight.querySelector('.r-img-i'+index+' oc-img');
+			let ocImgMG = contentRight.querySelector('.reading-lens .r-img-i'+index+' oc-img');
+
+			let prevIframe = ocImg.querySelector('iframe');
+			if(prevIframe) prevIframe.remove();
+
+			let prevIframeMG = ocImgMG.querySelector('iframe');
+			if(prevIframeMG) prevIframeMG.remove();
+
+			ocImg.appendChild(iframe);
+			ocImgMG.appendChild(iframeMG);
+
+			if(ebookConfigChanged)
+			{
+				ebook.applyConfigToHtml(iframe.contentDocument);
+				ebook.applyConfigToHtml(iframeMG.contentDocument);
+			}
 		}
 	}
 
@@ -246,11 +328,13 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 module.exports = {
 	setFile: setFile,
+	reset: reset,
 	setImagesData: setImagesData,
 	setMagnifyingGlassStatus: setMagnifyingGlassStatus,
 	setScale: setScale,
 	setScaleMagnifyingGlass: setScaleMagnifyingGlass,
-	//render: render,
+	render: render,
 	focusIndex: focusIndex,
 	resized: resized,
+	setEbookConfigChanged: setEbookConfigChanged,
 }

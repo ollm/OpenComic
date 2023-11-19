@@ -1,5 +1,5 @@
 {{#if comicsReadingProgress}}
-<div class="continue-reading gamepad-item body-medium" onclick="dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
+<div class="continue-reading gamepad-item body-medium" onclick="{{#if comicsReadingProgress.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgress.chapterIndex}}, {{comicsReadingProgress.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
 	<div>
 		<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
 		<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>

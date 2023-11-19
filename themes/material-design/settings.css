@@ -64,4 +64,5 @@
 {
 	margin: 19px 0px 13px;
 	display: flex;
+	flex-wrap: wrap;
 }

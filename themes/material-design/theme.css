@@ -1876,3 +1876,47 @@ cb
 {
 	background-color: rgba(0, 0, 0, 0.03);
 }
+
+.night-mode ::-webkit-scrollbar-thumb
+{
+	background-color: rgba(255, 255, 255, 0.12);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:hover
+{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:active
+{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.night-mode ::-webkit-scrollbar-thumb:window-inactive
+{
+	background-color: rgba(255, 255, 255, 0.06);
+}
+
+.night-mode .bar-right-buttons::-webkit-scrollbar-thumb,
+.night-mode .bar-title::-webkit-scrollbar-thumb
+{
+	background-color: rgba(255, 255, 255, 0.06);
+}
+
+.night-mode .bar-right-buttons::-webkit-scrollbar-thumb:hover,
+.night-mode .bar-title::-webkit-scrollbar-thumb:hover
+{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.night-mode .bar-right-buttons::-webkit-scrollbar-thumb:active,
+.night-mode .bar-title::-webkit-scrollbar-thumb:active
+{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.night-mode .bar-right-buttons::-webkit-scrollbar-thumb:window-inactive,
+.night-mode .bar-title::-webkit-scrollbar-thumb:window-inactive
+{
+	background-color: rgba(255, 255, 255, 0.03);
+}

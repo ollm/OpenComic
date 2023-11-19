@@ -641,6 +641,7 @@
         "nativeName":"тоҷикӣ, toğikī, تاجیکی‎"
     },
     "th":{
+        "active":true,
         "name":"Thai",
         "nativeName":"ไทย"
     },
@@ -658,7 +659,7 @@
     },
     "tl":{
         "name":"Tagalog",
-        "nativeName":"Wikang Tagalog, ᜏᜒᜃᜅ᜔ ᜆᜄᜎᜓᜄ᜔"
+        "nativeName":"Wikang Tagalog"
     },
     "tn":{
         "name":"Tswana",

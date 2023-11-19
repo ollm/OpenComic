@@ -29,7 +29,8 @@
 ## Features
 
 - 🖼 Support this image formats: `JPG`, `PNG`, `APNG`, `AVIF`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
-- 🗄 Support this compressed formats: `PDF`, `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
+- 🗄 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
+- 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
 - 📁 Master folders support
 - 🇯🇵 Manga read mode
 - 🇰🇷 Webtoon read mode
@@ -37,9 +38,9 @@
 - 🔖 Bookmarks and continue reading
 - 🔍 Floating magnifying glass
 - 🖱 Reading in scroll or slide
-- ⚪ Adjust the brightness, saturation, contrast, sepia and invert colors
+- ⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors
 - 🎨 Colorize black and white images
-- 🔄 Tracking with sites
+- 🔄 Tracking with sites (AniList)
 - 🎮 Gamepad navigation
 
 You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)

@@ -104,7 +104,8 @@
 {
 	transition: background-color 0.2s;
 	box-shadow: var(--md-sys-elevation-level2);
-	background-color: var(--md-sys-color-background);
+	/*background-color: var(--md-sys-color-background);*/
+	background-color: white;
 	display: block;
 	position: relative;
 }
@@ -114,6 +115,7 @@
 	position: relative;
 	z-index: 2;
 	transform-origin: top left;
+	border: 0px;
 }
 
 .reading-body .r-img.blank > div > *, .reading-lens .r-img.blank > div > *
@@ -554,4 +556,54 @@
 {
 	margin-left: 8px;
 	margin-bottom: 8px;
+}
+
+/* Ebook Toc  */
+
+.reading-toc-item .reading-toc-title,
+.reading-toc-subitem .reading-toc-title
+{
+	padding: 12px 12px;
+	cursor: pointer;
+	transition: border 0.2s, background-color 0.2s;
+	border-radius: 0px 16px 16px 0px;
+}
+
+.reading-toc-item .reading-toc-title:hover,
+.reading-toc-subitem .reading-toc-title:hover
+{
+	background-color: var(--md-sys-color-on-surface-variant-2);
+}
+
+.reading-toc-item .reading-toc-title:active,
+.reading-toc-subitem .reading-toc-title:active
+{
+	background-color: var(--md-sys-color-on-surface-variant-4);
+}
+
+.reading-toc-item .reading-toc-title.s,
+.reading-toc-subitem .reading-toc-title.s
+{
+	background-color: var(--md-sys-color-secondary-container);
+	color: var(--md-sys-color-on-secondary-container);
+}
+
+.reading-toc-subitems
+{
+	padding-left: 12px;
+	position: relative;
+}
+
+.reading-toc-subitems:after
+{
+	content: '';
+	display: block;
+	width: 2px;
+	height: 100%;
+	position: absolute;
+	left: 12px;
+	top: 0px;
+	border-radius: 2px;
+	background-color: var(--md-sys-color-outline-variant);
+	transition: 0.2s;
 }

@@ -1,4 +1,4 @@
-var changes = 57; // Update this if readingPagesConfig is updated
+var changes = 59; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -39,6 +39,7 @@ var readingPagesConfig = {
 		sepia: 0,
 		hueRotate: 0,
 		invert: false,
+		negative: false,
 		colorize: false,
 		onlyBlackAndWhite: true,
 		colorPreset: 'redAndBlueGray',
@@ -47,6 +48,24 @@ var readingPagesConfig = {
 			s: 0,
 			m: 1,
 		}],
+	},
+	readingEbook: {
+		integrated: true,
+		ratio: 1.4,
+		fontSize: 20,
+		fontFamily: '',
+		textAlign: false,
+		italic: false,
+		fontWeight: 0,
+		maxWidth: 800,
+		minMargin: 40,
+		verticalMargin: 20,
+		letterSpacing: 0,
+		wordSpacing: 0,
+		pSpacing: 4,
+		pLineHeight: 1.3,
+		lineHeight: false,
+		colorsTheme: 'app',
 	},
 };
 
@@ -83,7 +102,7 @@ var storageDefault = {
 		readingHideBarHeaderFullScreen: true,
 		readingMaxMargin: 400,
 		readingGlobalZoom: true,
-		readingMoveZoomWithMouse: true,
+		readingMoveZoomWithMouse: false,
 		readingScrollWithMouse: false,
 		readingStartReadingInFullScreen: false,
 		readingTrackingAtTheEnd: true,
@@ -153,6 +172,10 @@ var storageDefault = {
 		wildcard: [{
 			index: 0,
 			path: 'Path',
+			ebook: false,
+			progress: 0,
+			chapterIndex: 0,
+			chapterProgress: 0,
 		}]
 	},
 	readingShortcutPagesConfig: {
@@ -172,7 +195,10 @@ var storageDefault = {
 			index: 0,
 			path: 'Path',
 			lastReading: 0,
+			ebook: false,
 			progress: 0,
+			chapterIndex: 0,
+			chapterProgress: 0,
 		}
 	},
 	recentlyOpened: {

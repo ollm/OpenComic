@@ -305,6 +305,26 @@ function hasRangeReset(input, range)
 	}
 }
 
+function hasMinDisables(input, range)
+{
+	let minDisables = range.closest('.simple-slider.simple-slider-min-disables');
+
+	if(minDisables)
+	{
+		let text = dom.this(range).siblings('.simple-slider-text')._this[0].firstElementChild;
+		let value = +input.value;
+		let min = +input.getAttribute('min') || 0;
+
+		if(text)
+		{
+			if(value == min)
+				text.style.textDecoration = 'line-through';
+			else
+				text.style.textDecoration = '';
+		}
+	}
+}
+
 function resetRange(This)
 {
 	let input = dom.this(This).closest('.simple-slider-text').siblings('.range').find('input')._this[0];
@@ -325,7 +345,7 @@ function rangePosition(input, range, percent = false)
 	range.querySelector('.range-line').style.width = percent+'%';
 	range.querySelector('.range-point').style.left = percent+'%';
 
-	if(step && (max - min) / step < 60) // Only show steps if has less 60
+	if(step && (max - min) / step <= 60) // Only show steps if has less 60
 	{
 		let rangeSteps = range.querySelectorAll('.range-steps > div');
 		let len = rangeSteps.length;
@@ -371,6 +391,7 @@ function _eventRange(event, percent = false)
 
 	rangePosition(this, _range, percent);
 	hasRangeReset(this, _range);
+	hasMinDisables(this, _range);
 
 	if(step)
 	{
@@ -519,6 +540,7 @@ function eventRange(query = '')
 
 		rangePosition(input, range);
 		hasRangeReset(input, range);
+		hasMinDisables(input, range);
 	}
 }
 
@@ -717,6 +739,12 @@ function hideSelect(insideMenu = false)
 
 	if(currentSelect.menu)
 		desactiveMenu('#'+currentSelect.menu, This.firstElementChild, insideMenu);
+}
+
+function select(This)
+{
+	dom.this(This).parents('.menu-simple').find('.menu-simple-element.s', true).removeClass('s');
+	This.classList.add('s');
 }
 
 var fromGamepadMenu = false;
@@ -1046,6 +1074,7 @@ module.exports = {
 	hideHoverText: hideHoverText,
 	showSelect: showSelect,
 	hideSelect: hideSelect,
+	select: select,
 	activeMenu: activeMenu,
 	activeContextMenu: activeContextMenu,
 	desactiveMenu: desactiveMenu,

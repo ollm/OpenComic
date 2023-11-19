@@ -1,0 +1,9 @@
+<div>
+
+	{{#each fonts}}
+		<div class="menu-fonts menu-fonts--{{key}} menu-simple-element menu-simple-element-medium gamepad-item{{#if select}} s{{/if}}" onclick="reading.ebook.change('fontFamily', '{{fontFamily}}', true, false);/* events.hideSelect(true);*/events.select(this);">
+			<span style="{{#if fontFamily}}font-family: '{{fontFamily}}';{{/if}}">{{name}}</span>
+		</div>
+	{{/each}}
+
+</div>

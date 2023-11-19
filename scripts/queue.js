@@ -16,6 +16,8 @@ async function processTheQueue(key)
 			{
 				if(key == 'folderThumbnails')
 					dom.compressedError(error);
+				else
+					throw new Error(error);
 
 				console.error(error);
 			}

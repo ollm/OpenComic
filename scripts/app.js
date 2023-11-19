@@ -180,6 +180,17 @@ function rand(min = 0, max = 10000000)
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function extract(code, string, value)
+{
+	string = string.match(code);
+	return (string !== null && typeof string[value] != 'undefined') ? string[value] : '';
+}
+
+function capitalize(s)
+{
+    return s && s[0].toUpperCase() + s.slice(1);
+}
+
 function sleep(ms)
 {
 	return new Promise(function(resolve){
@@ -187,7 +198,7 @@ function sleep(ms)
 	});
 }
 
-function setImmediate(ms)
+function setImmediate()
 {
 	return new Promise(function(resolve){
 		window.setImmediate(resolve);
@@ -211,6 +222,8 @@ module.exports = {
 	touchesDiff: touchesDiff,
 	distance: distance,
 	rand: rand,
+	extract: extract,
+	capitalize: capitalize,
 	sleep: sleep,
 	setImmediate: setImmediate,
 };

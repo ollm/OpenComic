@@ -1,5 +1,6 @@
 const render = require(p.join(appDir, 'scripts/reading/render.js')),
-	filters = require(p.join(appDir, 'scripts/reading/filters.js'));
+	filters = require(p.join(appDir, 'scripts/reading/filters.js')),
+	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js'));
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
 
@@ -35,7 +36,7 @@ function calculateImagesDataWithClip()
 {
 	imagesDataClip = {};
 
-	let imageClip = _config.readingImageClip;
+	let imageClip = readingImageClip();
 	let clipVertical = (imageClip.top + imageClip.bottom) / 100;
 	let clipHorizontal = (imageClip.left + imageClip.right) / 100;
 
@@ -237,6 +238,8 @@ function addHtmlImages()
 
 			if(readingIsCanvas)
 				image.canvas = true;
+			else if(readingIsEbook)
+				image.ebook = true;
 
 			distribution.push(image);
 		}
@@ -283,10 +286,12 @@ function calcAspectRatio(first, second)
 
 function disposeImages(data = false)
 {
-	let margin = (data && typeof data.margin !== 'undefined') ? data.margin : _config.readingMargin.margin;
-	let marginHorizontal = (data && typeof data.left !== 'undefined') ? data.left : _config.readingMargin.left;
-	let marginVertical = (data && typeof data.top !== 'undefined') ? data.top : _config.readingMargin.top;
-	let marginHorizontalsHorizontal = (data && typeof data.horizontalsLeft !== 'undefined') ? data.horizontalsLeft : _config.readingHorizontalsMargin.left;
+	let _margin = readingMargin(data);
+
+	let margin = _margin.margin;
+	let marginHorizontal = _margin.left;
+	let marginVertical = _margin.top;
+	let marginHorizontalsHorizontal = readingHorizontalsMargin(data).left;
 
 	let contentRight = template._contentRight();
 	let rect = contentRight.firstElementChild.getBoundingClientRect();
@@ -307,7 +312,7 @@ function disposeImages(data = false)
 
 	let _imagesDistribution = applyMangaReading(imagesDistribution);
 
-	let imageClip = _config.readingImageClip;
+	let imageClip = readingImageClip();
 
 	let clipTop = imageClip.top / 100;
 	let clipBottom = imageClip.bottom / 100;
@@ -608,8 +613,8 @@ function calculateView()
 					let rect = image.getBoundingClientRect();
 					let scale = config.readingGlobalZoom ? scalePrevData.scale : 1;
 
-					top = rect.top + (_config.readingMargin.top * scale);
-					height = rect.height - (_config.readingMargin.top * scale);
+					top = rect.top + (readingMargin().top * scale);
+					height = rect.height - (readingMargin().top * scale);
 				}
 
 				imagesPosition[key1][key2] = (top + (height / 2)) + scrollTop;
@@ -709,35 +714,58 @@ function goToImageCL(index, animation = true, fromScroll = false)
 	if(!onReading) return;
 
 	render.focusIndex(index);
-	filters.focusIndex(index);
+	filters.focusIndex(index, readingIsEbook);
 
 	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
-
 	let contentLeft = template._contentLeft();
 
-	let leftImg = contentLeft.querySelector('.r-l-i'+index);
-	let leftScroll = leftImg.parentElement;
+	let leftScroll = contentLeft.firstElementChild;
+	let leftItem;
 
-	dom.this(contentLeft).find('.reading-left.s', true).removeClass('s');
-	leftImg.classList.add('s');
-
-	let rectImg = leftImg.getBoundingClientRect();
-	let rectScroll = leftScroll.getBoundingClientRect();
-
-	let scrollTop = (((rectImg.top + leftScroll.scrollTop) - rectScroll.top) + (rectImg.height / 2)) - (rectScroll.height / 2);
-	let scrollHeight = leftScroll.scrollHeight;
-
-	if(scrollTop > 0 && scrollTop < (scrollHeight - rectScroll.height))
+	if(readingIsEbook)
 	{
-		$(leftScroll).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
-	}
-	else if(scrollTop > 0)
-	{
-		$(leftScroll).stop(true).animate({scrollTop: (scrollHeight - rectScroll.height)+'px'}, animationDurationMS);
+		let currentPage = index;
+		let closest = 0;
+
+		for(let i = 0, len = _ebook.tocPages.length; i < len; i++)
+		{
+			if(_ebook.tocPages[i] <= index && _ebook.tocPages[i] > closest)
+				closest = _ebook.tocPages[i];
+		}
+
+		leftItem = contentLeft.querySelector('.reading-toc-page-'+closest+' .reading-toc-title');
+
+		dom.this(contentLeft).find('.reading-toc-title.s', true).removeClass('s');
+		if(leftItem) leftItem.classList.add('s');
 	}
 	else
 	{
-		$(leftScroll).stop(true).animate({scrollTop: '0px'}, animationDurationMS);
+		leftItem = contentLeft.querySelector('.r-l-i'+index);
+
+		dom.this(contentLeft).find('.reading-left.s', true).removeClass('s');
+		leftItem.classList.add('s');
+	}
+
+	if(leftItem)
+	{
+		let rectItem = leftItem.getBoundingClientRect();
+		let rectScroll = leftScroll.getBoundingClientRect();
+
+		let scrollTop = (((rectItem.top + leftScroll.scrollTop) - rectScroll.top) + (rectItem.height / 2)) - (rectScroll.height / 2);
+		let scrollHeight = leftScroll.scrollHeight;
+
+		if(scrollTop > 0 && scrollTop < (scrollHeight - rectScroll.height))
+		{
+			$(leftScroll).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+		}
+		else if(scrollTop > 0)
+		{
+			$(leftScroll).stop(true).animate({scrollTop: (scrollHeight - rectScroll.height)+'px'}, animationDurationMS);
+		}
+		else
+		{
+			$(leftScroll).stop(true).animate({scrollTop: '0px'}, animationDurationMS);
+		}
 	}
 
 	// Change header buttons
@@ -837,7 +865,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	if(((nextPrevious && currentPageStart) || !nextPrevious || end) && (readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
 	{
 		let largerImage = returnLargerImage(eIndex-1);
-		imgHeight = largerImage.height + _config.readingMargin.top;
+		imgHeight = largerImage.height + readingMargin().top;
 
 		if(imgHeight > contentHeight)
 		{
@@ -865,7 +893,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		eIndex = currentIndex;
 
 		let largerImage = returnLargerImage(eIndex-1);
-		imgHeight = largerImage.height + _config.readingMargin.top;
+		imgHeight = largerImage.height + readingMargin().top;
 
 		if(readingDirection)
 			currentPageVisibility++;
@@ -888,7 +916,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 			eIndex = index;
 
 			let largerImage = returnLargerImage(eIndex-1);
-			imgHeight = largerImage.height + _config.readingMargin.top;
+			imgHeight = largerImage.height + readingMargin().top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -930,7 +958,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		if((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && pageVisibilityIndex !== false)
 		{
-			imgHeight = largerImage.height + _config.readingMargin.top;
+			imgHeight = largerImage.height + readingMargin().top;
 
 			if(imgHeight > contentHeight)
 			{
@@ -981,6 +1009,40 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 			isBookmarkTrue = true;
 
 	});
+}
+
+// 
+var nextOpenChapterProgress = false;
+
+function setNextOpenChapterProgress(chapterIndex, chapterProgress)
+{
+	nextOpenChapterProgress = {
+		chapterIndex: chapterIndex,
+		chapterProgress: chapterProgress,
+	};
+}
+
+// Go to ebook chapter progress
+function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
+{
+	nextOpenChapterProgress = false;
+	let closest = false;
+
+	for(let i = 0, len = _ebook.chaptersPages[chapterIndex].length; i < len; i++)
+	{
+		let diff = Math.abs(_ebook.chaptersPages[chapterIndex][i].chapterProgress - chapterProgress);
+
+		if(closest === false || diff < closest.diff)
+		{
+			closest = {
+				page: _ebook.chaptersPages[chapterIndex][i],
+				diff: diff,
+			};
+		}
+	}
+
+	if(closest.page)
+		reading.goToIndex(closest.page.index + 1, animation);
 }
 
 //Go to the next comic page
@@ -1153,7 +1215,7 @@ function onScroll(event)
 			}
 		}
 
-		let imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (_config.readingMargin.top * 2);
+		let imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (readingMargin().top * 2);
 
 		let pageVisibility = Math.floor(imgHeight / rightSize.height);
 
@@ -1163,7 +1225,7 @@ function onScroll(event)
 
 		scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
 
-		currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - _config.readingMargin.top)) / scrollPart);
+		currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
 
 		if(currentIndex != selIndex + 1)
 		{
@@ -1845,7 +1907,7 @@ function getIndexImagesSize(index)
 	let len = images.length;
 
 	if(len == 1)
-		width += _config.readingMargin.left * 2;
+		width += readingMargin().left * 2;
 
 	for(let i = 0; i < len; i++)
 	{
@@ -1861,7 +1923,7 @@ function getIndexImagesSize(index)
 				width += +img.dataset.left;
 		}
 
-		let _height = +img.dataset.height + (_config.readingMargin.top * 2);
+		let _height = +img.dataset.height + (readingMargin().top * 2);
 
 		if(_height > height) height = _height;
 	}
@@ -1888,7 +1950,7 @@ function notCrossZoomLimits(x, y, scale = false)
 	let minDiff = readingViewIs('scroll') ? (originalRect.top - originalRectReadingBody.top) : 0;
 
 	let maxY = (indexSize.height * 0.5 * scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
-	let minY = (indexSize.height * -0.5 * scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + _config.readingMargin.top : 0);
+	let minY = (indexSize.height * -0.5 * scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + readingMargin().top : 0);
 
 	if(maxY < 0) maxY = 0;
 	if(minY > 0) minY = 0;
@@ -2189,11 +2251,16 @@ function resizedWindow()
 	
 	if(onReading || _onReading)
 	{
-		disposeImages();
-		calculateView();
-		stayInLine();
+		if(!readingIsEbook)
+		{
+			disposeImages();
+			calculateView();
+			stayInLine();
+		}
 
 		render.resized(_config.readingDoublePage);
+		fastUpdateEbookPages(false, true);
+		generateEbookPagesDelayed();
 	}
 
 	previousContentHeight = template.contentRight().children('div').children('div').height();
@@ -2401,7 +2468,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 1) // Set the scroll mode
 	{
@@ -2422,13 +2489,14 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 2) // Sets the margin of the pages
 	{
 		disposeImages({margin: value});
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
+		updateEbook(save);
 	}
 	else if(mode == 3) // Set width adjustment
 	{
@@ -2436,7 +2504,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
@@ -2457,7 +2525,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
@@ -2465,7 +2533,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
@@ -2473,7 +2541,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
 	{
@@ -2496,7 +2564,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
@@ -2504,6 +2572,7 @@ function changePagesView(mode, value, save)
 		stayInLine();
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: _config.readingMargin.top, bottom: _config.readingMargin.bottom, left: value, right: value});
+		updateEbook(save);
 	}
 	else if(mode == 11) // Set vertical margin of the pages
 	{
@@ -2511,6 +2580,7 @@ function changePagesView(mode, value, save)
 		stayInLine();
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: value, bottom: value, left: _config.readingMargin.left, right: _config.readingMargin.right});
+		updateEbook(save);
 	}
 	else if(mode == 12) // Add blank page at first
 	{
@@ -2518,7 +2588,7 @@ function changePagesView(mode, value, save)
 
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 13) // Set width adjustment
 	{
@@ -2531,7 +2601,7 @@ function changePagesView(mode, value, save)
 		else
 			template.globalElement('.reading-horizontals-margin').addClass('disable-pointer');
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas);
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
@@ -2539,6 +2609,7 @@ function changePagesView(mode, value, save)
 		stayInLine();
 
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: _config.readingHorizontalsMargin.top, bottom: _config.readingHorizontalsMargin.bottom, left: value, right: value});
+		updateEbook(save);
 	}
 	/*else if(mode == 15) // Set vertical margin of the horizontals pages
 	{
@@ -2551,6 +2622,8 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingImageClip', {top: _config.readingImageClip.top, bottom: _config.readingImageClip.bottom, left: value, right: value});
 
+		if(readingIsEbook) return;
+
 		addHtmlImages();
 		disposeImages();
 		calculateView();
@@ -2560,6 +2633,8 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingImageClip', {top: value, bottom: value, left: _config.readingImageClip.left, right: _config.readingImageClip.right});
 
+		if(readingIsEbook) return;
+
 		addHtmlImages();
 		disposeImages();
 		calculateView();
@@ -2568,40 +2643,63 @@ function changePagesView(mode, value, save)
 }
 
 //Change the bookmark icon
-function activeBookmark(mode)
+function activeBookmark(active = false)
 {
-	if(mode == 1)
-	{
+	if(active)
 		template.barHeader('.button-bookmark').addClass('fill').attr('hover-text', language.reading.removeBookmark);
-	}
 	else
-	{
 		template.barHeader('.button-bookmark').removeClass('fill').attr('hover-text', language.reading.addBookmark);
-	}
 }
 
-//Check if a path is a marker
-function isBookmark(path)
+//Check if a path is a bookmarks
+function isBookmark(path, _return = false)
 {
 	let i = false;
 
-	for(let key in readingCurrentBookmarks)
+	if(readingIsEbook)
 	{
-		if(readingCurrentBookmarks[key].path === path)
+		let _path = path.replace(/\?page=[0-9]+$/, '');
+		let page = app.extract(/\?page=([0-9]+)$/, path, 1);
+
+		page = _ebook.pages[page];
+
+		let min = page.chapterProgressSize == page.chapterProgress ? 0 : page.chapterProgress - (page.chapterProgressSize / 2);
+		let max = page.chapterProgress + (page.chapterProgressSize / 2);
+
+		for(let key in readingCurrentBookmarks)
 		{
-			i = key;
-			break;
+			let bookmark = readingCurrentBookmarks[key];
+
+			if(bookmark.path === _path && bookmark.chapterProgress >= min && bookmark.chapterProgress < max)
+			{
+				i = key;
+				break;
+			}
+		}
+	}
+	else
+	{
+		for(let key in readingCurrentBookmarks)
+		{
+			if(readingCurrentBookmarks[key].path === path)
+			{
+				i = key;
+				break;
+			}
 		}
 	}
 
+	if(_return)
+		return i;
+
 	if(i !== false)
 	{
-		activeBookmark(1);
+		activeBookmark(true);
 		return true;
 	}
 	else
 	{
-		activeBookmark(2);
+		activeBookmark(false);
 		return false;
 	}
 }
@@ -2615,7 +2713,7 @@ function createAndDeleteBookmark(index = false)
 	{
 		let imageBookmark = false;
 
-		var newIndex = (currentIndex - 1);
+		let newIndex = (currentIndex - 1);
 
 		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) - 1;
@@ -2646,36 +2744,46 @@ function createAndDeleteBookmark(index = false)
 
 	if(currentIndex <= contentNum && currentIndex > 0 && imageIndex)
 	{
-		var path = p.normalize(images[imageIndex].path);
+		let path = p.normalize(images[imageIndex].path);
+
+		let progress = 0;
+		let chapterProgress = 0;
+
+		if(readingIsEbook)
+		{
+			let page = _ebook.pages[imageIndex - 1];
+
+			progress = page.progress;
+			chapterProgress = page.chapterProgress;
+		}
+
+		let newBookmark = {
+			path: path.replace(/\?page=[0-9]+$/, ''),
+			index: imagesPath[path],
+			ebook: readingIsEbook,
+			progress: progress,
+			chapterProgress: chapterProgress,
+		};
 
 		if(typeof readingCurrentBookmarks !== 'undefined')
 		{
-			let i = false;
-
-			for(let key in readingCurrentBookmarks)
-			{
-				if(readingCurrentBookmarks[key].path === path)
-				{
-					i = key;
-					break;
-				}
-			}
+			let i = isBookmark(path, true);
 
 			if(i !== false)
 			{
 				readingCurrentBookmarks.splice(i, 1);
-				activeBookmark(2);
+				activeBookmark(false);
 			}
 			else
 			{
-				readingCurrentBookmarks.push({path: path, index: imagesPath[path]});
-				activeBookmark(1);
+				readingCurrentBookmarks.push(newBookmark);
+				activeBookmark(true);
 			}
 		}
 		else
 		{
-			readingCurrentBookmarks = [{path: path, index: imagesPath[path]}];
-			activeBookmark(1);
+			readingCurrentBookmarks = [newBookmark];
+			activeBookmark(true);
 		}
 
 		storage.updateVar('bookmarks', dom.indexMainPathA(), readingCurrentBookmarks);
@@ -2722,7 +2830,7 @@ function saveReadingProgress(path = false)
 		path = p.normalize(images[imageIndex].path);
 	}
 
-	let comic = false, comicIndex = 0, comics = storage.get('comics');
+	/*let comic = false, comicIndex = 0, comics = storage.get('comics');
 
 	for(let i in comics)
 	{
@@ -2732,26 +2840,43 @@ function saveReadingProgress(path = false)
 			comicIndex = i;
 			break;
 		}
+	}*/
+
+	let progress = 0;
+	let chapterIndex = 0;
+	let chapterProgress = 0;
+
+	if(readingIsEbook)
+	{
+		let imageIndex = imagesDistribution[currentIndex - 1][0].index;
+		let page = _ebook.pages[imageIndex - 1];
+
+		progress = page.progress;
+		chapterIndex = page.chapterIndex;
+		chapterProgress = page.chapterProgress;
 	}
 
 	storage.updateVar('readingProgress', mainPath, {
 		index: imagesPath[path],
-		path: path,
+		path: path.replace(/\?page=[0-9]+$/, ''),
 		lastReading: +new Date(),
-		progress: 0,
+		ebook: readingIsEbook,
+		progress: progress,
+		chapterIndex: chapterIndex,
+		chapterProgress: chapterProgress,
 	});
 
 	dom.indexPathControlUpdateLastComic(path);
 
-	if(comic && path)
+	/*if(comic && path)
 	{
-		comic.readingProgress.path = imagesPath[path];
-		comic.readingProgress.path = path;
+		comic.readingProgress.path = path.replace(/\?page=[0-9]+$/, '');
 		comic.readingProgress.lastReading = +new Date();
 		comic.readingProgress.progress = 0;
 
 		storage.updateVar('comics', comicIndex, comic);
-	}
+	}*/
+
 	return true;
 }
 
@@ -2787,6 +2912,9 @@ function loadBookmarks()
 
 			});
 
+			let name = p.basename(bookmark.path);
+			let chapterIndex = app.extract(/^([0-9]+):sortonly/, name, 1);
+
 			bookmarksPath[bookmarkDirname].push({
 				name: dom.translatePageName(decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, ''))),
 				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
@@ -2794,6 +2922,10 @@ function loadBookmarks()
 				mainPath: mainPath,
 				thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 				path: bookmark.path,
+				chapterIndex: chapterIndex,
+				ebook: bookmark.ebook,
+				progress: bookmark.progress,
+				chapterProgress: bookmark.chapterProgress,
 			});
 		}
 	}
@@ -2921,6 +3053,7 @@ function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 	handlebarsContext.editReadingShortcutPagesConfig = edit;
 
 	filters.processContext();
+	readingEbook.processContext();
 
 	let menuSimpleContent = document.querySelector('#reading-pages .menu-simple-content');
 	menuSimpleContent.innerHTML = template.load('reading.elements.menus.pages.html');
@@ -3229,6 +3362,320 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	{
 		notFound();
 	}
+}
+
+var generateEbookPagesDelayedST = false, generateEbookPagesCancel = false;
+
+function generateEbookPagesDelayed()
+{
+	if(!readingIsEbook) return;
+
+	clearTimeout(generateEbookPagesDelayedST);
+	generateEbookPagesCancel = true;
+
+	ebook.createRenders(_ebook.chaptersPages ? _ebook.chaptersPages.length : 1);
+
+	generateEbookPagesDelayedST = setTimeout(function(){
+
+		generateEbookPagesCancel = false;
+		generateEbookPages(false, true);
+
+	}, 300);
+}
+
+function readingMargin(data = false)
+{
+	if(readingIsEbook && _config.readingEbook.integrated)
+	{
+		return {
+			margin: 0,
+			top: 0,
+			bottom: 0,
+			left: 0,
+			right: 0,
+		};
+	}
+	else
+	{
+		return {
+			margin: data && data.margin !== undefined ? data.margin : _config.readingMargin.margin,
+			top: data && data.top !== undefined ? data.top : _config.readingMargin.top,
+			bottom: data && data.bottom !== undefined ? data.bottom : _config.readingMargin.bottom,
+			left: data && data.left !== undefined ? data.left : _config.readingMargin.left,
+			right: data && data.right !== undefined ? data.right : _config.readingMargin.right,
+		};
+	}
+}
+
+function readingHorizontalsMargin(data = false)
+{
+	if(readingIsEbook && _config.readingEbook.integrated)
+	{
+		return {
+			margin: 0,
+			top: 0,
+			bottom: 0,
+			left: 0,
+			right: 0,
+		};
+	}
+	else
+	{
+		return {
+			margin: data && data.horizontalsMargin !== undefined ? data.horizontalsMargin : _config.readingHorizontalsMargin.margin,
+			top: data && data.horizontalsTop !== undefined ? data.horizontalsTop : _config.readingHorizontalsMargin.top,
+			bottom: data && data.horizontalsBottom !== undefined ? data.horizontalsBottom : _config.readingHorizontalsMargin.bottom,
+			left: data && data.horizontalsLeft !== undefined ? data.horizontalsLeft : _config.readingHorizontalsMargin.left,
+			right: data && data.horizontalsRight !== undefined ? data.horizontalsRight : _config.readingHorizontalsMargin.right,
+		};
+	}
+}
+
+function readingImageClip()
+{
+	if(readingIsEbook)
+	{
+		return {
+			top: 0,
+			bottom: 0,
+			left: 0,
+			right: 0
+		};
+	}
+	else
+	{
+		return _config.readingImageClip;
+	}
+}
+
+var _ebook = false;
+
+async function getEbookConfig(configReadingEbook = false)
+{
+	configReadingEbook = configReadingEbook || _config.readingEbook;
+
+	let rect = template._contentRight().getBoundingClientRect();
+
+	let renderZone = {
+		width: (rect.width - (readingMargin().left * (_config.readingDoublePage ? 3 : 2))) / (_config.readingDoublePage ? 2 : 1),
+		height: (rect.height - (readingMargin().top * 2)),
+	};
+
+	let width = 0;
+	let height = 0;
+
+	let integratedMode = configReadingEbook.integrated;
+	let ratio = configReadingEbook.ratio;
+
+	if(!integratedMode && ratio > 0.4)
+	{
+		if(renderZone.height / renderZone.width > ratio)
+		{
+			width = renderZone.width;
+			height = renderZone.width * ratio;
+		}
+		else
+		{
+			width = renderZone.height / ratio;
+			height = renderZone.height;
+		}
+	}
+	else
+	{
+		width = renderZone.width;
+		height = renderZone.height;
+	}
+
+	let maxWidth = configReadingEbook.maxWidth;
+	let minMargin = configReadingEbook.minMargin;
+	let verticalMargin = /*readingViewIs('scroll') ? 0 : */configReadingEbook.verticalMargin;
+
+	let horizontalMargin = Math.round((width - maxWidth) / 2);
+
+	if(horizontalMargin < minMargin)
+		horizontalMargin = minMargin;
+
+	return {
+		width: width,
+		height: height,
+		colors: readingEbook.getThemeColors(configReadingEbook.colorsTheme),
+		fontFamily: configReadingEbook.fontFamily,
+		fontSize: configReadingEbook.fontSize,
+		fontWeight: configReadingEbook.fontWeight,
+		italic: configReadingEbook.italic,
+		textAlign: configReadingEbook.textAlign,
+		margin: {
+			top: verticalMargin,
+			right: horizontalMargin,
+			bottom: verticalMargin,
+			left: horizontalMargin,
+		},
+		letterSpacing: configReadingEbook.letterSpacing,
+		wordSpacing: configReadingEbook.wordSpacing,
+		pSpacing: configReadingEbook.pSpacing,
+		pLineHeight: configReadingEbook.pLineHeight,
+		lineHeight: configReadingEbook.lineHeight,
+	};
+}
+
+async function updateEbook(save)
+{
+	if(save)
+		generateEbookPagesDelayed();
+}
+
+async function fastUpdateEbookPages(readingEbook = false, resize = false)
+{
+	if(!readingIsEbook) return;
+
+	let ebookConfig = await getEbookConfig(readingEbook);
+
+	for(let index in imagesData)
+	{
+		imagesData[index].width = ebookConfig.width;
+		imagesData[index].height = ebookConfig.height;
+		imagesData[index].aspectRatio = ebookConfig.width / ebookConfig.height;
+	}
+
+	if(resize)
+	{
+		disposeImages();
+		calculateView();
+		stayInLine();
+	}
+
+	if(_ebook)
+	{
+		_ebook.updateConfig(ebookConfig);
+		render.setEbookConfigChanged(ebookConfig);
+
+		let iframes = template._contentRight().querySelectorAll('oc-img iframe');
+
+		for(let i = 0, len = iframes.length; i < len; i++)
+		{
+			let iframe = iframes[i];
+			await _ebook.applyConfigToHtml(iframe.contentDocument);
+		}
+	}
+}
+
+var hasGenerateEbookPages = false;
+
+async function generateEbookPages(end = false, reset = false, fast = false, imagePath = false)
+{
+	// Avoid running multiple times at the same time
+	if(hasGenerateEbookPages)
+	{
+		hasGenerateEbookPages = 1;
+
+		return;
+	}
+	else if(!nextOpenChapterProgress && imagesDistribution && imagesDistribution[0] && !imagePath)
+	{
+		let imageIndex = imagesDistribution[currentIndex - 1][0].index;
+		let page = _ebook.pages[imageIndex - 1];
+
+		let chapterIndex = page.chapterIndex;
+		let chapterProgress = page.chapterProgress;
+
+		setNextOpenChapterProgress(chapterIndex, chapterProgress);
+	}
+
+	hasGenerateEbookPages = true;
+
+	let ebookConfig = await getEbookConfig();
+
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0;
+
+	let ebookPages = await readingFile.ebookPages(ebookConfig);
+
+	if(hasGenerateEbookPages === 1) // Priorize last generateEbookPages request
+	{
+		hasGenerateEbookPages = false;
+		generateEbookPages(end, reset, fast);
+	}
+	else if(!generateEbookPagesCancel)
+	{
+		let comics = [];
+
+		for(let i = 0, len = ebookPages.pages.length; i < len; i++)
+		{
+			let page = ebookPages.pages[i];
+			let index = i + 1;
+			let path = page.path+'?page='+i;
+
+			images[index] = {index: index, path: path};
+			imagesPath[path] = index;
+
+			imagesData[index] = {width: ebookConfig.width, height: ebookConfig.height, aspectRatio: (ebookConfig.width / ebookConfig.height), name: page.name};
+
+			comics.push({
+				index: i + 1,
+				sha: sha1(path),
+				name: ''.replace(/\.[^\.]*$/, ''),
+				image: '',
+				path: path,
+				mainPath: '', // mainPath,
+				size: false,
+				canvas: false,
+				ebook: true,
+				folder: false,
+			});
+		}
+
+		_ebook = await readingFile.ebook();
+
+		if(reset)
+			await render.reset();
+		else
+			await render.setFile(readingFile, false, 'ebook');
+
+		render.setImagesData(imagesData);
+		filters.setImagesPath(imagesPath, readingCurrentPath);
+
+		setCurrentComics(comics);
+
+		imagesNum = contentNum = ebookPages.pages.length;
+
+		template.contentRight('.reading-body').css('display', 'block');
+
+		addHtmlImages();
+		disposeImages();
+		calculateView();
+
+		handlebarsContext.ebookLandmarks = ebookPages.landmarks;
+		handlebarsContext.ebookToc = ebookPages.toc;
+		template.loadContentLeft('reading.content.left.ebook.html', true);
+
+		// await render.render(currentIndex);
+
+		if(imagePath)
+		{
+			let imageName = p.basename(imagePath);
+			let chapterIndex = app.extract(/^([0-9]+):sortonly/, imageName, 1);
+
+			currentIndex = _ebook.chaptersPagesInfo[chapterIndex].startPage + 1;
+		}
+
+		currentIndex = imagesData[currentIndex].position + 1;
+
+		let newIndex = currentIndex;
+
+		if(_config.readingManga && !readingViewIs('scroll'))
+			newIndex = (indexNum - newIndex) + 1;
+
+		if(nextOpenChapterProgress)
+			goToChapterProgress(nextOpenChapterProgress.chapterIndex, nextOpenChapterProgress.chapterProgress, false);
+		else
+			goToIndex(newIndex, false, end, end);
+
+		if(readingViewIs('scroll'))
+			previousContentHeight = template.contentRight().children('div').children('div').height();
+
+		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
+	}
+
+	hasGenerateEbookPages = false;
 }
 
 // Events functions
@@ -3543,10 +3990,10 @@ function mouseleave()
 	isMouseenter.document = false;
 }
 
-var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
+var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
-async function read(path, index = 1, end = false, isCanvas = false)
+async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
 {
 	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false;
 
@@ -4095,6 +4542,7 @@ async function read(path, index = 1, end = false, isCanvas = false)
 	contentNum = template.contentRight('.reading-body .r-img:not(.blank)').length;
 
 	readingIsCanvas = isCanvas;
+	readingIsEbook = isEbook;
 
 	if(isCanvas)
 	{
@@ -4138,6 +4586,11 @@ async function read(path, index = 1, end = false, isCanvas = false)
 			previousContentHeight = template.contentRight().children('div').children('div').height();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
+	}
+	else if(isEbook)
+	{
+		readingFile = fileManager.fileCompressed(path);
+		await generateEbookPages(end, false, false, imagePath);
 	}
 	else
 	{
@@ -4247,6 +4700,8 @@ module.exports = {
 	goToImage: goToImage,
 	goToFolder: goToFolder,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
+	goToChapterProgress: goToChapterProgress,
+	setNextOpenChapterProgress: setNextOpenChapterProgress,
 	goStart: goStart,
 	goPrevious: goPrevious,
 	goPrev: goPrevious,
@@ -4308,5 +4763,11 @@ module.exports = {
 	rightSize: function(){return rightSize},
 	zoomingIn: function(){return zoomingIn},
 	updateReadingPagesConfig: updateReadingPagesConfig,
+	readingFile: function(){return readingFile},
+	fastUpdateEbookPages: fastUpdateEbookPages,
+	generateEbookPagesDelayed: generateEbookPagesDelayed,
+	isEbook: function(){return readingIsEbook},
+	isCanvas: function(){return readingIsCanvas},
+	ebook: readingEbook,
 	filters: filters,
 };

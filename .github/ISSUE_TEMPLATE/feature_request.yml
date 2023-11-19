@@ -22,3 +22,9 @@ body:
     description: Add any other context about the feature here.
   validations:
     required: false
+- type: textarea
+  attributes:
+    label: Sample file
+    description: If it is related to the feature request.
+  validations:
+    required: false
