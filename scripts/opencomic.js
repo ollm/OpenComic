@@ -709,7 +709,7 @@ function showAboutWindow()
 		minWidth: 380,
 		minHeight: 260,
 		//resizable: false,
-		modal: true,
+		modal: (process.platform == 'darwin') ? false : true,
 		parent: electronRemote.getCurrentWindow(),
 		webPreferences: {
 			contextIsolation: false,

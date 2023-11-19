@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🐛 Bug Fixes
 
-- Remove button in library not showing
+- Remove button in library not showing [`24ba9ba`](https://github.com/ollm/OpenComic/commit/24ba9ba787130c8f92b098cfefefdb7d37d18549)
+- Window buttons not showing in About OpenComic (macOS only)
 
 ## [v1.0.0-beta.4](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.4) (17-10-2023)
 
