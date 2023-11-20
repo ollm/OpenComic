@@ -324,7 +324,6 @@ function setIgnoreSingleFoldersLibrary(value)
 function setWhenOpenFolderContinueReading(value)
 {
 	storage.updateVar('config', 'whenOpenFolderContinueReading', value);
-
 }
 
 function setShowFullPathLibrary(value)
@@ -372,9 +371,14 @@ function setCheckPreReleases(value)
 	storage.updateVar('config', 'checkPreReleases', value);
 }
 
+function set(key, value)
+{
+	storage.updateVar('config', key, value);
+}
 
 module.exports = {
 	start: start,
+	set: set,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
 	setMoveZoomWithMouse: setMoveZoomWithMouse,

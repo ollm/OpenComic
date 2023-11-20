@@ -1534,11 +1534,11 @@ cb
 
 .content-view-module .folder-poster
 {
-	height: calc(100% - 8px);
-	width: calc(100% - 8px);
+	height: calc(100% - 4px);
+	width: calc(100% - 4px);
 	position: absolute;
-	top: 4px;
-	left: 4px;
+	top: 2px;
+	left: 2px;
 	border-radius: 10px;
 }
 

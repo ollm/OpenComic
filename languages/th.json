@@ -177,8 +177,11 @@
 		},
 		"navigation": {
 			"main": "การนำทาง",
+			"folders": "",
+			"files": "",
 			"ignoreSingleFoldersLibrary": "ละเว้นโฟลเดอร์เดี่ยว (เปิดอัตโนมัติ)",
 			"whenOpenFolderContinueReading": "เปิดไปอ่านต่อโดยตรงแทนที่จะเป็นรายการไฟล์",
+			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "แสดงที่ตั้งแบบเต็มเมื่อเปิดห้องสมุดคอมมิกส์",
 			"showFullPathOpened": "แสดงที่ตั้งแบบเต็มเมื่อเปิดไฟล์หรือโฟลเดอร์"
 		},

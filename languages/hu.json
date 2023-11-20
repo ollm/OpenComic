@@ -177,8 +177,11 @@
 		},
 		"navigation": {
 			"main": "",
+			"folders": "",
+			"files": "",
 			"ignoreSingleFoldersLibrary": "",
 			"whenOpenFolderContinueReading": "",
+			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "",
 			"showFullPathOpened": ""
 		},

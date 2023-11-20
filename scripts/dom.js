@@ -1278,15 +1278,15 @@ async function comicContextMenu(path, fromIndex = true, folder = false, gamepad 
 		let images = await file.images(2, false, true);
 		file.destroy();
 
-		poster = !Array.isArray(images) ? images.path : false;
+		let poster = !Array.isArray(images) ? images : false;
 
-		addPoster.setAttribute('onclick', 'dom.addPoster('+(fromIndex ? 'true' : 'false')+', \''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(poster ? '\''+escapeQuotes(escapeBackSlash(poster), 'simples')+'\'' : 'false')+');');
+		addPoster.setAttribute('onclick', 'dom.addPoster('+(fromIndex ? 'true' : 'false')+', \''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(poster ? '\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\'' : 'false')+');');
 		addPoster.querySelector('span').innerHTML = poster ? language.global.contextMenu.changePoster : language.global.contextMenu.addPoster;
 
-		if(poster)
+		if(poster && !poster.fromFirstImageAsPoster)
 		{
 			deletePoster.style.display = 'block';
-			deletePoster.setAttribute('onclick', 'dom.deletePoster(\''+escapeQuotes(escapeBackSlash(poster), 'simples')+'\');');
+			deletePoster.setAttribute('onclick', 'dom.deletePoster(\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\');');
 		}
 		else
 		{

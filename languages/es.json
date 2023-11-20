@@ -177,8 +177,11 @@
 		},
 		"navigation": {
 			"main": "Navegación",
+			"folders": "Navegación (Carpetas)",
+			"files": "Navegación (Archivos)",
 			"ignoreSingleFoldersLibrary": "Ignorar carpetas individuales (Se abren automáticamente)",
 			"whenOpenFolderContinueReading": "Abrir directamente en continuar leyendo en lugar de la lista de archivos",
+			"useTheFirstImageAsPoster": "Utilizar la primera imagen como póster (Solo si no hay ninguno actualmente)",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los comics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta"
 		},

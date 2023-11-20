@@ -9,11 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Preliminary support for the `EPUB` format (Alpha) [`24b6494`](https://github.com/ollm/OpenComic/commit/24b6494c00f35dcb5fcea4f2e4cb713a8a130cd9)
+- Option to use the first image in the folder/file as a poster
 
 ##### 🐛 Bug Fixes
 
 - Remove button in library not showing [`24ba9ba`](https://github.com/ollm/OpenComic/commit/24ba9ba787130c8f92b098cfefefdb7d37d18549)
-- Window buttons not showing in About OpenComic (macOS only)
+- Window buttons not showing in About OpenComic (macOS only) [`40ae6d1`](https://github.com/ollm/OpenComic/commit/40ae6d1caa80bb404d4986af1d0853e2bbec5eed)
 
 ## [v1.0.0-beta.4](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.4) (17-10-2023)
 

@@ -177,8 +177,11 @@
 		},
 		"navigation": {
 			"main": "导航",
+			"folders": "",
+			"files": "",
 			"ignoreSingleFoldersLibrary": "忽略单个文件夹（自动打开）",
 			"whenOpenFolderContinueReading": "直接在继续阅读中打开而不是文件列表",
+			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "打开库时显示漫画完整路径",
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径"
 		},

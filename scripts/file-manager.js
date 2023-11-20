@@ -382,7 +382,8 @@ var file = function(path) {
 		let regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+(inside ? '|cover|default|folder|series|poster' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+$');
 		let poster = false;
 
-		for(let i = 0, len = files.length; i < len; i++)
+		let len = files.length
+		for(let i = 0; i < len; i++)
 		{
 			let file = files[i];
 
@@ -399,6 +400,35 @@ var file = function(path) {
 					poster = file;
 
 					break;
+				}
+			}
+		}
+
+		if(!poster && inside && len && (config.useTheFirstImageAsPosterInFolders || config.useTheFirstImageAsPosterInFiles))
+		{
+			let _containsCompressed = containsCompressed(path);
+
+			if((!_containsCompressed && config.useTheFirstImageAsPosterInFolders) || (_containsCompressed && config.useTheFirstImageAsPosterInFiles))
+			{
+				for(let i = 0; i < len; i++)
+				{
+					let file = files[i];
+
+					if(!file.folder && !file.compressed)
+					{
+						if(inArray(mime.getType(file.path), compatibleMime))
+						{
+							file.sha = sha1(file.path);
+							file.fromFirstImageAsPoster = sha1(file.path);
+							poster = file;
+
+							break;
+						}
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 		}
