@@ -497,24 +497,24 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let readingProgress = storage.get('readingProgress');
 		readingProgress = readingProgress[mainPath] || {};
 
-		let containsCompressed = fileManager.containsCompressed(path);
+		let isCompressed = fileManager.isCompressed(path);
 
 		let openContinueReading = false;
-		let openFirstImage = ((!containsCompressed && config.whenOpenFolderFirstImageOrContinueReading) || (containsCompressed && config.whenOpenFileFirstImageOrContinueReading)) ? true : false;
+		let openFirstImage = ((!isCompressed && config.whenOpenFolderFirstImageOrContinueReading) || (isCompressed && config.whenOpenFileFirstImageOrContinueReading)) ? true : false;
 
 		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !disableIgnoreSingleFolders && readingProgress && readingProgress.lastReading > 0)
 		{
 			let isParentPath = fileManager.isParentPath(path, readingProgress.path);
 
-			if((!containsCompressed && (config.whenOpenFolderContinueReading || config.whenOpenFolderFirstImageOrContinueReading)) && isParentPath)
+			if((!isCompressed && (config.whenOpenFolderContinueReading || config.whenOpenFolderFirstImageOrContinueReading)) && isParentPath)
 				openContinueReading = true;
-			else if((containsCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)) && isParentPath)
+			else if((isCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)) && isParentPath)
 				openContinueReading = true;
 		}
 
 		let file = fileManager.file(path);
 
-		if(openContinueReading)
+		if(openContinueReading && !fromGoBack && !disableIgnoreSingleFolders)
 		{
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
@@ -522,15 +522,13 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			if(readingProgress.ebook)
 				reading.setNextOpenChapterProgress(readingProgress.chapterIndex, readingProgress.chapterProgress);
 
-			console.log(readingProgress);
-
 			dom.openComic(true, readingProgress.path, mainPath, false, false, false, true);
 
 			file.destroy();
 
 			return;
 		}
-		else if(openFirstImage)
+		else if(openFirstImage && !fromGoBack && !disableIgnoreSingleFolders)
 		{
 			let first = await file.images(1);
 
@@ -559,6 +557,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			return;
 		}
+
+		console.log(indexPathControlA);
 
 		let contentRightScroll = template.contentRight().children().html(indexData.html);
 
@@ -1574,6 +1574,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	}
 
 	template.loadContentLeft('reading.content.left.html', true);
+	template._contentLeft().firstElementChild.style.height = 'calc(100% - 60px)';
 
 	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
 

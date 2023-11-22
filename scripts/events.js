@@ -294,7 +294,7 @@ function hasRangeReset(input, range)
 {
 	let sliderReset = dom.this(range).siblings('.simple-slider-text').find('.slider-reset')._this[0];
 
-	if(sliderReset)
+	if(sliderReset && sliderReset.dataset.default !== undefined)
 	{
 		let value = input.value;
 
@@ -330,6 +330,12 @@ function resetRange(This)
 	let input = dom.this(This).closest('.simple-slider-text').siblings('.range').find('input')._this[0];
 	input.value = This.dataset.default;
 	if(input) _eventRange.call(input, {type: 'change'});
+}
+
+function goRange(input, value, end = true)
+{
+	input.value = value;
+	if(input) _eventRange.call(input, {type: end ? 'change' : 'none'});
 }
 
 function rangePosition(input, range, percent = false)
@@ -403,12 +409,15 @@ function _eventRange(event, percent = false)
 			value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
 	}
 
-	let callback = hb.compile(onrange)({
-		value: value,
-		toEnd: (event.type == 'input' ? 'false' : 'true'),
-	});
+	if(event.type != 'none')
+	{
+		let callback = hb.compile(onrange)({
+			value: value,
+			toEnd: (event.type == 'input' ? 'false' : 'true'),
+		});
 
-	callbackString(callback);
+		callbackString(callback);
+	}
 
 	range.siblings('.simple-slider-text').find('span').html(value_txt);
 }
@@ -1084,4 +1093,5 @@ module.exports = {
 	closeSnackbar: closeSnackbar,
 	rangeMoveStep: rangeMoveStep,
 	resetRange: resetRange,
+	goRange: goRange,
 };

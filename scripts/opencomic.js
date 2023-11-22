@@ -905,6 +905,12 @@ hb.registerHelper('round', function(number) {
 
 });
 
+hb.registerHelper('sLength', function(value) {
+
+	return String(value).length;
+
+});
+
 hb.registerHelper('escapeQuotes', function(string) {
 
 	return escapeQuotes(string);

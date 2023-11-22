@@ -76,7 +76,7 @@
 			</div>
 
 			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
-				<div class="simple-slider-text">{{language.settings.reading.maxMargin}}<div><span>{{config.readingMaxMargin}}</span>px</div></div>
+				<div class="simple-slider-text">{{language.settings.reading.maxMargin}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="400" style="right: 70px;">undo</i><span>{{config.readingMaxMargin}}</span>px</div></div>
 				<div class="range">
 					<div class="range-position">
 						<span class="range-line" style="width: 100%"></span>
@@ -224,7 +224,7 @@
 
 
 			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
-				<div class="simple-slider-text">{{language.settings.storage.cacheMaxSize}}<div><span>{{config.cacheMaxSize}}</span>MB</div></div>
+				<div class="simple-slider-text">{{language.settings.storage.cacheMaxSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="256" style="right: 70px;">undo</i><span>{{config.cacheMaxSize}}</span>MB</div></div>
 				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.cacheMaxSizeDescription}}</span>
 				<div class="range">
 					<div class="range-position">
@@ -240,7 +240,7 @@
 
 
 			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
-				<div class="simple-slider-text">{{language.settings.storage.cacheMaxOld}}<div><span>{{config.cacheMaxOld}}</span> {{language.global.days}}</div></div>
+				<div class="simple-slider-text">{{language.settings.storage.cacheMaxOld}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="60" style="right: 76px;">undo</i><span>{{config.cacheMaxOld}}</span> {{language.global.days}}</div></div>
 				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.cacheMaxOldDescription}}</span>
 				<div class="range">
 					<div class="range-position">

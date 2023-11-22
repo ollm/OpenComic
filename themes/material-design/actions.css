@@ -1656,6 +1656,7 @@
 	border-radius: 4px;
 	background-color: var(--md-sys-color-surface-container-highest);
 	position: relative;
+	transition: background-color 0.2s;
 }
 
 .range > div > span.range-line
@@ -1663,6 +1664,7 @@
 	height: 4px;
 	border-radius: 6px;
 	background-color: var(--md-sys-color-primary);
+	transition: background-color 0.2s;
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -1718,6 +1720,18 @@
 	transform: translate(-24px, 0px);
 	display: block;
 	position: absolute;
+}
+
+.range.show-point-on-hover > div > div > div
+{
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+
+.range.show-point-on-hover:hover > div > div > div
+{
+	opacity: 1;
 }
 
 .range > div > div > div > div

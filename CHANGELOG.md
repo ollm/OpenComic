@@ -10,7 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Preliminary support for the `EPUB` format (Alpha) [`24b6494`](https://github.com/ollm/OpenComic/commit/24b6494c00f35dcb5fcea4f2e4cb713a8a130cd9)
 - Option to use the first image in the folder/file as a poster [`a5cf998`](https://github.com/ollm/OpenComic/commit/a5cf998786b17e451ce7d1a8fa24ac287779de44)
-- Option to open folder/file directly in first image or in continue reading
+- Option to open folder/file directly in first image or in continue reading [`6a20160`](https://github.com/ollm/OpenComic/commit/6a20160bcd96291c14d16d025baf7aef7ebe13c9)
+- Change page using an input range
 
 ##### 🐛 Bug Fixes
 

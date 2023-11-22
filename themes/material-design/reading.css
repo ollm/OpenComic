@@ -6,10 +6,14 @@
 	padding: 16px 16px 16px 0px;
 	cursor: pointer;
 	position: relative;
-	transition: border 0.2s, background-color 0.2s;
 	box-sizing: border-box;
 	font-size: 0px;
 	border-radius: 0px 16px 16px 0px;
+}
+
+.reading-left.transition
+{
+	transition: border 0.2s, background-color 0.2s;
 }
 
 .reading-left:hover
@@ -36,6 +40,52 @@
 	font-size: 24px;
 	display: block;
 	margin-left: calc(100% - 80px);
+}
+
+.reading-page-range
+{
+	position: absolute;
+	bottom: 50px;
+	left: 0px;
+	width: 100%;
+	height: 66px;
+	padding: 0px 16px 16px 16px;
+	box-sizing: border-box;
+	background-color: var(--md-sys-color-surface-container);
+	border-top: 1px solid var(--md-sys-color-surface-variant);
+	transition: 0.2s;
+}
+
+.reading-page-range .simple-slider
+{
+	padding: 0px;
+	margin-top: 6px;
+}
+
+.reading-page-range .simple-slider-text
+{
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row-reverse;
+	margin-bottom: 2px;
+}
+
+.reading-page-range .simple-slider-text > div > span
+{
+	position: relative;
+	z-index: 11;
+	cursor: text;
+}
+
+.reading-page-range .slider-reset
+{
+	top: -5px;
+	padding-bottom: 0px;
+}
+
+.reading-page-range .simple-slider .slider-reset.active
+{
+	z-index: 11;
 }
 
 .reading-images
@@ -565,8 +615,13 @@
 {
 	padding: 12px 12px;
 	cursor: pointer;
-	transition: border 0.2s, background-color 0.2s;
 	border-radius: 0px 16px 16px 0px;
+}
+
+.reading-toc-item .reading-toc-title.transition,
+.reading-toc-subitem .reading-toc-title.transition
+{
+	transition: border 0.2s, background-color 0.2s;
 }
 
 .reading-toc-item .reading-toc-title:hover,

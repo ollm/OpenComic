@@ -709,12 +709,15 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 }
 
 //Go to a specific comic image (Left menu)
-function goToImageCL(index, animation = true, fromScroll = false)
+function goToImageCL(index, animation = true, fromScroll = false, fromPageRange = false)
 {
 	if(!onReading) return;
 
-	render.focusIndex(index);
-	filters.focusIndex(index, readingIsEbook);
+	if(!fromPageRange)
+	{
+		render.focusIndex(index);
+		filters.focusIndex(index, readingIsEbook);
+	}
 
 	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
 	let contentLeft = template._contentLeft();
@@ -735,15 +738,28 @@ function goToImageCL(index, animation = true, fromScroll = false)
 
 		leftItem = contentLeft.querySelector('.reading-toc-page-'+closest+' .reading-toc-title');
 
-		dom.this(contentLeft).find('.reading-toc-title.s', true).removeClass('s');
-		if(leftItem) leftItem.classList.add('s');
+		if(animation)
+			dom.this(contentLeft).find('.reading-toc-title.s', true).removeClass('s');
+		else
+			dom.this(contentLeft).find('.reading-toc-title.s', true).removeClass('s', 'transition');
+
+		if(leftItem)
+		{
+			leftItem.classList.add('s');
+			if(animation) leftItem.classList.add('transition');
+		}
 	}
 	else
 	{
 		leftItem = contentLeft.querySelector('.r-l-i'+index);
 
-		dom.this(contentLeft).find('.reading-left.s', true).removeClass('s');
+		if(animation)
+			dom.this(contentLeft).find('.reading-left.s', true).removeClass('s');
+		else
+			dom.this(contentLeft).find('.reading-left.s', true).removeClass('s', 'transition');
+
 		leftItem.classList.add('s');
+		if(animation) leftItem.classList.add('transition');
 	}
 
 	if(leftItem)
@@ -756,20 +772,35 @@ function goToImageCL(index, animation = true, fromScroll = false)
 
 		if(scrollTop > 0 && scrollTop < (scrollHeight - rectScroll.height))
 		{
-			$(leftScroll).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+			if(animation)
+				$(leftScroll).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+			else
+				leftScroll.scrollTop = scrollTop;
 		}
 		else if(scrollTop > 0)
 		{
-			$(leftScroll).stop(true).animate({scrollTop: (scrollHeight - rectScroll.height)+'px'}, animationDurationMS);
+			if(animation)
+				$(leftScroll).stop(true).animate({scrollTop: (scrollHeight - rectScroll.height)+'px'}, animationDurationMS);
+			else
+				leftScroll.scrollTop = (scrollHeight - rectScroll.height);
 		}
 		else
 		{
-			$(leftScroll).stop(true).animate({scrollTop: '0px'}, animationDurationMS);
+			if(animation)
+				$(leftScroll).stop(true).animate({scrollTop: '0px'}, animationDurationMS);
+			else
+				leftScroll.scrollTop = 0;
 		}
 	}
 
+	if(!fromPageRange)
+	{
+		let input = contentLeft.querySelector('.simple-slider input');
+		if(input) events.goRange(input, index, false);
+	}
+
 	// Change header buttons
-	if(!readingViewIs('scroll') || !fromScroll)
+	if(!fromPageRange && (!readingViewIs('scroll') || !fromScroll))
 		changeHeaderButtons();
 }
 
@@ -808,6 +839,32 @@ function goToFolder(folderIndex)
 		goToIndex(newIndex);
 		goToImageCL(folderIndex, true)
 	}
+}
+
+var pageRangeHistory = [];
+
+function pageRange(page, end)
+{
+	if(!end)
+	{
+		goToImageCL(page, false, false, true);
+	}
+	else
+	{
+		template._contentLeft().querySelector('.range input').blur();
+		template._contentLeft().querySelector('.slider-reset').classList.add('active');
+		pageRangeHistory.push(currentIndex);
+		reading.goToImage(page);
+	}
+}
+
+function goBackPageRangeHistory()
+{
+	let page = pageRangeHistory.pop();
+	reading.goToImage(page);
+
+	if(pageRangeHistory.length == 0)
+		template._contentLeft().querySelector('.slider-reset').classList.remove('active');
 }
 
 //Returns the highest image
@@ -3598,7 +3655,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 	let ebookConfig = await getEbookConfig();
 
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0;
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
 
 	let ebookPages = await readingFile.ebookPages(ebookConfig);
 
@@ -3658,7 +3715,10 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		handlebarsContext.ebookLandmarks = ebookPages.landmarks;
 		handlebarsContext.ebookToc = ebookPages.toc;
+		handlebarsContext.ebookPages = imagesNum;
 		template.loadContentLeft('reading.content.left.ebook.html', true);
+		template._contentLeft().firstElementChild.style.height = 'calc(100% - 60px)';
+		events.eventRange();
 
 		// await render.render(currentIndex);
 
@@ -4010,7 +4070,7 @@ var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMousee
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false;
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [];
 
 	magnifyingGlassPosition.mode = false;
 
@@ -4728,6 +4788,8 @@ module.exports = {
 	goPrev: goPrevious,
 	goNext: goNext,
 	goEnd: goEnd,
+	pageRange: pageRange,
+	goBackPageRangeHistory: goBackPageRangeHistory,
 	leftClick: leftClick,
 	rightClick: rightClick,
 	zoomIn: zoomIn,
