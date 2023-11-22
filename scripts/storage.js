@@ -1,4 +1,4 @@
-var changes = 60; // Update this if readingPagesConfig is updated
+var changes = 61; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -112,7 +112,10 @@ var storageDefault = {
 		startOnlyFromLibrary: true,
 		startOnStartup: false,
 		ignoreSingleFoldersLibrary: true,
+		whenOpenFolderFirstImageOrContinueReading: false,
+		whenOpenFileFirstImageOrContinueReading: true,
 		whenOpenFolderContinueReading: false,
+		whenOpenFileContinueReading: false,
 		useTheFirstImageAsPosterInFolders: false,
 		useTheFirstImageAsPosterInFiles: true,
 		renderMaxWidth: 12000,

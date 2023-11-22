@@ -2137,6 +2137,14 @@ function containsCompressed(path, index = 0)
 	return false;
 }
 
+function isParentPath(parentPath, fullPath)
+{
+	if(new RegExp('^\s*'+pregQuote(parentPath)).test(fullPath))
+		return true;
+
+	return false;
+}
+
 function removePathPart(path, partToRemove)
 {
 	path = path.replace(new RegExp('^\s*'+pregQuote(partToRemove)), '');
@@ -2271,6 +2279,7 @@ module.exports = {
 	firstCompressedFile: firstCompressedFile,
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
+	isParentPath: isParentPath,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
 }

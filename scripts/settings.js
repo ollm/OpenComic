@@ -321,11 +321,6 @@ function setIgnoreSingleFoldersLibrary(value)
 	storage.updateVar('config', 'ignoreSingleFoldersLibrary', value);
 }
 
-function setWhenOpenFolderContinueReading(value)
-{
-	storage.updateVar('config', 'whenOpenFolderContinueReading', value);
-}
-
 function setShowFullPathLibrary(value)
 {
 	storage.updateVar('config', 'showFullPathLibrary', value);
@@ -373,6 +368,27 @@ function setCheckPreReleases(value)
 
 function set(key, value)
 {
+	switch (key)
+	{
+		case 'whenOpenFolderFirstImageOrContinueReading':
+
+			if(!value)
+				dom.queryAll('.settings-when-open-folder-continue-reading').removeClass('disable-pointer');
+			else
+				dom.queryAll('.settings-when-open-folder-continue-reading').addClass('disable-pointer');
+
+			break;
+
+		case 'whenOpenFileFirstImageOrContinueReading':
+
+			if(!value)
+				dom.queryAll('.settings-when-open-file-continue-reading').removeClass('disable-pointer');
+			else
+				dom.queryAll('.settings-when-open-file-continue-reading').addClass('disable-pointer');
+
+			break;
+	}
+
 	storage.updateVar('config', key, value);
 }
 
@@ -386,7 +402,6 @@ module.exports = {
 	setStartReadingInFullScreen: setStartReadingInFullScreen,
 	setTrackingAtTheEnd: setTrackingAtTheEnd,
 	setIgnoreSingleFoldersLibrary: setIgnoreSingleFoldersLibrary,
-	setWhenOpenFolderContinueReading: setWhenOpenFolderContinueReading,
 	setShowFullPathLibrary: setShowFullPathLibrary,
 	setShowFullPathOpened: setShowFullPathOpened,
 	setStartInFullScreen: setStartInFullScreen,

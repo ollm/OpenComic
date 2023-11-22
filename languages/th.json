@@ -180,6 +180,7 @@
 			"folders": "",
 			"files": "",
 			"ignoreSingleFoldersLibrary": "ละเว้นโฟลเดอร์เดี่ยว (เปิดอัตโนมัติ)",
+			"whenOpenFolderFirstImageOrContinueReading": "",
 			"whenOpenFolderContinueReading": "เปิดไปอ่านต่อโดยตรงแทนที่จะเป็นรายการไฟล์",
 			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "แสดงที่ตั้งแบบเต็มเมื่อเปิดห้องสมุดคอมมิกส์",

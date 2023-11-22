@@ -127,11 +127,12 @@ function addImageToDom(querySelector, path, animation = true)
 
 	if(animation)
 	{
-		src.addClass('a');
+		src.addClass('a', 'border');
 		cr.addClass('a');
 	}
 	else
 	{
+		src.addClass('border');
 		src.filter('.folder-poster-img').addClass('has-poster');
 	}
 }
@@ -264,22 +265,22 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 			handlebarsContext.comicsReadingProgress = false;
 		}
 
-		if(keepScroll > 1)
+		/*if(keepScroll > 1)
 			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html')).scrollTop(keepScroll);
 		else
-			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));
+			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));*/
 
 		//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
 		events.events();
 
-		return {files: pathFiles, readingProgress: readingProgress[mainPath] || {}};
+		return {files: pathFiles, readingProgress: readingProgress[mainPath] || {}, html: template.load('index.content.right.'+config.view+'.html')};
 
 	}).catch(function(error){
 
 		console.error(error);
 		dom.compressedError(error);
 
-		return {files: [], readingProgress: {}};
+		return {files: [], readingProgress: {}, html: ''};
 
 	});
 
@@ -469,7 +470,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		if(fromDeepLoad && Date.now() - fromDeepLoadNow < 300)
 		{
 			template._barHeader().firstElementChild.innerHTML = template.load('index.header.html');
-			template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
+			// template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
 		}
 		else
 		{
@@ -492,23 +493,64 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		cache.stopQueue();
 		queue.stop('folderThumbnails');
 
-		let file = fileManager.file(path);
-		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
-		file.destroy();
+		// Get comic reading progress image
+		let readingProgress = storage.get('readingProgress');
+		readingProgress = readingProgress[mainPath] || {};
 
-		if(config.whenOpenFolderContinueReading && !fromGoBack && !disableIgnoreSingleFolders && indexData.readingProgress && indexData.readingProgress.lastReading > 0)
+		let containsCompressed = fileManager.containsCompressed(path);
+
+		let openContinueReading = false;
+		let openFirstImage = ((!containsCompressed && config.whenOpenFolderFirstImageOrContinueReading) || (containsCompressed && config.whenOpenFileFirstImageOrContinueReading)) ? true : false;
+
+		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !disableIgnoreSingleFolders && readingProgress && readingProgress.lastReading > 0)
+		{
+			let isParentPath = fileManager.isParentPath(path, readingProgress.path);
+
+			if((!containsCompressed && (config.whenOpenFolderContinueReading || config.whenOpenFolderFirstImageOrContinueReading)) && isParentPath)
+				openContinueReading = true;
+			else if((containsCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)) && isParentPath)
+				openContinueReading = true;
+		}
+
+		let file = fileManager.file(path);
+
+		if(openContinueReading)
 		{
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
 
-			if(indexData.readingProgress.ebook)
-				reading.setNextOpenChapterProgress(indexData.readingProgress.chapterIndex, indexData.readingProgress.chapterProgress);
+			if(readingProgress.ebook)
+				reading.setNextOpenChapterProgress(readingProgress.chapterIndex, readingProgress.chapterProgress);
 
-			dom.openComic(true, indexData.readingProgress.path, indexData.readingProgress.mainPath, false, false, false, true);
+			console.log(readingProgress);
+
+			dom.openComic(true, readingProgress.path, mainPath, false, false, false, true);
+
+			file.destroy();
 
 			return;
 		}
-		else if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
+		else if(openFirstImage)
+		{
+			let first = await file.images(1);
+
+			if(first)
+			{
+				fromDeepLoadNow = Date.now();
+				indexPathControlA.pop();
+
+				dom.openComic(true, first.path, mainPath, false, false, false, true);
+
+				file.destroy();
+
+				return;
+			}
+		}
+		
+		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+		file.destroy();
+
+		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
 		{
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
@@ -517,6 +559,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			return;
 		}
+
+		let contentRightScroll = template.contentRight().children().html(indexData.html);
+
+		if(keepScroll > 1)
+			contentRightScroll.scrollTop(keepScroll);
 
 		cache.resumeQueue();
 		queue.resume('folderThumbnails');
@@ -1375,14 +1422,13 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	if(fromDeepLoad && Date.now() - fromDeepLoadNow < 300)
 	{
-		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
-		template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
 		template._barHeader().firstElementChild.innerHTML = template.load('reading.header.html');
 	}
 	else
 	{
-		template.loadContentLeft('reading.content.left.html', true);
-		template.loadContentRight('reading.content.right.html', true);
+		if(!template._contentRight().querySelector('.loading'))
+			template.loadContentRight('reading.content.right.html', true);
+
 		template.loadHeader('reading.header.html', true);
 	}
 
@@ -1408,7 +1454,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		{
 			await file.makeAvailable([{path: compressedFile}]);
 			isEbook = true;
-			files = [];
+			// files = [];
 		}
 		else
 		{
@@ -1500,21 +1546,34 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 			indexStart = comics[i].index;
 	}
 
+	if(isEbook)
+		comics = [];
+
 	handlebarsContext.comics = comics;
 	handlebarsContext.previousComic = skipPreviousComic;
 	handlebarsContext.nextComic = skipNextComic;
 	reading.setCurrentComics(comics);
 
+	handlebarsContext.loading = true;
+
 	if(Date.now() - now < 300)
 	{
-		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
-		template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
+		if(template._contentRight().querySelector('.loading'))
+		{
+			handlebarsContext.loading = false;
+			template._contentRight().firstElementChild.insertAdjacentHTML('beforeend', template.load('reading.content.right.html'));
+		}
+		else
+		{
+			template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
+		}
 	}
 	else
 	{
-		template.loadContentLeft('reading.content.left.html', true);
 		template.loadContentRight('reading.content.right.html', true);
 	}
+
+	template.loadContentLeft('reading.content.left.html', true);
 
 	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
 
@@ -1522,12 +1581,17 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	
 	events.events();
 
+	reading.onLoad(function(){
+
+		cache.resumeQueue();
+
+	});
+
 	reading.read(path, indexStart, end, isCanvas, isEbook, imagePath);
 	reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
 
 	generateAppMenu();
-
-	cache.resumeQueue();
+	
 	shortcuts.register('reading');
 	gamepad.updateBrowsableItems('reading-'+sha1(path));
 }

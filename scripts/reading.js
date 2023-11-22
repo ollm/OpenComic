@@ -3448,6 +3448,19 @@ function readingImageClip()
 	}
 }
 
+var onLoadCallback = false;
+
+async function isLoad()
+{
+	if(onLoadCallback) onLoadCallback();
+	onLoadCallback = false;
+}
+
+function onLoad(callback)
+{
+	onLoadCallback = callback;
+}
+
 var _ebook = false;
 
 async function getEbookConfig(configReadingEbook = false)
@@ -3673,6 +3686,8 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			previousContentHeight = template.contentRight().children('div').children('div').height();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
+
+		reading.isLoad();
 	}
 
 	hasGenerateEbookPages = false;
@@ -4586,6 +4601,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			previousContentHeight = template.contentRight().children('div').children('div').height();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
+
+		reading.isLoad();
 	}
 	else if(isEbook)
 	{
@@ -4631,6 +4648,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 						previousContentHeight = template.contentRight().children('div').children('div').height();
 
 					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
+
+					reading.isLoad();
 				}
 
 			}
@@ -4662,6 +4681,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 						previousContentHeight = template.contentRight().children('div').children('div').height();
 
 					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
+
+					reading.isLoad();
 				}
 
 			}
@@ -4768,6 +4789,8 @@ module.exports = {
 	generateEbookPagesDelayed: generateEbookPagesDelayed,
 	isEbook: function(){return readingIsEbook},
 	isCanvas: function(){return readingIsCanvas},
+	isLoad: isLoad,
+	onLoad: onLoad,
 	ebook: readingEbook,
 	filters: filters,
 };

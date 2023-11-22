@@ -32,7 +32,7 @@
 		</div>
 		{{else}}
 		<div class="v-img">
-			<picture><img class="item-image" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}"></picture>
+			<picture><img class="item-image{{#if thumbnail}} border{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}"></picture>
 		</div>
 		{{/if}}
 		<div class="v-text body-small">{{name}}</div>

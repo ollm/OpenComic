@@ -1411,11 +1411,15 @@ cb
 	display: block;
 	border-radius: 12px;
 	background-color: #fff;
-	border: 1px solid var(--md-sys-color-surface-variant);
 	overflow: hidden;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
+}
+
+.content-view-module .v-img img.border
+{
+	border: 1px solid var(--md-sys-color-surface-variant);
 }
 
 .content-view-module .v-img picture
@@ -1678,6 +1682,15 @@ cb
 .loading
 {
 
+}
+
+.loading-show-delayed
+{
+	opacity: 0;
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	animation-delay: 0.1s;
 }
 
 .loading.align

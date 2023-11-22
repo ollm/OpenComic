@@ -180,6 +180,7 @@
 			"folders": "Navegació (Carpetes)",
 			"files": "Navegació (Fitxers)",
 			"ignoreSingleFoldersLibrary": "Ignorar carpetes individuals (S'obren automàticament)",
+			"whenOpenFolderFirstImageOrContinueReading": "Obrir directament a la primera imatge o en continuar llegint en lloc de la llista de fitxers",
 			"whenOpenFolderContinueReading": "Obrir directament en continuar llegint en lloc de la llista de fitxers",
 			"useTheFirstImageAsPoster": "Utilitzar la primera imatge com a pòster (Només si no n'hi ha cap actualment)",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",

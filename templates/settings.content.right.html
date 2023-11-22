@@ -100,14 +100,6 @@
 			</div>
 
 			<div class="menu-simple-text gamepad-item">
-				<span>{{language.settings.navigation.whenOpenFolderContinueReading}}</span>
-				<div class="switch{{#if config.whenOpenFolderContinueReading}} a{{/if}}" on="settings.setWhenOpenFolderContinueReading(true)" off="settings.setWhenOpenFolderContinueReading(false)">
-					<div></div>
-					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-				</div>
-			</div>
-
-			<div class="menu-simple-text gamepad-item">
 				<span>{{language.settings.navigation.showFullPathLibrary}}</span>
 				<div class="switch{{#if config.showFullPathLibrary}} a{{/if}}" on="settings.setShowFullPathLibrary(true)" off="settings.setShowFullPathLibrary(false)">
 					<div></div>
@@ -126,6 +118,22 @@
 			<h2 class="headline-small">{{language.settings.navigation.folders}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
+				<span>{{language.settings.navigation.whenOpenFolderFirstImageOrContinueReading}}</span>
+				<div class="switch{{#if config.whenOpenFolderFirstImageOrContinueReading}} a{{/if}}" on="settings.set('whenOpenFolderFirstImageOrContinueReading', true)" off="settings.set('whenOpenFolderFirstImageOrContinueReading', false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text gamepad-item settings-when-open-folder-continue-reading{{#if config.whenOpenFolderContinueReading}} disable-pointer{{/if}}">
+				<span>{{language.settings.navigation.whenOpenFolderContinueReading}}</span>
+				<div class="switch{{#if config.whenOpenFolderContinueReading}} a{{/if}}" on="settings.set('whenOpenFolderContinueReading', true)" off="settings.set('whenOpenFolderContinueReading', false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text gamepad-item">
 				<span>{{language.settings.navigation.useTheFirstImageAsPoster}}</span>
 				<div class="switch{{#if config.useTheFirstImageAsPosterInFolders}} a{{/if}}" on="settings.set('useTheFirstImageAsPosterInFolders', true)" off="settings.set('useTheFirstImageAsPosterInFolders', false)">
 					<div></div>
@@ -134,6 +142,22 @@
 			</div>
 
 			<h2 class="headline-small">{{language.settings.navigation.files}}</h2>
+
+			<div class="menu-simple-text gamepad-item">
+				<span>{{language.settings.navigation.whenOpenFolderFirstImageOrContinueReading}}</span>
+				<div class="switch{{#if config.whenOpenFileFirstImageOrContinueReading}} a{{/if}}" on="settings.set('whenOpenFileFirstImageOrContinueReading', true)" off="settings.set('whenOpenFileFirstImageOrContinueReading', false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
+
+			<div class="menu-simple-text gamepad-item settings-when-open-file-continue-reading{{#if config.whenOpenFileFirstImageOrContinueReading}} disable-pointer{{/if}}">
+				<span>{{language.settings.navigation.whenOpenFolderContinueReading}}</span>
+				<div class="switch{{#if config.whenOpenFileContinueReading}} a{{/if}}" on="settings.set('whenOpenFileContinueReading', true)" off="settings.set('whenOpenFileContinueReading', false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
 
 			<div class="menu-simple-text gamepad-item">
 				<span>{{language.settings.navigation.useTheFirstImageAsPoster}}</span>

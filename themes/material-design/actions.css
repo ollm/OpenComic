@@ -761,6 +761,11 @@
 {
 	line-height: 44px;
 	max-width: calc(100% - 450px);
+	text-overflow: initial;
+	overflow: initial;
+	white-space: initial;
+	word-wrap: initial;
+	display: initial;
 }
 
 .menu-simple-supporting-text > span > span
