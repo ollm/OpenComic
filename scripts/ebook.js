@@ -110,7 +110,7 @@ var ebook = function(book, config = {}) {
 		])
 	};
 
-	this.allowElements = new Sanitizer().getConfiguration().allowElements;
+	this.allowElements = []; //;new Sanitizer().getConfiguration().allowElements;
 
 	this.allowElements = [...this.allowElements, ...[
 		// MathML

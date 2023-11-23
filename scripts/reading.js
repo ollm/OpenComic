@@ -2337,8 +2337,6 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 function resized()
 {
-	if(!onReading) return;
-
 	originalRect = false;
 	originalRectReadingBody = false;
 	originalRect2 = false;
@@ -3758,7 +3756,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		handlebarsContext.ebookToc = ebookPages.toc;
 		handlebarsContext.ebookPages = imagesNum;
 		template.loadContentLeft('reading.content.left.ebook.html', true);
-		template._contentLeft().firstElementChild.style.height = 'calc(100% - 60px)';
+		template._contentLeft().firstElementChild.style.height = 'calc(100% - 66px)';
 		events.eventRange();
 
 		// await render.render(currentIndex);

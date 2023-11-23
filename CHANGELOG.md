@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to use the first image in the folder/file as a poster [`a5cf998`](https://github.com/ollm/OpenComic/commit/a5cf998786b17e451ce7d1a8fa24ac287779de44)
 - Option to open folder/file directly in first image or in continue reading [`6a20160`](https://github.com/ollm/OpenComic/commit/6a20160bcd96291c14d16d025baf7aef7ebe13c9)
 - Change page using an input range [`527999c`](https://github.com/ollm/OpenComic/commit/527999ccacf16beea2387f7eef2f6cb7648fb2d5)
-- Go to page writing it in a dialog
+- Go to page writing it in a dialog [`2d7a028`](https://github.com/ollm/OpenComic/commit/2d7a02853d27752094555275e77cdc7ad2ca3771)
 
 ##### 🐛 Bug Fixes
 

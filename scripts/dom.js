@@ -522,7 +522,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			if(readingProgress.ebook)
 				reading.setNextOpenChapterProgress(readingProgress.chapterIndex, readingProgress.chapterProgress);
 
-			dom.openComic(true, readingProgress.path, mainPath, false, false, false, true);
+			dom.openComic(animation, readingProgress.path, mainPath, false, false, false, true);
 
 			file.destroy();
 
@@ -537,7 +537,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				fromDeepLoadNow = Date.now();
 				indexPathControlA.pop();
 
-				dom.openComic(true, first.path, mainPath, false, false, false, true);
+				dom.openComic(animation, first.path, mainPath, false, false, false, true);
 
 				file.destroy();
 
@@ -553,12 +553,10 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
 
-			dom.loadIndexPage(true, indexData.files[0].path, false, false, indexData.files[0].mainPath, false, false, true);
+			dom.loadIndexPage(animation, indexData.files[0].path, false, false, indexData.files[0].mainPath, false, false, true);
 
 			return;
 		}
-
-		console.log(indexPathControlA);
 
 		let contentRightScroll = template.contentRight().children().html(indexData.html);
 
@@ -876,7 +874,7 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 	{
 		indexPathControlA = [];
 
-		isFromRecentlyOpened = fromRecentlyOpened;
+		isFromRecentlyOpened = handlebarsContext.isFromRecentlyOpened = fromRecentlyOpened;
 	}
 	else
 	{
@@ -1427,9 +1425,9 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	else
 	{
 		if(!template._contentRight().querySelector('.loading'))
-			template.loadContentRight('reading.content.right.html', true);
+			template.loadContentRight('reading.content.right.html', animation);
 
-		template.loadHeader('reading.header.html', true);
+		template.loadHeader('reading.header.html', animation);
 	}
 
 	// Load files
@@ -1570,11 +1568,11 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	}
 	else
 	{
-		template.loadContentRight('reading.content.right.html', true);
+		template.loadContentRight('reading.content.right.html', animation);
 	}
 
-	template.loadContentLeft('reading.content.left.html', true);
-	template._contentLeft().firstElementChild.style.height = 'calc(100% - 60px)';
+	template.loadContentLeft('reading.content.left.html', animation);
+	template._contentLeft().firstElementChild.style.height = 'calc(100% - 66px)';
 
 	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');
 
