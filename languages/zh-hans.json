@@ -170,6 +170,7 @@
 			"main": "阅读设置",
 			"maxMargin": "最大水平和垂直边距",
 			"globalZoom": "应用全局缩放而不是逐个图片（仅在垂直阅读时）",
+			"globalZoomSlide": "",
 			"moveZoomWithMouse": "使用鼠标移动缩放（禁用通过拖放移动）",
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
 			"startReadingInFullScreen": "开始全屏阅读",

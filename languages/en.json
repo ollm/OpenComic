@@ -169,7 +169,8 @@
 		"reading": {
 			"main": "Reading preferences",
 			"maxMargin": "Maximum horizontal and vertical margin",
-			"globalZoom": "Applies a global zoom instead of image by image (Only in vertical reading)",
+			"globalZoom": "Global zoom instead of image by image (Vertical reading)",
+			"globalZoomSlide": "Global zoom instead of image by image (Slide reading)",
 			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
 			"scrollWithMouse": "Scroll by moving the cursor along the edges of the screen (Disables drag and drop scrolling)",
 			"startReadingInFullScreen": "Start reading in full screen",

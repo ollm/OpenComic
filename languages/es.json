@@ -169,10 +169,11 @@
 		"reading": {
 			"main": "Preferencias de lectura",
 			"maxMargin": "Margen horizontal y vertical máximo",
-			"globalZoom": "Aplica un zoom global en vez de imagen a imagen (Solo en lectura vertical)",
+			"globalZoom": "Zoom global en vez de imagen a imagen (Lectura vertical)",
+			"globalZoomSlide": "Zoom global en vez de imagen a imagen (Lectura horizontal)",
 			"moveZoomWithMouse": "Mover el zoom mediante el cursor (Desactiva mover mediante arrastrar y soltar)",
 			"scrollWithMouse": "Realizar desplazamiento moviendo el cursor por los bordes de la pantalla (Desactiva desplazamiento mediante arrastrar y soltar)",
-			"startReadingInFullScreen": "Empieza la lectura en pantalla completa",
+			"startReadingInFullScreen": "Empezar la lectura en pantalla completa",
 			"trackingAtTheEnd": "Seguimiento al final del capítulo/tomo"
 		},
 		"navigation": {

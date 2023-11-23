@@ -1,4 +1,4 @@
-var changes = 61; // Update this if readingPagesConfig is updated
+var changes = 62; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -102,6 +102,7 @@ var storageDefault = {
 		readingHideBarHeaderFullScreen: true,
 		readingMaxMargin: 400,
 		readingGlobalZoom: true,
+		readingGlobalZoomSlide: true,
 		readingMoveZoomWithMouse: false,
 		readingScrollWithMouse: false,
 		readingStartReadingInFullScreen: false,

@@ -942,8 +942,10 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 	let animationDurationMS = animationDurationS * 1000;
 
+	let _currentScale = currentScale;
+
 	if(currentScale != 1 && animation && !(config.readingGlobalZoom && readingViewIs('scroll')))
-		reading.resetZoom();
+		reading.resetZoom(true, false, true, true, (config.readingGlobalZoomSlide && readingViewIs('slide')));
 
 	let content = template._contentRight().firstElementChild;
 	let rect = content.getBoundingClientRect();
@@ -1094,6 +1096,13 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		goToImageCL(image.index, animation);
 
 	}, false, false, true);
+
+	if(_currentScale != 1 && config.readingGlobalZoomSlide && readingViewIs('slide'))
+	{
+		currentZoomIndex = false;
+		currentScale = _currentScale;
+		reading.applyScale(false, _currentScale, true, _currentScale > 1 ? false : true);
+	}
 
 	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
 
@@ -1611,11 +1620,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
 
-function applyScale(animation = true, scale = 1, center = false, zoomOut = false, round = true)
+function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false)
 {
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
-
-	if(round) scale = Math.round(scale * 100) / 100;
 
 	if(currentZoomIndex === false)
 	{
@@ -1813,13 +1820,30 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			translateX = withLimits.x;
 			translateY = withLimits.y;
 
-			dom.this(contentRight).find('.image-position'+currentZoomIndex, true).css({
-				transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
-				transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
-				transformOrigin: 'center center',
-				zIndex: scale == 1 ? 1 : 2,
-				// willChange: scale == 1 ? '' : 'transform',
-			});
+			let imagePosition = dom.this(contentRight).find('.image-position'+currentZoomIndex, true)
+
+			if(delayed)
+			{
+				setTimeout(function(){
+
+					imagePosition.css({
+						transition: 'transform 0s, z-index 0s',
+						transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
+						transformOrigin: 'center center',
+						zIndex: scale == 1 ? 1 : 2,
+					});
+
+				}, _config.readingViewSpeed * 1000);
+			}
+			else
+			{
+				imagePosition.css({
+					transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
+					transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
+					transformOrigin: 'center center',
+					zIndex: scale == 1 ? 1 : 2,
+				});
+			}
 
 			if(scale == 1)
 			{
@@ -1887,7 +1911,7 @@ function zoomOut(animation = true, center = false)
 
 
 // Reset zoom or show in original size if is current in 1 scale
-function resetZoom(animation = true, index = false, apply = true, center = true)
+function resetZoom(animation = true, index = false, apply = true, center = true, delayed = false)
 {
 	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 
@@ -1912,7 +1936,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true)
 				currentScale = ((image.width / width + image.height / height) / 2) / window.devicePixelRatio;
 
 				if(apply)
-					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false, false);
+					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
 
 				return;
 			}
@@ -1929,7 +1953,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true)
 		}
 		else
 		{
-			applyScale(animation, currentScale, true);
+			applyScale(animation, currentScale, true, false, delayed);
 
 			originalRect = false;
 			scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0};
@@ -4837,6 +4861,7 @@ module.exports = {
 	zoomOut: zoomOut,
 	resetZoom: resetZoom,
 	dragZoom: dragZoom,
+	fixBlurOnZoom: fixBlurOnZoom,
 	applyScale: applyScale,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
