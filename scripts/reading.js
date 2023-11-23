@@ -1097,7 +1097,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	}, false, false, true);
 
-	if(_currentScale != 1 && config.readingGlobalZoomSlide && readingViewIs('slide'))
+	if(_currentScale && _currentScale != 1 && config.readingGlobalZoomSlide && readingViewIs('slide'))
 	{
 		currentZoomIndex = false;
 		currentScale = _currentScale;
@@ -4574,7 +4574,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 								}
 							}
 						}
-						else if(touchevents.type == 'zoom')
+						else if(touchevents.type == 'zoom' && touchevents.scale)
 						{
 							currentScale = touchevents.scale;
 						}
