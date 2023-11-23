@@ -288,7 +288,8 @@
 			"readingConfigRemoveHeader": "Xóa cấu hình",
 			"readingConfigRemove": "Bạn chắc chắn muốn xóa cấu hình này?",
 			"readingNumColorsGenerate": "",
-			"readingPresetName": ""
+			"readingPresetName": "",
+			"readingGotoPage": ""
 		},
 		"release": {
 			"title": "",

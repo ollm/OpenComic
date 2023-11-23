@@ -157,6 +157,7 @@
 				"application/pdf",
 				"application/x-bzpdf",
 				"application/x-gzpdf",
+				"application/epub+zip",
 				"text/directory",
 				"inode/directory",
 				"application/x-directory"
@@ -222,6 +223,11 @@
 			{
 				"description": "PDF Document",
 				"ext": "pdf",
+				"role": "Viewer"
+			},
+			{
+				"description": "EPUB ebook format",
+				"ext": "epub",
 				"role": "Viewer"
 			}
 		]

@@ -1580,7 +1580,7 @@
 	display: block;
 }
 
-.simple-slider-text > div
+.simple-slider-text > div:not(.range-percent)
 {
 	float: right;
 	color: #666;
@@ -1638,6 +1638,15 @@
 {
 	transform: scale(1);
 	z-index: 2;
+}
+
+.simple-slider .range-percent .slider-reset
+{
+	position: relative;
+	margin-top: -4px;
+	padding-top: 0px;
+	top: 6px;
+	right: 0px;
 }
 
 .range

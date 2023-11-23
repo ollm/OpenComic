@@ -288,7 +288,8 @@
 			"readingConfigRemoveHeader": "Удалить конфигурацию",
 			"readingConfigRemove": "Вы уверены, что хотите удалить эту конфигурацию?",
 			"readingNumColorsGenerate": "",
-			"readingPresetName": ""
+			"readingPresetName": "",
+			"readingGotoPage": ""
 		},
 		"release": {
 			"title": "",

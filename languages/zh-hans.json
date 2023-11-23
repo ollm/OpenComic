@@ -288,7 +288,8 @@
 			"readingConfigRemoveHeader": "删除配置",
 			"readingConfigRemove": "您确定要删除此配置吗？",
 			"readingNumColorsGenerate": "要生成的颜色数量",
-			"readingPresetName": "预设名称"
+			"readingPresetName": "预设名称",
+			"readingGotoPage": ""
 		},
 		"release": {
 			"title": "新版本可用<b>{{releaseName}}</b>",

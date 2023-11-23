@@ -10,7 +10,7 @@
 {{/each}}
 <div class="reading-page-range">
 	<div class="simple-slider">
-		<div class="simple-slider-text">{{comics.length}}<div><i class="material-icon slider-reset" onclick="reading.goBackPageRangeHistory(this)" style="right: calc(4px + {{sLength comics.length}} * 4px);">undo</i><span onclick="reading.goPageDialog()">1</span></div></div>
+		<div class="simple-slider-text"><div class="range-percent"><i class="material-icon slider-reset" onclick="reading.goBackPageRangeHistory(this)">undo</i><span onclick="reading.goPageDialog()">0%</span></div><div onclick="reading.goPageDialog()"><span>1</span> / {{comics.length}}</div></div>
 		<div class="range show-point-on-hover">
 			<div class="range-position">
 				<span class="range-line" style="width: 100%"></span>

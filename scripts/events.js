@@ -380,33 +380,31 @@ function rangePosition(input, range, percent = false)
 			range.querySelector('.range-steps').innerHTML = steps;
 		}
 	}
+
+	return percent;
 }
 
 function _eventRange(event, percent = false)
 {
-	let range = $(this).closest('.range');
-
+	let range = this.closest('.range');
 	let onrange = this.getAttribute('onrange');
 
 	let value;
-	let value_txt = value = this.value;
+	let text = value = this.value;
 
 	let step = this.getAttribute('step');
 
-	let _range = range.get(0);
-
-	rangePosition(this, _range, percent);
-	hasRangeReset(this, _range);
-	hasMinDisables(this, _range);
+	percent = rangePosition(this, range, percent);
+	hasRangeReset(this, range);
+	hasMinDisables(this, range);
 
 	if(step)
 	{
-		let num_v = value_txt.replace(/.*?(\.|$)/, '').length;
+		let num = text.replace(/.*?(\.|$)/, '').length;
+		let steps = step.replace(/.*?(\.|$)/, '').length;
 
-		let num_s = step.replace(/.*?(\.|$)/, '').length;
-
-		if(num_s != 0)
-			value_txt = value_txt+(value_txt.match(/\./) ? '' : '.')+('0'.repeat(num_s - num_v));
+		if(steps != 0)
+			text = text+(text.match(/\./) ? '' : '.')+('0'.repeat(steps - num));
 	}
 
 	if(event.type != 'none')
@@ -419,7 +417,11 @@ function _eventRange(event, percent = false)
 		callbackString(callback);
 	}
 
-	range.siblings('.simple-slider-text').find('span').html(value_txt);
+	let simpleSliderText = dom.this(range).siblings('.simple-slider-text')._this[0];
+	simpleSliderText.querySelector('div:not(.range-percent) > span').innerHTML = text;
+
+	let rangePercent = simpleSliderText.querySelector('.range-percent > span');
+	if(rangePercent) rangePercent.innerHTML = Math.round(percent)+'%';
 }
 
 function rangeStart(event)

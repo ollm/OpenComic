@@ -288,7 +288,8 @@
 			"readingConfigRemoveHeader": "Remove configuration",
 			"readingConfigRemove": "Are you sure you want to remove this configuration?",
 			"readingNumColorsGenerate": "Number of colors to generate",
-			"readingPresetName": "Preset name"
+			"readingPresetName": "Preset name",
+			"readingGotoPage": "Go to page"
 		},
 		"release": {
 			"title": "New version available <b>{{releaseName}}</b>",

@@ -841,6 +841,15 @@ function goToFolder(folderIndex)
 	}
 }
 
+//Go to a specific page
+function goToPage(page)
+{
+	if(typeof imagesData[page] !== 'undefined')
+		goToImage(page);
+	else
+		goToFolder(page);
+}
+
 var pageRangeHistory = [];
 
 function pageRange(page, end)
@@ -854,17 +863,47 @@ function pageRange(page, end)
 		template._contentLeft().querySelector('.range input').blur();
 		template._contentLeft().querySelector('.slider-reset').classList.add('active');
 		pageRangeHistory.push(currentIndex);
-		reading.goToImage(page);
+		reading.goToPage(page);
 	}
 }
 
 function goBackPageRangeHistory()
 {
 	let page = pageRangeHistory.pop();
-	reading.goToImage(page);
+	reading.goToPage(page);
 
 	if(pageRangeHistory.length == 0)
 		template._contentLeft().querySelector('.slider-reset').classList.remove('active');
+}
+
+function goPageDialog(go = false)
+{
+	if(go)
+	{
+		let input = document.querySelector('.input-goto-page');
+		reading.goToPage(input.value);
+	}
+	else
+	{
+		handlebarsContext.currentIndex = currentIndex;
+
+		events.dialog({
+			header: language.dialog.pages.readingGotoPage,
+			width: 400,
+			height: false,
+			content: template.load('dialog.pages.reading.goto.page.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.menu.goto.main,
+					function: 'events.closeDialog(); reading.goPageDialog(true);',
+				}
+			],
+		});
+	}
 }
 
 //Returns the highest image
@@ -1002,7 +1041,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	if(readingViewIs('slide'))
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-			'transition': animationDurationS+'s',
+			'transition': 'transform '+animationDurationS+'s',
 			'transform': 'translate(-'+(contentWidth * (eIndex - 1))+'px, 0)',
 		});
 	}
@@ -2296,8 +2335,10 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 	//calculateView();
 }
 
-function resizedWindow()
+function resized()
 {
+	if(!onReading) return;
+
 	originalRect = false;
 	originalRectReadingBody = false;
 	originalRect2 = false;
@@ -2380,7 +2421,7 @@ function hideContent(fullScreen = false, first = false)
 	}
 
 	if(!first && onReading)
-		resizedWindow();
+		resized();
 }
 
 function hideBarHeader(value = null)
@@ -4090,7 +4131,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	goToImageCL(index, false);
 
-	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click resize');
+	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click');
 	template.contentRight().off('mousewheel');
 	$('.reading-body, .reading-lens').off('mousemove');
 	$('.reading-lens').off('mousemove');
@@ -4602,7 +4643,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	})
 
-	$(window).on('resize', resizedWindow);
+	app.event(window, 'resize', resized);
 
 	$(window).on('mousewheel touchstart', function(e) {
 
@@ -4778,6 +4819,7 @@ module.exports = {
 	imagesData: function(){return imagesData},
 	imagesDataClip: function(){return imagesDataClip},
 	scalePrevData: function(){return scalePrevData},
+	goToPage: goToPage,
 	goToImage: goToImage,
 	goToFolder: goToFolder,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
@@ -4790,6 +4832,7 @@ module.exports = {
 	goEnd: goEnd,
 	pageRange: pageRange,
 	goBackPageRangeHistory: goBackPageRangeHistory,
+	goPageDialog: goPageDialog,
 	leftClick: leftClick,
 	rightClick: rightClick,
 	zoomIn: zoomIn,

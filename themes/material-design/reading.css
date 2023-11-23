@@ -70,6 +70,7 @@
 	margin-bottom: 2px;
 }
 
+.reading-page-range .simple-slider-text > div:not(.range-percent),
 .reading-page-range .simple-slider-text > div > span
 {
 	position: relative;

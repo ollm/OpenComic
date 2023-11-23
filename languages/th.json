@@ -288,7 +288,8 @@
 			"readingConfigRemoveHeader": "นำการกำหนดค่าออก",
 			"readingConfigRemove": "คุณต้องการนำการกำหนดค่านี้ออกหรือไม่?",
 			"readingNumColorsGenerate": "จำนวนสีที่จะสร้าง",
-			"readingPresetName": "ชื่อการตั้งค่า"
+			"readingPresetName": "ชื่อการตั้งค่า",
+			"readingGotoPage": ""
 		},
 		"release": {
 			"title": "มีเวอร์ชั่นใหม่พร้อมใช้งาน <b>{{releaseName}}</b>",

@@ -288,7 +288,8 @@
 			"readingConfigRemoveHeader": "Odstranit nastavení",
 			"readingConfigRemove": "Opravdu chcete toto nastavení odstranit?",
 			"readingNumColorsGenerate": "",
-			"readingPresetName": ""
+			"readingPresetName": "",
+			"readingGotoPage": ""
 		},
 		"release": {
 			"title": "",
