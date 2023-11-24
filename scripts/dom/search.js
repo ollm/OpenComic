@@ -359,6 +359,7 @@ function setResults(results)
 
 	searchBarResults.style.height = height+'px';
 	searchBarResults.innerHTML = template.load('search.results.html');
+	searchBarResults.dataset.height = height;
 
 	if(len > 0)
 		searchBarResults.classList.add('active');
@@ -493,6 +494,15 @@ function showHide(_filterCurrentPage = false)
 
 	clearTimeout(updateBrowsableItemsST);
 	clearTimeout(hideST);
+
+	let searchBarResults = document.querySelector('.search-bar-results');
+	let height = +searchBarResults.dataset.height;
+
+	if(height > window.innerHeight - 136 - titleBar.height())
+	{
+		height = window.innerHeight - 136 - titleBar.height();
+		searchBarResults.style.height = height+'px';
+	}
 
 	filterCurrentPage = _filterCurrentPage;
 

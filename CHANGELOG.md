@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Change page using an input range [`527999c`](https://github.com/ollm/OpenComic/commit/527999ccacf16beea2387f7eef2f6cb7648fb2d5)
 - Go to page writing it in a dialog [`2d7a028`](https://github.com/ollm/OpenComic/commit/2d7a02853d27752094555275e77cdc7ad2ca3771)
 - Global zoom in the slide reading [`da36774`](https://github.com/ollm/OpenComic/commit/da3677414846e04d9d540ad9ed79f9e66b1175a2)
-- Switch to night/light mode when the OS does it
+- Switch to night/light mode when the OS does it [`3d80403`](https://github.com/ollm/OpenComic/commit/3d804032f0766b111888878a220039711161d94b)
 
 ##### 🐛 Bug Fixes
 
