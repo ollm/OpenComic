@@ -274,7 +274,12 @@ var epub = function(path, config = {}) {
 
 	this.removeFileScheme = function(path) {
 
-		return p.normalize(path.replace(/^file:/, ''));
+		if(process.platform == 'win32' || process.platform == 'win64')
+			path = path.replace(/^file:\/*/, '');
+		else
+			path = path.replace(/^file:/, '');
+
+		return p.normalize(path);
 
 	}
 
