@@ -1482,6 +1482,7 @@
 	fill: var(--md-sys-color-on-primary);
 	d: path('M 8,-4 C 1.37,-4 -4,1.37 -4,8 -4,14.63 1.37,20 8,20 8,20 8,20 8,20 14.63,20 20,14.63 20,8 20,1.37 14.63,-4 8,-4 8,-4 8,-4 8,-4 Z');
 	transform: translate(28px, 8px);
+	transition: fill 0.2s;
 }
 
 .switch.animeOn > svg path

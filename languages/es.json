@@ -194,6 +194,9 @@
 			"startOnlyFromLibrary": "Sólo si la última lectura es de la biblioteca",
 			"startOnStartup": "Iniciar OpenComic al inicio"
 		},
+		"theme": {
+			"systemNightMode": "Cambiar al modo noche/claro cuando el sistema operativo lo haga"
+		},
 		"releases": {
 			"main": "Comprobar nuevas versiones",
 			"checkReleases": "Comprobar si existe una nueva versión al iniciar OpenComic",

@@ -194,6 +194,9 @@
 			"startOnlyFromLibrary": "",
 			"startOnStartup": ""
 		},
+		"theme": {
+			"systemNightMode": ""
+		},
 		"releases": {
 			"main": "",
 			"checkReleases": "",

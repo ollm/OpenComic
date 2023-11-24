@@ -194,6 +194,9 @@
 			"startOnlyFromLibrary": "仅当来自库的最后一次阅读时",
 			"startOnStartup": "开机启动时打开 OpenComic"
 		},
+		"theme": {
+			"systemNightMode": ""
+		},
 		"releases": {
 			"main": "检查新版本",
 			"checkReleases": "启动 OpenComic 时检查是否有新版本",

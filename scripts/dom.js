@@ -1274,19 +1274,21 @@ function selectElement(element)
 
 //Enable/Disable night mode
 
-function nightMode()
+function nightMode(force = null)
 {
-	if($('.app').hasClass('night-mode'))
+	let _app = document.querySelector('.app');
+
+	if((force === null && _app.classList.contains('night-mode')) || force === false)
 	{
-		$('.app').removeClass('night-mode');
-		$('.button-night-mode').html('light_mode');
+		_app.classList.remove('night-mode');
+		dom.queryAll('.button-night-mode').html('light_mode');
 		handlebarsContext.nightMode = false;
 		storage.updateVar('config', 'nightMode', false);
 	}
 	else
 	{
-		$('.app').addClass('night-mode');
-		$('.button-night-mode').html('dark_mode');
+		_app.classList.add('night-mode');
+		dom.queryAll('.button-night-mode').html('dark_mode');
 		handlebarsContext.nightMode = true;
 		storage.updateVar('config', 'nightMode', true);
 	}

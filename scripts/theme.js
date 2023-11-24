@@ -31,6 +31,27 @@ function setColor(color)
 	titleBar.setColors();
 }
 
+var nightMode;
+
+function _systemNightMode()
+{
+	if(config.systemNightMode)
+	{
+		if(nightMode.matches)
+			dom.nightMode(true);
+		else
+			dom.nightMode(false);
+	}
+}
+
+function systemNightMode()
+{
+	nightMode = window.matchMedia('(prefers-color-scheme: dark)');
+	nightMode.addEventListener('change', _systemNightMode);
+
+	_systemNightMode();
+}
+
 function start()
 {
 	events.events();
@@ -76,5 +97,6 @@ function start()
 
 module.exports = {
 	setColor: setColor,
+	systemNightMode: systemNightMode,
 	start: start,
 };

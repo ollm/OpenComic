@@ -288,6 +288,7 @@ window.onload = function() {
 		loadLanguage(config.language);
 
 		template.loadInQuery('body', 'body.html');
+		theme.systemNightMode();
 
 		titleBar.start();
 		titleBar.setColors();
