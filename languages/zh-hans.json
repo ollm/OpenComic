@@ -67,7 +67,7 @@
 		"pages": {
 			"main": "页面设置",
 			"pageLayout": "页面布局",
-			"ebookLayout": "",
+			"ebookLayout": "电子书布局",
 			"colorFilters": "颜色滤镜",
 			"slide": "横向翻页",
 			"scroll": "纵向翻页",
@@ -93,7 +93,7 @@
 			"contrast": "对比度",
 			"sepia": "怀旧风格",
 			"invert": "反转",
-			"negative": "",
+			"negative": "负片",
 			"hueRotate": "色调转换",
 			"tone": "色调",
 			"colorize": "着色",
@@ -106,31 +106,31 @@
 			"savedPresets": "保存预设",
 			"multipleTonePresets": "多个色调预设",
 			"oneTonePresets": "单个色调预设",
-			"integrated": "",
-			"ebookTheme": "",
-			"fontSize": "",
-			"fontFamily": "",
-			"useEbookFont": "",
-			"useEbookTheme": "",
-			"useAppTheme": "",
-			"fontWeight": "",
-			"bold": "",
-			"italic": "",
-			"textAlign": "",
-			"textCenter": "",
-			"textJustify": "",
-			"textLeft": "",
-			"textRight": "",
-			"maxWidth": "",
-			"letterSpacing": "",
-			"wordSpacing": "",
-			"paragraphSpacing": "",
-			"paragraphLineHeight": "",
-			"lineHeight": "",
-			"textColors": "",
-			"text": "",
-			"links": "",
-			"background": ""
+			"integrated": "整体",
+			"ebookTheme": "电子书主题",
+			"fontSize": "字体大小",
+			"fontFamily": "字体系列",
+			"useEbookFont": "使用电子书字体",
+			"useEbookTheme": "使用电子书主题",
+			"useAppTheme": "使用应用程序主题",
+			"fontWeight": "字体粗细",
+			"bold": "粗体",
+			"italic": "斜体",
+			"textAlign": "文本对齐",
+			"textCenter": "居中对齐",
+			"textJustify": "两端对齐",
+			"textLeft": "左对齐",
+			"textRight": "右对齐",
+			"maxWidth": "最大宽度",
+			"letterSpacing": "字母间距",
+			"wordSpacing": "字间距",
+			"paragraphSpacing": "段落间距",
+			"paragraphLineHeight": "段落行高",
+			"lineHeight": "行高",
+			"textColors": "文本颜色",
+			"text": "文本",
+			"links": "链接",
+			"background": "背景"
 		},
 		"magnifyingGlass": {
 			"main": "放大镜",
@@ -169,8 +169,8 @@
 		"reading": {
 			"main": "阅读设置",
 			"maxMargin": "最大水平和垂直边距",
-			"globalZoom": "应用全局缩放而不是逐个图片（仅在垂直阅读时）",
-			"globalZoomSlide": "",
+			"globalZoom": "全局缩放而不是逐个图片（垂直阅读）",
+			"globalZoomSlide": "全局缩放而不是逐个图片（幻灯片阅读）",
 			"moveZoomWithMouse": "使用鼠标移动缩放（禁用通过拖放移动）",
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
 			"startReadingInFullScreen": "开始全屏阅读",
@@ -178,12 +178,12 @@
 		},
 		"navigation": {
 			"main": "导航",
-			"folders": "",
-			"files": "",
+			"folders": "导航（文件夹）",
+			"files": "导航（文件）",
 			"ignoreSingleFoldersLibrary": "忽略单个文件夹（自动打开）",
-			"whenOpenFolderFirstImageOrContinueReading": "",
+			"whenOpenFolderFirstImageOrContinueReading": "直接在第一张图片或继续阅读中打开，而不是文件列表",
 			"whenOpenFolderContinueReading": "直接在继续阅读中打开而不是文件列表",
-			"useTheFirstImageAsPoster": "",
+			"useTheFirstImageAsPoster": "使用第一张图片作为海报（当前没有海报时）",
 			"showFullPathLibrary": "打开库时显示漫画完整路径",
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径"
 		},
@@ -195,7 +195,7 @@
 			"startOnStartup": "开机启动时打开 OpenComic"
 		},
 		"theme": {
-			"systemNightMode": ""
+			"systemNightMode": "当操作系统执行此操作时切换到夜间/明亮模式"
 		},
 		"releases": {
 			"main": "检查新版本",
@@ -266,7 +266,7 @@
 		"help": {
 			"main": "帮助",
 			"about": "关于 OpenComic",
-			"funding": "资金！",
+			"funding": "赞助！",
 			"bug": "报告错误"
 		}
 	},
@@ -293,7 +293,7 @@
 			"readingConfigRemove": "您确定要删除此配置吗？",
 			"readingNumColorsGenerate": "要生成的颜色数量",
 			"readingPresetName": "预设名称",
-			"readingGotoPage": ""
+			"readingGotoPage": "转到页面"
 		},
 		"release": {
 			"title": "新版本可用<b>{{releaseName}}</b>",
