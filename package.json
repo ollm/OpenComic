@@ -105,6 +105,7 @@
 			"!themes/*/templates",
 			"!templates",
 			"!images/icons",
+			"!images/screenshots",
 			"!images/icon.ico",
 			"!images/icon.png",
 			"templates/index.html",

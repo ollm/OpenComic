@@ -1,30 +1,42 @@
-## Download beta `v1.0.0-beta.5`
+## Download beta [`v1.0.0-beta.5`](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5)
+
+###### Windows
+- [.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic.Setup.1.0.0-beta.5.exe)
+- [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic.Portable.1.0.0-beta.5.exe)
+###### macOS
+- [.dmg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.dmg)
+- [.pkg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.pkg)
+- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-mac.7z)
+###### macOS Arm64
+- [arm64.dmg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.dmg)
+- [arm64.pkg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.pkg)
+- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64-mac.7z)
+###### Linux
+- [.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_amd64.deb)
+- [.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.x86_64.rpm)
+- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.7z)
+- [.snap](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_amd64.snap)
+- [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-x86_64.flatpak)
+- [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.AppImage)
+- [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
+- `snap install opencomic`
+###### Linux Arm64
+- [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_arm64.deb)
+- [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.aarch64.rpm)
+- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5-arm64.7z)
+- [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-aarch64.flatpak)
+- [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.AppImage)
+
+## Download [`v0.2.1`](https://github.com/ollm/OpenComic/releases/tag/v0.2.1)
 
 ###### All packages
-- [v1.0.0-beta.5](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5)
+- [v0.2.1](https://github.com/ollm/OpenComic/releases/tag/v0.2.1)
 
-## Download `v0.2.1`
-###### Windows
-- [.exe](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic.Setup.0.2.1.exe)
-###### macOS
-- [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1-mac-build2.7z)
-###### Linux
-- [.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_amd64.deb)
-- [.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.x86_64.rpm)
-- [.snap](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_amd64.snap)
-- [.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.7z)
-- [.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1.AppImage)
-- `snap install opencomic`
-- [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
-###### Linux Arm64
-- [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic_0.2.1_arm64.deb)
-- [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1.aarch64.rpm)
-- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v0.2.1/opencomic-0.2.1-arm64.7z)
-- [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v0.2.1/OpenComic-0.2.1-arm64.AppImage)
+## Screenshot
 
-## ScreenShot
+![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/main.png "Screenshot")
 
-![Screenshot](https://i.ibb.co/vPKbpyQ/Open-Comic-Screen-Shot.png "Screenshot")
+Here you can see more [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD)
 
 ## Features
 

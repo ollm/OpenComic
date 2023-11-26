@@ -2,6 +2,7 @@ node_modules/
 dist/
 scripts/builded
 scripts/tracking/_tracking-sites-keys.js
+images/screenshots/template.xcf
 
 # OSX
 .DS_Store
