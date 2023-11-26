@@ -5,13 +5,11 @@
 ### Colorize
 
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize.png "Colorize")
-
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize-menu.png "Colorize menu")
 
 ### eBook (Epub)
 
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ebook.png "eBook")
-
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ebook-menu.png "eBook menu")
 
 ### Settings
