@@ -1587,6 +1587,11 @@
 	color: #666;
 }
 
+.night-mode .simple-slider-text > div:not(.range-percent)
+{
+	color: #999;
+}
+
 .simple-slider-text > i
 {
 	margin-right: 8px;

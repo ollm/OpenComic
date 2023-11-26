@@ -108,7 +108,8 @@
 			"!images/icon.ico",
 			"!images/icon.png",
 			"templates/index.html",
-			"templates/about.html"
+			"templates/about.html",
+			"templates/ebook.render.html"
 		],
 		"asarUnpack": [
 			"node_modules/sharp",
