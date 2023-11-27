@@ -122,6 +122,7 @@
 		"win": {
 			"target": [
 				"nsis",
+				"appx",
 				"portable"
 			],
 			"icon": "images/icon.ico"
@@ -131,6 +132,9 @@
 			"installerIcon": "images/icon.ico",
 			"uninstallerIcon": "images/icon.ico",
 			"installerHeaderIcon": "images/icon.ico"
+		},
+		"appx": {
+			"backgroundColor": "#242a30"
 		},
 		"portable": {
 			"useZip": true
