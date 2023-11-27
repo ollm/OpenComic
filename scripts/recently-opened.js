@@ -10,6 +10,8 @@ async function reload()
 
 async function load(animation = true, content = false)
 {
+	onReading = _onReading = false;
+
 	dom.fromLibrary(false);
 	dom.indexPathControl(false, false, false, false, true);
 
