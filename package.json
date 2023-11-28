@@ -135,7 +135,12 @@
 			"installerHeaderIcon": "images/icon.ico"
 		},
 		"appx": {
-			"backgroundColor": "#242a30"
+			"identityName": "28270OleguerLlopart.OpenComic",
+			"publisher": "CN=0DD8CE42-AD4F-4E11-9D0B-8FD4FFAC5DF0",
+			"publisherDisplayName": "Oleguer Llopart",
+			"applicationId": "OleguerLlopart.OpenComic",
+			"backgroundColor": "#242a30",
+			"languages": ["en", "es", "ca", "pt-BR", "fr", "hu", "it", "de", "cs", "ru", "th", "vi", "ja", "zh-Hans", "zh-Hant"]
 		},
 		"portable": {
 			"useZip": true
