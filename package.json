@@ -105,10 +105,9 @@
 			"**/*",
 			"!themes/*/templates",
 			"!templates",
-			"!images/icons",
-			"!images/screenshots",
-			"!images/icon.ico",
-			"!images/icon.png",
+			"!images",
+			"images/logo.png",
+			"images/logo.svg",
 			"templates/index.html",
 			"templates/about.html",
 			"templates/ebook.render.html"
