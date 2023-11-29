@@ -47,3 +47,7 @@ if(!fs.existsSync(p.join(__dirname, '../scripts/builded/')))
 	fs.mkdirSync(p.join(__dirname, '../scripts/builded/'));
 
 fs.writeFileSync(p.join(__dirname, '../scripts/builded/templates.js'), templatesJs);
+
+fs.writeFileSync(p.join(__dirname, '../scripts/installed-from-store.js'), `module.exports = {
+	check: function(){return false},
+};`);

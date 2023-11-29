@@ -121,7 +121,7 @@ var storageDefault = {
 		useTheFirstImageAsPosterInFolders: false,
 		useTheFirstImageAsPosterInFiles: true,
 		renderMaxWidth: 12000,
-		checkReleases: true,
+		checkReleases: installedFromStore.check() ? false : true,
 		checkPreReleases: true,
 		lastCheckedRelease: '',
 		lastCheckedReleaseTime: 0,

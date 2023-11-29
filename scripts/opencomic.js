@@ -243,6 +243,7 @@ var compatibleSpecialExtensions = [
 //console.time('Require time 2');
 
 const app = require(p.join(appDir, 'scripts/app.js')),
+	installedFromStore = require(p.join(appDir, 'scripts/installed-from-store.js')),
 	storage = require(p.join(appDir, 'scripts/storage.js')),
 	image = require(p.join(appDir, 'scripts/image.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
