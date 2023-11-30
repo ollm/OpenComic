@@ -47,7 +47,7 @@
 		"build-appx-store": "npm run prebuild && npm run prebuild-store && electron-builder --win appx",
 		"build-portable": "npm run prebuild && electron-builder --win portable",
 		"build-mac": "npm run prebuild && electron-builder --mac 7z dmg pkg && electron-builder --arm64 --mac 7z dmg pkg",
-		"build-mac-store": "npm run prebuild && npm run prebuild-store && electron-builder --mac pkg && electron-builder --arm64 --mac pkg",
+		"build-mac-store": "npm run prebuild && npm run prebuild-store && electron-builder --universal --mac mas",
 		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
 		"build-mac-zip": "npm run prebuild && electron-builder --mac zip",
 		"build-mac-dmg": "npm run prebuild && electron-builder --mac dmg && electron-builder --arm64 --mac dmg",
@@ -96,7 +96,7 @@
 	"devDependencies": {
 		"@electron/rebuild": "^3.3.1",
 		"electron": "^25.9.6",
-		"electron-builder": "^24.6.4",
+		"electron-builder": "^24.9.1",
 		"node-abi": "^3.51.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.0.1"
@@ -150,10 +150,18 @@
 		},
 		"mac": {
 			"target": [
-				"dmg"
+				"dmg",
+				"pkg",
+				"mas"
 			],
 			"icon": "images/icon-mac.icns",
 			"category": "public.app-category.graphics-design"
+		},
+		"mas": {
+			"type": "distribution",
+			"entitlements": "build/entitlements.mas.plist",
+			"entitlementsInherit": "build/entitlements.mas.inherit.plist",
+			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2023_11.provisionprofile"
 		},
 		"linux": {
 			"target": [
