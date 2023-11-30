@@ -288,12 +288,13 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 async function reloadIndex()
 {
-	loadIndexPage(true, indexPathA, true, true, indexMainPathA);
+	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true);
+	if(indexPathA) indexPathControlA.pop();
 }
 
 var currentPath = false, currentPathScrollTop = [], fromDeepLoadNow = 0;
 
-async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, disableIgnoreSingleFolders = false, fromDeepLoad = false)
+async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromDeepLoad = false)
 {
 	onReading = _onReading = false;
 
@@ -502,7 +503,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let openContinueReading = false;
 		let openFirstImage = ((!isCompressed && config.whenOpenFolderFirstImageOrContinueReading) || (isCompressed && config.whenOpenFileFirstImageOrContinueReading)) ? true : false;
 
-		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !disableIgnoreSingleFolders && readingProgress && readingProgress.lastReading > 0)
+		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !notAutomaticBrowsing && readingProgress && readingProgress.lastReading > 0)
 		{
 			let isParentPath = fileManager.isParentPath(path, readingProgress.path);
 
@@ -514,7 +515,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		let file = fileManager.file(path);
 
-		if(openContinueReading && !fromGoBack && !disableIgnoreSingleFolders)
+		if(openContinueReading && !fromGoBack && !notAutomaticBrowsing)
 		{
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
@@ -528,7 +529,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			return;
 		}
-		else if(openFirstImage && !fromGoBack && !disableIgnoreSingleFolders)
+		else if(openFirstImage && !fromGoBack && !notAutomaticBrowsing)
 		{
 			let first = await file.images(1);
 
@@ -548,7 +549,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 		file.destroy();
 
-		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !disableIgnoreSingleFolders && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
+		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !notAutomaticBrowsing && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
 		{
 			fromDeepLoadNow = Date.now();
 			indexPathControlA.pop();
@@ -674,7 +675,7 @@ async function goNextComic(path, mainPath)
 
 	if(_nextComic)
 	{
-		dom.loadIndexPage(true, p.dirname(_nextComic), false, false, indexMainPathA);
+		dom.loadIndexPage(true, p.dirname(_nextComic), false, false, indexMainPathA, false, true);
 	}
 }
 
@@ -684,7 +685,7 @@ async function goPrevComic(path, mainPath)
 
 	if(prevComic)
 	{
-		dom.loadIndexPage(true, p.dirname(prevComic), false, false, indexMainPathA);
+		dom.loadIndexPage(true, p.dirname(prevComic), false, false, indexMainPathA, false, true);
 	}
 }
 
@@ -1194,18 +1195,9 @@ function changeView(mode, page)
 	if(changed)
 	{
 		if(page == 'recently-opened')
-		{
 			recentlyOpened.reload();
-		}
-		else if(page == 'index')
-		{
-			loadIndexPage(true, false, true, true);
-		}
 		else
-		{
-			loadIndexPage(true, indexPathA, true, true, indexMainPathA);
-			indexPathControlA.pop();
-		}
+			reloadIndex();
 	}
 }
 
@@ -1251,18 +1243,9 @@ function changeSort(type, mode, page)
 	if(changed)
 	{
 		if(page == 'recently-opened')
-		{
 			recentlyOpened.reload();
-		}
-		else if(page == 'index')
-		{
-			loadIndexPage(true, false, true, true);
-		}
 		else
-		{
-			loadIndexPage(true, indexPathA, true, true, indexMainPathA);
-			indexPathControlA.pop();
-		}
+			reloadIndex();
 	}
 }
 
@@ -1637,6 +1620,7 @@ module.exports = {
 	addPoster: addPoster,
 	deletePoster: deletePoster,
 	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
+	indexPathA: function(){return indexPathA},
 	indexMainPathA: function(){return indexMainPathA},
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,

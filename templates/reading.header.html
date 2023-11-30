@@ -2,7 +2,7 @@
 <div class="bar-title title-small" style="max-width: calc(100% - (957px + 68px));">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
-			<span class="bar-title-a" onclick="reading.saveReadingProgress(); dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', true)">{{name}}</span>
+			<span class="bar-title-a" onclick="reading.saveReadingProgress(); dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true)">{{name}}</span>
 			{{#unless last}} <i class="material-icon navegation">chevron_right</i> {{/unless}}
 		{{/each}}
 	{{else}}
