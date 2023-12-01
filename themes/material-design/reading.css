@@ -1,5 +1,10 @@
 /* Reading - Start */
 
+.reading-header-loading
+{
+	pointer-events: none;
+}
+
 .reading-left
 {
 	width: 100%;
@@ -97,8 +102,14 @@
 	background-repeat: no-repeat;
 	background-position: 50%;
 	margin-left: calc(100% - 80px);
-	transition: 0.2s border;
 	border: 1px solid var(--md-sys-color-surface-variant);
+	transition: 0.2s border;
+	opacity: 0;
+}
+
+.reading-images.show
+{
+	opacity: 1;
 }
 
 .reading-number

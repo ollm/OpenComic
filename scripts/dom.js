@@ -468,7 +468,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		headerPath(path, mainPath);
 
-		if(fromDeepLoad && Date.now() - fromDeepLoadNow < 300)
+		if(fromDeepLoad && Date.now() - fromDeepLoadNow < 200)
 		{
 			template._barHeader().firstElementChild.innerHTML = template.load('index.header.html');
 			// template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
@@ -1383,6 +1383,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		}
 	}
 
+	onReading = _onReading = true;
+
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
 	currentPath = path;
 
@@ -1403,7 +1405,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	handlebarsContext.comics = [];
 
-	if(fromDeepLoad && Date.now() - fromDeepLoadNow < 300)
+	if(fromDeepLoad && Date.now() - fromDeepLoadNow < 200)
 	{
 		template._barHeader().firstElementChild.innerHTML = template.load('reading.header.html');
 	}
@@ -1414,6 +1416,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 		template.loadHeader('reading.header.html', animation);
 	}
+
+	template.loadContentLeft('reading.content.left.html', animation);
 
 	// Load files
 	let file = fileManager.file(path);
@@ -1449,6 +1453,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	skipNextComic = await nextComic(path, mainPath);
 	skipPreviousComic = await previousComic(path, mainPath);
+
+	// The user has gone back before finishing loading
+	if(!onReading)
+		return;
 
 	if(!fromGoBack)
 		indexPathControl(imagePath, mainPath, true, fromNextAndPrev);
@@ -1539,7 +1547,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	handlebarsContext.loading = true;
 
-	if(Date.now() - now < 300)
+	if(Date.now() - now < 200)
 	{
 		if(template._contentRight().querySelector('.loading'))
 		{
@@ -1550,13 +1558,15 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		{
 			template._contentRight().firstElementChild.innerHTML = template.load('reading.content.right.html');
 		}
+
+		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
 	}
 	else
 	{
+		template.loadContentLeft('reading.content.left.html', animation);
 		template.loadContentRight('reading.content.right.html', animation);
 	}
 
-	template.loadContentLeft('reading.content.left.html', animation);
 	template._contentLeft().firstElementChild.style.height = 'calc(100% - 66px)';
 
 	if(template.globalElement('.reading-elements-menus').length == 0) template.loadGlobalElement('reading.elements.menus.html', 'menus');

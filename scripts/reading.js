@@ -3572,6 +3572,9 @@ var onLoadCallback = false;
 
 async function isLoad()
 {
+	let readingHeaderLoading = template._barHeader().querySelector('.reading-header-loading');
+	if(readingHeaderLoading) readingHeaderLoading.classList.remove('reading-header-loading');
+
 	if(onLoadCallback) onLoadCallback();
 	onLoadCallback = false;
 }
@@ -4151,7 +4154,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	else
 		readingCurrentBookmarks = undefined;
 
-	goToImageCL(index, false);
+	if(!isEbook)
+		goToImageCL(index, false);
 
 	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click');
 	template.contentRight().off('mousewheel');
@@ -4681,6 +4685,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	readingIsCanvas = isCanvas;
 	readingIsEbook = isEbook;
+
+	console.log(readingIsEbook);
 
 	if(isCanvas)
 	{
