@@ -269,9 +269,10 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
 if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 
-const macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
-
+var macosMAS = false;
 fileManager.removeTmpVector();
+
+macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
 
 //console.timeEnd('Require time 2');
 

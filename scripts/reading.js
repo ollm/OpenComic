@@ -4686,8 +4686,6 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	readingIsCanvas = isCanvas;
 	readingIsEbook = isEbook;
 
-	console.log(readingIsEbook);
-
 	if(isCanvas)
 	{
 		readingFile = fileManager.fileCompressed(path);

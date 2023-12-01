@@ -442,14 +442,25 @@ var file = function(path) {
 
 		let dirname = p.dirname(this.path);
 
-		let file = fileManager.file(dirname);
-		file.updateConfig({...this.config, ...{fastRead: true, specialFiles: true, sha: false}});
-		let files = await file.read();
+		try
+		{
+			let file = fileManager.file(dirname);
+			file.updateConfig({...this.config, ...{fastRead: true, specialFiles: true, sha: false}});
+			let files = await file.read();
 
-		let poster = this._poster(files);
+			let poster = this._poster(files);
 
-		return poster;
+			return poster;
+		}
+		catch(error)
+		{
+			console.error(error);
 
+			if(!macosMAS)
+				throw new Error(error);
+		}
+
+		return false;
 	}
 
 	this.sha = function(files) {

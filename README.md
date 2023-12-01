@@ -1,6 +1,7 @@
 ## Download beta [`v1.0.0-beta.5`](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5)
 
 ###### Windows
+- [Microsoft Store](https://apps.microsoft.com/detail/9PDCMVNFZ2KK)
 - [.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic.Setup.1.0.0-beta.5.exe)
 - [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic.Portable.1.0.0-beta.5.exe)
 ###### macOS
@@ -19,7 +20,7 @@
 - [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-x86_64.flatpak)
 - [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.AppImage)
 - [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
-- `snap install opencomic`
+- [Snap Store](https://snapcraft.io/opencomic)
 ###### Linux Arm64
 - [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_arm64.deb)
 - [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.aarch64.rpm)
