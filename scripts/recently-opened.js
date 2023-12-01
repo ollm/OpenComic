@@ -131,6 +131,9 @@ async function load(animation = true, content = false)
 		dom.floatingActionButton(false);
 	}
 
+	shortcuts.register('browse');
+	gamepad.updateBrowsableItems('recently-opened');
+
 	events.events();
 }
 
