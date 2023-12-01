@@ -77,7 +77,9 @@ function addMasterFolder()
 {
 	let dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: ['openDirectory'], filters: [{name: language.settings.masterFolders.folder}]}).then(async function (files) {
+	dialog.showOpenDialog({properties: ['openDirectory'], filters: [{name: language.settings.masterFolders.folder}], securityScopedBookmarks: macosMAS}).then(async function (files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
 
 		if(files.filePaths && files.filePaths[0])
 		{

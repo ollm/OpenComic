@@ -77,12 +77,22 @@ function handleDrop(event)
 	{
 		let type = dragAndDropFocus.dataset.type;
 
+		console.log(event.dataTransfer.files);
+
 		if(pathIsSupported(event.dataTransfer.files[0].path))
 		{
+			let files = [];
+
+			for(let i = 0, len = event.dataTransfer.files.length; i < len; i++)
+			{
+				if(pathIsSupported(event.dataTransfer.files[i].path))
+					files.push(event.dataTransfer.files[i].path);
+			}
+
 			if(type == 'add')
-				addComicsToLibrary([event.dataTransfer.files[0].path]);
+				addComicsToLibrary(files);
 			else
-				openComic(event.dataTransfer.files[0].path);
+				openComic(files[0]);
 		}
 		else
 		{

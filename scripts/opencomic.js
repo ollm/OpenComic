@@ -269,6 +269,8 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
 if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
 
+const macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
+
 fileManager.removeTmpVector();
 
 //console.timeEnd('Require time 2');
@@ -1024,7 +1026,9 @@ function openComicDialog(folders = false)
 
 	var dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}]}).then(function (files) {
+	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}], securityScopedBookmarks: macosMAS}).then(function (files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
 
 		if(files.filePaths && files.filePaths[0])
 			openComic(files.filePaths[0]);
@@ -1088,7 +1092,9 @@ function addComic(folders = false)
 
 	var dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}]}).then(function(files) {
+	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}], securityScopedBookmarks: macosMAS}).then(function(files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
 
 		addComicsToLibrary(files.filePaths);
 

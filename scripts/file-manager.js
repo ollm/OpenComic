@@ -90,6 +90,8 @@ var file = function(path) {
 
 		let _this = this;
 
+		this.macosStartAccessingSecurityScopedResource(_realPath);
+
 		return fsp.readdir(_realPath, {withFileTypes: !_this.config.fastRead}).then(function(_files){
 
 			let files = [];
@@ -567,6 +569,21 @@ var file = function(path) {
 		return filesToDecompressNum;
 	}
 
+	this.macosScopedResources = [];
+
+	this.macosStartAccessingSecurityScopedResource = function(path) {
+
+		if(macosMAS)
+		{
+			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
+			let bookmark = securityScopedBookmarks[path] || false;
+
+			if(bookmark)
+				this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+		}
+
+	}
+
 	this.destroy = function() {
 
 		for(let path in this.compressedOpened)
@@ -574,6 +591,14 @@ var file = function(path) {
 			this.compressedOpened[path].compressed.destroy();
 			delete this.compressedOpened[path];
 		}
+
+		// Stop accessing security scoped resources
+		for(let i = 0, len = this.macosScopedResources.length; i < len; i++)
+		{
+			this.macosScopedResources[i]();
+		}
+
+		delete this.macosScopedResources;
 
 	};
 }
@@ -1210,6 +1235,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(unzip === false) unzip = require('unzipper');
 
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		this.zip = await unzip.Open.file(this.realPath);
 
 		return this.zip;
@@ -1359,6 +1385,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(un7z === false) un7z = require('node-7z');
 		if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7za);
 
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
+
 		if(extract)
 			this._7z = un7z.extractFull(this.realPath, this.tmp, {$bin: bin7z, $progress: true, $cherryPick: only});
 		else
@@ -1458,6 +1486,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(unrar === false) unrar = require('node-unrar-js');
 
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		let wasmBinary = fs.readFileSync(require.resolve('node-unrar-js/esm/js/unrar.wasm'));
 		this.rar = await unrar.createExtractorFromFile({wasmBinary: wasmBinary, filepath: this.realPath, targetPath: this.tmp});
 
@@ -1562,6 +1591,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(untar === false) untar = require('tar-fs');
 
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		this.tar = fs.createReadStream(this.realPath);
 
 		return this.tar;
@@ -1667,6 +1697,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			unpdf.GlobalWorkerOptions.workerSrc = p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.js');
 		}
 
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		this.pdf = await unpdf.getDocument({url: this.realPath/*, nativeImageDecoderSupport: 'none', disableFontFace: true*/}).promise;
 
 		return this.pdf;
@@ -1802,6 +1833,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(ebook.epub === false)
 			ebook.epub = require(p.join(appDir, 'scripts/ebook/epub.js'));
 
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		this.epub = ebook.epub.load(this.realPath);
 
 		return this.epub;
@@ -1939,6 +1971,21 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.macosScopedResources = [];
+
+	this.macosStartAccessingSecurityScopedResource = function(path) {
+
+		if(macosMAS)
+		{
+			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
+			let bookmark = securityScopedBookmarks[path] || false;
+
+			if(bookmark)
+				this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+		}
+
+	}
+
 	this.destroy = function() {
 
 		if(this.tar) this.tar.destroy();
@@ -1951,6 +1998,14 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		delete this.tar;
 		delete this.pdf;
 		delete this.epub;
+
+		// Stop accessing security scoped resources
+		for(let i = 0, len = this.macosScopedResources.length; i < len; i++)
+		{
+			this.macosScopedResources[i]();
+		}
+
+		delete this.macosScopedResources;
 
 	}
 
@@ -2212,6 +2267,21 @@ function sort(files)
 	}
 }
 
+function macosSecurityScopedBookmarks(files)
+{
+	if(macosMAS && files.bookmarks && files.bookmarks[0])
+	{
+		let securityScopedBookmarks = storage.get('securityScopedBookmarks');
+
+		for(let i = 0, len = files.bookmarks.length; i < len; i++)
+		{
+			securityScopedBookmarks[p.normalize(files.filePaths[i])] = files.bookmarks[i];
+		}
+
+		storage.set('securityScopedBookmarks', securityScopedBookmarks);
+	}
+}
+
 async function dirSize(dir)
 {
 	let files = await fsp.readdir(dir, {withFileTypes: true});
@@ -2280,6 +2350,7 @@ module.exports = {
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
 	isParentPath: isParentPath,
+	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
 }

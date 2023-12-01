@@ -1,4 +1,4 @@
-var changes = 63; // Update this if readingPagesConfig is updated
+var changes = 64; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -175,6 +175,12 @@ var storageDefault = {
 	masterFolders: [
 		'',
 	],
+	securityScopedBookmarks: {
+		wildcard: [{
+			path: '',
+			bookmark: '',
+		}]
+	},
 	bookmarks: {
 		wildcard: [{
 			index: 0,
