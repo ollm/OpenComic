@@ -587,10 +587,21 @@ var file = function(path) {
 		if(macosMAS)
 		{
 			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
-			let bookmark = securityScopedBookmarks[path] || false;
+			let segments = path.split(p.sep);
 
-			if(bookmark)
-				this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+			for(let i = 1, len = segments.length; i < len; i++)
+			{
+				let _path = p.join(...segments);
+				let bookmark = securityScopedBookmarks[_path] || false;
+
+				if(bookmark)
+				{
+					this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+					break;
+				}
+
+				segments.pop();
+			}
 		}
 
 	}
@@ -1989,10 +2000,21 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(macosMAS)
 		{
 			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
-			let bookmark = securityScopedBookmarks[path] || false;
+			let segments = path.split(p.sep);
 
-			if(bookmark)
-				this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+			for(let i = 1, len = segments.length; i < len; i++)
+			{
+				let _path = p.join(...segments);
+				let bookmark = securityScopedBookmarks[_path] || false;
+
+				if(bookmark)
+				{
+					this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+					break;
+				}
+
+				segments.pop();
+			}
 		}
 
 	}
