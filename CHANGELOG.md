@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.0.0-beta.6 (dd-mm-yyyy)
+## v1.0.0 (dd-mm-yyyy)
 
 ##### 🚀 New Features
 
@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - When reloading, change view or sorting a folder opens reading mode in some cases [`e8e2c16`](https://github.com/ollm/OpenComic/commit/e8e2c16a18d8f0c03b6b00b09a7c0d1bf8a24032)
 - Reading shortcuts remain active when going back to recently opened [`716c10b`](https://github.com/ollm/OpenComic/commit/716c10b3a6b3ec17352952bba6a19b3b1a4dd66a)
 - Some errors on go back before comic load [`99fb29d`](https://github.com/ollm/OpenComic/commit/99fb29dab7b07a94883199665167a1301774f4e8)
+- Blank page keep white color in dark theme
 
 ## [v1.0.0-beta.5](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5) (24-11-2023)
 

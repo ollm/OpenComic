@@ -186,7 +186,7 @@
 	height: 100%;
 	position: relative;
 	z-index: 2;
-	background-color: #fff;
+	background-color: var(--md-sys-color-background);
 }
 
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img
