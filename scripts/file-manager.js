@@ -589,6 +589,9 @@ var file = function(path) {
 			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
 			let segments = path.split(p.sep);
 
+			if(!segments[0])
+				segments[0] = p.sep;
+
 			for(let i = 1, len = segments.length; i < len; i++)
 			{
 				let _path = p.join(...segments);
@@ -2001,6 +2004,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		{
 			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
 			let segments = path.split(p.sep);
+
+			if(!segments[0])
+				segments[0] = p.sep;
 
 			for(let i = 1, len = segments.length; i < len; i++)
 			{
