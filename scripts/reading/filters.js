@@ -1117,7 +1117,8 @@ async function focusIndex(index, notBlackAndWhite = false)
 
 				if(isBlackAndWhite[sha] === undefined)
 				{
-					isBlackAndWhiteQueue[sha] = {index: i, path: image.path, sha: image.sha};
+					let _path = image.path.replace(/\?page=[0-9]+$/, '');
+					isBlackAndWhiteQueue[sha] = {index: i, path: _path, sha: sha1(_path)};
 
 					processIsBlackAndWhiteQueue();
 				}

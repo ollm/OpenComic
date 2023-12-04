@@ -716,7 +716,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 	if(!fromPageRange)
 	{
 		render.focusIndex(index);
-		filters.focusIndex(index, readingIsEbook);
+		filters.focusIndex(index);
 	}
 
 	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
@@ -2910,6 +2910,14 @@ function createAndDeleteBookmark(index = false)
 	}
 }
 
+function deleteBookmark(key)
+{
+	readingCurrentBookmarks.splice(key, 1);
+	storage.updateVar('bookmarks', dom.indexMainPathA(), readingCurrentBookmarks);
+
+	loadBookmarks(true);
+}
+
 var saveReadingProgressA = false, fromSkip = false;
 
 function setFromSkip()
@@ -3010,7 +3018,7 @@ function startSaveReadingProgressSI()
 }
 
 //Load the bookmarks in the current directory
-function loadBookmarks()
+function loadBookmarks(bookmarksChild = false)
 {
 	var bookmarksPath = {}, mainPath = dom.indexMainPathA();
 
@@ -3036,6 +3044,7 @@ function loadBookmarks()
 			let chapterIndex = app.extract(/^([0-9]+):sortonly/, name, 1);
 
 			bookmarksPath[bookmarkDirname].push({
+				key: key,
 				name: dom.translatePageName(decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, ''))),
 				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
 				sha: sha,
@@ -3112,8 +3121,9 @@ function loadBookmarks()
 	});
 
 	handlebarsContext.bookmarks = bookmarks;
+	handlebarsContext.bookmarksChild = bookmarksChild;
 
-	$('#collections-bookmark .menu-simple').html(template.load('reading.elements.menus.collections.bookmarks.html'));
+	dom.query(!bookmarksChild ? '#collections-bookmark .menu-simple' : '#collections-bookmark .menu-simple > div').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
 var currentReadingConfigKey = false;
@@ -4884,6 +4894,7 @@ module.exports = {
 	saveReadingProgressA: function(){return saveReadingProgressA},
 	setFromSkip: setFromSkip,
 	createAndDeleteBookmark: createAndDeleteBookmark,
+	deleteBookmark: deleteBookmark,
 	currentIndex: function(){return currentIndex},
 	currentPageVisibility: function(){return currentPageVisibility},
 	loadBookmarks: loadBookmarks,

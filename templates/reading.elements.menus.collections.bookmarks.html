@@ -1,19 +1,26 @@
+{{#unless bookmarksChild}}
 <div class="menu-simple-content">
+{{/unless}}
 	<div>
 		{{#each bookmarks}}
 			<div class="reading-bookmark menu-simple-text-small">
 				<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.currentReading}}: {{/if}}{{name}}</span>
 			</div>
 			{{#each bookmarks}}
-				<div class="reading-bookmark menu-simple-element gamepad-item" onclick="{{#if ../current}}{{#if ebook}}reading.goToChapterProgress({{chapterIndex}}, {{chapterProgress}}, true);{{else}}reading.goToImage({{index}}, true);{{/if}}{{else}}{{#if ebook}}reading.setNextOpenChapterProgress({{chapterIndex}}, {{chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
+				<div class="reading-bookmark{{#unless ../continueReading}} reading-bookmark--{{key}}{{/unless}} menu-simple-element menu-simple-element-medium gamepad-item" onclick="{{#if ../current}}{{#if ebook}}reading.goToChapterProgress({{chapterIndex}}, {{chapterProgress}}, true);{{else}}reading.goToImage({{index}}, true);{{/if}}{{else}}{{#if ebook}}reading.setNextOpenChapterProgress({{chapterIndex}}, {{chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
 					<div class="menu-simple-element-image menu-simple-element-image-{{sha}}" style="background-image: url({{thumbnail}})"></div>
 					<span>{{#if ebook}}{{round progress}}%{{else}}{{index}}{{/if}}</span>
 					{{name}}
 					{{#if ebook}}({{round chapterProgress}}%){{/if}}
+					{{#unless ../continueReading}}
+					<i class="material-icon menu-simple-icon-last" onclick="reading.deleteBookmark({{key}}); event.stopPropagation();">close<!-- bookmark_remove --></i>
+					{{/unless}}
 				</div>
 			{{/each}}
 		{{else}}
 			<div class="menu-simple-text">{{language.reading.emptyBookmarks}}</div>
 		{{/each}}
 	</div>
+{{#unless bookmarksChild}}
 </div>
+{{/unless}}

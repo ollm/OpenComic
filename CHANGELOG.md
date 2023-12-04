@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
+- Delete bookmarks from the bookmark list
+
 ##### 🐛 Bug Fixes
 
 - Error when resizing after exit comic opened from recents [`8291730`](https://github.com/ollm/OpenComic/commit/829173058bb3dde12d35b726070c19ec43a63be3)
