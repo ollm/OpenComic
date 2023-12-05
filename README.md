@@ -1,4 +1,55 @@
-## Download beta [`v1.0.0-beta.5`](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5)
+<div align="center" >
+  <img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/logo-mac.svg" width="128px" height="128px"/>
+</div>
+
+<h1 align="center">
+  OpenComic
+</h1>
+
+<h3 align="center">
+  Comic and Manga reader
+</h3>
+
+<div align="center">
+
+[Screenshots](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD) | [Features](#features) | [Download](#download-beta-v100-beta5)
+
+</div>
+
+## Screenshot
+
+![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/main.png "Screenshot")
+
+More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD)
+
+## Features
+
+- 🖼 Support this image formats: `JPG`, `PNG`, `APNG`, `AVIF`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
+- 🗄 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
+- 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
+- 📁 Master folders support
+- 🇯🇵 Manga read mode
+- 🇰🇷 Webtoon read mode
+- 📖 Double page view
+- 🔖 Bookmarks and continue reading
+- 🔍 Floating magnifying glass
+- 🖱 Reading in scroll or slide
+- ⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors
+- 🎨 Colorize black and white images
+- 🔄 Tracking with sites (AniList)
+- 🎮 Gamepad navigation
+
+You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)
+
+## Download Beta [`v1.0.0-beta.5`](https://github.com/ollm/OpenComic/releases)
+
+<a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Get it from the Microsoft Store" title="Get it from the Microsoft Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/microsoft-store.svg" /></a>
+&nbsp;&nbsp;&nbsp;
+<!--
+<a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Get it from the Mac App Store" title="Get it from the Mac App Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/mac-app-store.svg" /></a>
+&nbsp;&nbsp;&nbsp;
+-->
+<a href="https://snapcraft.io/opencomic"><img height="50" alt="Get it from the Snap Store" title="Get it from the Snap Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/snap-store.svg" /></a>
 
 ###### Windows
 - [Microsoft Store](https://apps.microsoft.com/detail/9PDCMVNFZ2KK)
@@ -27,36 +78,6 @@
 - [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5-arm64.7z)
 - [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-aarch64.flatpak)
 - [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.AppImage)
-
-## Download [`v0.2.1`](https://github.com/ollm/OpenComic/releases/tag/v0.2.1)
-
-###### All packages
-- [v0.2.1](https://github.com/ollm/OpenComic/releases/tag/v0.2.1)
-
-## Screenshot
-
-![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/main.png "Screenshot")
-
-Here you can see more [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD)
-
-## Features
-
-- 🖼 Support this image formats: `JPG`, `PNG`, `APNG`, `AVIF`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
-- 🗄 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
-- 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
-- 📁 Master folders support
-- 🇯🇵 Manga read mode
-- 🇰🇷 Webtoon read mode
-- 📖 Double page view
-- 🔖 Bookmarks and continue reading
-- 🔍 Floating magnifying glass
-- 🖱 Reading in scroll or slide
-- ⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors
-- 🎨 Colorize black and white images
-- 🔄 Tracking with sites (AniList)
-- 🎮 Gamepad navigation
-
-You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM
