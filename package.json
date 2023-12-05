@@ -224,34 +224,40 @@
 		},
 		"fileAssociations": [
 			{
-				"description": "Compressed with ZIP",
 				"ext": "cbz",
-				"role": "Viewer"
+				"icon": "images/icons/associations/cbz",
+				"role": "Viewer",
+				"mimeType": "application/x-cbz"
 			},
 			{
-				"description": "Compressed with RAR",
 				"ext": "cbr",
-				"role": "Viewer"
+				"icon": "images/icons/associations/cbr",
+				"role": "Viewer",
+				"mimeType": "application/x-cbr"
 			},
 			{
-				"description": "Compressed with 7z",
 				"ext": "cb7",
-				"role": "Viewer"
+				"icon": "images/icons/associations/cb7",
+				"role": "Viewer",
+				"mimeType": "application/x-cb7"
 			},
 			{
-				"description": "Compressed with TAR",
 				"ext": "cbt",
-				"role": "Viewer"
+				"icon": "images/icons/associations/cbt",
+				"role": "Viewer",
+				"mimeType": "application/x-cbt"
 			},
 			{
-				"description": "PDF Document",
 				"ext": "pdf",
-				"role": "Viewer"
+				"icon": "images/icons/associations/pdf",
+				"role": "Viewer",
+				"mimeType": "application/pdf"
 			},
 			{
-				"description": "EPUB ebook format",
 				"ext": "epub",
-				"role": "Viewer"
+				"icon": "images/icons/associations/epub",
+				"role": "Viewer",
+				"mimeType": "application/epub+zip"
 			}
 		]
 	}
