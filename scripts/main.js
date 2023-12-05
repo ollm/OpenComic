@@ -19,7 +19,7 @@ function createWindow() {
 	let gotSingleInstanceLock = app.requestSingleInstanceLock();
 	if(!gotSingleInstanceLock)
 	{
-		let toOpenFile = false;
+		let _toOpenFile = false;
 
 		for(let i = 1, len = process.argv.length; i < len; i++)
 		{
@@ -27,12 +27,12 @@ function createWindow() {
 
 			if(arg && ['scripts/main.js', '.'].indexOf(arg) == -1 && !/^--/.test(arg) && fs.existsSync(arg))
 			{
-				toOpenFile = arg;
+				_toOpenFile = arg;
 				break;
 			}
 		}
 
-		if(toOpenFile) app.quit();
+		if(_toOpenFile) app.quit();
 	}
 
 	let mainWindowState = windowStateKeeper({
@@ -97,7 +97,10 @@ function createWindow() {
 	}));
 
 	// Open the DevTools.
- 	// win.webContents.openDevTools()
+	// win.webContents.openDevTools()
+
+	if(toOpenFile)
+		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
 
 	win.on('close',	function(event) {
 
@@ -136,7 +139,15 @@ function createWindow() {
 
 	mainWindowState.manage(win);
 }
-	
+
+var toOpenFile = false;
+
+app.on('open-file', function(event, path) {
+
+	toOpenFile = path;
+
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

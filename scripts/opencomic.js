@@ -89,7 +89,7 @@ require('jquery-bez');
 
 //console.timeEnd('Require time 1');
 
-var toOpenFile = false, windowHasLoaded = false;
+var toOpenFile = toOpenFile || false, windowHasLoaded = false;
 
 electronRemote.app.on('open-file', function(event, path) {
 
