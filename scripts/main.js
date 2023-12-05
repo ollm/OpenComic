@@ -1,4 +1,5 @@
 const {app, ipcMain, BrowserWindow, Menu, nativeImage} = require('electron');
+const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
@@ -15,12 +16,31 @@ process.traceProcessWarnings = true;
 function createWindow() {
 	// Create the browser window.
 
-	var mainWindowState = windowStateKeeper({
+	let gotSingleInstanceLock = app.requestSingleInstanceLock();
+	if(!gotSingleInstanceLock)
+	{
+		let toOpenFile = false;
+
+		for(let i = 1, len = process.argv.length; i < len; i++)
+		{
+			let arg = process.argv[i];
+
+			if(arg && ['scripts/main.js', '.'].indexOf(arg) == -1 && !/^--/.test(arg) && fs.existsSync(arg))
+			{
+				toOpenFile = arg;
+				break;
+			}
+		}
+
+		if(toOpenFile) app.quit();
+	}
+
+	let mainWindowState = windowStateKeeper({
 		defaultWidth: 1100,
 		defaultHeight: 640
 	});
 
-	var image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png')); 
+	let image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png'));
 
 	win = new BrowserWindow({
 		show: false,
@@ -53,7 +73,7 @@ function createWindow() {
 
 	require("@electron/remote/main").enable(win.webContents)
 
-	var menuTemplate = [
+	let menuTemplate = [
 		{
 			label: '...',
 			submenu: [
@@ -64,7 +84,7 @@ function createWindow() {
 		}
 	];
 
-	var menu = Menu.buildFromTemplate(menuTemplate);
+	let menu = Menu.buildFromTemplate(menuTemplate);
 	win.setMenu(menu);
 
 	win.removeMenu();

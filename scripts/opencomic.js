@@ -89,7 +89,38 @@ require('jquery-bez');
 
 //console.timeEnd('Require time 1');
 
-var testVar = 'test';
+var toOpenFile = false, windowHasLoaded = false;
+
+electronRemote.app.on('open-file', function(event, path) {
+
+	if(windowHasLoaded)
+		openComic(path, true);
+	else
+		toOpenFile = path;
+
+});
+
+electronRemote.app.on('second-instance', function(event, argv) {
+
+	if(electronRemote.app.hasSingleInstanceLock())
+	{
+		let win = electronRemote.getCurrentWindow();
+		if (win.isMinimized()) win.restore();
+		win.focus();
+
+		for(let i = 1, len = argv.length; i < len; i++)
+		{
+			let arg = argv[i];
+
+			if(arg && !inArray(arg, ['--no-sandbox', 'scripts/main.js', '.']) && !/^--/.test(arg) && fs.existsSync(arg))
+			{
+				openComic(arg, true);
+				break;
+			}
+		}
+	}
+
+});
 
 var handlebarsContext = {};
 var language = {};
@@ -313,9 +344,23 @@ async function startApp()
 	template.loadContentLeft('index.content.left.html', false);
 	template.loadGlobalElement('index.elements.menus.html', 'menus');
 
-	if(electronRemote.process.argv && electronRemote.process.argv[1] && !inArray(electronRemote.process.argv[1], ['--no-sandbox', 'scripts/main.js', '.']) && fs.existsSync(electronRemote.process.argv[1]))
+	if(!toOpenFile)
 	{
-		openComic(electronRemote.process.argv[1], false);
+		for(let i = 1, len = electronRemote.process.argv.length; i < len; i++)
+		{
+			let arg = electronRemote.process.argv[i];
+
+			if(arg && !inArray(arg, ['scripts/main.js', '.']) && !/^--/.test(arg) && fs.existsSync(arg))
+			{
+				toOpenFile = arg;
+				break;
+			}
+		}
+	}
+
+	if(toOpenFile && fs.existsSync(toOpenFile))
+	{
+		openComic(toOpenFile, false);
 	}
 	else
 	{
@@ -414,6 +459,8 @@ async function startApp()
 		}
 
 	});
+
+	windowHasLoaded = true;
 
 }
 
@@ -1081,6 +1128,24 @@ function openComic(filePath, animation = true)
 			dom.openComic(animation, path, mainPath);
 		else
 			dom.loadIndexPage(animation, path, false, false, mainPath);
+	}
+	else
+	{
+		if(!windowHasLoaded)
+			dom.loadIndexPage(false);
+
+		events.snackbar({
+			key: 'unsupportedFile',
+			text: language.global.unsupportedFile,
+			duration: 6,
+			update: true,
+			buttons: [
+				{
+					text: language.buttons.dismiss,
+					function: 'events.closeSnackbar();',
+				},
+			],
+		});
 	}
 }
 
