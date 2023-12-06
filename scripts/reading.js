@@ -634,18 +634,18 @@ function stayInLine()
 {
 	if(readingViewIs('slide') || (readingViewIs('scroll') && !_config.readingViewAdjustToWidth && !_config.readingWebtoon))
 	{
-		if(currentIndex < 1)
+		if(currentIndex < 1 && dom.previousComic())
 			showPreviousComic(1, false);
-		else if(currentIndex > contentNum)
+		else if(currentIndex > contentNum && dom.nextComic())
 			showNextComic(1, false);
 		else
 			goToIndex(currentIndex, false, currentPageVisibility);
 	}
 	else if(readingViewIs('scroll'))
 	{
-		if(currentIndex < 1)
+		if(currentIndex < 1 && dom.previousComic())
 			showPreviousComic(1, false);
-		else if(currentIndex > contentNum)
+		else if(currentIndex > contentNum && dom.nextComic())
 			showNextComic(1, false);
 		else
 			goToIndex(currentIndex, false, currentPageVisibility);
@@ -3601,6 +3601,19 @@ async function getEbookConfig(configReadingEbook = false)
 	configReadingEbook = configReadingEbook || _config.readingEbook;
 
 	let rect = template._contentRight().getBoundingClientRect();
+
+	if(rect.width == 0 || rect.height == 0)
+	{
+		for(let i = 0; i < 100; i++)
+		{
+			await app.sleep(20);
+
+			rect = template._contentRight().getBoundingClientRect();
+
+			if(rect.width != 0 && rect.height != 0)
+				break;
+		}
+	}
 
 	let renderZone = {
 		width: (rect.width - (readingMargin().left * (_config.readingDoublePage ? 3 : 2))) / (_config.readingDoublePage ? 2 : 1),

@@ -451,7 +451,7 @@ async function startApp()
 		$('body .app').css('display', 'block');
 		$('body .preload').css('display', 'none');
 
-		if(onReading)
+		if(onReading && !reading.isEbook())
 		{
 			reading.disposeImages();
 			reading.calculateView();
