@@ -301,7 +301,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		}
 
 		// Current folder reading progress
-		if(readingProgressCurrentPath)
+		if(readingProgressCurrentPath && (!readingProgress || readingProgress.path !== readingProgressCurrentPath.path))
 		{
 			let sha = readingProgressCurrentPath.sha;
 			let thumbnail = thumbnails[sha];
