@@ -144,6 +144,17 @@ function translatePageName(name)
 	return name.replace(/^page\-([0-9]+)/, language.global.pageAndNumber);
 }
 
+function metadataPathName(file, force = false)
+{
+	if(file.compressed || force)
+	{
+		let metadata = storage.getKey('compressedMetadata', file.path);
+		if(metadata && metadata.title) return metadata.title;
+	}
+
+	return file.name;
+}
+
 async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 {
 	return file.read().then(async function(files){
@@ -228,7 +239,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 					pathFiles.push({
 						sha: file.sha,
-						name: fileName,
+						name: metadataPathName(file),
 						path: filePath,
 						mainPath: mainPath,
 						poster: images.poster,
@@ -412,7 +423,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 						if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
 						{
 							comics.push({
-								name: folder.name,
+								name: metadataPathName(folder),
 								path: folder.path,
 								added: Math.round(fs.statSync(folder.path).mtimeMs / 1000),
 								folder: true,
@@ -435,7 +446,10 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			for(let key in comicsStorage)
 			{
 				if(!pathInMasterFolder[comicsStorage[key].path] && fs.existsSync(comicsStorage[key].path))
+				{
+					comicsStorage[key].name = metadataPathName(comicsStorage[key]);
 					comics.push(comicsStorage[key]);
+				}
 			}
 		}
 
@@ -649,8 +663,13 @@ function returnTextPath(path, mainPath, image = false, extension = true)
 	let files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 	path = [];
 
+	let _path = mainPathR;
+
 	for(let i = 0, len = files.length; i < len; i++)
 	{
+		_path = p.normalize(p.join(_path, files[i]));
+		files[i] = metadataPathName({path: _path, name: files[i]}, true);
+
 		if(!extension && i == len - 1)
 			files[i] = p.parse(files[i]).name;
 
@@ -676,17 +695,15 @@ function headerPath(path, mainPath)
 
 	mainPathR = addSepToEnd(p.dirname(_mainPath));
 
-	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+	let files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+	path = [];
 
-	var path = [];
+	let _path = mainPathR;
 
-	var pathJoin = mainPathR;
-
-	for(let index in files)
+	for(let i = 0, len = files.length; i < len; i++)
 	{
-		pathJoin = p.join(pathJoin, files[index]);
-
-		path.push({name: files[index], path: p.normalize(pathJoin), mainPath: mainPath});
+		_path = p.normalize(p.join(_path, files[i]));
+		path.push({name: metadataPathName({path: _path, name: files[i]}, true), path: _path, mainPath: mainPath});
 	}
 
 	if(path.length > 0)
@@ -1679,6 +1696,7 @@ module.exports = {
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,
 	translatePageName: translatePageName,
+	metadataPathName: metadataPathName,
 	fromLibrary: fromLibrary,
 	search: search,
 	this: domManager.this,

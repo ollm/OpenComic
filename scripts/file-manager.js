@@ -1,4 +1,4 @@
-var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, fileType = false;
+var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, fastXmlParser = false, fileType = false;
 
 var file = function(path) {
 
@@ -204,6 +204,9 @@ var file = function(path) {
 			{
 				if(json.mtime == mtime)
 					return json.files;
+
+				if(fs.existsSync(compressed.tmp))
+					await fsp.rmdir(compressed.tmp, {recursive: true});
 			}
 		}
 
@@ -213,9 +216,14 @@ var file = function(path) {
 		await this.extractIfInsideAnotherCompressed(path, _realPath);
 
 		let files = await compressed.read(this.config);
+		let metadata = await compressed.readMetadata(this.config);
+		this.saveCompressedMetadata(path, metadata);
+
+		if(metadata.poster)
+			files = this.setPosterFromMetadata(files, metadata.poster);
 
 		if(!json || json.mtime != mtime)
-			cache.writeFile(compressed.cacheFile, JSON.stringify({mtime: mtime, files: files}), {}, function(){});
+			cache.writeFile(compressed.cacheFile, JSON.stringify({mtime: mtime, files: files, metadata: metadata}), {}, function(){});
 
 		return files;
 
@@ -389,7 +397,7 @@ var file = function(path) {
 		{
 			let file = files[i];
 
-			if(!file.folder && !file.compressed && regex.test(file.name))
+			if(!file.folder && !file.compressed && (regex.test(file.name) || file.poster))
 			{
 				if(!poster && inArray(mime.getType(file.path), compatibleMime))
 				{
@@ -408,9 +416,9 @@ var file = function(path) {
 
 		if(!poster && inside && len && (config.useTheFirstImageAsPosterInFolders || config.useTheFirstImageAsPosterInFiles))
 		{
-			let _containsCompressed = containsCompressed(path);
+			let _isCompressed = isCompressed(path);
 
-			if((!_containsCompressed && config.useTheFirstImageAsPosterInFolders) || (_containsCompressed && config.useTheFirstImageAsPosterInFiles))
+			if((!_isCompressed && config.useTheFirstImageAsPosterInFolders) || (_isCompressed && config.useTheFirstImageAsPosterInFiles))
 			{
 				for(let i = 0; i < len; i++)
 				{
@@ -461,6 +469,34 @@ var file = function(path) {
 		}
 
 		return false;
+	}
+
+	this.setPosterFromMetadata = function(files, poster) {
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			if(files[i].name == poster)
+			{
+				files[i].poster = true;
+
+				break;
+			}
+		}
+
+		return files;
+
+	}
+
+	this.saveCompressedMetadata = function(path, metadata) {
+
+		if(metadata.title || metadata.author)
+		{
+			storage.setVar('compressedMetadata', path, {
+				title: metadata.title,
+				author: metadata.author,
+			});
+		}
+
 	}
 
 	this.sha = function(files) {
@@ -668,6 +704,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.files = false;
 	this.filesStatus = {};
+	this.metadata = false;
 
 	this.config = this._config = {
 		// only: false,
@@ -812,8 +849,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.readWithoutCache = false;
-
 	this.read = async function(config = {}) {
 
 		this.updateConfig(config);
@@ -821,8 +856,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(this.config.cache && this.files)
 			return this.files;
-
-		this.readWithoutCache = true;
 
 		return this.readCurrent();
 	}
@@ -843,6 +876,172 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			return this.readEpub();
 
 		return false;
+	}
+
+	this.readMetadata = async function(config = {}) {
+
+		this.updateConfig(config);
+		this.getFeatures();
+
+		if(this.config.cache && this.metadata)
+			return this.metadata;
+
+		return this.readCurrentMetadata();
+	}
+
+	this.readCurrentMetadata = function() {
+
+		if(this.features.zip || this.features['7z'] || this.features.rar || this.features.tar)
+			return this.readCompressedMetadata();
+		else if(this.features.pdf)
+			return this.readPdfMetadata();
+		else if(this.features.epub)
+			return this.readEpubMetadata();
+
+		return {};
+	}
+
+	this.readCompressedMetadata = async function() {
+
+		let files = await this.read();
+
+		let comicInfoFile = false;
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			if(files[i].name == 'ComicInfo.xml')
+			{
+				comicInfoFile = files[i];
+
+				break;
+			}
+		}
+
+		if(comicInfoFile)
+		{
+			if(fastXmlParser === false)
+			{
+				fastXmlParser = require('fast-xml-parser').XMLParser;
+				fastXmlParser = new fastXmlParser({ignoreAttributes: false});
+			}
+
+			let only = this.config.only;
+			await this.extract({only: [comicInfoFile.name]});
+			this.updateConfig({only: only});
+
+			let xml = await fsp.readFile(realPath(comicInfoFile.path, -1));
+			let metadata = fastXmlParser.parse(xml);
+
+			let comicInfo = metadata.ComicInfo || {};
+			let poster = false;
+
+			if(comicInfo.Pages && comicInfo.Pages.Page)
+			{
+				let _poster = false;
+
+				for(let i = 0, len = comicInfo.Pages.Page.length; i < len; i++)
+				{
+					let page = comicInfo.Pages.Page[i];
+
+					if(page['@_Type'] == 'FrontCover')
+					{
+						_poster = +page['@_Image'];
+
+						break;
+					}
+					else if(page['@_Type'] == 'InnerCover')
+					{
+						_poster = +page['@_Image'];
+					}
+				}
+
+				if(_poster !== false)
+				{
+					let index = 0;
+
+					for(let i = 0, len = files.length; i < len; i++)
+					{
+						let file = files[i];
+
+						if(!file.folder && !file.compressed && inArray(mime.getType(file.path), compatibleMime))
+						{
+							if(index === _poster)
+							{
+								poster = file.name;
+								file.poster = true;
+
+								break;
+							}
+
+							index++;
+						}
+					}
+
+				}
+			}
+
+			// https://anansi-project.github.io/docs/category/schemas
+			return {
+				title: comicInfo.Title || '',
+				series: comicInfo.Series || '',
+				localizedSeries: comicInfo.LocalizedSeries || '',
+				seriesGroup: comicInfo.SeriesGroup || '',
+
+				poster: poster,
+
+				bookNumber: comicInfo.Number || 0,
+				bookTotal: comicInfo.Count || 0,
+				volume: comicInfo.Volume || 0,
+
+				storyArc: comicInfo.StoryArc || '',
+				storyArcNumber: comicInfo.StoryArcNumber || 0,
+
+				alternateSeries: comicInfo.AlternateSeries || 0,
+				alternateBookNumber: comicInfo.AlternateNumber || 0,
+				alternateBookTotal: comicInfo.AlternateCount || 0,
+
+				manga: (comicInfo.Manga == 'Yes' || comicInfo.Manga == 'YesAndRightToLeft') ? true : (comicInfo.Manga == 'No' ? false : null),
+
+				author: comicInfo.Writer || '',
+				writer: comicInfo.Writer || '',
+				penciller: comicInfo.Penciller || '',
+				inker: comicInfo.Inker || '',
+				colorist: comicInfo.Colorist || '',
+				letterer: comicInfo.Letterer || '',
+				coverArtist: comicInfo.CoverArtist || '',
+				editor: comicInfo.Editor || '',
+				translator: comicInfo.Translator || '',
+				publisher: comicInfo.Publisher || '',
+				imprint: comicInfo.Imprint || '',
+
+				ageRating: comicInfo.AgeRating || '',
+				genre: comicInfo.Genre || '',
+				tags: comicInfo.Tags || '',
+				web: comicInfo.Web || '',
+				description: comicInfo.Summary || '',
+
+				characters: comicInfo.Characters || '',
+				teams: comicInfo.Teams || '',
+				locations: comicInfo.Locations || '',
+				mainCharacterOrTeam: comicInfo.MainCharacterOrTeam || '',
+
+				releaseDate: (comicInfo.Year && comicInfo.Month && comicInfo.Day) ? comicInfo.Year+'-'+comicInfo.Month+'-'+comicInfo.Day : '',
+				year: comicInfo.Year || 0,
+				month: comicInfo.Month || 0,
+				day: comicInfo.Day || 0,
+
+				language: comicInfo.LanguageISO || '',
+				format: comicInfo.Format || '',
+				scanInformation: comicInfo.ScanInformation || '',
+				notes: comicInfo.Notes || '',
+				GTIN: comicInfo.GTIN || '',
+
+				metadata: metadata,
+			};
+		}
+
+		return {};
+
 	}
 
 	this.readIfTypeFromBinaryIsDifferent = async function(error = false) {
@@ -1759,6 +1958,53 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.readPdfMetadata = async function() {
+
+		let pdf = await this.openPdf();
+		let metadata = await pdf.getMetadata();
+
+		let map = {};
+
+		if(metadata.metadata)
+		{
+			let _map = metadata.metadata.getAll();
+			map._map = _map;
+
+			for(let key in _map)
+			{
+				let item = _map;
+
+				let _key = app.extract(/([^:]+)$/, key, 1);
+				if(!map[_key]) map[_key] = Array.isArray(_map[key]) ? _map[key].join(', ') : _map[key];
+			}
+		}
+
+		return {
+			title: metadata.info.Title || map.title || '',
+
+			author: map.creator || metadata.info.Author || '',
+			publisher: map.publisher || '',
+
+			description: app.stripTagsWithDOM(map.description || metadata.info.Description || metadata.info.Subject || ''),
+
+			language: map.language || metadata.info.Language || '',
+
+			web: map.identifier ? app.extract(/^(?:url|uri):(.*)/iu, map.identifier) : '',
+			identifier: map.identifier,
+
+			releaseDate: map.metadatadate || '',
+			modifiedDate: map.modifydate || '',
+
+			creatorTool: map.creatortool || '',
+
+			metadata: {
+				info: metadata.info,
+				map: map,
+			},
+		};
+
+	}
+
 	this.extractPdf = async function() {
 
 		console.time('extractPdf');
@@ -1887,6 +2133,33 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		console.timeEnd('readEpub');
 
 		return this.files = files;
+
+	}
+
+	this.readEpubMetadata = async function() {
+
+		let epub = await this.openEpub();
+		let metadata = await epub.readEpubMetadata();
+
+		return {
+			title: metadata.title || '',
+
+			author: metadata.creator || '',
+			publisher: metadata.publisher || '',
+
+			description: metadata.description || '',
+			rights: metadata.rights || '',
+
+			language: metadata.language || '',
+
+			web: metadata.identifier ? app.extract(/^(?:url|uri):(.*)/iu, metadata.identifier) : '',
+			identifier: metadata.identifier,
+
+			releaseDate: metadata.pubdate || '',
+			modifiedDate: metadata.modified_date || '',
+
+			metadata: metadata,
+		};
 
 	}
 

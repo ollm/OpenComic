@@ -30,7 +30,7 @@ var epub = function(path, config = {}) {
 
 		await this.openEpubZip();
 
-		return this.zipFiles = await this.zip.read({forceType: 'zip', prefixes: {epub: 'epub-zip'}});
+		return this.zipFiles = await this.zip.read({filtered: false, forceType: 'zip', prefixes: {epub: 'epub-zip'}});
 
 	}
 
@@ -60,9 +60,16 @@ var epub = function(path, config = {}) {
 			this.opf = extract(/\<rootfile\s[^>]*full-path="([^">]+)"/, this.containerXml, 1);
 
 			if(this.opf)
-				this.opf = p.join(this.realPathZip, this.opf);
+			{
+				this.opf = p.join(this.realPathZip, this.opf)
+
+				if(!fs.existsSync(this.opf))
+					throw new Error('Epub opf file not exists');
+			}
 			else
-				throw new Error('Epub opf file not exists');
+			{
+				throw new Error('Epub not have opf file');
+			}
 		}
 		else
 		{
@@ -78,6 +85,7 @@ var epub = function(path, config = {}) {
 
 	this.epub = false;
 	this.epubFiles = false;
+	this.epubMetadata = false;
 
 	this.toc = false;
 
@@ -149,6 +157,21 @@ var epub = function(path, config = {}) {
 		}
 
 		return this.epubFiles;
+
+	}
+
+	this.readEpubMetadata = async function() {
+
+		if(this.epubMetadata) return this.epubMetadata;
+
+		await this.openEpub();
+
+		this.toc = await this.epub.loaded.navigation;
+		let metadata = await this.epub.loaded.metadata;
+
+		this.epubMetadata = metadata;
+
+		return this.epubMetadata;
 
 	}
 

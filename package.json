@@ -71,6 +71,7 @@
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
+		"fast-xml-parser": "^4.3.2",
 		"file-type": "^18.7.0",
 		"font-list": "^1.5.1",
 		"fs": "0.0.1-security",
@@ -143,7 +144,23 @@
 			"publisherDisplayName": "Oleguer Llopart",
 			"applicationId": "OleguerLlopart.OpenComic",
 			"backgroundColor": "#242a30",
-			"languages": ["en", "es", "ca", "pt-BR", "fr", "hu", "it", "de", "cs", "ru", "th", "vi", "ja", "zh-Hans", "zh-Hant"]
+			"languages": [
+				"en",
+				"es",
+				"ca",
+				"pt-BR",
+				"fr",
+				"hu",
+				"it",
+				"de",
+				"cs",
+				"ru",
+				"th",
+				"vi",
+				"ja",
+				"zh-Hans",
+				"zh-Hant"
+			]
 		},
 		"portable": {
 			"useZip": true

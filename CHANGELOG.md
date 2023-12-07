@@ -9,7 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Delete bookmarks from the bookmark list [`3792f7d`](https://github.com/ollm/OpenComic/commit/3792f7db319cf885f398836aefe983e56fe5ef2a)
-- Save and show also the current folder progress apart from the main folder
+- Save and show also the current folder progress apart from the main folder [`86f094b`](https://github.com/ollm/OpenComic/commit/86f094b7a216982ae7799950234be233113143e7)
+- Instead of the file name it shows the title of EPUB, PDF and Compressed Files with ComicInfo.xml
 
 ##### 🐛 Bug Fixes
 

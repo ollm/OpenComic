@@ -191,6 +191,12 @@ function capitalize(s)
     return s && s[0].toUpperCase() + s.slice(1);
 }
 
+function stripTagsWithDOM(string)
+{
+    let doc = new DOMParser().parseFromString(string, 'text/html');
+    return doc.body.textContent || '';
+}
+
 function sleep(ms)
 {
 	return new Promise(function(resolve){
@@ -224,6 +230,7 @@ module.exports = {
 	rand: rand,
 	extract: extract,
 	capitalize: capitalize,
+	stripTagsWithDOM: stripTagsWithDOM,
 	sleep: sleep,
 	setImmediate: setImmediate,
 };

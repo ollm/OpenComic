@@ -1,4 +1,4 @@
-var changes = 64; // Update this if readingPagesConfig is updated
+var changes = 65; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -260,6 +260,12 @@ var storageDefault = {
 			m: 1,
 		}],
 	}],
+	compressedMetadata: {
+		wildcard: {
+			title: '',
+			author: '',
+		}
+	},
 	cache: {
 		wildcard: {
 			lastAccess: 0,

@@ -12,7 +12,7 @@
 
 <div align="center">
 
-[Screenshots](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD) | [Features](#features) | [Download](#download-beta-v100-beta5)
+[Screenshots](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD) | [Features](#features) | [Changelog](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md) | [Download](#download-beta-v100-beta5)
 
 </div>
 

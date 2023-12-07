@@ -117,6 +117,12 @@ var ebook = function(book, config = {}) {
 		'math', 'maction', 'annotation', 'annotation-xml', 'menclose', 'merror', 'mfenced', 'mfrac', 'mi', 'mmultiscripts', 'mn', 'mo', 'mover', 'mpadded', 'mphantom', 'mprescripts', 'mroot', 'mrow', 'ms', 'semantics', 'mspace', 'msqrt', 'mstyle', 'msub', 'msup', 'msubsup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover',
 	]];
 
+	this.notSplitElements = {
+		'm:math': true,
+		math: true,
+		svg: true,
+	};
+
 	this.splitInPagesIframe = async function(html, basePath) {
 
 		html = html.cloneNode(true);
@@ -198,6 +204,7 @@ var ebook = function(book, config = {}) {
 	}
 
 	this._chaptersPage = false;
+	this._chaptersPageFirst = false;
 	this._chaptersPages = [];
 	this._chaptersPagesPage = 0;
 	this._currentPageTop = 0;
@@ -208,6 +215,7 @@ var ebook = function(book, config = {}) {
 		this._chaptersPages.push(this._chaptersPage);
 
 		this._chaptersPage = [];
+		this._chaptersPageFirst = true;
 
 		let highMarginTop = 0;
 
@@ -261,8 +269,13 @@ var ebook = function(book, config = {}) {
 
 		this.calculateAndSplitParents.push(parent);
 
+		let elementI = 0;
+
 		for(let i = 0; i < len; i++)
 		{
+			if(elementI !== 0)
+				this._chaptersPageFirst = false;
+
 			let child = childs[i];
 			let nodeType = child.nodeType;
 
@@ -305,28 +318,39 @@ var ebook = function(book, config = {}) {
 
 				if(_len === 0)
 				{
-					if(_hasToSplit)
+					if(_hasToSplit && !this._chaptersPageFirst)
 						await this.splitDocumentHere(_hasToSplit);
 
 					this._chaptersPage.push({
 						index: index + 1,
 						node: child.cloneNode(false),
 					});
+
+					//if(_hasToSplit && this._chaptersPageFirst)
+					//	await this.splitDocumentHere(_hasToSplit);
 				}
 				else
 				{
-					if(_hasToSplit)
+					if(_hasToSplit && !this.notSplitElements[child.tagName.toLowerCase()])
 					{
 						await this._calculateAndSplit(child, _childs, _len, _hasToSplit, isSeparateWords, index + 1);
 					}
 					else
 					{
+						if(_hasToSplit && !this._chaptersPageFirst)
+							await this.splitDocumentHere(_hasToSplit);
+
 						this._chaptersPage.push({
 							index: index + 1,
 							node: child.cloneNode(true),
 						});
+
+						//if(_hasToSplit && this._chaptersPageFirst)
+						//	await this.splitDocumentHere(_hasToSplit);
 					}
 				}
+
+				elementI++;
 			}
 		}
 
@@ -339,6 +363,7 @@ var ebook = function(book, config = {}) {
 	this.calculateAndSplit = async function(iframe, path) {
 
 		this._chaptersPage = [];
+		this._chaptersPageFirst = true;
 		this._chaptersPages = [];
 		this._chaptersPagesPage = 0;
 		this._currentPageTop = 0;

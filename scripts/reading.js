@@ -3085,7 +3085,7 @@ function loadBookmarks(bookmarksChild = false)
 			continueReading: true,
 			current: (bookmarkDirname === readingCurrentPath) ? true : false,
 			path: bookmarkDirname,
-			name: p.basename(bookmarkDirname),
+			name: dom.metadataPathName({path: bookmarkDirname, name: p.basename(bookmarkDirname)}, true),
 			bookmarks: [{
 				name: dom.translatePageName(decodeURI(p.basename(readingProgress.path).replace(/\.[^\.]*$/, ''))),
 				index: readingProgress.index,
