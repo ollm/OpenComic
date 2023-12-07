@@ -154,7 +154,10 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		let thumbnails = [];
 
 		// Get comic reading progress image
-		let readingProgress = storage.get('readingProgress');
+		let _readingProgress = storage.get('readingProgress');
+
+		let readingProgress = _readingProgress[mainPath] || false;
+		let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
 
 		if(files)
 		{
@@ -170,14 +173,24 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 			}
 
-			if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+			if(readingProgress)
 			{
-				let path = readingProgress[mainPath].path;
+				let path = readingProgress.path;
 				let sha = sha1(path);
 
 				images.push({path: path, sha: sha});
 
-				readingProgress[mainPath].sha = sha;
+				readingProgress.sha = sha;
+			}
+
+			if(readingProgressCurrentPath)
+			{
+				let path = readingProgressCurrentPath.path;
+				let sha = sha1(path);
+
+				images.push({path: path, sha: sha});
+
+				readingProgressCurrentPath.sha = sha;
 			}
 
 			thumbnails = cache.returnThumbnailsImages(images, function(data){
@@ -228,59 +241,81 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 		}
 		else
 		{
-			if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+			let images = [];
+
+			if(readingProgress)
 			{
-				let path = readingProgress[mainPath].path;
+				let path = readingProgress.path;
 				let sha = sha1(path);
 
-				let thumbnail = cache.returnThumbnailsImages({path: path, sha: sha}, function(data){
+				images.push({path: path, sha: sha});
 
-					addImageToDom(data.sha, data.path);
-
-				}, file);
-
-				readingProgress[mainPath].sha = sha;
-				thumbnails[sha] = thumbnail;
+				readingProgress.sha = sha;
 			}
+
+			if(readingProgressCurrentPath)
+			{
+				let path = readingProgressCurrentPath.path;
+				let sha = sha1(path);
+
+				images.push({path: path, sha: sha});
+
+				readingProgressCurrentPath.sha = sha;
+			}
+
+			thumbnails = cache.returnThumbnailsImages(images, function(data){
+
+				addImageToDom(data.sha, data.path);
+
+			}, file);
 		}
 
 		handlebarsContext.comics = pathFiles;
 
 		// Comic reading progress
-		if(readingProgress[mainPath] && readingProgress[mainPath].lastReading > 0)
+		if(readingProgress)
 		{
-			let path = readingProgress[mainPath].path;
-			let sha = readingProgress[mainPath].sha;
-
+			let sha = readingProgress.sha;
 			let thumbnail = thumbnails[sha];
 
-			readingProgress[mainPath].sha = sha;
-			readingProgress[mainPath].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-			readingProgress[mainPath].mainPath = mainPath;	
-			readingProgress[mainPath].pathText = returnTextPath(readingProgress[mainPath].path, mainPath, true);	
-			handlebarsContext.comicsReadingProgress = readingProgress[mainPath];
+			readingProgress.sha = sha;
+			readingProgress.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+			readingProgress.mainPath = mainPath;
+			readingProgress.pathText = returnTextPath(readingProgress.path, mainPath, true, !readingProgress.ebook);
+			handlebarsContext.comicsReadingProgress = readingProgress;
 		}
 		else
 		{
 			handlebarsContext.comicsReadingProgress = false;
 		}
 
-		/*if(keepScroll > 1)
-			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html')).scrollTop(keepScroll);
-		else
-			template.contentRight().children().html(template.load('index.content.right.'+config.view+'.html'));*/
+		// Current folder reading progress
+		if(readingProgressCurrentPath)
+		{
+			let sha = readingProgressCurrentPath.sha;
+			let thumbnail = thumbnails[sha];
 
-		//template.loadContentRight('index.content.right.'+config.view+'.html', animation, keepScroll);
+			readingProgressCurrentPath.sha = sha;
+			readingProgressCurrentPath.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+			readingProgressCurrentPath.mainPath = mainPath;
+			readingProgressCurrentPath.pathText = returnTextPath(readingProgressCurrentPath.path, path, true, !readingProgressCurrentPath.ebook);
+			handlebarsContext.comicsReadingProgressCurrentPath = readingProgressCurrentPath;
+		}
+		else
+		{
+			handlebarsContext.comicsReadingProgressCurrentPath = false;
+		}
+
 		events.events();
 
-		return {files: pathFiles, readingProgress: readingProgress[mainPath] || {}, html: template.load('index.content.right.'+config.view+'.html')};
+		return {files: pathFiles, readingProgress: readingProgress || {}, readingProgressCurrentPath: readingProgressCurrentPath || {}, html: template.load('index.content.right.'+config.view+'.html')};
 
 	}).catch(function(error){
 
 		console.error(error);
 		dom.compressedError(error);
 
-		return {files: [], readingProgress: {}, html: ''};
+		return {files: [], readingProgress: {}, readingProgressCurrentPath: {}, html: ''};
 
 	});
 
@@ -495,22 +530,29 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		queue.stop('folderThumbnails');
 
 		// Get comic reading progress image
-		let readingProgress = storage.get('readingProgress');
-		readingProgress = readingProgress[mainPath] || {};
+		let _readingProgress = storage.get('readingProgress');
+		let readingProgress = _readingProgress[mainPath] || false;
+		let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
 
 		let isCompressed = fileManager.isCompressed(path);
 
 		let openContinueReading = false;
 		let openFirstImage = ((!isCompressed && config.whenOpenFolderFirstImageOrContinueReading) || (isCompressed && config.whenOpenFileFirstImageOrContinueReading)) ? true : false;
 
-		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !notAutomaticBrowsing && readingProgress && readingProgress.lastReading > 0)
+		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !notAutomaticBrowsing && readingProgress)
 		{
 			let isParentPath = fileManager.isParentPath(path, readingProgress.path);
 
-			if((!isCompressed && (config.whenOpenFolderContinueReading || config.whenOpenFolderFirstImageOrContinueReading)) && isParentPath)
-				openContinueReading = true;
-			else if((isCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)) && isParentPath)
-				openContinueReading = true;
+			if(isParentPath || readingProgressCurrentPath)
+			{
+				if(!isParentPath && readingProgressCurrentPath)
+					readingProgress = readingProgressCurrentPath;
+
+				if((!isCompressed && (config.whenOpenFolderContinueReading || config.whenOpenFolderFirstImageOrContinueReading)))
+					openContinueReading = true;
+				else if((isCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)))
+					openContinueReading = true;
+			}
 		}
 
 		let file = fileManager.file(path);
@@ -600,17 +642,19 @@ function addSepToEnd(path)
 	return path;
 }
 
-function returnTextPath(path, mainPath, image = false)
+function returnTextPath(path, mainPath, image = false, extension = true)
 {
 	mainPathR = addSepToEnd(p.dirname(mainPath));
 
-	var files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+	let files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+	path = [];
 
-	var path = [];
-
-	for(let index in files)
+	for(let i = 0, len = files.length; i < len; i++)
 	{
-		path.push(translatePageName(image ? htmlEntities(files[index]) : files[index]));
+		if(!extension && i == len - 1)
+			files[i] = p.parse(files[i]).name;
+
+		path.push(translatePageName(image ? htmlEntities(files[i]) : files[i]));
 	}
 
 	return path.join(image ? '<i class="material-icon navegation">chevron_right</i>' : ' / '); 

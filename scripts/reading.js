@@ -2926,15 +2926,13 @@ function setFromSkip()
 }
 
 //Save current reading progress
-function saveReadingProgress(path = false)
+function saveReadingProgress(path = false, mainPath = false)
 {
 	if(!onReading)
 		return;
 
 	if(!saveReadingProgressA)
 		return;
-
-	let mainPath = dom.indexMainPathA();
 
 	if(!path)
 	{
@@ -2958,17 +2956,14 @@ function saveReadingProgress(path = false)
 		path = p.normalize(images[imageIndex].path);
 	}
 
-	/*let comic = false, comicIndex = 0, comics = storage.get('comics');
-
-	for(let i in comics)
+	if(mainPath === false)
 	{
-		if(comics[i].path == mainPath)
-		{
-			comic = comics[i];
-			comicIndex = i;
-			break;
-		}
-	}*/
+		mainPath = dom.indexMainPathA();
+
+		// Save also the current folder progress
+		if(mainPath !== p.dirname(path))
+			saveReadingProgress(path, p.dirname(path));
+	}
 
 	let progress = 0;
 	let chapterIndex = 0;
@@ -2995,15 +2990,6 @@ function saveReadingProgress(path = false)
 	});
 
 	dom.indexPathControlUpdateLastComic(path);
-
-	/*if(comic && path)
-	{
-		comic.readingProgress.path = path.replace(/\?page=[0-9]+$/, '');
-		comic.readingProgress.lastReading = +new Date();
-		comic.readingProgress.progress = 0;
-
-		storage.updateVar('comics', comicIndex, comic);
-	}*/
 
 	return true;
 }

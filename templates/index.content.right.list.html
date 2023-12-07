@@ -1,11 +1,21 @@
-{{#if comicsReadingProgress}}
-<div class="continue-reading gamepad-item body-medium" onclick="{{#if comicsReadingProgress.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgress.chapterIndex}}, {{comicsReadingProgress.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
-	<div>
-		<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
-		<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
+<div class="continue-reading-list{{#if comicsReadingProgress}}{{#if comicsReadingProgressCurrentPath}} continue-reading-list-double{{/if}}{{/if}}">
+	{{#if comicsReadingProgress}}
+	<div class="continue-reading gamepad-item body-medium" onclick="{{#if comicsReadingProgress.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgress.chapterIndex}}, {{comicsReadingProgress.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
+		<div>
+			<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
+			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
+		</div>
 	</div>
+	{{/if}}
+	{{#if comicsReadingProgressCurrentPath}}
+	<div class="continue-reading gamepad-item body-medium" onclick="{{#if comicsReadingProgressCurrentPath.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgressCurrentPath.chapterIndex}}, {{comicsReadingProgressCurrentPath.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.mainPath}}');">
+		<div>
+			<div class="continue-reading-sha-{{comicsReadingProgressCurrentPath.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.thumbnail}});"></div>
+			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgressCurrentPath.pathText}}}</span>
+		</div>
+	</div>
+	{{/if}}
 </div>
-{{/if}}
 <div class="content-view-list">
 	{{#each comics}}
 	<div class="medium-list body-medium{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}{{onclick}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">

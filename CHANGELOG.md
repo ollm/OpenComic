@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Delete bookmarks from the bookmark list [`3792f7d`](https://github.com/ollm/OpenComic/commit/3792f7db319cf885f398836aefe983e56fe5ef2a)
+- Save and show also the current folder progress apart from the main folder
 
 ##### 🐛 Bug Fixes
 
@@ -18,7 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Some errors on go back before comic load [`99fb29d`](https://github.com/ollm/OpenComic/commit/99fb29dab7b07a94883199665167a1301774f4e8)
 - Blank page keep white color in dark theme [`8d1a5b7`](https://github.com/ollm/OpenComic/commit/8d1a5b741855fd0bae6a7efd9579c7ddecbfd3d1)
 - Open with OpenComic not working in macOS and some fixes in Windows and Linux [`ea90063`](https://github.com/ollm/OpenComic/commit/ea9006309eee995c92571e0bc4c919d50de8e55b)
-- Error opening an epub when OpenComic is closed
+- Error opening an epub when OpenComic is closed [`84c838a`](https://github.com/ollm/OpenComic/commit/84c838a17a32b3f50e9b25bf016ea810c91d95e6)
 
 ## [v1.0.0-beta.5](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5) (24-11-2023)
 
