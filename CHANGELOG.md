@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Blank page keep white color in dark theme [`8d1a5b7`](https://github.com/ollm/OpenComic/commit/8d1a5b741855fd0bae6a7efd9579c7ddecbfd3d1)
 - Open with OpenComic not working in macOS and some fixes in Windows and Linux [`ea90063`](https://github.com/ollm/OpenComic/commit/ea9006309eee995c92571e0bc4c919d50de8e55b)
 - Error opening an epub when OpenComic is closed [`84c838a`](https://github.com/ollm/OpenComic/commit/84c838a17a32b3f50e9b25bf016ea810c91d95e6)
-- Performance issues when generating some thumbnails
+- Performance issues when generating some thumbnails [`1a07d2d`](https://github.com/ollm/OpenComic/commit/1a07d2d9ad462e56fbd5e592b71868013d10aa12)
 
 ## [v1.0.0-beta.5](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5) (24-11-2023)
 

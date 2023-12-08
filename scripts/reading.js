@@ -805,11 +805,11 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 }
 
 //Go to a specific comic image
-function goToImage(imageIndex, bookmarks = false)
+function goToImage(imageIndex, disableSave = false)
 {
 	if(typeof imagesData[imageIndex] !== 'undefined')
 	{
-		if(!bookmarks)
+		if(!disableSave)
 			saveReadingProgressA = true;
 
 		readingDirection = true;
@@ -3008,6 +3008,8 @@ function loadBookmarks(bookmarksChild = false)
 {
 	var bookmarksPath = {}, mainPath = dom.indexMainPathA();
 
+	let images = [];
+
 	for(let key in readingCurrentBookmarks)
 	{
 		if(typeof readingCurrentBookmarks[key].path != 'undefined')
@@ -3019,12 +3021,7 @@ function loadBookmarks(bookmarksChild = false)
 			if(typeof bookmarksPath[bookmarkDirname] === 'undefined') bookmarksPath[bookmarkDirname] = [];
 
 			let sha = sha1(bookmark.path);
-
-			let thumbnail = cache.returnThumbnailsImages({path: bookmark.path, sha: sha}, function(data) {
-
-				dom.addImageToDom(data.sha, data.path);
-
-			});
+			images.push({path: bookmark.path, sha: sha});
 
 			let name = p.basename(bookmark.path);
 			let chapterIndex = app.extract(/^([0-9]+):sortonly/, name, 1);
@@ -3035,7 +3032,6 @@ function loadBookmarks(bookmarksChild = false)
 				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
 				sha: sha,
 				mainPath: mainPath,
-				thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 				path: bookmark.path,
 				chapterIndex: chapterIndex,
 				ebook: bookmark.ebook,
@@ -3074,12 +3070,7 @@ function loadBookmarks(bookmarksChild = false)
 		let bookmarkDirname = p.dirname(readingProgress.path);
 
 		let sha = sha1(readingProgress.path);
-
-		let thumbnail = cache.returnThumbnailsImages({path: readingProgress.path, sha: sha}, function(data){
-
-			dom.addImageToDom(data.sha, data.path);
-
-		});
+		images.push({path: readingProgress.path, sha: sha});
 
 		bookmarks.push({
 			continueReading: true,
@@ -3091,10 +3082,24 @@ function loadBookmarks(bookmarksChild = false)
 				index: readingProgress.index,
 				sha: sha,
 				mainPath: readingProgress.mainPath,
-				thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 				path: readingProgress.path,
 			}],
 		});
+	}
+
+	let thumbnails = cache.returnThumbnailsImages(images, function(data) {
+
+		dom.addImageToDom(data.sha, data.path);
+
+	}, readingFile);
+
+	for(let i = 0, len = bookmarks.length; i < len; i++)
+	{
+		for(let i2 = 0, len2 = bookmarks[i].bookmarks.length; i2 < len2; i2++)
+		{
+			let thumbnail = thumbnails[bookmarks[i].bookmarks[i2].sha] || {};
+			bookmarks[i].bookmarks[i2].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+		}
 	}
 
 	bookmarks.sort(function (a, b) {
@@ -3732,7 +3737,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
 
-	let ebookPages = await readingFile.ebookPages(ebookConfig);
+	let ebookPages = await readingFileC.ebookPages(ebookConfig);
 
 	if(hasGenerateEbookPages === 1) // Priorize last generateEbookPages request
 	{
@@ -3768,12 +3773,12 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			});
 		}
 
-		_ebook = await readingFile.ebook();
+		_ebook = await readingFileC.ebook();
 
 		if(reset)
 			await render.reset();
 		else
-			await render.setFile(readingFile, false, 'ebook');
+			await render.setFile(readingFileC, false, 'ebook');
 
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
@@ -4140,7 +4145,7 @@ function mouseleave()
 	isMouseenter.document = false;
 }
 
-var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
+var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
@@ -4695,10 +4700,16 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	readingIsCanvas = isCanvas;
 	readingIsEbook = isEbook;
 
+	if(readingFile) readingFile.destroy();
+	if(readingFileC) readingFileC.destroy();
+
+	readingFile = fileManager.file();
+	readingFileC = false;
+
 	if(isCanvas)
 	{
-		readingFile = fileManager.fileCompressed(path);
-		await render.setFile(readingFile, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
+		readingFileC = fileManager.fileCompressed(path);
+		await render.setFile(readingFileC, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
 
 		let _images = template.contentRight('.reading-body oc-img canvas').get();
 
@@ -4742,12 +4753,11 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	}
 	else if(isEbook)
 	{
-		readingFile = fileManager.fileCompressed(path);
+		readingFileC = fileManager.fileCompressed(path);
 		await generateEbookPages(end, false, false, imagePath);
 	}
 	else
 	{
-		readingFile = false;
 		render.setFile(false);
 
 		template.contentRight('.reading-body img').each(function() {

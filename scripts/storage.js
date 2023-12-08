@@ -477,9 +477,11 @@ var throttles = {};
 var debounces = {};
 
 // Improve save perfomance in places that do not require instantaneous save
-async function setThrottle(key)
+async function setThrottle(key, value)
 {
 	clearTimeout(throttles[key]);
+
+	storageJson[key] = value;
 
 	throttles[key] = setTimeout(function(){
 

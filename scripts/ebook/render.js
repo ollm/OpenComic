@@ -18,7 +18,16 @@ window.onload = function() {
 
 }
 
-var renderPageIframe;
+function removeDocumentIframes()
+{
+	// Remove prev iframes
+	let iframes = document.querySelectorAll('iframe');
+
+	for(let i = 0, len = iframes.length; i < len; i++)
+	{
+		iframes[i].remove();
+	}
+}
 
 async function process(data)
 {
@@ -29,19 +38,29 @@ async function process(data)
 
 		ipcRenderer.send('rendered-ebook', data.index, pages);
 
+		removeDocumentIframes();
 	}
 	else if(data.type == 'render-page')
 	{
-		if(renderPageIframe) renderPageIframe.remove();
+		removeDocumentIframes();
 
 		book.updateConfig(data.config);
 		let pages = await book.splitInPages(data.html.documentElement, data.basePath, data.path);
 
-		renderPageIframe = book.pageToIframe(pages[0].html);
+		let renderPageIframe = book.pageToIframe(pages[0].html);
 
 		renderPageIframe.addEventListener('load', function(event) {
 
-			ipcRenderer.send('rendered-page', data.index, pages);
+			// Delay this to avoid white pages or pages from prev iframe
+			window.requestAnimationFrame(function(){
+
+				window.requestAnimationFrame(function(){
+
+					ipcRenderer.send('rendered-page', data.index, pages);
+
+				});
+
+			});
 
 		});
 

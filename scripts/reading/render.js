@@ -306,14 +306,21 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			let ocImg = contentRight.querySelector('.r-img-i'+index+' oc-img');
 			let ocImgMG = contentRight.querySelector('.reading-lens .r-img-i'+index+' oc-img');
 
-			let prevIframe = ocImg.querySelector('iframe');
-			if(prevIframe) prevIframe.remove();
+			if(ocImg)
+			{
+				let prevIframe = ocImg.querySelector('iframe');
+				if(prevIframe) prevIframe.remove();
 
-			let prevIframeMG = ocImgMG.querySelector('iframe');
-			if(prevIframeMG) prevIframeMG.remove();
+				ocImg.appendChild(iframe);
+			}
 
-			ocImg.appendChild(iframe);
-			ocImgMG.appendChild(iframeMG);
+			if(ocImgMG)
+			{
+				let prevIframeMG = ocImgMG.querySelector('iframe');
+				if(prevIframeMG) prevIframeMG.remove();
+
+				ocImgMG.appendChild(iframeMG);
+			}
 
 			if(ebookConfigChanged)
 			{

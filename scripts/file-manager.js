@@ -659,7 +659,7 @@ var file = function(path) {
 			this.macosScopedResources[i]();
 		}
 
-		delete this.macosScopedResources;
+		this.macosScopedResources = [];
 
 	};
 }
@@ -2317,7 +2317,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			this.macosScopedResources[i]();
 		}
 
-		delete this.macosScopedResources;
+		this.macosScopedResources = [];
 
 	}
 

@@ -1309,6 +1309,15 @@ async function createRender(callback)
 	return win;
 }
 
+async function showRenders()
+{
+	for(let i = 0, len = renders.length; i < len; i++)
+	{
+		renders[i].render.show();
+		renders[i].render.setPosition(i * 100, 0)
+	}
+}
+
 var closeAllRendersST = false;
 
 function closeAllRendersDelayed()
@@ -1376,5 +1385,6 @@ module.exports = {
 	closeAllRenders: closeAllRenders,
 	renders: function(){return renders},
 	renderQueue: function(){return renderQueue},
+	showRenders: showRenders,
 	epub: false,
 }

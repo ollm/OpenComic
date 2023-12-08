@@ -123,12 +123,12 @@ function addImageToDom(querySelector, path, animation = true)
 	let src = dom.queryAll('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).setAttribute('src', path);
 
 	let ri = dom.queryAll('.ri-sha-'+querySelector).setAttribute('src', path);
-	let cr = dom.queryAll('.continue-reading-sha-'+querySelector+', .search-result-sha-'+querySelector).css({backgroundImage: backgroundImage});
+	let imageBackground = dom.queryAll('.sha-image-bg-'+querySelector).css({backgroundImage: backgroundImage});
 
 	if(animation)
 	{
 		src.addClass('a', 'border');
-		cr.addClass('a');
+		imageBackground.addClass('a');
 	}
 	else
 	{

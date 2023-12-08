@@ -2,7 +2,7 @@
 	{{#if comicsReadingProgress}}
 	<div class="continue-reading gamepad-item body-medium" onclick="{{#if comicsReadingProgress.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgress.chapterIndex}}, {{comicsReadingProgress.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');">
 		<div>
-			<div class="continue-reading-sha-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
+			<div class="sha-image-bg-{{comicsReadingProgress.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}});"></div>
 			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
 		</div>
 	</div>
@@ -10,7 +10,7 @@
 	{{#if comicsReadingProgressCurrentPath}}
 	<div class="continue-reading gamepad-item body-medium" onclick="{{#if comicsReadingProgressCurrentPath.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgressCurrentPath.chapterIndex}}, {{comicsReadingProgressCurrentPath.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.mainPath}}');">
 		<div>
-			<div class="continue-reading-sha-{{comicsReadingProgressCurrentPath.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.thumbnail}});"></div>
+			<div class="sha-image-bg-{{comicsReadingProgressCurrentPath.sha}}" style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.thumbnail}});"></div>
 			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgressCurrentPath.pathText}}}</span>
 		</div>
 	</div>

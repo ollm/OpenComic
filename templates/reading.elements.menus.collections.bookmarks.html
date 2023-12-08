@@ -8,7 +8,7 @@
 			</div>
 			{{#each bookmarks}}
 				<div class="reading-bookmark{{#unless ../continueReading}} reading-bookmark--{{key}}{{/unless}} menu-simple-element menu-simple-element-medium gamepad-item" onclick="{{#if ../current}}{{#if ebook}}reading.goToChapterProgress({{chapterIndex}}, {{chapterProgress}}, true);{{else}}reading.goToImage({{index}}, true);{{/if}}{{else}}{{#if ebook}}reading.setNextOpenChapterProgress({{chapterIndex}}, {{chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
-					<div class="menu-simple-element-image menu-simple-element-image-{{sha}}" style="background-image: url({{thumbnail}})"></div>
+					<div class="menu-simple-element-image sha-image-bg-{{sha}}" style="background-image: url({{thumbnail}})"></div>
 					<span>{{#if ebook}}{{round progress}}%{{else}}{{index}}{{/if}}</span>
 					{{name}}
 					{{#if ebook}}({{round chapterProgress}}%){{/if}}
