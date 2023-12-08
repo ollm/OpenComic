@@ -37,7 +37,7 @@ function processTheImageQueue()
 		{
 			processingTheImageQueue = false;
 
-			storage.set('cache', data);
+			storage.setThrottle('cache', data);
 		}
 
 	}).catch(function(){
@@ -56,7 +56,7 @@ function processTheImageQueue()
 		{
 			processingTheImageQueue = false;
 
-			storage.set('cache', data);
+			storage.setThrottle('cache', data);
 		}
 
 	});

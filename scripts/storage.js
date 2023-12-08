@@ -473,6 +473,36 @@ function push(key, item)
 	ejs.set(key, storageJson[key], function(error){});
 }
 
+var throttles = {};
+var debounces = {};
+
+// Improve save perfomance in places that do not require instantaneous save
+async function setThrottle(key)
+{
+	clearTimeout(throttles[key]);
+
+	throttles[key] = setTimeout(function(){
+
+		clearTimeout(debounces[key]);
+		debounces[key] = false;
+
+		ejs.set(key, storageJson[key], function(error){});
+
+	}, 300);
+
+	if(debounces[key] === undefined || debounces[key] === false)
+	{
+		debounces[key] = setTimeout(function(){
+
+			clearTimeout(throttles[key]);
+			debounces[key] = false;
+
+			ejs.set(key, storageJson[key], function(error){});
+
+		}, 3000);
+	}
+}
+
 var storageKeys = [];
 
 for(let key in storageDefault)
@@ -563,6 +593,7 @@ module.exports = {
 	updateVar: updateVar,
 	setVar: updateVar,
 	set: update,
+	setThrottle: setThrottle,
 	update: update,
 	push: push,
 	storageJson: storageJson,

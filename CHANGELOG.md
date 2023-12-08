@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Delete bookmarks from the bookmark list [`3792f7d`](https://github.com/ollm/OpenComic/commit/3792f7db319cf885f398836aefe983e56fe5ef2a)
 - Save and show also the current folder progress apart from the main folder [`86f094b`](https://github.com/ollm/OpenComic/commit/86f094b7a216982ae7799950234be233113143e7)
-- Instead of the file name it shows the title of EPUB, PDF and Compressed Files with ComicInfo.xml
+- Instead of the file name it shows the title of EPUB, PDF and Compressed Files with ComicInfo.xml [`0d3e4ba`](https://github.com/ollm/OpenComic/commit/0d3e4ba489f616d862c4b52e2f2498f1a203d218)
 
 ##### 🐛 Bug Fixes
 
@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Blank page keep white color in dark theme [`8d1a5b7`](https://github.com/ollm/OpenComic/commit/8d1a5b741855fd0bae6a7efd9579c7ddecbfd3d1)
 - Open with OpenComic not working in macOS and some fixes in Windows and Linux [`ea90063`](https://github.com/ollm/OpenComic/commit/ea9006309eee995c92571e0bc4c919d50de8e55b)
 - Error opening an epub when OpenComic is closed [`84c838a`](https://github.com/ollm/OpenComic/commit/84c838a17a32b3f50e9b25bf016ea810c91d95e6)
+- Performance issues when generating some thumbnails
 
 ## [v1.0.0-beta.5](https://github.com/ollm/OpenComic/releases/tag/v1.0.0-beta.5) (24-11-2023)
 
