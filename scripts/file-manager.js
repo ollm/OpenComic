@@ -635,8 +635,12 @@ var file = function(path) {
 
 				if(bookmark)
 				{
-					this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
-					break;
+					try
+					{
+						this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+						break;
+					}
+					catch {}
 				}
 
 				segments.pop();
@@ -2288,8 +2292,12 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				if(bookmark)
 				{
-					this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
-					break;
+					try
+					{
+						this.macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+						break;
+					}
+					catch {}
 				}
 
 				segments.pop();

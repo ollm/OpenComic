@@ -119,7 +119,7 @@ function handleDrop(event)
 function start()
 {
 	// Currently the drop event does not return securityScopedBookmarks in macOS MAS, so this would not work correctly https://github.com/electron/electron/issues/40678
-	if(!macosMAS) return;
+	if(macosMAS) return;
 
 	app.event(window, 'dragenter', showDropZone);
 	app.event(window, 'dragleave', hideDropZone);
