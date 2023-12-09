@@ -41,7 +41,7 @@ More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOT
 
 You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)
 
-## Download Beta [`v1.0.0-beta.5`](https://github.com/ollm/OpenComic/releases)
+## Download Beta [`v1.0.0`](https://github.com/ollm/OpenComic/releases)
 
 <a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Get it from Microsoft" title="Get it from Microsoft" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/microsoft-store.svg" /></a>
 &nbsp;&nbsp;&nbsp;<a href="https://snapcraft.io/opencomic"><img height="50" alt="Get it from the Snap Store" title="Get it from the Snap Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/snap-store.svg" /></a>
@@ -51,31 +51,31 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 
 ###### Windows
 - [Microsoft Store](https://apps.microsoft.com/detail/9PDCMVNFZ2KK)
-- [.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic.Setup.1.0.0-beta.5.exe)
-- [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic.Portable.1.0.0-beta.5.exe)
+- [.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic.Setup.1.0.0.exe)
+- [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic.Portable.1.0.0.exe)
 ###### macOS
-- [.dmg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.dmg)
-- [.pkg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.pkg)
-- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-mac.7z)
+- [.dmg](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0.dmg)
+- [.pkg](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0.pkg)
+- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-mac.7z)
 ###### macOS Arm64
-- [arm64.dmg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.dmg)
-- [arm64.pkg](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.pkg)
-- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64-mac.7z)
+- [arm64.dmg](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-arm64.dmg)
+- [arm64.pkg](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-arm64.pkg)
+- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-arm64-mac.7z)
 ###### Linux
-- [.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_amd64.deb)
-- [.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.x86_64.rpm)
-- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.7z)
-- [.snap](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_amd64.snap)
-- [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-x86_64.flatpak)
-- [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5.AppImage)
+- [.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic_1.0.0_amd64.deb)
+- [.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic-1.0.0.x86_64.rpm)
+- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic-1.0.0.7z)
+- [.snap](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic_1.0.0_amd64.snap)
+- [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-x86_64.flatpak)
+- [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0.AppImage)
 - [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
 - [Snap Store](https://snapcraft.io/opencomic)
 ###### Linux Arm64
-- [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic_1.0.0-beta.5_arm64.deb)
-- [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5.aarch64.rpm)
-- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/opencomic-1.0.0-beta.5-arm64.7z)
-- [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-aarch64.flatpak)
-- [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0-beta.5/OpenComic-1.0.0-beta.5-arm64.AppImage)
+- [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic_1.0.0_arm64.deb)
+- [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic-1.0.0.aarch64.rpm)
+- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic-1.0.0-arm64.7z)
+- [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-aarch64.flatpak)
+- [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-arm64.AppImage)
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM
