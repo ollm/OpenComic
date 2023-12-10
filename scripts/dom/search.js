@@ -274,8 +274,6 @@ function searchClick(event)
 
 	if(!event.target.closest('.search-bar, .button-search'))
 	{
-		console.log(event.target);
-
 		if(filterCurrentPage)
 		{
 			let gamepadItem = event.target.closest('.gamepad-item');
@@ -402,12 +400,25 @@ async function _indexFiles(file, mainPath)
 
 				if(file.files)
 				{
-					_files = file.files;
+					_files = fileManager.filtered(file.files);
 				}
 				else
 				{
 					let _file = fileManager.file(file.path);
-					_files = await _file.read({sha: false});
+
+					try
+					{
+						_files = await _file.read({sha: false});
+					}
+					catch(error)
+					{
+						console.error(error);
+
+						if(!macosMAS)
+							throw new Error(error);
+					}
+
+					_file.destroy();
 					delete _file;
 				}
 
@@ -577,6 +588,7 @@ module.exports = {
 	hide: hide,
 	fillInput: fillInput,
 	saveRecentlySearched: saveRecentlySearched,
+	files: function(){return files},
 	start: function(){
 
 		hideST = setTimeout(showRecentlySearched, 500);
