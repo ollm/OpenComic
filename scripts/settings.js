@@ -59,6 +59,138 @@ function removeTemporaryFiles(onClose = false)
 		getStorageSize();
 }
 
+function removeUnreferencedTemporaryFiles(tmpUsage, dir, first = true)
+{
+	let files = fs.readdirSync(dir, {withFileTypes: true});
+	let empty = true;
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		let file = files[i];
+		let path = p.join(dir, file.name);
+
+		if(file.isDirectory())
+		{
+			let _empty = removeUnreferencedTemporaryFiles(tmpUsage, path, false);
+
+			if(!_empty)
+				empty = false;
+		}
+		else if(file.isFile())
+		{
+			if(!/opencomic[a-z0-9_-]*\.txt$/iu.test(path))
+			{
+				if(!tmpUsage[path])
+					fs.unlinkSync(path);
+				else
+					empty = false;
+			}
+		}
+	}
+
+	if(empty && !first)
+		fs.rmdirSync(dir, {recursive: true})
+
+	return empty;
+}
+
+function removeTemporaryPath(path)
+{
+	let size = 0;
+
+	if(fs.existsSync(path))
+	{
+		if(fs.statSync(path).isDirectory())
+		{
+			size = fileManager.dirSizeSync(path);
+			fs.rmdirSync(path, {recursive: true});
+		}
+		else
+		{
+			size = fs.statSync(path).size;
+			fs.unlinkSync(path);
+		}
+	}
+
+	return size;
+}
+
+function purgeTemporaryFiles()
+{
+	try
+	{
+		if(config.tmpMaxSize == 0)
+		{
+			settings.removeTemporaryFiles(true);
+		}
+		else
+		{
+			let time = app.time();
+			let tmpUsage = storage.get('tmpUsage') || {};
+
+			let tmpMaxSize = config.tmpMaxSize * 1000 * 1000 * 1000;
+			let tmpMaxOld = config.tmpMaxOld * 60 * 60 * 24;
+
+			let dataArray = [];
+
+			// Remove not usage files
+			for(let path in tmpUsage)
+			{
+				if(time - tmpUsage[path].lastAccess > tmpMaxOld)
+				{
+					if(fs.existsSync(path))
+						fs.unlinkSync(path);
+				}
+				else
+				{
+					dataArray.push({
+						path: path,
+						lastAccess: tmpUsage[path].lastAccess,
+					});
+				}
+			}
+
+			// Remove unreferenced files
+			removeUnreferencedTemporaryFiles(tmpUsage, tempFolder, true);
+
+			// Remove if exede tmp max size
+			let tmpSize = fileManager.dirSizeSync(tempFolder);
+
+			if(tmpSize > tmpMaxSize)
+			{
+				let tmpMaxSizeMargin = tmpMaxSize * 0.8; // Remove 20% if tmp exceeds maximum size to avoid running this every time
+
+				dataArray.sort(function(a, b) {
+
+					if(a.lastAccess === b.lastAccess)
+						return 0;
+
+					return a.lastAccess > b.lastAccess ? 1 : -1;
+
+				});
+
+				for(let i = 0, len = dataArray.length; i < len; i++)
+				{
+					let path = dataArray[i].path;
+					delete tmpUsage[path];
+
+					let size = removeTemporaryPath(path);
+
+					tmpSize -= size;
+
+					if(tmpSize < tmpMaxSizeMargin)
+						break;
+				}
+			}
+
+			storage.set('tmpUsage', tmpUsage);
+		}
+	}
+	catch(error)
+	{
+		console.error(error);
+	}
+}
 
 function removeMasterFolder(key)
 {
@@ -368,7 +500,7 @@ function setCheckPreReleases(value)
 	storage.updateVar('config', 'checkPreReleases', value);
 }
 
-function set(key, value)
+function set(key, value, save = true)
 {
 	switch (key)
 	{
@@ -391,7 +523,8 @@ function set(key, value)
 			break;
 	}
 
-	storage.updateVar('config', key, value);
+	if(save)
+		storage.updateVar('config', key, value);
 }
 
 module.exports = {
@@ -423,4 +556,5 @@ module.exports = {
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,
 	removeTemporaryFiles: removeTemporaryFiles,
+	purgeTemporaryFiles: purgeTemporaryFiles,
 };

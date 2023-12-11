@@ -197,6 +197,11 @@ function stripTagsWithDOM(string)
     return doc.body.textContent || '';
 }
 
+function time()
+{
+	return Math.floor(Date.now() / 1000);
+}
+
 function sleep(ms)
 {
 	return new Promise(function(resolve){
@@ -231,6 +236,7 @@ module.exports = {
 	extract: extract,
 	capitalize: capitalize,
 	stripTagsWithDOM: stripTagsWithDOM,
+	time: time,
 	sleep: sleep,
 	setImmediate: setImmediate,
 };

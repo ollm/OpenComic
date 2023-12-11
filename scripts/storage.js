@@ -1,4 +1,4 @@
-var changes = 65; // Update this if readingPagesConfig is updated
+var changes = 66; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -125,8 +125,10 @@ var storageDefault = {
 		checkPreReleases: true,
 		lastCheckedRelease: '',
 		lastCheckedReleaseTime: 0,
-		cacheMaxSize: 256,
+		cacheMaxSize: 256, // MB
 		cacheMaxOld: 60,
+		tmpMaxSize: 1, // GB
+		tmpMaxOld: 30,
 		trackingSites: {
 			wildcard: {
 				favorite: false,
@@ -270,6 +272,11 @@ var storageDefault = {
 		wildcard: {
 			lastAccess: 0,
 			size: 0,
+		}
+	},
+	tmpUsage: {
+		wildcard: {
+			lastAccess: 0,
 		}
 	},
 },

@@ -233,8 +233,12 @@
 			"cacheMaxOldDescription": "Se eliminarán archivos de la caché cuando lleven más de este tiempo sin usarse",
 			"clearCache": "Limpiar caché",
 			"temporaryFiles": "Archivos temporales",
-			"temporaryFilesDescription": "Aquí se descomprimen los archivos comprimidos a medida que se van necesitando, esto se elimina automáticamente al cerrar OpenComic",
-			"removeTemporaryFiles": "Eliminar archivos temporales"
+			"temporaryFilesDescription": "Aquí se descomprimen los archivos comprimidos a medida que se van necesitando, esto se elimina parcialmente al cerrar OpenComic",
+			"removeTemporaryFiles": "Eliminar archivos temporales",
+			"temporaryFilesMaxSize": "Tamaño máximo de los archivos temporales",
+			"temporaryFilesMaxSizeDescription": "Se eliminarán archivos temporales cuando superen este tamaño, priorizando los archivos más antiguos sin uso",
+			"temporaryFilesMaxOld": "Tiempo máximo de los archivos temporales",
+			"temporaryFilesMaxOldDescription": "Se eliminarán archivos temporales cuando lleven más de este tiempo sin usarse"
 		}
 	},
 	"menu": {

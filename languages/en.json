@@ -233,8 +233,12 @@
 			"cacheMaxOldDescription": "Files will be removed from the cache when they have not been used for more than this time",
 			"clearCache": "Clear cache",
 			"temporaryFiles": "Temporary files",
-			"temporaryFilesDescription": "Here the compressed files are decompressed as they are needed, this is automatically removed when closing OpenComic",
-			"removeTemporaryFiles": "Remove temporary files"
+			"temporaryFilesDescription": "Here the compressed files are decompressed as they are needed, this is partially removed when closing OpenComic",
+			"removeTemporaryFiles": "Remove temporary files",
+			"temporaryFilesMaxSize": "Maximum temporary files",
+			"temporaryFilesMaxSizeDescription": "Temporary files will be removed when they exceed this size, prioritizing older unused files",
+			"temporaryFilesMaxOld": "Maximum temporary files time",
+			"temporaryFilesMaxOldDescription": "Temporary files will be removed when they have not been used for more than this time"
 		}
 	},
 	"menu": {

@@ -127,6 +127,8 @@ function returnThumbnailsImages(images, callback, file = false)
 	let toGenerateThumbnails = [];
 	let toGenerateThumbnailsData = {};
 
+	let time = app.time();
+
 	for(let i = 0, len = images.length; i < len; i++)
 	{
 		let image = images[i];
@@ -145,7 +147,7 @@ function returnThumbnailsImages(images, callback, file = false)
 		}
 		else
 		{
-			data[sha].lastAccess = time();
+			data[sha].lastAccess = time;
 
 			if(imgCache.size != size)
 			{
@@ -240,7 +242,7 @@ function purge()
 {
 	if(!data) data = storage.get('cache') || {};
 
-	let _time = time();
+	let time = app.time();
 
 	let cacheMaxSize = config.cacheMaxSize * 1000 * 1000;
 	let cacheMaxOld = config.cacheMaxOld * 60 * 60 * 24;
@@ -250,7 +252,7 @@ function purge()
 	// Remove not usage files
 	for(let sha in data)
 	{
-		if(_time - data[sha].lastAccess > cacheMaxOld)
+		if(time - data[sha].lastAccess > cacheMaxOld)
 		{
 			deleteInCacheSha(sha);
 		}

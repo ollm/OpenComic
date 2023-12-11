@@ -93,7 +93,7 @@
 							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
 						</div>
 					</div>
-					<input type="range" max="3000" min="50" step="50" list="marginlist" value="{{config.readingMaxMargin}}" onrange="settings.setMaxMargin(\{{value}}, \{{toEnd}})">
+					<input type="range" max="3000" min="50" step="50" value="{{config.readingMaxMargin}}" onrange="settings.setMaxMargin(\{{value}}, \{{toEnd}})">
 				</div>
 			</div>
 
@@ -240,7 +240,6 @@
 
 			<h2 class="headline-small">{{language.settings.storage.main}}</h2>
 
-
 			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
 				<div class="simple-slider-text">{{language.settings.storage.cacheMaxSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="256" style="right: 70px;">undo</i><span>{{config.cacheMaxSize}}</span>MB</div></div>
 				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.cacheMaxSizeDescription}}</span>
@@ -252,7 +251,7 @@
 							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
 						</div>
 					</div>
-					<input type="range" max="1024" min="32" step="32" list="marginlist" value="{{config.cacheMaxSize}}" onrange="settings.setCacheMaxSize(\{{value}}, \{{toEnd}})">
+					<input type="range" max="1024" min="32" step="32" value="{{config.cacheMaxSize}}" onrange="settings.setCacheMaxSize(\{{value}}, \{{toEnd}})">
 				</div>
 			</div>
 
@@ -268,7 +267,37 @@
 							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
 						</div>
 					</div>
-					<input type="range" max="365" min="2" step="1" list="marginlist" value="{{config.cacheMaxOld}}" onrange="settings.setCacheMaxOld(\{{value}}, \{{toEnd}})">
+					<input type="range" max="365" min="2" step="1" value="{{config.cacheMaxOld}}" onrange="settings.setCacheMaxOld(\{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+				<div class="simple-slider-text">{{language.settings.storage.temporaryFilesMaxSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="1" style="right: 70px;">undo</i><span>{{config.tmpMaxSize}}</span>GB</div></div>
+				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.temporaryFilesMaxSizeDescription}}</span>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="30" min="0" step="1" value="{{config.tmpMaxSize}}" onrange="settings.set('tmpMaxSize', \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+				<div class="simple-slider-text">{{language.settings.storage.temporaryFilesMaxOld}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="30" style="right: 76px;">undo</i><span>{{config.tmpMaxOld}}</span> {{language.global.days}}</div></div>
+				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.temporaryFilesMaxOldDescription}}</span>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="365" min="2" step="1" value="{{config.tmpMaxOld}}" onrange="settings.set('tmpMaxOld', \{{value}}, \{{toEnd}})">
 				</div>
 			</div>
 
@@ -282,7 +311,6 @@
 				</div>
 
 			</div>
-
 
 			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">
 				<span>

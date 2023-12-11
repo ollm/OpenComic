@@ -234,7 +234,11 @@
 			"clearCache": "ล้างแคช",
 			"temporaryFiles": "ไฟล์ชั่วคราว",
 			"temporaryFilesDescription": "ที่ที่ไฟล์บีบอัดจำเป็นต้นใช้ในการคลายไฟล์ โดยจะมีการนำไฟล์ออกโดยอัตโนมัติเมื่อปิด OpenComic",
-			"removeTemporaryFiles": "นำไฟล์ชั่วคราวออก"
+			"removeTemporaryFiles": "นำไฟล์ชั่วคราวออก",
+			"temporaryFilesMaxSize": "",
+			"temporaryFilesMaxSizeDescription": "",
+			"temporaryFilesMaxOld": "",
+			"temporaryFilesMaxOldDescription": ""
 		}
 	},
 	"menu": {

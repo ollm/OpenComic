@@ -577,7 +577,9 @@ var file = function(path) {
 		{
 			let file = files[i];
 
-			if(fs.existsSync(realPath(file.path, -1, this.config.prefixes)))
+			let _path = realPath(file.path, -1, this.config.prefixes);
+
+			if(fs.existsSync(_path))
 			{
 				if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
 			}
@@ -592,6 +594,9 @@ var file = function(path) {
 
 				filesToDecompressNum++;
 			}
+
+			if(_path !== file.path) // If it is different it is because it is not a compressed file
+				this.setTmpUsage(_path);
 		}
 
 		if(filesToDecompress)
@@ -613,7 +618,39 @@ var file = function(path) {
 			}
 		}
 
+		this.saveTmpUsage();
+
 		return filesToDecompressNum;
+	}
+
+	this.tmpUsage = [];
+
+	this.setTmpUsage = function(path) {
+
+		this.tmpUsage.push(path);
+
+	}
+
+	this.saveTmpUsage = function() {
+
+		let len = this.tmpUsage.length;
+
+		if(len === 0) return;
+
+		let time = app.time();
+		let tmpUsage = storage.get('tmpUsage');
+
+		for(let i = 0; i < len; i++)
+		{
+			let path = this.tmpUsage[i];
+
+			if(!tmpUsage[path]) tmpUsage[path] = {};
+			tmpUsage[path].lastAccess = time;
+		}
+
+		storage.setThrottle('tmpUsage', tmpUsage);
+		this.tmpUsage = [];
+
 	}
 
 	this.macosScopedResources = [];
@@ -1804,7 +1841,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		}
 		catch(error)
 		{
-			return this.readIfTypeFromBinaryIsDifferent(error);
+			return this.extractIfTypeFromBinaryIsDifferent(error);
 		}
 	}
 

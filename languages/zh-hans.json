@@ -234,7 +234,11 @@
 			"clearCache": "清除缓存",
 			"temporaryFiles": "临时文件",
 			"temporaryFilesDescription": "在这里，压缩文件根据需要进行解压缩，这在关闭 OpenComic 时会自动删除",
-			"removeTemporaryFiles": "删除临时文件"
+			"removeTemporaryFiles": "删除临时文件",
+			"temporaryFilesMaxSize": "",
+			"temporaryFilesMaxSizeDescription": "",
+			"temporaryFilesMaxOld": "",
+			"temporaryFilesMaxOldDescription": ""
 		}
 	},
 	"menu": {

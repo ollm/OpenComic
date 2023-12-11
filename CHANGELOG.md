@@ -4,13 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.0.1 (dd-mm-yyyy)
+## v1.1.0 (dd-mm-yyyy)
 
 ##### 🚀 New Features
 
+- Option to set maximum size of temporary files, preserving them when closing the app
+
 ##### 🐛 Bug Fixes
 
-- Error on detect file type from binary
+- Error on detect file type from binary [`0f81947`](https://github.com/ollm/OpenComic/commit/0f819470d42ce996cd4f1f0a31665a605d2bc39a)
 
 ## [v1.0.0](https://github.com/ollm/OpenComic/releases/tag/v1.0.0) (09-12-2023)
 

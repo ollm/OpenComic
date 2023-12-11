@@ -234,7 +234,11 @@
 			"clearCache": "",
 			"temporaryFiles": "",
 			"temporaryFilesDescription": "",
-			"removeTemporaryFiles": ""
+			"removeTemporaryFiles": "",
+			"temporaryFilesMaxSize": "",
+			"temporaryFilesMaxSizeDescription": "",
+			"temporaryFilesMaxOld": "",
+			"temporaryFilesMaxOldDescription": ""
 		}
 	},
 	"menu": {

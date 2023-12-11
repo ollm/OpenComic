@@ -226,15 +226,19 @@
 		"storage": {
 			"main": "Emmagatzematge",
 			"cache": "Memòria cau",
-			"cacheDescription": "Les miniatures i l'índex dels fitxers comprimits s'emmagatzemen aquí, no es recomana netejar-la tret que sigui molt gran o hi hagi algun error relacionat amb ella",
+			"cacheDescription": "Les miniatures i l'índex dels arxius comprimits s'emmagatzemen aquí, no es recomana netejar-la tret que sigui molt gran o hi hagi algun error relacionat amb ella",
 			"cacheMaxSize": "Tamany màxim de la memòria cau",
-			"cacheMaxSizeDescription": "S'eliminaran fitxers de la memòria cau quan superi aquesta mida, prioritzant els fitxers més antics sense ús",
+			"cacheMaxSizeDescription": "S'eliminaran arxius de la memòria cau quan superi aquesta mida, prioritzant els arxius més antics sense ús",
 			"cacheMaxOld": "Temps màxim de la memòria cau",
-			"cacheMaxOldDescription": "S'eliminaran fitxers de la memòria cau quan portin més d'aquest temps sense fer-se servir",
+			"cacheMaxOldDescription": "S'eliminaran arxius de la memòria cau quan portin més d'aquest temps sense fer-se servir",
 			"clearCache": "Netejar memòria cau",
 			"temporaryFiles": "Arxius temporals",
-			"temporaryFilesDescription": "Aquí es descomprimeixen els fitxers comprimits a mesura que es van necessitant, això s'elimina automàticament en tancar OpenComic",
-			"removeTemporaryFiles": "Eliminar fitxers temporals"
+			"temporaryFilesDescription": "Aquí es descomprimeixen els arxius comprimits a mesura que es van necessitant, això s'elimina parcialment en tancar OpenComic",
+			"removeTemporaryFiles": "Eliminar arxius temporals",
+			"temporaryFilesMaxSize": "Tamany màxim dels arxius temporals",
+			"temporaryFilesMaxSizeDescription": "S'eliminaran arxius temporals quan superin aquesta mida, prioritzant els arxius més antics sense ús",
+			"temporaryFilesMaxOld": "Temps màxim dels arxius temporals",
+			"temporaryFilesMaxOldDescription": "S'eliminaran arxius temporals quan portin més d'aquest temps sense fer-se servir"
 		}
 	},
 	"menu": {
