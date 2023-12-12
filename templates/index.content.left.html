@@ -10,18 +10,19 @@
 		{{language.global.recents}}
 	</div>
 
-	{{#if masterFolders}}
+	<div class="separator-2" style="width: calc(100% + 12px);"></div>
 
-		<div class="separator-2" style="width: calc(100% + 12px);"></div>
+	<div class="menu-item menu-item-favorites body-medium gamepad-item" onclick="dom.labels.favorites();">
+		<div class="icon-24 material-icon">favorite</div>
+		{{language.global.favorites}}
+	</div>
 
-		{{#each masterFolders}}
-		<div class="menu-item menu-item-master-folder-{{@key}} body-medium gamepad-item" onclick="dom.labels.masterFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{@key}});">
-			<div class="icon-24 material-icon">folder</div>
-			{{name}}
-		</div>
-		{{/each}}
-
-	{{/if}}
+	{{#each masterFolders}}
+	<div class="menu-item menu-item-master-folder-{{@key}} body-medium gamepad-item" onclick="dom.labels.masterFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{@key}});">
+		<div class="icon-24 material-icon">folder</div>
+		{{name}}
+	</div>
+	{{/each}}
 
 	<div class="separator-2" style="width: calc(100% + 12px);"></div>
 

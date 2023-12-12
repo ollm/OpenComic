@@ -7,6 +7,7 @@
 		"library": "库",
 		"recents": "最近添加",
 		"recentlyOpened": "最近打开",
+		"favorites": "",
 		"images": "图片",
 		"sort": {
 			"main": "排列",
@@ -26,6 +27,7 @@
 		},
 		"contextMenu": {
 			"remove": "移除",
+			"favorite": "",
 			"openFileLocation": "打开文件所在位置",
 			"openFolderLocation": "打开文件夹位置",
 			"addPoster": "添加封面",

@@ -18,7 +18,7 @@
 </div>
 <div class="content-view-module">
 	{{#each comics}}
-	<div class="sha-{{sha}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}{{onclick}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">
+	<div class="sha-{{sha}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}{{onclick}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{#if @root.comicsIndex}}{{#unless fromRecentlyOpened}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">
 		{{#if folder}}
 		<div class="v-folder item-image">
 			{{#if poster}}

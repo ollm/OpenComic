@@ -7,6 +7,7 @@
 		"library": "",
 		"recents": "",
 		"recentlyOpened": "",
+		"favorites": "",
 		"images": "",
 		"sort": {
 			"main": "Sortieren",
@@ -26,6 +27,7 @@
 		},
 		"contextMenu": {
 			"remove": "Entfernen",
+			"favorite": "",
 			"openFileLocation": "",
 			"openFolderLocation": "",
 			"addPoster": "",

@@ -7,6 +7,7 @@
 		"library": "ห้องสมุด",
 		"recents": "ล่าสุด",
 		"recentlyOpened": "ที่อ่านค้างไว้",
+		"favorites": "",
 		"images": "รูปภาพ",
 		"sort": {
 			"main": "เรียงตาม",
@@ -26,6 +27,7 @@
 		},
 		"contextMenu": {
 			"remove": "นำออก",
+			"favorite": "",
 			"openFileLocation": "เปิดตำแหน่งไฟล์",
 			"openFolderLocation": "เปิดตำแหน่งโฟลเดอร์",
 			"addPoster": "เพิ่มปก",

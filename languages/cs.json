@@ -7,6 +7,7 @@
 		"library": "",
 		"recents": "",
 		"recentlyOpened": "",
+		"favorites": "",
 		"images": "",
 		"sort": {
 			"main": "Seřadit",
@@ -26,6 +27,7 @@
 		},
 		"contextMenu": {
 			"remove": "Odstranit",
+			"favorite": "",
 			"openFileLocation": "",
 			"openFolderLocation": "",
 			"addPoster": "",

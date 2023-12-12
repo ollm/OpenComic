@@ -77,6 +77,7 @@ async function load(animation = true, content = false)
 					added: 0,
 					folder: true,
 					compressed: fileManager.isCompressed(name),
+					fromRecentlyOpened: true,
 					fromMasterFolder: true,
 				});
 			}

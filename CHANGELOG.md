@@ -9,7 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Option to set maximum size of temporary files, preserving them when closing the app [`a727249`](https://github.com/ollm/OpenComic/commit/a7272499407191064f9d6bd7c42ecf3bb1231a83)
-- Label to display only the contents of a master folder
+- Label to display only the contents of a master folder [`ff35144`](https://github.com/ollm/OpenComic/commit/ff351447829641de32e59a7332f354d945df88fa)
+- Support favorite label 
 
 ##### 🐛 Bug Fixes
 

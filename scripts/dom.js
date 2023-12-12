@@ -335,11 +335,12 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 async function reloadIndex()
 {
+	indexLabel = prevIndexLabel;
 	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true);
 	if(indexPathA) indexPathControlA.pop();
 }
 
-var indexLabel = {};
+var indexLabel = {}, prevIndexLabel = {};
 
 function setIndexLabel(config)
 {
@@ -367,7 +368,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	if(currentPathScrollTop[path === false ? 0 : path])
 		keepScroll = currentPathScrollTop[path === false ? 0 : path];
 
-	let _indexLabel = indexLabel;
+	let _indexLabel = prevIndexLabel = indexLabel;
 	indexLabel = {};
 
 	currentPath = path;
@@ -468,20 +469,37 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		cache.stopQueue();
 		queue.stop('folderThumbnails');
 
-		if(comics.length > 0)
+		let len = comics.length;
+
+		if(len && _indexLabel.favorites)
+		{
+			let favorites = storage.get('favorites');
+			let _comics = [];
+
+			for(let i = 0; i < len; i++)
+			{
+				if(favorites[comics[i].path])
+					_comics.push(comics[i]);
+			}
+
+			comics = _comics;
+			len = comics.length;
+		}
+
+		if(len)
 		{
 			// Comic reading progress
 			let readingProgress = storage.get('readingProgress');
 
-			for(let key in comics)
+			for(let i = 0; i < len; i++)
 			{
-				let images = await getFolderThumbnails(comics[key].path);
+				let images = await getFolderThumbnails(comics[i].path);
 
-				comics[key].sha = sha1(comics[key].path);
-				comics[key].poster = images.poster;
-				comics[key].images = images.images;
-				comics[key].mainPath = comics[key].path;
-				comics[key].readingProgress = readingProgress[comics[key].path] || {lastReading: 0};
+				comics[i].sha = sha1(comics[i].path);
+				comics[i].poster = images.poster;
+				comics[i].images = images.images;
+				comics[i].mainPath = comics[i].path;
+				comics[i].readingProgress = readingProgress[comics[i].path] || {lastReading: 0};
 			}
 
 			comics.sort(function (a, b) {
@@ -1377,17 +1395,41 @@ function nightMode(force = null)
 }
 
 // Show the comic context menu
-async function comicContextMenu(path, fromIndex = true, folder = false, gamepad = false)
+async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
 {	
 	// Remove
 	let remove = document.querySelector('#index-context-menu .context-menu-remove');
 
-	if(fromIndex)
+	if(fromIndexNotMasterFolders)
+	{
 		remove.style.display = 'block';
+		remove.setAttribute('onclick', 'dom.removeComic(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+	}
 	else
+	{
 		remove.style.display = 'none';
+	}
 
-	remove.setAttribute('onclick', 'dom.removeComic(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+	// Favorite
+	let favorite = document.querySelector('#index-context-menu .context-menu-favorite');
+
+	if(fromIndex)
+	{
+		let favorites = storage.get('favorites');
+		let isFavorte = favorites[path] ? true : false;
+
+		favorite.style.display = 'block';
+		favorite.setAttribute('onclick', 'dom.labels.setFavorite(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+
+		if(isFavorte)
+			favorite.querySelector('i').classList.add('fill');
+		else
+			favorite.querySelector('i').classList.remove('fill');
+	}
+	else
+	{
+		favorite.style.display = 'none';
+	}
 
 	// Open file location
 	let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
@@ -1407,13 +1449,13 @@ async function comicContextMenu(path, fromIndex = true, folder = false, gamepad 
 
 		let poster = !Array.isArray(images) ? images : false;
 
-		addPoster.setAttribute('onclick', 'dom.addPoster('+(fromIndex ? 'true' : 'false')+', \''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(poster ? '\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\'' : 'false')+');');
+		addPoster.setAttribute('onclick', 'dom.poster.add('+(fromIndexNotMasterFolders ? 'true' : 'false')+', \''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(poster ? '\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\'' : 'false')+');');
 		addPoster.querySelector('span').innerHTML = poster ? language.global.contextMenu.changePoster : language.global.contextMenu.addPoster;
 
 		if(poster && !poster.fromFirstImageAsPoster)
 		{
 			deletePoster.style.display = 'block';
-			deletePoster.setAttribute('onclick', 'dom.deletePoster(\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\');');
+			deletePoster.setAttribute('onclick', 'dom.poster.delete(\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\');');
 		}
 		else
 		{
@@ -1434,16 +1476,6 @@ async function comicContextMenu(path, fromIndex = true, folder = false, gamepad 
 		events.activeMenu('#index-context-menu', false, 'gamepad');
 	else
 		events.activeContextMenu('#index-context-menu');
-}
-
-function addPoster(fromIndex = false, path = false, currentPoster = false)
-{
-	domPoster.add(fromIndex, path, currentPoster);
-}
-
-function deletePoster(currentPoster = false)
-{
-	domPoster.delete(currentPoster);
 }
 
 // Remove the comic from OpenComic
@@ -1699,6 +1731,7 @@ module.exports = {
 	loadIndexPage: loadIndexPage,
 	loadIndexContentLeft: loadIndexContentLeft,
 	setIndexLabel: setIndexLabel,
+	prevIndexLabel: function(){return prevIndexLabel},
 	reloadIndex: reloadIndex,
 	loadRecentlyOpened: loadRecentlyOpened,
 	loadLanguagesPage: loadLanguagesPage,
@@ -1727,8 +1760,6 @@ module.exports = {
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
 	addSepToEnd: addSepToEnd,
-	addPoster: addPoster,
-	deletePoster: deletePoster,
 	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
 	indexPathA: function(){return indexPathA},
 	indexMainPathA: function(){return indexMainPathA},
@@ -1737,6 +1768,7 @@ module.exports = {
 	translatePageName: translatePageName,
 	metadataPathName: metadataPathName,
 	fromLibrary: fromLibrary,
+	poster: domPoster,
 	search: search,
 	labels: labels,
 	this: domManager.this,

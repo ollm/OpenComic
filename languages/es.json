@@ -7,6 +7,7 @@
 		"library": "Biblioteca",
 		"recents": "Recientes",
 		"recentlyOpened": "Abierto recientemente",
+		"favorites": "Favoritos",
 		"images": "Imágenes",
 		"sort": {
 			"main": "Ordenar",
@@ -26,6 +27,7 @@
 		},
 		"contextMenu": {
 			"remove": "Retirar",
+			"favorite": "Favorito",
 			"openFileLocation": "Abrir ubicación del archivo",
 			"openFolderLocation": "Abrir ubicación de la carpeta",
 			"addPoster": "Añadir póster",

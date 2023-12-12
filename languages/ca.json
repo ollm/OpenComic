@@ -7,6 +7,7 @@
 		"library": "Biblioteca",
 		"recents": "Recents",
 		"recentlyOpened": "Obert recentment",
+		"favorites": "Favorits",
 		"images": "Imatges",
 		"sort": {
 			"main": "Ordenar",
@@ -26,6 +27,7 @@
 		},
 		"contextMenu": {
 			"remove": "Retirar",
+			"favorite": "Favorit",
 			"openFileLocation": "Obre la ubicació del fitxer",
 			"openFolderLocation": "Obre la ubicació de la carpeta",
 			"addPoster": "Afegeix pòster",

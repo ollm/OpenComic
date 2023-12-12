@@ -18,7 +18,7 @@ function canAddPosterOutside(path = false)
 
 var currentPath = '', addPosterInside = false;
 
-function add(fromIndex = false, path = false, currentPoster = false)
+function add(fromIndexNotMasterFolders = false, path = false, currentPoster = false)
 {
 	currentPath = path;
 	addPosterInside = false;
@@ -32,7 +32,7 @@ function add(fromIndex = false, path = false, currentPoster = false)
 			currentPosterIsInside = true;
 	}*/
 
-	if((fromIndex/* || currentPosterIsInside*/) && canAddPosterInside(path))
+	if((fromIndexNotMasterFolders/* || currentPosterIsInside*/) && canAddPosterInside(path))
 		addPosterInside = true;
 
 	if(addPosterInside || canAddPosterOutside(path))
