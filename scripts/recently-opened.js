@@ -126,7 +126,7 @@ async function load(animation = true, content = false)
 
 	if(!content)
 	{
-		if(template.contentLeft('.menu-list').length === 0) template.loadContentLeft('index.content.left.html', animation);
+		if(template.contentLeft('.menu-list').length === 0) dom.loadIndexContentLeft(animation);
 		template.loadGlobalElement('index.elements.menus.html', 'menus');
 		dom.floatingActionButton(false);
 	}

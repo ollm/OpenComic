@@ -202,6 +202,7 @@ function removeMasterFolder(key)
 		storage.set('masterFolders', masterFolders);
 
 		updateMasterFolders();
+		dom.loadIndexContentLeft(true, true);
 	}
 }
 
@@ -224,6 +225,7 @@ function addMasterFolder()
 				storage.set('masterFolders', masterFolders);
 
 				updateMasterFolders();
+				dom.loadIndexContentLeft(true, true);
 			}
 		}
 

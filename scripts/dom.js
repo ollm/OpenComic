@@ -1,5 +1,6 @@
 const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	domManager = require(p.join(appDir, 'scripts/dom/dom.js')),
+	labels = require(p.join(appDir, 'scripts/dom/labels.js')),
 	search = require(p.join(appDir, 'scripts/dom/search.js'));
 
 /*Page - Index*/
@@ -338,6 +339,13 @@ async function reloadIndex()
 	if(indexPathA) indexPathControlA.pop();
 }
 
+var indexLabel = {};
+
+function setIndexLabel(config)
+{
+	indexLabel = config;
+}
+
 var currentPath = false, currentPathScrollTop = [], fromDeepLoadNow = 0;
 
 async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromDeepLoad = false)
@@ -358,6 +366,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	if(currentPathScrollTop[path === false ? 0 : path])
 		keepScroll = currentPathScrollTop[path === false ? 0 : path];
+
+	let _indexLabel = indexLabel;
+	indexLabel = {};
 
 	currentPath = path;
 
@@ -410,7 +421,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			for(let key in masterFolders)
 			{
-				if(fs.existsSync(masterFolders[key]))
+				if(fs.existsSync(masterFolders[key]) && (!_indexLabel.masterFolder || _indexLabel.masterFolder == masterFolders[key]))
 				{
 					let file = fileManager.file(masterFolders[key]);
 					let files = await file.readDir();
@@ -441,7 +452,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		// Get comics in library
 		let comicsStorage = storage.get('comics');
 
-		if(!isEmpty(comicsStorage))
+		if(!isEmpty(comicsStorage) && !_indexLabel.masterFolder)
 		{
 			for(let key in comicsStorage)
 			{
@@ -494,7 +505,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		if(!content)
 		{
-			if(template.contentLeft('.menu-list').length === 0) template.loadContentLeft('index.content.left.html', animation);
+			if(template.contentLeft('.menu-list').length === 0) dom.loadIndexContentLeft(animation);
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
 			floatingActionButton(true, 'dom.addComicButtons();');
 		}
@@ -532,7 +543,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			if(readingActive)
 			{
-				template.loadContentLeft('index.content.left.html', animation);
+				dom.loadIndexContentLeft(animation);
 			}
 
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
@@ -627,13 +638,38 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	if(readingActive)
 		readingActive = false;
 
-	if(!isFromRecentlyOpened)
-		selectMenuItem('library');
-	else
-		selectMenuItem('recently-opened');
+	if(isEmpty(_indexLabel))
+	{
+		if(!isFromRecentlyOpened)
+			selectMenuItem('library');
+		else
+			selectMenuItem('recently-opened');
+	}
 
 	shortcuts.register('browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
+}
+
+function loadIndexContentLeft(animation, isFromSettings = false)
+{
+	let masterFolders = storage.get('masterFolders');
+
+	let _masterFolders = [];
+
+	for(let i = 0, len = masterFolders.length; i < len; i++)
+	{
+		_masterFolders.push({
+			name: p.basename(masterFolders[i]),
+			path: masterFolders[i],
+		});
+	}
+
+	handlebarsContext.masterFolders = _masterFolders;
+	handlebarsContext.isFromSettings = isFromSettings;
+
+	template.loadContentLeft('index.content.left.html', animation);
+
+	handlebarsContext.isFromSettings = false;
 }
 
 function compressedError(error)
@@ -1064,7 +1100,7 @@ function changeLanguage(lan)
 	template.contentRight('.language-list.active').removeClass('active');
 	template.contentRight('.language-list-'+lan).addClass('active');
 
-	template.loadContentLeft('index.content.left.html', false);
+	dom.loadIndexContentLeft(false);
 	template.loadHeader('languages.header.html', false);
 	storage.updateVar('config', 'language', lan);
 
@@ -1661,12 +1697,15 @@ gamepad.setButtonEvent('reading', 1, function(key, button) {
 
 module.exports = {
 	loadIndexPage: loadIndexPage,
+	loadIndexContentLeft: loadIndexContentLeft,
+	setIndexLabel: setIndexLabel,
 	reloadIndex: reloadIndex,
 	loadRecentlyOpened: loadRecentlyOpened,
 	loadLanguagesPage: loadLanguagesPage,
 	loadSettingsPage: loadSettingsPage,
 	loadThemePage: loadThemePage,
 	changeLanguage: changeLanguage,
+	selectMenuItem: selectMenuItem,
 	floatingActionButton: floatingActionButton,
 	setCurrentPageVars: setCurrentPageVars,
 	changeView: changeView,
@@ -1699,6 +1738,7 @@ module.exports = {
 	metadataPathName: metadataPathName,
 	fromLibrary: fromLibrary,
 	search: search,
+	labels: labels,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

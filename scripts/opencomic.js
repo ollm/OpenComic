@@ -341,8 +341,8 @@ async function startApp()
 
 	template.loadContentRight('index.content.right.empty.html', false);
 	template.loadHeader('index.header.html', false);
-	template.loadContentLeft('index.content.left.html', false);
 	template.loadGlobalElement('index.elements.menus.html', 'menus');
+	dom.loadIndexContentLeft(false);
 
 	if(!toOpenFile)
 	{
@@ -937,6 +937,20 @@ hb.registerHelper('compare', function(lvalue, operator, rvalue, options) {
 		return options.fn(this);
 	else
 		return options.inverse(this);
+
+});
+
+hb.registerHelper('ifOr', function() {
+
+	let options = arguments[arguments.length - 1];
+
+	for(let i = 0, len = arguments.length - 1; i < len; i++)
+	{
+		if(!playmax.empty(arguments[i]))
+			return options.fn(this);
+	}
+
+	return options.inverse(this);
 
 });
 
