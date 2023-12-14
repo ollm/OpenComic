@@ -43,12 +43,11 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 
 ## Download [`v1.0.0`](https://github.com/ollm/OpenComic/releases)
 
+###### Stores
 <a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Get it from Microsoft" title="Get it from Microsoft" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/microsoft-store.svg" /></a>
 &nbsp;&nbsp;&nbsp;<a href="https://apps.apple.com/app/opencomic/id6464329463"><img height="50" alt="Download on the Mac App Store" title="Download on the Mac App Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/mac-app-store.svg" /></a>
 &nbsp;&nbsp;&nbsp;<a href="https://snapcraft.io/opencomic"><img height="50" alt="Get it from the Snap Store" title="Get it from the Snap Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/snap-store.svg" /></a>
-
 ###### Windows
-- [Microsoft Store](https://apps.microsoft.com/detail/9PDCMVNFZ2KK)
 - [.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic.Setup.1.0.0.exe)
 - [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic.Portable.1.0.0.exe)
 ###### macOS
@@ -67,7 +66,6 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 - [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-x86_64.flatpak)
 - [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0.AppImage)
 - [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
-- [Snap Store](https://snapcraft.io/opencomic)
 ###### Linux Arm64
 - [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic_1.0.0_arm64.deb)
 - [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic-1.0.0.aarch64.rpm)
