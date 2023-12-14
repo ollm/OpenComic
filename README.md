@@ -44,10 +44,8 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 ## Download [`v1.0.0`](https://github.com/ollm/OpenComic/releases)
 
 <a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Get it from Microsoft" title="Get it from Microsoft" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/microsoft-store.svg" /></a>
+&nbsp;&nbsp;&nbsp;<a href="https://apps.apple.com/app/opencomic/id6464329463"><img height="50" alt="Download on the Mac App Store" title="Download on the Mac App Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/mac-app-store.svg" /></a>
 &nbsp;&nbsp;&nbsp;<a href="https://snapcraft.io/opencomic"><img height="50" alt="Get it from the Snap Store" title="Get it from the Snap Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/snap-store.svg" /></a>
-
-<!--<a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Download on the Mac App Store" title="Download on the Mac App Store" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/mac-app-store.svg" /></a>
-&nbsp;&nbsp;&nbsp;-->
 
 ###### Windows
 - [Microsoft Store](https://apps.microsoft.com/detail/9PDCMVNFZ2KK)
