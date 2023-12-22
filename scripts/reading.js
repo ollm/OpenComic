@@ -1830,7 +1830,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 						transition: 'transform 0s, z-index 0s',
 						transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 						transformOrigin: 'center center',
-						zIndex: scale == 1 ? 1 : 2,
+						zIndex: scale == 1 ? 1 : 3,
 					});
 
 				}, _config.readingViewSpeed * 1000);
@@ -1841,7 +1841,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 					transition: 'transform '+animationDurationS+'s, z-index '+animationDurationS+'s',
 					transform: 'translateX('+app.roundDPR(translateX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 					transformOrigin: 'center center',
-					zIndex: scale == 1 ? 1 : 2,
+					zIndex: scale == 1 ? 1 : 3,
 				});
 			}
 
