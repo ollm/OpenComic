@@ -92,15 +92,15 @@ function round(number, precision = 0) {
 
 }
 
-function roundDPR(number) {
+function roundDPR(number, base = 0) {
 
-	return Math.round(number * window.devicePixelRatio) / window.devicePixelRatio;
+	return Math.round(base + number * window.devicePixelRatio) / window.devicePixelRatio - base;
 
 }
 
-function floorDPR(number) {
+function floorDPR(number, base = 0) {
 
-	return Math.floor(number * window.devicePixelRatio) / window.devicePixelRatio;
+	return Math.floor(base + number * window.devicePixelRatio) / window.devicePixelRatio - base;
 
 }
 

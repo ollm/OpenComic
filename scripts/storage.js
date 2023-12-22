@@ -1,10 +1,11 @@
-var changes = 68; // Update this if readingPagesConfig is updated
+var changes = 69; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
 	readingView: 'slide',
 	readingViewSpeed: 0.3,
 	readingViewAdjustToWidth: false,
+	readingNotEnlargeMoreThanOriginalSize: false,
 	readingMargin: {
 		margin: 16,
 		top: 16,

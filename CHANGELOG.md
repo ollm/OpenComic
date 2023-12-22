@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Label to display only the contents of a master folder [`ff35144`](https://github.com/ollm/OpenComic/commit/ff351447829641de32e59a7332f354d945df88fa)
 - Support favorite label [`86039e6`](https://github.com/ollm/OpenComic/commit/86039e6d9f90d77b9671068d520c8bc2fa635f30)
 - Custom labels support [`1185d82`](https://github.com/ollm/OpenComic/commit/1185d82790a764e63d1d223362e4b44e203ff0e1)
+- Option to not enlarge images more than its original size
 
 ##### 🐛 Bug Fixes
 

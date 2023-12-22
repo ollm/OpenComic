@@ -338,6 +338,8 @@ function disposeImages(data = false)
 		imageElements[key1][key2].push(image.firstElementChild);
 	}
 
+	let readingNotEnlargeMoreThanOriginalSize = (_config.readingNotEnlargeMoreThanOriginalSize || _config.readingWebtoon) ? true : false;
+	
 	for(let key1 in _imagesDistribution)
 	{
 		if(!imageElements[key1])
@@ -388,6 +390,25 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
+				if(readingNotEnlargeMoreThanOriginalSize)
+				{
+					let dpr = window.devicePixelRatio;
+					let size = imagesData[first.index];
+					let sizeClip = imagesDataClip[first.index];
+
+					if(imgWidth0 * dpr > size.width || imgHeight0 * dpr > size.height)
+					{
+						marginLeft0 += (imgWidth0 - size.width / dpr);
+						if(!readingViewIs('scroll')) marginTop0 += (imgHeight0 - size.height / dpr) / 2;
+
+						imgWidth0 = sizeClip.width / dpr;
+						imgHeight0 = sizeClip.height / dpr;
+
+						imageWidth0 = size.width / dpr;
+						imageHeight0 = size.height / dpr;
+					}
+				}
+
 				for(let i = 0, len = image0.length; i < len; i++)
 				{
 					let image = image0[i];
@@ -423,6 +444,25 @@ function disposeImages(data = false)
 
 			if(image1)
 			{
+				if(readingNotEnlargeMoreThanOriginalSize)
+				{
+					let dpr = window.devicePixelRatio;
+					let size = imagesData[second.index];
+					let sizeClip = imagesDataClip[second.index];
+
+					if(imgWidth1 * dpr > size.width || imgHeight1 * dpr > size.height)
+					{
+						marginLeft1 += 0;
+						if(!readingViewIs('scroll')) marginTop1 += (imgHeight1 - size.height / dpr) / 2;
+
+						imgWidth1 = sizeClip.width / dpr;
+						imgHeight1 = sizeClip.height / dpr;
+
+						imageWidth1 = size.width / dpr;
+						imageHeight1 = size.height / dpr;
+					}
+				}
+
 				for(let i = 0, len = image1.length; i < len; i++)
 				{
 					let image = image1[i];
@@ -500,6 +540,25 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
+				if(readingNotEnlargeMoreThanOriginalSize)
+				{
+					let dpr = window.devicePixelRatio;
+					let size = imagesData[first.index];
+					let sizeClip = imagesDataClip[first.index];
+
+					if(imgWidth * dpr > size.width || imgHeight * dpr > size.height)
+					{
+						marginLeft += (imgWidth - size.width / dpr) / 2;
+						if(!readingViewIs('scroll')) marginTop += (imgHeight - size.height / dpr) / 2;
+
+						imgWidth = sizeClip.width / dpr;
+						imgHeight = sizeClip.height / dpr;
+
+						imageWidth = size.width / dpr;
+						imageHeight = size.height / dpr;
+					}
+				}
+
 				for(let i = 0, len = image0.length; i < len; i++)
 				{
 					let image = image0[i];
@@ -2669,7 +2728,7 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width').addClass('disable-pointer');
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size').addClass('disable-pointer');
 		}
 		else
 		{
@@ -2679,7 +2738,7 @@ function changePagesView(mode, value, save)
 			if(_config.readingDoublePage)
 				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
 
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page').removeClass('disable-pointer');
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size').removeClass('disable-pointer');
 		}
 
 		template.loadContentRight('reading.content.right.html', true);
@@ -2759,6 +2818,14 @@ function changePagesView(mode, value, save)
 		disposeImages();
 		calculateView();
 		stayInLine();
+	}
+	else if(mode == 18) // Do not enlarge images more than its original size
+	{
+		updateReadingPagesConfig('readingNotEnlargeMoreThanOriginalSize', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 }
 
@@ -4615,11 +4682,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		}
 
 		if(haveZoom && zoomMoveData.active)
-		{
 			dragZoomEnd();
-
-			$('body').removeClass('dragging');
-		}
 		
 		if(readingDragScroll)
 		{
@@ -4643,12 +4706,15 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 					readingDragScroll.content.stop(true).animate({scrollTop: (readingDragScroll.content.scrollTop() + moreScroll)+'px'}, duration * 1000, $.bez([0.22, 0.6, 0.3, 1]));
 				}
-
-				$('body').removeClass('dragging');
 			}
 
 			setTimeout(function(){reading.setReadingDragScroll(false)}, 10);
 		}
+
+		let dragging = document.querySelector('body.dragging');
+
+		if(dragging)
+			dragging.classList.remove('dragging');
 
 	});
 

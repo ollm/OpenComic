@@ -76,6 +76,7 @@
 			"slide": "Slide Reader",
 			"scroll": "Vertical Reader",
 			"adjustToWidth": "Adjust to width",
+			"notEnlargeMoreThanOriginalSize": "Do not enlarge more than its original size",
 			"margin": "Margin",
 			"marginHorizontal": "Horizontal margin",
 			"marginVertical": "Vertical margin",

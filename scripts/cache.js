@@ -17,7 +17,7 @@ function processTheImageQueue()
 	let realPath = fileManager.realPath(img.file);
 	let toImage = p.join(cacheFolder, sha+'.jpg');
 
-	image.resize(realPath, toImage, {width: img.size, height: img.size * 1.5, quality: 95}).then(function(){
+	image.resize(realPath, toImage, {width: img.size, height: Math.round(img.size * 1.5), quality: 95}).then(function(){
 
 		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
 
