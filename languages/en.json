@@ -8,6 +8,8 @@
 		"recents": "Recents",
 		"recentlyOpened": "Recently opened",
 		"favorites": "Favorites",
+		"labels": "Labels",
+		"editLabels": "Edit labels",
 		"images": "Images",
 		"sort": {
 			"main": "Sort",
@@ -301,6 +303,14 @@
 			"readingPresetName": "Preset name",
 			"readingGotoPage": "Go to page"
 		},
+		"labels": {
+			"empty": "No labels",
+			"newLabel": "New label",
+			"labelName": "Label name",
+			"labelExists": "This label already exists",
+			"deleteLabel": "Delete label",
+			"confirmDelete": "Are you sure you want to delete this label?"
+		},
 		"release": {
 			"title": "New version available <b>{{releaseName}}</b>",
 			"body": "You can see the implemented changes from the {{{linkStart}}}release page{{{linkEnd}}}"
@@ -313,7 +323,8 @@
 		"undo": "Undo",
 		"dismiss": "Dismiss",
 		"remove": "Remove",
-		"download": "Download"
+		"download": "Download",
+		"close": "Close"
 	},
 	"error": {
 		"uncompress": {

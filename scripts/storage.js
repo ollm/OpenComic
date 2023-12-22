@@ -1,4 +1,4 @@
-var changes = 67; // Update this if readingPagesConfig is updated
+var changes = 68; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -144,6 +144,18 @@ var storageDefault = {
 			},
 		},
 	},
+	readingShortcutPagesConfig: {
+		wildcard: {
+			key: 0,
+			...readingPagesConfig,
+		}
+	},
+	readingPagesConfig: {
+		wildcard: {
+			configKey: false,
+			...readingPagesConfig,
+		}
+	},
 	comics: [{
 		name: 'Name',
 		path: 'Files path',
@@ -182,6 +194,14 @@ var storageDefault = {
 			added: 0,
 		}
 	},
+	labels: [
+		'',
+	],
+	comicLabels: {
+		wildcard: [
+			'',
+		],
+	},
 	securityScopedBookmarks: {
 		wildcard: [{
 			path: '',
@@ -197,18 +217,6 @@ var storageDefault = {
 			chapterIndex: 0,
 			chapterProgress: 0,
 		}]
-	},
-	readingShortcutPagesConfig: {
-		wildcard: {
-			key: 0,
-			...readingPagesConfig,
-		}
-	},
-	readingPagesConfig: {
-		wildcard: {
-			configKey: false,
-			...readingPagesConfig,
-		}
 	},
 	readingProgress: {
 		wildcard: {

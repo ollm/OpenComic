@@ -8,6 +8,8 @@
 		"recents": "ล่าสุด",
 		"recentlyOpened": "ที่อ่านค้างไว้",
 		"favorites": "",
+		"labels": "",
+		"editLabels": "",
 		"images": "รูปภาพ",
 		"sort": {
 			"main": "เรียงตาม",
@@ -301,6 +303,14 @@
 			"readingPresetName": "ชื่อการตั้งค่า",
 			"readingGotoPage": "ไปยังหน้า"
 		},
+		"labels": {
+			"empty": "",
+			"newLabel": "",
+			"labelName": "",
+			"labelExists": "",
+			"deleteLabel": "",
+			"confirmDelete": ""
+		},
 		"release": {
 			"title": "มีเวอร์ชั่นใหม่พร้อมใช้งาน <b>{{releaseName}}</b>",
 			"body": "คุณสามารถดูการเปลี่ยนแปลงจาก {{{linkStart}}}หน้าปล่อยซอฟแวร์{{{linkEnd}}}"
@@ -313,7 +323,8 @@
 		"undo": "้ย้อนกลับ",
 		"dismiss": "ปิด",
 		"remove": "นำออก",
-		"download": "ดาวน์โหลด"
+		"download": "ดาวน์โหลด",
+		"close": ""
 	},
 	"error": {
 		"uncompress": {

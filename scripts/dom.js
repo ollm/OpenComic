@@ -340,7 +340,7 @@ async function reloadIndex()
 	if(indexPathA) indexPathControlA.pop();
 }
 
-var indexLabel = {}, prevIndexLabel = {};
+var indexLabel = false, prevIndexLabel = false;
 
 function setIndexLabel(config)
 {
@@ -369,7 +369,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		keepScroll = currentPathScrollTop[path === false ? 0 : path];
 
 	let _indexLabel = prevIndexLabel = indexLabel;
-	indexLabel = {};
+	indexLabel = false;
 
 	currentPath = path;
 
@@ -471,19 +471,39 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		let len = comics.length;
 
-		if(len && _indexLabel.favorites)
+		if(len && _indexLabel)
 		{
-			let favorites = storage.get('favorites');
-			let _comics = [];
-
-			for(let i = 0; i < len; i++)
+			if(_indexLabel.favorites)
 			{
-				if(favorites[comics[i].path])
-					_comics.push(comics[i]);
-			}
+				let favorites = storage.get('favorites');
+				let _comics = [];
 
-			comics = _comics;
-			len = comics.length;
+				for(let i = 0; i < len; i++)
+				{
+					if(favorites[comics[i].path])
+						_comics.push(comics[i]);
+				}
+
+				comics = _comics;
+				len = comics.length;
+			}
+			else if(_indexLabel.label)
+			{
+				let labels = storage.get('labels');
+				let label = labels[_indexLabel.index] || [];
+
+				let comicLabels = storage.get('comicLabels');
+				let _comics = [];
+
+				for(let i = 0; i < len; i++)
+				{
+					if(comicLabels[comics[i].path] && inArray(label, comicLabels[comics[i].path]))
+						_comics.push(comics[i]);
+				}
+
+				comics = _comics;
+				len = comics.length;
+			}
 		}
 
 		if(len)
@@ -519,7 +539,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		handlebarsContext.headerTitle = false;
 		handlebarsContext.headerTitlePath = false;
-		template.loadHeader('index.header.html', animation);
+		dom.loadIndexHeader(_indexLabel ? _indexLabel.name : false, animation);
 
 		if(!content)
 		{
@@ -548,12 +568,12 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		if(fromDeepLoad && Date.now() - fromDeepLoadNow < 200)
 		{
-			template._barHeader().firstElementChild.innerHTML = template.load('index.header.html');
+			template._barHeader().firstElementChild.innerHTML = dom.indexHeader(false);
 			// template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
 		}
 		else
 		{
-			template.loadHeader('index.header.html', animation);
+			dom.loadIndexHeader(false, animation);
 			template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
 		}
 
@@ -656,20 +676,25 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	if(readingActive)
 		readingActive = false;
 
-	if(isEmpty(_indexLabel))
+	if(!_indexLabel && !isFromIndexLabel)
 	{
 		if(!isFromRecentlyOpened)
 			selectMenuItem('library');
 		else
 			selectMenuItem('recently-opened');
 	}
+	else
+	{
+		selectMenuItem(dom.labels.menuItemSelector(isFromIndexLabel ? isFromIndexLabel : _indexLabel));
+	}
 
 	shortcuts.register('browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
 }
 
-function loadIndexContentLeft(animation, isFromSettings = false)
+function loadIndexContentLeft(animation)
 {
+	// Master folders
 	let masterFolders = storage.get('masterFolders');
 
 	let _masterFolders = [];
@@ -677,17 +702,65 @@ function loadIndexContentLeft(animation, isFromSettings = false)
 	for(let i = 0, len = masterFolders.length; i < len; i++)
 	{
 		_masterFolders.push({
+			id: 'master-folder-'+i,
+			key: i,
 			name: p.basename(masterFolders[i]),
 			path: masterFolders[i],
 		});
 	}
 
+	_masterFolders.sort(function(a, b){
+
+		if(a.name === b.name)
+			return 0;
+
+		return a.name > b.name ? 1 : -1;
+
+	});
+
 	handlebarsContext.masterFolders = _masterFolders;
-	handlebarsContext.isFromSettings = isFromSettings;
+
+	// Labels
+	let labels = storage.get('labels');
+
+	let _labels = [];
+
+	for(let i = 0, len = labels.length; i < len; i++)
+	{
+		_labels.push({
+			id: 'label-'+i,
+			key: i,
+			name: labels[i],
+		});
+	}
+
+	_labels.sort(function(a, b){
+
+		if(a.name === b.name)
+			return 0;
+
+		return a.name > b.name ? 1 : -1;
+
+	});
+
+	handlebarsContext.labels = _labels;
+	handlebarsContext.isFrom = currentSelectMenuItem;
 
 	template.loadContentLeft('index.content.left.html', animation);
 
-	handlebarsContext.isFromSettings = false;
+	handlebarsContext.isFrom = false;
+}
+
+function loadIndexHeader(title = false, animation = true)
+{
+	handlebarsContext.indexHeaderTitle = title || language.global.comics;
+	template.loadHeader('index.header.html', animation);
+}
+
+function indexHeader(title = false)
+{
+	handlebarsContext.indexHeaderTitle = title || language.global.comics;
+	return template.load('index.header.html');
 }
 
 function compressedError(error)
@@ -945,6 +1018,9 @@ function indexPathControlGoBack()
 {
 	if(indexPathControlA.length == 1)
 	{
+		if(isFromIndexLabel && !isFromRecentlyOpened)
+			indexLabel = isFromIndexLabel;
+
 		if(isFromRecentlyOpened)
 			recentlyOpened.load(true);
 		else
@@ -953,6 +1029,8 @@ function indexPathControlGoBack()
 	else if(indexPathControlA.length > 0)
 	{
 		let goBack = indexPathControlA[indexPathControlA.length - 2];
+
+		indexLabel = goBack.indexLabel;
 
 		if(goBack.isComic)
 			openComic(true, goBack.path, goBack.mainPath, false, true);
@@ -978,7 +1056,7 @@ function indexPathControlUpdateLastComic(path = false)
 	}
 }
 
-var barBackStatus = false, isFromRecentlyOpened = false;
+var barBackStatus = false, isFromRecentlyOpened = false, isFromIndexLabel = false;
 
 // This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
 function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false, fromRecentlyOpened = false)
@@ -991,6 +1069,7 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 		indexPathControlA = [];
 
 		isFromRecentlyOpened = handlebarsContext.isFromRecentlyOpened = fromRecentlyOpened;
+		isFromIndexLabel = prevIndexLabel;
 	}
 	else
 	{
@@ -1173,10 +1252,12 @@ function loadThemePage(animation = true)
 		readingActive = false;
 }
 
+var currentSelectMenuItem = false;
+
 function selectMenuItem(page)
 {
-	let contentLeft = template.contentLeft().get(0);
-	//let contentLeft = dom.this(contentLeft);
+	currentSelectMenuItem = page;
+	let contentLeft = template._contentLeft();
 
 	let active = contentLeft.querySelector('.menu-item.active');
 	if(active) active.classList.remove('active');
@@ -1431,6 +1512,27 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 		favorite.style.display = 'none';
 	}
 
+	// Labels
+	let labels = document.querySelector('#index-context-menu .context-menu-labels');
+
+	if(fromIndex)
+	{
+		let comicLabels = storage.get('comicLabels');
+		let hasLabels = comicLabels[path] ? true : false;
+
+		labels.style.display = 'block';
+		labels.setAttribute('onclick', 'dom.labels.setLabels(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+
+		if(hasLabels)
+			labels.querySelector('i').classList.add('fill');
+		else
+			labels.querySelector('i').classList.remove('fill');
+	}
+	else
+	{
+		labels.style.display = 'none';
+	}
+
 	// Open file location
 	let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 	openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
@@ -1678,7 +1780,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	if(Date.now() - now < 200)
 	{
-		if(template._contentRight().querySelector('.loading'))
+		if(template._contentRight().querySelector('.loading') && !template._contentRight().querySelector('.reading-body'))
 		{
 			handlebarsContext.loading = false;
 			template._contentRight().firstElementChild.insertAdjacentHTML('beforeend', template.load('reading.content.right.html'));
@@ -1730,6 +1832,8 @@ gamepad.setButtonEvent('reading', 1, function(key, button) {
 module.exports = {
 	loadIndexPage: loadIndexPage,
 	loadIndexContentLeft: loadIndexContentLeft,
+	loadIndexHeader: loadIndexHeader,
+	indexHeader: indexHeader,
 	setIndexLabel: setIndexLabel,
 	prevIndexLabel: function(){return prevIndexLabel},
 	reloadIndex: reloadIndex,

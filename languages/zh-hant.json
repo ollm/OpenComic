@@ -8,6 +8,8 @@
 		"recents": "",
 		"recentlyOpened": "",
 		"favorites": "",
+		"labels": "",
+		"editLabels": "",
 		"images": "",
 		"sort": {
 			"main": "排序",
@@ -301,6 +303,14 @@
 			"readingPresetName": "",
 			"readingGotoPage": ""
 		},
+		"labels": {
+			"empty": "",
+			"newLabel": "",
+			"labelName": "",
+			"labelExists": "",
+			"deleteLabel": "",
+			"confirmDelete": ""
+		},
 		"release": {
 			"title": "",
 			"body": ""
@@ -313,7 +323,8 @@
 		"undo": "",
 		"dismiss": "",
 		"remove": "",
-		"download": ""
+		"download": "",
+		"close": ""
 	},
 	"error": {
 		"uncompress": {

@@ -1,0 +1,21 @@
+{{#if labels}}
+	{{#each labels}}
+	<div class="menu-simple-element menu-simple-element-medium menu-simple-element-dialog rounded gamepad-item menu-simple-element-icons-2"{{#if @last}} style="margin-bottom: 14px;"{{/if}}>
+		<span>{{name}}</span>
+		<i class="material-icon menu-simple-icon" onclick="dom.labels.deleteLabel({{key}}); event.stopPropagation();">delete</i>
+		<i class="material-icon menu-simple-icon" onclick="dom.labels.editLabel({{key}}); event.stopPropagation();" style="padding-right: 8px;">edit</i>
+	</div>
+	{{/each}}
+{{else}}
+
+<div class="menu-simple-text" style="margin-bottom: 14px;">{{language.dialog.labels.empty}}</div>
+
+{{/if}}
+
+<cb></cb>
+
+<div class="simple-button filled-tonal gamepad-item" onclick="dom.labels.newLabel(false, true);">
+	<div class="touch-effect"><i class="icon-24 material-icon">new_label</i>{{language.dialog.labels.newLabel}}</div>
+</div>
+
+<cb></cb>

@@ -263,6 +263,31 @@ function eventSwitch()
 	app.event('.switch', 'click', swiftClick);
 }
 
+function checkboxClick()
+{
+	let input = this.querySelector('input');
+
+	if(this.classList.contains('active'))
+	{
+		this.classList.remove('active');
+		input.value = 0;
+	}
+	else
+	{
+		this.classList.add('active');
+		input.value = 1;
+	}
+
+	this.classList.remove('activeAnimation');
+	this.getBoundingClientRect();
+	this.classList.add('activeAnimation');
+}
+
+function eventCheckbox()
+{
+	app.event('.checkbox', 'click', checkboxClick);
+}
+
 var rangeMoveStepST = false;
 
 function rangeMoveStep(This, stepToSum = 1)
@@ -632,6 +657,7 @@ function events()
 	eventHover();
 	eventButton();
 	eventSwitch();
+	eventCheckbox();
 	eventRange();
 	eventsTab();
 	eventSelect(false);
@@ -950,10 +976,11 @@ function desactiveMenu(query, query2 = false, insideMenu = false)
 }
 
 // Dialogs
-var closeDialogST = false;
+var dialogST = false, closeDialogST = false;
 
 function dialog(config)
 {
+	clearTimeout(dialogST);
 	clearTimeout(closeDialogST);
 
 	config.width = (config.width) ? config.width : 280;
@@ -962,7 +989,11 @@ function dialog(config)
 
 	handlebarsContext.dialog = config;
 
-	$('.dialogs').html(template.load('dialog.html'));
+	closeDialog();
+
+	gamepad.updateBrowsableItems('dialog');
+
+	dom.query('.dialogs').append(template.load('dialog.html'));
 
 	onReading = false;
 	generateAppMenu();
@@ -972,13 +1003,19 @@ function closeDialog()
 {
 	clearTimeout(closeDialogST);
 
-	$('.dialogs .dialog, .dialogs .dialog-close').addClass('hide');
+	dom.queryAll('.dialogs .dialog').css({zIndex: 119});
+	let toRemove = dom.queryAll('.dialogs .dialog, .dialogs .dialog-close, .dialogs .dialog-clip-path-shadow').addClass('hide');
 
 	closeDialogST = setTimeout(function(){
 
-		$('.dialogs .dialog, .dialogs .dialog-close, .dialogs .dialog-clip-path-shadow').remove();
+		toRemove.remove();
 
-	}, 150);
+	}, 400);
+
+	if(!onReading)
+		gamepad.updateBrowsableItemsPrevKey();
+	else
+		gamepad.cleanBrowsableItems();
 
 	onReading = _onReading;
 	generateAppMenu();
@@ -1079,6 +1116,8 @@ module.exports = {
 	eventHover: eventHover,
 	eventRange: eventRange,
 	eventSelect: eventSelect,
+	eventSwitch: eventSwitch,
+	eventCheckbox: eventCheckbox,
 	eventsTab: eventsTab,
 	events: events,
 	showHoverText: showHoverText,
@@ -1093,6 +1132,7 @@ module.exports = {
 	closeDialog: closeDialog,
 	snackbar: snackbar,
 	closeSnackbar: closeSnackbar,
+	checkboxClick: checkboxClick,
 	rangeMoveStep: rangeMoveStep,
 	resetRange: resetRange,
 	goRange: goRange,

@@ -2,16 +2,18 @@ var sharp = false, jimp = false, imageMagick = false, graphicsMagick = false;
 
 async function resize(fromImage, toImage, config = {})
 {
+	if(sharp === false) sharp = require('sharp');
+
 	config = {...{
 		width: 200,
+		fit: sharp.fit.inside,
 		quality: 95,
+		background: 'white',
 	}, ...config};
-
-	if(sharp === false) sharp = require('sharp');
 
 	return new Promise(function(resolve, reject) {
 
-		sharp(fromImage).jpeg({quality: config.quality}).resize({width: config.width, background: 'white'}).toFile(toImage, function(error) {
+		sharp(fromImage).jpeg({quality: config.quality}).resize(config).toFile(toImage, function(error) {
 		
 			if(error)
 			{

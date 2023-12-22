@@ -303,6 +303,8 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 
 	let toHighlight = false, index = 0;
 
+	let has = false;
+
 	// Search
 	let search = template._globalElement().querySelector('.search-bar.active');
 	let hasSearch = search && !ignore.search ? true : false;
@@ -344,11 +346,56 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 		}
 	}
 
+	has = hasSearch || has;
+
+	// Dialog
+	let dialog = template._globalElement().querySelector('.dialogs .dialog:not(.hide)');
+	let hasDialog = dialog && !ignore.dialog ? true : false;
+
+	if(hasDialog && !has)
+	{
+		let items = dialog.querySelectorAll('.gamepad-item');
+		let scrollElement = currentScrollElement = dialog.querySelector('.dialog-content');
+		let scrollTop = scrollElement.scrollTop;
+		currentScrollElementRect = scrollElement.getBoundingClientRect();
+
+		for(let i = 0, len = items.length; i < len; i++)
+		{
+			let item = items[i];
+			let rect = item.getBoundingClientRect();
+
+			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
+				toHighlight = index;
+
+			if(rect.height != 0 || rect.width != 0)
+			{
+				currentScreenItems.push({
+					inScroll: true,
+					block: 'top',
+					element: item,
+					x: rect.left,
+					y: rect.top + scrollTop,
+					centerY: rect.top + (rect.height / 2) + scrollTop,
+					onLeft: item.dataset.gamepadLeft,
+					onRight: item.dataset.gamepadRight,
+					left: rect.left,
+					right: rect.right,
+					top: rect.top + scrollTop,
+					bottom: rect.bottom + scrollTop,
+				});
+
+				index++;
+			}
+		}
+	}
+
+	has = hasDialog || has;
+
 	// Menu
 	let menu = template._globalElement().querySelector('.menu-simple.a');
 	let hasMenu = menu && !ignore.menu ? true : false;
 
-	if(hasMenu && !hasSearch)
+	if(hasMenu && !has)
 	{
 		let items = menu.querySelectorAll('.gamepad-item');
 		let scrollElement = currentScrollElement = menu.querySelector('.menu-simple-content');
@@ -385,8 +432,10 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 		}
 	}
 
+	has = hasMenu || has;
+
 	// Content right
-	if(!hasMenu && !hasSearch && !ignore.right)
+	if(!has && !ignore.right)
 	{
 		let items = template._contentRight().querySelectorAll('.gamepad-item');
 		let scrollElement = currentScrollElement = template.contentRight().children().get(0);
@@ -424,7 +473,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 	}
 
 	// Content left
-	if(!hasMenu && !hasSearch && !ignore.left)
+	if(!has && !ignore.left)
 	{
 		let items = template._contentLeft().querySelectorAll('.gamepad-item');
 
@@ -625,9 +674,12 @@ function goHighlightItem()
 		else
 		{
 			let _switch = current.element.querySelector('.switch');
+			let _checkbox = current.element.querySelector('.checkbox');
 
 			if(_switch)
 				$(_switch).trigger('click');
+			else if(_checkbox)
+				$(_checkbox).trigger('click');
 			else
 				$(current.element).trigger('click');
 		}

@@ -1385,6 +1385,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				return 0;
 
 			return a.name > b.name ? 1 : -1;
+
 		});
 
 		let dimensions = {};

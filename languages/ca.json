@@ -8,6 +8,8 @@
 		"recents": "Recents",
 		"recentlyOpened": "Obert recentment",
 		"favorites": "Favorits",
+		"labels": "Etiquetes",
+		"editLabels": "Editar etiquetes",
 		"images": "Imatges",
 		"sort": {
 			"main": "Ordenar",
@@ -301,6 +303,14 @@
 			"readingPresetName": "Nom del preajustament",
 			"readingGotoPage": "Anar a la pàgina"
 		},
+		"labels": {
+			"empty": "Sense etiquetes",
+			"newLabel": "Nova etiqueta",
+			"labelName": "Nom de l'etiqueta",
+			"labelExists": "Aquesta etiqueta ja existeix",
+			"deleteLabel": "Eliminar etiqueta",
+			"confirmDelete": "Esteu segur que voleu eliminar aquesta etiqueta?"
+		},
 		"release": {
 			"title": "Nova versió disponible <b>{{releaseName}}</b>",
 			"body": "Podeu veure els canvis implementats des de la {{{linkStart}}}pàgina de llançament{{{linkEnd}}}"
@@ -313,7 +323,8 @@
 		"undo": "Desfer",
 		"dismiss": "Descarta",
 		"remove": "Eliminar",
-		"download": "Descarregar"
+		"download": "Descarregar",
+		"close": "Tancar"
 	},
 	"error": {
 		"uncompress": {

@@ -8,6 +8,8 @@
 		"recents": "Recientes",
 		"recentlyOpened": "Abierto recientemente",
 		"favorites": "Favoritos",
+		"labels": "Etiquetas",
+		"editLabels": "Editar etiquetas",
 		"images": "Imágenes",
 		"sort": {
 			"main": "Ordenar",
@@ -301,6 +303,14 @@
 			"readingPresetName": "Nombre del preajuste",
 			"readingGotoPage": "Ir a la página"
 		},
+		"labels": {
+			"empty": "Sin etiquetas",
+			"newLabel": "Nueva etiqueta",
+			"labelName": "Nombre de etiqueta",
+			"labelExists": "Esta etiqueta ya existe",
+			"deleteLabel": "Eliminar etiqueta",
+			"confirmDelete": "¿Seguro que quiere eliminar esta etiqueta?"
+		},
 		"release": {
 			"title": "Nueva versión disponible <b>{{releaseName}}</b>",
 			"body": "Puede ver los cambios implementados desde la {{{linkStart}}}página de lanzamiento{{{linkEnd}}}"
@@ -313,7 +323,8 @@
 		"undo": "Deshacer",
 		"dismiss": "Descartar",
 		"remove": "Eliminar",
-		"download": "Descargar"
+		"download": "Descargar",
+		"close": "Cerrar"
 	},
 	"error": {
 		"uncompress": {

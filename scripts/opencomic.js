@@ -339,6 +339,8 @@ async function startApp()
 	if(config.checkReleases)
 		checkReleases.check();
 
+	handlebarsContext.indexHeaderTitle = language.global.comics;
+
 	template.loadContentRight('index.content.right.empty.html', false);
 	template.loadHeader('index.header.html', false);
 	template.loadGlobalElement('index.elements.menus.html', 'menus');

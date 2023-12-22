@@ -8,6 +8,8 @@
 		"recents": "最近添加",
 		"recentlyOpened": "最近打开",
 		"favorites": "",
+		"labels": "",
+		"editLabels": "",
 		"images": "图片",
 		"sort": {
 			"main": "排列",
@@ -301,6 +303,14 @@
 			"readingPresetName": "预设名称",
 			"readingGotoPage": "转到页面"
 		},
+		"labels": {
+			"empty": "",
+			"newLabel": "",
+			"labelName": "",
+			"labelExists": "",
+			"deleteLabel": "",
+			"confirmDelete": ""
+		},
 		"release": {
 			"title": "新版本可用<b>{{releaseName}}</b>",
 			"body": "您可以从{{{linkStart}}}发布页面{{{linkEdin}}}查看最新更改"
@@ -313,7 +323,8 @@
 		"undo": "撤消",
 		"dismiss": "去除",
 		"remove": "删除",
-		"download": "下载"
+		"download": "下载",
+		"close": ""
 	},
 	"error": {
 		"uncompress": {

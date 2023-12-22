@@ -80,6 +80,18 @@
 	}
 }
 
+@keyframes show-out2
+{
+	from
+	{
+		opacity: 1;
+	}
+	to
+	{
+		opacity: 0;
+	}
+}
+
 @keyframes prueba
 {
 	0%
@@ -832,7 +844,7 @@ cb
 
 .content-left .menu-list
 {
-	padding-top: 10px;
+	padding: 10px 0px;
 }
 
 .content-left .menu-item
