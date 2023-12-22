@@ -298,7 +298,17 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
 var tempFolder = p.join(os.tmpdir(), 'opencomic');
-if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
+
+// Use cache folder on Linux and Darwin to avoid tmp system cleanup on reboot
+if(process.platform == 'linux' || process.platform == 'darwin')
+{
+	tempFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic', 'tmp');
+	if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
+}
+else if(!fs.existsSync(tempFolder))
+{
+	fs.mkdirSync(tempFolder);
+}
 
 var macosMAS = false;
 fileManager.removeTmpVector();
