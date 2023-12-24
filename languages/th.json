@@ -7,9 +7,9 @@
 		"library": "ห้องสมุด",
 		"recents": "ล่าสุด",
 		"recentlyOpened": "ที่อ่านค้างไว้",
-		"favorites": "",
-		"labels": "",
-		"editLabels": "",
+		"favorites": "เรื่องที่ชอบ",
+		"labels": "ป้ายกำกับ",
+		"editLabels": "แก้ไขป้ายกำกับ",
 		"images": "รูปภาพ",
 		"sort": {
 			"main": "เรียงตาม",
@@ -29,7 +29,7 @@
 		},
 		"contextMenu": {
 			"remove": "นำออก",
-			"favorite": "",
+			"favorite": "เรื่องที่ชอบ",
 			"openFileLocation": "เปิดตำแหน่งไฟล์",
 			"openFolderLocation": "เปิดตำแหน่งโฟลเดอร์",
 			"addPoster": "เพิ่มปก",
@@ -76,7 +76,7 @@
 			"slide": "อ่านแบบเลื่อนข้าง",
 			"scroll": "อ่านแบบเลื่อนลง",
 			"adjustToWidth": "ปรับตามความกว้าง",
-			"notEnlargeMoreThanOriginalSize": "",
+			"notEnlargeMoreThanOriginalSize": "ห้ามขยายเกินขนาดดั้งเดิม",
 			"margin": "ระยะขอบ",
 			"marginHorizontal": "ขอบแนวนอน",
 			"marginVertical": "ขอบแนวตั้ง",
@@ -240,10 +240,10 @@
 			"temporaryFiles": "ไฟล์ชั่วคราว",
 			"temporaryFilesDescription": "ที่ที่ไฟล์บีบอัดจำเป็นต้นใช้ในการคลายไฟล์ โดยจะมีการนำไฟล์ออกโดยอัตโนมัติเมื่อปิด OpenComic",
 			"removeTemporaryFiles": "นำไฟล์ชั่วคราวออก",
-			"temporaryFilesMaxSize": "",
-			"temporaryFilesMaxSizeDescription": "",
-			"temporaryFilesMaxOld": "",
-			"temporaryFilesMaxOldDescription": ""
+			"temporaryFilesMaxSize": "ขนาดไฟล์ชั่วคราวสูงสุด",
+			"temporaryFilesMaxSizeDescription": "ไฟล์ชั่วคราวจะถูกนำออกเมื่อขนาดเกินค่าที่ตั้งไว้ โดยเริ่มจากที่ไม่ได้ใช้นาน ๆ ก่อน",
+			"temporaryFilesMaxOld": "ระยะเวลาไฟล์ชั่วคราว",
+			"temporaryFilesMaxOldDescription": "ไฟล์ชั่วคราวจะถูกนำออกเมื่อไม่ได้ใช้นานเกินระยะเวลาที่กำหนดไว้"
 		}
 	},
 	"menu": {
@@ -305,12 +305,12 @@
 			"readingGotoPage": "ไปยังหน้า"
 		},
 		"labels": {
-			"empty": "",
-			"newLabel": "",
-			"labelName": "",
-			"labelExists": "",
-			"deleteLabel": "",
-			"confirmDelete": ""
+			"empty": "ไม่มีป้ายกำกับ",
+			"newLabel": "ป้ายกำกับใหม่",
+			"labelName": "ชื่อป้ายกำกับ",
+			"labelExists": "มีป้ายกำกับนี้อยู่แล้ว",
+			"deleteLabel": "ลบป้ายกำกับ",
+			"confirmDelete": "คุณต้องการลบป้ายกำกับนี้หรือไม่?"
 		},
 		"release": {
 			"title": "มีเวอร์ชั่นใหม่พร้อมใช้งาน <b>{{releaseName}}</b>",
@@ -321,11 +321,11 @@
 		"cancel": "ยกเลิก",
 		"ok": "ตกลง",
 		"save": "จัดเก็บ",
-		"undo": "้ย้อนกลับ",
+		"undo": "ย้อนกลับ",
 		"dismiss": "ปิด",
 		"remove": "นำออก",
 		"download": "ดาวน์โหลด",
-		"close": ""
+		"close": "ปิด"
 	},
 	"error": {
 		"uncompress": {
