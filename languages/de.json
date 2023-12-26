@@ -181,6 +181,15 @@
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},
+		"imageInterpolation": {
+			"main": "",
+			"interpolationMethod": "",
+			"disabled": "",
+			"downscaling": "",
+			"downscalingDescription": "",
+			"upscaling": "",
+			"upscalingDescription": ""
+		},
 		"navigation": {
 			"main": "",
 			"folders": "",

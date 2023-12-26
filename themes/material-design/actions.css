@@ -666,6 +666,11 @@
 	padding: 8px 24px;
 }
 
+.menu-simple-element-padding-left
+{
+	padding-left: 36px;
+}
+
 .menu-simple-element-medium .menu-simple-element-image
 {
 	height: 32px;
@@ -761,6 +766,11 @@
 	padding: 0px 24px;
 	line-height: 32px;
 	transition: background-color 0.2s, opacity 0.2s;
+}
+
+.menu-simple-text-grey
+{
+	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
 }
 
 .menu-simple-text, .menu-simple-button

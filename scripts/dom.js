@@ -1217,12 +1217,14 @@ function loadSettingsPage(animation = true)
 
 	generateAppMenu();
 
+	settings.start();
+
 	template.loadContentRight('settings.content.right.html', animation);
 	template.loadHeader('settings.header.html', animation);
 	template.loadGlobalElement('general.elements.menus.html', 'menus');
 	floatingActionButton(false);
 
-	settings.start();
+	settings.startSecond();
 
 	if(readingActive)
 		readingActive = false;

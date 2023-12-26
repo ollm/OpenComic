@@ -181,6 +181,15 @@
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
 		},
+		"imageInterpolation": {
+			"main": "",
+			"interpolationMethod": "",
+			"disabled": "",
+			"downscaling": "",
+			"downscalingDescription": "",
+			"upscaling": "",
+			"upscalingDescription": ""
+		},
 		"navigation": {
 			"main": "การนำทาง",
 			"folders": "การนำทาง (โฟลเดอร์)",

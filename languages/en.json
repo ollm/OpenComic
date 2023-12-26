@@ -181,6 +181,15 @@
 			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
 		},
+		"imageInterpolation": {
+			"main": "Image interpolation",
+			"interpolationMethod": "Interpolation method",
+			"disabled": "Disabled",
+			"downscaling": "Downscaling an image",
+			"downscalingDescription": "This method will only be used when the image resolution needs to be reduced, the interpolation method does not apply to PDF and EPUB or animated images",
+			"upscaling": "Upscaling an image",
+			"upscalingDescription": "This method will only be used when the image resolution needs to be enlarged, the interpolation method does not apply to PDF, EPUB or animated images. Warning: Sharp methods can be slow on upscaling"
+		},
 		"navigation": {
 			"main": "Navigation",
 			"folders": "Navigation (Folders)",

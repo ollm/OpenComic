@@ -2,11 +2,13 @@ var file = false,
 	ebook = false,
 	ebookConfigChanged = false,
 	renderType = 'canvas',
+	renderImages = false,	
 	renderCanvas = false,
 	renderEbook = false,	
 	imagesData = {},
 	rendered = {},
 	renderedMagnifyingGlass = {},
+	renderedObjectsURL = [],
 	maxNext = 10,
 	maxPrev = 5,
 	currentIndex = 0,
@@ -21,6 +23,7 @@ async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'canv
 
 	renderType = _renderType;
 
+	renderImages = (renderType == 'images') ? true : false;
 	renderCanvas = (renderType == 'canvas') ? true : false;
 	renderEbook = (renderType == 'ebook') ? true : false;
 
@@ -36,6 +39,9 @@ async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'canv
 	scaleMagnifyingGlass = _scaleMagnifyingGlass;
 	globalZoom = false;
 
+	if(renderImages)
+		revokeAllObjectURL();
+
 	return;
 }
 
@@ -49,6 +55,9 @@ async function reset(_scaleMagnifyingGlass = false)
 	scaleMagnifyingGlass = _scaleMagnifyingGlass;
 	globalZoom = false;
 
+	if(renderImages)
+		revokeAllObjectURL();
+
 	return;
 }
 
@@ -59,6 +68,8 @@ function setImagesData(_imagesData)
 
 function setMagnifyingGlassStatus(active = false)
 {
+	if(renderImages) return;
+
 	if(active)
 	{
 		scaleMagnifyingGlass = active;
@@ -73,7 +84,7 @@ var sendToQueueST = false;
 
 function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 {
-	if(!file) return;
+	if(!file && !renderImages) return;
 	if(renderEbook) return;
 
 	clearTimeout(sendToQueueST);
@@ -86,6 +97,9 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 
 	if(globalZoom)
 	{
+		if(renderImages)
+			revokeAllObjectURL();
+
 		rendered = {};
 		renderedMagnifyingGlass = {};
 
@@ -131,12 +145,15 @@ function setScaleMagnifyingGlass(_scale = 1)
 
 function resized(doublePage = false)
 {
-	if(!file) return;
+	if(!file && !renderImages) return;
 	if(renderEbook) return; // Reset function is used
 
 	clearTimeout(sendToQueueST);
 
 	queue.clean('readingRender');
+
+	if(renderImages)
+		revokeAllObjectURL();
 
 	rendered = {};
 	renderedMagnifyingGlass = {};
@@ -165,7 +182,7 @@ async function setEbookConfigChanged(ebookConfig)
 
 async function focusIndex(index)
 {
-	if(!file) return;
+	if(!file && !renderImages) return;
 
 	clearTimeout(sendToQueueST);
 
@@ -180,6 +197,17 @@ async function focusIndex(index)
 		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
 
 	}, 100);
+}
+
+function revokeAllObjectURL()
+{
+	for(let i = 0, len = renderedObjectsURL.length; i < len; i++)
+	{
+		renderedObjectsURL[i].img.classList.remove('blobRendered');
+		URL.revokeObjectURL(renderedObjectsURL[i].data.blob);
+	}
+
+	renderedObjectsURL = [];
 }
 
 async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false)
@@ -215,7 +243,7 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 		{
 			if(renderEbook) // Render ebook instantly
 			{
-				await render(prevI, scale, magnifyingGlass);
+				render(prevI, scale, magnifyingGlass);
 			}
 			else
 			{
@@ -327,6 +355,83 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			{
 				ebook.applyConfigToHtml(iframe.contentDocument);
 				ebook.applyConfigToHtml(iframeMG.contentDocument);
+			}
+		}
+		else if(renderImages)
+		{
+			if(magnifyingGlass) return;
+
+			let cssMethods = {
+				'pixelated': 'pixelated',
+				'webkit-optimize-contrast': '-webkit-optimize-contrast',
+			};
+
+			let affineInterpolationMethods = {
+				'bicubic': 'bicubic',
+				'bilinear': 'bilinear',
+				'nohalo': 'nohalo',
+				'locally-bounded-bicubic': 'lbb',
+				'vertex-split-quadratic-basis-spline': 'vsqbs',
+			};
+
+			_scale = (_scale || scale);
+
+			let ocImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img');
+			if(!ocImg) return;
+
+			let img = ocImg.querySelector('img');
+			if(!img) return;
+
+			let originalWidth = +ocImg.dataset.width;
+			let originalHeight = +ocImg.dataset.height;
+
+			if(isNaN(originalWidth) || isNaN(originalHeight)) return;
+
+			rendered[index] = _scale;
+
+			_scale = _scale * window.devicePixelRatio;
+
+			let _config = {
+				width: Math.round(originalWidth * _scale),
+				height: Math.round(originalHeight * _scale),
+				compressionLevel: 0,
+				// kernel: 'lanczos3',
+			};
+
+			_config.kernel = _config.width > imageData.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
+
+			let src = img.dataset.src;
+
+			if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium')
+			{
+				if(cssMethods[_config.kernel])
+				{
+					img.style.imageRendering = cssMethods[_config.kernel];
+				}
+				else if(!(await image.isAnimated(src)))
+				{
+					if(affineInterpolationMethods[_config.kernel])
+					{
+						_config.imageWidth = imageData.width;
+						_config.imageHeight = imageData.height;
+						_config.interpolator = affineInterpolationMethods[_config.kernel];
+
+						_config.kernel = false;
+					}
+
+					let data = await image.resizeToBlob(src, _config);
+					img.src = data.blob;
+					img.classList.add('blobRendered', 'blobRender');
+					img.style.imageRendering = '';
+
+					renderedObjectsURL.push({data: data, img: img});
+				}
+			}
+			else
+			{
+				img.src = encodeSrcURI(img.dataset.src);
+				img.classList.remove('blobRendered', 'blobRender');
+				img.style.imageRendering = '';
 			}
 		}
 	}

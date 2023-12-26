@@ -1,5 +1,11 @@
 function start()
 {
+	handlebarsContext.readingImageInterpolationMethodDownscaling = getInterpolationMethodName(config.readingImageInterpolationMethodDownscaling);
+	handlebarsContext.readingImageInterpolationMethodUpscaling = getInterpolationMethodName(config.readingImageInterpolationMethodUpscaling);
+}
+
+function startSecond()
+{
 	generateShortcutsTable();
 
 	updateMasterFolders();
@@ -412,6 +418,125 @@ function resoreShortcuts()
 	generateShortcutsTable(gamepad.currentHighlightItem());
 }
 
+function getImageInterpolationMethods(upscaling = false)
+{
+	let current = upscaling ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
+
+	let interpolationMethods = [
+		{
+			text: language.settings.imageInterpolation.disabled,
+		},
+		{
+			key: 'chromium',
+			name: language.settings.imageInterpolation.disabled+' (Chromium)',
+			upscaling: upscaling,
+			select: !current || current == 'chromium' ? true : false,
+		},
+		{
+			text: 'CSS Image Rendering', // https://jsfiddle.net/ericwilligers/8ayzskhn/
+		},
+		{
+			key: 'pixelated',
+			name: 'Pixelated',
+			upscaling: upscaling,
+			select: current == 'pixelated' ? true : false,
+		},
+		{
+			key: 'webkit-optimize-contrast',
+			name: 'Webkit Optimize Contrast',
+			upscaling: upscaling,
+			select: current == 'webkit-optimize-contrast' ? true : false,
+		},
+		{
+			text: 'Sharp',
+		},
+		{
+			key: 'nearest',
+			name: 'Nearest',
+			upscaling: upscaling,
+			select: current == 'nearest' ? true : false,
+		},
+		{
+			key: 'mitchell',
+			name: 'Mitchell',
+			upscaling: upscaling,
+			select: current == 'mitchell' ? true : false,
+		},
+		{
+			key: 'lanczos2',
+			name: 'Lanczos2',
+			upscaling: upscaling,
+			select: current == 'lanczos2' ? true : false,
+		},
+		{
+			key: 'lanczos3',
+			name: 'Lanczos3',
+			upscaling: upscaling,
+			select: current == 'lanczos3' ? true : false,
+		},
+		{
+			key: 'cubic',
+			name: 'Cubic (Catmull-Rom spline)',
+			upscaling: upscaling,
+			select: current == 'cubic' ? true : false,
+		},
+		{
+			text: 'Sharp Affine',
+		},
+		{
+			key: 'bicubic',
+			name: 'Bicubic',
+			upscaling: upscaling,
+			select: current == 'bicubic' ? true : false,
+		},
+		{
+			key: 'bilinear',
+			name: 'Bilinear',
+			upscaling: upscaling,
+			select: current == 'bilinear' ? true : false,
+		},
+		{
+			key: 'nohalo',
+			name: 'Nohalo',
+			upscaling: upscaling,
+			select: current == 'nohalo' ? true : false,
+		},
+		{
+			key: 'locally-bounded-bicubic',
+			name: 'Locally Bounded Bicubic (LBB)',
+			upscaling: upscaling,
+			select: current == 'locally-bounded-bicubic' ? true : false,
+		},
+		{
+			key: 'vertex-split-quadratic-basis-spline',
+			name: 'Vertex-Split Quadratic B-Splines (VSQBS)',
+			upscaling: upscaling,
+			select: current == 'vertex-split-quadratic-basis-spline' ? true : false,
+		},
+
+	];
+
+	handlebarsContext.interpolationMethods = interpolationMethods;
+	document.querySelector('#settings-image-interpolation .menu-simple-content').innerHTML = template.load('settings.elements.menus.interpolation.method.html');
+}
+
+function getInterpolationMethodName(key = 'lanczos3')
+{
+	let names = {
+		'webkit-optimize-contrast': 'Webkit Optimize Contrast',
+		'cubic': 'Cubic (Catmull-Rom spline)',
+		'locally-bounded-bicubic': 'Locally Bounded Bicubic (LBB)',
+		'vertex-split-quadratic-basis-spline': 'Vertex-Split Quadratic B-Splines (VSQBS)',
+	};
+
+	if(!key || key == 'chromium')
+		return language.settings.imageInterpolation.disabled+' (Chromium)';
+	else if(names[key])
+		return names[key];
+	else
+		return app.capitalize(key);
+}
+
 function setMaxMargin(value, save = false)
 {
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
@@ -523,6 +648,19 @@ function set(key, value, save = true)
 				dom.queryAll('.settings-when-open-file-continue-reading').addClass('disable-pointer');
 
 			break;
+
+		case 'readingImageInterpolationMethodUpscaling':
+
+			dom.queryAll('.settings-image-interpolation-method-upscaling .text').html(getInterpolationMethodName(value));
+
+			break;
+
+		case 'readingImageInterpolationMethodDownscaling':
+
+			dom.queryAll('.settings-image-interpolation-method-downscaling .text').html(getInterpolationMethodName(value));
+
+			break;
+
 	}
 
 	if(save)
@@ -531,6 +669,7 @@ function set(key, value, save = true)
 
 module.exports = {
 	start: start,
+	startSecond: startSecond,
 	set: set,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
@@ -554,6 +693,7 @@ module.exports = {
 	resoreShortcuts: resoreShortcuts,
 	removeMasterFolder: removeMasterFolder,
 	addMasterFolder: addMasterFolder,
+	getImageInterpolationMethods: getImageInterpolationMethods,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,

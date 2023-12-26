@@ -186,8 +186,6 @@ function gamepadLoop()
 
 			if(sendEvent && !firstGamepadEvent)
 			{
-				console.log('sendEvent');
-
 				status.eventNum++;
 				status.lastEvent = now;
 
@@ -675,11 +673,14 @@ function goHighlightItem()
 		{
 			let _switch = current.element.querySelector('.switch');
 			let _checkbox = current.element.querySelector('.checkbox');
+			let _select = current.element.querySelector('.select');
 
 			if(_switch)
 				$(_switch).trigger('click');
 			else if(_checkbox)
 				$(_checkbox).trigger('click');
+			else if(_select)
+				$(_select).trigger('click');
 			else
 				$(current.element).trigger('click');
 		}
@@ -775,8 +776,11 @@ function buttonKey(button = false)
 	return -1;
 }
 
-function goBack()
+function goBack(fromKeyboard = false)
 {
+	if(fromKeyboard)
+		hasKeyboardNavigation = true;
+
 	// Close dialog
 	let dialogActive = document.querySelector('.dialogs .dialog');
 

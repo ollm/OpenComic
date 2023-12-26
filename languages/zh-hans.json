@@ -181,6 +181,15 @@
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
 		},
+		"imageInterpolation": {
+			"main": "",
+			"interpolationMethod": "",
+			"disabled": "",
+			"downscaling": "",
+			"downscalingDescription": "",
+			"upscaling": "",
+			"upscalingDescription": ""
+		},
 		"navigation": {
 			"main": "导航",
 			"folders": "导航（文件夹）",

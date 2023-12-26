@@ -181,6 +181,15 @@
 			"startReadingInFullScreen": "Empezar la lectura en pantalla completa",
 			"trackingAtTheEnd": "Seguimiento al final del capítulo/tomo"
 		},
+		"imageInterpolation": {
+			"main": "Interpolación de imagen",
+			"interpolationMethod": "Método de interpolación",
+			"disabled": "Desactivado",
+			"downscaling": "Al reducir la resolución de la imagen",
+			"downscalingDescription": "Este método solo se utilizará cuando sea necesario reducir la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas",
+			"upscaling": "Al aumentar la resolución de la imagen",
+			"upscalingDescription": "Este método solo se utilizará cuando sea necesario aumantar la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas. Advertencia: Los métodos Sharp pueden ser lentos al aumentar la resolución"
+		},
 		"navigation": {
 			"main": "Navegación",
 			"folders": "Navegación (Carpetas)",

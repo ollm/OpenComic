@@ -1,0 +1,13 @@
+<div>
+	{{#each interpolationMethods}}
+		{{#if text}}
+		<div class="menu-simple-text-small menu-simple-text-grey">
+			<span>{{text}}</span>
+		</div>
+		{{else}}
+		<div class="menu-interpolation-method--{{key}} menu-simple-element menu-simple-element-padding-left gamepad-item{{#if select}} s{{/if}}" onclick="settings.set('{{#if upscaling}}readingImageInterpolationMethodUpscaling{{else}}readingImageInterpolationMethodDownscaling{{/if}}', '{{key}}'); events.hideSelect(true);">
+			<span>{{name}}</span>
+		</div>
+		{{/if}}
+	{{/each}}
+</div>

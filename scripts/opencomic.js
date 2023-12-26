@@ -37,7 +37,7 @@ document.addEventListener("keydown", event => {
 		}
 		else
 		{
-			gamepad.goBack();
+			gamepad.goBack(true);
 		}
 	}
 
@@ -152,7 +152,7 @@ var compatibleMime = [
 ];
 
 var compressedMime = {
-	'all': [
+	all: [
 		'application/zip',
 		'application/x-cbz',
 		'applicatpdomion/x-zip',
@@ -171,13 +171,13 @@ var compressedMime = {
 		'application/x-tar-compressed',
 		'application/epub+zip',
 	],
-	'zip': [
+	zip: [
 		'application/zip',
 		'application/x-cbz',
 		'application/x-zip',
 		'application/x-zip-compressed',
 	],
-	'rar': [
+	rar: [
 		'application/rar',
 		'application/x-cbr',
 		'application/x-rar',
@@ -189,25 +189,25 @@ var compressedMime = {
 		'application/x-7z',
 		'application/x-7z-compressed',
 	],
-	'tar': [
+	tar: [
 		'application/tar',
 		'application/x-cbt',
 		'application/x-tar',
 		'application/x-tar-compressed',
 	],
-	'pdf': [
+	pdf: [
 		'application/pdf',
 		'application/x-bzpdf',
 		'application/x-gzpdf',
 	],
-	'epub': [
+	epub: [
 		'application/epub+zip',
 	],
 };
 
 
 var compressedExtensions = {
-	'all': [
+	all: [
 		'zip',
 		'cbz',
 		'rar',
@@ -220,11 +220,11 @@ var compressedExtensions = {
 		'epub',
 		'epub3',
 	],
-	'zip': [
+	zip: [
 		'zip',
 		'cbz',
 	],
-	'rar': [
+	rar: [
 		'rar',
 		'cbr',
 	],
@@ -232,39 +232,89 @@ var compressedExtensions = {
 		'7z',
 		'cb7',
 	],
-	'tar': [
+	tar: [
 		'tar',
 		'cbt',
 	],
-	'pdf': [
+	pdf: [
 		'pdf',
 	],
-	'epub': [
+	epub: [
 		'epub',
 		'epub3',
 	],
 };
 
+var imageExtensions = {
+	all: [
+		'jpg',
+		'jpeg',
+		'jif',
+		'jfi',
+		'jfif',
+		'jfif-tbnl',
+		'jpe',
+		'png',
+		'x-png',
+		'apng',
+		'svg',
+		'svgz',
+		'gif',
+		'bmp',
+		'dib',
+		'ico',
+		'webp',
+		'avif',
+		'avifs',
+	],
+	jpg: [
+		'jpg',
+		'jpeg',
+		'jif',
+		'jfi',
+		'jfif',
+		'jfif-tbnl',
+		'jpe',
+	],
+	png: [
+		'png',
+		'x-png',
+		'apng',
+	],
+	svg: [
+		'svg',
+		'svgz',
+	],
+	gif: [
+		'gif',
+	],
+	bmp: [
+		'bmp',
+		'dib',
+	],
+	ico: [
+		'ico',
+	],
+	webp: [
+		'webp',
+	],
+	avif: [
+		'avif',
+		'avifs',
+	],
+};
+
 var compatibleImageExtensions = [
-	/*jpeg*/'jpg', 'jpeg', 'jif', 'jfi', 'jfif', 'jfif-tbnl', 'jpe', 
-	/*png*/'png', 'x-png', 'apng',
-	/*svg*/'svg', 'svgz',
-	/*gif*/'gif',
-	/*bmp*/'bmp', 'dib',
-	/*ico*/'ico',
-	/*webp*/'webp',
-	/*avif*/'avif', 'avifs',
+	...imageExtensions.all,
 ];
 
 var compatibleCompressedExtensions = [
-	/*compressed*/'zip', 'cbz', 'rar', 'cbr', '7z', 'cb7', 'tar', 'cbt',
-	/*pdf*/'pdf',
-	/*epub*/'epub', 'epub3',
+	...compressedExtensions.all,
 ];
 
 var compatibleExtensions = [
-	...compatibleImageExtensions,
-	...compatibleCompressedExtensions,
+	...imageExtensions.all,
+	...compressedExtensions.all,
 ];
 
 var compatibleSpecialExtensions = [

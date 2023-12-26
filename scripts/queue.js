@@ -2,6 +2,8 @@ var processingTheQueue = {}, queued = {}, onEnd = {}, queueIsStop = {};
 
 async function processTheQueue(key)
 {
+	let _error = false;
+
 	if(queued[key])
 	{
 		let current = queued[key].shift();
@@ -17,7 +19,7 @@ async function processTheQueue(key)
 				if(key == 'folderThumbnails')
 					dom.compressedError(error);
 				else
-					throw new Error(error);
+					_error = error;
 
 				console.error(error);
 			}
@@ -39,6 +41,12 @@ async function processTheQueue(key)
 
 	checkEnd(key);
 
+	if(_error)
+	{
+		console.log('Error');
+		throw new Error(_error);
+	}
+
 	return;
 }
 
@@ -54,10 +62,10 @@ function startProcessTheQueue(key)
 
 			processTheQueue(key).catch(function(error){
 
-				//if(key == 'folderThumbnails')
-				//	dom.compressedError(error);
+				if(key != 'folderThumbnails')
+					throw new Error(error);
 
-				//console.error(error);
+				console.error(error);
 
 			});
 

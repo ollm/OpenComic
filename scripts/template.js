@@ -72,6 +72,8 @@ function changeContentRight(html, animation = true, keepScroll = false)
 	{
 		let current = document.querySelector('.content-right > div:last-child > div');
 
+		console.log(current);
+
 		if(keepScroll > 1)
 			current.scrollTop = keepScroll;
 		else

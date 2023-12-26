@@ -390,13 +390,15 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
+				let originalSize = false;
+
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
 					let size = imagesData[first.index];
 					let sizeClip = imagesDataClip[first.index];
 
-					if(imgWidth0 * dpr > size.width || imgHeight0 * dpr > size.height)
+					if(size && (imgWidth0 * dpr > size.width || imgHeight0 * dpr > size.height))
 					{
 						marginLeft0 += (imgWidth0 - size.width / dpr);
 						if(!readingViewIs('scroll')) marginTop0 += (imgHeight0 - size.height / dpr) / 2;
@@ -406,6 +408,8 @@ function disposeImages(data = false)
 
 						imageWidth0 = size.width / dpr;
 						imageHeight0 = size.height / dpr;
+
+						originalSize = true;
 					}
 				}
 
@@ -432,9 +436,14 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight0 * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth0 * clipLeft)+'px';
 
-						img.style.height = imgHeight0+'px';
-						img.style.width = imgWidth0+'px';
+						img.style.height = app.roundDPR(imgHeight0)+'px';
+						img.style.width = app.roundDPR(imgWidth0)+'px';
 						img.style.transform = '';
+
+						if(originalSize)
+							img.classList.add('originalSize');
+						else
+							img.classList.remove('originalSize');
 					}
 				}
 			}
@@ -444,13 +453,15 @@ function disposeImages(data = false)
 
 			if(image1)
 			{
+				let originalSize = false;
+
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
 					let size = imagesData[second.index];
 					let sizeClip = imagesDataClip[second.index];
 
-					if(imgWidth1 * dpr > size.width || imgHeight1 * dpr > size.height)
+					if(size && (imgWidth1 * dpr > size.width || imgHeight1 * dpr > size.height))
 					{
 						marginLeft1 += 0;
 						if(!readingViewIs('scroll')) marginTop1 += (imgHeight1 - size.height / dpr) / 2;
@@ -460,6 +471,8 @@ function disposeImages(data = false)
 
 						imageWidth1 = size.width / dpr;
 						imageHeight1 = size.height / dpr;
+
+						originalSize = true;
 					}
 				}
 
@@ -486,9 +499,14 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight1 * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth1 * clipLeft)+'px';
 
-						img.style.height = imgHeight1+'px';
-						img.style.width = imgWidth1+'px';
+						img.style.height = app.roundDPR(imgHeight1)+'px';
+						img.style.width = app.roundDPR(imgWidth1)+'px';
 						img.style.transform = '';
+
+						if(originalSize)
+							img.classList.add('originalSize');
+						else
+							img.classList.remove('originalSize');
 					}
 				}
 			}
@@ -540,13 +558,15 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
+				let originalSize = false;
+
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
 					let size = imagesData[first.index];
 					let sizeClip = imagesDataClip[first.index];
 
-					if(imgWidth * dpr > size.width || imgHeight * dpr > size.height)
+					if(size && (imgWidth * dpr > size.width || imgHeight * dpr > size.height))
 					{
 						marginLeft += (imgWidth - size.width / dpr) / 2;
 						if(!readingViewIs('scroll')) marginTop += (imgHeight - size.height / dpr) / 2;
@@ -556,6 +576,8 @@ function disposeImages(data = false)
 
 						imageWidth = size.width / dpr;
 						imageHeight = size.height / dpr;
+
+						originalSize = true;
 					}
 				}
 
@@ -582,9 +604,14 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth * clipLeft)+'px';
 
-						img.style.height = imgHeight+'px';
-						img.style.width = imgWidth+'px';
+						img.style.height = app.roundDPR(imgHeight)+'px';
+						img.style.width = app.roundDPR(imgWidth)+'px';
 						img.style.transform = '';
+
+						if(originalSize)
+							img.classList.add('originalSize');
+						else
+							img.classList.remove('originalSize');
 					}
 				}
 			}
@@ -1719,6 +1746,10 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 		let contentRight = template._contentRight();
 
+		contentRight.querySelector('.reading-body').classList.add('zooming');
+		dom.this(contentRight).find('img.zoomOriginalSize', true).removeClass('zoomOriginalSize');
+		if(scale == 1) dom.this(contentRight).find('img.zoomed', true).removeClass('zoomed');
+
 		let content = contentRight.firstElementChild;
 		$(content).stop(true);
 
@@ -1793,6 +1824,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				zIndex: 1,
 			});
 
+			if(scale != 1) dom.this(contentRight).find('.reading-body > div img.originalSize', true).addClass('zoomed');
+
 			applyScaleST = setTimeout(function() {
 
 				let scrollTop = content.scrollTop;
@@ -1827,6 +1860,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				scalePrevData._scale = scale;
 
 				fixBlurOnZoom(scale);
+
+				contentRight.querySelector('.reading-body').classList.remove('zooming');
 
 				applyScaleST = false;
 
@@ -1879,7 +1914,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			translateX = withLimits.x;
 			translateY = withLimits.y;
 
-			let imagePosition = dom.this(contentRight).find('.image-position'+currentZoomIndex, true)
+			let imagePosition = dom.this(contentRight).find('.image-position'+currentZoomIndex, true);
 
 			if(delayed)
 			{
@@ -1909,10 +1944,16 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				originalRect = false;
 				currentZoomIndex = false;
 			}
+			else
+			{
+				dom.this(imagePosition._this).find('img.originalSize', true).addClass('zoomed');
+			}
 
 			applyScaleST = setTimeout(function() {
 
 				fixBlurOnZoom(scale, currentZoomIndex);
+
+				contentRight.querySelector('.reading-body').classList.remove('zooming');
 
 				applyScaleST = false;
 
@@ -1940,7 +1981,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			scrollTop: scrollTop,
 		};
 
-		render.setScale(scale, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
+		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), _config.readingDoublePage);
 	}
 }
 
@@ -1997,6 +2038,9 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 				if(apply)
 					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
 
+				let _img = img.querySelector('img');
+				if(_img) _img.classList.add('zoomOriginalSize');
+
 				return;
 			}
 		}
@@ -2020,7 +2064,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 			zoomMoveData.active = false;
 			currentZoomIndex = false;
 
-			render.setScale(1, (config.readingGlobalZoom && readingViewIs('scroll')), _config.readingDoublePage);
+			render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), _config.readingDoublePage);
 		}
 	}
 }
@@ -2043,9 +2087,16 @@ function fixBlurOnZoom(scale = 1, index = false)
 		let width = +ocImg.dataset.width;
 		let height = +ocImg.dataset.height;
 
-		img.style.width = (width * scale)+'px';
-		img.style.height = (height * scale)+'px';
-		img.style.transform = 'scale('+_scale+')';
+		let _width = Math.round(width * scale * window.devicePixelRatio);
+		let _height = Math.round(height * scale * window.devicePixelRatio);
+
+		img.style.width = (_width / window.devicePixelRatio)+'px';
+		img.style.height = (_height / window.devicePixelRatio)+'px';
+
+		if(img.classList.contains('blobRender'))
+			img.style.transform = 'scale('+_scale+') translate(0.001px, 0.001px)';
+		else
+			img.style.transform = 'scale('+_scale+')';
 	}
 
 	if(_scale == 1)
@@ -2058,15 +2109,19 @@ function fixBlurOnZoom(scale = 1, index = false)
 			for(let i = 0, len = images.length; i < len; i++)
 			{
 				let img = images[i];
-				let rect = img.getBoundingClientRect();
 
-				let left = -(rect.left - app.floorDPR(rect.left));
-				let top = -(rect.top - app.floorDPR(rect.top));
+				if(!img.classList.contains('blobRender'))
+				{
+					let rect = img.getBoundingClientRect();
 
-				if(left < -0.5) left++;
-				if(top < -0.5) top++;
+					let left = -(rect.left - app.floorDPR(rect.left));
+					let top = -(rect.top - app.floorDPR(rect.top));
 
-				img.style.transform = 'scale('+_scale+') translate('+(left)+'px, '+(top)+'px)';
+					if(left < -0.5) left++;
+					if(top < -0.5) top++;
+
+					img.style.transform = 'scale('+_scale+') translate('+(left)+'px, '+(top)+'px)';
+				}
 			}
 
 		});
@@ -4235,6 +4290,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	else
 		readingCurrentBookmarks = undefined;
 
+	filters.setImagesPath(false);
+
 	if(!isEbook)
 		goToImageCL(index, false);
 
@@ -4824,7 +4881,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	}
 	else
 	{
-		render.setFile(false);
+		render.setFile(false, false, 'images');
 
 		template.contentRight('.reading-body img').each(function() {
 
@@ -4840,6 +4897,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 				if(imagesNumLoad == imagesNum)
 				{
+					render.setImagesData(imagesData);
 					filters.setImagesPath(imagesPath, readingCurrentPath);
 
 					template.contentRight('.reading-body').css('display', 'block');
@@ -4873,6 +4931,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 				if(imagesNumLoad == imagesNum)
 				{
+					render.setImagesData(imagesData);
 					filters.setImagesPath(imagesPath, readingCurrentPath);
 
 					template.contentRight('.reading-body').css('display', 'block');

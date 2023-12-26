@@ -97,6 +97,46 @@
 				</div>
 			</div>
 
+			<h2 class="headline-small">{{language.settings.imageInterpolation.main}}</h2>
+
+			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">
+				<span>
+					<div>{{language.settings.imageInterpolation.downscaling}}</div>
+					<span class="body-medium">{{language.settings.imageInterpolation.downscalingDescription}}</span>
+				</span>
+
+				<div class="select settings-image-interpolation-method-downscaling body-large gamepad-item have-select-wa" onclick="settings.getImageInterpolationMethods(); events.showSelect(this, 'settings-image-interpolation', true);" style="height: 60px; width: 400px; padding-right: 0px;">
+					<div>
+						<div class="select-border">
+							<div class="bottom"><div></div></div>
+						</div>
+						<div class="text" style="opacity: 1;">{{readingImageInterpolationMethodDownscaling}}</div>
+						<div class="placeholder">{{language.settings.imageInterpolation.interpolationMethod}}</div>
+						<i class="material-icon">arrow_drop_down</i>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">
+				<span>
+					<div>{{language.settings.imageInterpolation.upscaling}}</div>
+					<span class="body-medium">{{language.settings.imageInterpolation.upscalingDescription}}</span>
+				</span>
+
+				<div class="select settings-image-interpolation-method-upscaling body-large gamepad-item have-select-wa" onclick="settings.getImageInterpolationMethods(true); events.showSelect(this, 'settings-image-interpolation', true);" style="height: 60px; width: 400px; padding-right: 0px;">
+					<div>
+						<div class="select-border">
+							<div class="bottom"><div></div></div>
+						</div>
+						<div class="text" style="opacity: 1;">{{readingImageInterpolationMethodUpscaling}}</div>
+						<div class="placeholder">{{language.settings.imageInterpolation.interpolationMethod}}</div>
+						<i class="material-icon">arrow_drop_down</i>
+					</div>
+				</div>
+
+			</div>
+
 			<h2 class="headline-small">{{language.settings.navigation.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">

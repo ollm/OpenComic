@@ -180,6 +180,14 @@
 	border: 0px;
 }
 
+.reading-body:not(.zooming) .r-img > oc-img > *.pixelated,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
+.reading-body:not(.zooming) .r-img > oc-img > *.originalSize:not(.zoomed),/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
+.reading-body:not(.zooming) .r-img > oc-img > *.zoomOriginalSize,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
+.reading-body:not(.zooming) .r-img > oc-img > *.blobRendered/* .reading-lens:not(.zooming) .r-img > oc-img > *.blobRendered*/
+{
+	image-rendering: pixelated;
+}
+
 .reading-body .r-img.blank > div > *, .reading-lens .r-img.blank > div > *
 {
 	width: 100%;

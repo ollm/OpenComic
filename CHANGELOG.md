@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support favorite label [`86039e6`](https://github.com/ollm/OpenComic/commit/86039e6d9f90d77b9671068d520c8bc2fa635f30)
 - Custom labels support [`1185d82`](https://github.com/ollm/OpenComic/commit/1185d82790a764e63d1d223362e4b44e203ff0e1)
 - Option to not enlarge images more than its original size [`e2f8598`](https://github.com/ollm/OpenComic/commit/e2f85983352529162822576bbb8e7da41cd31f39)
+- New image interpolation methods available: lanczos3, lanczos2, mitchell, cubic, nearest and others
 
 ##### 🐛 Bug Fixes
 

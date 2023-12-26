@@ -181,6 +181,15 @@
 			"startReadingInFullScreen": "Començar la lectura a pantalla completa",
 			"trackingAtTheEnd": "Seguiment al final del capítol/tom"
 		},
+		"imageInterpolation": {
+			"main": "Interpolació d'imatge",
+			"interpolationMethod": "Mètode d'interpolació",
+			"disabled": "Desactivat",
+			"downscaling": "Al reduir la resolució de la imatge",
+			"downscalingDescription": "Aquest mètode només s'utilitzarà quan calgui reduir la resolució de la imatge, el mètode d'interpolació no s'aplica a PDF, EPUB ni a imatges animades",
+			"upscaling": "A l'augmentar la resolució de la imatge",
+			"upscalingDescription": "Aquest mètode només s'utilitzarà quan calgui augmentar la resolució de la imatge, el mètode d'interpolació no s'aplica a PDF, EPUB ni a imatges animades. Advertència: Els mètodes Sharp poden ser lents a l'augmentar la resolució"
+		},
 		"navigation": {
 			"main": "Navegación",
 			"folders": "Navegació (Carpetes)",

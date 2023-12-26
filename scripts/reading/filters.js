@@ -974,8 +974,14 @@ var file = false,
 	processingIsBlackAndWhiteQueue = false;
 	toCheck = [];
 
-function setImagesPath(_imagesPath, mainPath)
+function setImagesPath(_imagesPath = false, mainPath = false)
 {
+	if(_imagesPath == false)
+	{
+		imagesPath = {};
+		return;
+	}
+
 	file = fileManager.file(mainPath);
 
 	isBlackAndWhiteCurrent = {};
