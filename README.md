@@ -38,6 +38,7 @@ More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOT
 - 🎨 Colorize black and white images
 - 🔄 Tracking with sites (AniList)
 - 🎮 Gamepad navigation
+- 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `nearest` and others
 
 You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)
 

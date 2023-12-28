@@ -319,8 +319,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 			if(isRendered)
 			{
-				canvas.style.width = _config.width+'px';
-				canvas.style.height = Math.round(originalHeight * _scale)+'px';
+				canvas.style.width = Math.round(isRendered.width)+'px';
+				canvas.style.height = Math.round(isRendered.height)+'px';
 				ocImg.replaceChildren(canvas);
 			}
 		}

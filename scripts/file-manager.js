@@ -2120,15 +2120,15 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			let scale = this.config.width / status.size.width;
 			let viewport = page.getViewport({scale: scale});
 
-			canvas.width = viewport.width;
-			canvas.height = viewport.height;
+			canvas.width = viewport.width = Math.round(viewport.width);
+			canvas.height = viewport.height = Math.round(viewport.height);
 			let context = canvas.getContext('2d');
 
 			await page.render({canvasContext: context, viewport: viewport}).promise;
 
 			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width});
 
-			return true;
+			return {width: viewport.width, height: viewport.height};
 		}
 
 		return false;
