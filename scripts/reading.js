@@ -403,11 +403,11 @@ function disposeImages(data = false)
 						marginLeft0 += (imgWidth0 - size.width / dpr);
 						if(!readingViewIs('scroll')) marginTop0 += (imgHeight0 - size.height / dpr) / 2;
 
-						imgWidth0 = sizeClip.width / dpr;
-						imgHeight0 = sizeClip.height / dpr;
+						imgWidth0 = size.width / dpr;
+						imgHeight0 = size.height / dpr;
 
-						imageWidth0 = size.width / dpr;
-						imageHeight0 = size.height / dpr;
+						imageWidth0 = sizeClip.width / dpr;
+						imageHeight0 = sizeClip.height / dpr;
 
 						originalSize = true;
 					}
@@ -466,11 +466,11 @@ function disposeImages(data = false)
 						marginLeft1 += 0;
 						if(!readingViewIs('scroll')) marginTop1 += (imgHeight1 - size.height / dpr) / 2;
 
-						imgWidth1 = sizeClip.width / dpr;
-						imgHeight1 = sizeClip.height / dpr;
+						imgWidth1 = size.width / dpr;
+						imgHeight1 = size.height / dpr;
 
-						imageWidth1 = size.width / dpr;
-						imageHeight1 = size.height / dpr;
+						imageWidth1 = sizeClip.width / dpr;
+						imageHeight1 = sizeClip.height / dpr;
 
 						originalSize = true;
 					}
@@ -571,11 +571,11 @@ function disposeImages(data = false)
 						marginLeft += (imgWidth - size.width / dpr) / 2;
 						if(!readingViewIs('scroll')) marginTop += (imgHeight - size.height / dpr) / 2;
 
-						imgWidth = sizeClip.width / dpr;
-						imgHeight = sizeClip.height / dpr;
+						imgWidth = size.width / dpr;
+						imgHeight = size.height / dpr;
 
-						imageWidth = size.width / dpr;
-						imageHeight = size.height / dpr;
+						imageWidth = sizeClip.width / dpr;
+						imageHeight = sizeClip.height / dpr;
 
 						originalSize = true;
 					}
@@ -2808,6 +2808,8 @@ function changePagesView(mode, value, save)
 		disposeImages({left: value, right: value});
 		stayInLine();
 
+		render.resized(_config.readingDoublePage);
+
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: _config.readingMargin.top, bottom: _config.readingMargin.bottom, left: value, right: value});
 		updateEbook(save);
 	}
@@ -2815,6 +2817,8 @@ function changePagesView(mode, value, save)
 	{
 		disposeImages({top: value, bottom: value});
 		stayInLine();
+
+		render.resized(_config.readingDoublePage);
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: value, bottom: value, left: _config.readingMargin.left, right: _config.readingMargin.right});
 		updateEbook(save);
@@ -2845,6 +2849,8 @@ function changePagesView(mode, value, save)
 		disposeImages({horizontalsLeft: value, horizontalsRight: value});
 		stayInLine();
 
+		render.resized(_config.readingDoublePage);
+
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: _config.readingHorizontalsMargin.top, bottom: _config.readingHorizontalsMargin.bottom, left: value, right: value});
 		updateEbook(save);
 	}
@@ -2865,6 +2871,8 @@ function changePagesView(mode, value, save)
 		disposeImages();
 		calculateView();
 		stayInLine();
+
+		render.resized(_config.readingDoublePage);
 	}
 	else if(mode == 17) // Clip vertical images
 	{
@@ -2876,6 +2884,8 @@ function changePagesView(mode, value, save)
 		disposeImages();
 		calculateView();
 		stayInLine();
+
+		render.resized(_config.readingDoublePage);
 	}
 	else if(mode == 18) // Do not enlarge images more than its original size
 	{
@@ -5079,4 +5089,5 @@ module.exports = {
 	onLoad: onLoad,
 	ebook: readingEbook,
 	filters: filters,
+	render: render,
 };

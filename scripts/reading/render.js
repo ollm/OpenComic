@@ -148,6 +148,9 @@ function resized(doublePage = false)
 	if(!file && !renderImages) return;
 	if(renderEbook) return; // Reset function is used
 
+	let readingBody = template._contentRight().querySelector('.reading-body');
+	if(readingBody) readingBody.classList.add('resizing');
+
 	clearTimeout(sendToQueueST);
 
 	queue.clean('readingRender');
@@ -159,6 +162,10 @@ function resized(doublePage = false)
 	renderedMagnifyingGlass = {};
 
 	sendToQueueST = setTimeout(function(){
+
+		if(readingBody) readingBody.classList.remove('resizing')
+
+		template._contentRight().querySelector('.reading-body').classList.add('resizing');
 
 		setRenderQueue(0, doublePage ? 2 : 1);
 

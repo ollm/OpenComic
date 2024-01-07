@@ -2262,8 +2262,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let status = this.getFileStatus(file);
 
-		if((status && status.widthRendered !== this.config.width) || this.config.force)
+		if((status && (status.widthRendered !== this.config.width || status.canvasRendered !== canvas)) || this.config.force)
 		{
+			console.log('renderCanvasPdf');
+
 			// Render page
 			let page = await pdf.getPage(status.page);
 
@@ -2276,7 +2278,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			await page.render({canvasContext: context, viewport: viewport}).promise;
 
-			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width});
+			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width, canvasRendered: canvas});
 
 			return {width: viewport.width, height: viewport.height};
 		}
@@ -2503,6 +2505,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		delete this.tar;
 		delete this.pdf;
 		delete this.epub;
+
+		delete this.filesStatus;
 
 		// Stop accessing security scoped resources
 		for(let i = 0, len = this.macosScopedResources.length; i < len; i++)
