@@ -177,16 +177,42 @@ function returnThumbnailsImages(images, callback, file = false)
 	return single ? thumbnail : thumbnails;
 }
 
-
 function writeFile(name, content)
 {
 	fs.writeFile(p.join(cacheFolder, name), content, function(){}); 
 }
 
+function writeFileSync(name, content)
+{
+	fs.writeFileSync(p.join(cacheFolder, name), content, function(){}); 
+}
+
 function readFile(name)
 {
-	if(fs.existsSync(p.join(cacheFolder, name)))
-		return fs.readFileSync(p.join(cacheFolder, name), 'utf8');
+	let path = p.join(cacheFolder, name);
+
+	if(fs.existsSync(path))
+		return fs.readFileSync(path, 'utf8');
+	else
+		return false;
+}
+
+function readJson(name)
+{
+	let path = p.join(cacheFolder, name);
+
+	if(fs.existsSync(path))
+		return JSON.parse(fs.readFileSync(path, 'utf8'));
+	else
+		return false;
+}
+
+function existsFile(name)
+{
+	let path = p.join(cacheFolder, name);
+
+	if(fs.existsSync(path))
+		return true;
 	else
 		return false;
 }
@@ -315,7 +341,10 @@ module.exports = {
 	returnThumbnailsImages: returnThumbnailsImages,
 	cleanQueue: cleanQueue,
 	writeFile: writeFile,
+	writeFileSync: writeFileSync,
 	readFile: readFile,
+	readJson: readJson,
+	existsFile: existsFile,
 	deleteInCache: deleteInCache,
 	queuedImages: function(){return queuedImages},
 	processingTheImageQueue: function(){return processingTheImageQueue},

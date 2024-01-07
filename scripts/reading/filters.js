@@ -1295,6 +1295,9 @@ function saveAsPreset(save = false)
 				}
 			],
 		});
+
+		events.focus('.input-preset-name');
+		events.eventInput();
 	}
 }
 
@@ -1356,6 +1359,9 @@ function editPreset(key, save = false)
 				}
 			],
 		});
+
+		events.focus('.input-preset-name');
+		events.eventInput();
 	}
 }
 

@@ -45,6 +45,7 @@
 		"addToLibrary": "เพิ่มไปห้องสมุด",
 		"unsupportedFile": "ไม่รองรับไฟล์ประเภทนี้",
 		"reload": "รีโหลด",
+		"retry": "",
 		"search": "ค้นหา",
 		"filterCurrentPage": "ตัวกรองหน้าปัจจุบัน",
 		"language": "ภาษา",
@@ -59,7 +60,16 @@
 		"continueReading": "อ่านต่อ",
 		"emptyIndex": "ไม่มีคอมมิกส์ในห้องสมุด",
 		"emptyFolder": "ไม่มีไฟล์ที่รองรับในโฟลเดอร์นี้",
-		"emptyRecentlyOpened": "ไม่มีไฟล์ที่เปิดล่าสุด"
+		"emptyRecentlyOpened": "ไม่มีไฟล์ที่เปิดล่าสุด",
+		"emptyFavorites": "",
+		"emptyLabel": ""
+	},
+	"servers": {
+		"offlineMode": "",
+		"error": {
+			"connection": "",
+			"folderNotFound": ""
+		}
 	},
 	"reading": {
 		"prevChapter": "ตอนก่อนหน้า",
@@ -236,6 +246,23 @@
 			"main": "โฟลเดอร์ตั้งต้น",
 			"folder": "โฟลเดอร์",
 			"noFolders": "ไม่มีโฟลเดอร์"
+		},
+		"servers": {
+			"main": "",
+			"add": "",
+			"noServers": "",
+			"deleteServer": "",
+			"confirmDelete": "",
+			"supportedProtocols": "",
+			"protocolsDescription": "",
+			"serverNameExists": "",
+			"name": "",
+			"path": "",
+			"user": "",
+			"pass": "",
+			"domain": "",
+			"onlyIn": "",
+			"showOnLibrary": ""
 		},
 		"storage": {
 			"main": "พื้นที่จัดเก็บ",

@@ -45,6 +45,7 @@
 		"addToLibrary": "Añadir a la biblioteca",
 		"unsupportedFile": "El archivo no es compatible",
 		"reload": "Recargar",
+		"retry": "Reintentar",
 		"search": "Buscar",
 		"filterCurrentPage": "Filtrar la página actual",
 		"language": "Idioma",
@@ -57,9 +58,18 @@
 	},
 	"comics": {
 		"continueReading": "Continuar leyendo",
-		"emptyIndex": "No hay ningún cómic en la biblioteca.",
-		"emptyFolder": "No hay ningún archivo compatible en esta carpeta.",
-		"emptyRecentlyOpened": "No hay archivos abiertos recientemente."
+		"emptyIndex": "No hay ningún cómic en la biblioteca",
+		"emptyFolder": "No hay ningún archivo compatible en esta carpeta",
+		"emptyRecentlyOpened": "No hay archivos abiertos recientemente",
+		"emptyFavorites": "No hay cómics favoritos",
+		"emptyLabel": "No hay cómics en esta etiqueta."
+	},
+	"servers": {
+		"offlineMode": "Modo sin conexión",
+		"error": {
+			"connection": "No se ha podido conectar con el servidor",
+			"folderNotFound": "Carpeta no encontrada en el servidor"
+		}
 	},
 	"reading": {
 		"prevChapter": "Capítulo anterior",
@@ -237,6 +247,23 @@
 			"folder": "Carpeta",
 			"noFolders": "Sin carpetas"
 		},
+		"servers": {
+			"main": "Servidores",
+			"add": "Añadir servidor",
+			"noServers": "Sin servidores",
+			"deleteServer": "Eliminar servidor",
+			"confirmDelete": "¿Está seguro de que desea eliminar este servidor?",
+			"supportedProtocols": "Protocolos soportados",
+			"protocolsDescription": "Conéctese solo a servidores de confianza y utilizando protocolos seguros siempre que sea posible",
+			"serverNameExists": "Este nombre de servidor ya existe",
+			"name": "Nombre del servidor",
+			"path": "Ruta del servidor",
+			"user": "Usuario",
+			"pass": "Contraseña",
+			"domain": "Dominio",
+			"onlyIn": "Sólo usado en",
+			"showOnLibrary": "Mostrar comics en la biblioteca"
+		},
 		"storage": {
 			"main": "Almacenamiento",
 			"cache": "Caché",
@@ -298,7 +325,7 @@
 			"emptySearch": "No se ha encontrado ningún resultado",
 			"setHeader": "Marcar manualmente",
 			"setMessage": "Si lo desea puede marcar manualmente los capítulos",
-			"setWaitMessage": "Puede hacer esto ahora o esperar a que se detecte automáticamente en otro capítulo.",
+			"setWaitMessage": "Puede hacer esto ahora o esperar a que se detecte automáticamente en otro capítulo",
 			"setChapterNumber": "Marcar hasta el siguiente capítulo",
 			"setVolumeNumber": "Marcar hasta el siguiente tomo",
 			"activate": "Activar seguimiento"
@@ -339,7 +366,7 @@
 	"error": {
 		"uncompress": {
 			"title": "Error al descomprimir",
-			"message": "Ha ocurrido un error al intentar descomprimir el archivo."
+			"message": "Ha ocurrido un error al intentar descomprimir el archivo"
 		}
 	},
 	"about": {

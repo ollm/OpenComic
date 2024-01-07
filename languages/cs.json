@@ -45,6 +45,7 @@
 		"addToLibrary": "",
 		"unsupportedFile": "",
 		"reload": "",
+		"retry": "",
 		"search": "",
 		"filterCurrentPage": "",
 		"language": "Jazyk",
@@ -59,7 +60,16 @@
 		"continueReading": "Pokračovat ve čtení",
 		"emptyIndex": "V této sbírce nejsou žádné komiksy.",
 		"emptyFolder": "V této složce nejsou žádné kompatibilní soubory.",
-		"emptyRecentlyOpened": ""
+		"emptyRecentlyOpened": "",
+		"emptyFavorites": "",
+		"emptyLabel": ""
+	},
+	"servers": {
+		"offlineMode": "",
+		"error": {
+			"connection": "",
+			"folderNotFound": ""
+		}
 	},
 	"reading": {
 		"prevChapter": "",
@@ -236,6 +246,23 @@
 			"main": "",
 			"folder": "",
 			"noFolders": ""
+		},
+		"servers": {
+			"main": "",
+			"add": "",
+			"noServers": "",
+			"deleteServer": "",
+			"confirmDelete": "",
+			"supportedProtocols": "",
+			"protocolsDescription": "",
+			"serverNameExists": "",
+			"name": "",
+			"path": "",
+			"user": "",
+			"pass": "",
+			"domain": "",
+			"onlyIn": "",
+			"showOnLibrary": ""
 		},
 		"storage": {
 			"main": "",

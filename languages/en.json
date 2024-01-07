@@ -45,6 +45,7 @@
 		"addToLibrary": "Add to library",
 		"unsupportedFile": "The file is not supported",
 		"reload": "Reload",
+		"retry": "Retry",
 		"search": "Search",
 		"filterCurrentPage": "Filter current page",
 		"language": "Language",
@@ -57,9 +58,18 @@
 	},
 	"comics": {
 		"continueReading": "Continue reading",
-		"emptyIndex": "There are no comics in the library.",
-		"emptyFolder": "There is no compatible file in this folder.",
-		"emptyRecentlyOpened": "No recently opened files."
+		"emptyIndex": "There are no comics in the library",
+		"emptyFolder": "There is no compatible file in this folder",
+		"emptyRecentlyOpened": "No recently opened files",
+		"emptyFavorites": "No favorite comics",
+		"emptyLabel": "No comics in this label"
+	},
+	"servers": {
+		"offlineMode": "Offline mode",
+		"error": {
+			"connection": "Could not connect to the server",
+			"folderNotFound": "Folder not found on the server"
+		}
 	},
 	"reading": {
 		"prevChapter": "Previous chapter",
@@ -237,6 +247,23 @@
 			"folder": "Folder",
 			"noFolders": "No folders"
 		},
+		"servers": {
+			"main": "Servers",
+			"add": "Add server",
+			"noServers": "No servers",
+			"deleteServer": "Delete server",
+			"confirmDelete": "Are you sure you want to delete this server?",
+			"supportedProtocols": "Supported protocols",
+			"protocolsDescription": "Only connect to trusted servers and using secure protocols whenever possible",
+			"serverNameExists": "This server name already exists",
+			"name": "Server name",
+			"path": "Server path",
+			"user": "Username",
+			"pass": "Password",
+			"domain": "Domain",
+			"onlyIn": "Only used in",
+			"showOnLibrary": "Show comics in the library"
+		},
 		"storage": {
 			"main": "Storage",
 			"cache": "Cache",
@@ -298,7 +325,7 @@
 			"emptySearch": "No results found",
 			"setHeader": "Mark manually",
 			"setMessage": "If you wish you can manually mark the chapters",
-			"setWaitMessage": "You can do this now or wait for it to be automatically detected in another chapter.",
+			"setWaitMessage": "You can do this now or wait for it to be automatically detected in another chapter",
 			"setChapterNumber": "Mark until the chapter",
 			"setVolumeNumber": "Mark until the volume",
 			"activate": "Activate tracking"

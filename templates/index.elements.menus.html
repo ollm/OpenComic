@@ -8,10 +8,7 @@
 				{{#compare page.name '==' 'recently-opened'}}
 				<div class="menu-simple-element sort-last-opened gamepad-item{{#compare page.sort '==' 'last-opened'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-opened', '{{page.name}}')">{{language.global.sort.lastOpened}}</div>
 				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
-				{{else compare page.name '==' 'index'}}
-				<div class="menu-simple-element sort-last-add gamepad-item{{#compare page.sort '==' 'last-add'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-add', '{{page.name}}')">{{language.global.sort.lastAdd}}</div>
-				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
-				{{else}}
+				{{else compare page.name '==' 'browsing'}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.foldersFirst}}
 					<div class="switch{{#if page.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">
@@ -19,6 +16,9 @@
 						<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 					</div>
 				</div>
+				{{else}}
+				<div class="menu-simple-element sort-last-add gamepad-item{{#compare page.sort '==' 'last-add'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-add', '{{page.name}}')">{{language.global.sort.lastAdd}}</div>
+				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
 				{{/compare}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.invert}}

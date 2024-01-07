@@ -31,13 +31,41 @@
 </div>
 
 {{#if siteData.trackingChapter}}
-<input class="input input-margin-top input-chapter" type="number" min="0" max="99999" placeholder="{{language.dialog.tracking.setChapterNumber}}"> 
+<div class="input input-margin-top{{#unless siteData.trackingVolume}} input-compact{{/unless}}">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.dialog.tracking.setChapterNumber}}</div>
+		<input type="number" min="0" max="99999" value="" class="input-chapter">
+	</div>
+</div>
 {{/if}}
 {{#if siteData.trackingVolume}}
-<input class="input input-margin-top input-volume" type="number" min="0" max="99999" placeholder="{{language.dialog.tracking.setVolumeNumber}}">
+<div class="input input-compact{{#unless siteData.trackingChapter}} input-margin-top{{/unless}}">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.dialog.tracking.setVolumeNumber}}</div>
+		<input type="number" min="0" max="99999" value="" class="input-volume">
+	</div>
+</div>
 {{/if}}
 
-<div class="dialog-buttons" style="margin: 0px -24px -24px 0px;">
+<div class="dialog-buttons" style="margin: 0px -10px -24px 0px;">
 	<div class="simple-button transparent">
 		<div class="touch-effect" onclick="events.closeDialog();">{{language.buttons.cancel}}</div>
 	</div>

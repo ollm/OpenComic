@@ -458,9 +458,9 @@
 
 .tracking-search
 {
-	min-height: calc(100% - 36px);
+	min-height: calc(100% - 52px);
 	position: relative;
-	width: calc(100% + 48px);
+	width: calc(100% + 34px);
 	margin-left: -24px;
 	padding: 8px 0px;
 	box-sizing: border-box;

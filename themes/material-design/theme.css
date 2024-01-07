@@ -1035,6 +1035,23 @@ cb
 	padding: 0px 20px;
 }
 
+.content-empty-server
+{
+	margin-top: -40px !important;
+}
+
+.server-connection-error
+{
+	display: flex;
+	justify-content: center;
+	margin: 16px;
+}
+
+.server-connection-error > div
+{
+	margin: 0px 4px;
+}
+
 /* separators */
 
 .separator-1
@@ -1079,7 +1096,7 @@ cb
 
 .dialog-text .menu-simple-separator
 {
-	width: calc(100% + 48px);
+	width: calc(100% + 46px);
 	margin-left: -24px;
 }
 

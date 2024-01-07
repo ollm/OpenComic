@@ -9,6 +9,7 @@ function startSecond()
 	generateShortcutsTable();
 
 	updateMasterFolders();
+	updateServers();
 
 	getStorageSize();
 
@@ -198,20 +199,6 @@ function purgeTemporaryFiles()
 	}
 }
 
-function removeMasterFolder(key)
-{
-	let masterFolders = storage.get('masterFolders');
-
-	if(masterFolders[key])
-	{
-		masterFolders.splice(key, 1);
-		storage.set('masterFolders', masterFolders);
-
-		updateMasterFolders();
-		dom.loadIndexContentLeft(true);
-	}
-}
-
 function addMasterFolder()
 {
 	let dialog = electronRemote.dialog;
@@ -238,6 +225,21 @@ function addMasterFolder()
 	});
 }
 
+function removeMasterFolder(key)
+{
+	let masterFolders = storage.get('masterFolders');
+
+	if(masterFolders[key])
+	{
+		masterFolders.splice(key, 1);
+		dom.labels.deleteFromSortAndView('masterFolder', key);
+		storage.set('masterFolders', masterFolders);
+
+		updateMasterFolders();
+		dom.loadIndexContentLeft(true);
+	}
+}
+
 function updateMasterFolders()
 {
 	let masterFolders = storage.get('masterFolders');
@@ -260,6 +262,246 @@ function updateMasterFolders()
 	}
 
 	list.innerHTML = template.load('settings.content.right.master.folders.list.html');
+}
+
+function getServerInputValues()
+{
+	let name = document.querySelector('.input-name').value;
+	let path = document.querySelector('.input-path').value;
+	let user = document.querySelector('.input-user').value;
+	let pass = document.querySelector('.input-pass').value;
+	let domain = document.querySelector('.input-domain').value;
+	let showOnLibrary = !!+document.querySelector('.input-show-on-library').dataset.value;
+
+	return {
+		name: name,
+		path: path,
+		user: user,
+		pass: pass,
+		domain: domain,
+		showOnLibrary: showOnLibrary,
+	};
+}
+
+function serverValidateData(server)
+{
+	let name = server.name;
+	let path = /^((?:smb|ftp|ftps|scp|sftp|ssh)\:\/\/?[^\/\\]+\/[^\/\\]+)/.test(server.path);
+
+	dom.query('.input-name').parents('.input').class(!name, 'error');
+	dom.query('.input-path').parents('.input').class(!path, 'error');
+
+	return (name && path) ? true : false;
+}
+
+function addServer(save = false)
+{
+	if(save)
+	{		
+		let server = getServerInputValues();
+		if(!serverValidateData(server)) return;
+
+		let servers = storage.get('servers');
+
+		let exists = false;
+
+		for(let i = 0, len = servers.length; i < len; i++)
+		{
+			if(servers[i].name == server.name)
+			{
+				exists = true;
+				break;
+			}
+		}
+
+		if(!exists)
+		{
+			events.closeDialog();
+
+			servers.push(server);
+			storage.set('servers', servers);
+
+			updateServers();
+			dom.loadIndexContentLeft(true);
+		}
+		else
+		{
+			events.snackbar({
+				key: 'labelExists',
+				text: language.settings.servers.serverNameExists,
+				duration: 6,
+				update: true,
+				buttons: [
+					{
+						text: language.buttons.dismiss,
+						function: 'events.closeSnackbar();',
+					},
+				],
+			});
+		}
+	}
+	else
+	{
+		handlebarsContext.server = false;
+
+		events.dialog({
+			header: language.settings.servers.main,
+			width: 600,
+			height: false,
+			content: template.load('dialog.servers.add.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.save,
+					function: 'settings.addServer(true);',
+				}
+			],
+		});
+
+		events.eventSwitch();
+		events.eventInput();
+	}
+}
+
+function editServer(key, save = false)
+{
+	if(save)
+	{
+		let server = getServerInputValues();
+		if(!serverValidateData(server)) return;
+
+		let servers = storage.get('servers');
+		let _server = servers[key];
+
+		let exists = false;
+
+		for(let i = 0, len = servers.length; i < len; i++)
+		{
+			if(servers[i].name == server.name)
+			{
+				exists = true;
+				break;
+			}
+		}
+
+		if(!exists || _server.name === server.name)
+		{
+			events.closeDialog();
+
+			servers[key] = server;
+			storage.set('servers', servers);
+
+			updateServers();
+			dom.loadIndexContentLeft(true);
+		}
+		else
+		{
+			events.snackbar({
+				key: 'labelExists',
+				text: language.settings.servers.serverNameExists,
+				duration: 6,
+				update: true,
+				buttons: [
+					{
+						text: language.buttons.dismiss,
+						function: 'events.closeSnackbar();',
+					},
+				],
+			});
+		}
+	}
+	else
+	{
+		let servers = storage.get('servers');
+		handlebarsContext.server = servers[key];
+
+		events.dialog({
+			header: language.settings.servers.main,
+			width: 600,
+			height: false,
+			content: template.load('dialog.servers.add.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.save,
+					function: 'settings.editServer('+key+', true);',
+				}
+			],
+		});
+
+		events.eventSwitch();
+		events.eventInput();
+	}
+}
+
+function removeServer(key, confirm = false)
+{
+	if(confirm)
+	{
+		let servers = storage.get('servers');
+
+		servers.splice(key, 1);
+		storage.set('servers', servers);
+
+		dom.labels.deleteFromSortAndView('server', key);
+
+		updateServers();
+		dom.loadIndexContentLeft(true);
+	}
+	else
+	{
+		events.dialog({
+			header: language.settings.servers.deleteServer,
+			width: 400,
+			height: false,
+			content: language.settings.servers.confirmDelete,
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.remove,
+					function: 'events.closeDialog(); settings.removeServer('+key+', true);',
+				}
+			],
+		});
+	}
+}
+
+function showOnLibrary(value = 0)
+{
+	document.querySelector('.input-show-on-library').dataset.value = value;
+}
+
+function updateServers()
+{
+	let servers = storage.get('servers');
+	handlebarsContext.settingsServers = servers;
+
+	let contentRight = template._contentRight();
+
+	let empty = contentRight.querySelector('.settings-servers-empty');
+	let list = contentRight.querySelector('.settings-servers-list');
+
+	if(!isEmpty(servers))
+	{
+		empty.style.display = 'none';
+		list.style.display = '';
+	}
+	else
+	{
+		empty.style.display = '';
+		list.style.display = 'none';
+	}
+
+	list.innerHTML = template.load('settings.content.right.servers.list.html');
 }
 
 function generateShortcutsTable(highlightItem = false)
@@ -691,8 +933,12 @@ module.exports = {
 	changeButton: changeButton,
 	removeButton: removeButton,
 	resoreShortcuts: resoreShortcuts,
-	removeMasterFolder: removeMasterFolder,
 	addMasterFolder: addMasterFolder,
+	removeMasterFolder: removeMasterFolder,
+	addServer: addServer,
+	editServer: editServer,
+	removeServer: removeServer,
+	showOnLibrary: showOnLibrary,
 	getImageInterpolationMethods: getImageInterpolationMethods,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,

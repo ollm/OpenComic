@@ -45,6 +45,7 @@
 		"addToLibrary": "添加到库",
 		"unsupportedFile": "该文件不受支持",
 		"reload": "重新加载",
+		"retry": "",
 		"search": "搜索",
 		"filterCurrentPage": "筛选当前页面",
 		"language": "语言",
@@ -59,7 +60,16 @@
 		"continueReading": "继续阅读",
 		"emptyIndex": "库里还没有漫画。",
 		"emptyFolder": "此文件夹中没有兼容的文件。",
-		"emptyRecentlyOpened": "没有最近打开的文件。"
+		"emptyRecentlyOpened": "没有最近打开的文件。",
+		"emptyFavorites": "",
+		"emptyLabel": ""
+	},
+	"servers": {
+		"offlineMode": "",
+		"error": {
+			"connection": "",
+			"folderNotFound": ""
+		}
 	},
 	"reading": {
 		"prevChapter": "上一章",
@@ -236,6 +246,23 @@
 			"main": "主文件夹",
 			"folder": "文件夹",
 			"noFolders": "无文件夹"
+		},
+		"servers": {
+			"main": "",
+			"add": "",
+			"noServers": "",
+			"deleteServer": "",
+			"confirmDelete": "",
+			"supportedProtocols": "",
+			"protocolsDescription": "",
+			"serverNameExists": "",
+			"name": "",
+			"path": "",
+			"user": "",
+			"pass": "",
+			"domain": "",
+			"onlyIn": "",
+			"showOnLibrary": ""
 		},
 		"storage": {
 			"main": "存储",

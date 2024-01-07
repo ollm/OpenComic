@@ -28,6 +28,7 @@ More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOT
 - 🗄 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
 - 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
 - 📁 Master folders support
+- ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`
 - 🇯🇵 Manga read mode
 - 🇰🇷 Webtoon read mode
 - 📖 Double page view
@@ -66,7 +67,7 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 - [.snap](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic_1.0.0_amd64.snap)
 - [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0-x86_64.flatpak)
 - [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.0.0/OpenComic-1.0.0.AppImage)
-- [AUR](https://aur.archlinux.org/packages/opencomic-bin/)
+- [AUR](https://aur.archlinux.org/packages/opencomic-bin/) by [@z00rat](https://github.com/z00rat)
 ###### Linux Arm64
 - [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic_1.0.0_arm64.deb)
 - [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.0.0/opencomic-1.0.0.aarch64.rpm)

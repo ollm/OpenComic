@@ -219,7 +219,7 @@ function search(text)
 
 					dom.addImageToDom(data.sha, data.path);
 
-				}, fileManager.file());
+				}, fileManager.file(false, {cacheServer: true}));
 
 				for(let i = 0, len = matches.length; i < len; i++)
 				{
@@ -404,7 +404,7 @@ async function _indexFiles(file, mainPath)
 				}
 				else
 				{
-					let _file = fileManager.file(file.path);
+					let _file = fileManager.file(file.path, {cacheServer: true});
 
 					try
 					{

@@ -45,6 +45,7 @@
 		"addToLibrary": "Afegir a la biblioteca",
 		"unsupportedFile": "L'arxiu no és compatible",
 		"reload": "Recarregar",
+		"retry": "Reintentar",
 		"search": "Cerca",
 		"filterCurrentPage": "Filtra la pàgina actual",
 		"language": "Idioma",
@@ -57,9 +58,18 @@
 	},
 	"comics": {
 		"continueReading": "Continuar llegint",
-		"emptyIndex": "No hi ha cap còmic en la biblioteca.",
-		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta.",
-		"emptyRecentlyOpened": "No hi ha fitxers oberts recentment."
+		"emptyIndex": "No hi ha cap còmic en la biblioteca",
+		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta",
+		"emptyRecentlyOpened": "No hi ha fitxers oberts recentment",
+		"emptyFavorites": "No hi ha còmics favorits",
+		"emptyLabel": "No hi ha còmics en aquesta etiqueta"
+	},
+	"servers": {
+		"offlineMode": "Mode sense connexió",
+		"error": {
+			"connection": "No s'ha pogut connectar amb el servidor",
+			"folderNotFound": "Carpeta no trobada al servidor"
+		}
 	},
 	"reading": {
 		"prevChapter": "Capítol anterior",
@@ -205,7 +215,7 @@
 			"main": "Comportament d'inici",
 			"startInFullScreen": "Inicia OpenComic a pantalla completa",
 			"startInContinueReading": "Iniciar directament a l'última lectura",
-			"startOnlyFromLibrary": "Només si l'última lectura és de la biblioteca.",
+			"startOnlyFromLibrary": "Només si l'última lectura és de la biblioteca",
 			"startOnStartup": "Iniciar OpenComic a l'inici"
 		},
 		"theme": {
@@ -236,6 +246,23 @@
 			"main": "Carpetes mestres",
 			"folder": "Carpeta",
 			"noFolders": "Sense carpetes"
+		},
+		"servers": {
+			"main": "Servidors",
+			"add": "Afegir servidor",
+			"noServers": "Sense servidors",
+			"deleteServer": "Esborrar servidor",
+			"confirmDelete": "Esteu segur que voleu esborrar aquest servidor?",
+			"supportedProtocols": "Protocols suportats",
+			"protocolsDescription": "Connecteu-vos només a servidors de confiança i utilitzant protocols segurs sempre que sigui possible",
+			"serverNameExists": "Aquest nom de servidor ja existeix",
+			"name": "Nom del servidor",
+			"path": "Ruta del servidor",
+			"user": "Usuari",
+			"pass": "Contrasenya",
+			"domain": "Domini",
+			"onlyIn": "Només s'utilitza a",
+			"showOnLibrary": "Mostra còmics a la biblioteca"
 		},
 		"storage": {
 			"main": "Emmagatzematge",
@@ -298,7 +325,7 @@
 			"emptySearch": "No s'ha trobat cap resultat",
 			"setHeader": "Marcar manualment",
 			"setMessage": "Si ho desitja pot marcar manualment els capítols",
-			"setWaitMessage": "Pot fer això ara o esperar que es detecti automàticament en un altre capítol.",
+			"setWaitMessage": "Pot fer això ara o esperar que es detecti automàticament en un altre capítol",
 			"setChapterNumber": "Marcar fins al següent capítol",
 			"setVolumeNumber": "Marcar fins al següent tom",
 			"activate": "Activa seguiment"
@@ -339,7 +366,7 @@
 	"error": {
 		"uncompress": {
 			"title": "Error en descomprimir",
-			"message": "Hi ha hagut un error en intentar descomprimir l'arxiu."
+			"message": "Hi ha hagut un error en intentar descomprimir l'arxiu"
 		}
 	},
 	"about": {

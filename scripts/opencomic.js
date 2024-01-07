@@ -49,7 +49,7 @@ window.addEventListener('error', function(evt) {
 
 	let error = false;
 
-	if(evt.message && !/debug\-evaluate/.test(evt.message))
+	if(evt.message && !/debug\-evaluate/.test(evt.message) && !/client_closed|connect EHOSTUNREACH/iu.test(evt.message))
 		error = 'Error: '+evt.message +' at linenumber '+evt.lineno+':'+evt.colno+' of file '+evt.filename;
 
 	if(error !== false && errorDialog)
@@ -337,6 +337,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
 	ebook = require(p.join(appDir, 'scripts/ebook.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
+	serverClient = require(p.join(appDir, 'scripts/server-client.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	recentlyOpened = require(p.join(appDir, 'scripts/recently-opened.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),

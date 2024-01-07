@@ -1095,6 +1095,7 @@
 	animation-fill-mode: forwards;
 	animation-timing-function: var(--md-sys-motion-easing-emphasized-decelerate);
 	clip-path: inset(-20px -20px -20px -20px round 14px);
+	scrollbar-gutter: stable;
 }
 
 .dialog:before
@@ -1124,6 +1125,7 @@
 	animation-name: dialog-hide;
 	animation-duration: 0.15s;
 	animation-timing-function: var(--md-sys-motion-easing-emphasized-accelerate);
+	pointer-events: none;
 }
 
 .dialog.hide .dialog-content
@@ -1150,7 +1152,7 @@
 	padding: 0px 0px;
 	color: var(--md-sys-color-on-surface);
 	font-weight: 500;
-	padding: 24px 24px 16px 24px;
+	padding: 24px 10px 16px 24px;
 }
 
 .dialog-text
@@ -1160,12 +1162,12 @@
 	padding: 0px 0px;
 	color: var(--md-sys-color-on-surface);
 	font-weight: 500;
-	padding: 0px 24px 0px 24px;
+	padding: 0px 10px 0px 24px;
 }
 
 .dialog-not-header
 {
-	padding: 20px 24px 20px 24px;
+	padding: 20px 10px 20px 24px;
 	height: 100%;
 	box-sizing: border-box;
 }
@@ -1173,7 +1175,7 @@
 .dialog-buttons
 {
 	float: right;
-	padding: 24px;
+	padding: 24px 10px 24px 24px;
 }
 
 .dialog-buttons .simple-button
@@ -1226,6 +1228,7 @@
 	animation-name: dialog-close-hide;
 	animation-duration: 0.15s;
 	animation-timing-function: var(--md-sys-motion-easing-legacy);
+	pointer-events: none;
 }
 
 .dialog-clip-path-shadow
@@ -1367,34 +1370,6 @@
 .snackbars .snackbar .simple-button.transparent > div
 {
 	color: var(--md-sys-color-inverse-primary);
-}
-
-/* Input */
-.input
-{
-	height: 56px;
-	box-sizing: border-box;
-	border: 2px solid #999999;
-	border-radius: 4px;
-	font-size: 16px;
-	padding: 0px 14px;
-	width: 100%;
-	/*transition: all 0.15s var(--md-sys-motion-easing-legacy);*/
-	transition: all 0.3s var(--md-sys-motion-easing-legacy);
-	outline: none;
-	background-color: transparent;
-	color: var(--md-sys-color-on-surface);
-}
-
-.input:focus
-{
-	border: 2px solid var(--md-sys-color-primary);
-	padding: 0px 14px;
-}
-
-.input-margin-top
-{
-	margin-top: 16px;
 }
 
 /* Buttons */
@@ -2030,6 +2005,7 @@
 	display: flex;
 	margin: 0px 24px;
 	width: calc(100% - 48px);
+	transition: background-color 0.2s;
 }
 
 .tabs-high,
@@ -2083,7 +2059,7 @@
 	opacity: 0;
 	transform: scaleX(0.32);
 	transition-duration: 0.2s;
-	transition-property: transform, opacity;
+	transition-property: transform, opacity, background;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 	border-radius: 100px;
 	background: var(--md-sys-color-secondary-container);
@@ -2853,4 +2829,350 @@ table tbody td.lh0
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
+}
+
+/* Input and Textarea */
+
+.placeholder-width
+{
+	position: fixed;
+	z-index: -10;
+	font-size: 12px !important;
+}
+
+.input
+{
+	height: 72px;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0px;
+	transition: all 0.2s var(--md-sys-motion-easing-legacy);
+	margin-bottom: 8px;
+}
+
+.input.error
+{
+	background-color: transparent;
+}
+
+.input.helper
+{
+	margin-bottom: 20px;
+}
+
+.input-margin-top
+{
+	margin-top: 16px;
+}
+
+.input-margin-top-min
+{
+	margin-top: 4px;
+}
+
+.input-compact
+{
+	height: 56px;
+	margin-bottom: 0px;
+}
+
+.input input, .input textarea
+{
+	border: 0px;
+	background-color: transparent;
+	padding: 0px;
+	height: 52px;
+	width: 100%;
+	position: absolute;
+	top: 2px;
+	width: calc(100% - 4px);
+	left: 2px;
+	box-sizing: border-box;
+	padding: 0px 14px;
+	z-index: 4;
+	font-size: 16px;
+	letter-spacing: 0.15px;
+	border-radius: 2px;
+	resize: none;
+
+	color: var(--md-sys-color-on-surface);
+
+	font-family: var(--md-sys-typescale-body-large-font-family-name);
+	font-style: var(--md-sys-typescale-body-large-font-family-style);
+	font-weight: var(--md-sys-typescale-body-large-font-weight);
+	font-size: var(--md-sys-typescale-body-large-font-size);
+	letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+	text-transform: var(--md-sys-typescale-body-large-text-transform);
+	text-decoration: var(--md-sys-typescale-body-large-text-decoration);
+}
+
+.input textarea
+{
+	height: 48px;
+	line-height: 24px;
+	padding: 10px 14px 14px 14px;
+	margin-top: 4px;
+}
+
+.input .inputBorder
+{
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+	z-index: 1;
+}
+
+.input .inputBorder .left, .input .inputBorder .right
+{
+	height: 100%;
+	width: 10px;
+	position: absolute;
+	overflow: hidden;
+	top: 0px;
+}
+
+.input .inputBorder .bottom
+{
+	height: 0px;
+	width: calc(100% - 18px);
+	position: absolute;
+	left: 9px;
+	border-top: 3px solid var(--md-sys-color-outline);
+	transform-origin: bottom;
+	transform: scaleY(0.3333333);
+	bottom: 0px;
+	overflow: hidden;
+	transition: all 0.2s var(--md-sys-motion-easing-legacy);
+}
+
+.input:hover .inputBorder .bottom
+{
+	border-top: 3px solid var(--md-sys-color-on-surface);
+}
+
+.input .inputBorder .left
+{
+	left: 0px;
+}
+
+.input .inputBorder .right
+{
+	right: 0px;
+}
+
+.input .inputBorder .left:after, .input .inputBorder .right:after
+{
+	content: '';
+	display: block;
+	height: 100%;
+	width: 20px;
+	border-radius: 4px;
+	border: 0px solid #868686;
+	box-sizing: border-box;
+	position: absolute;
+	transition: all 0.2s var(--md-sys-motion-easing-legacy);
+	box-shadow: inset 0px 0px 0px 1px var(--md-sys-color-outline);
+}
+
+.input:hover .inputBorder .left:after, .input:hover .inputBorder .right:after
+{
+	box-shadow: inset 0px 0px 0px 1px var(--md-sys-color-on-surface);
+}
+
+.input .inputBorder .top
+{
+	height: 3px;
+	width: calc(100% - 18px);
+	position: absolute;
+	left: 9px;
+	top: 0px;
+	overflow: hidden;
+	display: flex;
+}
+
+.input .inputBorder .top div, .input .inputBorder .top span
+{
+	display: block;
+	border-top: 3px solid var(--md-sys-color-outline);
+	transform: scaleY(0.3333333);
+	float: left;
+	transition: transform 0.2s var(--md-sys-motion-easing-legacy), border 0.2s var(--md-sys-motion-easing-legacy);
+	width: 50%;
+	transform-origin: top;
+}
+
+.input:hover .inputBorder .top div, .input:hover .inputBorder .top span
+{
+	border-top: 3px solid var(--md-sys-color-on-surface);
+}
+
+.input .inputBorder .right:after
+{
+	margin-left: -10px;
+}
+
+.input > div
+{
+	height: 56px;
+	box-sizing: border-box;
+	border-radius: 4px;
+	width: 100%;
+	position: relative;
+	transition: all 0.2s var(--md-sys-motion-easing-legacy);
+	z-index: 1;
+}
+
+.input.mini > div
+{
+	height: 40px;
+}
+
+.input.mini.active > div, .input.mini.haveText > div
+{
+	height: 56px;
+}
+
+.input .placeholder
+{
+	line-height: 0px;
+	height: 24px;
+	position: absolute;
+	top: 16px;
+	left: 0px;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 12px 14px;
+	z-index: 1;
+	transition: all 0.25s var(--md-sys-motion-easing-legacy);
+	z-index: 3;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	color: var(--md-sys-color-on-surface-variant);
+
+	font-family: var(--md-sys-typescale-body-large-font-family-name);
+	font-style: var(--md-sys-typescale-body-large-font-family-style);
+	font-weight: var(--md-sys-typescale-body-large-font-weight);
+	font-size: var(--md-sys-typescale-body-large-font-size);
+	letter-spacing: var(--md-sys-typescale-body-large-letter-spacing);
+	text-transform: var(--md-sys-typescale-body-large-text-transform);
+	text-decoration: var(--md-sys-typescale-body-large-text-decoration);
+}
+
+.input.mini .placeholder
+{
+	transform: translate(0px, -8px);
+	font-size: 14px;
+	letter-spacing: 0.4px;
+}
+
+.input .helper
+{
+	font-size: 12px;
+	margin-left: 16px;
+	transition: all 0.2s var(--md-sys-motion-easing-legacy);
+	opacity: 0;
+	height: 16px;
+	display: block;
+	line-height: 24px;
+	width: calc(100% - 16px);
+}
+
+.input .helper.active
+{
+	opacity: 1;
+}
+
+.input.white
+{
+	color: #2d2d2d;
+}
+
+.input.white .inputBorder *, .input.white .inputBorder *:after
+{
+	border-color: #ffffff !important;
+}
+
+.input.white .helper, .input.white .placeholder
+{
+	color: #aaa;
+}
+
+.input.white input
+{
+	color: #fff;
+}
+
+.input.mini .inputBorder *, .input.mini .inputBorder *:after
+{
+	border-width: 1px !important;
+}
+
+.input.mini.active .inputBorder *, .input.mini.active .inputBorder *:after/*, .input.mini.haveText .inputBorder *, .input.mini.haveText .inputBorder *:after*/
+{
+	border-width: 2px !important;
+}
+
+.input.active .inputBorder *
+{
+	border-color: var(--md-sys-color-primary) !important;
+}
+
+.input.active .inputBorder *:after
+{
+	box-shadow: inset 0px 0px 0px 3px var(--md-sys-color-primary);
+}
+
+.input.active:hover .inputBorder *:after
+{
+	box-shadow: inset 0px 0px 0px 3px var(--md-sys-color-primary);
+}
+
+.input.active .inputBorder .bottom
+{
+	transform: scaleY(1);
+}
+
+.input:hover .placeholder
+{
+	color: var(--md-sys-color-on-surface)
+}
+
+.input.active .placeholder
+{
+	color: var(--md-sys-color-primary);
+}
+
+.input.active .placeholder, .input.haveText .placeholder
+{
+	font-size: 12px;
+	transform: translate(0px, -28px);
+}
+
+.input.error .inputBorder *
+{
+	border-color: var(--md-sys-color-error) !important;
+}
+
+.input.error .inputBorder *:after
+{
+	box-shadow: inset 0px 0px 0px 1px var(--md-sys-color-error);
+}
+
+.input.error.active .inputBorder *:after
+{
+	box-shadow: inset 0px 0px 0px 3px var(--md-sys-color-error);
+}
+
+.input.error .helper, .input.error .placeholder
+{
+	color: var(--md-sys-color-error);
+}
+
+input, textarea
+{
+	outline: none;
 }

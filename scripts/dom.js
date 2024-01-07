@@ -318,6 +318,12 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 			handlebarsContext.comicsReadingProgressCurrentPath = false;
 		}
 
+		if(!pathFiles.length && fileManager.isServer(path) && serverClient.serverLastError())
+		{
+			handlebarsContext.serverLastError = true;
+			handlebarsContext.serverHasCache = file.serverHasCache(path);
+		}
+
 		events.events();
 
 		return {files: pathFiles, readingProgress: readingProgress || {}, readingProgressCurrentPath: readingProgressCurrentPath || {}, html: template.load('index.content.right.'+config.view+'.html')};
@@ -333,10 +339,10 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 }
 
-async function reloadIndex()
+async function reloadIndex(fromSetOfflineMode = false)
 {
 	indexLabel = prevIndexLabel;
-	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true);
+	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true, false, fromSetOfflineMode);
 	if(indexPathA) indexPathControlA.pop();
 }
 
@@ -349,7 +355,7 @@ function setIndexLabel(config)
 
 var currentPath = false, currentPathScrollTop = [], fromDeepLoadNow = 0;
 
-async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromDeepLoad = false)
+async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromDeepLoad = false, fromSetOfflineMode = false)
 {
 	onReading = _onReading = false;
 
@@ -373,14 +379,45 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	currentPath = path;
 
+	handlebarsContext.serverLastError = false;
+
+	let contentRightIndex = template.contentRightIndex();
+
 	if(!path)
 	{
 		dom.fromLibrary(true);
+		dom.indexPathControl(false);
 
-		indexPathControl(false);
+		if(!fromSetOfflineMode)
+			fileManager.setServerInOfflineMode(false);
 
 		let sort = config.sortIndex;
 		let sortInvert = config.sortInvertIndex;
+
+		let sortAndView = false;
+
+		if(_indexLabel)
+		{
+			let labelKey = '';
+
+			if(_indexLabel.favorites)
+				labelKey = 'favorites';
+			else if(_indexLabel.masterFolder)
+				labelKey = 'masterFolder-'+_indexLabel.index;
+			else if(_indexLabel.server)
+				labelKey = 'server-'+_indexLabel.index;
+			else if(_indexLabel.label)
+				labelKey = 'label-'+_indexLabel.index;
+
+			sortAndView = config.sortAndView[labelKey] || {
+				view: 'module',
+				sort: 'name',
+				sortInvert: false,
+			};
+
+			sort = sortAndView.sort;
+			sortInvert = sortAndView.sortInvert;
+		}
 
 		let order = '';
 		let orderKey = 'name';
@@ -422,7 +459,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			for(let key in masterFolders)
 			{
-				if(fs.existsSync(masterFolders[key]) && (!_indexLabel.masterFolder || _indexLabel.masterFolder == masterFolders[key]))
+				if(fs.existsSync(masterFolders[key]) && (!_indexLabel.masterFolder || _indexLabel.masterFolder == masterFolders[key]) && !_indexLabel.server)
 				{
 					let file = fileManager.file(masterFolders[key]);
 					let files = await file.readDir();
@@ -450,10 +487,64 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			}
 		}
 
+		// Get server file lists
+		let servers = storage.get('servers');
+
+		if(!isEmpty(servers))
+		{
+			if(_indexLabel.server)
+			{
+				selectMenuItem(dom.labels.menuItemSelector(isFromIndexLabel ? isFromIndexLabel : _indexLabel));
+
+				handlebarsContext.animationDelay = 0.2;
+				template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+				handlebarsContext.animationDelay = false;
+
+				contentRightIndex = template.contentRightIndex();
+			}
+
+			for(let i = 0, len = servers.length; i < len; i++)
+			{
+				if((servers[i].showOnLibrary || _indexLabel.favorites || _indexLabel.label || _indexLabel.server == servers[i].path) && !_indexLabel.masterFolder)
+				{
+					let file = fileManager.file(servers[i].path);
+					if(!_indexLabel.server) file.updateConfig({cacheServer: true});
+					let files = await file.readServer();
+
+					let len = files.length;
+
+					for(let i = 0; i < len; i++)
+					{
+						let folder = files[i];
+
+						if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
+						{
+							comics.push({
+								name: metadataPathName(folder),
+								path: folder.path,
+								added: folder.mtime,
+								folder: true,
+								compressed: folder.compressed,
+								fromMasterFolder: true,
+							});
+						}
+					}
+
+					if(!len && _indexLabel.server && serverClient.serverLastError())
+					{
+						handlebarsContext.serverLastError = true;
+						handlebarsContext.serverHasCache = file.serverHasCache(servers[i].path);
+					}
+
+					file.destroy();
+				}
+			}
+		}
+
 		// Get comics in library
 		let comicsStorage = storage.get('comics');
 
-		if(!isEmpty(comicsStorage) && !_indexLabel.masterFolder)
+		if(!isEmpty(comicsStorage) && !_indexLabel.masterFolder && !_indexLabel.server)
 		{
 			for(let key in comicsStorage)
 			{
@@ -527,12 +618,15 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			});
 		}
 
+		// Avoid continue if another loadIndexPage has been run
+		if(contentRightIndex != template.contentRightIndex()) return;
+
 		handlebarsContext.comics = comics;
 		handlebarsContext.comicsIndex = true;
 		handlebarsContext.comicsReadingProgress = false;
-		dom.setCurrentPageVars('index');
+		dom.setCurrentPageVars('index', _indexLabel);
 
-		template.loadContentRight('index.content.right.'+config.viewIndex+'.html', animation, keepScroll);
+		template.loadContentRight('index.content.right.'+(sortAndView ? sortAndView.view : config.viewIndex)+'.html', animation, keepScroll);
 
 		cache.resumeQueue();
 		queue.resume('folderThumbnails');
@@ -547,6 +641,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
 			floatingActionButton(true, 'dom.addComicButtons();');
 		}
+		
+		if(_indexLabel)
+			floatingActionButton(false);
 
 		events.events();
 
@@ -575,6 +672,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			dom.loadIndexHeader(false, animation);
 			template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+
+			contentRightIndex = template.contentRightIndex();
 		}
 
 		if(!content)
@@ -654,6 +753,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 		file.destroy();
 
+		// Avoid continue if another loadIndexPage has been run
+		if(contentRightIndex != template.contentRightIndex()) return;
+
 		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !notAutomaticBrowsing && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
 		{
 			fromDeepLoadNow = Date.now();
@@ -702,7 +804,7 @@ function loadIndexContentLeft(animation)
 	for(let i = 0, len = masterFolders.length; i < len; i++)
 	{
 		_masterFolders.push({
-			id: 'master-folder-'+i,
+			id: 'masterFolder-'+i,
 			key: i,
 			name: p.basename(masterFolders[i]),
 			path: masterFolders[i],
@@ -744,6 +846,32 @@ function loadIndexContentLeft(animation)
 	});
 
 	handlebarsContext.labels = _labels;
+
+	// Servers
+	let servers = storage.get('servers');
+
+	let _servers = [];
+
+	for(let i = 0, len = servers.length; i < len; i++)
+	{
+		_servers.push({
+			id: 'server-'+i,
+			key: i,
+			name: servers[i].name,
+			path: servers[i].path,
+		});
+	}
+
+	_servers.sort(function(a, b){
+
+		if(a.name === b.name)
+			return 0;
+
+		return a.name > b.name ? 1 : -1;
+
+	});
+
+	handlebarsContext.servers = _servers;
 	handlebarsContext.isFrom = currentSelectMenuItem;
 
 	template.loadContentLeft('index.content.left.html', animation);
@@ -841,7 +969,7 @@ function headerPath(path, mainPath)
 
 async function nextComic(path, mainPath)
 {
-	let file = fileManager.file(mainPath);
+	let file = fileManager.file(mainPath, {cacheServer: true});
 	let image = await file.images(1, path);
 	file.destroy();
 
@@ -850,7 +978,7 @@ async function nextComic(path, mainPath)
 
 async function previousComic(path, mainPath)
 {
-	let file = fileManager.file(mainPath);
+	let file = fileManager.file(mainPath, {cacheServer: true});
 	let image = await file.images(-1, path);
 	file.destroy();
 
@@ -987,7 +1115,7 @@ async function getFolderThumbnails(path)
 	}
 	catch(error)
 	{
-		if(error.message && error.message === 'notCacheOnly')
+		if(error.message && /notCacheOnly/.test(error.message))
 		{
 			queue.add('folderThumbnails', async function(path, folderSha) {
 
@@ -1349,8 +1477,42 @@ function floatingActionButton(active, callback)
 	}
 }
 
-function setCurrentPageVars(page)
+function setCurrentPageVars(page, _indexLabel = false)
 {
+	let labelKey = false;
+	let sortAndView = false;
+
+	let key = page;
+
+	if(_indexLabel)
+	{
+		if(_indexLabel.favorites)
+		{
+			labelKey = key = 'favorites';
+		}
+		else if(_indexLabel.masterFolder)
+		{
+			labelKey = 'masterFolder-'+_indexLabel.index;
+			key = 'masterFolder';
+		}
+		else if(_indexLabel.server)
+		{
+			labelKey = 'server-'+_indexLabel.index;
+			key = 'server';
+		}
+		else if(_indexLabel.label)
+		{
+			labelKey = 'label-'+_indexLabel.index;
+			key = 'label';
+		}
+
+		sortAndView = config.sortAndView[labelKey] || {
+			view: 'module',
+			sort: 'name',
+			sortInvert: false,
+		};
+	}
+
 	let extraKey = '';
 
 	if(page == 'recently-opened')
@@ -1359,35 +1521,60 @@ function setCurrentPageVars(page)
 		extraKey = 'Index';
 
 	handlebarsContext.page = {
-		name: page,
-		view: config['view'+extraKey],
-		sort: config['sort'+extraKey],
-		sortInvert: config['sortInvert'+extraKey],
-		foldersFirst: config['foldersFirst'+extraKey] || false,
+		key: key,
+		name: labelKey ? labelKey : page,
+		view: sortAndView ? sortAndView.view : config['view'+extraKey],
+		sort: sortAndView ? sortAndView.sort : config['sort'+extraKey],
+		sortInvert: sortAndView ? sortAndView.sortInvert : config['sortInvert'+extraKey],
+		foldersFirst: sortAndView ? false : (config['foldersFirst'+extraKey] || false),
 	};
 }
 
 function changeView(mode, page)
 {
-	let extraKey = '';
+	let labelKey = false;
+	let sortAndView = false;
 
-	if(page == 'recently-opened')
-		extraKey = 'RecentlyOpened';
-	else if(page == 'index')
-		extraKey = 'Index';
-
-	let icon = '';
-
-	if(mode == 'module')
-		icon = 'view_module';
-	else
-		icon = 'sort';
-
-	if(mode != config['view'+extraKey])
+	if(/favorites|masterFolder|server|label/.test(page))
 	{
-		storage.updateVar('config', 'view'+extraKey, mode);
-		selectElement('.view-'+mode);
-		changed = true;
+		labelKey = page;
+
+		sortAndView = config.sortAndView[labelKey] || {
+			view: 'module',
+			sort: 'name',
+			sortInvert: false,
+		};
+	}
+
+	let changed = false;
+
+	if(sortAndView)
+	{
+		if(mode != sortAndView.view)
+		{
+			sortAndView.view = mode;
+			config.sortAndView[labelKey] = sortAndView;
+
+			storage.updateVar('config', 'sortAndView', config.sortAndView);
+			selectElement('.view-'+mode);
+			changed = true;
+		}
+	}
+	else
+	{
+		let extraKey = '';
+
+		if(page == 'recently-opened')
+			extraKey = 'RecentlyOpened';
+		else if(page == 'index')
+			extraKey = 'Index';
+
+		if(mode != config['view'+extraKey])
+		{
+			storage.updateVar('config', 'view'+extraKey, mode);
+			selectElement('.view-'+mode);
+			changed = true;
+		}
 	}
 
 	if(changed)
@@ -1401,40 +1588,84 @@ function changeView(mode, page)
 
 function changeSort(type, mode, page)
 {
-	let extraKey = '';
+	let labelKey = false;
+	let sortAndView = false;
 
-	if(page == 'recently-opened')
-		extraKey = 'RecentlyOpened';
-	else if(page == 'index')
-		extraKey = 'Index';
+	if(/favorites|masterFolder|server|label/.test(page))
+	{
+		labelKey = page;
+
+		sortAndView = config.sortAndView[labelKey] || {
+			view: 'module',
+			sort: 'name',
+			sortInvert: false,
+		};
+	}
 
 	let changed = false;
 
-	if(type == 1)
+	if(sortAndView)
 	{
-		if(mode != config['sort'+extraKey])
+		if(type == 1)
 		{
-			storage.updateVar('config', 'sort'+extraKey, mode);
+			if(mode != sortAndView.sort)
+			{
+				sortAndView.sort = mode;
+				changed = true;
+			}
+		}
+		else if(type == 2)
+		{
+			if(mode != sortAndView.sortInvert)
+			{
+				sortAndView.sortInvert = mode;
+				changed = true;
+			}
+		}
+
+		if(changed)
+		{
+			config.sortAndView[labelKey] = sortAndView;
+
+			storage.updateVar('config', 'sortAndView', config.sortAndView);
 			selectElement('.sort-'+mode);
-			changed = true;
 		}
 	}
-	else if(type == 2)
+	else
 	{
-		if(mode != config['sortInvert'+extraKey])
+		let extraKey = '';
+
+		if(page == 'recently-opened')
+			extraKey = 'RecentlyOpened';
+		else if(page == 'index')
+			extraKey = 'Index';
+
+		if(type == 1)
 		{
-			storage.updateVar('config', 'sortInvert'+extraKey, mode);
-			selectElement('.sort-'+mode);
-			changed = true;
+			if(mode != config['sort'+extraKey])
+			{
+				storage.updateVar('config', 'sort'+extraKey, mode);
+				selectElement('.sort-'+mode);
+				changed = true;
+			}
 		}
-	}
-	else if(type == 3)
-	{
-		if(mode != config['foldersFirst'+extraKey])
+		else if(type == 2)
 		{
-			storage.updateVar('config', 'foldersFirst'+extraKey, mode);
-			selectElement('.sort-'+mode);
-			changed = true;
+			if(mode != config['sortInvert'+extraKey])
+			{
+				storage.updateVar('config', 'sortInvert'+extraKey, mode);
+				selectElement('.sort-'+mode);
+				changed = true;
+			}
+		}
+		else if(type == 3)
+		{
+			if(mode != config['foldersFirst'+extraKey])
+			{
+				storage.updateVar('config', 'foldersFirst'+extraKey, mode);
+				selectElement('.sort-'+mode);
+				changed = true;
+			}
 		}
 	}
 
@@ -1480,6 +1711,9 @@ function nightMode(force = null)
 // Show the comic context menu
 async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
 {	
+	let isServer = fileManager.isServer(path);
+	if(!fromIndex && isServer) return;
+
 	// Remove
 	let remove = document.querySelector('#index-context-menu .context-menu-remove');
 
@@ -1535,45 +1769,62 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 		labels.style.display = 'none';
 	}
 
-	// Open file location
-	let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
-	openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
-
-	// Add poster and delete
-	let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
-	let deletePoster = document.querySelector('#index-context-menu .context-menu-delete-poster');
-
-	if(folder)
+	if(isServer)
 	{
-		addPoster.style.display = 'block';
+		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
+		let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
+		let deletePoster = document.querySelector('#index-context-menu .context-menu-delete-poster');
 
-		let file = fileManager.file(path);
-		let images = await file.images(2, false, true);
-		file.destroy();
-
-		let poster = !Array.isArray(images) ? images : false;
-
-		addPoster.setAttribute('onclick', 'dom.poster.add('+(fromIndexNotMasterFolders ? 'true' : 'false')+', \''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(poster ? '\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\'' : 'false')+');');
-		addPoster.querySelector('span').innerHTML = poster ? language.global.contextMenu.changePoster : language.global.contextMenu.addPoster;
-
-		if(poster && !poster.fromFirstImageAsPoster)
-		{
-			deletePoster.style.display = 'block';
-			deletePoster.setAttribute('onclick', 'dom.poster.delete(\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\');');
-		}
-		else
-		{
-			deletePoster.style.display = 'none';
-		}
-
-		openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFolderLocation;
+		openFileLocation.style.display = 'none';
+		addPoster.style.display = 'none';
+		deletePoster.style.display = 'none';
 	}
 	else
 	{
-		addPoster.style.display = 'none';
-		deletePoster.style.display = 'none';
+		// Open file location
+		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
+		openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
+		openFileLocation.style.display = 'block';
 
-		openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFileLocation;
+		// Add poster and delete
+		let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
+		let deletePoster = document.querySelector('#index-context-menu .context-menu-delete-poster');
+		addPoster.style.display = 'block';
+		deletePoster.style.display = 'block';
+
+
+		if(folder)
+		{
+			addPoster.style.display = 'block';
+
+			let file = fileManager.file(path);
+			let images = await file.images(2, false, true);
+			file.destroy();
+
+			let poster = !Array.isArray(images) ? images : false;
+
+			addPoster.setAttribute('onclick', 'dom.poster.add('+(fromIndexNotMasterFolders ? 'true' : 'false')+', \''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(poster ? '\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\'' : 'false')+');');
+			addPoster.querySelector('span').innerHTML = poster ? language.global.contextMenu.changePoster : language.global.contextMenu.addPoster;
+
+			if(poster && !poster.fromFirstImageAsPoster)
+			{
+				deletePoster.style.display = 'block';
+				deletePoster.setAttribute('onclick', 'dom.poster.delete(\''+escapeQuotes(escapeBackSlash(poster.path), 'simples')+'\');');
+			}
+			else
+			{
+				deletePoster.style.display = 'none';
+			}
+
+			openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFolderLocation;
+		}
+		else
+		{
+			addPoster.style.display = 'none';
+			deletePoster.style.display = 'none';
+
+			openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFileLocation;
+		}
 	}
 
 	if(gamepad)
@@ -1645,7 +1896,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	else
 	{
 		if(!template._contentRight().querySelector('.loading'))
+		{
+			handlebarsContext.loading = true;
 			template.loadContentRight('reading.content.right.html', animation);
+		}
 
 		template.loadHeader('reading.header.html', animation);
 	}
@@ -1680,6 +1934,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		{
 			await file.makeAvailable(files);
 		}
+	}
+	else if(fileManager.isServer(path))
+	{
+		await file.makeAvailable(files, false, true);
 	}
 
 	file.destroy();

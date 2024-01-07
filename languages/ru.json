@@ -45,6 +45,7 @@
 		"addToLibrary": "",
 		"unsupportedFile": "",
 		"reload": "",
+		"retry": "",
 		"search": "",
 		"filterCurrentPage": "",
 		"language": "Язык",
@@ -59,7 +60,16 @@
 		"continueReading": "Продолжить чтение",
 		"emptyIndex": "В этом сборнике нет комиксов.",
 		"emptyFolder": "В этой папке нет совместимых файлов.",
-		"emptyRecentlyOpened": ""
+		"emptyRecentlyOpened": "",
+		"emptyFavorites": "",
+		"emptyLabel": ""
+	},
+	"servers": {
+		"offlineMode": "",
+		"error": {
+			"connection": "",
+			"folderNotFound": ""
+		}
 	},
 	"reading": {
 		"prevChapter": "",
@@ -236,6 +246,23 @@
 			"main": "",
 			"folder": "",
 			"noFolders": ""
+		},
+		"servers": {
+			"main": "",
+			"add": "",
+			"noServers": "",
+			"deleteServer": "",
+			"confirmDelete": "",
+			"supportedProtocols": "",
+			"protocolsDescription": "",
+			"serverNameExists": "",
+			"name": "",
+			"path": "",
+			"user": "",
+			"pass": "",
+			"domain": "",
+			"onlyIn": "",
+			"showOnLibrary": ""
 		},
 		"storage": {
 			"main": "",

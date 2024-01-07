@@ -989,6 +989,9 @@ function goPageDialog(go = false)
 				}
 			],
 		});
+
+		events.focus('.input-goto-page');
+		events.eventInput();
 	}
 }
 
@@ -3414,6 +3417,9 @@ function editReadingShortcutPagesConfigName(key = 0, save = false)
 				}
 			],
 		});
+
+		events.focus('.input-config-name');
+		events.eventInput();
 	}
 }
 
@@ -3484,6 +3490,9 @@ function newReadingShortcutPagesConfig(save = false)
 				}
 			],
 		});
+
+		events.focus('.input-config-name');
+		events.eventInput();
 	}
 }
 

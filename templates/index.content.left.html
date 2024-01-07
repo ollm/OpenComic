@@ -24,6 +24,13 @@
 	</div>
 	{{/each}}
 
+	{{#each servers}}
+	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.server('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{key}}, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}');">
+		<div class="icon-24 material-icon">smb_share</div>
+		{{name}}
+	</div>
+	{{/each}}
+
 	{{#each labels}}
 	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.label('{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}', {{key}});">
 		<div class="icon-24 material-icon">label</div>

@@ -1,1 +1,15 @@
-<input class="input input-goto-page" type="text" placeholder="" value="{{currentIndex}}"> 
+<div class="input input-margin-top input-compact">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.dialog.pages.readingGotoPage}}</div>
+		<input type="number" min="1" value="{{currentIndex}}" data-on-enter="events.closeDialog(); reading.goPageDialog(true);" class="input-goto-page">
+	</div>
+</div>

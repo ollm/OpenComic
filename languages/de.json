@@ -45,6 +45,7 @@
 		"addToLibrary": "",
 		"unsupportedFile": "",
 		"reload": "",
+		"retry": "",
 		"search": "",
 		"filterCurrentPage": "",
 		"language": "Sprache",
@@ -59,7 +60,16 @@
 		"continueReading": "Lesen fortsetzen",
 		"emptyIndex": "In dieser Kollektion gibt es keine Comics.",
 		"emptyFolder": "In diesem Ordner gibt es keine kompatiblen Dateien.",
-		"emptyRecentlyOpened": ""
+		"emptyRecentlyOpened": "",
+		"emptyFavorites": "",
+		"emptyLabel": ""
+	},
+	"servers": {
+		"offlineMode": "",
+		"error": {
+			"connection": "",
+			"folderNotFound": ""
+		}
 	},
 	"reading": {
 		"prevChapter": "",
@@ -236,6 +246,23 @@
 			"main": "",
 			"folder": "",
 			"noFolders": ""
+		},
+		"servers": {
+			"main": "",
+			"add": "",
+			"noServers": "",
+			"deleteServer": "",
+			"confirmDelete": "",
+			"supportedProtocols": "",
+			"protocolsDescription": "",
+			"serverNameExists": "",
+			"name": "",
+			"path": "",
+			"user": "",
+			"pass": "",
+			"domain": "",
+			"onlyIn": "",
+			"showOnLibrary": ""
 		},
 		"storage": {
 			"main": "",

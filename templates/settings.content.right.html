@@ -33,6 +33,23 @@
 				<cb></cb>
 			</div>
 
+			<h2 class="headline-small">{{language.settings.servers.main}}</h2>
+
+			<div class="settings-servers">
+				
+				<div class="menu-simple-text menu-grey settings-servers-empty"{{#if servers}} style="display: none;"{{/if}}>
+					<span>{{language.settings.servers.noServers}}</span>
+				</div>
+
+				<div class="settings-servers-list"{{#unless servers}} style="display: none;"{{/unless}}>
+				</div>
+
+				<div class="simple-button filled-tonal gamepad-item" onclick="settings.addServer();">
+					<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.settings.servers.add}}</div>
+				</div>
+				<cb></cb>
+			</div>
+
 			<h2 class="headline-small">{{language.settings.reading.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
@@ -312,7 +329,7 @@
 			</div>
 
 			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
-				<div class="simple-slider-text">{{language.settings.storage.temporaryFilesMaxSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="1" style="right: 70px;">undo</i><span>{{config.tmpMaxSize}}</span>GB</div></div>
+				<div class="simple-slider-text">{{language.settings.storage.temporaryFilesMaxSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="4" style="right: 70px;">undo</i><span>{{config.tmpMaxSize}}</span>GB</div></div>
 				<span class="simple-slider-supporting-text body-medium">{{language.settings.storage.temporaryFilesMaxSizeDescription}}</span>
 				<div class="range">
 					<div class="range-position">

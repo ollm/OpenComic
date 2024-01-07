@@ -34,6 +34,41 @@ function label(name, index)
 	dom.loadIndexPage(true);
 }
 
+function server(path, index, name)
+{
+	dom.setIndexLabel({server: path, index: index, name: name});
+	dom.loadIndexPage(true);
+}
+
+function deleteFromSortAndView(name, index)
+{
+	let sortAndView = {};
+
+	let regex = new RegExp('^'+pregQuote(name));
+
+	for(let key in config.sortAndView)
+	{
+		if(regex.test(key))
+		{
+			let _index = +app.extract(/([0-9]+)/, key, 1);
+
+			if(_index !== index)
+			{
+				if(_index < index)
+					sortAndView[key] = config.sortAndView[key];
+				else
+					sortAndView[name+'-'+(_index - 1)] = config.sortAndView[key];
+			}
+		}
+		else
+		{
+			sortAndView[key] = config.sortAndView[key];
+		}
+	}
+
+	storage.updateVar('config', 'sortAndView', sortAndView);
+}
+
 var labelsDialogPath = false;
 
 function setLabels(path, save = false)
@@ -195,6 +230,9 @@ function newLabel(save = false, fromEditLabels = false)
 				}
 			],
 		});
+
+		events.focus('.input-new-label');
+		events.eventInput();
 	}
 }
 
@@ -327,6 +365,9 @@ function editLabel(key, save = false)
 				}
 			],
 		});
+
+		events.focus('.input-new-label');
+		events.eventInput();
 	}
 }
 
@@ -355,6 +396,8 @@ function deleteLabel(key, confirm = false)
 			else
 				comicLabels[path] = _labels;
 		}
+
+		deleteFromSortAndView('label', key);
 
 		storage.set('labels', labels);
 		storage.set('comicLabels', comicLabels);
@@ -398,6 +441,8 @@ function menuItemSelector(labels)
 		return 'master-folder-'+labels.index;
 	else if(labels.label)
 		return 'label-'+labels.index;
+	else if(labels.server)
+		return 'server-'+labels.index;
 
 	return '';
 }
@@ -407,10 +452,12 @@ module.exports = {
 	setFavorite: setFavorite,
 	favorites: favorites,
 	label: label,
+	server: server,
 	setLabels: setLabels,
 	newLabel: newLabel,
 	editLabels: editLabels,
 	editLabel: editLabel,
 	deleteLabel: deleteLabel,
+	deleteFromSortAndView: deleteFromSortAndView,
 	menuItemSelector: menuItemSelector,
 };

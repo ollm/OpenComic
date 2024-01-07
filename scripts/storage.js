@@ -1,4 +1,4 @@
-var changes = 70; // Update this if readingPagesConfig is updated
+var changes = 73; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -90,6 +90,13 @@ var storageDefault = {
 		sortInvert: false,
 		sortInvertIndex: false,
 		sortInvertRecentlyOpened: false,
+		sortAndView: {
+			wildcard: {
+				view: 'module',
+				sort: 'name',
+				sortInvert: false,
+			}
+		},
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
 		...readingPagesConfig,
@@ -128,9 +135,10 @@ var storageDefault = {
 		checkPreReleases: true,
 		lastCheckedRelease: '',
 		lastCheckedReleaseTime: 0,
+		serverTimeoutMultiplier: 1,
 		cacheMaxSize: 256, // MB
 		cacheMaxOld: 60,
-		tmpMaxSize: 1, // GB
+		tmpMaxSize: 4, // GB
 		tmpMaxOld: 30,
 		trackingSites: {
 			wildcard: {
@@ -192,6 +200,14 @@ var storageDefault = {
 	masterFolders: [
 		'',
 	],
+	servers: [{
+		name: '',
+		path: '',
+		user: '',
+		pass: '',
+		domain: '',
+		showOnLibrary: false,
+	}],
 	favorites: {
 		wildcard: {
 			added: 0,

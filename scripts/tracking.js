@@ -306,7 +306,7 @@ function currentTrackingDialog(site)
 		events.dialog({
 			header: false,
 			width: 500,
-			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 443 : 517,
+			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 446 : 526,
 			content: template.load('loading.html'),
 			buttons: false,
 		});
@@ -381,6 +381,9 @@ function getTokenDialog(site = '', callback = false, done = false)
 					}
 				],
 			});
+
+			events.focus('.input-token');
+			events.eventInput();
 		}
 	}
 }
@@ -425,7 +428,10 @@ function searchDialog(site)
 		buttons: false,
 	});
 
-	var title = getTitle();
+	events.focus('.input-search');
+	events.eventInput();
+
+	let title = getTitle();
 
 	searchComic(site, title);
 }
@@ -542,6 +548,9 @@ function addChapterNumberDialog(done = false, onlySite = false)
 				}
 			],
 		});
+
+		events.focus('.input-chapter');
+		events.eventInput();
 	}
 }
 

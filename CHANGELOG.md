@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Custom labels support [`1185d82`](https://github.com/ollm/OpenComic/commit/1185d82790a764e63d1d223362e4b44e203ff0e1)
 - Option to not enlarge images more than its original size [`e2f8598`](https://github.com/ollm/OpenComic/commit/e2f85983352529162822576bbb8e7da41cd31f39)
 - New image interpolation methods available: lanczos3, lanczos2, mitchell, cubic, nearest and others [`86cd705`](https://github.com/ollm/OpenComic/commit/86cd7053011b09b1a0a0b898775e32ede8cf5296)
+- Server connection support: smb://, ftp://, ftps://, scp://, sftp://, ssh://
 
 ##### 🐛 Bug Fixes
 

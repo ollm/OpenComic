@@ -1,0 +1,93 @@
+{{language.settings.servers.protocolsDescription}}
+<br><br>
+{{language.settings.servers.supportedProtocols}}: <b>smb://</b>, <b>ftp://</b>, <b>ftps://</b>, <b>scp://</b>, <b>sftp://</b> {{language.global.and}} <b>ssh://</b>
+<br><br>
+<div class="input">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.servers.name}}</div>
+		<input type="text" value="{{server.name}}" class="input-name">
+	</div>
+</div>
+
+<div class="input helper">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.servers.path}}</div>
+		<input type="text" value="{{server.path}}" class="input-path">
+	</div>
+	<div class="helper active">smb://192.168.1.100/path/to/folder</div>
+</div>
+
+<div class="input">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.servers.user}}</div>
+		<input type="text" value="{{server.user}}" class="input-user">
+	</div>
+</div>
+
+<div class="input">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.servers.pass}}</div>
+		<input type="password" value="{{server.pass}}" class="input-pass">
+	</div>
+</div>
+
+<div class="input helper">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.servers.domain}}</div>
+		<input type="text" value="{{server.domain}}" class="input-domain">
+	</div>
+	<div class="helper active">{{language.settings.servers.onlyIn}} <b>smb://</b></div>
+</div>
+
+<div class="menu-simple-text gamepad-item">
+	<span>{{language.settings.servers.showOnLibrary}}</span>
+	<div class="switch input-show-on-library{{#if server.showOnLibrary}} a{{/if}}" on="settings.showOnLibrary(1)" off="settings.showOnLibrary(0)" data-value="{{#if server.showOnLibrary}}1{{else}}0{{/if}}">
+		<div></div>
+		<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+	</div>
+</div>

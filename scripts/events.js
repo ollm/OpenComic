@@ -373,6 +373,9 @@ function rangePosition(input, range, percent = false)
 	if(percent === false)
 		percent = (value - min) / (max - min) * 100;
 
+	if(isNaN(percent))
+		percent = 0;
+
 	range.querySelector('.range-line').style.width = percent+'%';
 	range.querySelector('.range-point').style.left = percent+'%';
 
@@ -658,6 +661,7 @@ function events()
 	eventButton();
 	eventSwitch();
 	eventCheckbox();
+	eventInput();
 	eventRange();
 	eventsTab();
 	eventSelect(false);
@@ -1111,6 +1115,123 @@ function closeSnackbar()
 
 }
 
+function inputFocus(event, animation = true)
+{
+	let parent = this.closest('.input');
+	let placeholder = parent.querySelector('.placeholder');
+
+	let placeholderWidth = document.querySelector('.placeholder-width');
+	placeholderWidth.innerHTML = placeholder.innerHTML;
+	placeholderWidth = placeholderWidth.getBoundingClientRect().width + 8;
+
+	let translate = Math.round(placeholderWidth / 2);
+
+	this.dataset.translate = translate;
+	this.dataset.placeholderWidth = placeholderWidth;
+
+	if(!animation)
+	{
+		placeholder.style.transition = '0s';
+		dom.this(parent).find('.inputBorder .top div, .inputBorder .top span', true).css({'transition': '0s'});
+	}
+
+	let top = parent.querySelector('.inputBorder .top');
+	let div = top.querySelector('div');
+	let span = top.querySelector('span');
+
+	div.style.width = translate+'px';
+	div.style.transform = 'translate(-'+translate+'px, 0px) scaleY(1)';
+
+	span.style.width =  (top.getBoundingClientRect().width - translate)+'px';
+	span.style.transform = 'translate('+translate+'px, 0px) scaleY(1)';
+
+	parent.classList.add('active');
+
+	if(!animation)
+	{
+		setTimeout(function(){
+
+			placeholder.style.transition = '';
+			dom.this(parent).find('.inputBorder .top div, .inputBorder .top span', true).css({'transition': ''});
+
+		}, 100, this);
+	}
+}
+
+function inputBlur()
+{
+	let parent = this.closest('.input');
+	let div = parent.querySelector('.inputBorder .top div');
+	let span = parent.querySelector('.inputBorder .top span');
+
+	if(this !== document.activeElement)
+	{
+		parent.classList.remove('active');
+
+		if(!this.value)
+		{
+			parent.classList.remove('haveText');
+
+			div.style.transform = '';
+			span.style.transform = '';
+		}
+		else
+		{
+			parent.classList.add('haveText');
+
+			let translate = this.dataset.translate;
+
+			div.style.transform = 'translate(-'+translate+'px, 0px) scaleY(0.3333333)';
+			span.style.transform = 'translate('+translate+'px, 0px) scaleY(0.3333333)';
+		}
+	}
+}
+
+function inputKeydown(event)
+{
+	let key = event.keyCode;
+
+	if(key == 13)
+	{
+		let onEnter = this.dataset.onEnter;
+		if(onEnter) $.globalEval(onEnter);
+	}
+}
+
+function eventInput()
+{
+	let inputs = document.querySelectorAll('.input input, .input textarea');
+
+	app.event(inputs, 'focus', inputFocus);
+	app.event(inputs, 'blur', inputBlur);
+	app.event(inputs, 'keydown', inputKeydown);
+
+	for(let i = 0, len = inputs.length; i < len; i++)
+	{
+		if(!inputs[i].dataset.first)
+		{
+			inputFocus.call(inputs[i], false, false);
+			inputBlur.call(inputs[i]);
+
+			inputs[i].dataset.first = 1;
+		}
+	}
+	
+}
+
+function focus(query, end = true)
+{
+	let input = document.querySelector(query);
+
+	if(input)
+	{
+		let len = input.value.length;
+
+		if(end && input.type != 'number') input.setSelectionRange(len, len);
+		input.focus();
+	}
+}
+
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
@@ -1118,8 +1239,10 @@ module.exports = {
 	eventSelect: eventSelect,
 	eventSwitch: eventSwitch,
 	eventCheckbox: eventCheckbox,
+	eventInput: eventInput,
 	eventsTab: eventsTab,
 	events: events,
+	focus: focus,
 	showHoverText: showHoverText,
 	hideHoverText: hideHoverText,
 	showSelect: showSelect,

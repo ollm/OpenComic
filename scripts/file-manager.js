@@ -1,6 +1,6 @@
 var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, fastXmlParser = false, fileType = false;
 
-var file = function(path) {
+var file = function(path, config = false) {
 
 	this.path = path;
 
@@ -16,6 +16,8 @@ var file = function(path) {
 		sha: true,
 		only: false,
 	};
+
+	if(config) this.config = {...this.config, ...config};
 
 	this.updateConfig = function(config) {
 
@@ -50,7 +52,14 @@ var file = function(path) {
 
 		let files = [];
 
-		if(containsCompressed(path))
+		if(isServer(path))
+		{
+			if(inArray(fileExtension(path), compressedExtensions.all) || !containsCompressed(path))
+				files = await this.readServer(path, _realPath);
+			else
+				files = await this.readInsideCompressedServer(path, _realPath);
+		}
+		else if(containsCompressed(path))
 		{
 			if(inArray(fileExtension(path), compressedExtensions.all))
 				files = await this.readCompressed(path, _realPath);
@@ -159,7 +168,7 @@ var file = function(path) {
 		else
 			_realPath = _realPath || realPath(path, -1);
 
-		mtime = mtime || Date.parse(fs.statSync(firstCompressedFile(path)).mtime);
+		mtime = mtime || fs.statSync(firstCompressedFileRealPath(path)).mtime.getTime();
 
 		let now = Date.now();
 
@@ -190,7 +199,9 @@ var file = function(path) {
 		path = path || this.path;
 		_realPath = _realPath || realPath(path, -1);
 
-		let mtime = Date.parse(fs.statSync(firstCompressedFile(path)).mtime);
+		let _isServer = isServer(path);
+
+		let mtime = !_isServer ? fs.statSync(firstCompressedFile(path)).mtime.getTime() : 1;
 		let compressed = this.openCompressed(path, _realPath, mtime);
 
 		let json = cache.readFile(compressed.cacheFile);
@@ -202,7 +213,7 @@ var file = function(path) {
 		{
 			if(json)
 			{
-				if(json.mtime == mtime)
+				if(json.mtime == mtime || _isServer)
 					return json.files;
 
 				if(fs.existsSync(compressed.tmp))
@@ -245,6 +256,83 @@ var file = function(path) {
 		}
 
 		return files;
+
+	}
+
+	this.serverHasCache = function(path) {
+
+		path = serverClient.fixPath(path || this.path);
+		let sha = sha1(path);
+		let cacheFile = 'server-files-'+sha+'.json';
+
+		return cache.existsFile(cacheFile);
+
+	}
+
+	this.readServer = async function(path = false, _realPath = false) {
+
+		path = serverClient.fixPath(path || this.path);
+		_realPath = _realPath || realPath(path, -1);
+
+		let sha = sha1(path);
+		let cacheFile = 'server-files-'+sha+'.json';
+
+		let _containsCompressed = containsCompressed(path, 0, false);
+
+		if(this.config.cache && (this.config.cacheOnly || this.config.cacheServer || serverInOfflineMode))
+		{
+			if(_containsCompressed)
+				return this.readCompressed(path);
+
+			let json = cache.readFile(cacheFile);
+
+			if(json)
+				json = JSON.parse(json);
+
+			if(json)
+				return json.files;
+		}
+
+		if(serverInOfflineMode)
+			return [];
+
+		if(this.config.cacheOnly)
+			throw new Error('notCacheOnly');
+
+		let files = [];
+
+		if(_containsCompressed)
+		{
+			let firstCompressed = firstCompressedFile(path, 0);
+
+			// Download file to tmp
+			let file = await serverClient.download(path, {only: [firstCompressed]});
+
+			return this.readCompressed(path);
+		}
+		else
+		{
+			files = await serverClient.read(path);
+		}
+
+		return files;
+
+	}
+
+	this.readInsideCompressedServer = async function(path = false, _realPath = false) {
+
+		path = path || this.path;
+		_realPath = _realPath || realPath(path, -1);
+
+		let firstCompressed = firstCompressedFile(path, 0);
+
+		if(firstCompressed)
+		{
+			// Download file to tmp
+			let file = await serverClient.download(path, {only: [firstCompressed]});
+		}
+
+		return this.readInsideCompressed(path, _realPath);
 
 	}
 
@@ -569,7 +657,7 @@ var file = function(path) {
 	}
 
 	// Makes the files available, extracting them from the respective compressed files if necessary
-	this.makeAvailable = async function(files, callbackWhenFileAvailable = false) {
+	this.makeAvailable = async function(files, callbackWhenFileAvailable = false, forceCheck = false) {
 
 		let filesToDecompress = false, filesToDecompressNum = 0;
 
@@ -579,18 +667,28 @@ var file = function(path) {
 
 			let _path = realPath(file.path, -1, this.config.prefixes);
 
-			if(fs.existsSync(_path))
+			if((!forceCheck || _path === file.path) && fs.existsSync(_path))
 			{
 				if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
 			}
 			else
 			{
+				if(!filesToDecompress) filesToDecompress = {};
+			
 				let compressedFile = lastCompressedFile(file.path);
 
-				if(!filesToDecompress) filesToDecompress = {};
-				if(!filesToDecompress[compressedFile]) filesToDecompress[compressedFile] = [];
+				if(!compressedFile && isServer(file.path))
+				{
+					compressedFile = serverClient.getTypeAdress(file.path);
 
-				filesToDecompress[compressedFile].push(removePathPart(file.path, compressedFile));
+					if(!filesToDecompress[compressedFile]) filesToDecompress[compressedFile] = [];
+					filesToDecompress[compressedFile].push(file.path);
+				}
+				else
+				{
+					if(!filesToDecompress[compressedFile]) filesToDecompress[compressedFile] = [];
+					filesToDecompress[compressedFile].push(removePathPart(file.path, compressedFile));
+				}
 
 				filesToDecompressNum++;
 			}
@@ -605,16 +703,49 @@ var file = function(path) {
 
 			for(let compressedFile in filesToDecompress)
 			{
-				let compressed = this.openCompressed(compressedFile);
+				if(isServer(compressedFile))
+				{
+					if(containsCompressed(compressedFile, 0, false))
+					{
+						let firstCompressed = firstCompressedFile(compressedFile, 0, false);
 
-				await this.extractIfInsideAnotherCompressed(compressedFile);
+						// Download file to tmp
+						let file = await serverClient.download(compressedFile, {only: [firstCompressed]});
 
-				await compressed.extract({only: filesToDecompress[compressedFile]}, function(file) {
+						let compressed = this.openCompressed(compressedFile);
 
-					if(_this.config.sha) file.sha = sha1(file.path);
-					if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
+						await this.extractIfInsideAnotherCompressed(compressedFile);
 
-				});
+						await compressed.extract({only: filesToDecompress[compressedFile]}, function(file) {
+
+							if(_this.config.sha) file.sha = sha1(file.path);
+							if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
+
+						});
+					}
+					else
+					{
+						await serverClient.download(compressedFile, {only: filesToDecompress[compressedFile]}, function(file) {
+
+							if(_this.config.sha) file.sha = sha1(file.path);
+							if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
+
+						});
+					}
+				}
+				else
+				{
+					let compressed = this.openCompressed(compressedFile);
+
+					await this.extractIfInsideAnotherCompressed(compressedFile);
+
+					await compressed.extract({only: filesToDecompress[compressedFile]}, function(file) {
+
+						if(_this.config.sha) file.sha = sha1(file.path);
+						if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
+
+					});
+				}
 			}
 		}
 
@@ -877,11 +1008,26 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.setTmpUsage = function() {
+
+		if(this.path !== this.realPath)
+		{
+			let time = app.time();
+			let tmpUsage = storage.get('tmpUsage');
+
+			if(!tmpUsage[this.realPath]) tmpUsage[this.realPath] = {};
+			tmpUsage[this.realPath].lastAccess = time;
+
+			storage.setThrottle('tmpUsage', tmpUsage);
+		}
+
+	}
+
 	this.detectFileTypeFromBinary = async function() {
 
 		if(fileType === false) fileType = require('file-type').fromFile;
 
-		let type = await fileType(this.path);
+		let type = await fileType(this.realPath);
 
 		if(inArray(type.ext, compressedExtensions.all))
 			return type.ext;
@@ -902,6 +1048,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	}
 
 	this.readCurrent = function() {
+
+		this.setTmpUsage();
 
 		if(this.features.zip)
 			return this.readZip();
@@ -1149,6 +1297,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	}
 
 	this.extractCurrent = function() {
+
+		this.setTmpUsage();
 
 		if(this.features.zip)
 			return this.extractZip();
@@ -1457,7 +1607,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.progress = {};
 
-	this.setProgress = function(progress) {
+	this.setProgress = function(progress, index = false) {
+
+		index = index !== false ? index : this.contentRightIndex;
 
 		if(!progress)
 			this.progressPrev = false;
@@ -1465,7 +1617,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(this.progress && this.progress.multiply)
 			progress = progress * this.progress.multiply;
 
-		let svg = document.querySelector('.content-right .content-right-'+this.contentRightIndex+' .loading.loading96 svg');
+		let svg = document.querySelector('.content-right .content-right-'+index+' .loading.loading96 svg');
 
 		if(svg)
 		{
@@ -1473,7 +1625,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			svg.style.transform = 'rotate(-90deg)';
 		}
 
-		let circle = document.querySelector('.content-right .content-right-'+this.contentRightIndex+' .loading.loading96 circle');
+		let circle = document.querySelector('.content-right .content-right-'+index+' .loading.loading96 circle');
 
 		if(circle)
 		{
@@ -1581,7 +1733,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		{
 			let zip = await this.openZip();
 
-			this.progressIndex = 0;
+			this.progressIndex = 1;
 
 			let _this = this;
 			let only = this.config.only;
@@ -1798,7 +1950,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		console.time('extractRar');
 
-		this.progressIndex = 0;
+		this.progressIndex = 1;
 
 		try
 		{
@@ -2057,7 +2209,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let only = this.config.only; 
 
 		let totalFiles = this.config._only ? this.config._only.length : pages;
-		let extracted = 0;
+		let progressIndex = 1;
 
 		for(let i = 1; i <= pages; i++)
 		{
@@ -2088,11 +2240,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				fs.writeFileSync(path, Buffer.from(imageData.replace(/^data:image\/[a-z]+;base64,/, ''), 'base64'));
 
-				extracted++;
-
 				this.setFileStatus(file, {page: i, extracted: true, width: this.config.width});
 
-				this.setProgress(extracted / totalFiles);
+				this.setProgress(progressIndex++ / totalFiles);
 				this.whenExtractFile(virtualPath);
 			}
 		}
@@ -2236,7 +2386,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		}
 
 		let totalFiles = filesToRender.length;
-		let extracted = 0;
+		let progressIndex = 1;
 
 		if(epub.extracted)
 			this.setProgress(0.5);
@@ -2248,11 +2398,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			let path = p.join(_this.tmp, file);
 			let virtualPath = p.join(_this.path, file);
 
-			extracted++;
-
 			_this.setFileStatus(file, {extracted: true, width: _this.config.width});
 
-			_this.setProgress(epub.extracted ? (0.5 + extracted / totalFiles / 2) : (extracted / totalFiles));
+			_this.setProgress(epub.extracted ? (0.5 + progressIndex++ / totalFiles / 2) : (progressIndex++ / totalFiles));
 			_this.whenExtractFile(virtualPath);
 
 		});
@@ -2281,7 +2429,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		files = this.filesToOnedimension(files);
 
 		let totalFiles = files.length;
-		let processed = 0;
+		let progressIndex = 1;
 
 		if(epub.extracted)
 			this.setProgress(0.5);
@@ -2290,9 +2438,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let pages = await epub.epubPages(config, function(){
 
-			processed++;
 			// _this.setFileStatus(file, {extracted: true, width: _this.config.width});
-			_this.setProgress(epub.extracted ? (0.5 + processed / totalFiles / 2) : (processed / totalFiles));
+			_this.setProgress(epub.extracted ? (0.5 + progressIndex++ / totalFiles / 2) : (progressIndex++ / totalFiles));
 
 		});
 
@@ -2402,6 +2549,19 @@ function realPath(path, index = 0, prefixes = false)
 	let newPath = virtualPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 	let numSegments = len + index;
 
+	if(isServer(path))
+	{
+		let adress = p.normalize(serverClient.getAdress(path));
+
+		newPath = p.join(tempFolder, sha1(adress));
+		virtualPath = adress;
+		
+		if(!segments[1])
+			segments[0] = segments[1] = segments[2] = '';
+		else
+			segments[0] = segments[1] = '';
+	}
+
 	for(let i = 1; i < len; i++)
 	{
 		newPath = p.join(newPath, segments[i]);
@@ -2436,6 +2596,21 @@ function realPath(path, index = 0, prefixes = false)
 	return newPath;
 }
 
+var serverInOfflineMode = false;
+
+function setServerInOfflineMode(value = false)
+{
+	serverInOfflineMode = value;
+}
+
+function isServer(path)
+{
+	if(/^(?:smb|ssh|sftp|scp|ftp|ftps)\:\/\/?/.test(path))
+		return true;
+
+	return false;
+}
+
 function isCompressed(name)
 {
 	let ext = fileExtension(name);
@@ -2454,6 +2629,8 @@ function firstCompressedFile(path, index = 0)
 	let newPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 	let numSegments = len + index;
 
+	let _isServer = isServer(path);
+
 	for(let i = 1; i < len; i++)
 	{
 		newPath = p.join(newPath, segments[i]);
@@ -2462,13 +2639,19 @@ function firstCompressedFile(path, index = 0)
 		{
 			let extension = fileExtension(newPath);
 
-			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(newPath).isDirectory())
+			if(extension && inArray(extension, compressedExtensions.all) && (_isServer || !fs.statSync(newPath).isDirectory()))
 				return newPath;
 		}
 	}
 
 	return newPath;
 }
+
+function firstCompressedFileRealPath(path, index = 0)
+{
+	return isServer(path) ? realPath(firstCompressedFile(path, index), -1) : firstCompressedFile(path, index);
+}
+
 
 function lastCompressedFile(path, index = 0)
 {
@@ -2532,6 +2715,8 @@ function containsCompressed(path, index = 0)
 	var virtualPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 	let numSegments = len + index;
 
+	let _isServer = isServer(path);
+
 	for(let i = 1; i < len; i++)
 	{
 		virtualPath = p.join(virtualPath, segments[i]);
@@ -2540,7 +2725,7 @@ function containsCompressed(path, index = 0)
 		{
 			var extension = fileExtension(virtualPath);
 
-			if(extension && inArray(extension, compressedExtensions.all) && !fs.statSync(virtualPath).isDirectory())
+			if(extension && inArray(extension, compressedExtensions.all) && (_isServer || !fs.statSync(virtualPath).isDirectory()))
 			{
 				return true;
 			}
@@ -2692,8 +2877,8 @@ window.addEventListener('resize', function() {
 });
 
 module.exports = {
-	file: function(path) {
-		return new file(path);
+	file: function(path, config = false) {
+		return new file(path, config);
 	},
 	fileCompressed: function(path, realPath = false, forceType = false, prefixes = false){ // This consider moving it to a separate file
 		return new fileCompressed(path, realPath, forceType, prefixes);
@@ -2704,6 +2889,9 @@ module.exports = {
 	realPath: realPath,
 	pathType: pathType,
 	isCompressed: isCompressed,
+	isServer: isServer,
+	setServerInOfflineMode: setServerInOfflineMode,
+	serverInOfflineMode: function(){return serverInOfflineMode},
 	firstCompressedFile: firstCompressedFile,
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
