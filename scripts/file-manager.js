@@ -2506,7 +2506,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		delete this.pdf;
 		delete this.epub;
 
-		delete this.filesStatus;
+		this.filesStatus = {};
 
 		// Stop accessing security scoped resources
 		for(let i = 0, len = this.macosScopedResources.length; i < len; i++)
