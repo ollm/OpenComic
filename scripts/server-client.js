@@ -258,7 +258,7 @@ var client = function(path) {
 			let data = {time: app.time(), files: files};
 
 			this.cacheData[cacheFile] = data;
-			cache.writeFileSync(cacheFile, JSON.stringify(data), {}, function(){});
+			cache.writeJsonSync(cacheFile, data);
 
 			serverLastError = false;
 		}
@@ -447,9 +447,10 @@ var client = function(path) {
 		return false;
 	}
 
-	this.setTask = function() {
+	this.setTask = function(fromPromise = false) {
 
-		this.doingTask++;
+		if(!fromPromise)
+			this.doingTask++;
 
 		let _this = this;
 
@@ -665,7 +666,7 @@ var client = function(path) {
 			let inTask = this.inTask(5);
 			if(inTask) await inTask;
 
-			let task = this.setTask();
+			let task = this.setTask(inTask);
 
 			promises.push(new Promise(async function(resolve, reject) {
 
@@ -785,7 +786,7 @@ var client = function(path) {
 		if(inTask) await inTask;
 
 		// Avoid reading multiples files at the same time
-		let task = this.setTask();
+		let task = this.setTask(inTask);
 		let entries = await ftp.list(getPath(path));
 		task.resolve();
 
@@ -832,7 +833,7 @@ var client = function(path) {
 				let inTask = this.inTask();
 				if(inTask) await inTask;
 
-				let task = this.setTask();
+				let task = this.setTask(inTask);
 				await ftp.downloadTo(filePath, getPath(path))
 				task.resolve();
 			}
@@ -946,7 +947,7 @@ var client = function(path) {
 			let inTask = this.inTask(20);
 			if(inTask) await inTask;
 
-			let task = this.setTask();
+			let task = this.setTask(inTask);
 
 			promises.push(new Promise(async function(resolve, reject) {
 
@@ -1033,7 +1034,6 @@ var client = function(path) {
 				host: serverInfo.host,
 				readyTimeout: 5000 * config.serverTimeoutMultiplier,
 				keepalive: 15 * 60 * 1000,
-				// debug: function(debug){console.log(debug)}
 			};
 
 			if(serverInfo.user) client.username = serverInfo.user;
@@ -1101,7 +1101,7 @@ var client = function(path) {
 			let inTask = this.inTask(20);
 			if(inTask) await inTask;
 
-			let task = this.setTask();
+			let task = this.setTask(inTask);
 
 			promises.push(new Promise(async function(resolve, reject) {
 

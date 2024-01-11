@@ -1,4 +1,4 @@
-var changes = 73; // Update this if readingPagesConfig is updated
+var changes = 75; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -564,6 +564,12 @@ function start(callback)
 
 		let _appVersion = config.appVersion;
 		let _changes = config.changes;
+
+		if(_changes != changes)
+		{
+			let migration = require(p.join(appDir, 'scripts/migration.js'));
+			data = migration.start(data);
+		}
 
 		for(let i in storageKeys)
 		{

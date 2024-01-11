@@ -68,6 +68,7 @@
 	"dependencies": {
 		"@electron/remote": "^2.1.0",
 		"@stifani/smb2": "^0.3.0",
+		"@toondepauw/node-zstd": "^1.2.0",
 		"7zip-bin": "^5.2.0",
 		"basic-ftp": "^5.0.4",
 		"electron-json-storage": "^4.6.0",

@@ -1,3 +1,7 @@
+const zstd = require('@toondepauw/node-zstd');
+const zstdEncoder = new zstd.Encoder(5);
+const zstdDecoder = new zstd.Decoder();
+
 var queuedImages = [], processingTheImageQueue = false;
 
 var cacheFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic');
@@ -177,7 +181,7 @@ function returnThumbnailsImages(images, callback, file = false)
 	return single ? thumbnail : thumbnails;
 }
 
-function writeFile(name, content)
+async function writeFile(name, content)
 {
 	fs.writeFile(p.join(cacheFolder, name), content, function(){}); 
 }
@@ -185,6 +189,22 @@ function writeFile(name, content)
 function writeFileSync(name, content)
 {
 	fs.writeFileSync(p.join(cacheFolder, name), content, function(){}); 
+}
+
+async function writeJson(name, json)
+{
+	let path = p.join(cacheFolder, name+'.zstd');
+
+	let encoded = await zstdEncoder.encode(Buffer.from(JSON.stringify(json)));
+	fs.writeFile(path, encoded, function(){});
+}
+
+function writeJsonSync(name, json)
+{
+	let path = p.join(cacheFolder, name+'.zstd');
+
+	let encoded = zstdEncoder.encodeSync(Buffer.from(JSON.stringify(json)));
+	fs.writeFileSync(path, encoded, function(){});
 }
 
 function readFile(name)
@@ -199,10 +219,10 @@ function readFile(name)
 
 function readJson(name)
 {
-	let path = p.join(cacheFolder, name);
+	let path = p.join(cacheFolder, name+'.zstd');
 
 	if(fs.existsSync(path))
-		return JSON.parse(fs.readFileSync(path, 'utf8'));
+		return JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
 	else
 		return false;
 }
@@ -342,6 +362,8 @@ module.exports = {
 	cleanQueue: cleanQueue,
 	writeFile: writeFile,
 	writeFileSync: writeFileSync,
+	writeJson: writeJson,
+	writeJsonSync: writeJsonSync,
 	readFile: readFile,
 	readJson: readJson,
 	existsFile: existsFile,

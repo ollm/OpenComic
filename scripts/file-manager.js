@@ -204,10 +204,7 @@ var file = function(path, config = false) {
 		let mtime = !_isServer ? fs.statSync(firstCompressedFile(path)).mtime.getTime() : 1;
 		let compressed = this.openCompressed(path, _realPath, mtime);
 
-		let json = cache.readFile(compressed.cacheFile);
-
-		if(json)
-			json = JSON.parse(json);
+		let json = cache.readJson(compressed.cacheFile);
 
 		if(this.config.cache)
 		{
@@ -234,7 +231,7 @@ var file = function(path, config = false) {
 			files = this.setPosterFromMetadata(files, metadata.poster);
 
 		if(!json || json.mtime != mtime)
-			cache.writeFile(compressed.cacheFile, JSON.stringify({mtime: mtime, files: files, metadata: metadata}), {}, function(){});
+			cache.writeJson(compressed.cacheFile, {mtime: mtime, files: files, metadata: metadata});
 
 		return files;
 
@@ -263,7 +260,7 @@ var file = function(path, config = false) {
 
 		path = serverClient.fixPath(path || this.path);
 		let sha = sha1(path);
-		let cacheFile = 'server-files-'+sha+'.json';
+		let cacheFile = 'server-files-'+sha+'.json.zstd';
 
 		return cache.existsFile(cacheFile);
 
@@ -284,10 +281,7 @@ var file = function(path, config = false) {
 			if(_containsCompressed)
 				return this.readCompressed(path);
 
-			let json = cache.readFile(cacheFile);
-
-			if(json)
-				json = JSON.parse(json);
+			let json = cache.readJson(cacheFile);
 
 			if(json)
 				return json.files;

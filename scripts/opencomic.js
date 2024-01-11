@@ -541,10 +541,9 @@ async function loadShoSho()
 
 /*Global functions*/
 
-function copy(data) {
-
+function copy(data)
+{
 	return JSON.parse(JSON.stringify(data));
-
 }
 
 function inArray(string, array)
