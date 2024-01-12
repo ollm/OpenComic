@@ -4,60 +4,81 @@ var servers = [];
 
 function getHost(path)
 {
+	path = posixPath(path);
+
 	return app.extract(/^[a-z]+\:\/\/?([^\/\\:]+)(:[0-9]+)?/, path, 1);
 }
 
 function getShare(path)
 {
+	path = posixPath(path);
+
 	return app.extract(/^[a-z]+\:\/\/?[^\/\\]+\/([^\/\\]+)/, path, 1);
 }
 
 function getPath(path)
 {
+	path = posixPath(path);
+
 	return app.extract(/^[a-z]+\:\/\/?[^\/\\]+\/(.+)/, path, 1);
 }
 
 function getPathWithoutShare(path)
 {
+	path = posixPath(path);
+
 	return app.extract(/^[a-z]+\:\/\/?[^\/\\]+\/[^\/\\]+\/(.+)/, path, 1);
 }
 
 function getPort(path)
 {
+	path = posixPath(path);
+
 	return +app.extract(/^[a-z]+\:\/\/?[^\/\\]+:([0-9]+)\//, path, 1);
 }
 
 function getAdress(path)
 {
+	path = posixPath(path);
+
 	if(/^(?:smb)\:\//.test(path))
-		return fixPath(app.extract(/^((?:smb)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:smb)\:\/\/[^\/\\]+)/, path, 1);
 	else if(/^(?:ftps?)\:\//.test(path))
-		return fixPath(app.extract(/^((?:ftps?)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:ftps?)\:\/\/[^\/\\]+)/, path, 1);
 	else if(/^(?:sftp|ssh)\:\//.test(path))
-		return fixPath(app.extract(/^((?:sftp|ssh)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:sftp|ssh)\:\/\/[^\/\\]+)/, path, 1);
 	else if(/^(?:scp)\:\//.test(path))
-		return fixPath(app.extract(/^((?:scp)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:scp)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
 
 function getTypeAdress(path)
 {
+	path = posixPath(path);
+
 	if(/^(?:smb)\:\//.test(path))
-		return fixPath(app.extract(/^((?:smb)\:\/\/?[^\/\\]+\/[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:smb)\:\/\/[^\/\\]+\/[^\/\\]+)/, path, 1);
 	else if(/^(?:ftps?)\:\//.test(path))
-		return fixPath(app.extract(/^((?:ftps?)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:ftps?)\:\/\/[^\/\\]+)/, path, 1);
 	else if(/^(?:sftp|ssh)\:\//.test(path))
-		return fixPath(app.extract(/^((?:sftp|ssh)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:sftp|ssh)\:\/\/[^\/\\]+)/, path, 1);
 	else if(/^(?:scp)\:\//.test(path))
-		return fixPath(app.extract(/^((?:scp)\:\/\/?[^\/\\]+)/, path, 1));
+		return app.extract(/^((?:scp)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
 
+function posixPath(path)
+{
+	path = path.split(p.sep).join(p.posix.sep);
+	return path.replace(/^([a-z]+)\:[\/\\]{1,2}/, '$1://');
+}
+
 function fixPath(path)
 {
-	return path.replace(/^([a-z]+)\:\/\/?/, '$1://');
+	path = p.normalize(path);
+	return path.replace(/^([a-z]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
 }
 
 var serverLastError = false;

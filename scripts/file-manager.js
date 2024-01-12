@@ -2603,7 +2603,7 @@ function setServerInOfflineMode(value = false)
 
 function isServer(path)
 {
-	if(/^(?:smb|ssh|sftp|scp|ftp|ftps)\:\/\/?/.test(path))
+	if(/^(?:smb|ssh|sftp|scp|ftp|ftps)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;
