@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to not enlarge images more than its original size [`e2f8598`](https://github.com/ollm/OpenComic/commit/e2f85983352529162822576bbb8e7da41cd31f39)
 - New image interpolation methods available: lanczos3, lanczos2, mitchell, cubic, nearest and others [`86cd705`](https://github.com/ollm/OpenComic/commit/86cd7053011b09b1a0a0b898775e32ede8cf5296)
 - Server connection support: smb://, ftp://, ftps://, scp://, sftp://, ssh:// [`52a09a9`](https://github.com/ollm/OpenComic/commit/52a09a9aad601a2e70b8f0011a6fddc7d3e9023a)
-- Compress json files from cache to zstd to reduce used space
+- Compress json files from cache to zstd to reduce used space [`3ae7cb7`](https://github.com/ollm/OpenComic/commit/3ae7cb721fb964fa1a41f8a5170b775d2182e8a9)
 
 ##### 🐛 Bug Fixes
 

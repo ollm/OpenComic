@@ -1,6 +1,8 @@
 
 function compressJsonCache()
 {
+	console.time('Migration: compressJsonCache');
+
 	let files = fs.readdirSync(cache.folder);
 
 	for(let i = 0, len = files.length; i < len; i++)
@@ -16,6 +18,8 @@ function compressJsonCache()
 			fs.unlinkSync(p.join(cache.folder, file));
 		}
 	}
+
+	console.timeEnd('Migration: compressJsonCache');
 }
 
 function start(data)

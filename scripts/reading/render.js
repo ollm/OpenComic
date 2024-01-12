@@ -165,8 +165,6 @@ function resized(doublePage = false)
 
 		if(readingBody) readingBody.classList.remove('resizing')
 
-		template._contentRight().querySelector('.reading-body').classList.add('resizing');
-
 		setRenderQueue(0, doublePage ? 2 : 1);
 
 		sendToQueueST = setTimeout(function(){

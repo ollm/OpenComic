@@ -126,9 +126,30 @@ async function resizeToBlob(fromImage, config = {})
 		let _sharp = sharp(fromImage);
 
 		if(config.interpolator && !config.kernel)
-			_sharp = _sharp.affine([config.width / config.imageWidth, 0, 0, config.height / config.imageHeight], {interpolator: config.interpolator});
+		{
+			let imageWidth = config.imageWidth;
+			let imageHeight = config.imageHeight;
+
+			if(config.width < imageWidth)
+			{
+				let m = Math.floor(imageWidth / config.width);
+
+				if(m >= 2)
+				{
+					imageWidth = Math.round(imageWidth / m);
+					imageHeight = Math.round(imageHeight / m);
+				}
+			}
+
+			if(imageWidth != config.imageWidth)
+				_sharp.resize({kernel: 'cubic', width: imageWidth});
+
+			_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
+		}
 		else
+		{
 			_sharp = _sharp.resize(config);
+		}
 
 		_sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer(function(error, buffer, info) {
 		
