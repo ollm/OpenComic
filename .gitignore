@@ -2,6 +2,7 @@ node_modules/
 dist/
 scripts/builded
 scripts/tracking/_tracking-sites-keys.js
+!build/node-zstd-native-dependencies/node_modules/
 
 # OSX
 .DS_Store
