@@ -1,0 +1,13 @@
+{
+	"name": "node-zstd-force-native-dependencies",
+	"version": "1.0.0",
+	"license": "MIT",
+	"dependencies": {
+		"@toondepauw/node-zstd-linux-arm64-gnu": "*",
+		"@toondepauw/node-zstd-linux-arm64-musl": "*",
+		"@toondepauw/node-zstd-linux-x64-gnu": "*",
+		"@toondepauw/node-zstd-linux-x64-musl": "*",
+		"@toondepauw/node-zstd-darwin-arm64": "*",
+		"@toondepauw/node-zstd-darwin-x64": "*"
+	}
+}

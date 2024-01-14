@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"main": "scripts/main.js",
 	"type": "commonjs",
 	"keywords": [
@@ -63,7 +63,7 @@
 		"build-7z-arm": "npm run prebuild && electron-builder --arm64 --linux 7z",
 		"snapcraft": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-amd64/ && snapcraft",
 		"snapcraft-arm": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64",
-		"postinstall": "electron-builder install-app-deps"
+		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
 		"@electron/remote": "^2.1.0",
@@ -116,6 +116,8 @@
 			"!themes/*/templates",
 			"!templates",
 			"!images",
+			"!node_modules/cpu-features/build/node_gyp_bins",
+			"!node_modules/ssh2/lib/protocol/crypto/build/node_gyp_bins",
 			"images/logo.png",
 			"images/logo.svg",
 			"templates/index.html",
@@ -124,9 +126,11 @@
 		],
 		"asarUnpack": [
 			"node_modules/sharp",
+			"node_modules/@img",
 			"node_modules/node-7z",
 			"node_modules/7zip-bin",
 			"node_modules/shosho",
+			"node_modules/@toondepauw",
 			"Pepper & Carrot"
 		],
 		"win": {
