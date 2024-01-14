@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🐛 Bug Fixes
 
 - node-zstd not have native dependencies in arm64 build (Linux and macOS)
+- Manga mode not working in epub
 
 ## [v1.1.0](https://github.com/ollm/OpenComic/releases/tag/v1.1.0) (13-01-2024)
 

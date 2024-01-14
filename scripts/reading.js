@@ -1236,7 +1236,14 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 	}
 
 	if(closest.page)
-		reading.goToIndex(closest.page.index + 1, animation);
+	{
+		let index = closest.page.index + 1;
+
+		if(_config.readingManga && !readingViewIs('scroll'))
+			index = (indexNum - closest.page.index);
+
+		reading.goToIndex(index, animation);
+	}
 }
 
 //Go to the next comic page
@@ -3193,7 +3200,7 @@ function loadBookmarks(bookmarksChild = false)
 			continueReading: false,
 			current: (path === readingCurrentPath) ? true : false,
 			path: path,
-			name: p.basename(path),
+			name: dom.metadataPathName({path: path, name: p.basename(path)}, true),
 			bookmarks: bookmarksPath[path],
 		});
 	}
@@ -3218,6 +3225,10 @@ function loadBookmarks(bookmarksChild = false)
 				sha: sha,
 				mainPath: readingProgress.mainPath,
 				path: readingProgress.path,
+				ebook: readingProgress.ebook,
+				progress: readingProgress.progress,
+				chapterIndex: readingProgress.chapterIndex,
+				chapterProgress: readingProgress.chapterProgress,
 			}],
 		});
 	}

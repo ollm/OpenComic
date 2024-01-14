@@ -6,7 +6,7 @@
 <div class="reading-toc-items">
 	{{#each ebookToc}}
 	<div class="reading-toc-item reading-toc-page-{{page}}">
-		<div class="reading-toc-title label-medium" onclick="reading.goToIndex({{page}})">
+		<div class="reading-toc-title label-medium" onclick="reading.goToPage({{page}})">
 			{{#if image}}<img class="ri-sha-{{image.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' image.thumbnail}}">{{/if}}
 			<div>{{name}}</div>
 		</div>
@@ -16,7 +16,7 @@
 		</div>
 		{{/if}}
 		{{#each pages}}
-		<div class="reading-toc-page label-large" onclick="reading.goToIndex({{page}})">{{name}}</div>
+		<div class="reading-toc-page label-large" onclick="reading.goToPage({{page}})">{{name}}</div>
 		{{/each}}
 	</div>
 	{{/each}}
