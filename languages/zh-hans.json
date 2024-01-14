@@ -7,9 +7,9 @@
 		"library": "库",
 		"recents": "最近添加",
 		"recentlyOpened": "最近打开",
-		"favorites": "",
-		"labels": "",
-		"editLabels": "",
+		"favorites": "收藏",
+		"labels": "标签",
+		"editLabels": "编辑标签",
 		"images": "图片",
 		"sort": {
 			"main": "排列",
@@ -29,7 +29,7 @@
 		},
 		"contextMenu": {
 			"remove": "移除",
-			"favorite": "",
+			"favorite": "收藏",
 			"openFileLocation": "打开文件所在位置",
 			"openFolderLocation": "打开文件夹位置",
 			"addPoster": "添加封面",
@@ -45,7 +45,7 @@
 		"addToLibrary": "添加到库",
 		"unsupportedFile": "该文件不受支持",
 		"reload": "重新加载",
-		"retry": "",
+		"retry": "重试",
 		"search": "搜索",
 		"filterCurrentPage": "筛选当前页面",
 		"language": "语言",
@@ -61,14 +61,14 @@
 		"emptyIndex": "库里还没有漫画。",
 		"emptyFolder": "此文件夹中没有兼容的文件。",
 		"emptyRecentlyOpened": "没有最近打开的文件。",
-		"emptyFavorites": "",
-		"emptyLabel": ""
+		"emptyFavorites": "没有收藏的漫画",
+		"emptyLabel": "没有该标签下漫画"
 	},
 	"servers": {
-		"offlineMode": "",
+		"offlineMode": "离线模式",
 		"error": {
-			"connection": "",
-			"folderNotFound": ""
+			"connection": "不可连接至服务器",
+			"folderNotFound": "在服务器上找不到文件夹"
 		}
 	},
 	"reading": {
@@ -86,7 +86,7 @@
 			"slide": "横向翻页",
 			"scroll": "纵向翻页",
 			"adjustToWidth": "适应屏幕",
-			"notEnlargeMoreThanOriginalSize": "",
+			"notEnlargeMoreThanOriginalSize": "请勿放大超过原始尺寸",
 			"margin": "边距",
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",
@@ -192,13 +192,13 @@
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
 		},
 		"imageInterpolation": {
-			"main": "",
-			"interpolationMethod": "",
-			"disabled": "",
-			"downscaling": "",
-			"downscalingDescription": "",
-			"upscaling": "",
-			"upscalingDescription": ""
+			"main": "图像插值",
+			"interpolationMethod": "插值法",
+			"disabled": "禁用",
+			"downscaling": "缩小图像",
+			"downscalingDescription": "此方法仅在需要降低图像分辨率时使用，插值方法不适用于 PDF 和 EPUB 或动态图像",
+			"upscaling": "放大图像",
+			"upscalingDescription": "此方法仅在需要放大图像分辨率时使用，插值方法不适用于 PDF、EPUB 或动态图像。警告：锐利的方法在放大时可能会很慢"
 		},
 		"navigation": {
 			"main": "导航",
@@ -248,21 +248,21 @@
 			"noFolders": "无文件夹"
 		},
 		"servers": {
-			"main": "",
-			"add": "",
-			"noServers": "",
-			"deleteServer": "",
-			"confirmDelete": "",
-			"supportedProtocols": "",
-			"protocolsDescription": "",
-			"serverNameExists": "",
-			"name": "",
-			"path": "",
-			"user": "",
-			"pass": "",
-			"domain": "",
-			"onlyIn": "",
-			"showOnLibrary": ""
+			"main": "服务器",
+			"add": "添加服务器",
+			"noServers": "没有服务器",
+			"deleteServer": "删除服务器",
+			"confirmDelete": "您确定要删除该服务器吗？",
+			"supportedProtocols": "支持的协议",
+			"protocolsDescription": "仅连接到受信任的服务器并尽可能使用安全协议",
+			"serverNameExists": "该服务器名称已存在",
+			"name": "服务器名称",
+			"path": "服务器路径",
+			"user": "用户名",
+			"pass": "密码",
+			"domain": "范围",
+			"onlyIn": "仅用于",
+			"showOnLibrary": "在库展示漫画"
 		},
 		"storage": {
 			"main": "存储",
@@ -276,10 +276,10 @@
 			"temporaryFiles": "临时文件",
 			"temporaryFilesDescription": "在这里，压缩文件根据需要进行解压缩，这在关闭 OpenComic 时会自动删除",
 			"removeTemporaryFiles": "删除临时文件",
-			"temporaryFilesMaxSize": "",
-			"temporaryFilesMaxSizeDescription": "",
-			"temporaryFilesMaxOld": "",
-			"temporaryFilesMaxOldDescription": ""
+			"temporaryFilesMaxSize": "最大临时文件数",
+			"temporaryFilesMaxSizeDescription": "当临时文件超过此大小时将被删除，优先考虑较旧的未使用文件",
+			"temporaryFilesMaxOld": "最大临时文件时间",
+			"temporaryFilesMaxOldDescription": "超过此时间未使用的临时文件将被删除"
 		}
 	},
 	"menu": {
@@ -341,12 +341,12 @@
 			"readingGotoPage": "转到页面"
 		},
 		"labels": {
-			"empty": "",
-			"newLabel": "",
-			"labelName": "",
-			"labelExists": "",
-			"deleteLabel": "",
-			"confirmDelete": ""
+			"empty": "无标签",
+			"newLabel": "新建标签",
+			"labelName": "标签名称",
+			"labelExists": "该标签已存在",
+			"deleteLabel": "删除标签",
+			"confirmDelete": "您确定要删除此标签吗？"
 		},
 		"release": {
 			"title": "新版本可用<b>{{releaseName}}</b>",
@@ -361,7 +361,7 @@
 		"dismiss": "去除",
 		"remove": "删除",
 		"download": "下载",
-		"close": ""
+		"close": "关闭"
 	},
 	"error": {
 		"uncompress": {
