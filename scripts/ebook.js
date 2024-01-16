@@ -1208,7 +1208,7 @@ async function jobEndedRenderedPage(event, index, pages)
 
 	let job = renders[index].job;
 
-	let width = job.config.imageWidth;
+	let width = Math.round(job.config.imageWidth);
 	let height = Math.round(job.config.imageWidth / job.config.width * job.config.height);
 
 	renders[index].render.setSize(width, height, false);
