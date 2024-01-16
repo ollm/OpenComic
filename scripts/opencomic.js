@@ -112,7 +112,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 		{
 			let arg = argv[i];
 
-			if(arg && !inArray(arg, ['--no-sandbox', 'scripts/main.js', '.']) && !/^--/.test(arg) && fs.existsSync(arg))
+			if(arg && !inArray(arg, ['--no-sandbox', 'scripts/main.js', '.']) && !/^--/.test(arg) && !/app\.asar/.test(arg) && fs.existsSync(arg))
 			{
 				openComic(arg, true);
 				break;
@@ -413,7 +413,7 @@ async function startApp()
 		{
 			let arg = electronRemote.process.argv[i];
 
-			if(arg && !inArray(arg, ['scripts/main.js', '.']) && !/^--/.test(arg) && fs.existsSync(arg))
+			if(arg && !inArray(arg, ['scripts/main.js', '.']) && !/^--/.test(arg) && !/app\.asar/.test(arg) && fs.existsSync(arg))
 			{
 				toOpenFile = arg;
 				break;
