@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "继续阅读",
+		"continueReadingNotExists": "",
 		"emptyIndex": "库里还没有漫画。",
 		"emptyFolder": "此文件夹中没有兼容的文件。",
 		"emptyRecentlyOpened": "没有最近打开的文件。",

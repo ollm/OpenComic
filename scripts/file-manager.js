@@ -2619,7 +2619,7 @@ function isCompressed(name)
 	return false;
 }
 
-function firstCompressedFile(path, index = 0)
+function firstCompressedFile(path, index = 0, checkDirectory = true)
 {
 	let segments = path.split(p.sep);
 	let len = segments.length;
@@ -2637,7 +2637,7 @@ function firstCompressedFile(path, index = 0)
 		{
 			let extension = fileExtension(newPath);
 
-			if(extension && inArray(extension, compressedExtensions.all) && (_isServer || !fs.statSync(newPath).isDirectory()))
+			if(extension && inArray(extension, compressedExtensions.all) && (!checkDirectory || _isServer || !fs.statSync(newPath).isDirectory()))
 				return newPath;
 		}
 	}
@@ -2759,6 +2759,23 @@ function pathType(path)
 		return {folder: true, compressed: false};
 	else
 		return false;
+}
+
+function simpleExists(path)
+{
+	if(isServer(path))
+	{
+		return true;
+	}
+	else
+	{
+		path = firstCompressedFile(path, 0, false);
+
+		if(fs.existsSync(path))
+			return true;
+	}
+
+	return false;
 }
 
 function filtered(files, specialFiles = false)
@@ -2894,6 +2911,7 @@ module.exports = {
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
 	isParentPath: isParentPath,
+	simpleExists: simpleExists,
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,

@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "続きを読む",
+		"continueReadingNotExists": "",
 		"emptyIndex": "このコレクションには本がありません",
 		"emptyFolder": "このフォルダには閲覧可能なファイルがありません",
 		"emptyRecentlyOpened": "",

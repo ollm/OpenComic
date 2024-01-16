@@ -294,6 +294,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 			readingProgress.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
 			readingProgress.mainPath = mainPath;
 			readingProgress.pathText = returnTextPath(readingProgress.path, mainPath, true, !readingProgress.ebook);
+			readingProgress.exists = fileManager.simpleExists(readingProgress.path);
 			handlebarsContext.comicsReadingProgress = readingProgress;
 		}
 		else
@@ -311,6 +312,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 			readingProgressCurrentPath.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
 			readingProgressCurrentPath.mainPath = mainPath;
 			readingProgressCurrentPath.pathText = returnTextPath(readingProgressCurrentPath.path, path, true, !readingProgressCurrentPath.ebook);
+			readingProgressCurrentPath.exists = fileManager.simpleExists(readingProgressCurrentPath.path);
 			handlebarsContext.comicsReadingProgressCurrentPath = readingProgressCurrentPath;
 		}
 		else
@@ -889,6 +891,21 @@ function indexHeader(title = false)
 {
 	handlebarsContext.indexHeaderTitle = title || language.global.comics;
 	return template.load('index.header.html');
+}
+
+function continueReadingError()
+{
+	events.snackbar({
+		key: 'continueReadingError',
+		text: language.comics.continueReadingNotExists,
+		duration: 6,
+		buttons: [
+			{
+				text: language.buttons.dismiss,
+				function: 'events.closeSnackbar();',
+			},
+		],
+	});
 }
 
 function compressedError(error)
@@ -2132,6 +2149,7 @@ module.exports = {
 	translatePageName: translatePageName,
 	metadataPathName: metadataPathName,
 	fromLibrary: fromLibrary,
+	continueReadingError: continueReadingError,
 	poster: domPoster,
 	search: search,
 	labels: labels,

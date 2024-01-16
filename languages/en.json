@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Continue reading",
+		"continueReadingNotExists": "The file saved in continue reading does not currently exist",
 		"emptyIndex": "There are no comics in the library",
 		"emptyFolder": "There is no compatible file in this folder",
 		"emptyRecentlyOpened": "No recently opened files",

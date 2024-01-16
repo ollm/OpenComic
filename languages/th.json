@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "อ่านต่อ",
+		"continueReadingNotExists": "",
 		"emptyIndex": "ไม่มีคอมมิกส์ในห้องสมุด",
 		"emptyFolder": "ไม่มีไฟล์ที่รองรับในโฟลเดอร์นี้",
 		"emptyRecentlyOpened": "ไม่มีไฟล์ที่เปิดล่าสุด",

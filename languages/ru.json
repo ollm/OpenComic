@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Продолжить чтение",
+		"continueReadingNotExists": "",
 		"emptyIndex": "В этом сборнике нет комиксов.",
 		"emptyFolder": "В этой папке нет совместимых файлов.",
 		"emptyRecentlyOpened": "",

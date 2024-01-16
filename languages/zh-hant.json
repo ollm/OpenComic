@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "繼續閱讀",
+		"continueReadingNotExists": "",
 		"emptyIndex": "收藏夾裡還沒有漫畫。",
 		"emptyFolder": "這個檔案夾裡沒有可讀檔案。",
 		"emptyRecentlyOpened": "",

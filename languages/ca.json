@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Continuar llegint",
+		"continueReadingNotExists": "El fitxer desat a continuar llegint no existeix actualment",
 		"emptyIndex": "No hi ha cap còmic en la biblioteca",
 		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta",
 		"emptyRecentlyOpened": "No hi ha fitxers oberts recentment",

@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Folytatás",
+		"continueReadingNotExists": "",
 		"emptyIndex": "Ebben a gyűjteményben nincsenek képregények.",
 		"emptyFolder": "Ebben a mappában nincsenek megfelelő fájlok.",
 		"emptyRecentlyOpened": "",

@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Pokračovat ve čtení",
+		"continueReadingNotExists": "",
 		"emptyIndex": "V této sbírce nejsou žádné komiksy.",
 		"emptyFolder": "V této složce nejsou žádné kompatibilní soubory.",
 		"emptyRecentlyOpened": "",

@@ -1688,6 +1688,11 @@ cb
 	overflow: hidden;
 }
 
+.continue-reading-not-exists > div
+{
+	background-color: var(--md-sys-color-error-container);
+}
+
 .continue-reading > div > div
 {
 	width: 54px;

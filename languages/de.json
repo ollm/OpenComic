@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Lesen fortsetzen",
+		"continueReadingNotExists": "",
 		"emptyIndex": "In dieser Kollektion gibt es keine Comics.",
 		"emptyFolder": "In diesem Ordner gibt es keine kompatiblen Dateien.",
 		"emptyRecentlyOpened": "",

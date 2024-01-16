@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Continua a leggere",
+		"continueReadingNotExists": "",
 		"emptyIndex": "Non ci sono fumetti in questa raccolta.",
 		"emptyFolder": "Non ci sono file compatibili in questa cartella.",
 		"emptyRecentlyOpened": "",

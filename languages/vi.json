@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Đọc tiếp",
+		"continueReadingNotExists": "",
 		"emptyIndex": "Chưa có truyện trong bộ sưu tập",
 		"emptyFolder": "Không có tệp tương thích trong thư mục",
 		"emptyRecentlyOpened": "Chưa mở tệp nào gần đây",

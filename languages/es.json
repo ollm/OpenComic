@@ -58,6 +58,7 @@
 	},
 	"comics": {
 		"continueReading": "Continuar leyendo",
+		"continueReadingNotExists": "El archivo guardado en continuar leyendo no existe actualmente",
 		"emptyIndex": "No hay ningún cómic en la biblioteca",
 		"emptyFolder": "No hay ningún archivo compatible en esta carpeta",
 		"emptyRecentlyOpened": "No hay archivos abiertos recientemente",
