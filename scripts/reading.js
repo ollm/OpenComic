@@ -1,5 +1,6 @@
 const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	filters = require(p.join(appDir, 'scripts/reading/filters.js')),
+	music = require(p.join(appDir, 'scripts/reading/music.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js'));
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
@@ -2103,7 +2104,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 		img.style.width = (_width / window.devicePixelRatio)+'px';
 		img.style.height = (_height / window.devicePixelRatio)+'px';
 
-		if(img.classList.contains('blobRender'))
+		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
 			img.style.transform = 'scale('+_scale+') translate(0.001px, 0.001px)';
 		else
 			img.style.transform = 'scale('+_scale+')';
@@ -2120,7 +2121,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 			{
 				let img = images[i];
 
-				if(!img.classList.contains('blobRender'))
+				if(!img.classList.contains('blobRender') && !img.classList.contains('zoomOriginalSize') && !img.classList.contains('originalSize'))
 				{
 					let rect = img.getBoundingClientRect();
 
@@ -5100,5 +5101,6 @@ module.exports = {
 	onLoad: onLoad,
 	ebook: readingEbook,
 	filters: filters,
+	music: music,
 	render: render,
 };

@@ -169,6 +169,10 @@
 			"volumes": "巻",
 			"volume": "巻"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "",
 			"hideBarHeader": "",

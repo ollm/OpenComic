@@ -362,6 +362,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	onReading = _onReading = false;
 
 	reading.hideContent();
+	reading.music.pause();
 
 	generateAppMenu();
 
@@ -1904,6 +1905,15 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	// Show loadign page
 	headerPath(path, mainPath);
 
+	// Load files
+	let file = fileManager.file(path);
+	let files = await file.read({filtered: false});
+
+	let hasMusic = await reading.music.has(files);
+	handlebarsContext.hasMusic = hasMusic;
+
+	files = fileManager.filtered(files);
+
 	handlebarsContext.comics = [];
 
 	if(fromDeepLoad && Date.now() - fromDeepLoadNow < 200)
@@ -1923,13 +1933,11 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	template.loadContentLeft('reading.content.left.html', animation);
 
-	// Load files
-	let file = fileManager.file(path);
-	let files = await file.read();
-
 	let isCanvas = false;
 	let isEbook = false;
 	let compressedFile = fileManager.lastCompressedFile(path);
+
+	if(hasMusic) files.push(hasMusic); // Only to make available
 
 	if(compressedFile)
 	{
@@ -1956,6 +1964,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	{
 		await file.makeAvailable(files, false, true);
 	}
+
+	if(hasMusic) files.pop(); // Remove now
 
 	file.destroy();
 
@@ -2091,6 +2101,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	reading.read(path, indexStart, end, isCanvas, isEbook, imagePath);
 	reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
+	reading.music.read(hasMusic);
 
 	generateAppMenu();
 	

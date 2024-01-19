@@ -169,6 +169,10 @@
 			"volumes": "Tomos",
 			"volume": "Tomo"
 		},
+		"music": {
+			"main": "Música",
+			"volume": "Volumen"
+		},
 		"moreOptions": {
 			"main": "Más opciones",
 			"hideBarHeader": "Ocultar barra superior",

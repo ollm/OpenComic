@@ -1,4 +1,4 @@
-var changes = 75; // Update this if readingPagesConfig is updated
+var changes = 76; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -118,6 +118,10 @@ var storageDefault = {
 		readingTrackingAtTheEnd: true,
 		readingImageInterpolationMethodDownscaling: 'lanczos3',
 		readingImageInterpolationMethodUpscaling: 'chromium',
+		readingMusic: {
+			play: true,
+			volume: 1.0,
+		},
 		controllerDeadZone: 0.06,
 		startInFullScreen: false,
 		startInContinueReading: false,

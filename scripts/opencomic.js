@@ -321,6 +321,19 @@ var compatibleSpecialExtensions = [
 	'tbn',
 ];
 
+var audioExtensions = {
+	all: [
+		'mp3',
+		'm4a',
+		'webm',
+		'weba',
+		'ogg',
+		'opus',
+		'wav',
+		'flac',
+	],
+};
+
 //console.time('Require time 2');
 
 const app = require(p.join(appDir, 'scripts/app.js')),

@@ -169,6 +169,10 @@
 			"volumes": "Svazky",
 			"volume": "Svazek"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "Více nastavení",
 			"hideBarHeader": "Skrýt vrchní panel",

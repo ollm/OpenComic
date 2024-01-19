@@ -169,6 +169,10 @@
 			"volumes": "Volumes",
 			"volume": "Volume"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "",
 			"hideBarHeader": "",

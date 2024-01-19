@@ -169,6 +169,10 @@
 			"volumes": "เล่ม",
 			"volume": "เล่ม"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "ตัวเลือกเพิ่มเติม",
 			"hideBarHeader": "ซ่อนแถบส่วนบน",

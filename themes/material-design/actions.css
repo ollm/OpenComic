@@ -474,7 +474,7 @@
 
 .menu-simple-content > div
 {
-	width: calc(100% + 14px);
+	width: calc(100% + 12px);
 }
 
 .menu-simple-header

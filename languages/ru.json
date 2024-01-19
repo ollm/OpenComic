@@ -169,6 +169,10 @@
 			"volumes": "Тома",
 			"volume": "Том"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "Дополнительные параметры",
 			"hideBarHeader": "Скрыть панель заголовка",

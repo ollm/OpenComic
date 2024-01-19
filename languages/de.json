@@ -169,6 +169,10 @@
 			"volumes": "Ausgaben",
 			"volume": "Ausgabe"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "",
 			"hideBarHeader": "",

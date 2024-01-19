@@ -169,6 +169,10 @@
 			"volumes": "卷",
 			"volume": "卷"
 		},
+		"music": {
+			"main": "",
+			"volume": ""
+		},
 		"moreOptions": {
 			"main": "更多选项",
 			"hideBarHeader": "隐藏标题栏",

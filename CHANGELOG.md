@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Show error message if continue reading file does not exist
+- Show error message if continue reading file does not exist [`7aee55c`](https://github.com/ollm/OpenComic/commit/7aee55ca5dac6b937824728b7ded116dc00c28df)
+- Support background music from folder: MP3, M4A, WEBM, WEBA, OGG, OPUS, WAV, FLAC
 
 ##### 🐛 Bug Fixes
 

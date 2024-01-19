@@ -704,6 +704,8 @@ function showMenu()
 	else
 		events.activeMenu(query, false, 'gamepad');
 
+	dom.query('.gamepad-reading-music').css({display: !handlebarsContext.hasMusic ? 'none' : ''});
+
 	if(!onReading)
 	{
 		let viewIcon = document.querySelector('.menu-gamepad-view-icon');
