@@ -21,9 +21,9 @@ function processTheImageQueue()
 	let realPath = fileManager.realPath(img.file);
 	let toImage = p.join(cacheFolder, sha+'.jpg');
 
-	image.resize(realPath, toImage, {width: img.size, height: Math.round(img.size * 1.5), quality: 95}).then(function(){
+	image.resize(realPath, toImage, {width: img.size, height: Math.round(img.size * (img.poster ? 1.51369 : 1.5)), quality: 95, fit: img.poster ? 'cover' : 'inside'}).then(function(){
 
-		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: time()};
+		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: app.time()};
 
 		data[sha].size = img.size;
 
@@ -66,9 +66,9 @@ function processTheImageQueue()
 	});
 }
 
-function addImageToQueue(file, size, sha, callback, vars)
+function addImageToQueue(file, size, sha, callback, vars, poster)
 {
-	queuedImages.push({file: file, size: size, sha: sha, callback: callback, vars: vars});
+	queuedImages.push({file: file, size: size, sha: sha, callback: callback, vars: vars, poster: poster});
 
 	if(!processingTheImageQueue && !stopTheImageQueue)
 	{
@@ -125,6 +125,7 @@ function returnThumbnailsImages(images, callback, file = false)
 	images = single ? [images] : images;
 
 	let size = Math.round(window.devicePixelRatio * 150);
+	let sizePoster = Math.round(window.devicePixelRatio * 146);
 
 	let thumbnail = {};
 	let thumbnails = {};
@@ -137,15 +138,17 @@ function returnThumbnailsImages(images, callback, file = false)
 	{
 		let image = images[i];
 
-		let sha = image.sha || sha1(image.path);
+		let sha = (image.poster) ? sha1(image.path+'?type=poster') : (image.sha || sha1(image.path));
 		let imgCache = data[sha];
 
-		let path = addCacheVars(p.join(cacheFolder, sha+'.jpg'), size, sha);
+		let _size = image.poster ? sizePoster : size;
+
+		let path = addCacheVars(p.join(cacheFolder, sha+'.jpg'), _size, sha);
 
 		if(typeof imgCache == 'undefined' || !fs.existsSync(p.join(cacheFolder, sha+'.jpg')))
 		{
 			toGenerateThumbnails.push(image);
-			toGenerateThumbnailsData[image.path] = {sha: sha, vars: image.vars};
+			toGenerateThumbnailsData[image.path] = {sha: sha, vars: image.vars, poster: image.poster || false};
 
 			thumbnails[sha] = thumbnail = {cache: false, path: '', sha: sha};
 		}
@@ -153,10 +156,10 @@ function returnThumbnailsImages(images, callback, file = false)
 		{
 			data[sha].lastAccess = time;
 
-			if(imgCache.size != size)
+			if(imgCache.size != _size)
 			{
 				toGenerateThumbnails.push(image);
-				toGenerateThumbnailsData[image.path] = {sha: sha, vars: image.vars};
+				toGenerateThumbnailsData[image.path] = {sha: sha, vars: image.vars, poster: image.poster || false};
 
 				thumbnails[sha] = thumbnail = {cache: true, path: escapeBackSlash(path), sha: sha};
 			}
@@ -173,7 +176,8 @@ function returnThumbnailsImages(images, callback, file = false)
 		file.makeAvailable(toGenerateThumbnails, function(image) {
 
 			let data = toGenerateThumbnailsData[image.path];
-			addImageToQueue(image.path, size, data.sha, callback, data.vars || false);
+			let _size = data.poster ? sizePoster : size;
+			addImageToQueue(image.path, _size, data.sha, callback, data.vars || false, data.poster);
 
 		});
 	}

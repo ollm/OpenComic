@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 let current = false, audio = false;
 
 async function has(files)

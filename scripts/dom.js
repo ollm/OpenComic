@@ -1090,7 +1090,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 	{
 		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-images').remove();
 
-		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha}, function(data){
+		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha, poster: true}, function(data){
 
 			addImageToDom(data.sha, data.path);
 			addImageToDom(folderSha+'-0', data.path);
