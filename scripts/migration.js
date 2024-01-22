@@ -22,12 +22,51 @@ function compressJsonCache()
 	console.timeEnd('Migration: compressJsonCache');
 }
 
+function clearCacheAndTemporaryFiles()
+{
+	console.time('Migration: clearCacheAndTemporaryFiles');
+
+	settings.clearCache();
+	settings.removeTemporaryFiles();
+
+	console.timeEnd('Migration: clearCacheAndTemporaryFiles');
+}
+
+function fixEpubWrongFilenames(data)
+{
+	console.time('Migration: fixEpubWrongFilenames');
+
+	clearCacheAndTemporaryFiles();
+
+	for(let path in data.bookmarks)
+	{
+		for(let i = 0, len = data.bookmarks[path].length; i < len; i++)
+		{
+			if(/([\/\\][0-9]+)\:sortonly/.test(data.bookmarks[path][i].path))
+				data.bookmarks[path][i].path = data.bookmarks[path][i].path.replace(/([\/\\][0-9]+)\:sortonly/, '$1_sortonly');
+		}
+	}
+
+	for(let path in data.readingProgress)
+	{
+		if(/([\/\\][0-9]+)\:sortonly/.test(data.readingProgress[path].path))
+			data.readingProgress[path].path = data.readingProgress[path].path.replace(/([\/\\][0-9]+)\:sortonly/, '$1_sortonly');
+	}
+
+	console.timeEnd('Migration: fixEpubWrongFilenames');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
 
-	if(changes < 75)
-		compressJsonCache();
+	//if(changes < 75)
+	//	compressJsonCache();
+
+	if(changes < 77) // Fix ePub wrong filenames
+		data = fixEpubWrongFilenames(data);
 
 	return data;
 }

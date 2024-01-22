@@ -153,7 +153,7 @@ var epub = function(path, config = {}) {
 				prevNameNum = 2;
 			}
 
-			this.epubFiles.push(i+':sortonly - '+name+'.jpg');
+			this.epubFiles.push(i+'_sortonly - '+fileManager.replaceReservedCharacters(name)+'.jpg');
 		}
 
 		return this.epubFiles;
