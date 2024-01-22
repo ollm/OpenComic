@@ -2794,7 +2794,7 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size').addClass('disable-pointer');
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').addClass('disable-pointer');
 		}
 		else
 		{
@@ -2804,7 +2804,7 @@ function changePagesView(mode, value, save)
 			if(_config.readingDoublePage)
 				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
 
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size').removeClass('disable-pointer');
+			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').removeClass('disable-pointer');
 		}
 
 		template.loadContentRight('reading.content.right.html', true);
@@ -3673,8 +3673,8 @@ function readingMargin(data = false)
 	{
 		return {
 			margin: data && data.margin !== undefined ? data.margin : _config.readingMargin.margin,
-			top: data && data.top !== undefined ? data.top : _config.readingMargin.top,
-			bottom: data && data.bottom !== undefined ? data.bottom : _config.readingMargin.bottom,
+			top: _config.readingWebtoon ? 0 : (data && data.top !== undefined ? data.top : _config.readingMargin.top),
+			bottom: _config.readingWebtoon ? 0 : (data && data.bottom !== undefined ? data.bottom : _config.readingMargin.bottom),
 			left: data && data.left !== undefined ? data.left : _config.readingMargin.left,
 			right: data && data.right !== undefined ? data.right : _config.readingMargin.right,
 		};
@@ -3697,8 +3697,8 @@ function readingHorizontalsMargin(data = false)
 	{
 		return {
 			margin: data && data.horizontalsMargin !== undefined ? data.horizontalsMargin : _config.readingHorizontalsMargin.margin,
-			top: data && data.horizontalsTop !== undefined ? data.horizontalsTop : _config.readingHorizontalsMargin.top,
-			bottom: data && data.horizontalsBottom !== undefined ? data.horizontalsBottom : _config.readingHorizontalsMargin.bottom,
+			top: _config.readingWebtoon ? 0 : (data && data.horizontalsTop !== undefined ? data.horizontalsTop : _config.readingHorizontalsMargin.top),
+			bottom: _config.readingWebtoon ? 0 : (data && data.horizontalsBottom !== undefined ? data.horizontalsBottom : _config.readingHorizontalsMargin.bottom),
 			left: data && data.horizontalsLeft !== undefined ? data.horizontalsLeft : _config.readingHorizontalsMargin.left,
 			right: data && data.horizontalsRight !== undefined ? data.horizontalsRight : _config.readingHorizontalsMargin.right,
 		};

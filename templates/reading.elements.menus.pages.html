@@ -345,7 +345,7 @@
 					<input type="range" max="{{config.readingMaxMargin}}" min="0" list="marginlist" value="{{_config.readingMargin.left}}" onrange="reading.changePagesView(10, \{{value}}, \{{toEnd}})">
 				</div>
 			</div>
-			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+			<div class="simple-slider gamepad-item reading-margin-vertical{{#if _config.readingWebtoon}} disable-pointer{{/if}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
 				<div class="simple-slider-text">{{language.reading.pages.marginVertical}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="16">undo</i><span>{{_config.readingMargin.top}}</span>px</div></div>
 				<div class="range">
 					<div class="range-position">

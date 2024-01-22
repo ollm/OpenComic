@@ -10,13 +10,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Show error message if continue reading file does not exist [`7aee55c`](https://github.com/ollm/OpenComic/commit/7aee55ca5dac6b937824728b7ded116dc00c28df)
 - Support background music from folder: MP3, M4A, WEBM, WEBA, OGG, OPUS, WAV, FLAC [`26947a2`](https://github.com/ollm/OpenComic/commit/26947a297868e86069cc6daca77e1a3f016d0705)
+- Now when applying Webtoon mode the vertical margin is 0
 
 ##### 🐛 Bug Fixes
 
 - node-zstd not have native dependencies in arm64 build (Linux and macOS) [`e906f21`](https://github.com/ollm/OpenComic/commit/e906f212dae36c43d514beda44fba62e5ca26be5)
 - Manga mode not working in epub [`a901754`](https://github.com/ollm/OpenComic/commit/a901754a4274687cddbfa3820ca3667b8b80e6ee)
 - eBook not working with decimal device pixel ratio (1.5, 2.5, etc) [`4962724`](https://github.com/ollm/OpenComic/commit/496272442747e466638e890a187f84b100deda14)
-- Blurry cover/poster images
+- Blurry cover/poster images [`23ae46d`](https://github.com/ollm/OpenComic/commit/23ae46d3d77847f5262f10799a21d7ee0141b226)
 
 ## [v1.1.0](https://github.com/ollm/OpenComic/releases/tag/v1.1.0) (13-01-2024)
 
