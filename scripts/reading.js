@@ -418,8 +418,8 @@ function disposeImages(data = false)
 				{
 					let image = image0[i];
 
-					image.style.height = imageHeight0+'px';
-					image.style.width = imageWidth0+'px';
+					image.style.height = app.roundDPR(imageHeight0)+'px';
+					image.style.width = app.roundDPR(imageWidth0)+'px';
 					image.style.marginLeft = app.roundDPR(marginLeft0)+'px';
 					image.style.marginTop = app.roundDPR(marginTop0)+'px';
 					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
@@ -481,8 +481,8 @@ function disposeImages(data = false)
 				{
 					let image = image1[i];
 
-					image.style.height = imageHeight1+'px';
-					image.style.width = imageWidth1+'px';
+					image.style.height = app.roundDPR(imageHeight1)+'px';
+					image.style.width = app.roundDPR(imageWidth1)+'px';
 					image.style.marginLeft = app.roundDPR(marginLeft1)+'px';
 					image.style.marginTop = app.roundDPR(marginTop1)+'px';
 					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
@@ -586,8 +586,8 @@ function disposeImages(data = false)
 				{
 					let image = image0[i];
 
-					image.style.height = imageHeight+'px';
-					image.style.width = imageWidth+'px';
+					image.style.height = app.roundDPR(imageHeight)+'px';
+					image.style.width = app.roundDPR(imageWidth)+'px';
 					image.style.marginLeft = app.roundDPR(marginLeft)+'px';
 					image.style.marginTop = app.roundDPR(marginTop)+'px';
 					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
@@ -715,11 +715,24 @@ function calculateView()
 	}
 }
 
-var previousScrollTop = 0, previousContentHeight = 0;
+var previousScrollTop = 0, previousScrollHeight = 0, previousContentHeight = 0, stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, setTimeout: false};
+
+function getPreviusContentSize()
+{
+	if(!readingViewIs('scroll')) return;
+
+	let contentRight = template._contentRight();
+	let content = contentRight.firstElementChild;
+	let rect = content.getBoundingClientRect();
+
+	previousContentHeight = rect.height;
+	previousScrollHeight = content.scrollHeight;
+	previousScrollTop = content.scrollTop;
+}
 
 function stayInLine()
 {
-	if(readingViewIs('slide') || (readingViewIs('scroll') && !_config.readingViewAdjustToWidth && !_config.readingWebtoon))
+	if(readingViewIs('slide')/* || (readingViewIs('scroll') && !_config.readingViewAdjustToWidth && !_config.readingWebtoon)*/)
 	{
 		if(currentIndex < 1 && dom.previousComic())
 			showPreviousComic(1, false);
@@ -730,12 +743,31 @@ function stayInLine()
 	}
 	else if(readingViewIs('scroll'))
 	{
-		if(currentIndex < 1 && dom.previousComic())
-			showPreviousComic(1, false);
-		else if(currentIndex > contentNum && dom.nextComic())
-			showNextComic(1, false);
+		let contentRight = template._contentRight();
+		let content = contentRight.firstElementChild;
+		let rect = content.getBoundingClientRect();
+
+		disableOnScroll(true);
+
+		if(stayInLineData.scrollTop === false)
+		{
+			stayInLineData = {scrollTop: previousScrollTop, scrollHeight: previousScrollHeight, height: previousContentHeight, setTimeout: false};
+		}
 		else
-			goToIndex(currentIndex, false, currentPageVisibility);
+		{
+			clearTimeout(stayInLineData.setTimeout);
+			stayInLineData.setTimeout = setTimeout(function(){
+
+				previousContentHeight = stayInLineData.height;
+				previousScrollHeight = stayInLineData.scrollHeight;
+				stayInLineData = {scrollTop: false, scrollHeight: false, setTimeout: false};
+
+				disableOnScroll(false);
+
+			}, 400);
+		}
+
+		content.scrollTop = ((stayInLineData.scrollTop + (stayInLineData.height / 2)) / stayInLineData.scrollHeight * content.scrollHeight) - (rect.height / 2);
 	}
 }
 
@@ -1428,6 +1460,7 @@ function onScroll(event)
 		scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
 
 		currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
+		if(currentPageVisibility < 0) currentPageVisibility = 0;
 
 		if(currentIndex != selIndex + 1)
 		{
@@ -2508,7 +2541,7 @@ function resized()
 		generateEbookPagesDelayed();
 	}
 
-	previousContentHeight = template.contentRight().children('div').children('div').height();
+	// getPreviusContentSize();
 }
 
 var hiddenContentLeft = false, hiddenBarHeader = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
@@ -2629,6 +2662,7 @@ var activeOnScroll = true;
 function disableOnScroll(disable = true)
 {
 	activeOnScroll = !disable;
+	if(!disable) getPreviusContentSize();
 }
 
 function setReadingDragScroll(dragScroll)
@@ -3976,7 +4010,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			goToIndex(newIndex, false, end, end);
 
 		if(readingViewIs('scroll'))
-			previousContentHeight = template.contentRight().children('div').children('div').height();
+			getPreviusContentSize();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
@@ -4899,7 +4933,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		goToIndex(newIndex, false, end, end);
 
 		if(readingViewIs('scroll'))
-			previousContentHeight = template.contentRight().children('div').children('div').height();
+			getPreviusContentSize();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
@@ -4946,7 +4980,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 					goToIndex(newIndex, false, end, end);
 
 					if(readingViewIs('scroll'))
-						previousContentHeight = template.contentRight().children('div').children('div').height();
+						getPreviusContentSize();
 
 					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
@@ -4980,7 +5014,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 					goToIndex(newIndex, false, end, end);
 
 					if(readingViewIs('scroll'))
-						previousContentHeight = template.contentRight().children('div').children('div').height();
+						getPreviusContentSize();
 
 					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 

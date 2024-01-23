@@ -172,7 +172,7 @@ function resized(doublePage = false)
 			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
 			setRenderQueue(maxPrev, maxNext);
 
-		}, 800);
+		}, 400);
 
 	}, 200);
 }
@@ -326,6 +326,10 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			{
 				canvas.style.width = Math.round(isRendered.width)+'px';
 				canvas.style.height = Math.round(isRendered.height)+'px';
+
+				ocImg.style.width = Math.round(isRendered.width)+'px';
+				ocImg.style.height = Math.round(isRendered.height)+'px';
+
 				ocImg.replaceChildren(canvas);
 			}
 		}
