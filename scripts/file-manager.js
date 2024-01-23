@@ -1,6 +1,6 @@
 var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, fastXmlParser = false, fileType = false;
 
-var file = function(path, config = false) {
+var file = function(path, _config = false) {
 
 	this.path = path;
 
@@ -17,7 +17,7 @@ var file = function(path, config = false) {
 		only: false,
 	};
 
-	if(config) this.config = {...this.config, ...config};
+	if(_config) this.config = {...this.config, ..._config};
 
 	this.updateConfig = function(config) {
 
@@ -2901,8 +2901,8 @@ window.addEventListener('resize', function() {
 });
 
 module.exports = {
-	file: function(path, config = false) {
-		return new file(path, config);
+	file: function(path, _config = false) {
+		return new file(path, _config);
 	},
 	fileCompressed: function(path, realPath = false, forceType = false, prefixes = false){ // This consider moving it to a separate file
 		return new fileCompressed(path, realPath, forceType, prefixes);
