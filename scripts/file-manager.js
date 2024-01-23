@@ -1023,7 +1023,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let type = await fileType(this.realPath);
 
-		if(inArray(type.ext, compressedExtensions.all))
+		if(inArray(type.ext, compressedExtensions.all) && type.ext != 'epub')
 			return type.ext;
 
 		return this.features.ext;

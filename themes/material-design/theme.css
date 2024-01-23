@@ -1040,16 +1040,41 @@ cb
 	margin-top: -40px !important;
 }
 
-.server-connection-error
+.server-connection-error,
+.content-message-buttons
 {
 	display: flex;
 	justify-content: center;
 	margin: 16px;
 }
 
-.server-connection-error > div
+.server-connection-error > div,
+.content-message-buttons > div
 {
 	margin: 0px 4px;
+}
+
+.content-message
+{
+	text-align: center;
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	top: 50%;
+	transform: translate(0px, -50%);
+	font-size: 15px;
+}
+
+.content-message .title-large
+{
+	line-height: 30px;
+	margin-bottom: 12px;
+	display: inline-block;
+}
+
+.content-message .body-medium
+{
+	line-height: 22px;
 }
 
 /* separators */
@@ -1107,6 +1132,15 @@ cb
 	height: 24px;
 	width: 24px;
 	background-size: 24px;
+	background-repeat: no-repeat;
+}
+
+.icon-96
+{
+	height: 96px;
+	width: 96px;
+	background-size: 96px;
+	font-size: 96px;
 	background-repeat: no-repeat;
 }
 

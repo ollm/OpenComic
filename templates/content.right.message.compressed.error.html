@@ -1,0 +1,18 @@
+<i class="icon-96 material-icon">problem{{!-- web_asset_off --}}</i>
+<br>
+<span class="title-large">{{language.error.uncompress.title}}</span>
+<br>
+<span class="body-medium">
+	{{language.error.uncompress.message}}
+	<br>
+	{{compressedError}}
+</span>
+<br>
+<div class="content-message-buttons">
+	<div class="simple-button filled-tonal gamepad-item" onclick="openComicDialog();">
+		<div class="touch-effect"><i class="icon-24 material-icon">file_open</i>{{language.menu.file.openFile}}</div>
+	</div>
+	<div class="simple-button filled-tonal gamepad-item" onclick="openComicDialog(true);">
+		<div class="touch-effect"><i class="icon-24 material-icon">folder_open</i>{{language.menu.file.openFolder}}</div>
+	</div>
+</div>

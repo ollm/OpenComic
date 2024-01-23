@@ -738,7 +738,19 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 		else if(openFirstImage && !fromGoBack && !notAutomaticBrowsing)
 		{
-			let first = await file.images(1);
+			let first;
+
+			try
+			{
+				first = await file.images(1);
+			}
+			catch(error)
+			{
+				console.error(error);
+				dom.compressedError(error);
+
+				return;
+			}
 
 			if(first)
 			{
@@ -909,16 +921,30 @@ function continueReadingError()
 	});
 }
 
-function compressedError(error)
+function compressedError(error, showInPage = true)
 {
-	//console.log(error);
+	// console.error(error);
 
-	electronRemote.dialog.showMessageBox({
-		type: 'error',
-		title: language.error.uncompress.title,
-		message: language.error.uncompress.message,
-		detail: error.detail || error.message,
-	});
+	if(showInPage)
+	{
+		handlebarsContext.compressedError = (error.detail || error.message);
+		handlebarsContext.contentRightMessage = template.load('content.right.message.compressed.error.html');
+		template._contentRight().firstElementChild.innerHTML = template.load('content.right.message.html');
+	}
+	else
+	{
+		events.snackbar({
+			key: 'compressedError',
+			text: language.error.uncompress.title+': '+(error.detail || error.message),
+			duration: 6,
+			buttons: [
+				{
+					text: language.buttons.dismiss,
+					function: 'events.closeSnackbar();',
+				},
+			],
+		});
+	}
 }
 
 function addSepToEnd(path)
@@ -1151,7 +1177,7 @@ async function getFolderThumbnails(path)
 		else
 		{
 			console.error(error);
-			dom.compressedError(error);
+			dom.compressedError(error, false);
 		}
 	}
 
@@ -1810,14 +1836,19 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 		addPoster.style.display = 'block';
 		deletePoster.style.display = 'block';
 
-
 		if(folder)
 		{
 			addPoster.style.display = 'block';
 
-			let file = fileManager.file(path);
-			let images = await file.images(2, false, true);
-			file.destroy();
+			let images = [];
+
+			try
+			{
+				let file = fileManager.file(path);
+				images = await file.images(2, false, true);
+				file.destroy();
+			}
+			catch{}
 
 			let poster = !Array.isArray(images) ? images : false;
 
@@ -1907,7 +1938,19 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	// Load files
 	let file = fileManager.file(path);
-	let files = await file.read({filtered: false});
+	let files = [];
+
+	try
+	{
+		files = await file.read({filtered: false});
+	}
+	catch(error)
+	{
+		console.error(error);
+		dom.compressedError(error);
+
+		return;
+	}
 
 	let hasMusic = await reading.music.has(files);
 	handlebarsContext.hasMusic = hasMusic;
