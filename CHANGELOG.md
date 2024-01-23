@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Blurry cover/poster images [`23ae46d`](https://github.com/ollm/OpenComic/commit/23ae46d3d77847f5262f10799a21d7ee0141b226)
 - Using the first image as a poster does not work [`fd6c748`](https://github.com/ollm/OpenComic/commit/dfd6c748090088109416b847a5e7581d80e36ea7)
 - Some errors in scroll reading [`a4887c3`](https://github.com/ollm/OpenComic/commit/a4887c3bfe3f0ec8b75d3cdceedfaae8684fe6df)
-- Stuck in a loop trying to read an epub file when the epub or zip is corrupt
+- Stuck in a loop trying to read an epub file when the epub or zip is corrupt [`6388a9e`](https://github.com/ollm/OpenComic/commit/6388a9ef8eb118e1d337fb6becd68ec64b5defc3)
 
 ## [v1.1.0](https://github.com/ollm/OpenComic/releases/tag/v1.1.0) (13-01-2024)
 

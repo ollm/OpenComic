@@ -865,7 +865,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		if(leftItem)
 		{
 			leftItem.classList.add('s');
-			if(animation) leftItem.classList.add('transition');
+			if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
 		}
 	}
 	else
@@ -878,7 +878,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 			dom.this(contentLeft).find('.reading-left.s', true).removeClass('s', 'transition');
 
 		leftItem.classList.add('s');
-		if(animation) leftItem.classList.add('transition');
+		if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
 	}
 
 	if(leftItem)
@@ -2134,8 +2134,11 @@ function fixBlurOnZoom(scale = 1, index = false)
 		let _width = Math.round(width * scale * window.devicePixelRatio);
 		let _height = Math.round(height * scale * window.devicePixelRatio);
 
-		img.style.width = (_width / window.devicePixelRatio)+'px';
-		img.style.height = (_height / window.devicePixelRatio)+'px';
+		if(img.tagName != 'CANVAS')
+		{
+			img.style.width = (_width / window.devicePixelRatio)+'px';
+			img.style.height = (_height / window.devicePixelRatio)+'px';
+		}
 
 		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
 			img.style.transform = 'scale('+_scale+') translate(0.001px, 0.001px)';
