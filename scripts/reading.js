@@ -3,7 +3,7 @@ const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	music = require(p.join(appDir, 'scripts/reading/music.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js'));
 
-var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
+var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -680,6 +680,8 @@ function calculateView()
 
 	if(readingViewIs('scroll'))
 	{
+		prevImagesFullPosition = imagesFullPosition;
+
 		imagesPosition = [];
 		imagesFullPosition = [];
 
@@ -709,13 +711,14 @@ function calculateView()
 					top: top + scrollTop,
 					center: imagesPosition[key1][key2],
 					bottom: top + height + scrollTop,
+					height: height,
 				};
 			}
 		}
 	}
 }
 
-var previousScrollTop = 0, previousScrollHeight = 0, previousContentHeight = 0, stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, setTimeout: false};
+var previousScrollTop = 0, previousScrollHeight = 0, previousContentHeight = 0, stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
 
 function getPreviusContentSize()
 {
@@ -746,12 +749,13 @@ function stayInLine()
 		let contentRight = template._contentRight();
 		let content = contentRight.firstElementChild;
 		let rect = content.getBoundingClientRect();
+		let position = imagesFullPosition[currentIndex-1][0];
 
 		disableOnScroll(true);
 
 		if(stayInLineData.scrollTop === false)
 		{
-			stayInLineData = {scrollTop: previousScrollTop, scrollHeight: previousScrollHeight, height: previousContentHeight, setTimeout: false};
+			stayInLineData = {scrollTop: previousScrollTop, scrollHeight: previousScrollHeight, height: previousContentHeight, position: prevImagesFullPosition[currentIndex-1][0], setTimeout: false};
 		}
 		else
 		{
@@ -760,14 +764,15 @@ function stayInLine()
 
 				previousContentHeight = stayInLineData.height;
 				previousScrollHeight = stayInLineData.scrollHeight;
-				stayInLineData = {scrollTop: false, scrollHeight: false, setTimeout: false};
+				stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
 
 				disableOnScroll(false);
 
 			}, 400);
 		}
 
-		content.scrollTop = ((stayInLineData.scrollTop + (stayInLineData.height / 2)) / stayInLineData.scrollHeight * content.scrollHeight) - (rect.height / 2);
+		let percent = ((stayInLineData.scrollTop + stayInLineData.height / 2) - stayInLineData.position.top) / stayInLineData.position.height;
+		content.scrollTop = position.top + (percent * position.height) - (rect.height / 2);
 	}
 }
 
@@ -877,8 +882,11 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		else
 			dom.this(contentLeft).find('.reading-left.s', true).removeClass('s', 'transition');
 
-		leftItem.classList.add('s');
-		if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
+		if(leftItem)
+		{
+			leftItem.classList.add('s');
+			if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
+		}
 	}
 
 	if(leftItem)
