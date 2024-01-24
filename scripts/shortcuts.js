@@ -21,7 +21,7 @@ async function loadShoShoObject()
 
 function inputIsFocused()
 {
-	if(document.activeElement.tagName === 'INPUT')
+	if(document.activeElement && document.activeElement.tagName === 'INPUT')
 		return document.activeElement;
 
 	return false;
