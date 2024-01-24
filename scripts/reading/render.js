@@ -9,6 +9,7 @@ var file = false,
 	rendered = {},
 	renderedMagnifyingGlass = {},
 	renderedObjectsURL = [],
+	renderedObjectsURLCache = {},
 	maxNext = 10,
 	maxPrev = 5,
 	currentIndex = 0,
@@ -97,8 +98,8 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 
 	if(globalZoom)
 	{
-		if(renderImages)
-			revokeAllObjectURL();
+		//if(renderImages)
+		//	revokeAllObjectURL();
 
 		rendered = {};
 		renderedMagnifyingGlass = {};
@@ -110,7 +111,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
 			setRenderQueue(maxPrev, maxNext);
 
-		}, 2000);
+		}, 1000);
 	}
 	else
 	{
@@ -213,6 +214,7 @@ function revokeAllObjectURL()
 	}
 
 	renderedObjectsURL = [];
+	renderedObjectsURLCache = {};
 }
 
 async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false)
@@ -407,12 +409,19 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			_config.kernel = _config.width > imageData.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
 
 			let src = img.dataset.src;
+			let key = src+'|'+_config.width+'x'+_config.height;
 
 			if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium')
 			{
 				if(cssMethods[_config.kernel])
 				{
 					img.style.imageRendering = cssMethods[_config.kernel];
+				}
+				else if(renderedObjectsURLCache[key])
+				{
+					img.src = renderedObjectsURLCache[key];
+					img.classList.add('blobRendered', 'blobRender');
+					img.style.imageRendering = '';
 				}
 				else if(!(await image.isAnimated(src)))
 				{
@@ -431,6 +440,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 					img.style.imageRendering = '';
 
 					renderedObjectsURL.push({data: data, img: img});
+					renderedObjectsURLCache[key] = data.blob;
 				}
 			}
 			else
