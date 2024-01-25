@@ -138,6 +138,12 @@ function addImageToDom(querySelector, path, animation = true)
 	}
 }
 
+function setWindowTitle(title = 'OpenComic')
+{
+	let _title = document.querySelector('head title');
+	_title.innerText = title;
+}
+
 function translatePageName(name)
 {
 	name = name.replace(/^[0-9]+\_sortonly - /, '');
@@ -365,6 +371,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	reading.music.pause();
 
 	generateAppMenu();
+	setWindowTitle();
 
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
 
@@ -985,7 +992,7 @@ function fromLibrary(value)
 	isFromLibrary = value;
 }
 
-function headerPath(path, mainPath)
+function headerPath(path, mainPath, windowTitle = false)
 {
 	let _mainPath = mainPath;
 
@@ -1005,8 +1012,13 @@ function headerPath(path, mainPath)
 		path.push({name: metadataPathName({path: _path, name: files[i]}, true), path: _path, mainPath: mainPath});
 	}
 
-	if(path.length > 0)
-		path[path.length - 1].last = true;
+	let len = path.length;
+
+	if(len > 0)
+		path[len - 1].last = true;
+
+	if(windowTitle && len > 0)
+		setWindowTitle(path[len - 1].name);
 
 	handlebarsContext.headerTitlePath = path;
 }
@@ -1934,7 +1946,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	}
 
 	// Show loadign page
-	headerPath(path, mainPath);
+	headerPath(path, mainPath, true);
 
 	// Load files
 	let file = fileManager.file(path);
@@ -2202,6 +2214,7 @@ module.exports = {
 	getFolderThumbnails: getFolderThumbnails,
 	translatePageName: translatePageName,
 	metadataPathName: metadataPathName,
+	setWindowTitle: setWindowTitle,
 	fromLibrary: fromLibrary,
 	continueReadingError: continueReadingError,
 	poster: domPoster,
