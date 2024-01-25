@@ -630,7 +630,7 @@ function disposeImages(data = false)
 
 var rightSize = {}; // Right content size
 
-function calculateView()
+function calculateView(first = false)
 {
 	let contentRight = template._contentRight();
 
@@ -715,6 +715,9 @@ function calculateView()
 				};
 			}
 		}
+
+		if(first)
+			prevImagesFullPosition = imagesFullPosition;
 	}
 }
 
@@ -733,9 +736,9 @@ function getPreviusContentSize()
 	previousScrollTop = content.scrollTop;
 }
 
-function stayInLine()
+function stayInLine(resize = false)
 {
-	if(readingViewIs('slide')/* || (readingViewIs('scroll') && !_config.readingViewAdjustToWidth && !_config.readingWebtoon)*/)
+	if(readingViewIs('slide'))
 	{
 		if(currentIndex < 1 && dom.previousComic())
 			showPreviousComic(1, false);
@@ -2544,7 +2547,7 @@ function resized()
 		{
 			disposeImages();
 			calculateView();
-			stayInLine();
+			stayInLine(true);
 		}
 
 		render.resized(_config.readingDoublePage);
@@ -2784,6 +2787,8 @@ function changePagesView(mode, value, save)
 	else if(mode == 2) // Sets the margin of the pages
 	{
 		disposeImages({margin: value});
+		calculateView();
+		stayInLine();
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
 		updateEbook(save);
@@ -2859,6 +2864,7 @@ function changePagesView(mode, value, save)
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
 		disposeImages({left: value, right: value});
+		calculateView();
 		stayInLine();
 
 		render.resized(_config.readingDoublePage);
@@ -2869,6 +2875,7 @@ function changePagesView(mode, value, save)
 	else if(mode == 11) // Set vertical margin of the pages
 	{
 		disposeImages({top: value, bottom: value});
+		calculateView();
 		stayInLine();
 
 		render.resized(_config.readingDoublePage);
@@ -2900,6 +2907,7 @@ function changePagesView(mode, value, save)
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
 		disposeImages({horizontalsLeft: value, horizontalsRight: value});
+		calculateView();
 		stayInLine();
 
 		render.resized(_config.readingDoublePage);
@@ -2910,6 +2918,7 @@ function changePagesView(mode, value, save)
 	/*else if(mode == 15) // Set vertical margin of the horizontals pages
 	{
 		disposeImages({horizontalsTop: value, horizontalsBottom: value});
+		calculateView();
 		stayInLine();
 
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: value, bottom: value, left: _config.readingHorizontalsMargin.left, right: _config.readingHorizontalsMargin.right});
@@ -3909,7 +3918,7 @@ async function fastUpdateEbookPages(readingEbook = false, resize = false)
 
 var hasGenerateEbookPages = false;
 
-async function generateEbookPages(end = false, reset = false, fast = false, imagePath = false)
+async function generateEbookPages(end = false, reset = false, fast = false, imagePath = false, first = false)
 {
 	// Avoid running multiple times at the same time
 	if(hasGenerateEbookPages)
@@ -3989,7 +3998,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		addHtmlImages();
 		disposeImages();
-		calculateView();
+		calculateView(first);
 
 		handlebarsContext.ebookLandmarks = ebookPages.landmarks;
 		handlebarsContext.ebookToc = ebookPages.toc;
@@ -4932,7 +4941,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		template.contentRight('.reading-body').css('display', 'block');
 		addHtmlImages();
 		disposeImages();
-		calculateView();
+		calculateView(true);
 
 		currentIndex = imagesData[currentIndex].position + 1;
 
@@ -4953,7 +4962,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	else if(isEbook)
 	{
 		readingFileC = fileManager.fileCompressed(path);
-		await generateEbookPages(end, false, false, imagePath);
+		await generateEbookPages(end, false, false, imagePath, true);
 	}
 	else
 	{
@@ -4979,7 +4988,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 					template.contentRight('.reading-body').css('display', 'block');
 					addHtmlImages();
 					disposeImages();
-					calculateView();
+					calculateView(true);
 
 					currentIndex = imagesData[currentIndex].position + 1;
 
@@ -5013,7 +5022,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 					template.contentRight('.reading-body').css('display', 'block');
 					addHtmlImages();
 					disposeImages();
-					calculateView();
+					calculateView(true);
 
 					currentIndex = imagesData[currentIndex].position + 1;
 
