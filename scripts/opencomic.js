@@ -756,6 +756,9 @@ function generateAppMenu(force = false)
 		let currentWindow = electronRemote.getCurrentWindow();
 		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading};
 
+		let readingCurrentPath = reading.readingCurrentPath();
+		let readingFolder = (onReading && fs.existsSync(readingCurrentPath) && fs.statSync(readingCurrentPath).isDirectory()) ? true : false;
+
 		var menuTemplate = [
 			{
 				label: language.menu.file.main,
@@ -764,6 +767,8 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.openFolder, click: function(){openComicDialog(true)}, accelerator: 'CmdOrCtrl+Shift+O'},
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
+					{type: 'separator'},
+					{label: readingFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, click: function(){electron.shell.showItemInFolder(fileManager.firstCompressedFile(readingCurrentPath))}},
 					{type: 'separator'},
 					{role: 'quit', label: language.menu.file.quit, click: function(){electronRemote.app.quit();}},
 				]
@@ -807,6 +812,9 @@ function generateAppMenu(force = false)
 				]
 			}
 		];
+
+		if(!onReading)
+			menuTemplate[0].submenu.splice(4, 2);
 
 		var menu = electronRemote.Menu.buildFromTemplate(menuTemplate);
 		currentWindow.setMenu(menu);
