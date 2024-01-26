@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support background music from folder: MP3, M4A, WEBM, WEBA, OGG, OPUS, WAV, FLAC [`26947a2`](https://github.com/ollm/OpenComic/commit/26947a297868e86069cc6daca77e1a3f016d0705)
 - Now when applying Webtoon mode the vertical margin is 0 [`683a08a`](https://github.com/ollm/OpenComic/commit/683a08aad3a6d947004ad77476184d613718b098)
 - Show the current reading title in app window [`9520faa`](https://github.com/ollm/OpenComic/commit/9520faa7486e4494bb878ffe2430e9fd198ee33a)
-- Option to open file location of current reading from the file menu
+- Option to open file location of current reading from the file menu [`c9215dc`](https://github.com/ollm/OpenComic/commit/c9215dc5cb29a3b5a759d80d21f7ff734053f23c)
 
 ##### 🐛 Bug Fixes
 
@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Using the first image as a poster does not work [`fd6c748`](https://github.com/ollm/OpenComic/commit/dfd6c748090088109416b847a5e7581d80e36ea7)
 - Some errors in scroll reading [`a4887c3`](https://github.com/ollm/OpenComic/commit/a4887c3bfe3f0ec8b75d3cdceedfaae8684fe6df)
 - Stuck in a loop trying to read an epub file when the epub or zip is corrupt [`6388a9e`](https://github.com/ollm/OpenComic/commit/6388a9ef8eb118e1d337fb6becd68ec64b5defc3)
+- Next chapter button not work inscroll mode if last page is smaller than the window and "Adjust to width" is enabled
 
 ## [v1.1.0](https://github.com/ollm/OpenComic/releases/tag/v1.1.0) (13-01-2024)
 

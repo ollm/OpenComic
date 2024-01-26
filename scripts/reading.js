@@ -797,7 +797,7 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 		prevIsPrevComic = true;
 		canGoPrev = dom.previousComic();
 	}
-	
+
 	if((scrollInEnd === null || scrollInEnd) && currentIndex == indexNum && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
 		nextIsNextComic = true;
@@ -1112,6 +1112,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		else
 		{
 			currentPageVisibility = 0;
+			maxPageVisibility = 0;
 		}
 
 		if(nextPrevious !== false && nextPrevious !== true) currentPageVisibility = nextPrevious;
