@@ -193,6 +193,7 @@
 			"globalZoomSlide": "",
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
+			"goNextPrevChapterWithScroll": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

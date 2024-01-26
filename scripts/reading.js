@@ -1381,6 +1381,8 @@ var scrollNextOrPrevComicDelayed = false, scrollNextOrPrevComicST = false;
 
 function scrollNextOrPrevComic(prev = false, delay = false)
 {
+	if(!config.readingGoNextPrevChapterWithScroll) return;
+
 	if(delay && !scrollNextOrPrevComicDelayed && ((prev && scrollInStart) || (!prev && scrollInEnd)))
 	{
 		if(scrollNextOrPrevComicST) return;
@@ -4407,7 +4409,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			}
 			else
 			{
-				if(reading.scrollNextOrPrevComic(e.originalEvent.wheelDelta / 120 > 0))
+				if(reading.scrollNextOrPrevComic(e.originalEvent.wheelDelta / 120 > 0, true))
 					e.preventDefault();
 			}
 		}

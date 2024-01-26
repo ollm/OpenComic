@@ -751,13 +751,15 @@ var generateAppMenuData = {resetZoom: null, onReading: null};
 
 function generateAppMenu(force = false)
 {
-	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading)
+	let indexPathA = dom.indexPathA();
+
+	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading || generateAppMenuData.indexPathA !== indexPathA)
 	{
 		let currentWindow = electronRemote.getCurrentWindow();
-		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading};
+		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading, indexPathA: indexPathA};
 
-		let readingCurrentPath = reading.readingCurrentPath();
-		let readingFolder = (onReading && fs.existsSync(readingCurrentPath) && fs.statSync(readingCurrentPath).isDirectory()) ? true : false;
+		let currentPath = onReading ? reading.readingCurrentPath() : indexPathA;
+		let pathIsFolder = (currentPath && fs.existsSync(currentPath) && fs.statSync(currentPath).isDirectory()) ? true : false;
 
 		var menuTemplate = [
 			{
@@ -768,7 +770,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
-					{label: readingFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, click: function(){electron.shell.showItemInFolder(fileManager.firstCompressedFile(readingCurrentPath))}},
+					{label: pathIsFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, enabled: currentPath, click: function(){pathIsFolder ? electron.shell.openPath(currentPath) : electron.shell.showItemInFolder(fileManager.firstCompressedFile(currentPath))}},
 					{type: 'separator'},
 					{role: 'quit', label: language.menu.file.quit, click: function(){electronRemote.app.quit();}},
 				]
@@ -812,9 +814,6 @@ function generateAppMenu(force = false)
 				]
 			}
 		];
-
-		if(!onReading)
-			menuTemplate[0].submenu.splice(4, 2);
 
 		var menu = electronRemote.Menu.buildFromTemplate(menuTemplate);
 		currentWindow.setMenu(menu);

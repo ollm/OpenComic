@@ -1,4 +1,4 @@
-var changes = 77; // Update this if readingPagesConfig is updated
+var changes = 78; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -114,6 +114,7 @@ var storageDefault = {
 		readingGlobalZoomSlide: true,
 		readingMoveZoomWithMouse: false,
 		readingScrollWithMouse: false,
+		readingGoNextPrevChapterWithScroll: true,
 		readingStartReadingInFullScreen: false,
 		readingTrackingAtTheEnd: true,
 		readingImageInterpolationMethodDownscaling: 'lanczos3',

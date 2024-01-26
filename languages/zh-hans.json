@@ -193,6 +193,7 @@
 			"globalZoomSlide": "全局缩放而不是逐个图片（幻灯片阅读）",
 			"moveZoomWithMouse": "使用鼠标移动缩放（禁用通过拖放移动）",
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
+			"goNextPrevChapterWithScroll": "",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
 		},

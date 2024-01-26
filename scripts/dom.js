@@ -370,7 +370,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	reading.hideContent();
 	reading.music.pause();
 
-	generateAppMenu();
 	setWindowTitle();
 
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
@@ -384,7 +383,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	if(currentPathScrollTop[path === false ? 0 : path])
 		keepScroll = currentPathScrollTop[path === false ? 0 : path];
 
-	let _indexLabel = prevIndexLabel = indexLabel;
+	let _indexLabel = prevIndexLabel = (indexLabel || false);
 	indexLabel = false;
 
 	currentPath = path;
@@ -397,6 +396,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	{
 		dom.fromLibrary(true);
 		dom.indexPathControl(false);
+
+		generateAppMenu();
 
 		if(!fromSetOfflineMode)
 			fileManager.setServerInOfflineMode(false);
@@ -662,6 +663,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	{
 		if(!fromGoBack)
 			indexPathControl(path, mainPath);
+
+		generateAppMenu();
 
 		handlebarsContext.comics = [];
 		handlebarsContext.comicsIndex = false;

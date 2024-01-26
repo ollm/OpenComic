@@ -193,6 +193,7 @@
 			"globalZoomSlide": "Global zoom instead of image by image (Slide reading)",
 			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
 			"scrollWithMouse": "Scroll by moving the cursor along the edges of the screen (Disables drag and drop scrolling)",
+			"goNextPrevChapterWithScroll": "Go next/previous chapter with mouse scroll (Vertical reading)",
 			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
 		},
