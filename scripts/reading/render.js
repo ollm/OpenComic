@@ -98,9 +98,6 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 
 	if(globalZoom)
 	{
-		//if(renderImages)
-		//	revokeAllObjectURL();
-
 		rendered = {};
 		renderedMagnifyingGlass = {};
 
@@ -162,20 +159,16 @@ function resized(doublePage = false)
 	rendered = {};
 	renderedMagnifyingGlass = {};
 
+	if(readingBody) readingBody.classList.remove('resizing')
+
+	setRenderQueue(0, doublePage ? 2 : 1);
+
 	sendToQueueST = setTimeout(function(){
 
-		if(readingBody) readingBody.classList.remove('resizing')
+		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+		setRenderQueue(maxPrev, maxNext);
 
-		setRenderQueue(0, doublePage ? 2 : 1);
-
-		sendToQueueST = setTimeout(function(){
-
-			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
-			setRenderQueue(maxPrev, maxNext);
-
-		}, 400);
-
-	}, 200);
+	}, 400);
 }
 
 async function setEbookConfigChanged(ebookConfig)

@@ -2534,8 +2534,10 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 	//calculateView();
 }
 
-function resized()
+async function resized()
 {
+	if(onLoadPromise) await onLoadPromise.promise;
+
 	originalRect = false;
 	originalRectReadingBody = false;
 	originalRect2 = false;
@@ -3779,7 +3781,7 @@ function readingImageClip()
 	}
 }
 
-var onLoadCallback = false;
+var onLoadCallback = false, onLoadPromise = false;
 
 async function isLoad()
 {
@@ -3788,6 +3790,11 @@ async function isLoad()
 
 	if(onLoadCallback) onLoadCallback();
 	onLoadCallback = false;
+
+	if(onLoadPromise)
+		onLoadPromise.resolve();
+
+	onLoadPromise = false;
 }
 
 function onLoad(callback)
@@ -4393,6 +4400,12 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	events.eventHover();
 
 	onReading = _onReading = true;
+
+	let resolve = false;
+	let promise = new Promise(function(_resolve){
+		resolve = _resolve;
+	});
+	onLoadPromise = {promise: promise, resolve: resolve};
 
 	template.contentRight().on('mousewheel', function(e) {
 
