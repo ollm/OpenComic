@@ -625,6 +625,7 @@
         "nativeName":"SiSwati"
     },
     "sv":{
+        "active":true,
         "name":"Swedish",
         "nativeName":"svenska"
     },
