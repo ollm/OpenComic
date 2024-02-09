@@ -1,0 +1,390 @@
+{
+	"appName": "OpenComic",
+	"global": {
+		"and": "och",
+		"comics": "Serier",
+		"collection": "Samling",
+		"library": "Bibliotek",
+		"recents": "Nyligen öppnat",
+		"recentlyOpened": "Nyligen öppnat",
+		"favorites": "Favoriter",
+		"labels": "Etiketter",
+		"editLabels": "Redigera etiketter",
+		"images": "Bilder",
+		"sort": {
+			"main": "Sortera",
+			"name": "Namn",
+			"number": "Nummer",
+			"nameNumber": "Namn / Nummer",
+			"lastAdd": "Senast tillagd",
+			"lastReading": "Senast läst",
+			"lastOpened": "Senast öppnad",
+			"foldersFirst": "Mappar först",
+			"invert": "Invertera"
+		},
+		"view": {
+			"main": "Vy",
+			"module": "Rutnät",
+			"list": "Lista"
+		},
+		"contextMenu": {
+			"remove": "Ta bort",
+			"favorite": "Favoritmarkera",
+			"openFileLocation": "Öppna filplats",
+			"openFolderLocation": "Öppna mapplats",
+			"addPoster": "Lägg till affisch",
+			"changePoster": "Ändra affisch",
+			"deletePoster": "Ta bort affisch",
+			"cannotAddPoster": "Det går inte att lägga till affischen om mappen finns i en komprimerad fil, du måste redigera filen med 7-zip, unrar, osv.",
+			"cannotDeletePoster": "Det är inte möjligt att ta bort affischen om den finns i en komprimerad fil, du måste redigera filen med 7-zip, unrar, osv.",
+			"closeApp": "Stäng OpenComic"
+		},
+		"back": "Tillbaka",
+		"open": "Öppna",
+		"add": "Lägg till",
+		"addToLibrary": "Lägg till i biblioteket",
+		"unsupportedFile": "Filen stöds inte",
+		"reload": "Ladda om",
+		"retry": "Försök igen",
+		"search": "Sök",
+		"filterCurrentPage": "Filtrera aktuell sida",
+		"language": "Språk",
+		"settings": "Inställningar",
+		"theme": "Tema",
+		"days": "Dagar",
+		"pageAndNumber": "Sida $1",
+		"valueCannotBeEmpty": "Värdet får inte vara tomt",
+		"nightMode": "Nattläge"
+	},
+	"comics": {
+		"continueReading": "Fortsätt läsa",
+		"emptyIndex": "Det finns inga serier i biblioteket",
+		"emptyFolder": "Det finns ingen kompatibel fil i denna mapp",
+		"emptyRecentlyOpened": "Inga nyligen öppnade filer",
+		"emptyFavorites": "Inga favoritserier",
+		"emptyLabel": "Inga serier i denna etikett",
+		"continueReadingNotExists": "Filen som är sparad i \"Fortsätt läsa\" finns inte"
+	},
+	"servers": {
+		"offlineMode": "Offline-läge",
+		"error": {
+			"connection": "Det gick inte att ansluta till servern",
+			"folderNotFound": "Mappen hittades inte på servern"
+		}
+	},
+	"reading": {
+		"prevChapter": "Föregående kapitel",
+		"firstPage": "Första sidan",
+		"previous": "Föregående",
+		"next": "Nästa",
+		"lastPage": "Sista sidan",
+		"nextChapter": "Nästa kapitel",
+		"pages": {
+			"main": "Sidor",
+			"pageLayout": "Sidlayout",
+			"ebookLayout": "e-boklayout",
+			"colorFilters": "Färgfilter",
+			"slide": "Horisontell bläddring",
+			"scroll": "Vertikal bläddring",
+			"adjustToWidth": "Anpassa till bredd",
+			"notEnlargeMoreThanOriginalSize": "Förstora inte mer än den ursprungliga storleken",
+			"margin": "Marginal",
+			"marginHorizontal": "Horisontell marginal",
+			"marginVertical": "Vertikal marginal",
+			"differentMarginInHorizontals": "Annan marginal på horisontella sidor",
+			"doublePage": "Dubbelsidig",
+			"doNotApplyToHorizontals": "Tillämpa inte på horisontella sidor",
+			"blankPage": "Blank sida i början",
+			"readingDelaySkip": "Fördröjning vid byte mellan serier",
+			"animationSpeed": "Hastighet för animering",
+			"readingManga": "Mangaläsning (inverterad)",
+			"readingWebtoon": "Webtoon-läsning",
+			"readingGlobal": "Global konfiguration",
+			"readingConfigNew": "Ny konfiguration",
+			"clipHorizontal": "Beskär horisontellt",
+			"clipVertical": "Beskär vertikalt",
+			"colors": "Färger",
+			"brightness": "Ljusstyrka",
+			"saturation": "Mättnad",
+			"contrast": "Kontrast",
+			"sepia": "Sepia",
+			"invert": "Invertera",
+			"negative": "Negativ",
+			"hueRotate": "Rotera färgton",
+			"tone": "Ton",
+			"colorize": "Färglägg",
+			"onlyBlackAndWhite": "Tillämpa endast på svartvita bilder",
+			"colorPreset": "Förinställd färg",
+			"multiplier": "Mult.",
+			"saveAsPreset": "Spara som förinställning",
+			"addColor": "Lägg till färg",
+			"fromImage": "Färglägg från en bild",
+			"savedPresets": "Sparade förinställningar",
+			"multipleTonePresets": "Förinställningar med flera toner",
+			"oneTonePresets": "Förinställningar med en ton",
+			"integrated": "Integrerad",
+			"ebookTheme": "e-boktema",
+			"fontSize": "Teckenstorlek",
+			"fontFamily": "Typsnitt",
+			"useEbookFont": "Använd e-bokens typsnitt",
+			"useEbookTheme": "Använd e-bokens tema",
+			"useAppTheme": "Använd appens tema",
+			"fontWeight": "Teckensnittsvikt",
+			"bold": "Fetstil",
+			"italic": "Kursiv",
+			"textAlign": "Textjustering",
+			"textCenter": "Centrera",
+			"textJustify": "Justera",
+			"textLeft": "Vänsterjustera",
+			"textRight": "Högerjustera",
+			"maxWidth": "Maxbredd",
+			"letterSpacing": "Teckenavstånd",
+			"wordSpacing": "Avstånd mellan ord",
+			"paragraphSpacing": "Styckeavstånd",
+			"paragraphLineHeight": "Radavstånd för stycken",
+			"lineHeight": "Radavstånd",
+			"textColors": "Textfärger",
+			"text": "Text",
+			"links": "Länkar",
+			"background": "Bakgrund"
+		},
+		"magnifyingGlass": {
+			"main": "Förstoringsglas",
+			"activate": "Aktivera",
+			"zoom": "Zooma",
+			"size": "Storlek",
+			"ratio": "Skala",
+			"radius": "Radie"
+		},
+		"tracking": {
+			"main": "Spårning med webbplatser",
+			"tracking": "Spårning",
+			"marked": "Markerad",
+			"sites": "All sidor",
+			"favoriteSites": "Favoritsidor",
+			"emptyFavoriteSites": "Inga favoritsidor",
+			"problemChapter": "Kapitel ej upptäckt",
+			"chapters": "Kapitel",
+			"chapter": "Kapitel",
+			"volumes": "Volymer",
+			"volume": "Volym"
+		},
+		"moreOptions": {
+			"main": "Fler alternativ",
+			"hideBarHeader": "Dölj titelrad",
+			"hideContentLeft": "Dölj vänster sidofält"
+		},
+		"viewBookmarks": "Visa bokmärken",
+		"addBookmark": "Lägg till bokmärke",
+		"removeBookmark": "Ta bort bokmärke",
+		"emptyBookmarks": "Inga bokmärken",
+		"currentReading": "Aktuell läsning",
+		"music": {
+			"main": "Musik",
+			"volume": "Volym"
+		}
+	},
+	"settings": {
+		"general": "Allmänt",
+		"reading": {
+			"main": "Läspreferenser",
+			"maxMargin": "Maximal horisontell och vertikal marginal",
+			"globalZoom": "Behåll zoomnivån vid sidbyte (vertikal bläddring)",
+			"globalZoomSlide": "Behåll zoomnivån vid sidbyte (horisontell bläddring)",
+			"moveZoomWithMouse": "Flytta zoom med hjälp av muspekare (inaktiverar flyttning med dra och släpp)",
+			"scrollWithMouse": "Bläddra genom att flytta muspekaren längs skärmens kanter (inaktiverar dra och släpp-rullning)",
+			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
+			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",
+			"goNextPrevChapterWithScroll": "Gå till nästa/förra kapitlet med musrullning (vertikal bläddring)"
+		},
+		"imageInterpolation": {
+			"main": "Bildinterpolering",
+			"interpolationMethod": "Interpolationsmetod",
+			"disabled": "Inaktiverad",
+			"downscaling": "Bildnedskalning",
+			"downscalingDescription": "Denna metod används endast när bildupplösningen behöver minskas. Interpolationsmetoden gäller inte för PDF och EPUB eller animerade bilder",
+			"upscaling": "Bilduppskalning",
+			"upscalingDescription": "Denna metod används endast när bildupplösningen behöver förstoras. Interpolationsmetoden gäller inte för PDF, EPUB eller animerade bilder. Varning! Metoder med skarp interpolering kan vara långsamma vid uppskalning"
+		},
+		"navigation": {
+			"main": "Navigation",
+			"folders": "Navigation (mappar)",
+			"files": "Navigation (filer)",
+			"ignoreSingleFoldersLibrary": "Ignorera enskilda mappar (öppna automatiskt)",
+			"whenOpenFolderFirstImageOrContinueReading": "Öppna den första bilden direkt eller den senaste läsningen i stället för fillistan",
+			"whenOpenFolderContinueReading": "Öppna den senaste läsningen direkt i stället för fillistan",
+			"useTheFirstImageAsPoster": "Använd den första bilden som affisch (endast om det inte redan finns någon)",
+			"showFullPathLibrary": "Visa fullständig filväg när du öppnar serietidningar i biblioteket",
+			"showFullPathOpened": "Visa fullständig filväg när en fil eller mapp öppnas"
+		},
+		"startupBehavior": {
+			"main": "Startbeteende",
+			"startInFullScreen": "Starta OpenComic i helskärmsläge",
+			"startInContinueReading": "Starta direkt i den senaste läsningen",
+			"startOnlyFromLibrary": "Endast om den senaste läsningen är i biblioteket",
+			"startOnStartup": "Starta OpenComic vid uppstart"
+		},
+		"theme": {
+			"systemNightMode": "Växla mellan nattläge och ljust läge när operativsystemet gör det"
+		},
+		"releases": {
+			"main": "Sök efter nya versioner",
+			"checkReleases": "Kontrollera om det finns en ny version när du startar OpenComic",
+			"checkPreReleases": "Visa förhandsversioner (beta/alfa-versioner)"
+		},
+		"shortcuts": {
+			"main": "Kortkommandon",
+			"keyboard": "Tangentbord",
+			"whenReading": "Under läsning",
+			"gamepadMenu": "Gamepadmeny",
+			"useGamepad": "Använd en gamepad för att ändra funktionen",
+			"restoreDefaults": "Återställ standardvärden",
+			"action": "Funktion",
+			"key1": "Knapp 1",
+			"key2": "Knapp 2",
+			"key3": "Knapp 3",
+			"key4": "Knapp 4",
+			"key5": "Knapp 5",
+			"gamepad1": "Knapp 1",
+			"gamepad2": "Knapp 2"
+		},
+		"masterFolders": {
+			"main": "Huvudmappar",
+			"folder": "Mapp",
+			"noFolders": "Inga mappar"
+		},
+		"servers": {
+			"main": "Servrar",
+			"add": "Lägg till server",
+			"noServers": "Inga servrar",
+			"deleteServer": "Ta bort server",
+			"confirmDelete": "Är du säker på att du vill ta bort den här servern?",
+			"supportedProtocols": "Stödda protokoll",
+			"protocolsDescription": "Anslut endast till betrodda servrar och använd säkra protokoll när det är möjligt",
+			"serverNameExists": "Detta servernamn finns redan",
+			"name": "Servernamn",
+			"path": "Filväg för server",
+			"user": "Användarnamn",
+			"pass": "Lösenord",
+			"domain": "Domän",
+			"onlyIn": "Används endast med",
+			"showOnLibrary": "Visa serier i biblioteket"
+		},
+		"storage": {
+			"main": "Lagring",
+			"cache": "Cache",
+			"cacheDescription": "Miniatyrbilder och index för de komprimerade filerna lagras här. Det rekommenderas inte att rensa det om det inte är mycket stort eller om det finns ett fel relaterat till det",
+			"cacheMaxSize": "Maximal cachestorlek",
+			"cacheMaxSizeDescription": "Filer kommer att tas bort från cacheminnet när det överskrider den specificerade storleken och äldre oanvända filer prioriteras",
+			"cacheMaxOld": "Maximal cachetid",
+			"cacheMaxOldDescription": "Filer kommer att tas bort från cacheminnet när de inte har använts under mer än den specificerad tiden",
+			"clearCache": "Töm cache",
+			"temporaryFiles": "Temporära filer",
+			"temporaryFilesDescription": "Här packas de komprimerade filerna upp när de behövs. De raderas delvis när du stänger OpenComic",
+			"removeTemporaryFiles": "Ta bort temporära filer",
+			"temporaryFilesMaxSize": "Högsta antal temporära filer",
+			"temporaryFilesMaxSizeDescription": "Temporära filer tas bort när de överskrider den specificerade storleken och äldre oanvända filer prioriteras",
+			"temporaryFilesMaxOld": "Maximal tid för temporära filer",
+			"temporaryFilesMaxOldDescription": "Temporära filer kommer att tas bort när de inte har använts under mer än den specifierade tiden"
+		}
+	},
+	"menu": {
+		"file": {
+			"main": "Arkiv",
+			"openFile": "Öppna fil",
+			"openFolder": "Öppna mapp",
+			"addFile": "Lägg till fil",
+			"addFolder": "Lägg till mapp",
+			"quit": "Avsluta"
+		},
+		"view": {
+			"main": "Visa",
+			"resetZoom": "Återställ zoomnivå",
+			"originalSize": "Standardstorlek",
+			"zoomIn": "Zooma in",
+			"zoomOut": "Zooma ut",
+			"toggleFullScreen": "Helskärmsläge"
+		},
+		"goto": {
+			"main": "Gå till"
+		},
+		"debug": {
+			"main": "Felsök",
+			"reload": "Ladda om",
+			"forceReload": "Framtvinga omladdning",
+			"toggleDevTools": "Aktivera utvecklarverktyg"
+		},
+		"help": {
+			"main": "Hjälp",
+			"about": "Om OpenComic",
+			"funding": "Finansiering!",
+			"bug": "Rapportera en bugg"
+		}
+	},
+	"dialog": {
+		"tracking": {
+			"getTokenHeader": "Logga in på {{siteName}} med token",
+			"getTokenInput": "{{siteName}}-token",
+			"invalidTokenHeader": "Ogiltig {{siteName}}-token",
+			"resendToken": "Vill du lägga till {{siteName}}-token igen?",
+			"serachIn": "Sök på {{siteName}}",
+			"emptySearch": "Inga resultat",
+			"setHeader": "Markera manuellt",
+			"setMessage": "Kapitel kan markeras manuellt",
+			"setWaitMessage": "Du kan göra det nu eller vänta tills det upptäcks automatiskt i ett annat kapitel",
+			"setChapterNumber": "Markera fram till kapitlet",
+			"setVolumeNumber": "Markera fram till volymen",
+			"activate": "Aktivera spårning"
+		},
+		"pages": {
+			"readingConfigNewHeader": "Skapa ny konfiguration",
+			"readingConfigEditHeader": "Redigera konfiguration",
+			"readingConfigName": "Konfigurationsnamn",
+			"readingConfigRemoveHeader": "Ta bort konfiguration",
+			"readingConfigRemove": "Är du säker på att du vill ta bort den här konfigurationen?",
+			"readingNumColorsGenerate": "Antal färger att generera",
+			"readingPresetName": "Förinställningsnamn",
+			"readingGotoPage": "Gå till sida"
+		},
+		"labels": {
+			"empty": "Inga etiketter",
+			"newLabel": "Ny etikett",
+			"labelName": "Etikettnamn",
+			"labelExists": "Denna etikett finns redan",
+			"deleteLabel": "Ta bort etikett",
+			"confirmDelete": "Är du säker på att du vill ta bort den här etiketten?"
+		},
+		"release": {
+			"title": "Ny version tillgänglig: <b>{{releaseName}}</b>",
+			"body": "Ändringarna kan ses på {{{linkStart}}}versionssidan{{{linkEnd}}}"
+		}
+	},
+	"buttons": {
+		"cancel": "Avbryt",
+		"ok": "Ok",
+		"save": "Spara",
+		"undo": "Ångra",
+		"dismiss": "Avvisa",
+		"remove": "Ta bort",
+		"download": "Ladda ned",
+		"close": "Stäng"
+	},
+	"error": {
+		"uncompress": {
+			"title": "Fel vid uppackning",
+			"message": "Ett fel uppstod under uppackningen av filen."
+		}
+	},
+	"about": {
+		"version": "Version",
+		"translatedBy": "Översatt till svenska av",
+		"contributedBy": "Bidrag från",
+		"translators": [
+			{
+				"name": "Viktor Engkvist",
+				"email": "",
+				"url": "https://github.com/PineappleSnackz"
+			}
+		]
+	}
+}
