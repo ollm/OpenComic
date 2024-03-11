@@ -62,14 +62,14 @@
 		"emptyIndex": "ไม่มีคอมมิกส์ในห้องสมุด",
 		"emptyFolder": "ไม่มีไฟล์ที่รองรับในโฟลเดอร์นี้",
 		"emptyRecentlyOpened": "ไม่มีไฟล์ที่เปิดล่าสุด",
-		"emptyFavorites": "",
-		"emptyLabel": ""
+		"emptyFavorites": "ยังไม่มีรายการคอมมิกส์ที่ชอบ",
+		"emptyLabel": "ยังไม่มีคอมมิกส์ในป้ายกำกับนี้"
 	},
 	"servers": {
-		"offlineMode": "",
+		"offlineMode": "โหมดออฟไลน์",
 		"error": {
-			"connection": "",
-			"folderNotFound": ""
+			"connection": "ไม่สามารถเชื่อมต่อกับเชิร์ฟเวอร์",
+			"folderNotFound": "ไม่พบโฟลเดอร์บนเซิร์ฟเวอร์"
 		}
 	},
 	"reading": {
@@ -170,8 +170,8 @@
 			"volume": "เล่ม"
 		},
 		"music": {
-			"main": "",
-			"volume": ""
+			"main": "เพลง",
+			"volume": "ระดับเสียง"
 		},
 		"moreOptions": {
 			"main": "ตัวเลือกเพิ่มเติม",
@@ -193,18 +193,18 @@
 			"globalZoomSlide": "ใช้การซูมที่ตั้งไว้แทนการซูมแบบภาพต่อภาพ (อ่านแบบเลื่อน)",
 			"moveZoomWithMouse": "ย้ายซูมโดยใช้เคอร์เซอร์ (ปิดการย้ายโดยลากวาง)",
 			"scrollWithMouse": "เลื่อนโดยย้ายเคอร์เซอร์ไปตามขอบจอ (ปิดการเลื่อนแบบลากและวาง)",
-			"goNextPrevChapterWithScroll": "",
+			"goNextPrevChapterWithScroll": "ไปตอนถัดไป / ก่อนหน้าด้านการเลื่อนเม้าส์ (การอ่านแนวตั้ง)",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
 		},
 		"imageInterpolation": {
-			"main": "",
-			"interpolationMethod": "",
-			"disabled": "",
-			"downscaling": "",
-			"downscalingDescription": "",
-			"upscaling": "",
-			"upscalingDescription": ""
+			"main": "การปรับปรุงรูปภาพ",
+			"interpolationMethod": "วิธีปรับปรุง",
+			"disabled": "ปิดใช้งาน",
+			"downscaling": "ลดขนาดรูปภาพ",
+			"downscalingDescription": "วิธีนี้จะใช้เมื่อต้องการลดความละเอียดของรูปภาพเท่านั้น ซึ่งวิธีการปรับปรุงรูปภาพจะไม่สามารถใช้ได้กับ PDF และ EPUB หรือรูปภาพเคลื่อนไหว",
+			"upscaling": "ขยายขนาดรูปภาพ",
+			"upscalingDescription": "วิธีนี้จะใช้เมื่อต้องการเพิ่มความละเอียดของรูปภาพเท่านั้น ซึ่งวิธีการปรับปรุงรูปภาพจะไม่สามารถใช้ได้กับ PDF และ EPUB หรือรูปภาพเคลื่อนไหว คำเตือน: วิธีเพิ่มความคมชัดอาจทำให้การขยายช้าลง"
 		},
 		"navigation": {
 			"main": "การนำทาง",
@@ -254,21 +254,21 @@
 			"noFolders": "ไม่มีโฟลเดอร์"
 		},
 		"servers": {
-			"main": "",
-			"add": "",
-			"noServers": "",
-			"deleteServer": "",
-			"confirmDelete": "",
-			"supportedProtocols": "",
-			"protocolsDescription": "",
-			"serverNameExists": "",
-			"name": "",
-			"path": "",
-			"user": "",
-			"pass": "",
-			"domain": "",
-			"onlyIn": "",
-			"showOnLibrary": ""
+			"main": "เซิร์ฟเวอร์",
+			"add": "เพิ้มเซิร์ฟเวอร์",
+			"noServers": "ยังไม่มีเซิร์ฟเวอร์",
+			"deleteServer": "ลบเซิร์ฟเวอร์",
+			"confirmDelete": "คุณต้องการลบเซิร์ฟเวอร์นี้หรือไม่?",
+			"supportedProtocols": "โปรโตคอลที่รองรับ",
+			"protocolsDescription": "เชื่อมต่อกับเซิร์ฟเวอร์ที่เชื่อถือได้เท่านั้นและใช้โปรโตคอลที่ปลอดภัยทุกครั้งที่เป็นไปได้",
+			"serverNameExists": "มีชื่อเซิร์ฟเวอร์นี้อยู่แล้ว",
+			"name": "ชื่อเซิร์ฟเวอร์",
+			"path": "ที่ตั้งเซิร์ฟเวอร์",
+			"user": "ชื่อผู้ใช้",
+			"pass": "รหัสผ่าน",
+			"domain": "โดเมน",
+			"onlyIn": "ใช้เฉพาะกับ",
+			"showOnLibrary": "แสดงคอมมิกส์ในห้องสมุด"
 		},
 		"storage": {
 			"main": "พื้นที่จัดเก็บ",
