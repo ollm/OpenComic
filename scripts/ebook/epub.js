@@ -160,6 +160,53 @@ var epub = function(path, config = {}) {
 
 	}
 
+	this.getStringMetadata = function(opf, query) {
+
+		let element = opf.querySelector(query.replace(/\:/g, '\\:'));
+		return element ? element.textContent : '';
+
+	}
+
+	this.getArrayMetadata = function(opf, query) {
+
+		let list = [];
+		let elements = opf.querySelectorAll(query.replace(/\:/g, '\\:'));
+		for(let i = 0, len = elements.length; i < len; i++)
+		{
+			list.push(elements[i].textContent);
+		}
+		return list.join(', ');
+
+	}
+
+	this.getObjectMetadata = function(opf, query, keys) {
+
+		let list = [];
+		let elements = opf.getElementsByTagName(query);
+
+		for(let i = 0, len = elements.length; i < len; i++)
+		{
+			let element = elements[i];
+
+			let _list = {
+				name: element.textContent,
+			};
+
+			for(let k = 0, len2 = keys.length; k < len2; k++)
+			{
+				let key = keys[k];
+				let property = opf.querySelector('*[property="'+key+'"][refines="#'+element.id+'"]');
+				_list[key] = property ? property.textContent : '';
+			}
+
+			list.push(_list);
+		}
+		return list;
+
+	}
+
+	// https://standardebooks.org/manual/latest/9-metadata
+	// https://www.w3.org/TR/epub-33/#sec-pkg-metadata
 	this.readEpubMetadata = async function() {
 
 		if(this.epubMetadata) return this.epubMetadata;
@@ -168,6 +215,34 @@ var epub = function(path, config = {}) {
 
 		this.toc = await this.epub.loaded.navigation;
 		let metadata = await this.epub.loaded.metadata;
+
+		let res = fs.readFileSync(this.opf, 'utf8');
+
+		let parser = new DOMParser();
+		let opf = parser.parseFromString(res, 'text/xml');
+
+		// Author
+		metadata.author = this.getArrayMetadata(opf, 'dc:creator');
+
+		// Publisher
+		metadata.publisher = this.getArrayMetadata(opf, 'dc:publisher');
+
+		// subject
+		metadata.subject = this.getObjectMetadata(opf, 'dc:subject', ['authority', 'term']);
+
+		// Genre
+		metadata.genre = this.getArrayMetadata(opf, 'se:subject, *[property="se:subject"]');
+
+		// Identifier
+		metadata.identifier = this.getArrayMetadata(opf, 'dc:identifier');
+
+		// Source
+		metadata.source = this.getArrayMetadata(opf, 'dc:source');
+
+		// Contributor
+		metadata.contributor = this.getObjectMetadata(opf, 'dc:contributor', ['role']);
+
+		metadata.longDescription = this.getStringMetadata(opf, 'se:long-description, *[property="se:long-description"]');
 
 		this.epubMetadata = metadata;
 
@@ -274,6 +349,10 @@ var epub = function(path, config = {}) {
 				if(callback) callback(chapters[index].name);
 
 			});
+
+			let res = fs.readFileSync(this.opf, 'utf8');
+			let parser = new DOMParser();
+			let opf = parser.parseFromString(res, 'text/xml');
 
 			console.time('generateTocWithPages');
 

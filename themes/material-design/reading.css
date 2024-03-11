@@ -167,7 +167,6 @@
 	transition: background-color 0.2s;
 	box-shadow: var(--md-sys-elevation-level2);
 	/*background-color: var(--md-sys-color-background);*/
-	background-color: white;
 	display: flex;
 	position: relative;
 }
@@ -178,6 +177,7 @@
 	z-index: 2;
 	transform-origin: top left;
 	border: 0px;
+	background-color: white;
 }
 
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.pixelated,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/

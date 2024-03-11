@@ -771,6 +771,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
 					{label: pathIsFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, enabled: currentPath, click: function(){pathIsFolder ? electron.shell.openPath(currentPath) : electron.shell.showItemInFolder(fileManager.firstCompressedFile(currentPath))}},
+					{label: language.global.contextMenu.aboutFile, enabled: currentPath, click: function(){dom.fileInfo.show(pathIsFolder ? currentPath : fileManager.lastCompressedFile(currentPath))}},
 					{type: 'separator'},
 					{role: 'quit', label: language.menu.file.quit, click: function(){electronRemote.app.quit();}},
 				]

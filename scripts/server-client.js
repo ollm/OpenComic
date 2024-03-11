@@ -1184,6 +1184,134 @@ var client = function(path) {
 
 }
 
+/*
+
+const { S3Client, ListObjectsCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const fs = require('fs');
+
+// Set up AWS S3 client
+const s3Client = new S3Client({
+    region: 'your-region', // e.g., 'us-east-1'
+    credentials: {
+        accessKeyId: 'your-access-key-id',
+        secretAccessKey: 'your-secret-access-key'
+    }
+});
+
+// Function to list files in S3 bucket
+async function listFiles(bucketName) {
+    const params = {
+        Bucket: bucketName
+    };
+    try {
+        const data = await s3Client.send(new ListObjectsCommand(params));
+        return data.Contents.map(item => item.Key);
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+// Function to download a file from S3
+async function downloadFile(bucketName, fileName) {
+    const params = {
+        Bucket: bucketName,
+        Key: fileName
+    };
+    try {
+        const data = await s3Client.send(new GetObjectCommand(params));
+        const fileStream = fs.createWriteStream(fileName);
+        data.Body.pipe(fileStream);
+        return new Promise((resolve, reject) => {
+            fileStream.on('finish', resolve);
+            fileStream.on('error', reject);
+        });
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+// Main function
+(async () => {
+    const bucketName = 'your-bucket-name';
+    const files = await listFiles(bucketName);
+    console.log("Files in the bucket:", files);
+    
+    if (files.length > 0) {
+        console.log("Downloading the first file:", files[0]);
+        await downloadFile(bucketName, files[0]);
+        console.log("File downloaded successfully.");
+    } else {
+        console.log("No files found in the bucket.");
+    }
+})();
+
+*/
+
+/*
+
+const { S3Client, ListObjectsCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const fs = require('fs');
+
+// Set up AWS S3 client
+const s3Client = new S3Client({
+    region: 'your-region', // e.g., 'us-east-1'
+    credentials: {
+        accessKeyId: 'your-access-key-id',
+        secretAccessKey: 'your-secret-access-key'
+    }
+});
+
+// Function to list files in S3 bucket
+async function listFiles(bucketName) {
+    const params = {
+        Bucket: bucketName
+    };
+    try {
+        const data = await s3Client.send(new ListObjectsCommand(params));
+        return data.Contents.map(item => item.Key);
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+// Function to download a file from S3
+async function downloadFile(bucketName, fileName) {
+    const params = {
+        Bucket: bucketName,
+        Key: fileName
+    };
+    try {
+        const data = await s3Client.send(new GetObjectCommand(params));
+        const fileStream = fs.createWriteStream(fileName);
+        data.Body.pipe(fileStream);
+        return new Promise((resolve, reject) => {
+            fileStream.on('finish', resolve);
+            fileStream.on('error', reject);
+        });
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+// Main function
+(async () => {
+    const bucketName = 'your-bucket-name';
+    const files = await listFiles(bucketName);
+    console.log("Files in the bucket:", files);
+    
+    if (files.length > 0) {
+        console.log("Downloading files...");
+        const downloadPromises = files.map(fileName => downloadFile(bucketName, fileName));
+        await Promise.all(downloadPromises);
+        console.log("All files downloaded successfully.");
+    } else {
+        console.log("No files found in the bucket.");
+    }
+})();
+
+*/
+
+
 module.exports = {
 	read: read,
 	download: download,

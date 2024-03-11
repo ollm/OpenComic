@@ -1,0 +1,128 @@
+.file-info.poster
+{
+	display: flex;
+	margin: -20px -10px -20px -24px;
+	width: calc(100% + 34px);
+}
+
+.file-info-poster img
+{
+	border-radius: 28px;
+	object-fit: cover;
+	object-position: center;
+	width: 100%;
+	height: 100%;
+	overflow-clip-margin: unset;
+	cursor: pointer;
+}
+
+.file-info.poster .file-info-content
+{
+	padding: 20px 10px 20px 24px;
+	overflow: auto;
+	box-sizing: border-box;
+}
+
+.file-info-header
+{
+	display: flex;
+	height: 234px;
+}
+
+.file-info.poster .file-info-header
+{
+	height: initial;
+}
+
+.file-info-title
+{
+	user-select: text;
+	cursor: auto;
+	width: calc(100% - 150px);
+}
+
+.file-info.poster .file-info-title
+{
+	width: 100%;
+}
+
+.file-info-header .content-view-module
+{
+	width: 170px;
+	overflow: hidden;
+}
+
+.file-info-header .content-view-module .v-folder
+{
+	margin: 0px;
+}
+
+.file-info-findOn
+{
+	float: initial;
+	margin: 22px 0px 12px 0px;
+	/* width: calc(100% - 14px); */
+}
+
+.file-info-findOn > div
+{
+	justify-content: center;
+}
+
+.file-info-data > div,
+.file-info-dataCompact > div,
+.file-info-description
+{
+	line-height: 44px;
+	/*max-width: calc(100% - 450px);*/
+	text-overflow: initial;
+	overflow: initial;
+	white-space: initial;
+	word-wrap: initial;
+	display: initial;
+}
+
+
+.file-info-data > div > span,
+.file-info-dataCompact > div > span,
+.file-info-description > span
+{
+	color: var(--md-sys-color-on-surface-variant);
+	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
+	margin-top: -12px;
+	display: block;
+	padding-bottom: 12px;
+	user-select: text;
+	cursor: auto;
+}
+
+
+.file-info-dataCompact
+{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.file-info-dataCompact > div
+{
+	width: 33.333%;
+	box-sizing: border-box;
+}
+
+.file-info-dataCompact > div:nth-child(odd)
+{
+	padding-right: 20px;
+}
+
+.file-info-subject
+{
+	margin-top: 6px;
+}
+
+.file-info-subject > i
+{
+	font-size: 18px;
+	padding: 0px 6px 0px 0px;
+	position: relative;
+	top: 4px;
+}

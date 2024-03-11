@@ -771,16 +771,6 @@ function add()
 	updateColorsList();
 }
 
-function loadImage(url, encode = false)
-{
-	return new Promise(function(resolve) {
-		let image = new Image();
-		image.onload = function(){resolve(image)}
-		image.onerror = function(){resolve(image)}
-		image.src = encode ? encodeSrcURI(url) : url;
-	});
-}
-
 var prevColors = false, imagePath = false;
 
 function fromImage()
@@ -849,13 +839,13 @@ var data = false, width = false, height = false;
 
 async function loadContext(path)
 {
-	let image = await loadImage(path, true);
+	let _image = await image.loadImage(path, true);
 	let canvas = document.createElement('canvas');
-	width = canvas.width = image.width;
-	height = canvas.height = image.height;
+	width = canvas.width = _image.width;
+	height = canvas.height = _image.height;
 	let context = canvas.getContext('2d');
 
-	context.drawImage(image, 0, 0, width, height);
+	context.drawImage(_image, 0, 0, width, height);
 	data = context.getImageData(0, 0, width, height).data;
 }
 
@@ -999,13 +989,13 @@ function setImagesPath(_imagesPath = false, mainPath = false)
 async function checkIsBlackAndWhite(path, sha, index)
 {
 	// Load image to a canvas
-	let image = await loadImage(path, false);
+	let _image = await image.loadImage(path, false);
 	let canvas = document.createElement('canvas');
-	let width = canvas.width = image.width;
-	let height = canvas.height = image.height;
+	let width = canvas.width = _image.width;
+	let height = canvas.height = _image.height;
 	let context = canvas.getContext('2d');
 
-	context.drawImage(image, 0, 0, width, height);
+	context.drawImage(_image, 0, 0, width, height);
 	let data = context.getImageData(0, 0, width, height).data;
 
 	// Detect if image is black and white or one tone color

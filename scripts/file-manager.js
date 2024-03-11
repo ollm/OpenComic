@@ -1165,6 +1165,14 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				}
 			}
 
+			for(let key in comicInfo)
+			{
+				if(comicInfo[key] instanceof Object && comicInfo[key]['#text'])
+				{
+					comicInfo[key] = comicInfo[key]['#text'];
+				}
+			}
+
 			// https://anansi-project.github.io/docs/category/schemas
 			return {
 				title: comicInfo.Title || '',
@@ -2338,14 +2346,32 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			author: metadata.creator || '',
 			publisher: metadata.publisher || '',
+			contributor: metadata.contributor || [],
+
+			/*author: comicInfo.Writer || '',
+			writer: comicInfo.Writer || '',
+			penciller: comicInfo.Penciller || '',
+			inker: comicInfo.Inker || '',
+			colorist: comicInfo.Colorist || '',
+			letterer: comicInfo.Letterer || '',
+			coverArtist: comicInfo.CoverArtist || '',
+			editor: comicInfo.Editor || '',
+			translator: comicInfo.Translator || '',
+			publisher: comicInfo.Publisher || '',
+			imprint: comicInfo.Imprint || '',*/
+
+			subject: metadata.subject || [],
+			genre: metadata.genre || '',
 
 			description: metadata.description || '',
+			longDescription: metadata.longDescription || '',
 			rights: metadata.rights || '',
 
 			language: metadata.language || '',
 
 			web: metadata.identifier ? app.extract(/^(?:url|uri):(.*)/iu, metadata.identifier) : '',
 			identifier: metadata.identifier,
+			source: metadata.source,
 
 			releaseDate: metadata.pubdate || '',
 			modifiedDate: metadata.modified_date || '',
@@ -2851,6 +2877,10 @@ function macosSecurityScopedBookmarks(files)
 
 async function dirSize(dir)
 {
+	let stat = await fsp.stat(dir);
+	if(!stat.isDirectory())
+		return stat.size;
+
 	let files = await fsp.readdir(dir, {withFileTypes: true});
 	let size = 0;
 
@@ -2870,6 +2900,10 @@ async function dirSize(dir)
 
 function dirSizeSync(dir)
 {
+	let stat = fs.statSync(dir);
+	if(!stat.isDirectory())
+		return stat.size;
+
 	let files = fs.readdirSync(dir, {withFileTypes: true});
 	let size = 0;
 

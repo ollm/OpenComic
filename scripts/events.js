@@ -733,7 +733,7 @@ function eventSelect(animation = true)
 
 let currentSelect = {};
 
-function showSelect(This, menu = false, insideMenu = false)
+function showSelect(This, menu = false, insideMenu = false, ajustHeight = false)
 {
 	selectThis = This;
 	This.classList.add('active');
@@ -749,6 +749,14 @@ function showSelect(This, menu = false, insideMenu = false)
 			text.style.opacity = 1;
 			text.innerHTML = '...';
 		}
+	}
+
+	if(ajustHeight)
+	{
+		let menuSimple = document.querySelector('#'+menu+' .menu-simple');
+
+		if(menuSimple)
+			menuSimple.style.width = This.getBoundingClientRect().width+'px';
 	}
 
 	if(menu)

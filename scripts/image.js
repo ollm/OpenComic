@@ -295,6 +295,16 @@ async function isAnimated(path)
 	return _isAnimated;
 }
 
+function loadImage(url, encode = false)
+{
+	return new Promise(function(resolve) {
+		let image = new Image();
+		image.onload = function(){resolve(image)}
+		image.onerror = function(){resolve(image)}
+		image.src = encode ? encodeSrcURI(url) : url;
+	});
+}
+
 module.exports = {
 	resize: resize,
 	resizeToCanvas: resizeToCanvas,
@@ -302,4 +312,5 @@ module.exports = {
 	convertToPng: convertToPng,
 	convertToWebp: convertToWebp,
 	isAnimated: isAnimated,
+	loadImage: loadImage,
 };

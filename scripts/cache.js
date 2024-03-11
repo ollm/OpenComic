@@ -241,6 +241,16 @@ function existsFile(name)
 		return false;
 }
 
+function existsJson(name)
+{
+	let path = p.join(cacheFolder, name+'.zstd');
+
+	if(fs.existsSync(path))
+		return true;
+	else
+		return false;
+}
+
 function addCacheVars(path, size, sha)
 {
 	return path+'?size='+size+(cacheImagesDeleted[sha] ? '&a='+cacheImagesDeleted[sha] : '');
@@ -370,6 +380,7 @@ module.exports = {
 	writeJsonSync: writeJsonSync,
 	readFile: readFile,
 	readJson: readJson,
+	existsJson: existsJson,
 	existsFile: existsFile,
 	deleteInCache: deleteInCache,
 	queuedImages: function(){return queuedImages},

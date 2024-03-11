@@ -32,6 +32,7 @@
 			"favorite": "Favoritmarkera",
 			"openFileLocation": "Öppna filplats",
 			"openFolderLocation": "Öppna mapplats",
+			"aboutFile": "",
 			"addPoster": "Lägg till affisch",
 			"changePoster": "Ändra affisch",
 			"deletePoster": "Ta bort affisch",
@@ -58,12 +59,12 @@
 	},
 	"comics": {
 		"continueReading": "Fortsätt läsa",
+		"continueReadingNotExists": "Filen som är sparad i \"Fortsätt läsa\" finns inte",
 		"emptyIndex": "Det finns inga serier i biblioteket",
 		"emptyFolder": "Det finns ingen kompatibel fil i denna mapp",
 		"emptyRecentlyOpened": "Inga nyligen öppnade filer",
 		"emptyFavorites": "Inga favoritserier",
-		"emptyLabel": "Inga serier i denna etikett",
-		"continueReadingNotExists": "Filen som är sparad i \"Fortsätt läsa\" finns inte"
+		"emptyLabel": "Inga serier i denna etikett"
 	},
 	"servers": {
 		"offlineMode": "Offline-läge",
@@ -169,6 +170,10 @@
 			"volumes": "Volymer",
 			"volume": "Volym"
 		},
+		"music": {
+			"main": "Musik",
+			"volume": "Volym"
+		},
 		"moreOptions": {
 			"main": "Fler alternativ",
 			"hideBarHeader": "Dölj titelrad",
@@ -178,11 +183,7 @@
 		"addBookmark": "Lägg till bokmärke",
 		"removeBookmark": "Ta bort bokmärke",
 		"emptyBookmarks": "Inga bokmärken",
-		"currentReading": "Aktuell läsning",
-		"music": {
-			"main": "Musik",
-			"volume": "Volym"
-		}
+		"currentReading": "Aktuell läsning"
 	},
 	"settings": {
 		"general": "Allmänt",
@@ -193,9 +194,9 @@
 			"globalZoomSlide": "Behåll zoomnivån vid sidbyte (horisontell bläddring)",
 			"moveZoomWithMouse": "Flytta zoom med hjälp av muspekare (inaktiverar flyttning med dra och släpp)",
 			"scrollWithMouse": "Bläddra genom att flytta muspekaren längs skärmens kanter (inaktiverar dra och släpp-rullning)",
+			"goNextPrevChapterWithScroll": "Gå till nästa/förra kapitlet med musrullning (vertikal bläddring)",
 			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
-			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",
-			"goNextPrevChapterWithScroll": "Gå till nästa/förra kapitlet med musrullning (vertikal bläddring)"
+			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen"
 		},
 		"imageInterpolation": {
 			"main": "Bildinterpolering",
@@ -353,6 +354,70 @@
 			"labelExists": "Denna etikett finns redan",
 			"deleteLabel": "Ta bort etikett",
 			"confirmDelete": "Är du säker på att du vill ta bort den här etiketten?"
+		},
+		"fileInfo": {
+			"description": "",
+			"findOn": "",
+			"store": "",
+			"social": "",
+			"book": "",
+			"comic": "",
+			"manga": "",
+			"data": {
+				"bookNumber": "",
+				"bookTotal": "",
+				"volume": "",
+				"pages": "",
+				"alternateBookNumber": "",
+				"alternateBookTotal": "",
+				"releaseDate": "",
+				"modifiedDate": "",
+				"language": "",
+				"size": "",
+				"series": "",
+				"localizedSeries": "",
+				"alternateSeries": "",
+				"seriesGroup": "",
+				"storyArc": "",
+				"storyArcNumber": "",
+				"ageRating": "",
+				"genre": "",
+				"subject": "",
+				"tags": "",
+				"web": "",
+				"identifier": "",
+				"source": "",
+				"characters": "",
+				"teams": "",
+				"locations": "",
+				"mainCharacterOrTeam": "",
+				"author": "",
+				"writer": "",
+				"penciller": "",
+				"inker": "",
+				"colorist": "",
+				"letterer": "",
+				"illustrator": "",
+				"photographer": "",
+				"coverArtist": "",
+				"editor": "",
+				"translator": "",
+				"compiler": "",
+				"adapter": "",
+				"commentator": "",
+				"preface": "",
+				"foreword": "",
+				"introduction": "",
+				"imprint": "",
+				"contributor": "",
+				"publisher": "",
+				"format": "",
+				"rights": "",
+				"scanInformation": "",
+				"creatorTool": "",
+				"notes": "",
+				"GTIN": ""
+			}
 		},
 		"release": {
 			"title": "Ny version tillgänglig: <b>{{releaseName}}</b>",

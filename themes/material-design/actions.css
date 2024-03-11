@@ -668,7 +668,12 @@
 
 .menu-simple-element-padding-left
 {
-	padding-left: 36px;
+	padding-left: 36px !important;
+}
+
+.menu-simple-element-padding-left-2
+{
+	padding-left: 72px !important;
 }
 
 .menu-simple-element-medium .menu-simple-element-image

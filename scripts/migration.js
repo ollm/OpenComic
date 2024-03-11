@@ -22,6 +22,23 @@ function compressJsonCache()
 	console.timeEnd('Migration: compressJsonCache');
 }
 
+function removeJsonCache()
+{
+	console.time('Migration: removeJsonCache');
+
+	let files = fs.readdirSync(cache.folder);
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		let file = files[i];
+
+		if(/\.json$/.test(file) || /\.json\.zstd$/.test(file))
+			fs.unlinkSync(p.join(cache.folder, file));
+	}
+
+	console.timeEnd('Migration: removeJsonCache');
+}
+
 function clearCacheAndTemporaryFiles()
 {
 	console.time('Migration: clearCacheAndTemporaryFiles');
@@ -67,6 +84,8 @@ function start(data)
 
 	if(changes < 77) // Fix ePub wrong filenames
 		data = fixEpubWrongFilenames(data);
+	else if(changes < 79)
+		removeJsonCache();
 
 	return data;
 }
@@ -74,4 +93,5 @@ function start(data)
 module.exports = {
 	start: start,
 	compressJsonCache: compressJsonCache,
+	removeJsonCache: removeJsonCache,
 };

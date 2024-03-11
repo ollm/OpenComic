@@ -1,0 +1,93 @@
+<div>
+
+	<div class="menu-simple-text-small menu-simple-text-grey">
+		<span>{{language.dialog.fileInfo.store}}</span>
+	</div>
+
+	{{#if findOn.store.general}}
+		{{#each findOn.store.general}}
+			<div class="menu-simple-element menu-simple-element-padding-left gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	{{#if findOn.store.book}}
+		<div class="menu-simple-text-small menu-simple-text-grey menu-simple-element-padding-left">
+			<span>{{language.dialog.fileInfo.book}}</span>
+		</div>
+		{{#each findOn.store.book}}
+			<div class="menu-simple-element menu-simple-element-padding-left-2 gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	{{#if findOn.store.comic}}
+		<div class="menu-simple-text-small menu-simple-text-grey menu-simple-element-padding-left">
+			<span>{{language.dialog.fileInfo.comic}}</span>
+		</div>
+		{{#each findOn.store.comic}}
+			<div class="menu-simple-element menu-simple-element-padding-left-2 gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	{{#if findOn.store.manga}}
+		<div class="menu-simple-text-small menu-simple-text-grey menu-simple-element-padding-left">
+			<span>{{language.dialog.fileInfo.manga}}</span>
+		</div>
+		{{#each findOn.store.manga}}
+			<div class="menu-simple-element menu-simple-element-padding-left-2 gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	<div class="menu-simple-text-small menu-simple-text-grey">
+		<span>{{language.dialog.fileInfo.social}}</span>
+	</div>
+
+	{{#if findOn.social.general}}
+		{{#each findOn.social.general}}
+			<div class="menu-simple-element menu-simple-element-padding-left gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	{{#if findOn.social.book}}
+		<div class="menu-simple-text-small menu-simple-text-grey menu-simple-element-padding-left">
+			<span>{{language.dialog.fileInfo.book}}</span>
+		</div>
+		{{#each findOn.social.book}}
+			<div class="menu-simple-element menu-simple-element-padding-left-2 gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	{{#if findOn.social.comic}}
+		<div class="menu-simple-text-small menu-simple-text-grey menu-simple-element-padding-left">
+			<span>{{language.dialog.fileInfo.comic}}</span>
+		</div>
+		{{#each findOn.social.comic}}
+			<div class="menu-simple-element menu-simple-element-padding-left-2 gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+	{{#if findOn.social.manga}}
+		<div class="menu-simple-text-small menu-simple-text-grey menu-simple-element-padding-left">
+			<span>{{language.dialog.fileInfo.manga}}</span>
+		</div>
+		{{#each findOn.social.manga}}
+			<div class="menu-simple-element menu-simple-element-padding-left-2 gamepad-item" onclick="electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}'); /* events.hideSelect(true);*/">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/if}}
+
+</div>

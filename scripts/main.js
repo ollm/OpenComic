@@ -1,4 +1,4 @@
-const {app, ipcMain, BrowserWindow, Menu, nativeImage} = require('electron');
+const {app, ipcMain, BrowserWindow, Menu, nativeImage, shell} = require('electron');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
@@ -135,7 +135,15 @@ function createWindow() {
 		
 		win.show();
 
-	})
+	});
+
+	win.webContents.setWindowOpenHandler(function(details) {
+
+		shell.openExternal(details.url);
+
+		return {action: 'deny'};
+
+	});
 
 	mainWindowState.manage(win);
 }

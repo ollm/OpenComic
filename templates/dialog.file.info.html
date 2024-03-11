@@ -1,0 +1,82 @@
+<div class="file-info{{#if fileInfo.bigPoster}} poster{{/if}}">
+	{{#if fileInfo.bigPoster}}
+	<div class="file-info-poster" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
+		<img src="{{chain 'encodeSrcURI' 'invertBackslash' fileInfo.poster.realPath}}">
+	</div>
+	{{/if}}
+	<div class="file-info-content">
+		<div class="file-info-header">
+			{{#unless fileInfo.bigPoster}}
+			<div class="content-view-module">
+				<div class="v-folder item-image" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
+					{{#if fileInfo.poster}}
+						<div class="fi-sha-{{fileInfo.poster.sha}} folder-poster">
+							<img{{#if fileInfo.poster.path}} class="has-poster" src="{{fileInfo.poster.path}}"{{else}} class="folder-poster-img"{{/if}}>
+						</div>
+						{{#if fileInfo.images}}
+							{{#each fileInfo.images}}
+							<div class="fi-sha-{{sha}} folder-images">
+								<img src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
+							</div>
+							{{/each}}
+						{{/if}}
+					{{else}}
+						{{#each fileInfo.images}}
+						<div class="fi-sha-{{sha}} folder-images">
+							<img src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
+						</div>
+						{{/each}}
+					{{/if}}
+				</div>
+			</div>
+			{{/unless}}
+			<div class="file-info-title">
+				<div class="title-large">{{fileInfo.title}}</div>
+				<div class="body-medium">{{fileInfo.author}}</div>
+				<div class="simple-button filled-tonal gamepad-item file-info-findOn file-info-find-on" onclick="dom.fileInfo.findOn.get('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.title}}'); events.showSelect(this, 'index-file-info-find-on', true, true);">
+					<div class="touch-effect"><i class="icon-24 material-icon">search</i>{{language.dialog.fileInfo.findOn}}</div>
+				</div>
+			</div>
+		</div>
+
+		{{#if fileInfo.description}}
+			<div class="file-info-description">
+				<div class="file-info-label">{{language.dialog.fileInfo.description}}</div>
+				<span class="body-medium">{{{fileInfo.description}}}</span>
+			</div>
+		{{/if}}
+
+		<div class="file-info-dataCompact">
+			{{#each fileInfo.dataCompactList}}
+
+				<div>
+					<div class="file-info-label">{{name}}</div>
+					<span class="body-medium">{{{value}}}</span>
+				</div>
+
+			{{/each}}
+		</div>
+
+		<div class="file-info-data">
+			{{#each fileInfo.dataList}}
+				{{#if dataCompact}}
+				<div>
+					<div class="file-info-dataCompact">
+						{{#each dataCompact}}
+							<div>
+								<div class="file-info-label">{{name}}</div>
+								<span class="body-medium">{{{value}}}</span>
+							</div>
+						{{/each}}
+					</div>
+				</div>
+				{{else}}
+				<div>
+					<div class="file-info-label">{{name}}</div>
+					<span class="body-medium">{{{value}}}</span>
+				</div>
+				{{/if}}
+			{{/each}}
+		</div>
+	</div>
+</div>

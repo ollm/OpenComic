@@ -1,6 +1,7 @@
 const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	domManager = require(p.join(appDir, 'scripts/dom/dom.js')),
 	labels = require(p.join(appDir, 'scripts/dom/labels.js')),
+	fileInfo = require(p.join(appDir, 'scripts/dom/file-info.js')),
 	search = require(p.join(appDir, 'scripts/dom/search.js'));
 
 /*Page - Index*/
@@ -1138,6 +1139,12 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 		}, file);
 
+		if(isAsync)
+		{
+			addImageToDom(poster.sha, poster.path);
+			addImageToDom(folderSha+'-0', poster.path);
+		}
+
 		poster.sha = folderSha+'-0';
 
 		images = false;
@@ -1773,6 +1780,8 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 	let isServer = fileManager.isServer(path);
 	if(!fromIndex && isServer) return;
 
+	dom.query('#index-context-menu .separator-remove').css({display: fromIndexNotMasterFolders ? 'block' : 'none'});
+
 	// Remove
 	let remove = document.querySelector('#index-context-menu .context-menu-remove');
 
@@ -1785,6 +1794,8 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 	{
 		remove.style.display = 'none';
 	}
+
+	dom.query('#index-context-menu .separator-labels').css({display: fromIndex ? 'block' : 'none'});
 
 	// Favorite
 	let favorite = document.querySelector('#index-context-menu .context-menu-favorite');
@@ -1830,6 +1841,8 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 
 	if(isServer)
 	{
+		dom.query('#index-context-menu .separator-poster').css({display: 'none'});
+
 		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 		let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
 		let deletePoster = document.querySelector('#index-context-menu .context-menu-delete-poster');
@@ -1840,6 +1853,8 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 	}
 	else
 	{
+		dom.query('#index-context-menu .separator-poster').css({display: folder ? 'block' : 'none'});
+
 		// Open file location
 		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 		openFileLocation.setAttribute('onclick', 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(fileManager.firstCompressedFile(path)), 'simples')+'\');');
@@ -1890,6 +1905,13 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 			openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFileLocation;
 		}
 	}
+
+	// File info
+	let fileInfo = document.querySelector('#index-context-menu .context-menu-file-info');
+
+	fileInfo.setAttribute('onclick', 'dom.fileInfo.show(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+	fileInfo.style.display = folder ? 'block' : 'none';
+
 
 	if(gamepad)
 		events.activeMenu('#index-context-menu', false, 'gamepad');
@@ -2223,6 +2245,7 @@ module.exports = {
 	poster: domPoster,
 	search: search,
 	labels: labels,
+	fileInfo: fileInfo,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

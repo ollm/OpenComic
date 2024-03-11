@@ -60,6 +60,8 @@
 					<span>{{language.global.labels}}</span>
 				</div>
 
+				<!--<div class="menu-simple-separator separator-labels"></div>-->
+
 				<div class="menu-simple-element menu-simple-element-little context-menu-add-poster gamepad-item">
 					<i class="material-icon menu-simple-icon-first">add_photo_alternate</i>
 					<span></span>
@@ -70,10 +72,19 @@
 					{{language.global.contextMenu.deletePoster}}
 				</div>
 
+				<div class="menu-simple-separator separator-poster"></div>
+
 				<div class="menu-simple-element menu-simple-element-little context-menu-open-file-location gamepad-item">
 					<i class="material-icon menu-simple-icon-first">folder_open</i>
 					<span>{{language.global.contextMenu.openFileLocation}}</span>
 				</div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-file-info gamepad-item">
+					<i class="material-icon menu-simple-icon-first">info</i>
+					<span>{{language.global.contextMenu.aboutFile}}</span>
+				</div>
+
+				<div class="menu-simple-separator separator-remove"></div>
 
 				<div class="menu-simple-element menu-simple-element-little context-menu-remove gamepad-item">
 					<i class="material-icon menu-simple-icon-first">delete</i>
@@ -117,6 +128,14 @@
 		</div>
 	</div>
 	<div class="menu-close" onclick="events.desactiveMenu('#index-menu-gamepad');"></div>
+</div>
+
+<div class="menu" id="index-file-info-find-on">
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 552px; z-index: 125;">
+		<div class="menu-simple-content">
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.hideSelect(true);" style="z-index: 124;"></div>
 </div>
 
 <script type="text/javascript">
