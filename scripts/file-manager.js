@@ -1,4 +1,4 @@
-var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false, unpdf = false, fastXmlParser = false, fileType = false;
+var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false/*, unpdf = false*/, fastXmlParser = false, fileType = false;
 
 var file = function(path, _config = false) {
 
@@ -2115,14 +2115,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(this.pdf) return this.pdf;
 
-		if(unpdf === false)
-		{
-			unpdf = require('pdfjs-dist/build/pdf');
-			unpdf.GlobalWorkerOptions.workerSrc = p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.js');
-		}
+		if(unpdf === false) await loadPdfjs();
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
-		this.pdf = await unpdf.getDocument({url: this.realPath/*, nativeImageDecoderSupport: 'none', disableFontFace: true*/}).promise;
+		this.pdf = await unpdf.getDocument({url: encodeURIComponent(this.realPath).replace(/\%2F/g,'/')/*, nativeImageDecoderSupport: 'none', disableFontFace: true*/}).promise;
 
 		return this.pdf;
 

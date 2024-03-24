@@ -90,7 +90,7 @@
 		"node-7z": "^3.0.0",
 		"node-scp": "^0.0.23",
 		"node-unrar-js": "^2.0.0",
-		"pdfjs-dist": "^3.11.174",
+		"pdfjs-dist": "^4.0.379",
 		"sanitize-html": "^2.11.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.31.3",
@@ -131,6 +131,7 @@
 			"node_modules/7zip-bin",
 			"node_modules/shosho",
 			"node_modules/@toondepauw",
+			"node_modules/pdfjs-dist",
 			"Pepper & Carrot"
 		],
 		"win": {

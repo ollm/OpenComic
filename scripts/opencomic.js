@@ -552,6 +552,18 @@ async function loadShoSho()
 	return true;
 }
 
+var unpdf = false;
+
+async function loadPdfjs()
+{
+	if(unpdf) return;
+
+	unpdf = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs')));
+	unpdf.GlobalWorkerOptions.workerSrc = asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.mjs'));
+
+	return true;
+}
+
 /*Global functions*/
 
 function copy(data)
