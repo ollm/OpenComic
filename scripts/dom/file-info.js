@@ -6,7 +6,7 @@ const _sanitizeHtml = require('sanitize-html'),
 
 var currentPath = false;
 
-var compactData = ['size', 'language', 'releaseDate', 'modifiedDate', 'bookNumber', 'bookTotal', 'volume', 'pages', 'alternateBookNumber', 'alternateBookTotal'];
+var compactData = ['size', 'language', 'releaseDate', 'readingDate', 'modifiedDate', 'bookNumber', 'bookTotal', 'volume', 'pages', 'alternateBookNumber', 'alternateBookTotal'];
 var ignoreData = [
 	...['title', 'author', 'description', 'longDescription', 'metadata', 'year', 'month', 'day', 'poster', 'manga', 'writer', 'penciller', 'inker', 'colorist', 'letterer', 'coverArtist', 'editor', 'translator', 'imprint'],
 	...compactData,
@@ -24,6 +24,7 @@ var keyOrder = [
 	'alternateBookTotal',
 
 	'releaseDate',
+	'readingDate',
 	'modifiedDate',
 
 	'language',
@@ -106,29 +107,26 @@ async function show(path)
 {
 	currentPath = path;
 
-	console.log(path);
-
 	let sha = sha1(p.normalize(path));
 	let cacheFile = 'compressed-files-'+sha+'.json';
 
 	let metadata = {};
 
-	console.log(cacheFile, cache.existsJson(cacheFile));
-
 	if(cache.existsJson(cacheFile))
-	{
 		metadata = cache.readJson(cacheFile).metadata || {};
-		console.log(cache.readJson(cacheFile));
-	}
 
 	metadata.size = '<span class="file-info-size">...</span>';
 	metadata.contributor = parseContributor(metadata);
 
+	let readingProgress = storage.get('readingProgress');
+	readingProgress = readingProgress[path] || false;
+
+	if(readingProgress)
+		metadata.readingDate = readingProgress.lastReading;
+
 	let dataCompactList = [];
 
 	let dataList = [];
-
-	console.log(metadata);
 
 	for(let key in metadata)
 	{
@@ -218,8 +216,6 @@ async function show(path)
 
 async function getFileSize()
 {
-	console.log('getFileSize');
-
 	let size = await fileManager.dirSize(fileManager.firstCompressedFile(currentPath));
 
 	size = size / 1000 / 1000;
@@ -229,8 +225,6 @@ async function getFileSize()
 	else
 		size = app.round(size, 1)+'MB';
 
-	console.log(size);
-
 	dom.queryAll('.file-info-size').html(size);
 }
 
@@ -239,6 +233,7 @@ function parseValue(value, key)
 	switch (key)
 	{
 		case 'releaseDate':
+		case 'readingDate':
 		case 'modifiedDate':
 
 			value = parseDate(value);
@@ -304,8 +299,6 @@ function parseSubject(subject)
 		let value = subject[i];
 		html.push('<i class="material-icon">sell</i> '+value.name);
 	}
-
-	console.log(html.join('<br>'));
 
 	return '<div class="file-info-subject">'+html.join('<br>')+'</div>';
 }
@@ -394,9 +387,9 @@ function splitCommaSeparated(string)
 	return _data;
 }
 
-function parseDate(string)
+function parseDate(value)
 {
-	let date = new Date(Date.parse(string));
+	let date = new Date(typeof value === 'number' ? value : Date.parse(value));
 
 	let options = {
 		weekday: 'short',

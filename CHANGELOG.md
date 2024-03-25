@@ -26,7 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Some errors in scroll reading [`a4887c3`](https://github.com/ollm/OpenComic/commit/a4887c3bfe3f0ec8b75d3cdceedfaae8684fe6df)
 - Stuck in a loop trying to read an epub file when the epub or zip is corrupt [`6388a9e`](https://github.com/ollm/OpenComic/commit/6388a9ef8eb118e1d337fb6becd68ec64b5defc3)
 - Next chapter button not work inscroll mode if last page is smaller than the window and "Adjust to width" is enabled [`2bbd49e`](https://github.com/ollm/OpenComic/commit/2bbd49e43f9bb96c2dc00f21494acd7a92820331)
-- PDF.js does not load files that have a hash (#) in the name
+- PDF.js does not load files that have a hash (#) in the name [`5691073`](https://github.com/ollm/OpenComic/commit/56910730d1b0241370565bce787508ba0811b9a9)
 
 ## [v1.1.0](https://github.com/ollm/OpenComic/releases/tag/v1.1.0) (13-01-2024)
 

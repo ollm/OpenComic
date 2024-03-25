@@ -371,6 +371,7 @@
 				"alternateBookNumber": "Alternate book number",
 				"alternateBookTotal": "Alternate book total",
 				"releaseDate": "Release date",
+				"readingDate": "Reading date",
 				"modifiedDate": "Modified date",
 				"language": "Language",
 				"size": "Size",

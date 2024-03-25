@@ -371,6 +371,7 @@
 				"alternateBookNumber": "Número del llibre (Alternatiu)",
 				"alternateBookTotal": "Llibres totals (Alternatiu)",
 				"releaseDate": "Data de llançament",
+				"readingDate": "Data de lectura",
 				"modifiedDate": "Data de modificació",
 				"language": "Idioma",
 				"size": "Tamany",
