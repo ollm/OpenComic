@@ -1022,7 +1022,10 @@ function headerPath(path, mainPath, windowTitle = false)
 		path[len - 1].last = true;
 
 	if(windowTitle && len > 0)
-		setWindowTitle(path[len - 1].name);
+	{
+		let firstCompressedFile = fileManager.firstCompressedFile(_path);
+		setWindowTitle(dom.metadataPathName({path: firstCompressedFile, name: p.basename(firstCompressedFile)}, true));
+	}
 
 	handlebarsContext.headerTitlePath = path;
 }
