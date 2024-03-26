@@ -938,7 +938,7 @@ function compressedError(error, showInPage = true)
 
 	if(showInPage)
 	{
-		handlebarsContext.compressedError = (error.detail || error.message);
+		handlebarsContext.compressedError = error ? (error.detail || error.message) : '';
 		handlebarsContext.contentRightMessage = template.load('content.right.message.compressed.error.html');
 		template._contentRight().firstElementChild.innerHTML = template.load('content.right.message.html');
 	}
@@ -946,7 +946,7 @@ function compressedError(error, showInPage = true)
 	{
 		events.snackbar({
 			key: 'compressedError',
-			text: language.error.uncompress.title+': '+(error.detail || error.message),
+			text: language.error.uncompress.title+(error ? ': '+(error.detail || error.message) : ''),
 			duration: 6,
 			buttons: [
 				{
@@ -1142,7 +1142,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 		}, file);
 
-		if(isAsync)
+		if(isAsync && poster.path)
 		{
 			addImageToDom(poster.sha, poster.path);
 			addImageToDom(folderSha+'-0', poster.path);

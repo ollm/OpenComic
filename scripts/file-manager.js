@@ -874,6 +874,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.config = this._config = {
 		// only: false,
+		cache: true,
 		width: window.devicePixelRatio * 150, // Vector width
 		height: false, // Vector height
 		force: false, // Forces the extraction even if the file exists
@@ -1649,6 +1650,18 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.fixCorruptedName = function(name, pos = 0) {
+
+		if(/�/.test(name))
+		{
+			let ext = p.extname(name);
+			return pos+' - '+sha1(name)+(ext ? '.'+ext : '');
+		}
+
+		return name;
+
+	}
+
 	// ZIP
 	this.zip = false;
 
@@ -1712,7 +1725,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			for(let i = 0, len = zip.files.length; i < len; i++)
 			{
 				let entry = zip.files[i];
-				let name = p.normalize(entry.path);
+				let name = p.normalize(this.fixCorruptedName(entry.path, i));
 
 				files.push({name: name, path: p.join(this.path, name), folder: (entry.type === 'Directory' ? true : false)});
 				this.setFileStatus(name, {extracted: false});
@@ -1747,7 +1760,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			for(let i = 0, len = zip.files.length; i < len; i++)
 			{
 				let entry = zip.files[i];
-				let name = p.normalize(entry.path);
+				let name = p.normalize(this.fixCorruptedName(entry.path, i));
 
 				let extract = !only || only[name] ? true : false;
 

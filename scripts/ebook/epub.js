@@ -97,7 +97,9 @@ var epub = function(path, config = {}) {
 		await this.findContentOpf();
 
 		this.epub = new epubjs.Book(this.opf);
+		this.toc = await this.epub.loaded.navigation;
 
+		await this.epub.opened;
 	}
 
 	this.getHrefNames = function(items, hrefNames = {}) {
@@ -123,9 +125,6 @@ var epub = function(path, config = {}) {
 		if(this.epubFiles) return this.epubFiles;
 
 		await this.openEpub();
-
-		this.toc = await this.epub.loaded.navigation;
-		await this.epub.opened;
 
 		this.epubFiles = [];
 
@@ -213,7 +212,6 @@ var epub = function(path, config = {}) {
 
 		await this.openEpub();
 
-		this.toc = await this.epub.loaded.navigation;
 		let metadata = await this.epub.loaded.metadata;
 
 		let res = fs.readFileSync(this.opf, 'utf8');
@@ -269,7 +267,7 @@ var epub = function(path, config = {}) {
 
 	this.renderFiles = async function(files, config, callback = false) {
 
-		await this.findContentOpf();
+		await this.openEpub();
 
 		let chapters = [];
 
@@ -315,7 +313,7 @@ var epub = function(path, config = {}) {
 
 	this.epubPages = async function(config, callback = false) {
 
-		await this.findContentOpf();
+		await this.openEpub();
 		let files = await this.readEpubFiles();
 
 		let chapters = [];

@@ -195,8 +195,84 @@ function writeFileSync(name, content)
 	fs.writeFileSync(p.join(cacheFolder, name), content, function(){}); 
 }
 
+var jsonMemory = {};
+
+function setJsonInMemory(name, json)
+{
+	if(jsonMemory[name])
+		clearTimeout(jsonMemory[name].timeout);
+
+	jsonMemory[name] = {
+		timeout: setTimeout(function(){
+			delete jsonMemory[name];
+		}, 1000 * 60 * 60),
+		json: json,
+		lastUsage: app.time(),
+	};
+
+	if(app.rand(0, 20))
+	{
+		let num = 0;
+		let data = [];
+
+		for(let key in jsonMemory)
+		{
+			num++;
+
+			data.push({
+				name: key,
+				lastUsage: jsonMemory[key].lastUsage,
+			});
+		}
+
+		let max = 500;
+
+		if(num > max)
+		{
+			data.sort(function(a, b) {
+
+				if(a.lastUsage === b.lastUsage)
+					return 0;
+
+				return a.lastUsage > b.lastUsage ? 1 : -1;
+
+			});
+
+			for(let i = 0, len = data.length - max; i < len; i++)
+			{
+				delete jsonMemory[data[i].name];
+			}
+		}
+	}
+}
+
+function readJsonInMemory(name)
+{
+	if(jsonMemory[name])
+	{
+		clearTimeout(jsonMemory[name].timeout);
+
+		jsonMemory[name].timeout = setTimeout(function(){
+			delete jsonMemory[name];
+		}, 1000 * 60 * 60);
+
+		jsonMemory[name].lastUsage = app.time();
+
+		return jsonMemory[name].json;
+	}
+
+	return false;
+}
+
+function flushJsonMemory()
+{
+	jsonMemory = {};
+}
+
 async function writeJson(name, json)
 {
+	setJsonInMemory(name, json);
+
 	let path = p.join(cacheFolder, name+'.zstd');
 
 	let encoded = await zstdEncoder.encode(Buffer.from(JSON.stringify(json)));
@@ -205,6 +281,8 @@ async function writeJson(name, json)
 
 function writeJsonSync(name, json)
 {
+	setJsonInMemory(name, json);
+
 	let path = p.join(cacheFolder, name+'.zstd');
 
 	let encoded = zstdEncoder.encodeSync(Buffer.from(JSON.stringify(json)));
@@ -223,12 +301,21 @@ function readFile(name)
 
 function readJson(name)
 {
+	let json = readJsonInMemory(name);
+	if(json) return json;
+
 	let path = p.join(cacheFolder, name+'.zstd');
 
 	if(fs.existsSync(path))
-		return JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
+	{
+		json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
+		setJsonInMemory(name, json);
+		return json;
+	}
 	else
+	{
 		return false;
+	}
 }
 
 function existsFile(name)
@@ -383,6 +470,8 @@ module.exports = {
 	existsJson: existsJson,
 	existsFile: existsFile,
 	deleteInCache: deleteInCache,
+	flushJsonMemory: flushJsonMemory,
+	jsonMemory: function(){return jsonMemory},
 	queuedImages: function(){return queuedImages},
 	processingTheImageQueue: function(){return processingTheImageQueue},
 	stopQueue: stopQueue,

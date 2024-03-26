@@ -47,6 +47,7 @@ async function clearCache()
 {
 	storage.set('cache', {});
 	await fse.emptyDir(cache.folder);
+	cache.flushJsonMemory();
 
 	getStorageSize();
 }
