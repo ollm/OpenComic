@@ -77,8 +77,6 @@ function handleDrop(event)
 	{
 		let type = dragAndDropFocus.dataset.type;
 
-		console.log(event.dataTransfer.files);
-
 		if(pathIsSupported(event.dataTransfer.files[0].path))
 		{
 			let files = [];

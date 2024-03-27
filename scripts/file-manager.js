@@ -1061,7 +1061,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		console.log('readCompressed... '+this.path);
 
 		if(this.features.zip)
-			return this.readZip();
+			return this.read7z(); // return this.readZip();
 		else if(this.features['7z'])
 			return this.read7z();
 		else if(this.features.rar)
@@ -1320,7 +1320,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		console.log('extractCompressed...'+(this.config._only ? ' ('+this.config._only.length+' files)' : '')+' '+this.path);
 
 		if(this.features.zip)
-			return this.extractZip();
+			return this.extract7z(); // return this.extractZip();
 		else if(this.features['7z'])
 			return this.extract7z();
 		else if(this.features.rar)
@@ -1853,6 +1853,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let _this = this;
 
 		let _7z = await this.open7z();
+		let readSome = false;
 
 		return new Promise(function(resolve, reject) {
 
@@ -1863,6 +1864,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				files.push({name: name, path: p.join(_this.path, name)});
 				_this.setFileStatus(name, {extracted: false});
 
+				readSome = true;
+
 			}).on('end', function(data) {
 
 				console.timeEnd('read7z: '+_this.path);
@@ -1872,7 +1875,19 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			}).on('error', function(error){
 
-				resolve(_this.readIfTypeFromBinaryIsDifferent(error));
+				if(readSome)
+				{
+					console.timeEnd('read7z: '+_this.path);
+
+					_this.files = _this.filesToMultidimension(files);
+					resolve(_this.files);
+
+					dom.compressedError(error, false);
+				}
+				else
+				{
+					resolve(_this.readIfTypeFromBinaryIsDifferent(error));
+				}
 
 			});
 
@@ -1888,6 +1903,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let _this = this;
 
 		let _7z = await this.open7z(true, this.config._only || false);
+		let extractedSome = false;
 
 		return new Promise(function(resolve, reject) {
 
@@ -1901,6 +1917,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 					_this.setFileStatus(name, {extracted: extract});
 					_this.whenExtractFile(p.join(_this.path, name));
+
+					extractedSome = true;
 				}
 
 			}).on('progress', function(progress) {
@@ -1917,7 +1935,20 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			}).on('error', function(error) {
 
-				resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
+				if(extractedSome)
+				{
+					console.timeEnd('extract7z: '+_this.path);
+
+					_this.setProgress(1);
+
+					resolve();
+
+					dom.compressedError(error, false);
+				}
+				else
+				{
+					resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
+				}
 
 			});
 
