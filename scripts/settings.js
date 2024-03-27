@@ -123,11 +123,13 @@ function removeTemporaryPath(path)
 	return size;
 }
 
-function purgeTemporaryFiles()
+function purgeTemporaryFiles(tmpMaxSize = false)
 {
+	tmpMaxSize = tmpMaxSize || config.tmpMaxSize;
+
 	try
 	{
-		if(config.tmpMaxSize == 0)
+		if(tmpMaxSize == 0)
 		{
 			settings.removeTemporaryFiles(true);
 		}
@@ -136,7 +138,7 @@ function purgeTemporaryFiles()
 			let time = app.time();
 			let tmpUsage = storage.get('tmpUsage') || {};
 
-			let tmpMaxSize = config.tmpMaxSize * 1000 * 1000 * 1000;
+			tmpMaxSize = tmpMaxSize * 1000 * 1000 * 1000;
 			let tmpMaxOld = config.tmpMaxOld * 60 * 60 * 24;
 
 			let dataArray = [];

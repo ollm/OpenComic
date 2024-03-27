@@ -952,8 +952,6 @@ var client = function(path) {
 
 		let files = [];
 
-		console.time('downloadSsh');
-
 		let _this = this;
 		let _only = this.config._only; 
 

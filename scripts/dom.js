@@ -1135,7 +1135,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 	{
 		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-images').remove();
 
-		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha, poster: true}, function(data){
+		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha, type: 'poster'}, function(data){
 
 			addImageToDom(data.sha, data.path);
 			addImageToDom(folderSha+'-0', data.path);
@@ -1171,7 +1171,7 @@ async function getFolderThumbnails(path)
 	
 	try
 	{
-		let file = fileManager.file(path);
+		let file = fileManager.file(path, {fromThumbnailsGeneration: true});
 		file.updateConfig({cacheOnly: true});
 		let _images = await file.images(4, false, true);
 
@@ -1188,7 +1188,9 @@ async function getFolderThumbnails(path)
 		{
 			queue.add('folderThumbnails', async function(path, folderSha) {
 
-				let file = fileManager.file(path);
+				console.log(path);
+
+				let file = fileManager.file(path, {fromThumbnailsGeneration: true});
 				let _images = await file.images(4, false, true);
 
 				await _getFolderThumbnails(file, images, _images, path, folderSha, true);

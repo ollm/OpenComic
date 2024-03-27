@@ -190,6 +190,9 @@ var file = function(path, _config = false) {
 		if(this.config.progress)
 			this.compressedOpened[path].compressed.progress = this.config.progress;
 
+		if(this.config.fromThumbnailsGeneration)
+			this.compressedOpened[path].compressed.config.fromThumbnailsGeneration = true;
+
 		return this.compressedOpened[path].compressed;
 
 	}
@@ -302,6 +305,9 @@ var file = function(path, _config = false) {
 			// Download file to tmp
 			let file = await serverClient.download(path, {only: [firstCompressed]});
 
+			if(this.config.fromThumbnailsGeneration)
+				downloadedCompressedFile(firstCompressed);
+
 			return this.readCompressed(path);
 		}
 		else
@@ -324,6 +330,9 @@ var file = function(path, _config = false) {
 		{
 			// Download file to tmp
 			let file = await serverClient.download(path, {only: [firstCompressed]});
+
+			if(this.config.fromThumbnailsGeneration)
+				downloadedCompressedFile(firstCompressed);
 		}
 
 		return this.readInsideCompressed(path, _realPath);
@@ -651,7 +660,7 @@ var file = function(path, _config = false) {
 	}
 
 	// Makes the files available, extracting them from the respective compressed files if necessary
-	this.makeAvailable = async function(files, callbackWhenFileAvailable = false, forceCheck = false) {
+	this.makeAvailable = async function(files, callbackWhenFileAvailable = false, forceCheck = false, fromThumbnailsGeneration = false) {
 
 		let filesToDecompress = false, filesToDecompressNum = 0;
 
@@ -716,6 +725,9 @@ var file = function(path, _config = false) {
 							if(callbackWhenFileAvailable) callbackWhenFileAvailable(file);
 
 						});
+
+						if(fromThumbnailsGeneration || _this.config.fromThumbnailsGeneration)
+							downloadedCompressedFile(firstCompressed);
 					}
 					else
 					{
@@ -2573,6 +2585,73 @@ async function removeTmpVector()
 			if(devicePixelRatio !== _devicePixelRatio)
 				fs.rmdir(p.join(tempFolder, folder.name), {recursive: true, force: true}, function(){});
 		}
+	}
+}
+
+var downloadedCompressedFiles = {
+	list: [],
+	sizes: {},
+};
+
+function downloadedCompressedFile(path)
+{
+	let realPath = fileManager.realPath(path, -1);
+
+	let totalSize = 0;
+	let list = [];
+
+	for(let i = 0, len = downloadedCompressedFiles.list.length; i < len; i++)
+	{
+		let _realPath = downloadedCompressedFiles.list[i];
+
+		if(fs.existsSync(_realPath) && _realPath !== realPath)
+		{
+			let size = downloadedCompressedFiles.sizes[_realPath] || fs.statSync(_realPath).size;
+
+			downloadedCompressedFiles.sizes[_realPath] = size;
+			list.push(_realPath);
+
+			totalSize += size;
+		}
+	}
+
+	downloadedCompressedFiles.list = list;
+	downloadedCompressedFiles.list.push(realPath);
+
+	let size = downloadedCompressedFiles.sizes[realPath] || fs.statSync(realPath).size;
+
+	downloadedCompressedFiles.sizes[realPath] = size;
+	totalSize += size;
+
+	let maxSize = ((config.tmpMaxSize || 2) / 2) * 1000 * 1000 * 1000; // 50% of tmpMaxSize
+
+	if(totalSize > maxSize)
+	{
+		let list = [];
+		let sizes = {};
+
+		for(let i = 0, len = downloadedCompressedFiles.list.length; i < len; i++)
+		{
+			let _realPath = downloadedCompressedFiles.list[i];
+			let size = downloadedCompressedFiles.sizes[_realPath] || fs.statSync(_realPath).size;
+
+			if(totalSize > maxSize)
+			{
+				if(fs.existsSync(_realPath))
+				{
+					totalSize -= size;
+					fs.unlinkSync(_realPath);
+				}
+			}
+			else
+			{
+				list.push(_realPath);
+				sizes[_realPath] = size;
+			}
+		}
+
+		downloadedCompressedFiles.list = list;
+		downloadedCompressedFiles.sizes = sizes;
 	}
 }
 
