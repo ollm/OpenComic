@@ -28,6 +28,12 @@
 			"list": "รายการ"
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "นำออก",
 			"favorite": "เรื่องที่ชอบ",
 			"openFileLocation": "เปิดตำแหน่งไฟล์",

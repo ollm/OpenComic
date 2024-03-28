@@ -28,6 +28,12 @@
 			"list": "Jako seznam"
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "Odstranit",
 			"favorite": "",
 			"openFileLocation": "",

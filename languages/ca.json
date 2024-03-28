@@ -28,6 +28,12 @@
 			"list": "Llista"
 		},
 		"contextMenu": {
+			"undo": "Desfer",
+			"redo": "Refer",
+			"cut": "Retallar",
+			"copy": "Copiar",
+			"paste": "Enganxar",
+			"selectAll": "Selecciona-ho tot",
 			"remove": "Retirar",
 			"favorite": "Favorit",
 			"openFileLocation": "Obre la ubicació del fitxer",

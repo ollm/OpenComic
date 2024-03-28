@@ -28,6 +28,12 @@
 			"list": "一覧"
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "削除",
 			"favorite": "",
 			"openFileLocation": "",

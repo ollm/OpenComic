@@ -1,0 +1,68 @@
+<div class="menu" id="global-selection-menu">
+	<div class="menu-simple elevation-2" onclick="events.desactiveMenu('#index-context-menu');" style="z-index: 125; user-select: none;">
+		<div class="menu-simple-content">
+			<div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-selection-menu'); electronRemote.getCurrentWindow().webContents.copy();">
+					<i class="material-icon menu-simple-icon-first">content_copy</i>
+					<span>{{language.global.contextMenu.copy}}</span>
+				</div>
+
+				<div class="menu-simple-separator separator-remove"></div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-remove gamepad-item" onclick="events.desactiveMenu('#global-selection-menu'); electronRemote.getCurrentWindow().webContents.selectAll();">
+					<i class="material-icon menu-simple-icon-first">select_all</i>
+					{{language.global.contextMenu.selectAll}}
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#global-selection-menu');" oncontextmenu="events.desactiveMenu('#global-selection-menu');" style="z-index: 124; user-select: none;"></div>
+</div>
+
+
+<div class="menu" id="global-input-menu">
+	<div class="menu-simple elevation-2" onclick="events.desactiveMenu('#index-context-menu');" style="z-index: 125; user-select: none;">
+		<div class="menu-simple-content">
+			<div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.cut();">
+					<i class="material-icon menu-simple-icon-first">content_cut</i>
+					<span>{{language.global.contextMenu.cut}}</span>
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.copy();">
+					<i class="material-icon menu-simple-icon-first">content_copy</i>
+					<span>{{language.global.contextMenu.copy}}</span>
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.paste();">
+					<i class="material-icon menu-simple-icon-first">content_paste</i>
+					<span>{{language.global.contextMenu.paste}}</span>
+				</div>
+
+				<div class="menu-simple-separator separator-remove"></div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-remove gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.selectAll();">
+					<i class="material-icon menu-simple-icon-first">select_all</i>
+					{{language.global.contextMenu.selectAll}}
+				</div>
+
+				<div class="menu-simple-separator separator-remove"></div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.undo();">
+					<i class="material-icon menu-simple-icon-first">undo</i>
+					<span>{{language.global.contextMenu.undo}}</span>
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.redo();">
+					<i class="material-icon menu-simple-icon-first">redo</i>
+					<span>{{language.global.contextMenu.redo}}</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#global-input-menu');" oncontextmenu="events.desactiveMenu('#global-input-menu');" style="z-index: 124; user-select: none;"></div>
+</div>

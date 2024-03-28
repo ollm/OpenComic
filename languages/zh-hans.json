@@ -28,6 +28,12 @@
 			"list": "列表"
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "移除",
 			"favorite": "收藏",
 			"openFileLocation": "打开文件所在位置",

@@ -28,6 +28,12 @@
 			"list": "Danh sách"
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "Xóa",
 			"favorite": "Yêu thích",
 			"openFileLocation": "Mở tệp trong trình quản lý tệp",

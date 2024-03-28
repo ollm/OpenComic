@@ -28,6 +28,12 @@
 			"list": ""
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "",
 			"favorite": "",
 			"openFileLocation": "",

@@ -28,6 +28,12 @@
 			"list": "Список"
 		},
 		"contextMenu": {
+			"undo": "",
+			"redo": "",
+			"cut": "",
+			"copy": "",
+			"paste": "",
+			"selectAll": "",
 			"remove": "Удалить",
 			"favorite": "",
 			"openFileLocation": "",

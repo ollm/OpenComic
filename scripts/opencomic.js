@@ -413,10 +413,13 @@ async function startApp()
 	if(config.checkReleases)
 		checkReleases.check();
 
+	loadContextMenu();
+
 	handlebarsContext.indexHeaderTitle = language.global.comics;
 
 	template.loadContentRight('index.content.right.empty.html', false);
 	template.loadHeader('index.header.html', false);
+	template.loadGlobalElement('global.elements.menus.html', 'global-menus');
 	template.loadGlobalElement('index.elements.menus.html', 'menus');
 	dom.loadIndexContentLeft(false);
 
@@ -538,6 +541,22 @@ async function startApp()
 
 	windowHasLoaded = true;
 
+}
+
+var currentContextMenuInput = false;
+
+async function loadContextMenu()
+{
+	electronRemote.getCurrentWindow().webContents.on('context-menu', function(event, props) {
+
+		currentContextMenuInput = document.activeElement;
+
+		if(props.isEditable)
+			events.activeContextMenu('#global-input-menu');
+		else if(props.selectionText && props.selectionText.trim() !== '')
+			events.activeContextMenu('#global-selection-menu');
+
+	});
 }
 
 var ShoSho = false;
