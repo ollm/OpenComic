@@ -29,7 +29,7 @@ More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOT
 - 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
 - 🎵 Support background music from folder: `MP3`, `M4A`, `WEBM`, `WEBA`, `OGG`, `OPUS`, `WAV`, `FLAC`
 - 📁 Master folders support
-- ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`
+- ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`, `s3://`
 - 🇯🇵 Manga read mode
 - 🇰🇷 Webtoon read mode
 - 📖 Double page view

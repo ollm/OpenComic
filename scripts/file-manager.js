@@ -2752,7 +2752,7 @@ function setServerInOfflineMode(value = false)
 
 function isServer(path)
 {
-	if(/^(?:smb|ssh|sftp|scp|ftp|ftps)\:[\/\\]{1,2}/.test(path))
+	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;
@@ -3061,6 +3061,7 @@ module.exports = {
 		return new fileCompressed(path, realPath, forceType, prefixes);
 	},
 	removeTmpVector: removeTmpVector,
+	removePathPart: removePathPart,
 	filtered: filtered,
 	sort: sort,
 	realPath: realPath,

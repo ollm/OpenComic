@@ -1,4 +1,4 @@
-var smb2 = false, basicFtp = false, ssh2 = false, nodeScp = false;
+var smb2 = false, basicFtp = false, ssh2 = false, nodeScp = false, s3c = false;
 
 var servers = [];
 
@@ -6,49 +6,43 @@ function getHost(path)
 {
 	path = posixPath(path);
 
-	return app.extract(/^[a-z]+\:\/\/?([^\/\\:]+)(:[0-9]+)?/, path, 1);
+	return app.extract(/^[a-z0-9]+\:\/\/?([^\/\\:]+)(:[0-9]+)?/, path, 1);
 }
 
 function getShare(path)
 {
 	path = posixPath(path);
 
-	return app.extract(/^[a-z]+\:\/\/?[^\/\\]+\/([^\/\\]+)/, path, 1);
+	return app.extract(/^[a-z0-9]+\:\/\/?[^\/\\]+\/([^\/\\]+)/, path, 1);
 }
 
 function getPath(path)
 {
 	path = posixPath(path);
 
-	return app.extract(/^[a-z]+\:\/\/?[^\/\\]+\/(.+)/, path, 1);
+	return app.extract(/^[a-z0-9]+\:\/\/?[^\/\\]+\/(.+)/, path, 1);
 }
 
 function getPathWithoutShare(path)
 {
 	path = posixPath(path);
 
-	return app.extract(/^[a-z]+\:\/\/?[^\/\\]+\/[^\/\\]+\/(.+)/, path, 1);
+	return app.extract(/^[a-z0-9]+\:\/\/?[^\/\\]+\/[^\/\\]+\/(.+)/, path, 1);
 }
 
 function getPort(path)
 {
 	path = posixPath(path);
 
-	return +app.extract(/^[a-z]+\:\/\/?[^\/\\]+:([0-9]+)\//, path, 1);
+	return +app.extract(/^[a-z0-9]+\:\/\/?[^\/\\]+:([0-9]+)\//, path, 1);
 }
 
 function getAdress(path)
 {
 	path = posixPath(path);
 
-	if(/^(?:smb)\:\//.test(path))
-		return app.extract(/^((?:smb)\:\/\/[^\/\\]+)/, path, 1);
-	else if(/^(?:ftps?)\:\//.test(path))
-		return app.extract(/^((?:ftps?)\:\/\/[^\/\\]+)/, path, 1);
-	else if(/^(?:sftp|ssh)\:\//.test(path))
-		return app.extract(/^((?:sftp|ssh)\:\/\/[^\/\\]+)/, path, 1);
-	else if(/^(?:scp)\:\//.test(path))
-		return app.extract(/^((?:scp)\:\/\/[^\/\\]+)/, path, 1);
+	if(/^(?:smb|ftps?|sftp|ssh|scp|s3)\:\//.test(path))
+		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -57,14 +51,10 @@ function getTypeAdress(path)
 {
 	path = posixPath(path);
 
-	if(/^(?:smb)\:\//.test(path))
-		return app.extract(/^((?:smb)\:\/\/[^\/\\]+\/[^\/\\]+)/, path, 1);
-	else if(/^(?:ftps?)\:\//.test(path))
-		return app.extract(/^((?:ftps?)\:\/\/[^\/\\]+)/, path, 1);
-	else if(/^(?:sftp|ssh)\:\//.test(path))
-		return app.extract(/^((?:sftp|ssh)\:\/\/[^\/\\]+)/, path, 1);
-	else if(/^(?:scp)\:\//.test(path))
-		return app.extract(/^((?:scp)\:\/\/[^\/\\]+)/, path, 1);
+	if(/^(?:smb|s3)\:\//.test(path))
+		return app.extract(/^((?:smb|s3)\:\/\/[^\/\\]+\/[^\/\\]+)/, path, 1);
+	else if(/^(?:ftps?|sftp|ssh|scp)\:\//.test(path))
+		return app.extract(/^((?:ftps?|sftp|ssh|scp)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -72,13 +62,13 @@ function getTypeAdress(path)
 function posixPath(path)
 {
 	path = path.split(p.sep).join(p.posix.sep);
-	return path.replace(/^([a-z]+)\:[\/\\]{1,2}/, '$1://');
+	return path.replace(/^([a-z0-9]+)\:[\/\\]{1,2}/, '$1://');
 }
 
 function fixPath(path)
 {
 	path = p.normalize(path);
-	return path.replace(/^([a-z]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
+	return path.replace(/^([a-z0-9]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
 }
 
 var serverLastError = false;
@@ -171,6 +161,12 @@ var client = function(path) {
 			progress: true,
 			secure: true,
 		},
+		s3: {
+			read: true,
+			single: true,
+			progress: true,
+			secure: true,
+		},
 	};
 
 	this.features = false;
@@ -225,6 +221,8 @@ var client = function(path) {
 				force = 'ssh';
 			else if(/^(?:scp)\:\//.test(this.path))
 				force = 'scp';
+			else if(/^(?:s3)\:\//.test(this.path))
+				force = 's3';
 		}
 
 		this.features = this._features[force];
@@ -314,6 +312,8 @@ var client = function(path) {
 			return this.readSsh(path);
 		else if(this.features.scp)
 			return this.readScp(path);
+		else if(this.features.s3)
+			return this.readS3(path);
 
 		return false;
 	}
@@ -356,6 +356,8 @@ var client = function(path) {
 			return this.downloadSsh(path, callbackWhenFileDownload, index);
 		else if(this.features.scp)
 			return this.downloadScp(path, callbackWhenFileDownload, index);
+		else if(this.features.s3)
+			return this.downloadS3(path, callbackWhenFileDownload, index);
 
 		return false;
 	}
@@ -664,7 +666,7 @@ var client = function(path) {
 		console.timeEnd('readSmb');
 
 		return files;
-		
+
 	}
 
 	this.downloadSmb = async function(_path, callbackWhenFileDownload, contentRightIndex) {
@@ -674,7 +676,7 @@ var client = function(path) {
 		console.time('downloadSmb');
 
 		let _this = this;
-		let _only = this.config._only; 
+		let _only = this.config._only;
 
 		let smb = await this.connectSmb();
 
@@ -737,7 +739,7 @@ var client = function(path) {
 		console.timeEnd('downloadSmb');
 
 		return;
-		
+
 	}
 
 	// FTP
@@ -823,7 +825,7 @@ var client = function(path) {
 		console.timeEnd('readFtp');
 
 		return files;
-		
+
 	}
 
 	this.downloadFtp = async function(_path, callbackWhenFileDownload, contentRightIndex) {
@@ -832,7 +834,7 @@ var client = function(path) {
 
 		console.time('downloadFtp');
 
-		let _only = this.config._only; 
+		let _only = this.config._only;
 
 		let ftp = await this.connectFtp();
 
@@ -867,7 +869,7 @@ var client = function(path) {
 		console.timeEnd('downloadFtp');
 
 		return;
-		
+
 	}
 
 
@@ -945,7 +947,7 @@ var client = function(path) {
 		console.timeEnd('readSsh');
 
 		return files;
-		
+
 	}
 
 	this.downloadSsh = async function(_path, callbackWhenFileDownload, contentRightIndex) {
@@ -953,7 +955,7 @@ var client = function(path) {
 		let files = [];
 
 		let _this = this;
-		let _only = this.config._only; 
+		let _only = this.config._only;
 
 		let ssh = await this.connectSsh();
 
@@ -1021,7 +1023,7 @@ var client = function(path) {
 		console.timeEnd('downloadSsh');
 
 		return;
-		
+
 	}
 
 
@@ -1097,7 +1099,7 @@ var client = function(path) {
 		console.timeEnd('readScp');
 
 		return files;
-		
+
 	}
 
 	this.downloadScp = async function(_path, callbackWhenFileDownload, contentRightIndex) {
@@ -1107,7 +1109,7 @@ var client = function(path) {
 		console.time('downloadScp');
 
 		let _this = this;
-		let _only = this.config._only; 
+		let _only = this.config._only;
 
 		let scp = await this.connectScp();
 
@@ -1151,6 +1153,8 @@ var client = function(path) {
 					}
 				}
 
+				progressIndex++;
+
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
 				_this.whenDownloadFile(path, callbackWhenFileDownload);
 
@@ -1167,7 +1171,227 @@ var client = function(path) {
 		console.timeEnd('downloadScp');
 
 		return;
-		
+
+	}
+
+
+	// S3
+	this.s3 = false;
+
+	this.connectS3 = async function() {
+
+		if(this.s3) return this.s3;
+
+		if(s3c === false)
+		{
+			let {S3Client, ListObjectsV2Command, GetObjectCommand} = require('@aws-sdk/client-s3');
+
+			s3c = {
+				Client: S3Client,
+				List: ListObjectsV2Command,
+				Get: GetObjectCommand,
+			};
+		}
+
+		this.s3 = {
+			client: false,
+			bucket: false,
+		};
+
+		let serverInfo;
+
+		try
+		{
+			serverInfo = this.getServerInfo();
+		}
+		catch(error)
+		{
+			this.s3 = false;
+
+			throw new Error(error);
+		}
+
+		try
+		{
+			let client = {
+				region: serverInfo.host,
+			};
+
+			if(serverInfo.user || serverInfo.pass) client.credentials = {}
+			if(serverInfo.user) client.credentials.accessKeyId = serverInfo.user;
+			if(serverInfo.pass) client.credentials.secretAccessKey = serverInfo.pass;
+
+			this.s3 = {
+				client: new s3c.Client(client),
+				bucket: serverInfo.share,
+			};
+		}
+		catch(error)
+		{
+			if(this.s3)
+				await this.scp.close();
+
+			this.s3 = false;
+
+			throw new Error('connection | '+error.message);
+		}
+
+		return this.s3;
+
+	}
+
+	this.readS3 = async function(path) {
+
+		let files = [];
+
+		console.time('readS3');
+
+		let s3 = await this.connectS3();
+
+		let base = getPathWithoutShare(path);
+		let nextContinuationToken = false;
+
+		for(let page = 0; page < 10; page++) // Get max 10000 files
+		{
+			let params = {
+				Bucket: s3.bucket,
+				Prefix: base ? base+'/' : '',
+				Delimiter: '/',
+			};
+
+			if(nextContinuationToken)
+				params.ContinuationToken = nextContinuationToken;
+
+			let entries = await s3.client.send(new s3c.List(params));
+
+			if(entries.Contents)
+			{
+				for(let i = 0, len = entries.Contents.length; i < len; i++)
+				{
+					let entry = entries.Contents[i];
+					let name = fileManager.removePathPart(entry.Key, base).replace(/\/$/, '');
+
+					let folder = /\/$/.test(entry.Key);
+
+					if(name && !/\/./.test(name))
+					{
+						name = p.normalize(name);
+						files.push({name: name, path: p.join(path, name), folder: folder, compressed: fileManager.isCompressed(name), mtime: entry.LastModified.getTime()});
+					}
+				}
+			}
+
+			if(entries.CommonPrefixes)
+			{
+				for(let i = 0, len = entries.CommonPrefixes.length; i < len; i++)
+				{
+					let entry = entries.CommonPrefixes[i];
+					let name = fileManager.removePathPart(entry.Prefix, base).replace(/\/$/, '');
+
+					if(name && !/\/./.test(name))
+					{
+						name = p.normalize(name);
+						files.push({name: name, path: p.join(path, name), folder: true, compressed: false, mtime: 0});
+					}
+				}
+			}
+
+			if(!entries.NextContinuationToken)
+				break;
+
+			nextContinuationToken = entries.NextContinuationToken;
+		}
+
+		console.timeEnd('readS3');
+
+		return files;
+
+	}
+
+	this.downloadS3 = async function(_path, callbackWhenFileDownload, contentRightIndex) {
+
+		let files = [];
+
+		console.time('downloadS3');
+
+		let _this = this;
+		let _only = this.config._only;
+
+		let s3 = await this.connectS3();
+
+		let promises = [];
+
+		let progressIndex = 0;
+
+		for(let i = 0, len = _only.length; i < len; i++)
+		{
+			let inTask = this.inTask(5);
+			if(inTask) await inTask;
+
+			let task = this.setTask(inTask);
+
+			promises.push(new Promise(async function(resolve, reject) {
+
+				let path = _only[i];
+
+				let filePath = fileManager.realPath(path, -1);
+				let folderPath = p.dirname(filePath);
+
+				if(!fs.existsSync(folderPath))
+					fs.mkdirSync(folderPath, {recursive: true});
+
+				// Avoid downloading the same files at the same time
+				if(!fs.existsSync(filePath))
+				{
+					let isDownloading = _this.isDownloadingPath(path);
+
+					if(isDownloading)
+					{
+						await isDownloading;
+					}
+					else
+					{
+						let downloading = _this.setDownloading(path);
+
+						let params = {
+							Bucket: s3.bucket,
+							Key: getPathWithoutShare(path),
+						};
+
+						let response = await s3.client.send(new s3c.Get(params));
+						let fileStream = fs.createWriteStream(filePath);
+						response.Body.pipe(fileStream);
+
+						await new Promise(function(resolve, reject) {
+
+							fileStream.on('finish', resolve);
+							fileStream.on('error', reject);
+
+						});
+
+						downloading.resolve();
+					}
+				}
+
+				progressIndex++;
+
+				_this.file.setProgress(progressIndex / len, contentRightIndex);
+				_this.whenDownloadFile(path, callbackWhenFileDownload);
+
+				task.resolve();
+				resolve();
+
+			}));
+		}
+
+		await Promise.all(promises);
+
+		this.file.setProgress(1, contentRightIndex);
+
+		console.timeEnd('downloadS3');
+
+		return;
+
 	}
 
 	this.destroy = async function() {
@@ -1177,138 +1401,11 @@ var client = function(path) {
 		if(this.ftp) await this.ftp.close();
 		if(this.ssh) await this.ssh.end();
 		if(this.scp) await this.scp.close();
+		if(this.s3) delete this.s3;
 
 	}
 
 }
-
-/*
-
-const { S3Client, ListObjectsCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
-const fs = require('fs');
-
-// Set up AWS S3 client
-const s3Client = new S3Client({
-    region: 'your-region', // e.g., 'us-east-1'
-    credentials: {
-        accessKeyId: 'your-access-key-id',
-        secretAccessKey: 'your-secret-access-key'
-    }
-});
-
-// Function to list files in S3 bucket
-async function listFiles(bucketName) {
-    const params = {
-        Bucket: bucketName
-    };
-    try {
-        const data = await s3Client.send(new ListObjectsCommand(params));
-        return data.Contents.map(item => item.Key);
-    } catch (err) {
-        console.log("Error", err);
-    }
-}
-
-// Function to download a file from S3
-async function downloadFile(bucketName, fileName) {
-    const params = {
-        Bucket: bucketName,
-        Key: fileName
-    };
-    try {
-        const data = await s3Client.send(new GetObjectCommand(params));
-        const fileStream = fs.createWriteStream(fileName);
-        data.Body.pipe(fileStream);
-        return new Promise((resolve, reject) => {
-            fileStream.on('finish', resolve);
-            fileStream.on('error', reject);
-        });
-    } catch (err) {
-        console.log("Error", err);
-    }
-}
-
-// Main function
-(async () => {
-    const bucketName = 'your-bucket-name';
-    const files = await listFiles(bucketName);
-    console.log("Files in the bucket:", files);
-    
-    if (files.length > 0) {
-        console.log("Downloading the first file:", files[0]);
-        await downloadFile(bucketName, files[0]);
-        console.log("File downloaded successfully.");
-    } else {
-        console.log("No files found in the bucket.");
-    }
-})();
-
-*/
-
-/*
-
-const { S3Client, ListObjectsCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
-const fs = require('fs');
-
-// Set up AWS S3 client
-const s3Client = new S3Client({
-    region: 'your-region', // e.g., 'us-east-1'
-    credentials: {
-        accessKeyId: 'your-access-key-id',
-        secretAccessKey: 'your-secret-access-key'
-    }
-});
-
-// Function to list files in S3 bucket
-async function listFiles(bucketName) {
-    const params = {
-        Bucket: bucketName
-    };
-    try {
-        const data = await s3Client.send(new ListObjectsCommand(params));
-        return data.Contents.map(item => item.Key);
-    } catch (err) {
-        console.log("Error", err);
-    }
-}
-
-// Function to download a file from S3
-async function downloadFile(bucketName, fileName) {
-    const params = {
-        Bucket: bucketName,
-        Key: fileName
-    };
-    try {
-        const data = await s3Client.send(new GetObjectCommand(params));
-        const fileStream = fs.createWriteStream(fileName);
-        data.Body.pipe(fileStream);
-        return new Promise((resolve, reject) => {
-            fileStream.on('finish', resolve);
-            fileStream.on('error', reject);
-        });
-    } catch (err) {
-        console.log("Error", err);
-    }
-}
-
-// Main function
-(async () => {
-    const bucketName = 'your-bucket-name';
-    const files = await listFiles(bucketName);
-    console.log("Files in the bucket:", files);
-    
-    if (files.length > 0) {
-        console.log("Downloading files...");
-        const downloadPromises = files.map(fileName => downloadFile(bucketName, fileName));
-        await Promise.all(downloadPromises);
-        console.log("All files downloaded successfully.");
-    } else {
-        console.log("No files found in the bucket.");
-    }
-})();
-
-*/
-
 
 module.exports = {
 	read: read,

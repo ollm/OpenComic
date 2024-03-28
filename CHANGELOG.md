@@ -16,7 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Setting to enable/disable go next/previous chapter with mouse scroll (Vertical reading) [`37612bf`](https://github.com/ollm/OpenComic/commit/37612bfdce13ce73348bda997bf3aeb32b8915af)
 - About this file dialog [`38f72f3`](https://github.com/ollm/OpenComic/commit/38f72f3c573aaa2a1923f3e6704261a9b600b3ab)
 - Delete downloaded compressed files for thumbnail generation if they exceed 50% of the maximum tmp size [`2a50079`](https://github.com/ollm/OpenComic/commit/2a500790d2251f0a447aae2f08050af56c4a6659)
-- Change extraction of zip to 7z to improve performance and support partial extraction of corrupted files
+- Change extraction of zip to 7z to improve performance and support partial extraction of corrupted files [`d07feac`](https://github.com/ollm/OpenComic/commit/d07feac608903ef7ba582273bca06abaded4f4df)
+- S3 server support
 
 ##### 🐛 Bug Fixes
 
