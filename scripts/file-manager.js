@@ -214,7 +214,12 @@ var file = function(path, _config = false) {
 			if(json)
 			{
 				if(json.mtime == mtime || _isServer)
+				{
+					if(json.error)
+						dom.compressedError({message: json.error}, false);
+
 					return json.files;
+				}
 
 				if(fs.existsSync(compressed.tmp))
 					await fsp.rmdir(compressed.tmp, {recursive: true});
@@ -1026,6 +1031,18 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			tmpUsage[this.realPath].lastAccess = time;
 
 			storage.setThrottle('tmpUsage', tmpUsage);
+		}
+
+	}
+
+	this.saveErrorToCache = function(error) {
+
+		let json = cache.readJson(this.cacheFile);
+
+		if(json)
+		{
+			json.error = (error.detail || error.message);
+			cache.writeJson(this.cacheFile, json);
 		}
 
 	}
@@ -1882,6 +1899,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					_this.files = _this.filesToMultidimension(files);
 					resolve(_this.files);
 
+					_this.saveErrorToCache(error);
 					dom.compressedError(error, false);
 				}
 				else
@@ -1943,6 +1961,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 					resolve();
 
+					_this.saveErrorToCache(error);
 					dom.compressedError(error, false);
 				}
 				else
