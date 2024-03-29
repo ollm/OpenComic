@@ -37,7 +37,8 @@ function createWindow() {
 
 	let mainWindowState = windowStateKeeper({
 		defaultWidth: 1100,
-		defaultHeight: 640
+		defaultHeight: 640,
+		fullScreen: false,
 	});
 
 	let image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png'));
