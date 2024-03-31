@@ -1339,17 +1339,35 @@ function goStart(force = false)
 		if((currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic())) && (!maxPageVisibility || currentPageVisibility == 0))
 		{
 			goPrevious();
+
+			return false;
 		}
 		else
 		{
 			readingDirection = true;
 
 			goToIndex(1, true);
+
+			return true;
 		}
 	}
 	else
 	{
-		goEnd(true);
+		return goEnd(true);
+	}
+}
+
+function goPrevComic()
+{
+	if(dom.previousComic())
+	{
+		let speed = _config.readingViewSpeed;
+		_config.readingViewSpeed = 0;
+
+		let double = goStart();
+		if(double) goStart();
+
+		_config.readingViewSpeed = speed;
 	}
 }
 
@@ -1363,17 +1381,35 @@ function goEnd(force = false)
 		if((currentIndex < 1 || (currentIndex == indexNum && dom.nextComic())) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
 		{
 			goNext();
+
+			return false;
 		}
 		else
 		{
 			readingDirection = false;
 
 			goToIndex(indexNum, true, true, true);
+
+			return true;
 		}
 	}
 	else
 	{
-		goStart(true);
+		return goStart(true);
+	}
+}
+
+function goNextComic()
+{
+	if(dom.nextComic())
+	{
+		let speed = _config.readingViewSpeed;
+		_config.readingViewSpeed = 0;
+
+		let double = goEnd();
+		if(double) goEnd();
+
+		_config.readingViewSpeed = speed;
 	}
 }
 
@@ -5139,8 +5175,10 @@ module.exports = {
 	goStart: goStart,
 	goPrevious: goPrevious,
 	goPrev: goPrevious,
+	goPrevComic: goPrevComic,
 	goNext: goNext,
 	goEnd: goEnd,
+	goNextComic: goNextComic,
 	pageRange: pageRange,
 	goBackPageRangeHistory: goBackPageRangeHistory,
 	goPageDialog: goPageDialog,

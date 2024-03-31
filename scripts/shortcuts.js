@@ -92,6 +92,8 @@ function loadShortcuts()
 				'next',
 				'start',
 				'end',
+				'prevComic',
+				'nextComic',
 				'magnifyingGlass',
 				'hideBarHeader',
 				'hideContentLeft',
@@ -145,11 +147,11 @@ function loadShortcuts()
 				},
 				start: {
 					name: language.reading.firstPage,
-					function: function(){
+					function: function(event){
 
 						if(inputIsFocused()) return false;
 
-						if(!reading.readingViewIs('scroll') || event.key !== 'ArrowUp')
+						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
 							reading.goStart();
 							return true;
@@ -169,9 +171,49 @@ function loadShortcuts()
 
 						if(inputIsFocused()) return false;
 
-						if(!reading.readingViewIs('scroll') || event.key !== 'ArrowDown')
+						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
 							reading.goEnd();
+							return true;
+						}
+						else if(!reading.zoomingIn())
+						{
+							reading.disableOnScroll(false);
+							if(reading.scrollNextOrPrevComic(false)) return true;
+						}
+
+						return false;
+					},
+				},
+				prevComic: {
+					name: language.reading.prevChapter,
+					function: function(event){
+
+						if(inputIsFocused()) return false;
+
+						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
+						{
+							reading.goPrevComic();
+							return true;
+						}
+						else if(!reading.zoomingIn())
+						{
+							reading.disableOnScroll(false);
+							if(reading.scrollNextOrPrevComic(true)) return true;
+						}
+
+						return false;
+					},
+				},
+				nextComic: {
+					name: language.reading.nextChapter,
+					function: function(event){
+
+						if(inputIsFocused()) return false;
+
+						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
+						{
+							reading.goNextComic();
 							return true;
 						}
 						else if(!reading.zoomingIn())
@@ -283,6 +325,10 @@ function loadShortcuts()
 				'Down': 'end',
 				'S': 'end',
 				'End': 'end',
+				'Ctrl+Up': 'prevComic',
+				'Ctrl+Left': 'prevComic',
+				'Ctrl+Down': 'nextComic',
+				'Ctrl+Right': 'nextComic',
 				'M': 'magnifyingGlass',
 				'B': 'hideBarHeader',
 				'H': 'hideBarHeader',
