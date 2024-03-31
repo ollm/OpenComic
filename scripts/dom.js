@@ -948,6 +948,8 @@ function compressedError(error, showInPage = true)
 			key: 'compressedError',
 			text: language.error.uncompress.title+(error ? ': '+(error.detail || error.message) : ''),
 			duration: 6,
+			update: true,
+			updateShown: true,
 			buttons: [
 				{
 					text: language.buttons.dismiss,

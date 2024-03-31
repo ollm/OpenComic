@@ -215,7 +215,7 @@ var file = function(path, _config = false) {
 			{
 				if(json.mtime == mtime || _isServer)
 				{
-					if(json.error)
+					if(json.error && !this.config.fromThumbnailsGeneration)
 						dom.compressedError({message: json.error}, false);
 
 					return json.files;
@@ -1894,12 +1894,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				if(readSome)
 				{
-					console.timeEnd('read7z: '+_this.path);
+					/*_this.files = _this.filesToMultidimension(files);
+					resolve(_this.files);*/
 
-					_this.files = _this.filesToMultidimension(files);
-					resolve(_this.files);
-
-					_this.saveErrorToCache(error);
+					//_this.saveErrorToCache(error);
 					dom.compressedError(error, false);
 				}
 				else
@@ -1949,17 +1947,16 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				_this.setProgress(1);
 
+				console.log('extract7z end:'+_this.path);
+
 				resolve();
 
 			}).on('error', function(error) {
 
 				if(extractedSome)
 				{
-					console.timeEnd('extract7z: '+_this.path);
-
-					_this.setProgress(1);
-
-					resolve();
+					/*_this.setProgress(1);
+					resolve();*/
 
 					_this.saveErrorToCache(error);
 					dom.compressedError(error, false);

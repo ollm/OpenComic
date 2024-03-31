@@ -1046,7 +1046,7 @@ function snackbar(config)
 
 		snackbarCurrent = config;
 
-		var duration = config.duration;
+		let duration = config.duration;
 
 		if(duration > 10)
 			duration = 10;
@@ -1054,7 +1054,6 @@ function snackbar(config)
 			duration = 4;
 
 		handlebarsContext.snackbar = config;
-
 		$('.snackbars').html(template.load('snackbar.html'));
 
 		snackbarST = setTimeout(function() {
@@ -1080,7 +1079,7 @@ function snackbar(config)
 	}
 	else	
 	{
-		var isset = false;
+		let isset = false;
 
 		for(let key in snackbarQueue)
 		{
@@ -1093,9 +1092,14 @@ function snackbar(config)
 			}
 		}
 
-		if(!isset && (!snackbarCurrent || (snackbarCurrent.key != config.key || config.update)))
+		if(!isset && (!snackbarCurrent || (snackbarCurrent.key != config.key || (config.update && !config.updateShown))))
 		{
 			snackbarQueue.push(config);
+		}
+		else if(!isset && snackbarCurrent.key == config.key && config.updateShown)
+		{
+			let snackbarText = document.querySelector('.snackbars .snackbar-text');
+			if(snackbarText) snackbarText.innerHTML = config.text;
 		}
 	}
 }
