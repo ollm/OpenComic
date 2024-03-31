@@ -932,7 +932,7 @@ function continueReadingError()
 	});
 }
 
-function compressedError(error, showInPage = true)
+function compressedError(error, showInPage = true, snackbarKey = '')
 {
 	// console.error(error);
 
@@ -945,7 +945,7 @@ function compressedError(error, showInPage = true)
 	else
 	{
 		events.snackbar({
-			key: 'compressedError',
+			key: 'compressedError'+snackbarKey,
 			text: language.error.uncompress.title+(error ? ': '+(error.detail || error.message) : ''),
 			duration: 6,
 			update: true,
