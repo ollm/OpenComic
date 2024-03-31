@@ -10,7 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🐛 Bug Fixes
 
-- Scroll does not work correctly when zooming and then resizing the window
+- Scroll does not work correctly when zooming and then resizing the window [`65a447c`](https://github.com/ollm/OpenComic/commit/65a447c1ce395214b1f787e5eb0824f003655f11)
+
 
 ## [v1.2.0](https://github.com/ollm/OpenComic/releases/tag/v1.2.0) (29-03-2024)
 

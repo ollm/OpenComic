@@ -1336,7 +1336,7 @@ function goStart(force = false)
 	{
 		saveReadingProgressA = true;
 
-		if(currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic()))
+		if((currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic())) && (!maxPageVisibility || currentPageVisibility == 0))
 		{
 			goPrevious();
 		}
@@ -1360,7 +1360,7 @@ function goEnd(force = false)
 	{
 		saveReadingProgressA = true;
 
-		if(currentIndex < 1 || (currentIndex == indexNum && dom.nextComic()))
+		if((currentIndex < 1 || (currentIndex == indexNum && dom.nextComic())) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
 		{
 			goNext();
 		}
