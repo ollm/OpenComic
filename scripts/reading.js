@@ -2043,6 +2043,45 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 	}
 }
 
+function zoomScrollHeight()
+{
+	if(scalePrevData.scale != 1 && config.readingGlobalZoom && readingViewIs('scroll'))
+	{
+		let contentRight = template._contentRight();
+		let readingBody = contentRight.querySelector('.reading-body');
+		let readingBodyChild = readingBody.firstElementChild;
+
+		let content = contentRight.firstElementChild;
+
+		let newRect = readingBody.getBoundingClientRect();
+		let childRect = readingBodyChild.getBoundingClientRect();
+		originalRectReadingBody = content.getBoundingClientRect();
+
+		let diff = childRect.height / originalRect2.height;
+
+		originalRect = {
+			width: diff * originalRect.width,
+			height: diff * originalRect.height,
+			left: newRect.left,
+			top: newRect.top,
+		};
+
+		originalRect2 = {
+			width: originalRect.width,
+			height: childRect.height,
+			left: newRect.left,
+			top: newRect.top,
+		};
+
+		if(!readingBody.classList.contains('zooming'))
+		{
+			dom.this(contentRight).find('.reading-body').css({
+				height: childRect.height+'px',
+			});
+		}
+	}
+}
+
 // Zoom in
 function zoomIn(animation = true, center = false)
 {
@@ -2551,6 +2590,7 @@ async function resized()
 		if(!readingIsEbook)
 		{
 			disposeImages();
+			zoomScrollHeight();
 			calculateView();
 			stayInLine(true);
 		}
