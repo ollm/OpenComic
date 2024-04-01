@@ -216,7 +216,7 @@ var file = function(path, _config = false) {
 				if(json.mtime == mtime || _isServer)
 				{
 					if(json.error && !this.config.fromThumbnailsGeneration)
-						dom.compressedError({message: json.error}, false);
+						dom.compressedError({message: json.error}, false, sha1(this.path));
 
 					return json.files;
 				}
@@ -1898,7 +1898,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					resolve(_this.files);*/
 
 					//_this.saveErrorToCache(error);
-					dom.compressedError(error, false);
+					dom.compressedError(error, false, sha1(_this.path));
 				}
 				else
 				{
@@ -1959,7 +1959,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					resolve();*/
 
 					_this.saveErrorToCache(error);
-					dom.compressedError(error, false);
+					dom.compressedError(error, false, sha1(_this.path));
 				}
 				else
 				{
