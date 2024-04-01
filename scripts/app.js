@@ -180,7 +180,7 @@ function rand(min = 0, max = 10000000)
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function extract(code, string, value)
+function extract(code, string, value = 1)
 {
 	string = string.match(code);
 	return (string !== null && typeof string[value] != 'undefined') ? string[value] : '';

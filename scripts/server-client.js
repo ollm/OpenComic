@@ -71,6 +71,11 @@ function fixPath(path)
 	return path.replace(/^([a-z0-9]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
 }
 
+function isDomain(host)
+{
+	return /\./.test(host) ? true : false;
+}
+
 var serverLastError = false;
 
 var closeServersST = {};
@@ -1213,9 +1218,19 @@ var client = function(path) {
 
 		try
 		{
-			let client = {
-				region: serverInfo.host,
-			};
+			let client = {};
+
+			if(isDomain(serverInfo.host))
+			{
+				client.endpoint = 'https://'+serverInfo.host;
+				client.forcePathStyle = true;
+				client.s3BucketEndpoint = true;
+				client.region = app.extract(/^([^\/\\:\.]{3,})/, serverInfo.host) || app.extract(/^[^\/\\:\.]+\.([^\/\\:\.]{3,})/, serverInfo.host);
+			}
+			else
+			{
+				client.region = serverInfo.host;
+			}
 
 			if(serverInfo.user || serverInfo.pass) client.credentials = {}
 			if(serverInfo.user) client.credentials.accessKeyId = serverInfo.user;
