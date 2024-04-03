@@ -1263,7 +1263,7 @@ var client = function(path) {
 
 		let s3 = await this.connectS3();
 
-		let base = getPathWithoutShare(path);
+		let base = posixPath(getPathWithoutShare(path));
 		let nextContinuationToken = false;
 
 		for(let page = 0; page < 10; page++) // Get max 10000 files
@@ -1284,7 +1284,7 @@ var client = function(path) {
 				for(let i = 0, len = entries.Contents.length; i < len; i++)
 				{
 					let entry = entries.Contents[i];
-					let name = fileManager.removePathPart(entry.Key, base).replace(/\/$/, '');
+					let name = fileManager.removePathPart(entry.Key, base).replace(/\/$/, '').replace(/^\//, '');
 
 					let folder = /\/$/.test(entry.Key);
 
@@ -1301,7 +1301,7 @@ var client = function(path) {
 				for(let i = 0, len = entries.CommonPrefixes.length; i < len; i++)
 				{
 					let entry = entries.CommonPrefixes[i];
-					let name = fileManager.removePathPart(entry.Prefix, base).replace(/\/$/, '');
+					let name = fileManager.removePathPart(entry.Prefix, base).replace(/\/$/, '').replace(/^\//, '');
 
 					if(name && !/\/./.test(name))
 					{
@@ -1370,7 +1370,7 @@ var client = function(path) {
 
 						let params = {
 							Bucket: s3.bucket,
-							Key: getPathWithoutShare(path),
+							Key: posixPath(getPathWithoutShare(path)),
 						};
 
 						let response = await s3.client.send(new s3c.Get(params));
