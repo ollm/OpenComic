@@ -215,7 +215,7 @@ var file = function(path, _config = false) {
 			{
 				if(json.mtime == mtime || _isServer)
 				{
-					if(json.error && !this.config.fromThumbnailsGeneration)
+					if(json.error && !this.config.fromThumbnailsGeneration && !this.config.subtask)
 						dom.compressedError({message: json.error}, false, sha1(this.path));
 
 					return json.files;

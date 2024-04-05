@@ -1034,7 +1034,7 @@ function headerPath(path, mainPath, windowTitle = false)
 
 async function nextComic(path, mainPath)
 {
-	let file = fileManager.file(mainPath, {cacheServer: true});
+	let file = fileManager.file(mainPath, {cacheServer: true, subtask: true});
 	let image = await file.images(1, path);
 	file.destroy();
 
@@ -1043,7 +1043,7 @@ async function nextComic(path, mainPath)
 
 async function previousComic(path, mainPath)
 {
-	let file = fileManager.file(mainPath, {cacheServer: true});
+	let file = fileManager.file(mainPath, {cacheServer: true, subtask: true});
 	let image = await file.images(-1, path);
 	file.destroy();
 
@@ -1173,7 +1173,7 @@ async function getFolderThumbnails(path)
 	
 	try
 	{
-		let file = fileManager.file(path, {fromThumbnailsGeneration: true});
+		let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
 		file.updateConfig({cacheOnly: true});
 		let _images = await file.images(4, false, true);
 
@@ -1192,7 +1192,7 @@ async function getFolderThumbnails(path)
 
 				console.log(path);
 
-				let file = fileManager.file(path, {fromThumbnailsGeneration: true});
+				let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
 				let _images = await file.images(4, false, true);
 
 				await _getFolderThumbnails(file, images, _images, path, folderSha, true);
@@ -1881,7 +1881,7 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 
 			try
 			{
-				let file = fileManager.file(path);
+				let file = fileManager.file(path, {subtask: true});
 				images = await file.images(2, false, true);
 				file.destroy();
 			}
