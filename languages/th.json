@@ -95,6 +95,7 @@
 			"scroll": "อ่านแบบเลื่อนลง",
 			"adjustToWidth": "ปรับตามความกว้าง",
 			"notEnlargeMoreThanOriginalSize": "ห้ามขยายเกินขนาดดั้งเดิม",
+			"rotateHorizontals": "",
 			"margin": "ระยะขอบ",
 			"marginHorizontal": "ขอบแนวนอน",
 			"marginVertical": "ขอบแนวตั้ง",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "ย้ายซูมโดยใช้เคอร์เซอร์ (ปิดการย้ายโดยลากวาง)",
 			"scrollWithMouse": "เลื่อนโดยย้ายเคอร์เซอร์ไปตามขอบจอ (ปิดการเลื่อนแบบลากและวาง)",
 			"goNextPrevChapterWithScroll": "ไปตอนถัดไป / ก่อนหน้าด้านการเลื่อนเม้าส์ (การอ่านแนวตั้ง)",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
 		},

@@ -391,12 +391,12 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
+				let size = imagesData[first.index];
 				let originalSize = false;
 
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
-					let size = imagesData[first.index];
 					let sizeClip = imagesDataClip[first.index];
 
 					if(size && (imgWidth0 * dpr > size.width || imgHeight0 * dpr > size.height))
@@ -437,9 +437,18 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight0 * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth0 * clipLeft)+'px';
 
-						img.style.height = app.roundDPR(imgHeight0)+'px';
-						img.style.width = app.roundDPR(imgWidth0)+'px';
-						img.style.transform = '';
+						if(size?.rotated)
+						{
+							img.style.height = app.roundDPR(imgWidth0)+'px';
+							img.style.width = app.roundDPR(imgHeight0)+'px';
+							img.style.transform = rotateImage(true);
+						}
+						else
+						{
+							img.style.height = app.roundDPR(imgHeight0)+'px';
+							img.style.width = app.roundDPR(imgWidth0)+'px';
+							img.style.transform = '';
+						}
 
 						if(originalSize)
 							img.classList.add('originalSize');
@@ -454,12 +463,12 @@ function disposeImages(data = false)
 
 			if(image1)
 			{
+				let size = imagesData[second.index];
 				let originalSize = false;
 
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
-					let size = imagesData[second.index];
 					let sizeClip = imagesDataClip[second.index];
 
 					if(size && (imgWidth1 * dpr > size.width || imgHeight1 * dpr > size.height))
@@ -500,9 +509,18 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight1 * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth1 * clipLeft)+'px';
 
-						img.style.height = app.roundDPR(imgHeight1)+'px';
-						img.style.width = app.roundDPR(imgWidth1)+'px';
-						img.style.transform = '';
+						if(size?.rotated)
+						{
+							img.style.height = app.roundDPR(imgWidth1)+'px';
+							img.style.width = app.roundDPR(imgHeight1)+'px';
+							img.style.transform = rotateImage(true);
+						}
+						else
+						{
+							img.style.height = app.roundDPR(imgHeight1)+'px';
+							img.style.width = app.roundDPR(imgWidth1)+'px';
+							img.style.transform = '';
+						}
 
 						if(originalSize)
 							img.classList.add('originalSize');
@@ -559,12 +577,12 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
+				let size = imagesData[first.index];
 				let originalSize = false;
 
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
-					let size = imagesData[first.index];
 					let sizeClip = imagesDataClip[first.index];
 
 					if(size && (imgWidth * dpr > size.width || imgHeight * dpr > size.height))
@@ -605,9 +623,18 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth * clipLeft)+'px';
 
-						img.style.height = app.roundDPR(imgHeight)+'px';
-						img.style.width = app.roundDPR(imgWidth)+'px';
-						img.style.transform = '';
+						if(size?.rotated)
+						{
+							img.style.height = app.roundDPR(imgWidth)+'px';
+							img.style.width = app.roundDPR(imgHeight)+'px';
+							img.style.transform = rotateImage(true);
+						}
+						else
+						{
+							img.style.height = app.roundDPR(imgHeight)+'px';
+							img.style.width = app.roundDPR(imgWidth)+'px';
+							img.style.transform = '';
+						}
 
 						if(originalSize)
 							img.classList.add('originalSize');
@@ -2217,22 +2244,22 @@ function fixBlurOnZoom(scale = 1, index = false)
 
 		let ocImg = img.parentElement;
 
-		let width = +ocImg.dataset.width;
-		let height = +ocImg.dataset.height;
-
-		let _width = Math.round(width * scale * window.devicePixelRatio);
-		let _height = Math.round(height * scale * window.devicePixelRatio);
-
 		if(img.tagName != 'CANVAS')
 		{
+			let width = image?.rotated ? +ocImg.dataset.height : +ocImg.dataset.width;
+			let height = image?.rotated ? +ocImg.dataset.width : +ocImg.dataset.height;
+
+			let _width = Math.round(width * scale * window.devicePixelRatio);
+			let _height = Math.round(height * scale * window.devicePixelRatio);
+
 			img.style.width = (_width / window.devicePixelRatio)+'px';
 			img.style.height = (_height / window.devicePixelRatio)+'px';
 		}
 
 		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
-			img.style.transform = 'scale('+_scale+') translate(0.001px, 0.001px)';
+			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.001, 0.001);
 		else
-			img.style.transform = 'scale('+_scale+')';
+			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
 	}
 
 	if(_scale == 1)
@@ -2245,6 +2272,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 			for(let i = 0, len = images.length; i < len; i++)
 			{
 				let img = images[i];
+				let image = imagesData[+img.dataset.index] || [];
 
 				if(!img.classList.contains('blobRender') && !img.classList.contains('zoomOriginalSize') && !img.classList.contains('originalSize'))
 				{
@@ -2256,7 +2284,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 					if(left < -0.5) left++;
 					if(top < -0.5) top++;
 
-					img.style.transform = 'scale('+_scale+') translate('+(left)+'px, '+(top)+'px)';
+					img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
 				}
 			}
 
@@ -2457,6 +2485,16 @@ function scrollWithMouse()
 	}
 
 	window.requestAnimationFrame(scrollWithMouse);
+}
+
+function rotateImage(rotate = false, x = 0, y = 0)
+{
+	if(rotate)
+		return 'rotate('+(_config.readingRotateHorizontalsAnticlockwise ? '-' : '')+'90deg) '+(_config.readingRotateHorizontalsAnticlockwise ? 'translate(calc(-100% + '+x+'px), '+y+')' : 'translate('+x+'px, calc(-100% + '+y+'px))');
+	else if(x || y)
+		return 'translate('+x+'px, '+y+'px)';
+
+	return '';
 }
 
 //Turn the magnifying glass on and off
@@ -3033,6 +3071,14 @@ function changePagesView(mode, value, save)
 	else if(mode == 18) // Do not enlarge images more than its original size
 	{
 		updateReadingPagesConfig('readingNotEnlargeMoreThanOriginalSize', value);
+
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+	}
+	else if(mode == 19) // Rotate horizontal images
+	{
+		updateReadingPagesConfig('readingRotateHorizontals', value);
 
 		template.loadContentRight('reading.content.right.html', true);
 
@@ -5068,7 +5114,10 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			images[index].index = index;
 			images[index].onload = function() {
 
-				imagesData[this.index] = {width: this.width, height: this.height, aspectRatio: (this.width / this.height)};
+				if(_config.readingRotateHorizontals && this.width > this.height)
+					imagesData[this.index] = {width: this.height, height: this.width, aspectRatio: (this.height / this.width), rotated: true};
+				else
+					imagesData[this.index] = {width: this.width, height: this.height, aspectRatio: (this.width / this.height), rotated: false};
 
 				imagesNumLoad++;
 

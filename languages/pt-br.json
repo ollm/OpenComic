@@ -95,6 +95,7 @@
 			"scroll": "Rolar para baixo",
 			"adjustToWidth": "Ajustar a largura",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "Margem",
 			"marginHorizontal": "",
 			"marginVertical": "",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

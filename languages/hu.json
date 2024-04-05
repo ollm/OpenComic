@@ -95,6 +95,7 @@
 			"scroll": "Görgetés",
 			"adjustToWidth": "Teljes szélesség",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "Margó",
 			"marginHorizontal": "Vízszintes margó",
 			"marginVertical": "Függőlges margó",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

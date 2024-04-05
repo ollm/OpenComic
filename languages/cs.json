@@ -95,6 +95,7 @@
 			"scroll": "Režim Vertikální Čtečka",
 			"adjustToWidth": "Přizpůsobit šířce",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "Okraj",
 			"marginHorizontal": "Vodorovné odsazení",
 			"marginVertical": "Svislé odsazení",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

@@ -95,6 +95,7 @@
 			"scroll": "垂直翻頁",
 			"adjustToWidth": "適應寬度",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "邊際",
 			"marginHorizontal": "",
 			"marginVertical": "",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

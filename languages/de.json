@@ -95,6 +95,7 @@
 			"scroll": "Vertikaler Reader",
 			"adjustToWidth": "Der Breite anpassen",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "Spanne",
 			"marginHorizontal": "Horizontale Spanne",
 			"marginVertical": "Vertikale Spanne",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

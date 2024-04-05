@@ -95,6 +95,7 @@
 			"scroll": "Vertical Reader",
 			"adjustToWidth": "Adjust to width",
 			"notEnlargeMoreThanOriginalSize": "Do not enlarge more than its original size",
+			"rotateHorizontals": "Rotate horizontals",
 			"margin": "Margin",
 			"marginHorizontal": "Horizontal margin",
 			"marginVertical": "Vertical margin",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
 			"scrollWithMouse": "Scroll by moving the cursor along the edges of the screen (Disables drag and drop scrolling)",
 			"goNextPrevChapterWithScroll": "Go next/previous chapter with mouse scroll (Vertical reading)",
+			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
 			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
 		},

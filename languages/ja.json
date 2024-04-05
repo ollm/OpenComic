@@ -95,6 +95,7 @@
 			"scroll": "垂直方向リーダー",
 			"adjustToWidth": "幅に合わせる",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "マージン",
 			"marginHorizontal": "横方向のマージン",
 			"marginVertical": "縦方向のマージン",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

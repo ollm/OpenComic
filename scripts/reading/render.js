@@ -393,8 +393,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			_scale = _scale * window.devicePixelRatio;
 
 			let _config = {
-				width: Math.round(originalWidth * _scale),
-				height: Math.round(originalHeight * _scale),
+				width: imageData?.rotated ? Math.round(originalHeight * _scale) : Math.round(originalWidth * _scale),
+				height: imageData?.rotated ? Math.round(originalWidth * _scale) : Math.round(originalHeight * _scale),
 				compressionLevel: 0,
 				// kernel: 'lanczos3',
 			};
@@ -420,8 +420,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				{
 					if(affineInterpolationMethods[_config.kernel])
 					{
-						_config.imageWidth = imageData.width;
-						_config.imageHeight = imageData.height;
+						_config.imageWidth = imageData?.rotated ? imageData.height : imageData.width;
+						_config.imageHeight = imageData?.rotated ? imageData.width : imageData.height;
 						_config.interpolator = affineInterpolationMethods[_config.kernel];
 
 						_config.kernel = false;

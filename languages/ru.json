@@ -95,6 +95,7 @@
 			"scroll": "Вертикальный ридер",
 			"adjustToWidth": "Отрегулировать по ширине",
 			"notEnlargeMoreThanOriginalSize": "",
+			"rotateHorizontals": "",
 			"margin": "Края",
 			"marginHorizontal": "Горизонтальный край",
 			"marginVertical": "Вертикальный край",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""
 		},

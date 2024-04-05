@@ -95,6 +95,7 @@
 			"scroll": "Trình đọc dọc",
 			"adjustToWidth": "Điều chỉnh theo độ rộng",
 			"notEnlargeMoreThanOriginalSize": "Không dãn rộng hơn độ rộng gốc",
+			"rotateHorizontals": "",
 			"margin": "Lề",
 			"marginHorizontal": "Lề ngang",
 			"marginVertical": "Lề dọc",
@@ -201,6 +202,7 @@
 			"moveZoomWithMouse": "Thay đổi thu phóng với con trỏ (tắt di chuyển bằng đúp chuột)",
 			"scrollWithMouse": "Cuộn khi di chuyển con trỏ theo viền màn hình (tắt cuộn bằng đúp chuột)",
 			"goNextPrevChapterWithScroll": "",
+			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Khởi động trình đọc trong chế độ toàn màn hình",
 			"trackingAtTheEnd": "Theo dõi tại đầu của chương/tập truyện"
 		},
