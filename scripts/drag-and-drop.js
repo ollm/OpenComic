@@ -9,6 +9,8 @@ function showDropZone(event)
 	clearTimeout(hideDropZoneST);
 	clearTimeout(showDropZoneST);
 
+	if(!event.dataTransfer.types.includes('Files') || event.dataTransfer.types.includes('text/html')) return;
+
 	allowDrag(event);
 
 	let dropZone = document.querySelector('.drop-zone');

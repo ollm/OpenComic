@@ -13,7 +13,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🐛 Bug Fixes
 
 - Scroll does not work correctly when zooming and then resizing the window [`65a447c`](https://github.com/ollm/OpenComic/commit/65a447c1ce395214b1f787e5eb0824f003655f11)
-- Support S3 path connection
+- Support S3 path connection [`ec1340d`](https://github.com/ollm/OpenComic/commit/ec1340dc9cd29f6ed73e95d6776e406d2ba75d6e)
+- S3 connection does not work correctly in Windows [`9352e3a`](https://github.com/ollm/OpenComic/commit/9352e3a388a4a1aea2f45155d72d057172808d56)
+- Don't show drag menu if the event comes from the app
 
 
 ## [v1.2.0](https://github.com/ollm/OpenComic/releases/tag/v1.2.0) (29-03-2024)
