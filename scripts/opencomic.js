@@ -9,13 +9,13 @@ window.onerror = function(msg, url, linenumber) {
 
 }*/
 
-function fullScreen(force = null)
+function fullScreen(force = null, win = false)
 {
-	if(force === null)
-	{
+	if(win === false)
 		win = electronRemote.getCurrentWindow();
+
+	if(force === null)
 		force = !win.isFullScreen();
-	}
 
 	titleBar.setFullScreen(force);
 
@@ -33,7 +33,7 @@ document.addEventListener("keydown", event => {
 
 		if(isFullScreen)
 		{
-			fullScreen(false);
+			fullScreen(false, win);
 		}
 		else
 		{
@@ -524,7 +524,7 @@ async function startApp()
 			let isFullScreen = win.isFullScreen();
 
 			if(!isFullScreen)
-				fullScreen(true);
+				fullScreen(true, win);
 		}
 
 		$('body .app').css('display', 'block');
