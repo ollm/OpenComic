@@ -3054,6 +3054,7 @@ function changePagesView(mode, value, save)
 		stayInLine();
 
 		render.resized(_config.readingDoublePage);
+		filters.cleanIsBlackAndWhiteCurrent();
 	}
 	else if(mode == 17) // Clip vertical images
 	{
@@ -3067,6 +3068,7 @@ function changePagesView(mode, value, save)
 		stayInLine();
 
 		render.resized(_config.readingDoublePage);
+		filters.cleanIsBlackAndWhiteCurrent();
 	}
 	else if(mode == 18) // Do not enlarge images more than its original size
 	{

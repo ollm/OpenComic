@@ -1389,4 +1389,5 @@ module.exports = {
 	saveAsPreset: saveAsPreset,
 	editPreset: editPreset,
 	removePreset: removePreset,
+	cleanIsBlackAndWhiteCurrent: function(){isBlackAndWhiteCurrent = {}; focusIndex(currentIndex);},
 };
