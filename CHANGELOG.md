@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Shortcut to go next/prev chapter [`20258ff`](https://github.com/ollm/OpenComic/commit/20258ff0ebf57d5a8064dec821ce745b7d9242a3)
-- Option to rotate horizontal images
+- Shortcut to go next/prev chapter [`9cda79e`](https://github.com/ollm/OpenComic/commit/9cda79e24dab1116c734e5a3773f74e13071c219)
+- Option to rotate horizontal images [`20258ff`](https://github.com/ollm/OpenComic/commit/20258ff0ebf57d5a8064dec821ce745b7d9242a3)
 
 ##### 🐛 Bug Fixes
 
@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support S3 path connection [`ec1340d`](https://github.com/ollm/OpenComic/commit/ec1340dc9cd29f6ed73e95d6776e406d2ba75d6e)
 - S3 connection does not work correctly in Windows [`9352e3a`](https://github.com/ollm/OpenComic/commit/9352e3a388a4a1aea2f45155d72d057172808d56)
 - Don't show drag menu if the event comes from the app [`383f9fe`](https://github.com/ollm/OpenComic/commit/383f9fe30d535260e6f6091242289d99ac4d755b)
+- PDF zoom not work if device pixel ratio is upper 1 [`d318cfc`](https://github.com/ollm/OpenComic/commit/d318cfc071b5e8d919b4c8acef89b85e8ef40cc8)
 
 
 ## [v1.2.0](https://github.com/ollm/OpenComic/releases/tag/v1.2.0) (29-03-2024)
