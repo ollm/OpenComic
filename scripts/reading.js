@@ -2256,7 +2256,9 @@ function fixBlurOnZoom(scale = 1, index = false)
 			img.style.height = (_height / window.devicePixelRatio)+'px';
 		}
 
-		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
+		if(img.tagName == 'CANVAS')
+			img.style.transform = 'scale('+(_scale / window.devicePixelRatio)+') '+rotateImage(image?.rotated, 0.001, 0.001);
+		else if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.001, 0.001);
 		else
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
@@ -2274,7 +2276,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 				let img = images[i];
 				let image = imagesData[+img.dataset.index] || [];
 
-				if(!img.classList.contains('blobRender') && !img.classList.contains('zoomOriginalSize') && !img.classList.contains('originalSize'))
+				if(img.tagName != 'CANVAS' && !img.classList.contains('blobRender') && !img.classList.contains('zoomOriginalSize') && !img.classList.contains('originalSize'))
 				{
 					let rect = img.getBoundingClientRect();
 

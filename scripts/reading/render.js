@@ -322,6 +322,9 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				canvas.style.width = Math.round(isRendered.width)+'px';
 				canvas.style.height = Math.round(isRendered.height)+'px';
 
+				canvas.dataset.width = Math.round(isRendered.width);
+				canvas.dataset.height = Math.round(isRendered.height);
+
 				ocImg.replaceChildren(canvas);
 			}
 		}
