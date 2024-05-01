@@ -1,6 +1,20 @@
-const zstd = require('@toondepauw/node-zstd');
-const zstdEncoder = new zstd.Encoder(5);
-const zstdDecoder = new zstd.Decoder();
+zstd = false;
+zstdEncoder = false;
+zstdDecoder = false;
+
+try
+{
+	zstd = require('@toondepauw/node-zstd');
+	zstdEncoder = new zstd.Encoder(5);
+	zstdDecoder = new zstd.Decoder();
+}
+catch (error)
+{
+	console.error('Warning: ZSTD cache compression not working');
+	console.error(error);
+
+	zstd = zstdEncoder = zstdDecoder = false;
+}
 
 var queuedImages = [], processingTheImageQueue = false;
 
@@ -284,9 +298,19 @@ async function writeJson(name, json)
 {
 	setJsonInMemory(name, json);
 
-	let path = p.join(cacheFolder, name+'.zstd');
+	let encoded, path;
 
-	let encoded = await zstdEncoder.encode(Buffer.from(JSON.stringify(json)));
+	if(zstd !== false)
+	{
+		path = p.join(cacheFolder, name+'.zstd');
+		encoded = await zstdEncoder.encode(Buffer.from(JSON.stringify(json)));
+	}
+	else
+	{
+		path = p.join(cacheFolder, name);
+		encoded = JSON.stringify(json);
+	}
+
 	fs.writeFile(path, encoded, function(){});
 }
 
@@ -294,9 +318,19 @@ function writeJsonSync(name, json)
 {
 	setJsonInMemory(name, json);
 
-	let path = p.join(cacheFolder, name+'.zstd');
+	let encoded, path;
 
-	let encoded = zstdEncoder.encodeSync(Buffer.from(JSON.stringify(json)));
+	if(zstd !== false)
+	{
+		path = p.join(cacheFolder, name+'.zstd');
+		encoded = zstdEncoder.encodeSync(Buffer.from(JSON.stringify(json)));
+	}
+	else
+	{
+		path = p.join(cacheFolder, name);
+		encoded = JSON.stringify(json);
+	}
+
 	fs.writeFileSync(path, encoded, function(){});
 }
 
@@ -315,17 +349,35 @@ function readJson(name)
 	let json = readJsonInMemory(name);
 	if(json) return json;
 
-	let path = p.join(cacheFolder, name+'.zstd');
-
-	if(fs.existsSync(path))
+	if(zstd !== false)
 	{
-		json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
-		setJsonInMemory(name, json);
-		return json;
+		let path = p.join(cacheFolder, name+'.zstd');
+
+		if(fs.existsSync(path))
+		{
+			json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
+			setJsonInMemory(name, json);
+			return json;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	else
 	{
-		return false;
+		let path = p.join(cacheFolder, name);
+
+		if(fs.existsSync(path))
+		{
+			json = JSON.parse(fs.readFileSync(path));
+			setJsonInMemory(name, json);
+			return json;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 
@@ -341,7 +393,7 @@ function existsFile(name)
 
 function existsJson(name)
 {
-	let path = p.join(cacheFolder, name+'.zstd');
+	let path = p.join(cacheFolder, (zstd !== false) ? name+'.zstd' : name);
 
 	if(fs.existsSync(path))
 		return true;

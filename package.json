@@ -51,7 +51,7 @@
 		"build-mac-tar": "npm run prebuild && electron-builder --mac tar.gz",
 		"build-mac-zip": "npm run prebuild && electron-builder --mac zip",
 		"build-mac-dmg": "npm run prebuild && electron-builder --mac dmg && electron-builder --arm64 --mac dmg",
-		"build-mac-pkg": "npm run prebuild && electron-builder --mac dmg && electron-builder --arm64 --mac pkg",
+		"build-mac-pkg": "npm run prebuild && electron-builder --mac pkg && electron-builder --arm64 --mac pkg",
 		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm AppImage 7z",
 		"build-deb-arm": "npm run prebuild && electron-builder --arm64 --linux deb",
 		"build-rpm-arm": "npm run prebuild && electron-builder --arm64 --linux rpm",
@@ -183,7 +183,8 @@
 				"mas"
 			],
 			"icon": "images/icon-mac.icns",
-			"category": "public.app-category.graphics-design"
+			"category": "public.app-category.graphics-design",
+			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2023_11.provisionprofile"
 		},
 		"mas": {
 			"type": "distribution",
