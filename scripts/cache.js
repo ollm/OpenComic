@@ -1,6 +1,6 @@
-zstd = false;
-zstdEncoder = false;
-zstdDecoder = false;
+let zstd = false;
+let zstdEncoder = false;
+let zstdDecoder = false;
 
 try
 {
