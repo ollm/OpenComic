@@ -30,17 +30,15 @@ function orderBy(a, b, mode, key = false, key2 = false)
 
 	if(mode == 'simple')
 	{
-		if (aValue > bValue) return 1;
-
-		if (aValue < bValue) return -1;
+		if(aValue > bValue) return 1;
+		if(aValue < bValue) return -1;
 
 		return 0;
 	}
 	else if(mode == 'real-numeric')
 	{
-		if (aValue > bValue) return 1;
-
-		if (aValue < bValue) return -1;
+		if(aValue > bValue) return 1;
+		if(aValue < bValue) return -1;
 
 		return 0;
 	}
@@ -50,48 +48,41 @@ function orderBy(a, b, mode, key = false, key2 = false)
 		let matchB = bValue.match(/([0-9]+)/g);
 
 		if(!matchA) return 1;
-
 		if(!matchB) return -1;
 
-		for(let i = 0, len1 = matchA.length, len2 = matchB.length; i < len1 && i < len2; i++)
+		for(let i = 0, len = Math.min(matchA.length, matchB.length); i < len; i++)
 		{
 			if(+matchA[i] > +matchB[i]) return 1;
-
 			if(+matchA[i] < +matchB[i]) return -1;
 		}
 
 		if(matchA.length > matchB.length) return 1;
-
 		if(matchA.length < matchB.length) return -1;
 
 		if(aValue > bValue) return 1;
-
 		if(aValue < bValue) return -1;
 
 		return 0;
 	}
 	else if(mode == 'simple-numeric')
 	{
-		let matchA = aValue.match(/([0-9]+|.?)/g);
-		let matchB = bValue.match(/([0-9]+|.?)/g);
+		let matchA = aValue.split(/([0-9]+)/);
+		let matchB = bValue.split(/([0-9]+)/);
 
 		if(!matchA) return 1;
-
 		if(!matchB) return -1;
 
-		for (let i = 0, len1 = matchA.length, len2 = matchB.length; i < len1 && i < len2; i++)
+		for(let i = 0, len = Math.min(matchA.length, matchB.length); i < len; i++)
 		{
-			if(isNaN(matchA[i]) || isNaN(matchB[i]))
+			if(isNaN(matchA[i]+matchB[i]) || isNaN(matchB[i]))
 			{
-				if (matchA[i] > matchB[i]) return 1;
-
-				if (matchA[i] < matchB[i]) return -1;
+				if(matchA[i] > matchB[i]) return 1;
+				if(matchA[i] < matchB[i]) return -1;
 			}
 			else
 			{
-				if (+matchA[i] > +matchB[i]) return 1;
-
-				if (+matchA[i] < +matchB[i]) return -1;
+				if(+matchA[i] > +matchB[i]) return 1;
+				if(+matchA[i] < +matchB[i]) return -1;
 			}
 		}
 
@@ -118,19 +109,13 @@ function getReadingProgress(path, callback)
 	return false;
 }
 
-function addImageToDom(querySelector, path, animation = true)
+function addImageToDom(sha, path, animation = true)
 {
-	let backgroundImage = 'url('+path+')';
-
-	let src = dom.queryAll('.fi-sha-'+querySelector+' img, .sha-'+querySelector+' img, img.fi-sha-'+querySelector).setAttribute('src', path);
-
-	let ri = dom.queryAll('.ri-sha-'+querySelector).setAttribute('src', path);
-	let imageBackground = dom.queryAll('.sha-image-bg-'+querySelector).css({backgroundImage: backgroundImage});
+	const src = dom.queryAll('img.sha-image-'+sha).setAttribute('src', path);
 
 	if(animation)
 	{
 		src.addClass('a', 'border');
-		imageBackground.addClass('a');
 	}
 	else
 	{
@@ -218,6 +203,8 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 			}, file);
 
+			let visibleItems = calculateVisibleItems(config.view, keepScroll);
+
 			for(let i = 0, len = files.length; i < len; i++)
 			{
 				let file = files[i];
@@ -243,7 +230,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 				else if(file.folder || file.compressed)
 				{
-					let images = await getFolderThumbnails(filePath);
+					let images = await getFolderThumbnails(filePath, i, visibleItems.start, visibleItems.end);
 
 					pathFiles.push({
 						sha: file.sha,
@@ -614,9 +601,15 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			// Comic reading progress
 			let readingProgress = storage.get('readingProgress');
 
+			comics.sort(function(a, b) {
+				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
+			});
+
+			let visibleItems = calculateVisibleItems((sortAndView ? sortAndView.view : config.viewIndex), keepScroll);
+
 			for(let i = 0; i < len; i++)
 			{
-				let images = await getFolderThumbnails(comics[i].path);
+				let images = await getFolderThumbnails(comics[i].path, i, visibleItems.start, visibleItems.end);
 
 				comics[i].sha = sha1(comics[i].path);
 				comics[i].poster = images.poster;
@@ -624,10 +617,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[i].mainPath = comics[i].path;
 				comics[i].readingProgress = readingProgress[comics[i].path] || {lastReading: 0};
 			}
-
-			comics.sort(function (a, b) {
-				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
-			});
 		}
 
 		// Avoid continue if another loadIndexPage has been run
@@ -1127,8 +1116,8 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 				if(isAsync)
 				{
-					addImageToDom(imageCache.sha, imageCache.path);
-					addImageToDom(folderSha+'-'+i, imageCache.path);
+					addImageToDom(imageCache.sha, imageCache.path, false);
+					addImageToDom(folderSha+'-'+i, imageCache.path, false);
 				}
 			}
 		}
@@ -1146,8 +1135,8 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 		if(isAsync && poster.path)
 		{
-			addImageToDom(poster.sha, poster.path);
-			addImageToDom(folderSha+'-0', poster.path);
+			addImageToDom(poster.sha, poster.path, false);
+			addImageToDom(folderSha+'-0', poster.path, false);
 		}
 
 		poster.sha = folderSha+'-0';
@@ -1158,7 +1147,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 	return {poster: poster, images: images};
 }
 
-async function getFolderThumbnails(path)
+async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
 {
 	let folderSha = sha1(path);
 
@@ -1170,47 +1159,90 @@ async function getFolderThumbnails(path)
 		{cache: false, path: '', sha: folderSha+'-2'},
 		{cache: false, path: '', sha: folderSha+'-3'},
 	];
+
+	let addToQueue = false;
 	
-	try
+	if(index >= start && index <= end)
 	{
-		let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-		file.updateConfig({cacheOnly: true});
-		let _images = await file.images(4, false, true);
+		try
+		{
+			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
+			file.updateConfig({cacheOnly: true});
+			let _images = await file.images(4, false, true);
 
-		_images = await _getFolderThumbnails(file, images, _images, path, folderSha);
+			_images = await _getFolderThumbnails(file, images, _images, path, folderSha);
 
-		file.destroy();
+			file.destroy();
 
-		poster = _images.poster;
-		images = _images.poster ? false : _images.images;
+			poster = _images.poster;
+			images = _images.poster ? false : _images.images;
+		}
+		catch(error)
+		{
+			if(error.message && /notCacheOnly/.test(error.message))
+			{
+				addToQueue = true;
+			}
+			else
+			{
+				console.error(error);
+				dom.compressedError(error, false);
+			}
+		}
 	}
-	catch(error)
+	else
 	{
-		if(error.message && /notCacheOnly/.test(error.message))
-		{
-			queue.add('folderThumbnails', async function(path, folderSha) {
+		addToQueue = true;
+	}
 
-				console.log(path);
+	if(addToQueue)
+	{
+		queue.add('folderThumbnails', async function(path, folderSha) {
 
-				let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-				let _images = await file.images(4, false, true);
+			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
+			let _images = await file.images(4, false, true);
 
-				await _getFolderThumbnails(file, images, _images, path, folderSha, true);
+			await _getFolderThumbnails(file, images, _images, path, folderSha, true);
 
-				file.destroy();
+			file.destroy();
 
-				return;
+			return;
 
-			}, path, folderSha);
-		}
-		else
-		{
-			console.error(error);
-			dom.compressedError(error, false);
-		}
+		}, path, folderSha);
 	}
 
 	return {poster: poster, images: images};
+}
+
+function calculateVisibleItems(view, scrollTop = false)
+{
+	const element = template._contentRight().firstElementChild;
+	let rect = element.getBoundingClientRect();
+
+	if(rect.width == 0 || rect.height == 0)
+		rect = {width: window.innerWidth, height: window.innerHeight};
+
+	scrollTop = scrollTop || element.scrollTop;
+
+	let start = 0;
+	let end = 100;
+
+	if(view == 'module')
+	{
+		const itemsPerLine =  Math.floor((rect.width - 16) / 166);
+		const lines = Math.ceil(rect.height / 305);
+		const line = Math.floor(scrollTop / 305);
+
+		start = scrollTop ? (line - 1) * itemsPerLine : 0; // 1 margin line
+		end = (line + lines + 1) * itemsPerLine; // 1 margin line
+	}
+	else
+	{
+		start = scrollTop ? Math.floor(scrollTop / 72) - 4 : 0; // 4 margin items
+		end = Math.floor((scrollTop + rect.height) / 72) + 4; // 4 margin items
+	}
+
+	return {start: start, end: end};
 }
 
 var indexPathControlA = [], indexPathA = false, indexMainPathA = false;

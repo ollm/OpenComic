@@ -1748,10 +1748,17 @@ a:hover
 	float: left;
 	margin: 0px 12px 0px 0px;
 	float: left;
-	background-size: cover;
-	background-position: 50%;
 	background-color: rgba(0, 0, 0, 0.1);
 	transition: 0.3s;
+	overflow: hidden;
+}
+
+.continue-reading > div > div > img
+{
+	width: 54px;
+	height: 54px;
+	object-fit: cover;
+	object-position: center;
 }
 
 .continue-reading > div > span

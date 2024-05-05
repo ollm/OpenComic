@@ -56,6 +56,7 @@ function removeTemporaryFiles(onClose = false)
 {
 	try
 	{
+		storage.set('tmpUsage', {});
 		fse.emptyDirSync(tempFolder);
 	}
 	catch(error)
@@ -150,6 +151,8 @@ function purgeTemporaryFiles(tmpMaxSize = false)
 				{
 					if(fs.existsSync(path))
 						fs.unlinkSync(path);
+
+					delete tmpUsage[path];
 				}
 				else
 				{

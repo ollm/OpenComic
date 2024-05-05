@@ -10,20 +10,20 @@
 			<div class="content-view-module">
 				<div class="v-folder item-image" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
 					{{#if fileInfo.poster}}
-						<div class="fi-sha-{{fileInfo.poster.sha}} folder-poster">
-							<img{{#if fileInfo.poster.path}} class="has-poster" src="{{fileInfo.poster.path}}"{{else}} class="folder-poster-img"{{/if}}>
+						<div class="folder-poster">
+							<img{{#if fileInfo.poster.path}} class="has-poster" src="{{fileInfo.poster.path}}"{{else}} class="sha-image-{{fileInfo.poster.sha}} folder-poster-img"{{/if}}>
 						</div>
 						{{#if fileInfo.images}}
 							{{#each fileInfo.images}}
-							<div class="fi-sha-{{sha}} folder-images">
-								<img src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
+							<div class="folder-images">
+								<img class="sha-image-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
 							</div>
 							{{/each}}
 						{{/if}}
 					{{else}}
 						{{#each fileInfo.images}}
-						<div class="fi-sha-{{sha}} folder-images">
-							<img src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
+						<div class="folder-images">
+							<img class="sha-image-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
 						</div>
 						{{/each}}
 					{{/if}}

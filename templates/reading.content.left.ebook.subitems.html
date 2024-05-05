@@ -1,7 +1,7 @@
 {{#each subitems}}
 <div class="reading-toc-subitem reading-toc-page-{{page}}">
 	<div class="reading-toc-title label-medium" onclick="reading.goToIndex({{page}})">
-		{{#if image}}<img class="ri-sha-{{image.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' image.thumbnail}}">{{/if}}
+		{{#if image}}<img class="sha-image-{{image.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' image.thumbnail}}">{{/if}}
 		<div>{{name}}</div>
 	</div>
 	{{#if subitems}}

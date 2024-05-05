@@ -235,6 +235,36 @@ function copy(toCopy)
 	}
 }
 
+var throttles = {};
+var debounces = {};
+
+async function setThrottle(key, callback, debounce = 300, throttle = 3000)
+{
+	clearTimeout(debounces[key]);
+
+	debounces[key] = setTimeout(function(){
+
+		clearTimeout(throttles[key]);
+		throttles[key] = false;
+
+		callback(true);
+
+	}, debounce);
+
+	if(throttles[key] === undefined || throttles[key] === false)
+	{
+		throttles[key] = setTimeout(function(){
+
+			clearTimeout(debounces[key]);
+			throttles[key] = false;
+
+			callback();
+
+		}, throttle);
+	}
+}
+
+
 function time()
 {
 	return Math.floor(Date.now() / 1000);
@@ -279,4 +309,5 @@ module.exports = {
 	time: time,
 	sleep: sleep,
 	setImmediate: setImmediate,
+	setThrottle: setThrottle,
 };

@@ -27,6 +27,8 @@ if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 cacheFolder = p.join(cacheFolder, 'cache');
 if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 
+var imagesWithoutSaving = 0;
+
 function processTheImageQueue()
 {
 	let img = queuedImages[0];
@@ -55,12 +57,21 @@ function processTheImageQueue()
 
 		if(queuedImages.length > 0)
 		{
+			imagesWithoutSaving++;
+
 			process.nextTick(function() {
 				processTheImageQueue();
 			});
+
+			if(imagesWithoutSaving > 50)
+			{
+				imagesWithoutSaving = 0;
+				storage.setThrottle('cache', data);
+			}
 		}
 		else
 		{
+			imagesWithoutSaving = 0;
 			processingTheImageQueue = false;
 
 			storage.setThrottle('cache', data);
@@ -74,12 +85,21 @@ function processTheImageQueue()
 
 		if(queuedImages.length > 0)
 		{
+			imagesWithoutSaving++;
+
 			process.nextTick(function() {
 				processTheImageQueue();
 			});
+
+			if(imagesWithoutSaving > 50)
+			{
+				imagesWithoutSaving = 0;
+				storage.setThrottle('cache', data);
+			}
 		}
 		else
 		{
+			imagesWithoutSaving = 0;
 			processingTheImageQueue = false;
 
 			storage.setThrottle('cache', data);
@@ -135,6 +155,7 @@ function resumeQueue()
 function cleanQueue()
 {
 	queuedImages.splice(1, queuedImages.length - 1);
+	if(data !== false) storage.setThrottle('cache', data);
 }
 
 var data = false;
