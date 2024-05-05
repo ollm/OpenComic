@@ -66,7 +66,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.540.0",
+		"@aws-sdk/client-s3": "^3.569.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -78,7 +78,6 @@
 		"fast-xml-parser": "^4.3.6",
 		"file-type": "^16.5.4",
 		"font-list": "^1.5.1",
-		"fs": "0.0.1-security",
 		"fs-extra": "^11.2.0",
 		"gm": "^1.25.0",
 		"handlebars": "^4.7.8",
@@ -91,20 +90,20 @@
 		"node-7z": "^3.0.0",
 		"node-scp": "^0.0.23",
 		"node-unrar-js": "^2.0.2",
-		"pdfjs-dist": "^4.0.379",
+		"pdfjs-dist": "^4.2.67",
 		"sanitize-html": "^2.13.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.33.3",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "^10.0.3",
-		"tar-fs": "^3.0.5",
-		"unzipper": "^0.10.14"
+		"tar-fs": "^3.0.6",
+		"unzipper": "^0.11.5"
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.6.0",
-		"electron": "^29.3.1",
+		"electron": "^30.0.2",
 		"electron-builder": "^24.13.3",
-		"node-abi": "^3.56.0",
+		"node-abi": "^3.62.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.1.0"
 	},
