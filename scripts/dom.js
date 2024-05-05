@@ -601,6 +601,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			// Comic reading progress
 			let readingProgress = storage.get('readingProgress');
 
+			for(let i = 0; i < len; i++)
+			{
+				comics[i].readingProgress = readingProgress[comics[i].path] || {lastReading: 0};
+			}
+
 			comics.sort(function(a, b) {
 				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
 			});
@@ -615,7 +620,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[i].poster = images.poster;
 				comics[i].images = images.images;
 				comics[i].mainPath = comics[i].path;
-				comics[i].readingProgress = readingProgress[comics[i].path] || {lastReading: 0};
 			}
 		}
 
