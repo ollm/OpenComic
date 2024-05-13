@@ -132,9 +132,21 @@ function createWindow() {
 		win = null
 	});
 
-	win.once('ready-to-show', function() {
-		
+	let windowShowed = false;
+
+	let showTimeout = setTimeout(function(){
+
 		win.show();
+		windowShowed = true;
+		console.log('Warning: win.show() from setTimeout and not from ready-to-show');
+
+	}, 1000);
+
+	win.once('ready-to-show', function() {
+
+		clearTimeout(showTimeout);
+		
+		if(!windowShowed) win.show();
 
 	});
 
