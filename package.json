@@ -183,7 +183,8 @@
 			],
 			"icon": "images/icon-mac.icns",
 			"category": "public.app-category.graphics-design",
-			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2023_11.provisionprofile"
+			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2023_11.provisionprofile",
+			"minimumSystemVersion": "10.15.0"
 		},
 		"mas": {
 			"type": "distribution",

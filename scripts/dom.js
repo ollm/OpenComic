@@ -74,7 +74,7 @@ function orderBy(a, b, mode, key = false, key2 = false)
 
 		for(let i = 0, len = Math.min(matchA.length, matchB.length); i < len; i++)
 		{
-			if(isNaN(matchA[i]+matchB[i]) || isNaN(matchB[i]))
+			if(isNaN(matchA[i]) || isNaN(matchB[i]))
 			{
 				if(matchA[i] > matchB[i]) return 1;
 				if(matchA[i] < matchB[i]) return -1;
