@@ -247,6 +247,7 @@
 			"main": "快捷键",
 			"keyboard": "键盘",
 			"whenReading": "阅读时",
+			"disableGamepadInput": "",
 			"gamepadMenu": "游戏手柄菜单",
 			"useGamepad": "使用游戏手柄来改变动作",
 			"restoreDefaults": "恢复默认值",

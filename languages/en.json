@@ -247,6 +247,7 @@
 			"main": "Shortcuts",
 			"keyboard": "Keyboard",
 			"whenReading": "When reading",
+			"disableGamepadInput": "Disable gamepad input",
 			"gamepadMenu": "Gamepad menu",
 			"useGamepad": "Use a gamepad to change the action",
 			"restoreDefaults": "Restore default values",

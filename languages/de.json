@@ -247,6 +247,7 @@
 			"main": "",
 			"keyboard": "",
 			"whenReading": "",
+			"disableGamepadInput": "",
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "",

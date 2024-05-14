@@ -1,4 +1,4 @@
-var changes = 81; // Update this if readingPagesConfig is updated
+var changes = 82; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -128,6 +128,7 @@ var storageDefault = {
 			volume: 1.0,
 		},
 		controllerDeadZone: 0.06,
+		disableGamepadInput: false,
 		startInFullScreen: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,

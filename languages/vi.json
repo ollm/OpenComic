@@ -247,6 +247,7 @@
 			"main": "Phím tắt",
 			"keyboard": "Bàn phím",
 			"whenReading": "Khi đọc",
+			"disableGamepadInput": "",
 			"gamepadMenu": "Menu gamepad",
 			"useGamepad": "Dùng gamepad để thay đổi hành động",
 			"restoreDefaults": "Trở về mặc định",

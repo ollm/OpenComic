@@ -247,6 +247,7 @@
 			"main": "Dreceres",
 			"keyboard": "Teclat",
 			"whenReading": "A l'hora de llegir",
+			"disableGamepadInput": "Desactiva l'entrada del comandament",
 			"gamepadMenu": "Menú del comandament",
 			"useGamepad": "Fes servir un comandament per canviar l'acció",
 			"restoreDefaults": "Restaurar valors per defecte",

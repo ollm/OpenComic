@@ -247,6 +247,7 @@
 			"main": "단축키",
 			"keyboard": "키보드",
 			"whenReading": "작품 감상 중",
+			"disableGamepadInput": "",
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "단축키 설정을 초기화",

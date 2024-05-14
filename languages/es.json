@@ -247,6 +247,7 @@
 			"main": "Atajos",
 			"keyboard": "Teclado",
 			"whenReading": "Al leer",
+			"disableGamepadInput": "Desactivar la entrada del mando",
 			"gamepadMenu": "Menú del mando",
 			"useGamepad": "Utiliza un mando para cambiar la acción",
 			"restoreDefaults": "Restaurar valores por defecto",

@@ -247,6 +247,7 @@
 			"main": "Kortkommandon",
 			"keyboard": "Tangentbord",
 			"whenReading": "Under läsning",
+			"disableGamepadInput": "",
 			"gamepadMenu": "Gamepadmeny",
 			"useGamepad": "Använd en gamepad för att ändra funktionen",
 			"restoreDefaults": "Återställ standardvärden",

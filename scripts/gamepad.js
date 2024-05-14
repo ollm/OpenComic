@@ -62,6 +62,8 @@ var prevHasAxes = false;
 
 function gamepadLoop()
 {
+	if(config.disableGamepadInput) return;
+
 	let gamepads = navigator.getGamepads();
 	let now = Date.now();
 

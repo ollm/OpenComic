@@ -247,6 +247,7 @@
 			"main": "ทางลัด",
 			"keyboard": "คีย์บอร์ด",
 			"whenReading": "เมื่ออ่าน",
+			"disableGamepadInput": "",
 			"gamepadMenu": "เมนูเกมแพด",
 			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
 			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
