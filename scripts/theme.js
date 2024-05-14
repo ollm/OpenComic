@@ -54,8 +54,6 @@ function systemNightMode()
 
 function start()
 {
-	events.events();
-
 	if(!handlebarsContext.themeColors)
 	{
 		let themeColors = [];
@@ -93,6 +91,8 @@ function start()
 	template.loadContentRight('theme.content.right.html', true);
 
 	gamepad.updateBrowsableItems('theme');
+
+	events.events();
 }
 
 module.exports = {

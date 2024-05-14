@@ -234,7 +234,9 @@
 			"startOnStartup": "Start OpenComic on startup"
 		},
 		"theme": {
-			"systemNightMode": "Switch to night/light mode when the OS does it"
+			"systemNightMode": "Switch to night/light mode when the OS does it",
+			"nightModeBlackBackground": "Use black as background in night mode",
+			"nightModeWhiteBlankPage": "Show blank pages white in night mode"
 		},
 		"releases": {
 			"main": "Check for new versions",

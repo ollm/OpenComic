@@ -198,6 +198,11 @@
 	background-color: var(--md-sys-color-background);
 }
 
+.night-mode-white-blank-page .reading-body .r-img.blank > div > *, .night-mode-white-blank-page .reading-lens .r-img.blank > div > *
+{
+	background-color: #fff;
+}
+
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img
 {
 	overflow: hidden;

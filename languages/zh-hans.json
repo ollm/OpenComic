@@ -234,7 +234,9 @@
 			"startOnStartup": "开机启动时打开 OpenComic"
 		},
 		"theme": {
-			"systemNightMode": "当操作系统执行此操作时切换到夜间/明亮模式"
+			"systemNightMode": "当操作系统执行此操作时切换到夜间/明亮模式",
+			"nightModeBlackBackground": "",
+			"nightModeWhiteBlankPage": ""
 		},
 		"releases": {
 			"main": "检查新版本",

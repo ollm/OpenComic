@@ -234,7 +234,9 @@
 			"startOnStartup": "Khởi động OpenComic khi bật máy"
 		},
 		"theme": {
-			"systemNightMode": "Chuyển sang chế độ sáng/tối theo hệ điều hành"
+			"systemNightMode": "Chuyển sang chế độ sáng/tối theo hệ điều hành",
+			"nightModeBlackBackground": "",
+			"nightModeWhiteBlankPage": ""
 		},
 		"releases": {
 			"main": "Kiểm tra phiên bản mới",

@@ -234,7 +234,9 @@
 			"startOnStartup": "Starta OpenComic vid uppstart"
 		},
 		"theme": {
-			"systemNightMode": "Växla mellan nattläge och ljust läge när operativsystemet gör det"
+			"systemNightMode": "Växla mellan nattläge och ljust läge när operativsystemet gör det",
+			"nightModeBlackBackground": "",
+			"nightModeWhiteBlankPage": ""
 		},
 		"releases": {
 			"main": "Sök efter nya versioner",

@@ -234,7 +234,9 @@
 			"startOnStartup": "Iniciar OpenComic a l'inici"
 		},
 		"theme": {
-			"systemNightMode": "Canviar al mode nit/clar quan el sistema operatiu ho faci"
+			"systemNightMode": "Canviar al mode nit/clar quan el sistema operatiu ho faci",
+			"nightModeBlackBackground": "Utilitzar el color negre com a fons en el mode nit",
+			"nightModeWhiteBlankPage": "Mostra les pàgines en blanc de color blanc en el mode nit"
 		},
 		"releases": {
 			"main": "Comprovar noves versions",

@@ -1,6 +1,22 @@
 <div class="settings-body body-medium">
 	<h1 class="display-medium">{{language.global.theme}}</h1>
 
+	<div class="menu-simple-text gamepad-item">
+		<span>{{language.settings.theme.nightModeBlackBackground}}</span>
+		<div class="switch{{#if config.nightModeBlackBackground}} a{{/if}}" on="settings.set('nightModeBlackBackground', true); dom.nightModeConfig();" off="settings.set('nightModeBlackBackground', false); dom.nightModeConfig();">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+
+	<div class="menu-simple-text gamepad-item">
+		<span>{{language.settings.theme.nightModeWhiteBlankPage}}</span>
+		<div class="switch{{#if config.nightModeWhiteBlankPage}} a{{/if}}" on="settings.set('nightModeWhiteBlankPage', true); dom.nightModeConfig();" off="settings.set('nightModeWhiteBlankPage', false); dom.nightModeConfig();">
+			<div></div>
+			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+		</div>
+	</div>
+
 	<div class="theme-page">
 		{{#each themeColors}}
 

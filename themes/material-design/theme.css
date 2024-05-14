@@ -656,6 +656,12 @@ body .app
 	display: none;
 }
 
+body .app.night-mode.night-mode-black-background
+{
+	--md-sys-color-background: #000;
+	--md-sys-color-surface: #000;
+}
+
 body .app > *
 {
 	color: var(--md-sys-color-on-surface);

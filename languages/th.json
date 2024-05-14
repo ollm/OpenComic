@@ -234,7 +234,9 @@
 			"startOnStartup": "เปิด OpenComic เมื่อเริ่มต้นระบบ"
 		},
 		"theme": {
-			"systemNightMode": "สลับโหมดกลางวัน/กลางคืนตามระบบ"
+			"systemNightMode": "สลับโหมดกลางวัน/กลางคืนตามระบบ",
+			"nightModeBlackBackground": "",
+			"nightModeWhiteBlankPage": ""
 		},
 		"releases": {
 			"main": "ตรวจหาเวอร์ชั่นใหม่",

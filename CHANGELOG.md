@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Shortcut to go next/prev chapter [`9cda79e`](https://github.com/ollm/OpenComic/commit/9cda79e24dab1116c734e5a3773f74e13071c219)
 - Option to rotate horizontal images [`20258ff`](https://github.com/ollm/OpenComic/commit/20258ff0ebf57d5a8064dec821ce745b7d9242a3)
+- Setting to force black background and white blank page in night mode
 
 ##### 🐛 Bug Fixes
 

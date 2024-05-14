@@ -1814,7 +1814,24 @@ function nightMode(force = null)
 		storage.updateVar('config', 'nightMode', true);
 	}
 
+	nightModeConfig(_app);
+
 	titleBar.setColors();
+}
+
+function nightModeConfig(_app = false)
+{
+	_app = _app || document.querySelector('.app');
+
+	if(config.nightModeBlackBackground)
+		_app.classList.add('night-mode-black-background');
+	else
+		_app.classList.remove('night-mode-black-background');
+
+	if(config.nightModeWhiteBlankPage)
+		_app.classList.add('night-mode-white-blank-page');
+	else
+		_app.classList.remove('night-mode-white-blank-page');
 }
 
 // Show the comic context menu
@@ -2269,6 +2286,7 @@ module.exports = {
 	goPrevComic: goPrevComic,
 	orderBy: orderBy,
 	nightMode: nightMode,
+	nightModeConfig: nightModeConfig,
 	addComicButtons: addComicButtons,
 	comicContextMenu: comicContextMenu,
 	removeComic: removeComic,

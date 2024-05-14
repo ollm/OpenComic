@@ -1,4 +1,4 @@
-var changes = 80; // Update this if readingPagesConfig is updated
+var changes = 81; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -79,6 +79,8 @@ var storageDefault = {
 		theme: 'material-design',
 		themeColor: 'blue',
 		nightMode: false,
+		nightModeBlackBackground: false,
+		nightModeWhiteBlankPage: false,
 		systemNightMode: false,
 		zoomFactor: 1,
 		foldersFirst: true,

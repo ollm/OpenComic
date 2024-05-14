@@ -234,7 +234,9 @@
 			"startOnStartup": ""
 		},
 		"theme": {
-			"systemNightMode": ""
+			"systemNightMode": "",
+			"nightModeBlackBackground": "",
+			"nightModeWhiteBlankPage": ""
 		},
 		"releases": {
 			"main": "업데이트 확인",
