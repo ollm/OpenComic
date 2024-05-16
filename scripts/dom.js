@@ -2013,6 +2013,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		}
 	}
 
+	reading.setIsLoaded(false);
 	onReading = _onReading = true;
 
 	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();

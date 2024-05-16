@@ -110,7 +110,7 @@ function loadShortcuts()
 					name: language.reading.previous,
 					function: function(event){
 
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(event instanceof PointerEvent)
 						{
@@ -128,7 +128,7 @@ function loadShortcuts()
 					name: language.reading.next,
 					function: function(event){
 
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(event instanceof PointerEvent)
 						{
@@ -149,7 +149,7 @@ function loadShortcuts()
 					name: language.reading.firstPage,
 					function: function(event){
 
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
@@ -169,7 +169,7 @@ function loadShortcuts()
 					name: language.reading.lastPage,
 					function: function(event){
 
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
@@ -189,7 +189,7 @@ function loadShortcuts()
 					name: language.reading.prevChapter,
 					function: function(event){
 
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
@@ -209,7 +209,7 @@ function loadShortcuts()
 					name: language.reading.nextChapter,
 					function: function(event){
 
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
@@ -228,7 +228,7 @@ function loadShortcuts()
 				magnifyingGlass: {
 					name: language.reading.magnifyingGlass.main,
 					function: function(event, gamepad = false){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.activeMagnifyingGlass(null, !!gamepad);
 						return true;
 					},
@@ -236,7 +236,7 @@ function loadShortcuts()
 				hideBarHeader: {
 					name: language.reading.moreOptions.hideBarHeader,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.hideBarHeader();
 						return true;
 					},
@@ -244,7 +244,7 @@ function loadShortcuts()
 				hideContentLeft: {
 					name: language.reading.moreOptions.hideContentLeft,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.hideContentLeft();
 						return true;
 					},
@@ -252,7 +252,7 @@ function loadShortcuts()
 				createAndDeleteBookmark: {
 					name: language.reading.addBookmark,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.createAndDeleteBookmark();
 						return true;
 					},
@@ -260,7 +260,7 @@ function loadShortcuts()
 				zoomIn: {
 					name: language.menu.view.zoomIn,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.zoomIn(true, true);
 						return true;
 					},
@@ -268,7 +268,7 @@ function loadShortcuts()
 				zoomOut: {
 					name: language.menu.view.zoomOut,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.zoomOut(true, true);
 						return true;
 					},
@@ -276,7 +276,7 @@ function loadShortcuts()
 				resetZoom: {
 					name: language.menu.view.resetZoom+'<br>'+language.menu.view.originalSize,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						let center = true;
 						if(event instanceof PointerEvent) center = false;
 						reading.resetZoom(true, false, true, center);
@@ -286,7 +286,7 @@ function loadShortcuts()
 				fullscreen: {
 					name: language.menu.view.toggleFullScreen,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						fullScreen();
 						return true;
 					},
@@ -294,7 +294,7 @@ function loadShortcuts()
 				goBack: {
 					name: language.global.back,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.goBack();
 						return true;
 					},
@@ -302,7 +302,7 @@ function loadShortcuts()
 				gamepadMenu: {
 					name: language.settings.shortcuts.gamepadMenu,
 					function: function(){
-						if(inputIsFocused()) return false;
+						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.showMenu();
 						return true;
 					},

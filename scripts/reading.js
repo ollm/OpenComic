@@ -3907,7 +3907,7 @@ function readingImageClip()
 	}
 }
 
-var onLoadCallback = false, onLoadPromise = false;
+var onLoadCallback = false, onLoadPromise = false, isLoaded = false;
 
 async function isLoad()
 {
@@ -3921,6 +3921,7 @@ async function isLoad()
 		onLoadPromise.resolve();
 
 	onLoadPromise = false;
+	isLoaded = true;
 }
 
 function onLoad(callback)
@@ -4495,6 +4496,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 {
 	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [];
 
+	isLoaded = false;
 	magnifyingGlassPosition.mode = false;
 
 	loadReadingConfig(currentReadingConfigKey);
@@ -5298,6 +5300,8 @@ module.exports = {
 	generateEbookPagesDelayed: generateEbookPagesDelayed,
 	isEbook: function(){return readingIsEbook},
 	isCanvas: function(){return readingIsCanvas},
+	setIsLoaded: function(value){isLoaded=value},
+	isLoaded: function(value){return isLoaded},
 	isLoad: isLoad,
 	onLoad: onLoad,
 	ebook: readingEbook,
