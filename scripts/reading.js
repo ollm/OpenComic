@@ -784,22 +784,18 @@ function stayInLine(resize = false)
 		disableOnScroll(true);
 
 		if(stayInLineData.scrollTop === false)
-		{
 			stayInLineData = {scrollTop: previousScrollTop, scrollHeight: previousScrollHeight, height: previousContentHeight, position: prevImagesFullPosition[currentIndex-1][0], setTimeout: false};
-		}
-		else
-		{
-			clearTimeout(stayInLineData.setTimeout);
-			stayInLineData.setTimeout = setTimeout(function(){
 
-				previousContentHeight = stayInLineData.height;
-				previousScrollHeight = stayInLineData.scrollHeight;
-				stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
+		clearTimeout(stayInLineData.setTimeout);
+		stayInLineData.setTimeout = setTimeout(function(){
 
-				disableOnScroll(false);
+			previousContentHeight = stayInLineData.height;
+			previousScrollHeight = stayInLineData.scrollHeight;
+			stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
 
-			}, 400);
-		}
+			disableOnScroll(false);
+
+		}, 400);
 
 		let percent = ((stayInLineData.scrollTop + stayInLineData.height / 2) - stayInLineData.position.top) / stayInLineData.position.height;
 		content.scrollTop = position.top + (percent * position.height) - (rect.height / 2);
