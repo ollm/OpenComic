@@ -1854,9 +1854,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
 		if(extract)
-			this._7z = un7z.extractFull(this.realPath, this.tmp, {$bin: bin7z, $progress: true, $cherryPick: only});
+			this._7z = un7z.extractFull(this.realPath, this.tmp, {$bin: bin7z, $progress: true, $cherryPick: only, charset: 'UTF-8', listFileCharset: 'UTF-8'});
 		else
-			this._7z = un7z.list(this.realPath, {$bin: bin7z});
+			this._7z = un7z.list(this.realPath, {$bin: bin7z, charset: 'UTF-8', listFileCharset: 'UTF-8'});
 
 		return this._7z;
 
@@ -1947,7 +1947,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				_this.setProgress(1);
 
-				console.log('extract7z end:'+_this.path);
+				console.log('extract7z end: '+_this.path);
 
 				resolve();
 
