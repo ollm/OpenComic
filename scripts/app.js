@@ -104,6 +104,12 @@ function floorDPR(number, base = 0) {
 
 }
 
+function ceilDPR(number, base = 0) {
+
+	return Math.ceil(base + number * window.devicePixelRatio) / window.devicePixelRatio - base;
+
+}
+
 function invertedDPR(number) {
 
 	return 1 / window.devicePixelRatio;
@@ -292,6 +298,7 @@ module.exports = {
 	round: round,
 	roundDPR: roundDPR,
 	floorDPR: floorDPR,
+	ceilDPR: ceilDPR,
 	invertedDPR: invertedDPR,
 	pageY: pageY,
 	pageX: pageX,

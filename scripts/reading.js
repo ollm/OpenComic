@@ -712,7 +712,10 @@ function calculateView(first = false)
 		imagesPosition = [];
 		imagesFullPosition = [];
 
-		let scrollTop = content.scrollTop - rect.top;
+		const scale = config.readingGlobalZoom ? scalePrevData.scale : 1;
+		const margin = readingMargin();
+
+		const scrollTop = content.scrollTop - rect.top;
 
 		for(let key1 in imagesDistribution)
 		{
@@ -721,16 +724,27 @@ function calculateView(first = false)
 
 			for(let key2 in imagesDistribution[key1])
 			{
-				let image = contentRight.querySelector('.image-position'+key1+'-'+key2);
+				const image = contentRight.querySelector('.image-position'+key1+'-'+key2);
 				let top = 0, height = 0;
 
 				if(image)
 				{
-					let rect = image.getBoundingClientRect();
-					let scale = config.readingGlobalZoom ? scalePrevData.scale : 1;
+					const ocImg = image.querySelector('oc-img');
 
-					top = rect.top + (readingMargin().top * scale);
-					height = rect.height - (readingMargin().top * scale);
+					if(ocImg)
+					{
+						const rect = ocImg.getBoundingClientRect();
+
+						top = rect.top;
+						height = rect.height;
+					}
+					else
+					{
+						const rect = image.getBoundingClientRect();
+
+						top = rect.top + (margin.top * scale);
+						height = rect.height - ((margin.top) * scale);
+					}
 				}
 
 				imagesPosition[key1][key2] = (top + (height / 2)) + scrollTop;
@@ -789,8 +803,6 @@ function stayInLine(resize = false)
 		clearTimeout(stayInLineData.setTimeout);
 		stayInLineData.setTimeout = setTimeout(function(){
 
-			previousContentHeight = stayInLineData.height;
-			previousScrollHeight = stayInLineData.scrollHeight;
 			stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
 
 			disableOnScroll(false);
@@ -798,7 +810,9 @@ function stayInLine(resize = false)
 		}, 400);
 
 		let percent = ((stayInLineData.scrollTop + stayInLineData.height / 2) - stayInLineData.position.top) / stayInLineData.position.height;
-		content.scrollTop = position.top + (percent * position.height) - (rect.height / 2);
+
+		let scrollTop = position.top + (percent * position.height) - (rect.height / 2);
+		content.scrollTop = rect.height > stayInLineData.height ? app.ceilDPR(scrollTop) : app.floorDPR(scrollTop);
 	}
 }
 
