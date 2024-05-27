@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - PDF zoom not work if device pixel ratio is upper 1 [`d318cfc`](https://github.com/ollm/OpenComic/commit/d318cfc071b5e8d919b4c8acef89b85e8ef40cc8)
 - Optimized index loading and folder navigation [`0e6000f`](https://github.com/ollm/OpenComic/commit/0e6000f00e445de98eab7cdfbf72ee9b0016bf26)
 - Error extracting files with 7zip if the file name contained UTF8 characters [`27c863b`](https://github.com/ollm/OpenComic/commit/27c863b6a9abd434e8855216100e5f8087ed1e73)
+- Fullscreen error [`d72813a`](https://github.com/ollm/OpenComic/commit/d72813abbb0320a94bee5b2881c2bfcd1f2084cf)
 
 ## [v1.2.0](https://github.com/ollm/OpenComic/releases/tag/v1.2.0) (29-03-2024)
 
