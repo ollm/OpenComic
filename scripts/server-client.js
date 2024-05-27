@@ -254,6 +254,8 @@ var client = function(path) {
 
 	this.snackbarError = function(key, error) {
 
+		console.error(error);
+
 		let message = _serverLastError(false, error);
 
 		events.snackbar({
