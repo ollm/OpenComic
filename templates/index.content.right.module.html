@@ -55,7 +55,7 @@
 	<div class="content-empty{{#if serverLastError}} content-empty-server{{/if}}">
 		{{#if serverLastError}}
 
-			{{language.servers.error.connection}}
+			{{{serverLastError}}}
 			<br>
 			<div class="server-connection-error">
 				<div class="simple-button filled-tonal gamepad-item" onclick="dom.reloadIndex();">

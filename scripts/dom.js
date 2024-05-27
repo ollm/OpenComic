@@ -316,7 +316,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 		if(!pathFiles.length && fileManager.isServer(path) && serverClient.serverLastError())
 		{
-			handlebarsContext.serverLastError = true;
+			handlebarsContext.serverLastError = serverClient.serverLastError();
 			handlebarsContext.serverHasCache = file.serverHasCache(path);
 		}
 
@@ -504,7 +504,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			for(let i = 0, len = servers.length; i < len; i++)
 			{
-				if((servers[i].showOnLibrary || _indexLabel.favorites || _indexLabel.label || _indexLabel.server == servers[i].path) && !_indexLabel.masterFolder)
+				if((((servers[i].showOnLibrary || _indexLabel.favorites || _indexLabel.label) && !_indexLabel.server) || _indexLabel.server == servers[i].path) && !_indexLabel.masterFolder)
 				{
 					let file = fileManager.file(servers[i].path);
 					if(!_indexLabel.server) file.updateConfig({cacheServer: true});
@@ -531,7 +531,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 					if(!len && _indexLabel.server && serverClient.serverLastError())
 					{
-						handlebarsContext.serverLastError = true;
+						handlebarsContext.serverLastError = serverClient.serverLastError();
 						handlebarsContext.serverHasCache = file.serverHasCache(servers[i].path);
 					}
 
@@ -768,7 +768,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				return;
 			}
 		}
-		
+
 		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 		file.destroy();
 

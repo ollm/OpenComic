@@ -78,6 +78,20 @@ function isDomain(host)
 
 var serverLastError = false;
 
+function _serverLastError(original = true, error = false)
+{
+	error = error || serverLastError;
+
+	let message = error.message || error || 'Server Error';
+
+	if(/connection/.test(message))
+		message = language.servers.error.connection+(original ? '<br>'+message : '');
+	if(/folder_not_found/.test(message))
+		message = language.servers.error.folderNotFound+(original ? '<br>'+message : '');
+
+	return message;
+}
+
 var closeServersST = {};
 
 function closeServerST(adress)
@@ -240,14 +254,7 @@ var client = function(path) {
 
 	this.snackbarError = function(key, error) {
 
-		console.error(error);
-
-		let message = error.message || error || 'Server Error';
-
-		if(/connection/.test(message))
-			message = language.servers.error.connection;
-		if(/folder_not_found/.test(message))
-			message = language.servers.error.folderNotFound;
+		let message = _serverLastError(false, error);
 
 		events.snackbar({
 			key: key,
@@ -1434,5 +1441,5 @@ module.exports = {
 	getTypeAdress: getTypeAdress,
 	fixPath: fixPath,
 	servers: function(){return servers},
-	serverLastError: function(){return serverLastError},
+	serverLastError: _serverLastError,
 }
