@@ -908,7 +908,7 @@ function showAboutWindow()
 
 function escapeBackSlash(string)
 {
-	return string.replace(/\\+/g, '\\\\');
+	return string.replace(/\\/g, '\\\\');
 }
 
 function invertBackslash(string)
@@ -918,7 +918,7 @@ function invertBackslash(string)
 
 function encodeSrcURI(string)
 {
-	let segments = string.split(p.sep);
+	let segments = fileManager.splitPath(string);
 
 	for(let i in segments)
 	{

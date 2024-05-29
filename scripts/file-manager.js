@@ -658,7 +658,7 @@ var file = function(path, _config = false) {
 
 	this.readFromFilesList = function(files, path, lastCompressed) {
 
-		let segments = removePathPart(path, lastCompressed).split(p.sep);
+		let segments = splitPath(removePathPart(path, lastCompressed));
 
 		return this._readFromFilesList(segments, files);
 
@@ -802,7 +802,7 @@ var file = function(path, _config = false) {
 		if(macosMAS)
 		{
 			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
-			let segments = path.split(p.sep);
+			let segments = splitPath(path);
 
 			if(!segments[0])
 				segments[0] = p.sep;
@@ -1582,7 +1582,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		{
 			let file = files[i];
 			let fileIndex = i;
-			let segments = file.name.split(p.sep);
+			let segments = splitPath(file.name);
 
 			let dimension = dimensions;
 
@@ -2559,7 +2559,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(macosMAS)
 		{
 			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
-			let segments = path.split(p.sep);
+			let segments = splitPath(path);
 
 			if(!segments[0])
 				segments[0] = p.sep;
@@ -2704,7 +2704,7 @@ function downloadedCompressedFile(path)
 
 function realPath(path, index = 0, prefixes = false)
 {
-	let segments = path.split(p.sep);
+	let segments = splitPath(path);
 	let len = segments.length;
 
 	let virtualPath;
@@ -2786,7 +2786,7 @@ function isCompressed(name)
 
 function firstCompressedFile(path, index = 0, checkDirectory = true)
 {
-	let segments = path.split(p.sep);
+	let segments = splitPath(path);
 	let len = segments.length;
 
 	let newPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
@@ -2818,7 +2818,7 @@ function firstCompressedFileRealPath(path, index = 0)
 
 function lastCompressedFile(path, index = 0)
 {
-	let segments = path.split(p.sep);
+	let segments = splitPath(path);
 	let len = segments.length;
 
 	let newPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
@@ -2844,7 +2844,7 @@ function lastCompressedFile(path, index = 0)
 
 function allCompressedFiles(path, index = 0)
 {
-	let segments = path.split(p.sep);
+	let segments = splitPath(path);
 	let len = segments.length;
 
 	let newPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
@@ -2872,7 +2872,7 @@ function allCompressedFiles(path, index = 0)
 
 function containsCompressed(path, index = 0)
 {
-	let segments = path.split(p.sep);
+	let segments = splitPath(path);
 	let len = segments.length;
 
 	var virtualPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
@@ -2896,6 +2896,16 @@ function containsCompressed(path, index = 0)
 	}
 
 	return false;
+}
+
+function splitPath(path)
+{
+	const first = app.extract(/^([\\\/]*[^\\\/]+)[\\\/]*/, path);
+	const segments = path.replace(/^([\\\/]*[^\\\/]+)[\\\/]*/, '').split(p.sep).filter(i => i);
+
+	segments.unshift(first);
+
+	return segments;
 }
 
 function isParentPath(parentPath, fullPath)
@@ -3089,6 +3099,7 @@ module.exports = {
 	firstCompressedFile: firstCompressedFile,
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
+	splitPath: splitPath,
 	isParentPath: isParentPath,
 	simpleExists: simpleExists,
 	replaceReservedCharacters: replaceReservedCharacters,
