@@ -19,7 +19,7 @@ function pollGamepads()
 		}
 	}
 
-	if(_hasGamepads)
+	if(_hasGamepads && !config.disableGamepadInput)
 	{
 		if(!hasGamepads)
 		{
@@ -62,8 +62,6 @@ var prevHasAxes = false;
 
 function gamepadLoop()
 {
-	if(config.disableGamepadInput) return;
-
 	let gamepads = navigator.getGamepads();
 	let now = Date.now();
 
