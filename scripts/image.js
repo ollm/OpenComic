@@ -4,6 +4,8 @@ async function resize(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
+	fromImage = shortWindowsPath.generateSync(fromImage);
+
 	config = {...{
 		width: 200,
 		fit: sharp.fit.inside,
@@ -74,6 +76,8 @@ async function resizeToCanvas(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
+	fromImage = shortWindowsPath.generateSync(fromImage);
+
 	config = {...{
 		// background: 'white',
 		kernel: 'lanczos3',
@@ -112,6 +116,8 @@ async function resizeToCanvas(fromImage, config = {})
 async function resizeToBlob(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
+
+	fromImage = shortWindowsPath.generateSync(fromImage);
 
 	config = {...{
 		// background: 'white',
@@ -200,6 +206,8 @@ async function convertToPng(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
+	fromImage = shortWindowsPath.generateSync(fromImage);
+
 	config = {...{
 		// background: 'white',
 		kernel: 'nearest',
@@ -225,6 +233,8 @@ async function convertToPng(fromImage, toImage, config = {})
 async function convertToWebp(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
+
+	fromImage = shortWindowsPath.generateSync(fromImage);
 
 	config = {...{
 		// background: 'white',

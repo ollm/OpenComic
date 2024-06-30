@@ -83,6 +83,7 @@ const electron = require('electron'),
 	sha1 = require('sha1'),
 	p = require('path'),
 	isEqual = require('lodash.isequal'),
+	shortWindowsPath = require('short-windows-path'),
 	$ = require('jquery');
 
 require('jquery-bez');
@@ -1142,6 +1143,12 @@ hb.registerHelper('encodeURI', function(string) {
 hb.registerHelper('encodeSrcURI', function(string) {
 
 	return encodeSrcURI(string);
+
+});
+
+hb.registerHelper('shortWindowsPath', function(string) {
+
+	return shortWindowsPath.generateSync(string);
 
 });
 

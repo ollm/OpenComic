@@ -20,7 +20,7 @@
 				{{else if ebook}}
 				<!-- <iframe> -->
 				{{else}}
-				<img src="{{chain 'encodeSrcURI' 'invertBackslash' image}}" data-src="{{htmlQuote image}}" data-path="{{htmlQuote path}}" data-index="{{index}}">
+				<img src="{{chain 'shortWindowsPath' 'encodeSrcURI' 'invertBackslash' image}}" data-src="{{htmlQuote image}}" data-path="{{htmlQuote path}}" data-index="{{index}}">
 				{{/if}}
 			</oc-img>
 			{{/if}}

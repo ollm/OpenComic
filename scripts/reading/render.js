@@ -441,7 +441,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			}
 			else
 			{
-				img.src = encodeSrcURI(img.dataset.src);
+				img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
 				img.classList.remove('blobRendered', 'blobRender');
 				img.style.imageRendering = '';
 			}
