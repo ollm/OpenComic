@@ -1679,6 +1679,26 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.stackOnlyInTasks = function(only, stackSize = 500) {
+
+		const tasks = [];
+
+		if(only)
+		{
+			for(let i = 0, len = Math.ceil(only.length / stackSize); i < len; i++)
+			{
+				tasks.push(only.slice(i * stackSize, i * stackSize + stackSize));
+			}
+
+			return tasks;
+		}
+		else
+		{
+			return [only];
+		}
+
+	}
+
 	this.fixCorruptedName = function(name, pos = 0) {
 
 		if(/�/.test(name))
@@ -1918,58 +1938,76 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let only = this.config.only; 
 		let _this = this;
 
-		let _7z = await this.open7z(true, this.config._only || false);
-		let extractedSome = false;
+		const onlyLen = this.config._only ? this.config._only.length : false;
+		const tasks = this.stackOnlyInTasks(this.config._only || false, 500);
 
-		return new Promise(function(resolve, reject) {
+		let result = false;
+		let error = false;
 
-			_7z.on('data', function(data) {
+		this.progressIndex = 1;
 
-				let extract = data.status == 'extracted' ? true : false;
+		for(let i = 0, len = tasks.length; i < len; i++)
+		{
+			const onlyStack = tasks[i];
 
-				if(extract)
-				{
-					let name = _this.removeTmp(p.normalize(data.file));
+			const _7z = await this.open7z(true, onlyStack);
+			let extractedSome = false;
 
-					_this.setFileStatus(name, {extracted: extract});
-					_this.whenExtractFile(p.join(_this.path, name));
+			result = await new Promise(function(resolve, reject) {
 
-					extractedSome = true;
-				}
+				_7z.on('data', function(data) {
 
-			}).on('progress', function(progress) {
+					let extract = data.status == 'extracted' ? true : false;
 
-  				_this.setProgress(progress.percent / 100);
+					if(extract)
+					{
+						let name = _this.removeTmp(p.normalize(data.file));
 
-			}).on('end', function(data) {
+						_this.setFileStatus(name, {extracted: extract});
+						_this.whenExtractFile(p.join(_this.path, name));
 
-				console.timeEnd('extract7z: '+_this.path);
+						extractedSome = true;
 
-				_this.setProgress(1);
+						_this.setProgress(_this.progressIndex++ / onlyLen);
+					}
 
-				console.log('extract7z end: '+_this.path);
+				}).on('progress', function(progress) {
 
-				resolve();
+					if(!onlyLen)
+						_this.setProgress(progress.percent / 100);
 
-			}).on('error', function(error) {
+				}).on('end', function(data) {
 
-				if(extractedSome)
-				{
-					/*_this.setProgress(1);
-					resolve();*/
+					resolve();
 
-					_this.saveErrorToCache(error);
-					dom.compressedError(error, false, sha1(_this.path));
-				}
-				else
-				{
-					resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
-				}
+				}).on('error', function(error) {
+
+					if(extractedSome)
+					{
+						/*_this.setProgress(1);
+						resolve();*/
+
+						_this.saveErrorToCache(error);
+						dom.compressedError(error, false, sha1(_this.path));
+					}
+					else
+					{
+						error = true;
+						resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
+					}
+
+				});
 
 			});
 
-		});
-		
+			if(error) return result;
+		}
+
+		this.setProgress(1);
+
+		console.timeEnd('extract7z: '+_this.path);
+
+		return result;
 	}
 
 

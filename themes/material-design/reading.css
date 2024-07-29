@@ -97,17 +97,23 @@
 .reading-images
 {
 	width: 80px;
+	margin-left: calc(100% - 80px);
+	text-align: center;
+}
+
+.reading-images > *
+{
+	max-width: 80px;
 	border-radius: 7px;
 	background-size: 100%;
 	background-repeat: no-repeat;
 	background-position: 50%;
-	margin-left: calc(100% - 80px);
 	border: 1px solid var(--md-sys-color-surface-variant);
 	transition: 0.2s border;
 	opacity: 0;
 }
 
-.reading-images.show
+.reading-images > *.show
 {
 	opacity: 1;
 }

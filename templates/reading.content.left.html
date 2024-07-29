@@ -4,7 +4,9 @@
 	{{#if folder}}
 	<i class="material-icon">folder</i>
 	{{else}}
-	<img class="reading-images sha-image-{{sha}}{{#if thumbnail}} show{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}" onload="this.classList.add('show')">
+	<div class="reading-images">
+		<img class="sha-image-{{sha}}{{#if thumbnail}} show{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}" onload="this.classList.add('show')">
+	</div>
 	{{/if}}
 </div>
 {{/each}}
