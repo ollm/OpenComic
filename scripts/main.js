@@ -61,7 +61,7 @@ function createWindow() {
 			backgroundThrottling: false,
 			nativeWindowOpen: false,
 		},
-		titleBarStyle: 'hidden',
+		titleBarStyle: (process.platform == 'linux') ? 'native' : 'hidden',
 		titleBarOverlay: {
 			color: '#242a3000',
 			symbolColor: '#c2c7cf',
