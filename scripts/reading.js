@@ -1492,6 +1492,8 @@ function scrollNextOrPrevComic(prev = false, delay = false)
 
 function onScroll(event)
 {
+	if(!isLoaded || !onReading) return;
+
 	if(activeOnScroll && readingViewIs('scroll'))
 	{
 		let scrollTop = this.scrollTop;
