@@ -217,25 +217,6 @@
 				"application/x-directory"
 			]
 		},
-		"deb": {
-			"depends": [
-				"gconf2",
-				"gconf-service",
-				"libnotify4",
-				"libappindicator1",
-				"libxtst6",
-				"libnss3"
-			]
-		},
-		"rpm": {
-			"depends": [
-				"GConf2",
-				"libnotify",
-				"libappindicator",
-				"libXtst",
-				"nss"
-			]
-		},
 		"snap": {
 			"buildPackages": [],
 			"stagePackages": [
