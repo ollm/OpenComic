@@ -151,9 +151,19 @@
 	display: flex;
 }
 
+.reading-body > div.compact
+{
+	display: block;
+}
+
 .reading-lens > div > div
 {
 	display: flex;
+}
+
+.reading-lens > div > div.compact
+{
+	display: block;
 }
 
 .reading-body .r-flex, .reading-lens .r-flex
@@ -161,6 +171,26 @@
 	display: flex;
 	position: relative;
 	will-change: auto; /*transform*/
+}
+
+.reading-body .compact .r-flex, .reading-lens .compact .r-flex
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background-color: var(--md-sys-color-background);
+	z-index: 0;
+	content-visibility: hidden;
+}
+
+.reading-body .fade .r-flex, .reading-lens .fade .r-flex
+{
+	opacity: 0;
+}
+
+.reading-body .compact .r-flex.active, .reading-lens .compact .r-flex.active
+{
+	content-visibility: visible;
 }
 
 .reading-body .r-img
@@ -307,6 +337,7 @@
 .reading-lens.h
 {
 	visibility: hidden;
+	content-visibility: hidden;
 }
 
 .reading-filters
@@ -694,3 +725,200 @@
 	background-color: var(--md-sys-color-outline-variant);
 	transition: 0.2s;
 }
+
+
+/* Page Transitions */
+
+.reading-transitions
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	content-visibility: hidden;
+	/*pointer-events: none;*/
+	background-color: var(--md-sys-color-background);
+	display: flex;
+}
+
+
+.reading-transitions.active
+{
+	z-index: 99;
+	content-visibility: visible;
+}
+
+.reading-transitions-left,
+.reading-transitions-right
+{
+	width: 50%;
+}
+
+.reading-transitions-center
+{
+	width: 100%;
+	position: absolute;
+	height: 100%;
+}
+
+/*.reading-transitions-left > div
+{
+	background-color: blue;
+}
+
+.reading-transitions-right > div
+{
+	background-color: red;
+}*/
+
+.reading-transitions-left > div,
+.reading-transitions-right > div,
+.reading-transitions-center > div
+{
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	background-color: var(--md-sys-color-background);
+}
+
+.reading-transitions-center > div
+{
+	background-color: transparent;
+}
+
+.reading-transitions-left > div > div,
+.reading-transitions-right > div > div,
+.reading-transitions-center > div > div
+{
+	/*overflow: hidden;*/
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	transition: 0.3s opacity;
+}
+
+.reading-transitions-left > div .r-flex,
+.reading-transitions-right > div .r-flex,
+.reading-transitions-center > div .r-flex
+{
+	content-visibility: visible !important;
+	background-color: transparent !important;
+}
+
+.reading-transitions-left oc-img iframe,
+.reading-transitions-right oc-img iframe,
+.reading-transitions-center oc-img iframe
+{
+	opacity: 0;
+}
+
+.reading-transitions-left oc-img iframe.active,
+.reading-transitions-right oc-img iframe.active,
+.reading-transitions-center oc-img iframe.active
+{
+	opacity: 1;
+}
+
+.reading-transitions-right > div .r-flex
+{
+	margin-left: -100%;
+}
+
+.rough-page-turn .reading-transitions-left > div > div,
+.smooth-page-turn .reading-transitions-left > div > div
+{
+	transform-origin: right center;
+}
+
+.rough-page-turn .reading-transitions-right > div > div,
+.smooth-page-turn .reading-transitions-right > div > div
+{
+	transform-origin: left center;
+}
+
+.smooth-page-turn .reading-transitions-center > div > div,
+.smooth-page-turn .reading-transitions-center > div > div > div
+{
+	transform-origin: center bottom;
+}
+
+.smooth-page-turn .reading-transitions-center > div > div > div.reading-transitions-shadow
+{
+	transform-origin: left bottom;
+}
+
+.reading-transitions-shadow
+{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: black;
+	z-index: 11;
+	filter: blur(0px);
+	background-color: rgba(0, 0, 0, 0.7);
+}
+
+.reading-transitions-color
+{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background: transparent;
+	z-index: 11;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.reading-transitions-left .reading-transitions-shadow
+{
+	right: -100%;
+}
+
+.reading-transitions-right .reading-transitions-shadow
+{
+	left: -100%;
+}
+
+.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.pixelated,
+.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.originalSize:not(.zoomed),
+.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.zoomOriginalSize,
+.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.blobRendered,
+.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > canvas
+{
+	image-rendering: initial;
+}
+
+.reading-view
+{
+	display: flex;
+	flex-wrap: wrap;
+	height: inherit;
+}
+
+.reading-view .chip
+{
+	width: calc(50% - 4px);
+}
+
+.reading-view .chip:nth-child(even)
+{
+	margin-right: 0px;
+}
+
+.test-point-draw
+{
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	width: 4px;
+	height: 4px;
+	border-radius: 4px;
+	background-color: red;
+}
+
+/*{
+	image-rendering: initial;
+}*/

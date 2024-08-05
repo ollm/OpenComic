@@ -278,8 +278,30 @@
 		</div>
 		<div class="tabs-page-layout{{#compare readingPagesTab '==' 'page-layout'}} active{{/compare}}">
 
-			<div class="menu-simple-element pages-slide gamepad-item{{#compare _config.readingView '==' 'slide'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'slide', false);">{{language.reading.pages.slide}}</div>
-			<div class="menu-simple-element pages-scroll gamepad-item{{#compare _config.readingView '==' 'scroll'}} s{{/compare}}{{#if _config.readingWebtoon}} disable-pointer{{/if}}" onclick="reading.changePagesView(1, 'scroll', false);">{{language.reading.pages.scroll}}</div>
+			<div class="menu-simple-text reading-view{{#if _config.readingWebtoon}} disable-pointer{{/if}}" style="padding-top: 8px; padding-bottom: 0px;">
+
+				<div class="chip chip-big label-large chip-icon-left reading-view-slide gamepad-item{{#compare _config.readingView '==' 'slide'}} active{{/compare}}" onclick="reading.changePagesView(1, 'slide', false);">
+					<div></div><i class="icon-24 material-icon" onclick="">transition_slide</i> {{language.reading.pages.slide}}
+				</div>
+
+				<div class="chip chip-big label-large chip-icon-left reading-view-scroll gamepad-item{{#compare _config.readingView '==' 'scroll'}} active{{/compare}}" onclick="reading.changePagesView(1, 'scroll', false)">
+					<div></div><i class="icon-24 material-icon" onclick="">contract</i> {{language.reading.pages.scroll}}
+				</div>
+
+				<div class="chip chip-big label-large chip-icon-left reading-view-rough-page-turn gamepad-item{{#compare _config.readingView '==' 'rough-page-turn'}} active{{/compare}}" onclick="reading.changePagesView(1, 'rough-page-turn', false)">
+					<div></div><i class="icon-24 material-icon" onclick="">import_contacts</i> {{language.reading.pages.roughPageTurn}} (Beta)
+				</div>
+
+				<div class="chip chip-big label-large chip-icon-left reading-view-smooth-page-turn gamepad-item{{#compare _config.readingView '==' 'smooth-page-turn'}} active{{/compare}}" onclick="reading.changePagesView(1, 'smooth-page-turn', false)">
+					<div></div><i class="icon-24 material-icon" onclick="">auto_stories</i> {{language.reading.pages.smoothPageTurn}} (Alpha)
+				</div>
+
+				<div class="chip chip-big label-large chip-icon-left reading-view-fade gamepad-item{{#compare _config.readingView '==' 'fade'}} active{{/compare}}" onclick="reading.changePagesView(1, 'fade', false)">
+					<div></div><i class="icon-24 material-icon" onclick="">transition_fade</i> {{language.reading.pages.fade}}
+				</div>
+
+			</div>
+
 			<div class="menu-simple-separator-min"></div>
 			<div class="menu-simple-text reading-reading-manga gamepad-item{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
 				{{language.reading.pages.readingManga}}

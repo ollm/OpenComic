@@ -1,6 +1,7 @@
 const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	filters = require(p.join(appDir, 'scripts/reading/filters.js')),
 	music = require(p.join(appDir, 'scripts/reading/music.js')),
+	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js'));
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
@@ -673,25 +674,33 @@ function calculateView(first = false)
 		scrollHeight: content.scrollHeight,
 	};
 
-	if(readingViewIs('slide'))
+	if(readingViewIs('compact'))
+	{
+		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
+			width: rect.width+'px',
+			height: rect.height+'px',
+			flexDirection: '',
+		}).addClass('compact', readingView());
+	}
+	else if(readingViewIs('slide'))
 	{
 		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
 			width: (rect.width * indexNum)+'px',
 			height: rect.height+'px',
 			flexDirection: '',
-		});
+		}).removeClass('compact', 'fade', 'rough-page-turn', 'smooth-page-turn');
 	}
 	else if(readingViewIs('scroll'))
 	{
 		dom.this(contentRight).find('.reading-body > div').css({
 			width: '100%',
 			flexDirection: 'column',
-		});
+		}).removeClass('compact', 'fade', 'rough-page-turn', 'smooth-page-turn');
 
 		dom.this(contentRight).find('.reading-lens > div > div').css({
 			width: rect.width+'px',
 			flexDirection: 'column',
-		});
+		}).removeClass('compact', 'fade', 'rough-page-turn', 'smooth-page-turn');
 
 		rect = content.getBoundingClientRect();
 
@@ -779,7 +788,16 @@ function getPreviusContentSize()
 
 function stayInLine(resize = false)
 {
-	if(readingViewIs('slide'))
+	if(readingViewIs('compact'))
+	{
+		if(currentIndex < 1 && dom.previousComic())
+			showPreviousComic(1, false);
+		else if(currentIndex > contentNum && dom.nextComic())
+			showNextComic(1, false);
+		else
+			pageTransitions.goToIndex(currentIndex, false);
+	}
+	else if(readingViewIs('slide'))
 	{
 		if(currentIndex < 1 && dom.previousComic())
 			showPreviousComic(1, false);
@@ -986,6 +1004,8 @@ function goToImage(imageIndex, disableSave = false)
 		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
 
+		calculateRealReadingDirection(newIndex);
+
 		goToIndex(newIndex);
 		goToImageCL(imageIndex, true)
 	}
@@ -1002,6 +1022,8 @@ function goToFolder(folderIndex)
 
 		if(_config.readingManga && !readingViewIs('scroll'))
 			newIndex = (indexNum - newIndex) + 1;
+
+		calculateRealReadingDirection(newIndex);
 
 		goToIndex(newIndex);
 		goToImageCL(folderIndex, true)
@@ -1104,7 +1126,15 @@ function returnLargerImage(index)
 	}
 }
 
-var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, disableOnScrollST = false;
+var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, realReadingDirection = true, disableOnScrollST = false;
+
+function calculateRealReadingDirection(index)
+{
+	if(currentIndex > index)
+		realReadingDirection = false;
+	else
+		realReadingDirection = true;
+}
 
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
@@ -1115,7 +1145,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	let _currentScale = currentScale;
 
 	if(currentScale != 1 && animation && !(config.readingGlobalZoom && readingViewIs('scroll')))
-		reading.resetZoom(true, false, true, true, (config.readingGlobalZoomSlide && readingViewIs('slide')));
+		reading.resetZoom(true, false, true, true, (config.readingGlobalZoomSlide && !readingViewIs('scroll')));
 
 	let content = template._contentRight().firstElementChild;
 	let rect = content.getBoundingClientRect();
@@ -1211,7 +1241,11 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		currentPageStart = true;
 	}
 
-	if(readingViewIs('slide'))
+	if(readingViewIs('compact'))
+	{
+		pageTransitions.goToIndex(eIndex, animation);
+	}
+	else if(readingViewIs('slide'))
 	{
 		template.contentRight('.reading-body > div, .reading-lens > div > div').css({
 			'transition': 'transform '+animationDurationS+'s',
@@ -1268,7 +1302,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	}, false, false, true);
 
-	if(_currentScale && _currentScale != 1 && config.readingGlobalZoomSlide && readingViewIs('slide'))
+	if(_currentScale && _currentScale != 1 && config.readingGlobalZoomSlide && !readingViewIs('scroll'))
 	{
 		currentZoomIndex = false;
 		currentScale = _currentScale;
@@ -1321,6 +1355,9 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 	{
 		let index = closest.page.index + 1;
 
+		if(_config.readingDoublePage)
+			index = Math.ceil(index / 2);
+
 		if(_config.readingManga && !readingViewIs('scroll'))
 			index = (indexNum - closest.page.index);
 
@@ -1335,7 +1372,7 @@ function goNext()
 
 	var nextIndex = currentIndex + 1;
 
-	readingDirection = true;
+	readingDirection = realReadingDirection = true;
 
 	if(currentIndex < 1)
 		showPreviousComic(2, true);
@@ -1354,7 +1391,7 @@ function goPrevious()
 
 	var previousIndex = currentIndex - 1;
 
-	readingDirection = false;
+	readingDirection = realReadingDirection = false;
 
 	if(currentIndex > indexNum)
 		showNextComic(2, true);
@@ -1382,6 +1419,7 @@ function goStart(force = false)
 		else
 		{
 			readingDirection = true;
+			realReadingDirection = false;
 
 			goToIndex(1, true);
 
@@ -1424,6 +1462,7 @@ function goEnd(force = false)
 		else
 		{
 			readingDirection = false;
+			realReadingDirection = true;
 
 			goToIndex(indexNum, true, true, true);
 
@@ -1661,25 +1700,7 @@ function showNextComic(mode, animation = true, invert = false)
 
 		if(_config.readingDelayComicSkip != 0)
 		{
-			if(readingViewIs('slide'))
-			{
-				var skip = template.contentRight('.reading-skip-right');
-
-				skip.css({
-					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
-					'transform': 'translate(-100px, 0px)',
-				});
-
-				var scale = ((contentWidth - 100) / contentWidth);
-
-				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-					'transform-origin': '0px center',
-					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
-					'transition-property': 'transform',
-					'transform': 'scale('+scale+') translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
-				});
-			}
-			else if(readingViewIs('scroll'))
+			if(readingViewIs('scroll'))
 			{
 				var skip = template.contentRight('.reading-skip-bottom');
 
@@ -1697,6 +1718,24 @@ function showNextComic(mode, animation = true, invert = false)
 					'transform': 'scale('+scale+')',
 				});
 			}
+			else
+			{
+				var skip = template.contentRight('.reading-skip-right');
+
+				skip.css({
+					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
+					'transform': 'translate(-100px, 0px)',
+				});
+
+				var scale = ((contentWidth - 100) / contentWidth);
+
+				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+					'transform-origin': '0px center',
+					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
+					'transition-property': 'transform',
+					'transform': 'scale('+scale+') translate(-'+(contentWidth * (readingViewIs('slide') ? (indexNum - 1) : 0))+'px, 0px)',
+				});
+			}
 
 			skip.find('circle').css('animation-duration', _config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
@@ -1710,19 +1749,7 @@ function showNextComic(mode, animation = true, invert = false)
 	}
 	else
 	{
-		if(readingViewIs('slide'))
-		{
-			var skip = template.contentRight('.reading-skip-right').css({
-				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
-				'transform': 'translate(0px, 0px)',
-			});
-
-			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
-				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
-				'transform': 'scale(1) translate(-'+(contentWidth * (indexNum - 1))+'px, 0px)',
-			});
-		}
-		else if(readingViewIs('scroll'))
+		if(readingViewIs('scroll'))
 		{
 			var skip = template.contentRight('.reading-skip-bottom').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
@@ -1732,6 +1759,18 @@ function showNextComic(mode, animation = true, invert = false)
 			template.contentRight('.reading-body, .reading-lens > div').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
+			});
+		}
+		else
+		{
+			var skip = template.contentRight('.reading-skip-right').css({
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transform': 'translate(0px, 0px)',
+			});
+
+			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transform': 'scale(1) translate(-'+(contentWidth * (readingViewIs('slide') ? (indexNum - 1) : 0))+'px, 0px)',
 			});
 		}
 
@@ -1754,7 +1793,26 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 		if(_config.readingDelayComicSkip != 0)
 		{
-			if(readingViewIs('slide'))
+			if(readingViewIs('scroll'))
+			{
+				var skip = template.contentRight('.reading-skip-top');
+
+				skip.css({
+					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
+					'transform': 'translate(0px, 100px)',
+				});
+
+				var scale = ((contentHeight - 100) / contentHeight);
+
+				template.contentRight('.reading-body, .reading-lens > div').css({
+					'transform-origin': 'center '+contentHeight+'px',
+					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
+					'transition-property': 'transform',
+					'transform': 'scale('+scale+')',
+				});
+
+			}
+			else
 			{
 				var skip = template.contentRight('.reading-skip-left');
 
@@ -1773,24 +1831,6 @@ function showPreviousComic(mode, animation = true, invert = false)
 				});
 
 			}
-			else if(readingViewIs('scroll'))
-			{
-				var skip = template.contentRight('.reading-skip-top');
-
-				skip.css({
-					'transition': 'transform '+transition+'s, background-color 0.2s, box-shadow 0.2s',
-					'transform': 'translate(0px, 100px)',
-				});
-
-				var scale = ((contentHeight - 100) / contentHeight);
-
-				template.contentRight('.reading-body, .reading-lens > div').css({
-					'transform-origin': 'center '+contentHeight+'px',
-					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
-					'transition-property': 'transform',
-					'transform': 'scale('+scale+')',
-				});
-			}
 
 			skip.find('circle').css('animation-duration', _config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
@@ -1804,9 +1844,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 	}
 	else
 	{
-		if(readingViewIs('slide'))
+		if(readingViewIs('scroll'))
 		{
-			var skip = template.contentRight('.reading-skip-left');
+			var skip = template.contentRight('.reading-skip-top');
 
 			skip.css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
@@ -1818,9 +1858,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
-		else if(readingViewIs('scroll'))
+		else
 		{
-			var skip = template.contentRight('.reading-skip-top');
+			var skip = template.contentRight('.reading-skip-left');
 
 			skip.css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
@@ -2624,6 +2664,7 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 
 		dom.this(contentRight).find('.reading-lens').css({
 			display: 'block',
+			contentVisibility: 'visible',
 			transform: 'translate('+left+'px, '+top+'px)',
 			width: lensWidth+'px',
 			height: lensHeight+'px',
@@ -2648,7 +2689,7 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		{
 			magnifyingGlassControlST = setTimeout(function(){
 
-				dom.this(contentRight).find('.reading-lens').css({display: 'none'});
+				dom.this(contentRight).find('.reading-lens').css({display: 'none', contentVisibility: 'hidden'});
 
 			}, 300);
 		}
@@ -2798,10 +2839,18 @@ function readingViewIs(value)
 	if(value == 'scroll' && _config.readingWebtoon)
 		return true;
 
-	if(_config.readingView == value && !_config.readingWebtoon)
+	if((_config.readingView == value || (value == 'compact' && _config.readingView != 'scroll' && _config.readingView != 'slide')) && !_config.readingWebtoon)
 		return true;
 
 	return false;
+}
+
+function readingView()
+{
+	if(_config.readingWebtoon)
+		return 'scroll';
+
+	return _config.readingView;
 }
 
 var activeOnScroll = true;
@@ -2892,6 +2941,7 @@ function changePagesView(mode, value, save)
 		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
 		loadReadingPages(false, false, selectTab);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -2900,19 +2950,15 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingView', value);
 
-		dom.selectElement('.pages-'+value);
+		dom.queryAll('.reading-view .chip.active').removeClass('active');
+		dom.query('.reading-view-'+value).addClass('active');
 
-		if(value == 'slide' && (_config.readingViewAdjustToWidth || _config.readingWebtoon))
-		{
-			//storage.updateVar('config', 'readingViewAdjustToWidth', false);
-			//template.globalElement('.reading-ajust-to-width .switch').removeClass('a');
-		}
-
-		if(value == 'slide')
+		if(value != 'scroll')
 			template.globalElement('.reading-ajust-to-width').addClass('disable-pointer');
 		else
 			template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -2930,6 +2976,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingViewAdjustToWidth', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -2951,6 +2998,7 @@ function changePagesView(mode, value, save)
 
 		updateReadingPagesConfig('readingDoublePage', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -2959,7 +3007,10 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingDoNotApplyToHorizontals', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
+
+		console.log(imageIndex);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
@@ -2967,6 +3018,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingManga', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -2977,7 +3029,7 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').addClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').addClass('disable-pointer');
 		}
 		else
 		{
@@ -2987,9 +3039,10 @@ function changePagesView(mode, value, save)
 			if(_config.readingDoublePage)
 				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
 
-			template.globalElement('.pages-slide, .pages-scroll, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').removeClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').removeClass('disable-pointer');
 		}
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -3020,6 +3073,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingBlankPage', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -3028,6 +3082,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingHorizontalsMarginActive', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		if(value)
@@ -3088,6 +3143,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingNotEnlargeMoreThanOriginalSize', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -3096,6 +3152,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingRotateHorizontals', value);
 
+		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
@@ -4078,7 +4135,14 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 	}
 	else if(!nextOpenChapterProgress && imagesDistribution && imagesDistribution[0] && !imagePath)
 	{
-		let imageIndex = imagesDistribution[currentIndex - 1][0].index;
+		const doublePage = imagesDistribution[0].length > 1 ? true : false;
+
+		let index = currentIndex;
+
+		if(doublePage && !_config.readingDoublePage)
+			index = Math.ceil(index / 2);
+
+		let imageIndex = imagesDistribution[index - 1][0].index;
 		let page = _ebook.pages[imageIndex - 1];
 
 		let chapterIndex = page.chapterIndex;
@@ -4090,9 +4154,6 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 	hasGenerateEbookPages = true;
 
 	let ebookConfig = await getEbookConfig();
-
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
-
 	let ebookPages = await readingFileC.ebookPages(ebookConfig);
 
 	if(hasGenerateEbookPages === 1) // Priorize last generateEbookPages request
@@ -4102,6 +4163,8 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 	}
 	else if(!generateEbookPagesCancel)
 	{
+		images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
+
 		let comics = [];
 
 		for(let i = 0, len = ebookPages.pages.length; i < len; i++)
@@ -4278,6 +4341,9 @@ function pointermove(event)
 					time: performance.now(),
 					pageX: app.pageX(event),
 				}];
+
+				if(readingViewIs('compact'))
+					pageTransitions.touchstart(event, touchevents);
 			}
 		}
 
@@ -4297,10 +4363,18 @@ function pointermove(event)
 				else if(left > (contentNum - 1) * touchevents.contentRect.width)
 					left = (contentNum - 1) * touchevents.contentRect.width;
 
-				dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
-					transition: '0s',
-					transform: 'translate('+(-left)+'px, 0)',
-				});
+				if(readingViewIs('compact'))
+				{
+					if(left != 0 && left != (contentNum - 1) * touchevents.contentRect.width)
+						pageTransitions.touchmove(event, touchevents);
+				}
+				else
+				{
+					dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
+						transition: '0s',
+						transform: 'translate('+(-left)+'px, 0)',
+					});
+				}
 
 				if(touchevents.speed.length > 2)
 					touchevents.speed.shift();
@@ -5236,7 +5310,7 @@ module.exports = {
 	goToPage: goToPage,
 	goToImage: goToImage,
 	goToFolder: goToFolder,
-	goToIndex: function(v1, v2, v3, v4){readingDirection = true; goToIndex(v1, v2, v3, v4)},
+	goToIndex: function(v1, v2, v3, v4){readingDirection = true; calculateRealReadingDirection(v1); goToIndex(v1, v2, v3, v4)},
 	goToChapterProgress: goToChapterProgress,
 	setNextOpenChapterProgress: setNextOpenChapterProgress,
 	goStart: goStart,
@@ -5267,7 +5341,10 @@ module.exports = {
 	stayInLine: stayInLine,
 	setCurrentComics: setCurrentComics,
 	currentComics: function(){return currentComics},
+	readingView: readingView,
 	readingViewIs: readingViewIs,
+	readingDirection: function(){return readingDirection},
+	realReadingDirection: function(){return realReadingDirection},
 	disableOnScroll: disableOnScroll,
 	activeOnScroll: function(){return activeOnScroll},
 	saveReadingProgress: saveReadingProgress,
@@ -5319,5 +5396,6 @@ module.exports = {
 	ebook: readingEbook,
 	filters: filters,
 	music: music,
+	pageTransitions: pageTransitions,
 	render: render,
 };

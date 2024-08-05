@@ -127,4 +127,6 @@ module.exports = {
 	end: end,
 	stop: stop,
 	resume: resume,
+	get: function(key){return queued[key]},
+	set: function(key, value){queued[key] = value},
 };

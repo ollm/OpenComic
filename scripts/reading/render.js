@@ -6,6 +6,7 @@ var file = false,
 	renderCanvas = false,
 	renderEbook = false,	
 	imagesData = {},
+	rendering = {},
 	rendered = {},
 	renderedMagnifyingGlass = {},
 	renderedObjectsURL = [],
@@ -83,6 +84,24 @@ function setMagnifyingGlassStatus(active = false)
 
 var sendToQueueST = false;
 
+function getVisbleImages(doublePage = false)
+{
+	const isScroll = reading.readingViewIs('scroll');
+
+	let images = doublePage ? 2 : 0;
+	if(isScroll) images += 2;
+
+	let prev = images;
+	let next = images;
+
+	if(next == 0)
+		next = 1;
+
+	console.log({prev: prev, next: next});
+
+	return {prev: prev, next: next}; 
+}
+
 function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 {
 	if(!file && !renderImages) return;
@@ -96,12 +115,14 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 	globalZoom = _globalZoom;
 	doublePage = _doublePage;
 
+	const visbleImages = getVisbleImages(doublePage);
+
 	if(globalZoom)
 	{
 		rendered = {};
 		renderedMagnifyingGlass = {};
 
-		setRenderQueue(0, doublePage ? 2 : 1);
+		setRenderQueue(visbleImages.prev, visbleImages.next);
 
 		sendToQueueST = setTimeout(function(){
 
@@ -112,7 +133,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 	}
 	else
 	{
-		setRenderQueue(0, doublePage ? 2 : 1, _scale);
+		setRenderQueue(visbleImages.prev, visbleImages.next, _scale);
 
 		sendToQueueST = setTimeout(function(){
 
@@ -159,9 +180,10 @@ function resized(doublePage = false)
 	rendered = {};
 	renderedMagnifyingGlass = {};
 
-	if(readingBody) readingBody.classList.remove('resizing')
+	if(readingBody) readingBody.classList.remove('resizing');
 
-	setRenderQueue(0, doublePage ? 2 : 1);
+	const visbleImages = getVisbleImages(doublePage);
+	setRenderQueue(visbleImages.prev, visbleImages.next);
 
 	sendToQueueST = setTimeout(function(){
 
