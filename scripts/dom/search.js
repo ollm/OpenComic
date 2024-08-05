@@ -5,7 +5,6 @@ function removeDiacritics(str)
 
 function searchText(regexps, text)
 {
-
 	for(let i = 0, len = regexps.length; i < len; i++)
 	{
 		let regexp = regexps[i];

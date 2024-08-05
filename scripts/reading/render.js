@@ -97,8 +97,6 @@ function getVisbleImages(doublePage = false)
 	if(next == 0)
 		next = 1;
 
-	console.log({prev: prev, next: next});
-
 	return {prev: prev, next: next}; 
 }
 

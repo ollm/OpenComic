@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to rotate horizontal images [`20258ff`](https://github.com/ollm/OpenComic/commit/20258ff0ebf57d5a8064dec821ce745b7d9242a3)
 - Setting to force black background and white blank page in night mode [`e7190f7`](https://github.com/ollm/OpenComic/commit/e7190f768a99f00bff07f46709870f94ab89c89e)
 - Setting to disable gamepad input [`5a2285f`](https://github.com/ollm/OpenComic/commit/5a2285f6d750280584455f55da0249686cecc153)
+- Setting to disable gamepad input [`5a2285f`](https://github.com/ollm/OpenComic/commit/5a2285f6d750280584455f55da0249686cecc153)
+- Page turn transitions and fade [`3592392`](https://github.com/ollm/OpenComic/commit/3592392b512c7767b916a7fa1b5bbd92a50e5bc9)
 
 ##### 🐛 Bug Fixes
 
@@ -26,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Files shared over a network in Windows do not open [`bab197f`](https://github.com/ollm/OpenComic/commit/bab197fa11f89ae07a707e4f42ea144a5416f25f)
 - Long paths not workin in Windows (paths equal or greater than 260 characters) [`884bccd`](https://github.com/ollm/OpenComic/commit/884bccd153a4cb2775fbfb5f0e7c6575188ec073)
 - Extracting 7zip in separate stacks to avoid errors when extracting many files [`061827f`](https://github.com/ollm/OpenComic/commit/061827fc737aa8edfde14e7b092a8b44e571bf08)
+- Prevent scroll event while reading is loading [`4c93a72`](https://github.com/ollm/OpenComic/commit/4c93a724220fc820347464a988727ef4649052fe)
 
 ## [v1.2.0](https://github.com/ollm/OpenComic/releases/tag/v1.2.0) (29-03-2024)
 
