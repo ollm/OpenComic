@@ -270,12 +270,16 @@ function showRecentlySearched()
 function showLoading()
 {
 	const searchBarResults = document.querySelector('.search-bar-results');
-	// const height = 200;
 
-	//searchBarResults.style.height = height+'px';
 	searchBarResults.innerHTML = template.load('loading.html');
-	//searchBarResults.dataset.height = height;
 	searchBarResults.classList.add('active');
+
+	if(+searchBarResults.dataset.height < 200)
+	{
+		const height = 200;
+		searchBarResults.style.height = height+'px';
+		searchBarResults.dataset.height = height;
+	}
 }
 
 function saveRecentlySearched()
