@@ -16,42 +16,77 @@ function searchText(regexps, text)
 	return true;
 }
 
-var searchPending = false;
+var searchAbort = {}, searchAbortIndex = 0;
 
-function search(text)
+function abortAll()
 {
-	if(indexFinished)
+	for(let key in searchAbort)
 	{
-		if(!text)
+		delete searchAbort[key];
+	}
+}
+
+function isAborted(index)
+{
+	if(searchAbort[index])
+		return false;
+	else
+		return true;
+}
+
+async function search(text)
+{
+	if(!text)
+	{
+		if(filterCurrentPage)
+			dom.queryAll('.content-view-module > div, .content-view-list > div').css({display: 'block'});
+
+		showRecentlySearched();
+
+		return;
+	}
+
+	abortAll();
+
+	const index = searchAbortIndex++;
+	searchAbort[index] = 1;
+
+	let search = removeDiacritics(text).split(' ');
+	let regexps = [];
+
+	for(let i = 0, len = search.length; i < len; i++)
+	{
+		let regexp = new RegExp(this.pregQuote(search[i].trim()), 'i');
+		regexps.push(regexp);
+	}
+
+	let matchesName = [];
+	let matchesPath = [];
+
+	let numName = 0;
+	let numPath = 0;
+	let firstIndex = true;
+
+	toBreak:
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		let group = files[i];
+
+		if(group.files === false && !filterCurrentPage)
 		{
-			if(filterCurrentPage)
-				dom.queryAll('.content-view-module > div, .content-view-list > div').css({display: 'block'});
+			if(firstIndex)
+				showLoading();
 
-			showRecentlySearched();
+			firstIndex = false;
 
-			return;
+			files[i].files = await _indexFiles(group.file, group.mainPath);
 		}
 
-		searchPending = false;
-	
-		let search = removeDiacritics(text).split(' ');
-		let regexps = [];
+		if(isAborted(index)) return;
 
-		for(let i = 0, len = search.length; i < len; i++)
+		for(let i2 = 0, len2 = group.files.length; i2 < len2; i2++)
 		{
-			let regexp = new RegExp(this.pregQuote(search[i].trim()), 'i');
-			regexps.push(regexp);
-		}
-
-		let matchesName = [];
-		let matchesPath = [];
-
-		let numName = 0;
-		let numPath = 0;
-
-		for(let i = 0, len = files.length; i < len; i++)
-		{
-			let file = files[i];
+			let file = group.files[i2];
 
 			if(searchText(regexps, file._name))
 			{
@@ -66,114 +101,114 @@ function search(text)
 			}
 
 			if(numName > 20 && !filterCurrentPage)
-				break;
+				break toBreak;
 		}
+	}
 
-		let matches = [...matchesName, ...matchesPath];
+	let matches = [...matchesName, ...matchesPath];
 
-		if(filterCurrentPage)
+	if(isAborted(index)) return;
+
+	if(filterCurrentPage)
+	{
+		let indexs = {};
+
+		for(let i = 0, len = matches.length; i < len; i++)
 		{
-			let indexs = {};
-
-			for(let i = 0, len = matches.length; i < len; i++)
-			{
-				indexs[matches[i].index] = true;
-			}
-
-			let contentRight = template._contentRight();
-			let elements = contentRight.querySelectorAll('.content-view-module > div, .content-view-list > div');
-
-			for(let i = 0, len = elements.length; i < len; i++)
-			{
-				let element = elements[i];
-
-				if(indexs[i])
-					element.style.display = 'block';
-				else
-					element.style.display = 'none';
-			}
-
-			setResults([]);
+			indexs[matches[i].index] = true;
 		}
-		else
+
+		let contentRight = template._contentRight();
+		let elements = contentRight.querySelectorAll('.content-view-module > div, .content-view-list > div');
+
+		for(let i = 0, len = elements.length; i < len; i++)
 		{
-			cache.cleanQueue();
-			cache.stopQueue();
+			let element = elements[i];
 
-			let totalResults = 0;
-
-			let results = [];
-
-			let len = matches.length;
-
-			if(len > 0)
-			{
-				let images = [];
-
-				for(let i = 0; i < len; i++)
-				{
-					let file = matches[i];
-
-					if(!file.folder && !file.compressed)
-					{
-						let sha = sha1(file.path);
-						matches[i].sha = sha;
-
-						images.push(matches[i]);
-					}
-
-				}
-
-				let thumbnails = cache.returnThumbnailsImages(images, function(data){
-
-					dom.addImageToDom(data.sha, data.path);
-
-				}, fileManager.file(false, {cacheServer: true}));
-
-				for(let i = 0, len = matches.length; i < len; i++)
-				{
-					let file = matches[i];
-
-					let click = '';
-					let image = {};
-
-					if(file.folder || file.compressed)
-					{
-						click = 'dom.loadIndexPage(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', false, false, \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\', false, true)';
-					}
-					else
-					{
-						let thumbnail = thumbnails[file.sha];
-
-						image.sha = file.sha;
-						image.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-
-						click = 'dom.openComic(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\')';
-					}
-
-					let text = file.matchPath ? file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '') : file.name;
-
-					results.push({
-						icon: file.compressed ? 'folder_zip' : (file.folder ? 'folder' : ''),
-						image: image,
-						text: text,
-						click: 'dom.search.saveRecentlySearched(); dom.search.hide(); '+click,
-					});
-
-					totalResults++;
-
-					if(totalResults > 20)
-						break;
-				}
-			}
-
-			setResults(results);
-			cache.resumeQueue();
+			if(indexs[i])
+				element.style.display = 'block';
+			else
+				element.style.display = 'none';
 		}
+
+		setResults([]);
 	}
 	else
 	{
-		searchPending = text;
+		cache.cleanQueue();
+		cache.stopQueue();
+
+		let totalResults = 0;
+
+		let results = [];
+
+		let len = matches.length;
+
+		if(len > 0)
+		{
+			let images = [];
+
+			for(let i = 0; i < len; i++)
+			{
+				let file = matches[i];
+
+				if(!file.folder && !file.compressed)
+				{
+					let sha = sha1(file.path);
+					matches[i].sha = sha;
+
+					images.push(matches[i]);
+				}
+
+			}
+
+			let thumbnails = cache.returnThumbnailsImages(images, function(data){
+
+				dom.addImageToDom(data.sha, data.path);
+
+			}, fileManager.file(false, {cacheServer: true}));
+
+			for(let i = 0, len = matches.length; i < len; i++)
+			{
+				let file = matches[i];
+
+				let click = '';
+				let image = {};
+
+				if(file.folder || file.compressed)
+				{
+					click = 'dom.loadIndexPage(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', false, false, \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\', false, true)';
+				}
+				else
+				{
+					let thumbnail = thumbnails[file.sha];
+
+					image.sha = file.sha;
+					image.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+
+					click = 'dom.openComic(true, \''+escapeQuotes(escapeBackSlash(file.path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(file.mainPath), 'simples')+'\')';
+				}
+
+				let text = file.matchPath ? file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '') : file.name;
+
+				results.push({
+					icon: file.compressed ? 'folder_zip' : (file.folder ? 'folder' : ''),
+					image: image,
+					text: text,
+					click: 'dom.search.saveRecentlySearched(); dom.search.hide(); '+click,
+				});
+
+				totalResults++;
+
+				if(totalResults > 20)
+					break;
+			}
+		}
+
+		if(isAborted(index)) return;
+
+		setResults(results);
+		cache.resumeQueue();
 	}
 }
 
@@ -232,6 +267,17 @@ function showRecentlySearched()
 	setResults(results);
 }
 
+function showLoading()
+{
+	const searchBarResults = document.querySelector('.search-bar-results');
+	// const height = 200;
+
+	//searchBarResults.style.height = height+'px';
+	searchBarResults.innerHTML = template.load('loading.html');
+	//searchBarResults.dataset.height = height;
+	searchBarResults.classList.add('active');
+}
+
 function saveRecentlySearched()
 {
 	let input = document.querySelector('.search-bar > div input');
@@ -283,10 +329,12 @@ function setResults(results)
 	}
 }
 
-var files = [], filesHas = {}, indexFinished = false;
+var files = [], filesHas = {};
 
 async function _indexFiles(file, mainPath)
 {
+	let files = [];
+
 	return new Promise(async function(resolve) {
 
 		if(!filesHas[file.path])
@@ -317,7 +365,7 @@ async function _indexFiles(file, mainPath)
 
 					try
 					{
-						_files = await _file.read({sha: false});
+						_files = await _file.read({sha: false, sort: false});
 					}
 					catch(error)
 					{
@@ -337,18 +385,30 @@ async function _indexFiles(file, mainPath)
 				{
 					let _file = _files[i];
 					promises.push(_indexFiles(_file, mainPath));
+
+					if(promises.length > 4 || i + 1 === len)
+					{
+						const results = await Promise.all(promises);
+
+						for(let i = 0, len = results.length; i < len; i++)
+						{
+							files = files.concat(results[i]);
+						}
+
+						promises = [];
+					}
 				}
 
-				Promise.all(promises).then(resolve);
+				resolve(files);
 			}
 			else
 			{
-				resolve();
+				resolve(files);
 			}
 		}
 		else
 		{
-			resolve();
+			resolve(files);
 		}
 
 	});
@@ -356,54 +416,45 @@ async function _indexFiles(file, mainPath)
 
 async function indexFiles()
 {
-	indexFinished = false;
-
 	let currentFiles = handlebarsContext.comics;
 
 	files = [];
 	filesHas = {};
-
-	let promises = [];
-
-	for(let i = 0, len = currentFiles.length; i < len; i++)
-	{
-		let file = currentFiles[i];
-		promises.push(_indexFiles(file, file.mainPath));
-	}
-
-	Promise.all(promises).then(function(){
-
-		indexFinished = true;
-
-		if(searchPending)
-			search(searchPending);
-
-	});
-}
-
-async function indexFilesDom()
-{
-	indexFinished = false;
-
-	let currentFiles = handlebarsContext.comics;
-
-	files = [];
 
 	for(let i = 0, len = currentFiles.length; i < len; i++)
 	{
 		let file = currentFiles[i];
 
 		files.push({
+			file: file,
+			mainPath: file.mainPath,
+			files: false,
+		});
+	}
+}
+
+async function indexFilesDom()
+{
+	let currentFiles = handlebarsContext.comics;
+
+	let _files = [];
+
+	for(let i = 0, len = currentFiles.length; i < len; i++)
+	{
+		let file = currentFiles[i];
+
+		_files.push({
 			index: i,
 			_name: removeDiacritics(file.name),
 			_path: '',
 		});
 	}
 
-	indexFinished = true;
-
-	if(searchPending)
-		search(searchPending);
+	files = [{
+		path: 'dom',
+		path: 'dom',
+		files: _files,
+	}];
 }
 
 var showed = false, filterCurrentPage = false;
@@ -462,6 +513,8 @@ async function hide(fromSearchClick = false)
 {
 	if(!showed) return;
 
+	abortAll();
+
 	clearTimeout(updateBrowsableItemsST);
 	clearTimeout(hideST);
 
@@ -481,6 +534,7 @@ async function hide(fromSearchClick = false)
 
 	showed = false;
 	files = [];
+	filesHas = {};
 }
 
 function fillInput(text)

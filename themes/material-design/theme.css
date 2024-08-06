@@ -1402,6 +1402,8 @@ a:hover
 	width: 150px;
 	height: 273px;
 	margin: 16px 0px 16px 16px;
+	margin: 8px -8px 8px 8px;
+	padding: 8px;
 	content-visibility: auto;
 	contain-intrinsic-size: 150px 273px;
 }

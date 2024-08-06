@@ -598,7 +598,12 @@ function inArray(string, array)
 
 function fileExtension(path)
 {
-	return p.extname(path).replace(/^\./, '').toLowerCase();
+	return p.extname(path).substr(1).toLowerCase();
+}
+
+function fastJoin(path1, path2)
+{
+	return path1.replace(/[\/\\]$/, '')+p.sep+path2.replace(/^[\/\\]/, '');
 }
 
 function pregQuote(str, delimiter = false)

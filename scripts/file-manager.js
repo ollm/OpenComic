@@ -111,7 +111,7 @@ var file = function(path, _config = false) {
 				{
 					let name = _this.config.fastRead ? _files[i] : _files[i].name;
 
-					let filePath = p.join(path, name);
+					let filePath = fastJoin(path, name);
 					let retrunPath = filePath;
 
 					if(!_this.config.fastRead && _files[i].isDirectory())

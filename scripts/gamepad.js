@@ -436,7 +436,7 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 	if(!has && !ignore.right)
 	{
 		let items = template._contentRight().querySelectorAll('.gamepad-item');
-		let scrollElement = currentScrollElement = template.contentRight().children().get(0);
+		let scrollElement = currentScrollElement = template._contentRight().firstElementChild;
 		let scrollTop = scrollElement.scrollTop;
 		currentScrollElementRect = scrollElement.getBoundingClientRect();
 
@@ -561,6 +561,9 @@ function scrollToItem(item)
 
 	if(scrollTop < 0)
 		scrollTop = 0;
+
+	if(scrollTop > currentScrollElement.scrollHeight - currentScrollElementRect.height)
+		scrollTop = currentScrollElement.scrollHeight - currentScrollElementRect.height + 1;
 
 	if(scrollTop !== prevScrollTop)
 		$(currentScrollElement).stop(true).animate({scrollTop: scrollTop+'px'}, 300, $.bez([0.22, 0.6, 0.3, 1]));

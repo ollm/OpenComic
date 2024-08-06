@@ -4,7 +4,9 @@
 		{{#if icon}}
 		<i class="icon-24 material-icon">{{icon}}</i>
 		{{else}}
-		<div class="sha-image-bg-{{image.sha}}" style="background-image: url({{image.thumbnail}});"></div>
+		<div class="search-bar-image">
+			<img class="sha-image-{{image.sha}}{{#if image.thumbnail}} show{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' image.thumbnail}}">
+		</div>
 		{{/if}}
 	</div>
 	<span class="body-large">{{text}}</span>

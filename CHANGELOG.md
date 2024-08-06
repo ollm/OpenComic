@@ -12,8 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to rotate horizontal images [`20258ff`](https://github.com/ollm/OpenComic/commit/20258ff0ebf57d5a8064dec821ce745b7d9242a3)
 - Setting to force black background and white blank page in night mode [`e7190f7`](https://github.com/ollm/OpenComic/commit/e7190f768a99f00bff07f46709870f94ab89c89e)
 - Setting to disable gamepad input [`5a2285f`](https://github.com/ollm/OpenComic/commit/5a2285f6d750280584455f55da0249686cecc153)
-- Setting to disable gamepad input [`5a2285f`](https://github.com/ollm/OpenComic/commit/5a2285f6d750280584455f55da0249686cecc153)
 - Page turn transitions and fade [`3592392`](https://github.com/ollm/OpenComic/commit/3592392b512c7767b916a7fa1b5bbd92a50e5bc9)
+- Improved search performance
 
 ##### 🐛 Bug Fixes
 

@@ -2828,16 +2828,35 @@ table tbody td.lh0
 	padding: 16px;
 }
 
-.search-bar-result > div > div
+.search-bar-result .search-bar-image
 {
 	width: 32px;
 	height: 32px;
 	border-radius: 10px;
-	background-size: cover;
-	background-position: 50%;
 	background-color: rgba(0, 0, 0, 0.1);
-	transition: 0.3s;
 	margin: 12px;
+}
+
+.search-bar-result .search-bar-image > img
+{
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	transition: 0.3s;
+	object-fit: cover;
+	object-position: center;
+	opacity: 0;
+}
+
+.search-bar-result .search-bar-image > img.show
+{
+	transition: 0s;
+	opacity: 1;
+}
+
+.search-bar-result .search-bar-image > img.a
+{
+	opacity: 1;
 }
 
 .search-bar-result > span
