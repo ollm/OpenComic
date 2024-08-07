@@ -1896,12 +1896,15 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			_7z.on('data', function(data) {
 
-				let name = _this.removeTmp(p.normalize(data.file));
+				if(data.file)
+				{
+					let name = _this.removeTmp(p.normalize(data.file));
 
-				files.push({name: name, path: p.join(_this.path, name)});
-				_this.setFileStatus(name, {extracted: false});
+					files.push({name: name, path: p.join(_this.path, name)});
+					_this.setFileStatus(name, {extracted: false});
 
-				readSome = true;
+					readSome = true;
+				}
 
 			}).on('end', function(data) {
 
