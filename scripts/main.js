@@ -140,7 +140,7 @@ function createWindow() {
 		windowShowed = true;
 		console.log('Warning: win.show() from setTimeout and not from ready-to-show');
 
-	}, 1000);
+	}, 2000);
 
 	win.once('ready-to-show', function() {
 
