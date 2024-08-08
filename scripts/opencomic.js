@@ -584,6 +584,12 @@ async function loadPdfjs()
 	return true;
 }
 
+async function loadWebdav()
+{
+	let webdav = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/webdav/dist/web/index.js')));
+	return webdav;
+}
+
 /*Global functions*/
 
 function copy(data)

@@ -2671,7 +2671,7 @@ async function removeTmpVector()
 			let _devicePixelRatio = +readFile(vector);
 
 			if(devicePixelRatio !== _devicePixelRatio)
-				fs.rmdir(p.join(tempFolder, folder.name), {recursive: true, force: true}, function(){});
+				fs.rm(p.join(tempFolder, folder.name), {recursive: true, force: true}, function(){});
 		}
 	}
 }
@@ -2809,7 +2809,7 @@ function setServerInOfflineMode(value = false)
 
 function isServer(path)
 {
-	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3)\:[\/\\]{1,2}/.test(path))
+	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdav)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;

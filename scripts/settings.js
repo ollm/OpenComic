@@ -295,7 +295,7 @@ function getServerInputValues()
 function serverValidateData(server)
 {
 	let name = server.name;
-	let path = /^((?:smb|ftp|ftps|scp|sftp|ssh|s3)\:\/\/?[^\/\\]+\/[^\/\\]+)/.test(server.path);
+	let path = /^((?:smb|ftp|ftps|scp|sftp|ssh|s3|webdav)\:\/\/?[^\/\\]+\/[^\/\\]+)/.test(server.path);
 
 	dom.query('.input-name').parents('.input').class(!name, 'error');
 	dom.query('.input-path').parents('.input').class(!path, 'error');

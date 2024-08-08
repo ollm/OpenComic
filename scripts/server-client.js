@@ -1,4 +1,4 @@
-var smb2 = false, basicFtp = false, ssh2 = false, nodeScp = false, s3c = false;
+var smb2 = false, basicFtp = false, ssh2 = false, nodeScp = false, s3c = false, webdav = false;
 
 var servers = [];
 
@@ -41,8 +41,8 @@ function getAdress(path)
 {
 	path = posixPath(path);
 
-	if(/^(?:smb|ftps?|sftp|ssh|scp|s3)\:\//.test(path))
-		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3)\:\/\/[^\/\\]+)/, path, 1);
+	if(/^(?:smb|ftps?|sftp|ssh|scp|s3|webdav)\:\//.test(path))
+		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3|webdav)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -53,8 +53,8 @@ function getTypeAdress(path)
 
 	if(/^(?:smb|s3)\:\//.test(path))
 		return app.extract(/^((?:smb|s3)\:\/\/[^\/\\]+\/[^\/\\]+)/, path, 1);
-	else if(/^(?:ftps?|sftp|ssh|scp)\:\//.test(path))
-		return app.extract(/^((?:ftps?|sftp|ssh|scp)\:\/\/[^\/\\]+)/, path, 1);
+	else if(/^(?:ftps?|sftp|ssh|scp|webdav)\:\//.test(path))
+		return app.extract(/^((?:ftps?|sftp|ssh|scp|webdav)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -81,6 +81,7 @@ var serverLastError = false;
 function _serverLastError(original = true, error = false)
 {
 	error = error || serverLastError;
+	if(!error) return false;
 
 	let message = error.message || error || 'Server Error';
 
@@ -186,6 +187,12 @@ var client = function(path) {
 			progress: true,
 			secure: true,
 		},
+		webdav: {
+			read: true,
+			single: true,
+			progress: true,
+			secure: true,
+		},
 	};
 
 	this.features = false;
@@ -242,6 +249,8 @@ var client = function(path) {
 				force = 'scp';
 			else if(/^(?:s3)\:\//.test(this.path))
 				force = 's3';
+			else if(/^(?:webdav)\:\//.test(this.path))
+				force = 'webdav';
 		}
 
 		this.features = this._features[force];
@@ -328,6 +337,8 @@ var client = function(path) {
 			return this.readScp(path);
 		else if(this.features.s3)
 			return this.readS3(path);
+		else if(this.features.webdav)
+			return this.readWebdav(path);
 
 		return false;
 	}
@@ -372,6 +383,8 @@ var client = function(path) {
 			return this.downloadScp(path, callbackWhenFileDownload, index);
 		else if(this.features.s3)
 			return this.downloadS3(path, callbackWhenFileDownload, index);
+		else if(this.features.webdav)
+			return this.downloadWebdav(path);
 
 		return false;
 	}
@@ -1253,7 +1266,7 @@ var client = function(path) {
 		catch(error)
 		{
 			if(this.s3)
-				await this.scp.close();
+				delete this.s3;
 
 			this.s3 = false;
 
@@ -1417,6 +1430,156 @@ var client = function(path) {
 		return;
 
 	}
+
+	// webdav
+	this.webdav = false;
+
+	this.connectWebdav = async function() {
+
+		if(this.webdav) return this.webdav;
+
+		if(webdav === false)
+			webdav = await loadWebdav();
+
+		let serverInfo;
+
+		try
+		{
+			serverInfo = this.getServerInfo();
+		}
+		catch(error)
+		{
+			this.webdav = false;
+
+			throw new Error(error);
+		}
+
+		try
+		{
+			let client = {};
+
+			if(serverInfo.user || serverInfo.pass) client.authType = webdav.AuthType.Digest;
+			if(serverInfo.user) client.username = serverInfo.user;
+			if(serverInfo.pass) client.password = serverInfo.pass;
+
+			console.log('https://'+serverInfo.host);
+
+			this.webdav = webdav.createClient('https://'+serverInfo.host, client);
+		}
+		catch(error)
+		{
+			if(this.webdav)
+				await this.scp.close();
+
+			this.webdav = false;
+
+			throw new Error('connection | '+error.message);
+		}
+
+		return this.webdav;
+
+	}
+
+	this.readWebdav = async function(path) {
+
+		let files = [];
+
+		console.time('readWebdav');
+
+		let webdav = await this.connectWebdav();
+
+		let entries = await webdav.getDirectoryContents('/'+getPath(path));
+
+		console.log(entries);
+
+		for(let i = 0, len = entries.length; i < len; i++)
+		{
+			let entry = entries[i];
+			let name = p.normalize(entry.basename);
+
+			files.push({name: name, path: p.join(path, name), folder: (entry.type === 'directory' ? true : false), compressed: fileManager.isCompressed(name), mtime: Date.parse(entry.lastmod)});
+		}
+
+		console.timeEnd('readWebdav');
+
+		return files;
+
+	}
+
+	this.downloadWebdav = async function(_path, callbackWhenFileDownload, contentRightIndex) {
+
+		let files = [];
+
+		console.time('downloadWebdav');
+
+		let _this = this;
+		let _only = this.config._only;
+
+		let webdav = await this.connectWebdav();
+
+		let promises = [];
+
+		let progressIndex = 0;
+
+		for(let i = 0, len = _only.length; i < len; i++)
+		{
+			let inTask = this.inTask(5);
+			if(inTask) await inTask;
+
+			let task = this.setTask(inTask);
+
+			promises.push(new Promise(async function(resolve, reject) {
+
+				let path = _only[i];
+
+				let filePath = fileManager.realPath(path, -1);
+				let folderPath = p.dirname(filePath);
+
+				if(!fs.existsSync(folderPath))
+					fs.mkdirSync(folderPath, {recursive: true});
+
+				// Avoid downloading the same files at the same time
+				if(!fs.existsSync(filePath))
+				{
+					let isDownloading = _this.isDownloadingPath(path);
+
+					if(isDownloading)
+					{
+						await isDownloading;
+					}
+					else
+					{
+						let downloading = _this.setDownloading(path);
+
+						const fileContents = await webdav.getFileContents('/'+posixPath(getPath(path)), {format: 'binary'});
+						await fsp.writeFile(filePath, Buffer.from(fileContents));
+
+						downloading.resolve();
+					}
+				}
+
+				progressIndex++;
+
+				_this.file.setProgress(progressIndex / len, contentRightIndex);
+				_this.whenDownloadFile(path, callbackWhenFileDownload);
+
+				task.resolve();
+				resolve();
+
+			}));
+		}
+
+		await Promise.all(promises);
+
+		this.file.setProgress(1, contentRightIndex);
+
+		console.timeEnd('downloadWebdav');
+
+		return;
+
+	}
+
+
 
 	this.destroy = async function() {
 
