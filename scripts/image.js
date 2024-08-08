@@ -129,7 +129,7 @@ async function resizeToBlob(fromImage, config = {})
 
 		// pipelineColourspace('rgb16').toColourspace('rgb16')
 
-		let _sharp = sharp(fromImage);
+		let _sharp = sharp(fromImage).keepIccProfile();
 
 		if(config.interpolator && !config.kernel)
 		{

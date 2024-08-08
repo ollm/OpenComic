@@ -1,7 +1,10 @@
 function start()
 {
+	const configInit = storage.get('configInit');
+
 	handlebarsContext.readingImageInterpolationMethodDownscaling = getInterpolationMethodName(config.readingImageInterpolationMethodDownscaling);
 	handlebarsContext.readingImageInterpolationMethodUpscaling = getInterpolationMethodName(config.readingImageInterpolationMethodUpscaling);
+	handlebarsContext.readingColorProfile = getColorProfileName(configInit.forceColorProfile);
 }
 
 function startSecond()
@@ -785,6 +788,72 @@ function getInterpolationMethodName(key = 'lanczos3')
 		return app.capitalize(key);
 }
 
+function getColorProfiles()
+{
+	const configInit = storage.get('configInit');
+	const current = configInit.forceColorProfile;
+
+	let colorProfiles = [
+		{
+			key: '',
+			name: language.settings.colorProfile.default,
+			select: !current || current == 'default' ? true : false,
+		},
+		{
+			key: 'srgb',
+			name: 'sRGB',
+			select: current == 'srgb' ? true : false,
+		},
+		{
+			key: 'display-p3-d65',
+			name: 'Display P3 D65',
+			select: current == 'display-p3-d65' ? true : false,
+		},
+		{
+			key: 'rec2020',
+			name: 'ITU-R BT.2020',
+			select: current == 'rec2020' ? true : false,
+		},
+		{
+			key: 'color-spin-gamma24',
+			name: 'Color spin with gamma 2.4',
+			select: current == 'color-spin-gamma24' ? true : false,
+		},
+		{
+			key: 'scrgb-linear',
+			name: 'scRGB linear (HDR where available)',
+			select: current == 'scrgb-linear' ? true : false,
+		},
+		{
+			key: 'hdr10',
+			name: 'HDR10 (HDR where available)',
+			select: current == 'hdr10' ? true : false,
+		},
+	];
+
+	handlebarsContext.colorProfiles = colorProfiles;
+	document.querySelector('#settings-color-profiles .menu-simple-content').innerHTML = template.load('settings.elements.menus.color.profiles.html');
+}
+
+function getColorProfileName(key = '')
+{
+	let names = {
+		'srgb': 'sRGB',
+		'display-p3-d65': 'Display P3 D65',
+		'rec2020': 'ITU-R BT.2020',
+		'color-spin-gamma24': 'Color spin with gamma 2.4',
+		'scrgb-linear': 'scRGB linear (HDR where available)',
+		'hdr10': 'HDR10 (HDR where available)',
+	};
+
+	if(!key || key == 'default')
+		return language.settings.colorProfile.default;
+	else if(names[key])
+		return names[key];
+	else
+		return app.capitalize(key);
+}
+
 function setMaxMargin(value, save = false)
 {
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
@@ -915,10 +984,27 @@ function set(key, value, save = true)
 		storage.updateVar('config', key, value);
 }
 
+function setInit(key, value, save = true)
+{
+	switch (key)
+	{
+		case 'forceColorProfile':
+
+			dom.queryAll('.settings-color-profile .text').html(getColorProfileName(value));
+
+			break;
+
+	}
+
+	if(save)
+		storage.updateVar('configInit', key, value);
+}
+
 module.exports = {
 	start: start,
 	startSecond: startSecond,
 	set: set,
+	setInit: setInit,
 	setMaxMargin: setMaxMargin,
 	setGlobalZoom: setGlobalZoom,
 	setMoveZoomWithMouse: setMoveZoomWithMouse,
@@ -946,6 +1032,7 @@ module.exports = {
 	removeServer: removeServer,
 	showOnLibrary: showOnLibrary,
 	getImageInterpolationMethods: getImageInterpolationMethods,
+	getColorProfiles: getColorProfiles,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,

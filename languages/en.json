@@ -218,6 +218,12 @@
 			"upscaling": "Upscaling an image",
 			"upscalingDescription": "This method will only be used when the image resolution needs to be enlarged, the interpolation method does not apply to PDF, EPUB or animated images. Warning: Sharp methods can be slow on upscaling"
 		},
+		"colorProfile": {
+			"main": "Color profile",
+			"force": "Force color profile",
+			"forceDescription": "Forces OpenComic to use a specific color profile instead of the color of the window's current monitor, as specified by the operating system. This requires restarting the app",
+			"default": "Default"
+		},
 		"navigation": {
 			"main": "Navigation",
 			"folders": "Navigation (Folders)",

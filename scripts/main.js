@@ -161,6 +161,12 @@ function createWindow() {
 	mainWindowState.manage(win);
 }
 
+const configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
+const configInit = fs.existsSync(configInitFile) ? JSON.parse(fs.readFileSync(configInitFile, 'utf8')) : {};
+
+if(configInit.forceColorProfile)
+	app.commandLine.appendSwitch('force-color-profile', configInit.forceColorProfile);
+
 var toOpenFile = false;
 
 app.on('open-file', function(event, path) {

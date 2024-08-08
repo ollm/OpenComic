@@ -218,6 +218,12 @@
 			"upscaling": "",
 			"upscalingDescription": ""
 		},
+		"colorProfile": {
+			"main": "",
+			"force": "",
+			"forceDescription": "",
+			"default": ""
+		},
 		"navigation": {
 			"main": "",
 			"folders": "",

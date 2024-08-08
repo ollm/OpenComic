@@ -1,4 +1,4 @@
-var changes = 82; // Update this if readingPagesConfig is updated
+var changes = 83; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -164,6 +164,9 @@ var storageDefault = {
 				},
 			},
 		},
+	},
+	configInit: {
+		forceColorProfile: '',
 	},
 	readingShortcutPagesConfig: {
 		wildcard: {

@@ -218,6 +218,12 @@
 			"upscaling": "Al aumentar la resolución de la imagen",
 			"upscalingDescription": "Este método solo se utilizará cuando sea necesario aumantar la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas. Advertencia: Los métodos Sharp pueden ser lentos al aumentar la resolución"
 		},
+		"colorProfile": {
+			"main": "Perfil de color",
+			"force": "Forzar perfil de color",
+			"forceDescription": "Fuerza a OpenComic a usar un perfil de color específico en lugar del color del monitor actual, según lo especificado por el sistema operativo. Esto requiere reiniciar la app",
+			"default": "Por defecto"
+		},
 		"navigation": {
 			"main": "Navegación",
 			"folders": "Navegación (Carpetas)",

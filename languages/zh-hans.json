@@ -218,6 +218,12 @@
 			"upscaling": "放大图像",
 			"upscalingDescription": "此方法仅在需要放大图像分辨率时使用，插值方法不适用于 PDF、EPUB 或动态图像。警告：锐利的方法在放大时可能会很慢"
 		},
+		"colorProfile": {
+			"main": "",
+			"force": "",
+			"forceDescription": "",
+			"default": ""
+		},
 		"navigation": {
 			"main": "导航",
 			"folders": "导航（文件夹）",

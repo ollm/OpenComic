@@ -170,6 +170,28 @@
 
 			</div>
 
+
+			<h2 class="headline-small">{{language.settings.colorProfile.main}}</h2>
+
+			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">
+				<span>
+					<div>{{language.settings.colorProfile.force}}</div>
+					<span class="body-medium">{{language.settings.colorProfile.forceDescription}}</span>
+				</span>
+
+				<div class="select settings-color-profile body-large gamepad-item have-select-wa" onclick="settings.getColorProfiles(); events.showSelect(this, 'settings-color-profiles', true);" style="height: 60px; width: 400px; padding-right: 0px;">
+					<div>
+						<div class="select-border">
+							<div class="bottom"><div></div></div>
+						</div>
+						<div class="text" style="opacity: 1;">{{readingColorProfile}}</div>
+						<div class="placeholder">{{language.settings.colorProfile.main}}</div>
+						<i class="material-icon">arrow_drop_down</i>
+					</div>
+				</div>
+
+			</div>
+
 			<h2 class="headline-small">{{language.settings.navigation.main}}</h2>
 
 			<div class="menu-simple-text gamepad-item">
