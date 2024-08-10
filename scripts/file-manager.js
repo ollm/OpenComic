@@ -268,7 +268,7 @@ var file = function(path, _config = false) {
 
 		path = serverClient.fixPath(path || this.path);
 		let sha = sha1(path);
-		let cacheFile = 'server-files-'+sha+'.json.zstd';
+		let cacheFile = (cache.zstd !== false) ? 'server-files-'+sha+'.json.zstd' : 'server-files-'+sha+'.json';
 
 		return cache.existsFile(cacheFile);
 
@@ -395,7 +395,7 @@ var file = function(path, _config = false) {
 				if(file.folder || file.compressed)
 				{
 					let _poster = false;
-					let _files = file.files || await this.read({}, file.path);
+					let _files = file.files || await this.read({cacheServer: true}, file.path);
 
 					if(poster)
 					{
@@ -456,7 +456,7 @@ var file = function(path, _config = false) {
 	this.images = async function(only = 1, from = false, poster = false) {
 
 		if(poster) this.updateConfig({specialFiles: true});
-		if(!this.alreadyRead) await this.read();
+		if(!this.alreadyRead) await this.read({cacheServer: true});
 
 		if(poster)
 		{
@@ -549,7 +549,7 @@ var file = function(path, _config = false) {
 		try
 		{
 			let file = fileManager.file(dirname);
-			file.updateConfig({...this.config, ...{fastRead: true, specialFiles: true, sha: false}});
+			file.updateConfig({...this.config, ...{fastRead: true, specialFiles: true, sha: false, cacheServer: true}});
 			let files = await file.read();
 
 			let poster = this._poster(files);

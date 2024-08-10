@@ -372,7 +372,7 @@ function readJson(name)
 
 	if(zstd !== false)
 	{
-		let path = p.join(cacheFolder, name+'.zstd');
+		const path = p.join(cacheFolder, name+'.zstd');
 
 		if(fs.existsSync(path))
 		{
@@ -387,7 +387,7 @@ function readJson(name)
 	}
 	else
 	{
-		let path = p.join(cacheFolder, name);
+		const path = p.join(cacheFolder, name);
 
 		if(fs.existsSync(path))
 		{
@@ -398,6 +398,85 @@ function readJson(name)
 		else
 		{
 			return false;
+		}
+	}
+}
+
+function validateJson(name)
+{
+	if(zstd !== false)
+	{
+		const path = p.join(cacheFolder, name+'.zstd');
+
+		if(fs.existsSync(path))
+		{
+			let json;
+
+			try
+			{
+				json = fs.readFileSync(path);
+			}
+			catch
+			{
+				return 'readError';
+			}
+
+			try
+			{
+				json = zstdDecoder.decodeSync(json);
+			}
+			catch
+			{
+				return 'corruptedZstd';
+			}
+
+			try
+			{
+				JSON.parse(json);
+			}
+			catch
+			{
+				return 'corruptedJson';
+			}
+
+			return 'correct';
+		}
+		else
+		{
+			return 'notInCache';
+		}
+	}
+	else
+	{
+		const path = p.join(cacheFolder, name);
+
+		if(fs.existsSync(path))
+		{
+			let json;
+
+			try
+			{
+				json = fs.readFileSync(path);
+			}
+			catch
+			{
+				return 'readError';
+			}
+
+			try
+			{
+				JSON.parse(json);
+			}
+			catch
+			{
+				return 'corruptedJson';
+			}
+
+			return 'correct';
+		}
+		else
+		{
+			return 'notInCache';
 		}
 	}
 }
@@ -541,6 +620,88 @@ function purge()
 	return;
 }
 
+function _validate(files, type = '')
+{
+	const correct = [];
+	const corruptedZstd = [];
+	const corruptedJson = [];
+	const readError = [];
+	const notInCache = [];
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+		const path = (type == 'servers' ? serverClient.fixPath(file.path) : file.path);
+		const sha = sha1(path);
+		const name = (type == 'servers' ? 'server-files-'+sha+'.json' : 'compressed-files-'+sha+'.json');
+
+		const status = validateJson(name);
+
+		if(status == 'correct')
+			correct.push(path);
+		else if(status == 'corruptedZstd')
+			corruptedZstd.push(path);
+		else if(status == 'corruptedJson')
+			corruptedJson.push(path);
+		else if(status == 'readError')
+			readError.push(path);
+		else if(status == 'notInCache')
+			notInCache.push(path);
+	}
+
+	console.log('Correct: '+correct.length+'\nCorrupted Zstd: '+corruptedZstd.length+'\nCorrupted Json: '+corruptedJson.length+'\nRead Error: '+readError.length+'\nNot in Cache: '+notInCache.length);
+	console.log({
+		correct: correct,
+		corruptedZstd: corruptedZstd,
+		corruptedJson: corruptedJson,
+		readError: readError,
+		notInCache: notInCache,
+	});
+	console.log(' ');
+}
+
+function validate()
+{
+	const currentFiles = handlebarsContext.comics;
+
+	const folders = [];
+	const compressed = [];
+	const servers = [];
+	const files = [];
+
+	for(let i = 0, len = currentFiles.length; i < len; i++)
+	{
+		const file = currentFiles[i];
+
+		if(fileManager.isServer(file.path) && file.folder && !file.compressed)
+			servers.push(file);
+		else if(file.compressed)
+			compressed.push(file);
+		else if(file.folder)
+			folders.push(file);
+		else
+			files.push(file);
+	}
+
+	console.log(' ');
+	console.log('Folders: '+folders.length+'\nCompressed files: '+compressed.length+'\nServers: '+servers.length+'\nFiles: '+files.length);
+	console.log(' ');
+
+	if(compressed.length)
+	{
+		console.log('Validating cache of compressed files...');
+		_validate(compressed, 'compressed');
+	}
+
+	if(servers.length)
+	{
+		console.log('Validating cache of servers...');
+		_validate(servers, 'servers');
+	}
+
+	console.log('Done');
+}
+
 module.exports = {
 	folder: cacheFolder,
 	returnThumbnailsImages: returnThumbnailsImages,
@@ -561,4 +722,6 @@ module.exports = {
 	stopQueue: stopQueue,
 	resumeQueue: resumeQueue,
 	purge: purge,
+	validate: validate,
+	zstd: zstd,
 };
