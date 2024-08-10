@@ -660,6 +660,43 @@ function _validate(files, type = '')
 	console.log(' ');
 }
 
+function validateThumbnails(images, type = '')
+{
+	const correct = [];
+	const errorOnlyFile = [];
+	const errorOnlyData = [];
+	const notThumbnails = [];
+
+	const size = Math.round(window.devicePixelRatio * 150);
+
+	for(let i = 0, len = images.length; i < len; i++)
+	{
+		const image = images[i];
+		const sha = image.sha || sha1(image.path);
+		const imgCache = data[sha];
+
+		const exists = fs.existsSync(p.join(cacheFolder, sha+'.jpg'));
+
+		if(typeof imgCache != 'undefined' && exists)
+			correct.push(image.path);
+		else if(typeof imgCache != 'undefined')
+			errorOnlyData.push(image.path);
+		else if(exists)
+			errorOnlyFile.push(image.path);
+		else
+			notThumbnails.push(image.path);
+	}
+
+	console.log('Correct: '+correct.length+'\nError only file: '+errorOnlyFile.length+'\nError only data: '+errorOnlyData.length+'\nNot Thumbnails: '+notThumbnails.length);
+	console.log({
+		correct: correct,
+		errorOnlyFile: errorOnlyFile,
+		errorOnlyData: errorOnlyData,
+		notThumbnails: notThumbnails,
+	});
+	console.log(' ');
+}
+
 function validate()
 {
 	const currentFiles = handlebarsContext.comics;
@@ -667,7 +704,7 @@ function validate()
 	const folders = [];
 	const compressed = [];
 	const servers = [];
-	const files = [];
+	const images = [];
 
 	for(let i = 0, len = currentFiles.length; i < len; i++)
 	{
@@ -680,11 +717,11 @@ function validate()
 		else if(file.folder)
 			folders.push(file);
 		else
-			files.push(file);
+			images.push(file);
 	}
 
 	console.log(' ');
-	console.log('Folders: '+folders.length+'\nCompressed files: '+compressed.length+'\nServers: '+servers.length+'\nFiles: '+files.length);
+	console.log('Folders: '+folders.length+'\nCompressed files: '+compressed.length+'\nServers: '+servers.length+'\nImages: '+images.length);
 	console.log(' ');
 
 	if(compressed.length)
@@ -697,6 +734,12 @@ function validate()
 	{
 		console.log('Validating cache of servers...');
 		_validate(servers, 'servers');
+	}
+
+	if(images.length)
+	{
+		console.log('Validating cache of thumbnail images...');
+		validateThumbnails(images, 'servers');
 	}
 
 	console.log('Done');
