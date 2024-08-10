@@ -79,7 +79,7 @@ async function search(text)
 
 			firstIndex = false;
 
-			files[i].files = await _indexFiles(group.file, group.mainPath);
+			files[i].files = await _indexFiles(group.file, group.mainPath, true);
 		}
 
 		if(isAborted(index)) return;
@@ -335,7 +335,7 @@ function setResults(results)
 
 var files = [], filesHas = {};
 
-async function _indexFiles(file, mainPath)
+async function _indexFiles(file, mainPath, first = false)
 {
 	let files = [];
 
@@ -345,15 +345,18 @@ async function _indexFiles(file, mainPath)
 		{
 			filesHas[file.path] = true;
 
-			files.push({
-				name: file.name,
-				_name: removeDiacritics(file.name),
-				path: file.path,
-				_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
-				mainPath: mainPath,
-				folder: file.folder,
-				compressed: file.compressed,
-			});
+			if(!first)
+			{
+				files.push({
+					name: file.name,
+					_name: removeDiacritics(file.name),
+					path: file.path,
+					_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
+					mainPath: mainPath,
+					folder: file.folder,
+					compressed: file.compressed,
+				});
+			}
 
 			if(file.folder || file.compressed)
 			{
@@ -422,8 +425,14 @@ async function indexFiles()
 {
 	let currentFiles = handlebarsContext.comics;
 
-	files = [];
+	files = [{
+		file: false,
+		mainPath: false,
+		files: [],
+	}];
 	filesHas = {};
+
+	const _files = [];
 
 	for(let i = 0, len = currentFiles.length; i < len; i++)
 	{
@@ -434,7 +443,19 @@ async function indexFiles()
 			mainPath: file.mainPath,
 			files: false,
 		});
+
+		_files.push({
+			name: file.name,
+			_name: removeDiacritics(file.name),
+			path: file.path,
+			_path: removeDiacritics(file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)), '')),
+			mainPath: file.mainPath,
+			folder: file.folder,
+			compressed: file.compressed,
+		});
 	}
+
+	files[0].files = _files;
 }
 
 async function indexFilesDom()
