@@ -4702,7 +4702,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	gamepad.setAxesEvent('reading', function(axes, status, now) {
 
-		if(onReading && !document.querySelector('.menu-simple.a'))
+		if(onReading && isLoaded && !document.querySelector('.menu-simple.a'))
 		{
 			if(status == 'start')
 				gamepadAxesNow = 0;
