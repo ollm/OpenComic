@@ -816,12 +816,39 @@ function goBack(fromKeyboard = false)
 	}
 }
 
-setButtonEvent('browsableItems', [0, 2, 3, 9, 12, 13, 14, 15, 16], function(key) {
+function goForwards(fromKeyboard = false)
+{
+	if(fromKeyboard)
+		hasKeyboardNavigation = true;
+
+	// Close dialog
+	let dialogActive = document.querySelector('.dialogs .dialog');
+
+	if(dialogActive)
+	{
+		events.closeDialog();
+
+		return;
+	}
+
+	// Close menu
+	let menuActive = document.querySelector('.menu-close.a');
+
+	if(menuActive)
+	{
+		eval(menuActive.getAttribute('onclick'));
+
+		return;
+	}
+
+	// Go forwards
+	dom.indexPathControlGoForwards();
+}
+
+setButtonEvent('browsableItems', [0, 3, 9, 12, 13, 14, 15, 16], function(key) {
 
 	if(key == 0)
 		goHighlightItem();
-	else if(key == 2)
-		highlightItemContextMenu();
 	else if(key == 3)
 		highlightItemContextMenu();
 	else if(key == 12)
@@ -916,6 +943,7 @@ module.exports = {
 	updateBrowsableItemsPrevKey: updateBrowsableItemsPrevKey,
 	cleanBrowsableItems: cleanBrowsableItems,
 	goBack: goBack,
+	goForwards: goForwards,
 	buttonName: buttonName,
 	buttonKey: buttonKey,
 	buttonEvents: function(){return buttonEvents},

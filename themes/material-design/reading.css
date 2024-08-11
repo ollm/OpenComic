@@ -214,6 +214,7 @@
 	transform-origin: top left;
 	border: 0px;
 	background-color: white;
+	-webkit-user-drag: none;
 }
 
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.pixelated,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/

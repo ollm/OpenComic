@@ -1249,7 +1249,7 @@ function calculateVisibleItems(view, scrollTop = false)
 	return {start: start, end: end};
 }
 
-var indexPathControlA = [], indexPathA = false, indexMainPathA = false;
+var indexPathControlA = [], indexPathA = false, indexMainPathA = false, indexPathControlForwards = [], fromGoForwards = false;
 
 function indexPathControlGoBack()
 {
@@ -1258,6 +1258,8 @@ function indexPathControlGoBack()
 		if(isFromIndexLabel && !isFromRecentlyOpened)
 			indexLabel = isFromIndexLabel;
 
+		indexPathControlForwards.push(indexPathControlA.pop());
+
 		if(isFromRecentlyOpened)
 			recentlyOpened.load(true);
 		else
@@ -1265,6 +1267,8 @@ function indexPathControlGoBack()
 	}
 	else if(indexPathControlA.length > 0)
 	{
+		console.log(indexPathControlA);
+
 		let goBack = indexPathControlA[indexPathControlA.length - 2];
 
 		indexLabel = goBack.indexLabel;
@@ -1274,10 +1278,30 @@ function indexPathControlGoBack()
 		else
 			loadIndexPage(true, goBack.path, false, false, goBack.mainPath, true);
 
-		indexPathControlA.pop();
+		indexPathControlForwards.push(indexPathControlA.pop());
 
 		indexPathA = goBack.path;
 		indexMainPathA = goBack.mainPath;
+	}
+}
+
+function indexPathControlGoForwards()
+{
+	if(indexPathControlForwards.length > 0)
+	{
+		const goForwards = indexPathControlForwards.pop();
+
+		if(onReading)
+			reading.saveReadingProgress();
+
+		fromGoForwards = true;
+
+		if(goForwards.isComic)
+			openComic(true, goForwards.path, goForwards.mainPath, false, false);
+		else
+			loadIndexPage(true, goForwards.path, false, false, goForwards.mainPath, false);
+
+		fromGoForwards = false;
 	}
 }
 
@@ -1320,10 +1344,15 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 
 		if(index >= 0)
 		{
-			if(len > 0 && isComic && fromNextAndPrev && indexPathControlA[len-1].isComic) // 
+			if(len > 0 && isComic && fromNextAndPrev && indexPathControlA[len-1].isComic)
+			{
 				indexPathControlA[len-1] = {file: files[index], path: path, mainPath: mainPath, isComic: isComic};
+			}
 			else
+			{
 				indexPathControlA.push({file: files[index], path: path, mainPath: mainPath, isComic: isComic});
+				if(!fromGoForwards) indexPathControlForwards = [];
+			}
 		}
 	}
 
@@ -2279,6 +2308,7 @@ module.exports = {
 	indexPathControl: indexPathControl,
 	indexPathControlA: function(){return indexPathControlA},
 	indexPathControlGoBack: indexPathControlGoBack,
+	indexPathControlGoForwards: indexPathControlGoForwards,
 	selectElement: selectElement,
 	openComic: openComic,
 	nextComic: function(){return skipNextComic},

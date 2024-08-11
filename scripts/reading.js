@@ -4675,7 +4675,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		if(onReading && (!haveZoom || config.readingGlobalZoom) && !config.readingScrollWithMouse && readingViewIs('scroll'))
 		{
-			if(e.originalEvent.pointerType != 'touch')
+			if(e.originalEvent.pointerType != 'touch' && e.originalEvent.button >= 0 && e.originalEvent.button <= 2)
 			{
 				// e.preventDefault();
 

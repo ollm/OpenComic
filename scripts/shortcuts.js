@@ -35,6 +35,10 @@ function loadShortcuts()
 				'reload',
 				'search',
 				'searchFilter',
+				'prevChapter',
+				'nextChapter',
+				'goBack',
+				'goForwards',
 			],
 			actions: {
 				reload: {
@@ -72,12 +76,28 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				goBack: {
+					name: language.global.back,
+					function: function(){
+						gamepad.goBack();
+						return true;
+					},
+				},
+				goForwards: {
+					name: language.global.forwards,
+					function: function(){
+						gamepad.goForwards();
+						return true;
+					},
+				},
 			},
 			shortcuts: {},
 			_shortcuts: {
 				'F5': 'reload',
 				'Ctrl+F': 'search',
 				'Ctrl+G': 'searchFilter',
+				'Mouse3': 'goBack',
+				'Mouse4': 'goForwards',
 			},
 			gamepad: {},
 			_gamepad: {
@@ -103,6 +123,7 @@ function loadShortcuts()
 				'resetZoom',
 				'fullscreen',
 				'goBack',
+				'goForwards',
 				'gamepadMenu',
 			],
 			actions: {
@@ -132,7 +153,7 @@ function loadShortcuts()
 
 						if(event instanceof PointerEvent)
 						{
-							if(event.type == 'contextmenu')
+							if(event.button != 2 || event.type != 'contextmenu')
 								return reading.rightClick(event);
 							else
 								return false;
@@ -296,6 +317,14 @@ function loadShortcuts()
 					function: function(){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.goBack();
+						return true;
+					},
+				},
+				goForwards: {
+					name: language.global.forwards,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						gamepad.goForwards();
 						return true;
 					},
 				},
