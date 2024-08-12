@@ -283,6 +283,18 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 	});
 }
 
+var onRender = false;
+
+async function setOnRender(num = 1, callback = false)
+{
+	queue.clean('readingRender');
+
+	onRender = {
+		num: num,
+		callback: callback,
+	};
+}
+
 async function render(index, _scale = false, magnifyingGlass = false)
 {
 	let imageData = imagesData[index] || false;
@@ -290,6 +302,9 @@ async function render(index, _scale = false, magnifyingGlass = false)
 	if(imageData)
 	{
 		let contentRight = template._contentRight();
+
+		let rImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index : '.r-img-i'+index);
+		if(!rImg) return;
 
 		if(renderCanvas)
 		{
@@ -305,7 +320,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 			_scale = _scale * window.devicePixelRatio// * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
 
-			let ocImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img');
+			let ocImg = rImg.querySelector('oc-img');
 			if(!ocImg) return;
 
 			let originalCanvas = ocImg.querySelector('canvas');
@@ -400,7 +415,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 			_scale = (_scale || scale);
 
-			let ocImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index+' oc-img' : '.r-img-i'+index+' oc-img');
+			let ocImg = rImg.querySelector('oc-img');
 			if(!ocImg) return;
 
 			let img = ocImg.querySelector('img');
@@ -458,12 +473,41 @@ async function render(index, _scale = false, magnifyingGlass = false)
 					renderedObjectsURL.push({data: data, img: img});
 					renderedObjectsURLCache[key] = data.blob;
 				}
+				else
+				{
+					img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
+					img.classList.remove('blobRendered', 'blobRender');
+					img.style.imageRendering = '';
+				}
 			}
 			else
 			{
 				img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
 				img.classList.remove('blobRendered', 'blobRender');
 				img.style.imageRendering = '';
+			}
+		}
+
+		if(onRender)
+		{
+			onRender.num--;
+
+			if(onRender.num <= 0)
+			{
+				let img = rImg.querySelector('oc-img img');
+
+				if(img && !img.complete)
+				{
+					await new Promise(function(resolve){
+
+						img.onload = resolve;
+						img.onerror = resolve;
+
+					});
+				}
+
+				onRender.callback();
+				onRender = false;
 			}
 		}
 	}
@@ -482,4 +526,5 @@ module.exports = {
 	focusIndex: focusIndex,
 	resized: resized,
 	setEbookConfigChanged: setEbookConfigChanged,
+	setOnRender: setOnRender,
 }

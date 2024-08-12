@@ -15,6 +15,11 @@ async function resize(fromImage, toImage, config = {})
 
 	return new Promise(function(resolve, reject) {
 
+		const extension = fileExtension(fromImage);
+
+		if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
+			return reject({});
+
 		sharp(fromImage).jpeg({quality: config.quality}).resize(config).toFile(toImage, function(error) {
 		
 			if(error)
@@ -124,6 +129,12 @@ async function resizeToBlob(fromImage, config = {})
 		kernel: 'lanczos3',
 		compressionLevel: 0,
 	}, ...config};
+
+	if(config.width && config.width < 1)
+		config.width = 1;
+
+	if(config.height && config.height < 1)
+		config.height = 1;
 
 	return new Promise(function(resolve, reject) {
 
@@ -266,15 +277,19 @@ async function isAnimated(path)
 	let extension = fileExtension(path);
 	let _isAnimated = false;
 
-	if(inArray(extension, imageExtensions.jpg) || inArray(extension, imageExtensions.bmp) || inArray(extension, imageExtensions.ico)) // Extensions that do not support animations
-	{
-		_isAnimated = false;
-	}
-	else if(inArray(extension, imageExtensions.svg) || inArray(extension, imageExtensions.gif)) // Is always animated or is a vector format
+	if(inArray(extension, imageExtensions.bmp) || inArray(extension, imageExtensions.ico)) // Unsupported image format by sharp
 	{
 		_isAnimated = true;
 	}
-	else if(inArray(extension, imageExtensions.png) || inArray(extension, imageExtensions.webp) || inArray(extension, imageExtensions.avif))  // They can have animations
+	else if(inArray(extension, imageExtensions.jpg)) // Extensions that do not support animations
+	{
+		_isAnimated = false;
+	}
+	else if(inArray(extension, imageExtensions.svg)) // Is a vector format
+	{
+		_isAnimated = true;
+	}
+	else if(inArray(extension, imageExtensions.png) || inArray(extension, imageExtensions.webp) || inArray(extension, imageExtensions.avif) || inArray(extension, imageExtensions.gif))  // They can have animations
 	{
 		_isAnimated = false;
 
@@ -286,6 +301,8 @@ async function isAnimated(path)
 			type = 'image/webp';
 		else if(inArray(extension, imageExtensions.avif))
 			type = 'image/avif';
+		else if(inArray(extension, imageExtensions.gif))
+			type = 'image/gif';
 
 		let decoder = new ImageDecoder({data: await fsp.readFile(path), type: type});
 		await decoder.tracks.ready;
@@ -305,6 +322,16 @@ async function isAnimated(path)
 	return _isAnimated;
 }
 
+function sharpSupportedFormat(path, extension = false)
+{
+	extension = extension || fileExtension(path);
+
+	if(inArray(extension, imageExtensions.bmp) || inArray(extension, imageExtensions.ico)) // Unsupported image format by sharp
+		return false;
+
+	return true;
+}
+
 function loadImage(url, encode = false)
 {
 	return new Promise(function(resolve) {
@@ -315,6 +342,101 @@ function loadImage(url, encode = false)
 	});
 }
 
+var threads = false, sizesCache = {};
+
+async function getSizes(images)
+{
+	if(sharp === false) sharp = require('sharp');
+	if(threads === false) threads = os.cpus().length || 1;
+
+	const sizes = [];
+	const len = images.length;
+
+	for(let i = 0; i < len; i++)
+	{
+		sizes.push(false);
+	}
+
+	let promises = [];
+	let index = 0;
+
+	for(let i = 0; i < threads; i++)
+	{
+		promises.push(new Promise(async function(resolve) {
+
+			toBreak:
+			while(true)
+			{
+				const p = index++;
+				const image = images[p];
+
+				if(image)
+				{
+					if(image.image && !image.folder)
+					{
+						const sha = image.sha || sha1(image.path);
+
+						if(sizesCache[sha])
+						{
+							sizes[p] = sizesCache[sha];
+						}
+						else
+						{
+							let size = {
+								width: 1,
+								height: 1,
+							};
+
+							try
+							{
+								if(sharpSupportedFormat(image.image))
+								{
+									const _sharp = sharp(shortWindowsPath.generateSync(image.image));
+									const metadata = await _sharp.metadata();
+
+									size = {
+										width: metadata.width,
+										height: metadata.height,
+									};
+								}
+								else
+								{
+									const img = new Image();
+									img.src = image.image;
+									await img.decode();
+
+									size = {
+										width: img.naturalWidth,
+										height: img.naturalHeight,
+									};
+								}
+							}
+							catch(error)
+							{
+								console.error(error);
+							}
+
+							sizesCache[sha] = size;
+							sizes[p] = size;
+						}
+					}
+				}
+				else
+				{
+					break toBreak;
+				}
+			}
+
+			resolve();
+
+		}));
+	}
+
+	await Promise.all(promises)
+
+	return sizes;
+}
+
 module.exports = {
 	resize: resize,
 	resizeToCanvas: resizeToCanvas,
@@ -322,5 +444,7 @@ module.exports = {
 	convertToPng: convertToPng,
 	convertToWebp: convertToWebp,
 	isAnimated: isAnimated,
+	sharpSupportedFormat: sharpSupportedFormat,
 	loadImage: loadImage,
+	getSizes: getSizes,
 };

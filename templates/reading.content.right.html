@@ -29,25 +29,8 @@
 			</svg>
 		</div>
 	</div>
-	<div class="reading-body" style="display: none;">
+	<div class="reading-body" style="opacity: 0;">
 		<div>
-			{{#each comics}}
-				{{#if folder}}
-				<div class="r-img r-img-i{{index}} folder"></div>
-				{{else}}
-				<div class="r-img r-img-i{{index}}">
-					<oc-img>
-						{{#if canvas}}
-						<canvas data-width="{{size.width}}" data-height="{{size.height}}" data-path="{{htmlQuote path}}" data-path="{{htmlQuote path}}" data-index="{{index}}" data-name="{{htmlQuote name}}"></canvas>
-						{{else if ebook}}
-						<!-- <iframe> -->
-						{{else}}
-						<img src="{{chain 'shortWindowsPath' 'encodeSrcURI' 'invertBackslash' image}}" data-src="{{htmlQuote image}}" data-path="{{htmlQuote path}}" data-index="{{index}}">
-						{{/if}}
-					</oc-img>
-				</div>
-				{{/if}}
-			{{/each}}
 		</div>
 	</div>
 </div>

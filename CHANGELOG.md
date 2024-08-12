@@ -17,7 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Setting to force app Color Profile [`c7d479a`](https://github.com/ollm/OpenComic/commit/c7d479abeed6638c39ec413abd68ccfcacf6d5d5)
 - WebDAV server support [`b6f4439`](https://github.com/ollm/OpenComic/commit/b6f4439d8953b3855fbc3d7ff476bfd6230a51a1)
 - Library Navigation using side mouse buttons [`96f4bb8`](https://github.com/ollm/OpenComic/commit/96f4bb8e0033bd58b78e9ec29155ae332c72ec8b)
-- Move to trash and Delete permanently options
+- Move to trash and Delete permanently options [`2737fbe`](https://github.com/ollm/OpenComic/commit/2737fbe2b9a318c9e5a8b27885e153caa5e9b327)
+- Improved reading load and memory usage
 
 
 ##### 🐛 Bug Fixes

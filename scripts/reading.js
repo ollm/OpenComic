@@ -11,7 +11,7 @@ function blankPage(index)
 {
 	var key = 0;
 
-	if(_config.readingDoublePage && !_config.readingWebtoon && _config.readingDoNotApplyToHorizontals)
+	if(readingDoublePage() && _config.readingDoNotApplyToHorizontals)
 	{
 		for(let i = index; i < (imagesNum + 1); i++)
 		{
@@ -69,7 +69,7 @@ function calculateImagesDistribution()
 	imagesDistribution = [];
 	indexNum = 0;
 
-	if(_config.readingDoublePage && !_config.readingWebtoon)
+	if(readingDoublePage())
 	{
 		var data = [];
 
@@ -255,7 +255,6 @@ function addHtmlImages()
 
 	let contentRight = template._contentRight();
 
-	dom.this(contentRight).find('.loading').remove();
 	dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).html(html);
 
 }
@@ -1101,7 +1100,7 @@ function goPageDialog(go = false)
 //Returns the highest image
 function returnLargerImage(index)
 {
-	if(_config.readingDoublePage && !_config.readingWebtoon)
+	if(readingDoublePage())
 	{
 		let image0 = template._contentRight().querySelector('.image-position'+(index)+'-0');
 		let image1 = template._contentRight().querySelector('.image-position'+(index)+'-1');
@@ -1355,7 +1354,7 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 	{
 		let index = closest.page.index + 1;
 
-		if(_config.readingDoublePage)
+		if(readingDoublePage())
 			index = Math.ceil(index / 2);
 
 		if(_config.readingManga && !readingViewIs('scroll'))
@@ -2154,7 +2153,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			scrollTop: scrollTop,
 		};
 
-		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), _config.readingDoublePage);
+		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), readingDoublePage());
 	}
 }
 
@@ -2276,7 +2275,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 			zoomMoveData.active = false;
 			currentZoomIndex = false;
 
-			render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), _config.readingDoublePage);
+			render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), readingDoublePage());
 		}
 	}
 }
@@ -2724,7 +2723,7 @@ async function resized()
 			stayInLine(true);
 		}
 
-		render.resized(_config.readingDoublePage);
+		render.resized(readingDoublePage());
 		fastUpdateEbookPages(false, true);
 		generateEbookPagesDelayed();
 	}
@@ -2851,6 +2850,11 @@ function readingView()
 		return 'scroll';
 
 	return _config.readingView;
+}
+
+function readingDoublePage()
+{
+	return (_config.readingDoublePage && !_config.readingWebtoon);
 }
 
 var activeOnScroll = true;
@@ -3053,7 +3057,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(_config.readingDoublePage);
+		render.resized(readingDoublePage());
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: _config.readingMargin.top, bottom: _config.readingMargin.bottom, left: value, right: value});
 		updateEbook(save);
@@ -3064,7 +3068,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(_config.readingDoublePage);
+		render.resized(readingDoublePage());
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: value, bottom: value, left: _config.readingMargin.left, right: _config.readingMargin.right});
 		updateEbook(save);
@@ -3098,7 +3102,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(_config.readingDoublePage);
+		render.resized(readingDoublePage());
 
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: _config.readingHorizontalsMargin.top, bottom: _config.readingHorizontalsMargin.bottom, left: value, right: value});
 		updateEbook(save);
@@ -3122,7 +3126,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(_config.readingDoublePage);
+		render.resized(readingDoublePage());
 		filters.cleanIsBlackAndWhiteCurrent();
 	}
 	else if(mode == 17) // Clip vertical images
@@ -3136,7 +3140,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(_config.readingDoublePage);
+		render.resized(readingDoublePage());
 		filters.cleanIsBlackAndWhiteCurrent();
 	}
 	else if(mode == 18) // Do not enlarge images more than its original size
@@ -4020,7 +4024,7 @@ async function getEbookConfig(configReadingEbook = false)
 	}
 
 	let renderZone = {
-		width: (rect.width - (readingMargin().left * (_config.readingDoublePage ? 3 : 2))) / (_config.readingDoublePage ? 2 : 1),
+		width: (rect.width - (readingMargin().left * (readingDoublePage() ? 3 : 2))) / (readingDoublePage() ? 2 : 1),
 		height: (rect.height - (readingMargin().top * 2)),
 	};
 
@@ -4139,7 +4143,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		let index = currentIndex;
 
-		if(doublePage && !_config.readingDoublePage)
+		if(doublePage && !readingDoublePage())
 			index = Math.ceil(index / 2);
 
 		let imageIndex = imagesDistribution[index - 1][0].index;
@@ -4205,8 +4209,6 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		setCurrentComics(comics);
 
 		imagesNum = contentNum = ebookPages.pages.length;
-
-		template.contentRight('.reading-body').css('display', 'block');
 
 		addHtmlImages();
 		disposeImages();
@@ -5132,8 +5134,17 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight().children('div').on('scroll', onScroll);
 
-	imagesNum = template.contentRight('.reading-body oc-img').length;
-	contentNum = template.contentRight('.reading-body .r-img:not(.blank)').length;
+	const _images = handlebarsContext.comics;
+	const len = _images.length;
+	contentNum = len;
+
+	imagesNum = 0;
+
+	for(let i = 0; i < len; i++)
+	{
+		if(!_images[i].folder)
+			imagesNum++;
+	}
 
 	readingIsCanvas = isCanvas;
 	readingIsEbook = isEbook;
@@ -5144,31 +5155,37 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	readingFile = fileManager.file();
 	readingFileC = false;
 
+	render.setOnRender((readingDoublePage() ? 2 : 1), function(){
+
+		const contentRight = template._contentRight();
+
+		dom.this(contentRight).find('.loading').remove();
+		dom.this(contentRight).find('.reading-body').css({opacity: 1});
+
+	});
+
 	if(isCanvas)
 	{
 		readingFileC = fileManager.fileCompressed(path);
 		await render.setFile(readingFileC, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
 
-		let _images = template.contentRight('.reading-body oc-img canvas').get();
-
-		for(let i = 0, len = _images.length; i < len; i++)
+		for(let i = 0; i < len; i++)
 		{
 			let image = _images[i];
-			let index = +image.dataset.index;
-			let width = +image.dataset.width;
-			let height = +image.dataset.height;
-			let path = image.dataset.path;
+			let index = +image.index;
+			let width = +image.size.width;
+			let height = +image.size.height;
+			let path = image.path;
 
 			images[index] = {index: index, path: path};
 			imagesPath[path] = index;
 
-			imagesData[index] = {width: width, height: height, aspectRatio: (width / height), name: image.dataset.name};
+			imagesData[index] = {width: width, height: height, aspectRatio: (width / height), name: image.name};
 		}
 
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
 
-		template.contentRight('.reading-body').css('display', 'block');
 		addHtmlImages();
 		disposeImages();
 		calculateView(true);
@@ -5198,89 +5215,47 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	{
 		render.setFile(false, false, 'images');
 
-		template.contentRight('.reading-body img').each(function() {
+		const sizes = await image.getSizes(_images);
 
-			var index = +this.dataset.index;
+		for(let i = 0; i < len; i++)
+		{
+			const image = _images[i];
+			const size = sizes[i];
 
-			images[index] = new Image();
-			images[index].index = index;
-			images[index].onload = function() {
-
-				if(_config.readingRotateHorizontals && this.width > this.height)
-					imagesData[this.index] = {width: this.height, height: this.width, aspectRatio: (this.height / this.width), rotated: true};
+			if(size)
+			{
+				if(_config.readingRotateHorizontals && size.width > size.height)
+					imagesData[image.index] = {width: size.height, height: size.width, aspectRatio: (size.height / size.width), rotated: true};
 				else
-					imagesData[this.index] = {width: this.width, height: this.height, aspectRatio: (this.width / this.height), rotated: false};
+					imagesData[image.index] = {width: size.width, height: size.height, aspectRatio: (size.width / size.height), rotated: false};
 
-				imagesNumLoad++;
-
-				if(imagesNumLoad == imagesNum)
-				{
-					render.setImagesData(imagesData);
-					filters.setImagesPath(imagesPath, readingCurrentPath);
-
-					template.contentRight('.reading-body').css('display', 'block');
-					addHtmlImages();
-					disposeImages();
-					calculateView(true);
-
-					currentIndex = imagesData[currentIndex].position + 1;
-
-					var newIndex = currentIndex;
-
-					if(_config.readingManga && !readingViewIs('scroll'))
-						newIndex = (indexNum - newIndex) + 1;
-
-					goToIndex(newIndex, false, end, end);
-
-					if(readingViewIs('scroll'))
-						getPreviusContentSize();
-
-					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
-
-					reading.isLoad();
-				}
-
+				images[image.index] = {index: image.index, path: image.path};
+				imagesPath[image.path] = image.index;
 			}
-			images[index].onerror = function() {
+		}
 
-				imagesData[this.index] = {width: 0, height: 0, aspectRatio: 0};
+		render.setImagesData(imagesData);
+		filters.setImagesPath(imagesPath, readingCurrentPath);
 
-				imagesNumLoad++;
+		addHtmlImages();
+		disposeImages();
+		calculateView(true);
 
-				if(imagesNumLoad == imagesNum)
-				{
-					render.setImagesData(imagesData);
-					filters.setImagesPath(imagesPath, readingCurrentPath);
+		currentIndex = imagesData[currentIndex].position + 1;
 
-					template.contentRight('.reading-body').css('display', 'block');
-					addHtmlImages();
-					disposeImages();
-					calculateView(true);
+		var newIndex = currentIndex;
 
-					currentIndex = imagesData[currentIndex].position + 1;
+		if(_config.readingManga && !readingViewIs('scroll'))
+			newIndex = (indexNum - newIndex) + 1;
 
-					var newIndex = currentIndex;
+		goToIndex(newIndex, false, end, end);
 
-					if(_config.readingManga && !readingViewIs('scroll'))
-						newIndex = (indexNum - newIndex) + 1;
+		if(readingViewIs('scroll'))
+			getPreviusContentSize();
 
-					goToIndex(newIndex, false, end, end);
+		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
-					if(readingViewIs('scroll'))
-						getPreviusContentSize();
-
-					setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
-
-					reading.isLoad();
-				}
-
-			}
-
-			images[index].src = $(this).attr('src');
-			images[index].path = this.dataset.path;
-			imagesPath[this.dataset.path] = index;
-
-		});
+		reading.isLoad();
 	}
 
 	template.contentRight().children('div').css({scrollbarGutter: readingViewIs('scroll') ? '' : 'initial'});

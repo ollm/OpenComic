@@ -679,8 +679,6 @@ function showHoverText()
 	let left = rect.left + (rect.width / 2);
 	let top = rect.top + rect.height;
 
-	console.log(left+' + '+hoverRect.width+' / 2 + 8 > '+window.innerWidth);
-
 	if(left < (hoverRect.width / 2) + 8)
 		left = (hoverRect.width / 2) + 8;
 	else if(left + (hoverRect.width / 2) + 8 > window.innerWidth)
