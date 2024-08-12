@@ -446,6 +446,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			{
 				if(cssMethods[_config.kernel])
 				{
+					img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
+					img.classList.remove('blobRendered', 'blobRender');
 					img.style.imageRendering = cssMethods[_config.kernel];
 				}
 				else if(renderedObjectsURLCache[key])
