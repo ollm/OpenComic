@@ -8,25 +8,27 @@
 		<div class="file-info-header">
 			{{#unless fileInfo.bigPoster}}
 			<div class="content-view-module">
-				<div class="v-folder item-image" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
-					{{#if fileInfo.poster}}
-						<div class="folder-poster">
-							<img{{#if fileInfo.poster.path}} class="has-poster" src="{{fileInfo.poster.path}}"{{else}} class="sha-image-{{fileInfo.poster.sha}} folder-poster-img"{{/if}}>
-						</div>
-						{{#if fileInfo.images}}
+				<div>
+					<div class="v-folder item-image" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
+						{{#if fileInfo.poster}}
+							<div class="folder-poster">
+								<img{{#if fileInfo.poster.path}} class="has-poster" src="{{fileInfo.poster.path}}"{{else}} class="sha-image-{{fileInfo.poster.sha}} folder-poster-img"{{/if}}>
+							</div>
+							{{#if fileInfo.images}}
+								{{#each fileInfo.images}}
+								<div class="folder-images">
+									<img class="sha-image-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
+								</div>
+								{{/each}}
+							{{/if}}
+						{{else}}
 							{{#each fileInfo.images}}
 							<div class="folder-images">
 								<img class="sha-image-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
 							</div>
 							{{/each}}
 						{{/if}}
-					{{else}}
-						{{#each fileInfo.images}}
-						<div class="folder-images">
-							<img class="sha-image-{{sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}">
-						</div>
-						{{/each}}
-					{{/if}}
+					</div>
 				</div>
 			</div>
 			{{/unless}}

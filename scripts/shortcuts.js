@@ -77,14 +77,14 @@ function loadShortcuts()
 					},
 				},
 				goBack: {
-					name: language.global.back,
+					name: language.global.goBack,
 					function: function(){
 						gamepad.goBack();
 						return true;
 					},
 				},
 				goForwards: {
-					name: language.global.forwards,
+					name: language.global.goForwards,
 					function: function(){
 						gamepad.goForwards();
 						return true;
@@ -313,7 +313,7 @@ function loadShortcuts()
 					},
 				},
 				goBack: {
-					name: language.global.back,
+					name: language.global.goBack,
 					function: function(){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.goBack();
@@ -321,7 +321,7 @@ function loadShortcuts()
 					},
 				},
 				goForwards: {
-					name: language.global.forwards,
+					name: language.global.goForwards,
 					function: function(){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.goForwards();

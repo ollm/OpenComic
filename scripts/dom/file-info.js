@@ -216,7 +216,7 @@ async function show(path)
 
 async function getFileSize()
 {
-	let size = await fileManager.dirSize(fileManager.firstCompressedFile(currentPath));
+	let size = await fileManager.dirSize(fileManager.realPath(fileManager.firstCompressedFile(currentPath)));
 
 	size = size / 1000 / 1000;
 

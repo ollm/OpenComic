@@ -35,6 +35,9 @@
 			"paste": "",
 			"selectAll": "",
 			"remove": "移除",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "",
 			"openFileLocation": "",
 			"openFolderLocation": "",
@@ -47,6 +50,8 @@
 			"closeApp": ""
 		},
 		"back": "返回",
+		"goBack": "",
+		"goForwards": "",
 		"open": "",
 		"add": "新增",
 		"addToLibrary": "",

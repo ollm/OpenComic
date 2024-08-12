@@ -57,6 +57,11 @@
 	margin: 0px;
 }
 
+.file-info-header .content-view-module > div
+{
+	margin: -8px;
+}
+
 .file-info-findOn
 {
 	float: initial;

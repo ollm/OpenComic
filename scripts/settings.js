@@ -101,7 +101,7 @@ function removeUnreferencedTemporaryFiles(tmpUsage, dir, first = true)
 	}
 
 	if(empty && !first)
-		fs.rmdirSync(dir, {recursive: true})
+		fs.rmSync(dir, {recursive: true})
 
 	return empty;
 }
@@ -115,7 +115,7 @@ function removeTemporaryPath(path)
 		if(fs.statSync(path).isDirectory())
 		{
 			size = fileManager.dirSizeSync(path);
-			fs.rmdirSync(path, {recursive: true});
+			fs.rmSync(path, {recursive: true});
 		}
 		else
 		{

@@ -35,6 +35,9 @@
 			"paste": "粘贴",
 			"selectAll": "全选",
 			"remove": "移除",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "收藏",
 			"openFileLocation": "打开文件所在位置",
 			"openFolderLocation": "打开文件夹位置",
@@ -47,6 +50,8 @@
 			"closeApp": "关闭 OpenComic"
 		},
 		"back": "返回",
+		"goBack": "",
+		"goForwards": "",
 		"open": "打开",
 		"add": "添加",
 		"addToLibrary": "添加到库",

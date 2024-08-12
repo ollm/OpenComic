@@ -35,6 +35,9 @@
 			"paste": "Paste",
 			"selectAll": "Select all",
 			"remove": "Remove",
+			"moveToTrash": "Move to trash",
+			"deletePermanently": "Delete permanently",
+			"deletePermanentlyConfirm": "Do you really want to permanently delete this file? This action cannot be undone",
 			"favorite": "Favorite",
 			"openFileLocation": "Open file location",
 			"openFolderLocation": "Open folder location",
@@ -47,6 +50,8 @@
 			"closeApp": "Close OpenComic"
 		},
 		"back": "Back",
+		"goBack": "Go back",
+		"goForwards": "Go forwards",
 		"open": "Open",
 		"add": "Add",
 		"addToLibrary": "Add to library",

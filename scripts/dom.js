@@ -1869,7 +1869,9 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 	let isServer = fileManager.isServer(path);
 	if(!fromIndex && isServer) return;
 
-	dom.query('#index-context-menu .separator-remove').css({display: fromIndexNotMasterFolders ? 'block' : 'none'});
+	const canBeDelete = (!fileManager.isServer(path) && !fileManager.lastCompressedFile(p.dirname(path))) ? true : false;
+
+	dom.query('#index-context-menu .separator-remove').css({display: canBeDelete ? 'block' : 'none'});
 
 	// Remove
 	let remove = document.querySelector('#index-context-menu .context-menu-remove');
@@ -1882,6 +1884,32 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 	else
 	{
 		remove.style.display = 'none';
+	}
+
+	// Move to trash
+	let moveToTrash = document.querySelector('#index-context-menu .context-menu-move-to-trash');
+
+	if(canBeDelete)
+	{
+		moveToTrash.style.display = 'block';
+		moveToTrash.setAttribute('onclick', 'dom.moveToTrash(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(fromIndexNotMasterFolders ? 'true' : 'false')+');');
+	}
+	else
+	{
+		moveToTrash.style.display = 'none';
+	}
+
+	// Delete permanently
+	let deletePermanently = document.querySelector('#index-context-menu .context-menu-delete-permanently');
+
+	if(canBeDelete)
+	{
+		deletePermanently.style.display = 'block';
+		deletePermanently.setAttribute('onclick', 'dom.deletePermanently(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(fromIndexNotMasterFolders ? 'true' : 'false')+');');
+	}
+	else
+	{
+		deletePermanently.style.display = 'none';
 	}
 
 	dom.query('#index-context-menu .separator-labels').css({display: fromIndex ? 'block' : 'none'});
@@ -2009,7 +2037,7 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 }
 
 // Remove the comic from OpenComic
-function removeComic(path, confirm = false)
+function removeComic(path, confirm = false, reload = true)
 {
 	var _comics = [], comics = storage.get('comics');
 
@@ -2021,8 +2049,51 @@ function removeComic(path, confirm = false)
 
 	storage.update('comics', _comics);
 
-	dom.loadIndexPage(true, false, true, true);
+	if(reload) dom.reloadIndex();
 }
+
+async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = false)
+{
+	await electron.shell.trashItem(path);
+
+	if(fromIndexNotMasterFolders)
+		dom.removeComic(path, true, false);
+
+	dom.reloadIndex();
+}
+
+function deletePermanently(path, fromIndexNotMasterFolders = false, confirm = false)
+{
+	if(confirm)
+	{
+		fs.rmSync(path, {recursive: true});
+
+		if(fromIndexNotMasterFolders)
+			dom.removeComic(path, true, false);
+
+		dom.reloadIndex();
+	}
+	else
+	{
+		events.dialog({
+			header: language.global.contextMenu.deletePermanently,
+			width: 400,
+			height: false,
+			content: language.global.contextMenu.deletePermanentlyConfirm,
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.global.contextMenu.deletePermanently,
+					function: 'events.closeDialog(); dom.deletePermanently(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(fromIndexNotMasterFolders ? 'true' : 'false')+', true);',
+				}
+			],
+		});
+	}
+}
+
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
@@ -2321,6 +2392,8 @@ module.exports = {
 	addComicButtons: addComicButtons,
 	comicContextMenu: comicContextMenu,
 	removeComic: removeComic,
+	moveToTrash: moveToTrash,
+	deletePermanently: deletePermanently,
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
 	addSepToEnd: addSepToEnd,

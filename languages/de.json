@@ -35,6 +35,9 @@
 			"paste": "",
 			"selectAll": "",
 			"remove": "Entfernen",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "",
 			"openFileLocation": "",
 			"openFolderLocation": "",
@@ -47,6 +50,8 @@
 			"closeApp": ""
 		},
 		"back": "Zurück",
+		"goBack": "",
+		"goForwards": "",
 		"open": "",
 		"add": "Hinzufügen",
 		"addToLibrary": "",

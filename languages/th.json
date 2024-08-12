@@ -35,6 +35,9 @@
 			"paste": "วาง",
 			"selectAll": "เลือกทั้งหมด",
 			"remove": "นำออก",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "เรื่องที่ชอบ",
 			"openFileLocation": "เปิดตำแหน่งไฟล์",
 			"openFolderLocation": "เปิดตำแหน่งโฟลเดอร์",
@@ -47,6 +50,8 @@
 			"closeApp": "ปิด OpenComic"
 		},
 		"back": "กลับ",
+		"goBack": "",
+		"goForwards": "",
 		"open": "เปิด",
 		"add": "เพิ่ม",
 		"addToLibrary": "เพิ่มไปห้องสมุด",

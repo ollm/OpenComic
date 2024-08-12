@@ -35,6 +35,9 @@
 			"paste": "",
 			"selectAll": "",
 			"remove": "",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "",
 			"openFileLocation": "",
 			"openFolderLocation": "",
@@ -47,6 +50,8 @@
 			"closeApp": "OpenComic 끝내기"
 		},
 		"back": "",
+		"goBack": "",
+		"goForwards": "",
 		"open": "열기",
 		"add": "추가",
 		"addToLibrary": "책장에 추가",

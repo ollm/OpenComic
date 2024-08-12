@@ -669,20 +669,41 @@ function events()
 
 function showHoverText()
 {
-	$('.global-elements .hover > div').html($(eventHoverTimeoutThis).attr('hover-text'));
+	const parent = document.querySelector('.global-elements .hover');
+	const hover = document.querySelector('.global-elements .hover > div');
+	hover.innerHTML = eventHoverTimeoutThis.getAttribute('hover-text');
 
-	var offset = $(eventHoverTimeoutThis).offset();
+	const rect = eventHoverTimeoutThis.getBoundingClientRect();
+	const hoverRect = hover.getBoundingClientRect();
 
-	var left = offset.left + ($(eventHoverTimeoutThis).innerWidth() / 2);
-	var top = offset.top + $(eventHoverTimeoutThis).innerWidth();
+	let left = rect.left + (rect.width / 2);
+	let top = rect.top + rect.height;
 
-	if(top + 60 > $(window).height())
+	console.log(left+' + '+hoverRect.width+' / 2 + 8 > '+window.innerWidth);
+
+	if(left < (hoverRect.width / 2) + 8)
+		left = (hoverRect.width / 2) + 8;
+	else if(left + (hoverRect.width / 2) + 8 > window.innerWidth)
+		left = window.innerWidth - (hoverRect.width / 2) - 8;
+
+
+	if(top + 60 > window.innerHeight)
 	{
-		$('.global-elements .hover').removeClass('d d-i').addClass('a-i').css('top', '').css('bottom', ($(window).height() - offset.top)+'px').css('left', left+'px');
+		parent.classList.remove('d', 'd-i');
+		parent.classList.add('a-i');
+
+		parent.style.top = '';
+		parent.style.bottom = (window.innerHeight - rect.top)+'px';
+		parent.style.left = left+'px';
 	}
 	else
 	{
-		$('.global-elements .hover').removeClass('d d-i').addClass('a').css('bottom', '').css('top', top+'px').css('left', left+'px');
+		parent.classList.remove('d', 'd-i');
+		parent.classList.add('a');
+
+		parent.style.bottom = '';
+		parent.style.top = top+'px';
+		parent.style.left = left+'px';
 	}
 
 	showedHoverText = true;

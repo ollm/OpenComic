@@ -35,6 +35,9 @@
 			"paste": "Enganxar",
 			"selectAll": "Selecciona-ho tot",
 			"remove": "Retirar",
+			"moveToTrash": "Moure a la paperera",
+			"deletePermanently": "Eliminar permanentment",
+			"deletePermanentlyConfirm": "Realment vols eliminar aquest fitxer de forma permanent? Aquesta acció no es pot desfer",
 			"favorite": "Favorit",
 			"openFileLocation": "Obre la ubicació del fitxer",
 			"openFolderLocation": "Obre la ubicació de la carpeta",
@@ -47,6 +50,8 @@
 			"closeApp": "Tancar OpenComic"
 		},
 		"back": "Enrere",
+		"goBack": "Anar enrere",
+		"goForwards": "Anar endavant",
 		"open": "Obrir",
 		"add": "Afegir",
 		"addToLibrary": "Afegir a la biblioteca",

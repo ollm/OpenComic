@@ -35,6 +35,9 @@
 			"paste": "",
 			"selectAll": "",
 			"remove": "Xóa",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "Yêu thích",
 			"openFileLocation": "Mở tệp trong trình quản lý tệp",
 			"openFolderLocation": "Mở thư mục trong trình quản lý tệp",
@@ -47,6 +50,8 @@
 			"closeApp": "Đóng OpenComic"
 		},
 		"back": "Trở về",
+		"goBack": "",
+		"goForwards": "",
 		"open": "Mở",
 		"add": "Thêm",
 		"addToLibrary": "Thêm vào thư viện",

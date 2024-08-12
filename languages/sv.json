@@ -35,6 +35,9 @@
 			"paste": "",
 			"selectAll": "",
 			"remove": "Ta bort",
+			"moveToTrash": "",
+			"deletePermanently": "",
+			"deletePermanentlyConfirm": "",
 			"favorite": "Favoritmarkera",
 			"openFileLocation": "Öppna filplats",
 			"openFolderLocation": "Öppna mapplats",
@@ -47,6 +50,8 @@
 			"closeApp": "Stäng OpenComic"
 		},
 		"back": "Tillbaka",
+		"goBack": "",
+		"goForwards": "",
 		"open": "Öppna",
 		"add": "Lägg till",
 		"addToLibrary": "Lägg till i biblioteket",
