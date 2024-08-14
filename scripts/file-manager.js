@@ -286,9 +286,6 @@ var file = function(path, _config = false) {
 
 		if(this.config.cache && (this.config.cacheOnly || this.config.cacheServer || serverInOfflineMode))
 		{
-			if(_containsCompressed)
-				return this.readCompressed(path);
-
 			let json = cache.readJson(cacheFile);
 
 			if(json)
@@ -307,11 +304,14 @@ var file = function(path, _config = false) {
 		{
 			let firstCompressed = firstCompressedFile(path, 0);
 
-			// Download file to tmp
-			let file = await serverClient.download(path, {only: [firstCompressed]});
+			if(!fs.existsSync(realPath(firstCompressed)))
+			{
+				// Download file to tmp
+				let file = await serverClient.download(path, {only: [firstCompressed]});
 
-			if(this.config.fromThumbnailsGeneration)
-				downloadedCompressedFile(firstCompressed);
+				if(this.config.fromThumbnailsGeneration)
+					downloadedCompressedFile(firstCompressed);
+			}
 
 			return this.readCompressed(path);
 		}
@@ -333,11 +333,14 @@ var file = function(path, _config = false) {
 
 		if(firstCompressed)
 		{
-			// Download file to tmp
-			let file = await serverClient.download(path, {only: [firstCompressed]});
+			if(!fs.existsSync(realPath(firstCompressed)))
+			{
+				// Download file to tmp
+				let file = await serverClient.download(path, {only: [firstCompressed]});
 
-			if(this.config.fromThumbnailsGeneration)
-				downloadedCompressedFile(firstCompressed);
+				if(this.config.fromThumbnailsGeneration)
+					downloadedCompressedFile(firstCompressed);
+			}
 		}
 
 		return this.readInsideCompressed(path, _realPath);
@@ -2809,7 +2812,7 @@ function setServerInOfflineMode(value = false)
 
 function isServer(path)
 {
-	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdav)\:[\/\\]{1,2}/.test(path))
+	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdavs?)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;

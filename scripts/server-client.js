@@ -41,8 +41,8 @@ function getAdress(path)
 {
 	path = posixPath(path);
 
-	if(/^(?:smb|ftps?|sftp|ssh|scp|s3|webdav)\:\//.test(path))
-		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3|webdav)\:\/\/[^\/\\]+)/, path, 1);
+	if(/^(?:smb|ftps?|sftp|ssh|scp|s3|webdavs?)\:\//.test(path))
+		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3|webdavs?)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -53,8 +53,8 @@ function getTypeAdress(path)
 
 	if(/^(?:smb|s3)\:\//.test(path))
 		return app.extract(/^((?:smb|s3)\:\/\/[^\/\\]+\/[^\/\\]+)/, path, 1);
-	else if(/^(?:ftps?|sftp|ssh|scp|webdav)\:\//.test(path))
-		return app.extract(/^((?:ftps?|sftp|ssh|scp|webdav)\:\/\/[^\/\\]+)/, path, 1);
+	else if(/^(?:ftps?|sftp|ssh|scp|webdavs?)\:\//.test(path))
+		return app.extract(/^((?:ftps?|sftp|ssh|scp|webdavs?)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -191,6 +191,12 @@ var client = function(path) {
 			read: true,
 			single: true,
 			progress: true,
+			secure: false,
+		},
+		webdavs: {
+			read: true,
+			single: true,
+			progress: true,
 			secure: true,
 		},
 	};
@@ -251,6 +257,8 @@ var client = function(path) {
 				force = 's3';
 			else if(/^(?:webdav)\:\//.test(this.path))
 				force = 'webdav';
+			else if(/^(?:webdavs)\:\//.test(this.path))
+				force = 'webdavs';
 		}
 
 		this.features = this._features[force];
@@ -337,7 +345,7 @@ var client = function(path) {
 			return this.readScp(path);
 		else if(this.features.s3)
 			return this.readS3(path);
-		else if(this.features.webdav)
+		else if(this.features.webdav || this.features.webdavs)
 			return this.readWebdav(path);
 
 		return false;
@@ -383,7 +391,7 @@ var client = function(path) {
 			return this.downloadScp(path, callbackWhenFileDownload, index);
 		else if(this.features.s3)
 			return this.downloadS3(path, callbackWhenFileDownload, index);
-		else if(this.features.webdav)
+		else if(this.features.webdav || this.features.webdavs)
 			return this.downloadWebdav(path);
 
 		return false;
@@ -1462,9 +1470,7 @@ var client = function(path) {
 			if(serverInfo.user) client.username = serverInfo.user;
 			if(serverInfo.pass) client.password = serverInfo.pass;
 
-			console.log('https://'+serverInfo.host);
-
-			this.webdav = webdav.createClient('https://'+serverInfo.host, client);
+			this.webdav = webdav.createClient('http'+(this.features.secure ? 's' : '')+'://'+serverInfo.host, client);
 		}
 		catch(error)
 		{
@@ -1489,8 +1495,6 @@ var client = function(path) {
 		let webdav = await this.connectWebdav();
 
 		let entries = await webdav.getDirectoryContents('/'+getPath(path));
-
-		console.log(entries);
 
 		for(let i = 0, len = entries.length; i < len; i++)
 		{
@@ -1550,6 +1554,8 @@ var client = function(path) {
 					else
 					{
 						let downloading = _this.setDownloading(path);
+
+						console.log('/'+posixPath(getPath(path)));
 
 						const fileContents = await webdav.getFileContents('/'+posixPath(getPath(path)), {format: 'binary'});
 						await fsp.writeFile(filePath, Buffer.from(fileContents));
