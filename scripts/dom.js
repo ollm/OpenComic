@@ -2054,6 +2054,7 @@ function removeComic(path, confirm = false, reload = true)
 
 async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = false)
 {
+	await dom.poster.findAndDelete(path, true, true);
 	await electron.shell.trashItem(path);
 
 	if(fromIndexNotMasterFolders)
@@ -2062,10 +2063,12 @@ async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = fa
 	dom.reloadIndex();
 }
 
-function deletePermanently(path, fromIndexNotMasterFolders = false, confirm = false)
+async function deletePermanently(path, fromIndexNotMasterFolders = false, confirm = false)
 {
 	if(confirm)
 	{
+		await dom.poster.findAndDelete(path, false, true);
+
 		fs.rmSync(path, {recursive: true});
 
 		if(fromIndexNotMasterFolders)

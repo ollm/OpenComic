@@ -136,18 +136,23 @@ function setNewPoster(path)
 
 }
 
-async function _delete(currentPoster = false)
+async function _delete(currentPoster = false, moveToTrash = false, silent = false)
 {
 	if(!fileManager.containsCompressed(currentPoster))
 	{
 		if(fs.existsSync(currentPoster))
-			fs.unlinkSync(currentPoster);
+		{
+			if(moveToTrash)
+				await electron.shell.trashItem(currentPoster);
+			else
+				fs.unlinkSync(currentPoster);
+		}
 
 		await cache.deleteInCache(currentPoster);
 
-		dom.reloadIndex();
+		if(!silent) dom.reloadIndex();
 	}
-	else
+	else if(!silent)
 	{
 		events.snackbar({
 			key: 'cannotDeletePoster',
@@ -164,7 +169,26 @@ async function _delete(currentPoster = false)
 	}
 }
 
+async function findAndDelete(path, moveToTrash = false, silent = true)
+{
+	let images = [];
+
+	try
+	{
+		let file = fileManager.file(path, {subtask: true});
+		images = await file.images(2, false, true);
+		file.destroy();
+	}
+	catch{}
+
+	let poster = !Array.isArray(images) ? images : false;
+
+	if(poster && !poster.fromFirstImageAsPoster)
+		await _delete(poster.path, moveToTrash, silent);
+}
+
 module.exports = {
 	add: add,
 	delete: _delete,
+	findAndDelete: findAndDelete,
 };
