@@ -1466,11 +1466,11 @@ var client = function(path) {
 		{
 			let client = {};
 
-			if(serverInfo.user || serverInfo.pass) client.authType = webdav.AuthType.Digest;
+			client.authType = webdav.AuthType.Auto;
 			if(serverInfo.user) client.username = serverInfo.user;
 			if(serverInfo.pass) client.password = serverInfo.pass;
 
-			this.webdav = webdav.createClient('http'+(this.features.secure ? 's' : '')+'://'+serverInfo.host, client);
+			this.webdav = webdav.createClient('http'+(this.features.secure ? 's' : '')+'://'+serverInfo.host+(serverInfo.port ? ':'+serverInfo.port : ''), client);
 		}
 		catch(error)
 		{
