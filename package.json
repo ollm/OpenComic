@@ -94,7 +94,7 @@
 		"pdfjs-dist": "^4.2.67",
 		"sanitize-html": "^2.13.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.33.4",
+		"sharp": "^0.33.5",
 		"short-windows-path": "^1.0.2",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "^10.0.3",

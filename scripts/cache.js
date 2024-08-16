@@ -526,9 +526,7 @@ async function deleteInCache(path, type = false)
 	cacheImagesDeleted[sha] = cacheImagesDeleted[sha] ? cacheImagesDeleted[sha] + 1 : 1;
 
 	if(!type)
-	{
 		await deleteInCache(path, 'poster');
-	}
 		
 	return;
 }
