@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Library Navigation using side mouse buttons [`96f4bb8`](https://github.com/ollm/OpenComic/commit/96f4bb8e0033bd58b78e9ec29155ae332c72ec8b)
 - Move to trash and Delete permanently options [`2737fbe`](https://github.com/ollm/OpenComic/commit/2737fbe2b9a318c9e5a8b27885e153caa5e9b327)
 - Improved reading load and memory usage [`f12cbdb`](https://github.com/ollm/OpenComic/commit/f12cbdbade5e487f5c608e253a6c82b8e7c554a4)
+- Option to set an image from the folder as a poster
 
 
 ##### 🐛 Bug Fixes

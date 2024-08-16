@@ -528,7 +528,7 @@ var file = function(path, _config = false) {
 						if(inArray(mime.getType(file.path), compatibleMime))
 						{
 							file.sha = sha1(file.path);
-							file.fromFirstImageAsPoster = sha1(file.path);
+							file.fromFirstImageAsPoster = true;
 							poster = file;
 
 							break;

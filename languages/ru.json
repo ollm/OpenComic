@@ -47,6 +47,9 @@
 			"deletePoster": "",
 			"cannotAddPoster": "",
 			"cannotDeletePoster": "",
+			"setAsPoster": "",
+			"setAsPosterFolders": "",
+			"posterSetSuccessfully": "",
 			"closeApp": ""
 		},
 		"back": "Назад",

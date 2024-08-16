@@ -47,6 +47,9 @@
 			"deletePoster": "",
 			"cannotAddPoster": "",
 			"cannotDeletePoster": "",
+			"setAsPoster": "",
+			"setAsPosterFolders": "",
+			"posterSetSuccessfully": "",
 			"closeApp": "OpenComic 끝내기"
 		},
 		"back": "",

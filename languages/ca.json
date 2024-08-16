@@ -47,6 +47,9 @@
 			"deletePoster": "Esborrar pòster",
 			"cannotAddPoster": "No es pot afegir el pòster si la carpeta és dins d'un fitxer comprimit, haurà d'editar el fitxer mitjançant 7-zip, unrar, etc",
 			"cannotDeletePoster": "No es pot esborrar el pòster si està dins d'un fitxer comprimit, haurà d'editar el fitxer mitjançant 7-zip, unrar, etc",
+			"setAsPoster": "Usar imatge com a pòster",
+			"setAsPosterFolders": "Usar imatge com a pòster d'una altra carpeta",
+			"posterSetSuccessfully": "La imatge s'ha establert com a pòster",
 			"closeApp": "Tancar OpenComic"
 		},
 		"back": "Enrere",

@@ -47,6 +47,9 @@
 			"deletePoster": "ลบปก",
 			"cannotAddPoster": "ไม่สามารถเพิ่มรูปภาพปกกรณีที่โฟลเดอร์อยู่ในไฟล์บีบอัดได้ คุณจะต้องแก้ไขไฟล์โดยใช้ 7-zip, unrar เป็นต้น",
 			"cannotDeletePoster": "ไม่สามารถนำรูปภาพปกกรณีที่โฟลเดอร์อยู่ในไฟล์บีบอัดออกได้ คุณจะต้องแก้ไขไฟล์โดยใช้ 7-zip, unrar เป็นต้น",
+			"setAsPoster": "",
+			"setAsPosterFolders": "",
+			"posterSetSuccessfully": "",
 			"closeApp": "ปิด OpenComic"
 		},
 		"back": "กลับ",

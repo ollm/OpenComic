@@ -47,6 +47,9 @@
 			"deletePoster": "删除封面",
 			"cannotAddPoster": "如果文件夹位于压缩文件内，则无法添加封面，您必须使用 7-zip、unrar 等编辑文件",
 			"cannotDeletePoster": "如果封面位于压缩文件内，则无法删除，您必须使用 7-zip、unrar 等编辑该文件",
+			"setAsPoster": "",
+			"setAsPosterFolders": "",
+			"posterSetSuccessfully": "",
 			"closeApp": "关闭 OpenComic"
 		},
 		"back": "返回",

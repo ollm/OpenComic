@@ -47,6 +47,9 @@
 			"deletePoster": "Delete poster",
 			"cannotAddPoster": "It is not possible to add the poster if the folder is inside a compressed file, you will have to edit the file using 7-zip, unrar, etc",
 			"cannotDeletePoster": "It is not possible to delete the poster if is inside a compressed file, you will have to edit the file using 7-zip, unrar, etc",
+			"setAsPoster": "Set image as poster",
+			"setAsPosterFolders": "Set image as poster of another folder",
+			"posterSetSuccessfully": "The image has been set as poster",
 			"closeApp": "Close OpenComic"
 		},
 		"back": "Back",

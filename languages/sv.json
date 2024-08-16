@@ -47,6 +47,9 @@
 			"deletePoster": "Ta bort affisch",
 			"cannotAddPoster": "Det går inte att lägga till affischen om mappen finns i en komprimerad fil, du måste redigera filen med 7-zip, unrar, osv.",
 			"cannotDeletePoster": "Det är inte möjligt att ta bort affischen om den finns i en komprimerad fil, du måste redigera filen med 7-zip, unrar, osv.",
+			"setAsPoster": "",
+			"setAsPosterFolders": "",
+			"posterSetSuccessfully": "",
 			"closeApp": "Stäng OpenComic"
 		},
 		"back": "Tillbaka",

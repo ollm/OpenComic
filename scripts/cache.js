@@ -508,9 +508,9 @@ function addCacheVars(path, size, sha)
 
 var cacheImagesDeleted = [];
 
-async function deleteInCache(path)
+async function deleteInCache(path, type = false)
 {
-	let sha = sha1(path);
+	let sha = (type) ? sha1(path+'?type='+type) : sha1(path);
 	let cachePath = p.join(cacheFolder, sha+'.jpg');
 
 	if(data[sha])
@@ -524,6 +524,11 @@ async function deleteInCache(path)
 	}
 
 	cacheImagesDeleted[sha] = cacheImagesDeleted[sha] ? cacheImagesDeleted[sha] + 1 : 1;
+
+	if(!type)
+	{
+		await deleteInCache(path, 'poster');
+	}
 		
 	return;
 }

@@ -47,6 +47,9 @@
 			"deletePoster": "Eliminar póster",
 			"cannotAddPoster": "No es posible añadir el póster si la carpeta está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc",
 			"cannotDeletePoster": "No es posible eliminar el póster si está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc",
+			"setAsPoster": "Usar imagen como póster",
+			"setAsPosterFolders": "Usar imagen como poster de otra carpeta",
+			"posterSetSuccessfully": "La imagen se ha establecido como póster",
 			"closeApp": "Cerrar OpenComic"
 		},
 		"back": "Atrás",

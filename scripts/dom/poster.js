@@ -24,15 +24,8 @@ function add(fromIndexNotMasterFolders = false, path = false, currentPoster = fa
 	addPosterInside = false;
 
 	let canAddPoster = false;
-	/*let currentPosterIsInside = false;
 
-	if(currentPoster)
-	{
-		if(p.normalize(path) === p.normalize(p.dirname(currentPoster)))
-			currentPosterIsInside = true;
-	}*/
-
-	if((fromIndexNotMasterFolders/* || currentPosterIsInside*/) && canAddPosterInside(path))
+	if((fromIndexNotMasterFolders) && canAddPosterInside(path))
 		addPosterInside = true;
 
 	if(addPosterInside || canAddPosterOutside(path))
@@ -71,16 +64,12 @@ function openDialog(path)
 	});
 }
 
-function setNewPoster(path)
+function setNewPoster(path, reload = true, message = false)
 {
-	console.log(path, currentPath);
-
 	let sha = sha1(path);
 	let tmp = p.join(tempFolder, sha+'.jpg');
 
 	let name = p.parse(currentPath).name;
-
-	// /home/llopart/Imágenes/Pepper & Carrot.zip
 
 	let posterPath = p.join(addPosterInside ? currentPath : p.dirname(currentPath), name+'.tbn');
 
@@ -95,7 +84,23 @@ function setNewPoster(path)
 			{
 				await cache.deleteInCache(posterPath);
 
-				dom.reloadIndex();
+				if(message)
+				{
+					events.snackbar({
+						key: 'setNewPoster',
+						text: language.global.contextMenu.posterSetSuccessfully,
+						duration: 6,
+						update: true,
+						buttons: [
+							{
+								text: language.buttons.dismiss,
+								function: 'events.closeSnackbar();',
+							},
+						],
+					});
+				}
+
+				if(reload) dom.reloadIndex();
 			}
 			else
 			{
@@ -187,8 +192,85 @@ async function findAndDelete(path, moveToTrash = false, silent = true)
 		await _delete(poster.path, moveToTrash, silent);
 }
 
+async function setAsPoster(path, _currentPath = false)
+{
+	currentPath = _currentPath || p.dirname(path);
+	addPosterInside = false;
+
+	if(canAddPosterOutside(currentPath))
+	{
+		let file = fileManager.file(path);
+		await file.makeAvailable([{path: path}]);
+		file.destroy();
+
+		await setNewPoster(fileManager.realPath(path), false, true);
+	}
+	else
+	{
+		events.snackbar({
+			key: 'cannotAddPoster',
+			text: language.global.contextMenu.cannotAddPoster,
+			duration: 14,
+			update: true,
+			buttons: [
+				{
+					text: language.buttons.dismiss,
+					function: 'events.closeSnackbar();',
+				},
+			],
+		});
+	}
+}
+
+async function setAsPosterFolders(path, mainPath, folderPath = false, confirm = false)
+{
+	if(confirm)
+	{
+		events.closeDialog();
+		await setAsPoster(path, folderPath);
+	}
+	else
+	{
+		const dirname = p.dirname(mainPath);
+		const segments = fileManager.splitPath(fileManager.removePathPart(path, dirname));
+		segments.pop();
+
+		const posterFolders = [];
+		let _path = dirname;
+
+		for(let i = 0, len = segments.length; i < len; i++)
+		{
+			_path = p.join(_path, segments[i]);
+
+			posterFolders.push({
+				name: segments[i],
+				image: path,
+				path: _path,
+			});
+		}
+
+		handlebarsContext.posterFolders = posterFolders;
+
+		events.dialog({
+			header: language.global.contextMenu.setAsPosterFolders,
+			width: 600,
+			height: false,
+			content: template.load('dialog.poster.folders.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				}
+			],
+		});
+
+	}
+}
+
 module.exports = {
 	add: add,
 	delete: _delete,
 	findAndDelete: findAndDelete,
+	setAsPoster: setAsPoster,
+	setAsPosterFolders: setAsPosterFolders,
 };

@@ -1267,8 +1267,6 @@ function indexPathControlGoBack()
 	}
 	else if(indexPathControlA.length > 0)
 	{
-		console.log(indexPathControlA);
-
 		let goBack = indexPathControlA[indexPathControlA.length - 2];
 
 		indexLabel = goBack.indexLabel;
@@ -1864,7 +1862,7 @@ function nightModeConfig(_app = false)
 }
 
 // Show the comic context menu
-async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
+async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
 {	
 	let isServer = fileManager.isServer(path);
 	if(!fromIndex && isServer) return;
@@ -1970,7 +1968,7 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 	}
 	else
 	{
-		dom.query('#index-context-menu .separator-poster').css({display: folder ? 'block' : 'none'});
+		dom.query('#index-context-menu .separator-poster').css({display: 'block'});
 
 		// Open file location
 		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
@@ -2020,6 +2018,24 @@ async function comicContextMenu(path, fromIndex = true, fromIndexNotMasterFolder
 			deletePoster.style.display = 'none';
 
 			openFileLocation.querySelector('span').innerHTML = language.global.contextMenu.openFileLocation;
+		}
+
+		// Set image as poster
+		let setAsPoster = document.querySelector('#index-context-menu .context-menu-set-as-poster');
+		let setAsPosterFolders = document.querySelector('#index-context-menu .context-menu-set-as-poster-folders');
+
+		if(!folder)
+		{
+			setAsPoster.style.display = 'block';
+			setAsPosterFolders.style.display = 'block';
+
+			setAsPoster.setAttribute('onclick', 'dom.poster.setAsPoster(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+			setAsPosterFolders.setAttribute('onclick', 'dom.poster.setAsPosterFolders(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(mainPath), 'simples')+'\');');
+		}
+		else
+		{
+			setAsPoster.style.display = 'none';
+			setAsPosterFolders.style.display = 'none';
 		}
 	}
 

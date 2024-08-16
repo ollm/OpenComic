@@ -47,6 +47,9 @@
 			"deletePoster": "Xóa ảnh bìa",
 			"cannotAddPoster": "Không thể thêm ảnh bìa nếu thư mục nằm trong một tệp nén, bạn sẽ phải sửa tệp tin bằng 7-zip, unrar hoặc các phần mềm tương tự",
 			"cannotDeletePoster": "Không thể xóa ảnh bìa nếu thư mục nằm trong một tệp nén, bạn sẽ phải sửa tệp tin bằng 7-zip, unrar hoặc các phần mềm tương tự",
+			"setAsPoster": "",
+			"setAsPosterFolders": "",
+			"posterSetSuccessfully": "",
 			"closeApp": "Đóng OpenComic"
 		},
 		"back": "Trở về",
