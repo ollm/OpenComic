@@ -54,10 +54,10 @@ var file = function(path, _config = false) {
 
 		if(isServer(path))
 		{
-			if(inArray(fileExtension(path), compressedExtensions.all) || !containsCompressed(path))
+			if(!containsCompressed(path))
 				files = await this.readServer(path, _realPath);
 			else
-				files = await this.readInsideCompressedServer(path, _realPath);
+				files = await this.readServerCompressed(path, _realPath);
 		}
 		else if(containsCompressed(path))
 		{
@@ -282,8 +282,6 @@ var file = function(path, _config = false) {
 		let sha = sha1(path);
 		let cacheFile = 'server-files-'+sha+'.json';
 
-		let _containsCompressed = containsCompressed(path, 0, false);
-
 		if(this.config.cache && (this.config.cacheOnly || this.config.cacheServer || serverInOfflineMode))
 		{
 			let json = cache.readJson(cacheFile);
@@ -298,13 +296,59 @@ var file = function(path, _config = false) {
 		if(this.config.cacheOnly)
 			throw new Error('notCacheOnly');
 
-		let files = [];
+		let files = await serverClient.read(path);
 
-		if(_containsCompressed)
+		return files;
+
+	}
+
+	this.readServerCompressed = async function(path = false, _realPath = false) {
+
+		path = serverClient.fixPath(path || this.path);
+		_realPath = _realPath || realPath(path, -1);
+
+		if(inArray(fileExtension(path), compressedExtensions.all))
+			return this._readServerCompressed(path, _realPath);
+		else
+			return this.readServerInsideCompressed(path, _realPath);
+	}
+
+	this._readServerCompressed = async function(path = false, _realPath = false) {
+
+		path = serverClient.fixPath(path || this.path);
+		_realPath = _realPath || realPath(path, -1);
+
+		if(this.config.cache && (this.config.cacheOnly || this.config.cacheServer || serverInOfflineMode))
 		{
-			let firstCompressed = firstCompressedFile(path, 0);
+			let files = false;
 
-			if(!fs.existsSync(realPath(firstCompressed)))
+			const cacheOnly = this.config.cacheOnly;
+			this.updateConfig({cacheOnly: true});
+
+			try
+			{
+				files = await this.readCompressed(path, _realPath);
+			}
+			catch(error)
+			{
+				if(!error.message || !/notCacheOnly/.test(error.message))
+					throw new Error(error);
+			}
+
+			this.updateConfig({cacheOnly: cacheOnly});
+
+			if(this.config.cacheOnly)
+				throw new Error('notCacheOnly');
+
+			if(files !== false)
+				return files; 
+		}
+
+		let firstCompressed = firstCompressedFile(path, 0);
+
+		if(firstCompressed)
+		{
+			if(!serverClient.existsSync(realPath(firstCompressed, -1)))
 			{
 				// Download file to tmp
 				let file = await serverClient.download(path, {only: [firstCompressed]});
@@ -312,28 +356,48 @@ var file = function(path, _config = false) {
 				if(this.config.fromThumbnailsGeneration)
 					downloadedCompressedFile(firstCompressed);
 			}
-
-			return this.readCompressed(path);
-		}
-		else
-		{
-			files = await serverClient.read(path);
 		}
 
-		return files;
+		return this.readCompressed(path, _realPath);
 
 	}
 
-	this.readInsideCompressedServer = async function(path = false, _realPath = false) {
+	this.readServerInsideCompressed = async function(path = false, _realPath = false) {
 
 		path = path || this.path;
 		_realPath = _realPath || realPath(path, -1);
+
+		if(this.config.cache && (this.config.cacheOnly || this.config.cacheServer || serverInOfflineMode))
+		{
+			let files = false;
+
+			const cacheOnly = this.config.cacheOnly;
+			this.updateConfig({cacheOnly: true});
+
+			try
+			{
+				files = await this.readInsideCompressed(path, _realPath);
+			}
+			catch(error)
+			{
+				if(!error.message || !/notCacheOnly/.test(error.message))
+					throw new Error(error);
+			}
+
+			this.updateConfig({cacheOnly: cacheOnly});
+
+			if(this.config.cacheOnly)
+				throw new Error('notCacheOnly');
+
+			if(files !== false)
+				return files; 
+		}
 
 		let firstCompressed = firstCompressedFile(path, 0);
 
 		if(firstCompressed)
 		{
-			if(!fs.existsSync(realPath(firstCompressed)))
+			if(!serverClient.existsSync(realPath(firstCompressed, -1)))
 			{
 				// Download file to tmp
 				let file = await serverClient.download(path, {only: [firstCompressed]});
@@ -412,7 +476,7 @@ var file = function(path, _config = false) {
 					}
 					else
 					{
-						image = await this._images(reverse ? -1 : 1, _files, from, fromReached, poster, deep + 1);
+						image = await this._images((reverse ? -1 : 1), _files, from, fromReached, poster, deep + 1);
 						fromReached = image.fromReached;
 						image = image.images[0] || false;
 					}
@@ -552,7 +616,7 @@ var file = function(path, _config = false) {
 		try
 		{
 			let file = fileManager.file(dirname);
-			file.updateConfig({...this.config, ...{fastRead: true, specialFiles: true, sha: false, cacheServer: true}});
+			file.updateConfig({fastRead: true, specialFiles: true, sha: false, cacheServer: true});
 			let files = await file.read();
 
 			let poster = this._poster(files);
@@ -1306,7 +1370,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			fs.mkdirSync(this.tmp);
 
 			if(this.config.only)
-				fs.writeFileSync(this.tmpPartialExtraction, ''); 
+				fs.writeFileSync(this.tmpPartialExtraction, '');
 		}
 		else if(!this.config.only)
 		{
@@ -1941,7 +2005,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		console.time('extract7z: '+this.path);
 
-		let only = this.config.only; 
 		let _this = this;
 
 		const onlyLen = this.config._only ? this.config._only.length : false;

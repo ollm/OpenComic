@@ -20,9 +20,9 @@ async function resize(fromImage, toImage, config = {})
 		if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
 			return reject({});
 
-		sharp(fromImage).jpeg({quality: config.quality}).resize(config).toFile(toImage, function(error) {
+		sharp(fromImage, {failOn: 'none'}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
 		
-			if(error)
+			if(error && /unsupported image format/iu.test(error?.message || ''))
 			{
 				if(!imageMagick) imageMagick = require('gm').subClass({imageMagick: true});
 
@@ -67,6 +67,11 @@ async function resize(fromImage, toImage, config = {})
 						resolve(toImage);
 					}
 				});
+			}
+			else if(error)
+			{
+				console.error(fromImage, error);
+				reject(error);
 			}
 			else
 			{

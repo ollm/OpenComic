@@ -93,6 +93,24 @@ function _serverLastError(original = true, error = false)
 	return message;
 }
 
+function existsSync(path)
+{
+	if(!fs.existsSync(path))
+		return false;
+
+	const stat = fs.statSync(path);
+
+	if(stat.size === 0)
+		return false;
+
+	const isDownloading = p.join(p.dirname(path), sha1(path)+'-is-downloading.txt');
+
+	if(fs.existsSync(isDownloading))
+		return false;
+
+	return true;
+}
+
 var closeServersST = {};
 
 function closeServerST(adress)
@@ -135,6 +153,16 @@ async function download(path, config = {}, callbackWhenFileDownload = false)
 
 	servers[adress] = new client(adress);
 	return servers[adress].download(path, config, callbackWhenFileDownload);
+}
+
+var globalIsDownloading = {};
+
+function existsOrDownloading(filePath)
+{
+	if(!globalIsDownloading[filePath] && !serverClient.existsSync(filePath))
+		return false;
+
+	return true;
 }
 
 var client = function(path) {
@@ -397,7 +425,13 @@ var client = function(path) {
 		return false;
 	}
 
-	this.whenDownloadFile = function(path, callbackWhenFileDownload = false) {
+	this.whenDownloadFile = function(path, filePath, callbackWhenFileDownload = false) {
+
+		globalIsDownloading[filePath] = false;
+		const isDownloading = p.join(p.dirname(filePath), sha1(filePath)+'-is-downloading.txt');
+
+		if(fs.existsSync(isDownloading))
+			fs.rmSync(isDownloading);
 
 		if(callbackWhenFileDownload)
 		{
@@ -461,10 +495,10 @@ var client = function(path) {
 			{
 				let realPath = fileManager.realPath(path, -1);
 
-				if(!fs.existsSync(realPath) || this.higherMtime(path, realPath))
+				if(!serverClient.existsSync(realPath) || this.higherMtime(path, realPath))
 					only.push(path);
 				else
-					this.whenDownloadFile(path);
+					this.whenDownloadFile(path, realPath);
 			}
 
 			if(!only.length)
@@ -547,7 +581,12 @@ var client = function(path) {
 		return false;
 	}
 
-	this.setDownloading = function(path) {
+	this.setDownloading = function(path, filePath) {
+
+		globalIsDownloading[filePath] = true;
+		const isDownloading = p.join(p.dirname(filePath), sha1(filePath)+'-is-downloading.txt');
+
+		fs.writeFileSync(isDownloading, '');
 
 		let promiseResolve = false;
 
@@ -737,7 +776,7 @@ var client = function(path) {
 					fs.mkdirSync(folderPath, {recursive: true});
 
 				// Avoid downloading the same files at the same time
-				if(!fs.existsSync(filePath))
+				if(!serverClient.existsOrDownloading(filePath))
 				{
 					let isDownloading = _this.isDownloadingPath(path);
 
@@ -747,7 +786,7 @@ var client = function(path) {
 					}
 					else
 					{
-						let downloading = _this.setDownloading(path);
+						let downloading = _this.setDownloading(path, filePath);
 
 						let buffer = await smb.tree.readFile(getPathWithoutShare(path));
 						await fsp.writeFile(filePath, buffer);
@@ -759,7 +798,7 @@ var client = function(path) {
 				progressIndex++;
 
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, callbackWhenFileDownload);
+				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
 
 				task.resolve();
 				resolve();
@@ -875,6 +914,11 @@ var client = function(path) {
 
 		for(let i = 0, len = _only.length; i < len; i++)
 		{
+			let inTask = this.inTask();
+			if(inTask) await inTask;
+
+			let task = this.setTask(inTask);
+
 			this.file.setProgress(i / len, contentRightIndex);
 
 			let path = _only[i];
@@ -886,17 +930,27 @@ var client = function(path) {
 				fs.mkdirSync(folderPath, {recursive: true});
 
 			// Avoid downloading multiples files at the same time
-			if(!fs.existsSync(filePath))
+			if(!serverClient.existsOrDownloading(filePath))
 			{
-				let inTask = this.inTask();
-				if(inTask) await inTask;
+				let isDownloading = this.isDownloadingPath(path);
 
-				let task = this.setTask(inTask);
-				await ftp.downloadTo(filePath, getPath(path))
-				task.resolve();
+				if(isDownloading)
+				{
+					await isDownloading;
+				}
+				else
+				{
+					let downloading = this.setDownloading(path, filePath);
+
+					await ftp.downloadTo(filePath, getPath(path))
+
+					downloading.resolve();
+				}
 			}
 
-			this.whenDownloadFile(path, callbackWhenFileDownload);
+			this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
+
+			task.resolve();
 		}
 
 		this.file.setProgress(1, contentRightIndex);
@@ -1016,7 +1070,7 @@ var client = function(path) {
 					fs.mkdirSync(folderPath, {recursive: true});
 
 				// Avoid downloading the same files at the same time
-				if(!fs.existsSync(filePath))
+				if(!serverClient.existsOrDownloading(filePath))
 				{
 					let isDownloading = _this.isDownloadingPath(path);
 
@@ -1026,7 +1080,7 @@ var client = function(path) {
 					}
 					else
 					{
-						let downloading = _this.setDownloading(path);
+						let downloading = _this.setDownloading(path, filePath);
 
 						await ssh.fastGet('/'+getPath(path), filePath, {
 							step: function(transferred, chunk, total) {
@@ -1043,7 +1097,7 @@ var client = function(path) {
 				}
 
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, callbackWhenFileDownload);
+				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
 
 				task.resolve();
 				resolve();
@@ -1170,7 +1224,7 @@ var client = function(path) {
 					fs.mkdirSync(folderPath, {recursive: true});
 
 				// Avoid downloading the same files at the same time
-				if(!fs.existsSync(filePath))
+				if(!serverClient.existsOrDownloading(filePath))
 				{
 					let isDownloading = _this.isDownloadingPath(path);
 
@@ -1180,7 +1234,7 @@ var client = function(path) {
 					}
 					else
 					{
-						let downloading = _this.setDownloading(path);
+						let downloading = _this.setDownloading(path, filePath);
 
 						await scp.downloadFile('/'+getPath(path), filePath);
 
@@ -1191,7 +1245,7 @@ var client = function(path) {
 				progressIndex++;
 
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, callbackWhenFileDownload);
+				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
 
 				task.resolve();
 				resolve();
@@ -1386,7 +1440,7 @@ var client = function(path) {
 					fs.mkdirSync(folderPath, {recursive: true});
 
 				// Avoid downloading the same files at the same time
-				if(!fs.existsSync(filePath))
+				if(!serverClient.existsOrDownloading(filePath))
 				{
 					let isDownloading = _this.isDownloadingPath(path);
 
@@ -1396,7 +1450,7 @@ var client = function(path) {
 					}
 					else
 					{
-						let downloading = _this.setDownloading(path);
+						let downloading = _this.setDownloading(path, filePath);
 
 						let params = {
 							Bucket: s3.bucket,
@@ -1421,7 +1475,7 @@ var client = function(path) {
 				progressIndex++;
 
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, callbackWhenFileDownload);
+				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
 
 				task.resolve();
 				resolve();
@@ -1543,7 +1597,7 @@ var client = function(path) {
 					fs.mkdirSync(folderPath, {recursive: true});
 
 				// Avoid downloading the same files at the same time
-				if(!fs.existsSync(filePath))
+				if(!serverClient.existsOrDownloading(filePath))
 				{
 					let isDownloading = _this.isDownloadingPath(path);
 
@@ -1553,7 +1607,7 @@ var client = function(path) {
 					}
 					else
 					{
-						let downloading = _this.setDownloading(path);
+						let downloading = _this.setDownloading(path, filePath);
 
 						console.log('/'+posixPath(getPath(path)));
 
@@ -1567,7 +1621,7 @@ var client = function(path) {
 				progressIndex++;
 
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, callbackWhenFileDownload);
+				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
 
 				task.resolve();
 				resolve();
@@ -1613,4 +1667,6 @@ module.exports = {
 	fixPath: fixPath,
 	servers: function(){return servers},
 	serverLastError: _serverLastError,
+	existsOrDownloading: existsOrDownloading,
+	existsSync: existsSync,
 }

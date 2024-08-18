@@ -927,7 +927,7 @@ function continueReadingError()
 
 function compressedError(error, showInPage = true, snackbarKey = '')
 {
-	// console.error(error);
+	console.error(error);
 
 	if(showInPage)
 	{
