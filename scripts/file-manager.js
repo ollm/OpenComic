@@ -1746,7 +1746,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.stackOnlyInTasks = function(only, stackSize = 500) {
+	this.stackOnlyInTasks = function(only, stackSize = 100) {
 
 		const tasks = [];
 
@@ -2008,7 +2008,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let _this = this;
 
 		const onlyLen = this.config._only ? this.config._only.length : false;
-		const tasks = this.stackOnlyInTasks(this.config._only || false, 500);
+		const tasks = this.stackOnlyInTasks(this.config._only || false, 100);
 
 		let result = false;
 		let error = false;
