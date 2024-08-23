@@ -241,6 +241,23 @@ function copy(toCopy)
 	}
 }
 
+function _shortWindowsPath(path, copyToTmp = false)
+{
+	if(process.platform !== 'win32') return path;
+
+	path = shortWindowsPath.generateSync(path);
+
+	if(path.length >= 260)
+	{
+		if(copyToTmp)
+			path = fileManager.copyToTmp(path);
+		else if(!/^\\\\\?/.test(path))
+			path = '\\\\?\\'+path;
+	}
+
+	return path;
+}
+
 var throttles = {};
 var debounces = {};
 
@@ -317,4 +334,5 @@ module.exports = {
 	sleep: sleep,
 	setImmediate: setImmediate,
 	setThrottle: setThrottle,
+	shortWindowsPath: _shortWindowsPath,
 };

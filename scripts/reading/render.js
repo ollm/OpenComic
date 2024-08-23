@@ -446,7 +446,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			{
 				if(cssMethods[_config.kernel])
 				{
-					img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
+					img.src = encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
 					img.classList.remove('blobRendered', 'blobRender');
 					img.style.imageRendering = cssMethods[_config.kernel];
 				}
@@ -477,14 +477,14 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				}
 				else
 				{
-					img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
+					img.src = encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
 					img.classList.remove('blobRendered', 'blobRender');
 					img.style.imageRendering = '';
 				}
 			}
 			else
 			{
-				img.src = encodeSrcURI(shortWindowsPath.generateSync(img.dataset.src));
+				img.src = encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
 				img.classList.remove('blobRendered', 'blobRender');
 				img.style.imageRendering = '';
 			}

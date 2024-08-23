@@ -4,7 +4,7 @@ async function resize(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = shortWindowsPath.generateSync(fromImage);
+	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		width: 200,
@@ -86,7 +86,7 @@ async function resizeToCanvas(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = shortWindowsPath.generateSync(fromImage);
+	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		// background: 'white',
@@ -127,7 +127,7 @@ async function resizeToBlob(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = shortWindowsPath.generateSync(fromImage);
+	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		// background: 'white',
@@ -222,7 +222,7 @@ async function convertToPng(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = shortWindowsPath.generateSync(fromImage);
+	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		// background: 'white',
@@ -250,7 +250,7 @@ async function convertToWebp(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = shortWindowsPath.generateSync(fromImage);
+	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		// background: 'white',
@@ -396,7 +396,7 @@ async function getSizes(images)
 							{
 								if(sharpSupportedFormat(image.image))
 								{
-									const _sharp = sharp(shortWindowsPath.generateSync(image.image));
+									const _sharp = sharp(app.shortWindowsPath(image.image));
 									const metadata = await _sharp.metadata();
 
 									size = {

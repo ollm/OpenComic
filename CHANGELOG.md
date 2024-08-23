@@ -33,7 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Error extracting files with 7zip if the file name contained UTF8 characters [`27c863b`](https://github.com/ollm/OpenComic/commit/27c863b6a9abd434e8855216100e5f8087ed1e73)
 - Fullscreen error [`d72813a`](https://github.com/ollm/OpenComic/commit/d72813abbb0320a94bee5b2881c2bfcd1f2084cf)
 - Files shared over a network in Windows do not open [`bab197f`](https://github.com/ollm/OpenComic/commit/bab197fa11f89ae07a707e4f42ea144a5416f25f)
-- Long paths not workin in Windows (paths equal or greater than 260 characters) [`884bccd`](https://github.com/ollm/OpenComic/commit/884bccd153a4cb2775fbfb5f0e7c6575188ec073)
+- Long paths not working in Windows (paths equal or greater than 260 characters) [`884bccd`](https://github.com/ollm/OpenComic/commit/884bccd153a4cb2775fbfb5f0e7c6575188ec073)
 - Extracting 7zip in separate stacks to avoid errors when extracting many files [`061827f`](https://github.com/ollm/OpenComic/commit/061827fc737aa8edfde14e7b092a8b44e571bf08)
 - Prevent scroll event while reading is loading [`4c93a72`](https://github.com/ollm/OpenComic/commit/4c93a724220fc820347464a988727ef4649052fe)
 - Multiple errors managing cache of files in servers

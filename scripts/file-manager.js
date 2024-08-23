@@ -3173,6 +3173,29 @@ function dirSizeSync(dir)
 	return size;
 }
 
+function copyToTmp(path)
+{
+	const name = p.basename(path);
+	const tmp = p.join(tempFolder, sha1(p.dirname(path)));
+
+	const newPath = p.join(tmp, sha1(name)+p.extname(name));
+
+	if(!fs.existsSync(tmp))
+		fs.mkdirSync(tmp, {recursive: true});
+
+	if(!fs.existsSync(newPath))
+		fs.copyFileSync(path, newPath);
+
+	const tmpUsage = storage.get('tmpUsage');
+
+	if(!tmpUsage[newPath]) tmpUsage[newPath] = {};
+	tmpUsage[newPath].lastAccess = app.time();
+
+	storage.setThrottle('tmpUsage', tmpUsage);
+
+	return newPath;
+}
+
 var prevDevicePixelRatio = window.devicePixelRatio;
 
 window.addEventListener('resize', function() {
@@ -3213,4 +3236,5 @@ module.exports = {
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
+	copyToTmp: copyToTmp,
 }

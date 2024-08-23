@@ -1159,7 +1159,7 @@ hb.registerHelper('encodeSrcURI', function(string) {
 
 hb.registerHelper('shortWindowsPath', function(string) {
 
-	return shortWindowsPath.generateSync(string);
+	return app.shortWindowsPath(string);
 
 });
 
