@@ -467,13 +467,24 @@ async function render(index, _scale = false, magnifyingGlass = false)
 						_config.kernel = false;
 					}
 
-					let data = await image.resizeToBlob(src, _config);
-					img.src = data.blob;
-					img.classList.add('blobRendered', 'blobRender');
-					img.style.imageRendering = '';
+					try
+					{
+						let data = await image.resizeToBlob(src, _config);
+						img.src = data.blob;
+						img.classList.add('blobRendered', 'blobRender');
+						img.style.imageRendering = '';
 
-					renderedObjectsURL.push({data: data, img: img});
-					renderedObjectsURLCache[key] = data.blob;
+						renderedObjectsURL.push({data: data, img: img});
+						renderedObjectsURLCache[key] = data.blob;
+					}
+					catch(error)
+					{
+						console.error(error);
+
+						img.src = encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
+						img.classList.remove('blobRendered', 'blobRender');
+						img.style.imageRendering = '';
+					}
 				}
 				else
 				{
