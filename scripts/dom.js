@@ -722,6 +722,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				else if((isCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)))
 					openContinueReading = true;
 			}
+
+			if(openContinueReading && !fileManager.simpleExists(readingProgress.path))
+				openContinueReading = false;
 		}
 
 		let file = fileManager.file(path);
@@ -1271,15 +1274,23 @@ function indexPathControlGoBack()
 
 		indexLabel = goBack.indexLabel;
 
-		if(goBack.isComic)
-			openComic(true, goBack.path, goBack.mainPath, false, true);
+		if(fileManager.simpleExists(goBack.path))
+		{
+			if(goBack.isComic)
+				openComic(true, goBack.path, goBack.mainPath, false, true);
+			else
+				loadIndexPage(true, goBack.path, false, false, goBack.mainPath, true);
+
+			indexPathControlForwards.push(indexPathControlA.pop());
+
+			indexPathA = goBack.path;
+			indexMainPathA = goBack.mainPath;
+		}
 		else
-			loadIndexPage(true, goBack.path, false, false, goBack.mainPath, true);
-
-		indexPathControlForwards.push(indexPathControlA.pop());
-
-		indexPathA = goBack.path;
-		indexMainPathA = goBack.mainPath;
+		{
+			indexPathControlA.pop();
+			return indexPathControlGoBack();
+		}
 	}
 }
 
@@ -1288,6 +1299,7 @@ function indexPathControlGoForwards()
 	if(indexPathControlForwards.length > 0)
 	{
 		const goForwards = indexPathControlForwards.pop();
+		if(!fileManager.simpleExists(goForwards.path)) return indexPathControlGoForwards();
 
 		if(onReading)
 			reading.saveReadingProgress();
