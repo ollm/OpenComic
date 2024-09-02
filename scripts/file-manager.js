@@ -2909,7 +2909,7 @@ function firstCompressedFile(path, index = 0, checkDirectory = true)
 		{
 			let extension = fileExtension(newPath);
 
-			if(extension && inArray(extension, compressedExtensions.all) && (!checkDirectory || _isServer || !fs.statSync(newPath).isDirectory()))
+			if(extension && inArray(extension, compressedExtensions.all) && (!checkDirectory || _isServer || !fs.existsSync(newPath) || !fs.statSync(newPath).isDirectory()))
 				return newPath;
 		}
 	}

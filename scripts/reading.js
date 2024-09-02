@@ -2713,7 +2713,7 @@ async function resized()
 	contentRightRect = false;
 	barHeaderRect = false;
 	
-	if(onReading || _onReading)
+	if((onReading || _onReading) && isLoaded)
 	{
 		if(!readingIsEbook)
 		{

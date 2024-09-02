@@ -1320,7 +1320,7 @@ function indexPathControlUpdateLastComic(path = false)
 	let index = indexPathControlA.length - 1;
 	let last = indexPathControlA[index];
 
-	if(last.isComic && p.normalize(p.dirname(last.path)) === p.normalize(p.dirname(path)))
+	if(last && last.isComic && p.normalize(p.dirname(last.path)) === p.normalize(p.dirname(path)))
 	{
 		indexPathControlA[index].file = p.basename(path);
 		indexPathControlA[index].path = path;
