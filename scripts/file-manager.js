@@ -3196,6 +3196,31 @@ function copyToTmp(path)
 	return newPath;
 }
 
+var blobObjectsURL = {};
+
+function fileToBlob(path)
+{
+	if(blobObjectsURL[path]) return blobObjectsURL[path];
+
+	const data = fs.readFileSync(path);
+
+	const blob = new Blob([data], {type: mime.getType(path)});
+	const blobURL = URL.createObjectURL(blob);
+
+	blobObjectsURL[path] = blobURL;
+	return blobObjectsURL[path];
+}
+
+function revokeAllObjectURL()
+{
+	for(let key in blobObjectsURL)
+	{
+		URL.revokeObjectURL(blobObjectsURL[key]);
+	}
+
+	blobObjectsURL = {};
+}
+
 var prevDevicePixelRatio = window.devicePixelRatio;
 
 window.addEventListener('resize', function() {
@@ -3237,4 +3262,6 @@ module.exports = {
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
 	copyToTmp: copyToTmp,
+	fileToBlob: fileToBlob,
+	revokeAllObjectURL: revokeAllObjectURL,
 }

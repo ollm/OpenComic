@@ -139,6 +139,7 @@
 	height: 100%;
 	overflow: hidden;
 	contain: paint;
+	transition: 0.1s opacity;
 }
 
 .reading-body > div

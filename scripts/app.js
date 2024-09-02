@@ -241,7 +241,7 @@ function copy(toCopy)
 	}
 }
 
-function _shortWindowsPath(path, copyToTmp = false)
+function _shortWindowsPath(path, fileToBlob = false)
 {
 	if(process.platform !== 'win32') return path;
 
@@ -249,13 +249,18 @@ function _shortWindowsPath(path, copyToTmp = false)
 
 	if(path.length >= 260)
 	{
-		if(copyToTmp)
-			path = fileManager.copyToTmp(path);
+		if(fileToBlob)
+			path = fileManager.fileToBlob(path);
 		else if(!/^\\\\\?/.test(path))
 			path = '\\\\?\\'+path;
 	}
 
 	return path;
+}
+
+function _encodeSrcURI(path)
+{
+	return /^blob/.test(path) ? path : encodeSrcURI(path);
 }
 
 var throttles = {};
@@ -335,4 +340,5 @@ module.exports = {
 	setImmediate: setImmediate,
 	setThrottle: setThrottle,
 	shortWindowsPath: _shortWindowsPath,
+	encodeSrcURI: _encodeSrcURI,
 };

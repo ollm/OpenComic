@@ -355,6 +355,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 {
 	onReading = _onReading = false;
 
+	fileManager.revokeAllObjectURL();
+
 	reading.hideContent();
 	reading.music.pause();
 
@@ -2130,6 +2132,8 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false, fromDeepLoad = false)
 {
+	fileManager.revokeAllObjectURL();
+	
 	// Start reading comic
 	if(config.readingStartReadingInFullScreen && !fromNextAndPrev && !fromGoBack)
 	{
