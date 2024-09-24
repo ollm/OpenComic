@@ -265,6 +265,7 @@
 			"keyboard": "Bàn phím",
 			"whenReading": "Khi đọc",
 			"disableGamepadInput": "",
+			"contextMenu": "",
 			"gamepadMenu": "Menu gamepad",
 			"useGamepad": "Dùng gamepad để thay đổi hành động",
 			"restoreDefaults": "Trở về mặc định",
@@ -276,6 +277,12 @@
 			"key5": "Phím 5",
 			"gamepad1": "Nút 1",
 			"gamepad2": "Nút 2"
+		},
+		"tapZones": {
+			"main": "",
+			"leftClick": "",
+			"rightClick": "",
+			"middleClick": ""
 		},
 		"masterFolders": {
 			"main": "Thư mục chính",

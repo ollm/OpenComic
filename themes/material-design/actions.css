@@ -2332,6 +2332,11 @@ table thead th:first-child
 	text-align: left;
 }
 
+table.full thead th:first-child
+{
+	text-align: center;
+}
+
 table thead th:last-child
 {
 	border-right: 0px;
@@ -2361,6 +2366,17 @@ table tbody tr td:first-child
 	cursor: initial;
 }
 
+table.full tbody tr td:first-child
+{
+	text-align: center;
+	cursor: pointer;
+}
+
+table.withoutThead tbody tr:first-child td
+{
+	border-top: 0px;
+}
+
 table tbody td:last-child
 {
 	border-right: 0px;
@@ -2384,13 +2400,16 @@ table tbody td:before
 	z-index: 1;
 }
 
-table tbody td:not(:first-child):hover:before
+table tbody td:not(:first-child):hover:before,
+table.full tbody td:hover:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
 
 table tbody td:not(:first-child):active:before,
-table tbody td:not(:first-child).gamepad-highlight:before
+table tbody td:not(:first-child).gamepad-highlight:before,
+table.full tbody td:active:before,
+table.full tbody td.gamepad-highlight:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-4);
 }

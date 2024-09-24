@@ -265,6 +265,7 @@
 			"keyboard": "คีย์บอร์ด",
 			"whenReading": "เมื่ออ่าน",
 			"disableGamepadInput": "",
+			"contextMenu": "",
 			"gamepadMenu": "เมนูเกมแพด",
 			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
 			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
@@ -276,6 +277,12 @@
 			"key5": "คีย์ 5",
 			"gamepad1": "ปุ่ม 1",
 			"gamepad2": "ปุ่ม 2"
+		},
+		"tapZones": {
+			"main": "",
+			"leftClick": "",
+			"rightClick": "",
+			"middleClick": ""
 		},
 		"masterFolders": {
 			"main": "โฟลเดอร์ตั้งต้น",

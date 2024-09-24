@@ -265,6 +265,7 @@
 			"keyboard": "키보드",
 			"whenReading": "작품 감상 중",
 			"disableGamepadInput": "",
+			"contextMenu": "",
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "단축키 설정을 초기화",
@@ -276,6 +277,12 @@
 			"key5": "",
 			"gamepad1": "",
 			"gamepad2": ""
+		},
+		"tapZones": {
+			"main": "",
+			"leftClick": "",
+			"rightClick": "",
+			"middleClick": ""
 		},
 		"masterFolders": {
 			"main": "폴더",

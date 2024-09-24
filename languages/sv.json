@@ -265,6 +265,7 @@
 			"keyboard": "Tangentbord",
 			"whenReading": "Under läsning",
 			"disableGamepadInput": "",
+			"contextMenu": "",
 			"gamepadMenu": "Gamepadmeny",
 			"useGamepad": "Använd en gamepad för att ändra funktionen",
 			"restoreDefaults": "Återställ standardvärden",
@@ -276,6 +277,12 @@
 			"key5": "Knapp 5",
 			"gamepad1": "Knapp 1",
 			"gamepad2": "Knapp 2"
+		},
+		"tapZones": {
+			"main": "",
+			"leftClick": "",
+			"rightClick": "",
+			"middleClick": ""
 		},
 		"masterFolders": {
 			"main": "Huvudmappar",

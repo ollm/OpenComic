@@ -265,6 +265,7 @@
 			"keyboard": "Keyboard",
 			"whenReading": "When reading",
 			"disableGamepadInput": "Disable gamepad input",
+			"contextMenu": "Context menu",
 			"gamepadMenu": "Gamepad menu",
 			"useGamepad": "Use a gamepad to change the action",
 			"restoreDefaults": "Restore default values",
@@ -276,6 +277,12 @@
 			"key5": "Key 5",
 			"gamepad1": "Button 1",
 			"gamepad2": "Button 2"
+		},
+		"tapZones": {
+			"main": "Tap zones",
+			"leftClick": "Left click",
+			"rightClick": "Right click",
+			"middleClick": "Middle click"
 		},
 		"masterFolders": {
 			"main": "Master folders",

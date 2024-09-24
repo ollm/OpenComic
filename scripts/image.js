@@ -20,7 +20,7 @@ async function resize(fromImage, toImage, config = {})
 		if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
 			return reject({});
 
-		sharp(fromImage, {failOn: 'none'}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
+		sharp(fromImage, {failOn: 'none'}).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
 		
 			if(error && /unsupported image format/iu.test(error?.message || ''))
 			{
@@ -89,7 +89,6 @@ async function resizeToCanvas(fromImage, config = {})
 	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
-		// background: 'white',
 		kernel: 'lanczos3',
 	}, ...config};
 
@@ -130,7 +129,6 @@ async function resizeToBlob(fromImage, config = {})
 	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
-		// background: 'white',
 		kernel: 'lanczos3',
 		compressionLevel: 0,
 	}, ...config};
@@ -225,7 +223,6 @@ async function convertToPng(fromImage, toImage, config = {})
 	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
-		// background: 'white',
 		kernel: 'nearest',
 		compressionLevel: 0,
 		quality: 100,
@@ -253,7 +250,6 @@ async function convertToWebp(fromImage, toImage, config = {})
 	fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
-		// background: 'white',
 		kernel: 'nearest',
 		compressionLevel: 0,
 		quality: 100,

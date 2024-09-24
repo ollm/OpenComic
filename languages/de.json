@@ -265,6 +265,7 @@
 			"keyboard": "",
 			"whenReading": "",
 			"disableGamepadInput": "",
+			"contextMenu": "",
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "",
@@ -276,6 +277,12 @@
 			"key5": "",
 			"gamepad1": "",
 			"gamepad2": ""
+		},
+		"tapZones": {
+			"main": "",
+			"leftClick": "",
+			"rightClick": "",
+			"middleClick": ""
 		},
 		"masterFolders": {
 			"main": "",

@@ -38,7 +38,8 @@
 	overflow: auto;
 }
 
-.settings-shortcuts-table .simple-button
+.settings-shortcuts-table .simple-button,
+.settings-tap-zones-table .simple-button
 {
 	float: right;
 	margin: 32px 24px 6px 0px;

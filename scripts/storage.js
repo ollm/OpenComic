@@ -1,4 +1,4 @@
-var changes = 83; // Update this if readingPagesConfig is updated
+var changes = 84; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -283,6 +283,15 @@ var storageDefault = {
 			shortcuts: {
 				wildcard: '',
 			},
+			tapZones: {
+				wildcard: {
+					wildcard: {
+						leftClick: '',
+						rightClick: '',
+						middleClick: '',
+					},
+				},
+			},
 			gamepad: {
 				wildcard: '',
 			},
@@ -293,6 +302,15 @@ var storageDefault = {
 			],
 			shortcuts: {
 				wildcard: '',
+			},
+			tapZones: {
+				wildcard: {
+					wildcard: {
+						leftClick: '',
+						rightClick: '',
+						middleClick: '',
+					},
+				},
 			},
 			gamepad: {
 				wildcard: '',

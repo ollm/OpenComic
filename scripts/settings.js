@@ -573,6 +573,8 @@ function generateShortcutsTable(highlightItem = false)
 
 	gamepad.updateBrowsableItems('settings', false, !(highlightItem !== false));
 	if(highlightItem !== false) gamepad.highlightItem(highlightItem);
+
+	generateTapZonesTable(list);
 }
 
 var recording= false;
@@ -617,7 +619,6 @@ function changeButton(action, current, This)
 
 		gamepad.reset('record');
 
-		console.log(This);
 		This.classList.remove('active');
 
 		events.snackbar({
@@ -637,11 +638,7 @@ function changeButton(action, current, This)
 
 	});
 
-	console.log(action, current);
-
 	gamepad.setButtonEvent('record', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], function(key, button){
-
-		console.log(key, button);
 
 		gamepad.reset('record');
 		shortcuts.stopRecord();
@@ -662,11 +659,120 @@ function removeButton(action, current)
 	generateShortcutsTable(gamepad.currentHighlightItem());
 }
 
-function resoreShortcuts()
+function restoreShortcuts()
 {
 	shortcuts.restoreDefaults();
 
 	generateShortcutsTable(gamepad.currentHighlightItem());
+}
+
+function generateTapZonesTable(list)
+{
+	const tapZones = app.copy(list.reading.tapZones);
+
+	for(let vertical in tapZones)
+	{
+		for(let horizontal in tapZones[vertical])
+		{
+			for(let button in tapZones[vertical][horizontal])
+			{
+				const action = tapZones[vertical][horizontal][button];
+				tapZones[vertical][horizontal][button] = list.reading.actions[action].name;
+			}
+		}
+	}
+
+	handlebarsContext.tapZones = tapZones;
+
+	let table = template._contentRight().querySelector('.settings-tap-zones-table');
+	table.innerHTML = template.load('settings.content.right.tap.zones.html');
+}
+
+var currentTapZone = {};
+
+function changeTapZone(y, x, This)
+{
+	const list = shortcuts.shortcuts();
+
+	const vertical = ['top', 'center', 'bottom'][y];
+	const horizontal = ['left', 'center', 'right'][x];
+
+	const tapZone = app.copy(list.reading.tapZones[vertical][horizontal]);
+
+	for(let button in tapZone)
+	{
+		const action = tapZone[button];
+
+		tapZone[button] = {
+			button: button,
+			name: list.reading.actions[action].name.replace(/\<br\s*\/?\>/, ' | '),
+		};
+	}
+
+	currentTapZone = {
+		this: This,
+		vertical: vertical,
+		horizontal: horizontal,
+		tapZone: tapZone,
+	};
+
+	handlebarsContext.tapZone = tapZone;
+
+	events.dialog({
+		header: language.settings.servers.main,
+		width: 400,
+		height: false,
+		content: template.load('dialog.tap.zone.html'),
+		buttons: [
+			{
+				text: language.buttons.close,
+				function: 'events.closeDialog();',
+			}
+		],
+	});
+}
+
+function setTapZone(button, action)
+{
+	const list = shortcuts.shortcuts();
+
+	console.log(button, action);
+	console.log(currentTapZone);
+
+	dom.query('.settings-'+button+' .text').html(list.reading.actions[action].name);
+
+	shortcuts.changeTapZone('reading', currentTapZone.vertical, currentTapZone.horizontal, button, action);
+	generateTapZonesTable(list);
+}
+
+function getTapZoneActions(button)
+{
+	const list = shortcuts.shortcuts();
+	const actions = [];
+
+	for(let key in list.reading.actionsOrder)
+	{
+		const action = list.reading.actionsOrder[key];
+		const data = list.reading.actions[action];
+
+		actions.push({
+			key: action,
+			name: data.name,
+			select: (currentTapZone.tapZone[button] == action ? true : false),
+		});
+	}
+
+	handlebarsContext.tapZoneButton = button;
+	handlebarsContext.tapZoneActions = actions;
+
+	document.querySelector('#settings-tap-zone .menu-simple-content').innerHTML = template.load('settings.elements.menus.tap.zone.html');
+}
+
+function restoreTapZones()
+{
+	shortcuts.restoreDefaultsTapZones();
+
+	generateTapZonesTable(shortcuts.shortcuts());
 }
 
 function getImageInterpolationMethods(upscaling = false)
@@ -1024,7 +1130,11 @@ module.exports = {
 	removeShortcut: removeShortcut,
 	changeButton: changeButton,
 	removeButton: removeButton,
-	resoreShortcuts: resoreShortcuts,
+	restoreShortcuts: restoreShortcuts,
+	restoreTapZones: restoreTapZones,
+	changeTapZone: changeTapZone,
+	setTapZone: setTapZone,
+	getTapZoneActions: getTapZoneActions,
 	addMasterFolder: addMasterFolder,
 	removeMasterFolder: removeMasterFolder,
 	addServer: addServer,

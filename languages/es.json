@@ -265,6 +265,7 @@
 			"keyboard": "Teclado",
 			"whenReading": "Al leer",
 			"disableGamepadInput": "Desactivar la entrada del mando",
+			"contextMenu": "Menú contextual",
 			"gamepadMenu": "Menú del mando",
 			"useGamepad": "Utiliza un mando para cambiar la acción",
 			"restoreDefaults": "Restaurar valores por defecto",
@@ -276,6 +277,12 @@
 			"key5": "Tecla 5",
 			"gamepad1": "Botón 1",
 			"gamepad2": "Botón 2"
+		},
+		"tapZones": {
+			"main": "Zonas de toque",
+			"leftClick": "Clic izquierdo",
+			"rightClick": "Clic derecho",
+			"middleClick": "Clic central"
 		},
 		"masterFolders": {
 			"main": "Carpetas maestras",

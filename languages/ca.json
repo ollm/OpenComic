@@ -265,6 +265,7 @@
 			"keyboard": "Teclat",
 			"whenReading": "A l'hora de llegir",
 			"disableGamepadInput": "Desactiva l'entrada del comandament",
+			"contextMenu": "",
 			"gamepadMenu": "Menú del comandament",
 			"useGamepad": "Fes servir un comandament per canviar l'acció",
 			"restoreDefaults": "Restaurar valors per defecte",
@@ -276,6 +277,12 @@
 			"key5": "Tecla 5",
 			"gamepad1": "Botó 1",
 			"gamepad2": "Botó 2"
+		},
+		"tapZones": {
+			"main": "Zones de toc",
+			"leftClick": "Clic esquerre",
+			"rightClick": "Clic dret",
+			"middleClick": "Clic central"
 		},
 		"masterFolders": {
 			"main": "Carpetes mestres",

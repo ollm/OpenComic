@@ -27,6 +27,30 @@ function inputIsFocused()
 	return false;
 }
 
+function clickTapZone(event, button)
+{
+	const contentRight = template._contentRight();
+	const rect = contentRight.getBoundingClientRect();
+
+	let pageX = app.pageX(event) - rect.left;
+	let pageY = app.pageY(event) - rect.top;
+
+	pageY = pageY / rect.height;
+	pageX = pageX / rect.width;
+
+	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
+	const horizontal = (pageX > 0.66666 ? 'right' : (pageX > 0.33333 ? 'center' : 'left'));
+
+	console.log(vertical, horizontal);
+
+	const action = shortcuts[currentlyRegistered].tapZones[vertical][horizontal][button];
+
+	if(shortcuts[currentlyRegistered].actions[action])
+		shortcuts[currentlyRegistered].actions[action].function();
+
+	// Check if reading has zoom, etc (leftClick(event))
+}
+
 function loadShortcuts()
 {
 	shortcuts = {
@@ -99,6 +123,9 @@ function loadShortcuts()
 				'Mouse3': 'goBack',
 				'Mouse4': 'goForwards',
 			},
+			_shortcutsForce: {},
+			tapZones: {},
+			_tapZones: {},
 			gamepad: {},
 			_gamepad: {
 				'X': 'reload',
@@ -124,6 +151,7 @@ function loadShortcuts()
 				'fullscreen',
 				'goBack',
 				'goForwards',
+				'contextMenu',
 				'gamepadMenu',
 			],
 			actions: {
@@ -336,17 +364,50 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				contextMenu: {
+					name: language.settings.shortcuts.contextMenu,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						
+						console.log('contextMenu');
+
+						return true;
+					},
+				},
+				leftClick: {
+					name: '',
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						clickTapZone(event, 'leftClick');
+						return true;
+					},
+				},
+				rightClick: {
+					name: '',
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						if(event.button == 2 && event.type != 'contextmenu') return false;
+						clickTapZone(event, 'rightClick');
+						return true;
+					},
+				},
+				middleClick: {
+					name: '',
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						clickTapZone(event, 'middleClick');
+						return true;
+					},
+				},
 			},
 			shortcuts: {},
 			_shortcuts: {
 				'Left': 'prev',
 				'A': 'prev',
-				'LeftClick': 'prev',
 				'Mouse4': 'prev',
 				'Right': 'next',
 				'D': 'next',
 				'Space': 'next',
-				'RightClick': 'next',
 				'Mouse3': 'next',
 				'Up': 'start',
 				'W': 'start',
@@ -364,10 +425,69 @@ function loadShortcuts()
 				'L': 'hideContentLeft',
 				'P': 'hideContentLeft',
 				'B': 'createAndDeleteBookmark',
-				'MiddleClick': 'resetZoom',
+				'C': 'contextMenu',
 				'Esc': 'goBack',
 				'Backspace': 'goBack',
 				'F11': 'fullscreen',
+			},
+			_shortcutsForce: {
+				'LeftClick': 'leftClick',
+				'RightClick': 'rightClick',
+				'MiddleClick': 'middleClick',
+			},
+			tapZones: {},
+			_tapZones: {
+				top: {
+					left: {
+						leftClick: 'prev',
+						rightClick: 'next',
+						middleClick: 'resetZoom',
+					},
+					center: {
+						leftClick: 'resetZoom',
+						rightClick: 'contextMenu',
+						middleClick: 'resetZoom',
+					},
+					right: {
+						leftClick: 'next',
+						rightClick: 'prev',
+						middleClick: 'resetZoom',
+					},
+				},
+				center: {
+					left: {
+						leftClick: 'prev',
+						rightClick: 'next',
+						middleClick: 'resetZoom',
+					},
+					center: {
+						leftClick: 'resetZoom',
+						rightClick: 'contextMenu',
+						middleClick: 'resetZoom',
+					},
+					right: {
+						leftClick: 'next',
+						rightClick: 'prev',
+						middleClick: 'resetZoom',
+					},
+				},
+				bottom: {
+					left: {
+						leftClick: 'prev',
+						rightClick: 'next',
+						middleClick: 'resetZoom',
+					},
+					center: {
+						leftClick: 'resetZoom',
+						rightClick: 'contextMenu',
+						middleClick: 'resetZoom',
+					},
+					right: {
+						leftClick: 'next',
+						rightClick: 'prev',
+						middleClick: 'resetZoom',
+					},
+				},
 			},
 			gamepad: {},
 			_gamepad: {
@@ -412,6 +532,27 @@ function loadShortcuts()
 				shortcuts[section].shortcuts[shortcut] = action;
 		}
 
+		// Set force shortcuts
+		for(let shortcut in shortcuts[section]._shortcutsForce)
+		{
+			let action = shortcuts[section]._shortcutsForce[shortcut];
+			shortcuts[section].shortcuts[shortcut] = action;
+		}
+
+		// Tap zones
+		for(let shortcut in _shortcuts[section]?.tapZones)
+		{
+			shortcuts[section].tapZones[shortcut] = _shortcuts[section].tapZones[shortcut];
+		}
+
+		// Set not configured tap zones
+		for(let shortcut in shortcuts[section]._tapZones)
+		{
+			let action = shortcuts[section]._tapZones[shortcut];
+
+			if(!_shortcuts[section]?.tapZones || !_shortcuts[section]?.tapZones[shortcut])
+				shortcuts[section].tapZones[shortcut] = action;
+		}
 
 		// Gamepad
 		for(let button in _shortcuts[section]?.gamepad)
@@ -599,20 +740,39 @@ function changeGamepad(section, action, current, button)
 	storage.setVar('shortcuts', section, saved);
 }
 
+function changeTapZone(section, vertical, horizontal, button, action)
+{
+	const saved = storage.getKey('shortcuts', section) || {};
+
+	saved.tapZones = shortcuts[section].tapZones;
+	saved.tapZones[vertical][horizontal][button] = action;
+
+	storage.setVar('shortcuts', section, saved);
+}
+
 function restoreDefaults()
 {
-	storage.set('shortcuts', {
-		browse: {
-			actionsConfigured: [],
-			shortcuts: {},
-			gamepad: {},
-		},
-		reading: {
-			actionsConfigured: [],
-			shortcuts: {},
-			gamepad: {},
-		},
-	});
+	const saved = storage.get('shortcuts');
+
+	saved.browse.actionsConfigured = [];
+	saved.browse.shortcuts = {};
+	saved.browse.gamepad = {};
+
+	saved.reading.actionsConfigured = [];
+	saved.reading.shortcuts = {};
+	saved.reading.gamepad = {};
+
+	storage.set('shortcuts', saved);
+}
+
+function restoreDefaultsTapZones()
+{
+	const saved = storage.get('shortcuts');
+
+	saved.browse.tapZones = {};
+	saved.reading.tapZones = {};
+
+	storage.set('shortcuts', saved);
 }
 
 var _currentlyRegistered = false, pauseST = false;
@@ -651,7 +811,9 @@ module.exports = {
 	stopRecord: stopRecord,
 	change: change,
 	changeGamepad: changeGamepad,
+	changeTapZone: changeTapZone,
 	restoreDefaults: restoreDefaults,
+	restoreDefaultsTapZones: restoreDefaultsTapZones,
 	play: play,
 	pause: pause,
 	inputIsFocused: inputIsFocused,
