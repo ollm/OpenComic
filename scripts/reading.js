@@ -2036,7 +2036,6 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 				calculateView();
 				disableOnScroll(false);
-				zoomingIn = false;
 
 				originalRect2 = false;
 
@@ -2053,11 +2052,14 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				contentRight.querySelector('.reading-body').classList.remove('zooming');
 
 				applyScaleST = false;
+				zoomingIn = false;
 
 			}, animationDurationS * 1000 + 100);
 		}
 		else
 		{
+			zoomingIn = true;
+
 			if(originalRect === false)
 			{
 				originalRect = contentRight.querySelector('.image-position'+currentZoomIndex).getBoundingClientRect();
@@ -2145,6 +2147,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				contentRight.querySelector('.reading-body').classList.remove('zooming');
 
 				applyScaleST = false;
+				zoomingIn = false;
 
 			}, animationDurationS * 1000 + 100);
 		}
@@ -2468,6 +2471,11 @@ function dragZoom(x, y)
 {
 	let withLimits = notCrossZoomLimits(scalePrevData.tranX2 + x, scalePrevData.tranY2 + y);
 
+	const diff = {
+		x: (scalePrevData.tranX2 + x) - withLimits.x,
+		y: (scalePrevData.tranY2 + y) - withLimits.y,
+	};
+
 	x = withLimits.x;
 	y = withLimits.y;
 
@@ -2495,6 +2503,8 @@ function dragZoom(x, y)
 			transformOrigin: 'center center',
 		});
 	}
+
+	return diff;
 }
 
 function dragZoomEnd(force = false)
@@ -4746,6 +4756,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	});
 
+	let afterZoomingIn = false;
+
 	gamepad.setAxesEvent('reading', function(axes, status, now) {
 
 		if(onReading && isLoaded && !document.querySelector('.menu-simple.a'))
@@ -4755,41 +4767,53 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 			if(haveZoom)
 			{
-				if(status == 'start')
+				if(!zoomingIn)
 				{
-					zoomMoveData = {
-						x: 0,
-						y: 0,
-						active: true,
-					};
-				}
-
-				if(status == 'start' || status == 'move')
-				{
-					let x = 0;
-					let y = 0;
-
-					if(axes[0] || axes[1])
+					if(status == 'start' || afterZoomingIn)
 					{
-						x = axes[0];
-						y = axes[1];
-					}
-					else if(!config.readingMagnifyingGlass)
-					{
-						x = axes[2];
-						y = axes[3];
+						zoomMoveData = {
+							x: 0,
+							y: 0,
+							active: true,
+						};
+
+						afterZoomingIn = false;
 					}
 
-					let speed = gamepadAxesNow ? now - gamepadAxesNow : 16;
+					if(status == 'start' || status == 'move')
+					{
+						let x = 0;
+						let y = 0;
 
-					x = zoomMoveData.x = zoomMoveData.x + -(x * speed);
-					y = zoomMoveData.y = zoomMoveData.y + -(y * speed);
+						if(axes[0] || axes[1])
+						{
+							x = axes[0];
+							y = axes[1];
+						}
+						else if(!config.readingMagnifyingGlass)
+						{
+							x = axes[2];
+							y = axes[3];
+						}
 
-					dragZoom(x, y);
+						let speed = gamepadAxesNow ? now - gamepadAxesNow : 16;
+
+						x = zoomMoveData.x = zoomMoveData.x + -(x * speed);
+						y = zoomMoveData.y = zoomMoveData.y + -(y * speed);
+
+						const diff = dragZoom(x, y);
+
+						zoomMoveData.x -= diff.x;
+						zoomMoveData.y -= diff.y;
+					}
+					else // status == 'end'
+					{
+						dragZoomEnd();
+					}
 				}
-				else // status == 'end'
+				else
 				{
-					dragZoomEnd();
+					afterZoomingIn = true;
 				}
 			}
 
