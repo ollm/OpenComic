@@ -3373,7 +3373,7 @@ function setFromSkip()
 //Save current reading progress
 function saveReadingProgress(path = false, mainPath = false)
 {
-	if(!onReading)
+	if(!onReading || !isLoaded)
 		return;
 
 	if(!saveReadingProgressA)
@@ -4669,7 +4669,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight().on('mousewheel', function(e) {
 
-		if(onReading)
+		if(onReading && isLoaded)
 		{
 			if(e.originalEvent.ctrlKey || !readingViewIs('scroll'))
 			{
