@@ -1462,11 +1462,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					setGlobalExtracting(_path);
 					only.push(path);
 				}
-
-				if(!fs.existsSync(p.join(this.tmp, path)))
-					only.push(path);
-				else
-					this.whenExtractFile(_path);
 			}
 
 			if(!only.length)
