@@ -1449,10 +1449,24 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			for(let path in this.config.only)
 			{
+				const _path = p.join(this.path, path);
+				const globalExtracting = getGlobalExtracting(_path);
+
+				if(globalExtracting || fs.existsSync(p.join(this.tmp, path)))
+				{
+					if(globalExtracting) await globalExtracting.promise;
+					this.whenExtractFile(_path);
+				}
+				else
+				{
+					setGlobalExtracting(_path);
+					only.push(path);
+				}
+
 				if(!fs.existsSync(p.join(this.tmp, path)))
 					only.push(path);
 				else
-					this.whenExtractFile(p.join(this.path, path));
+					this.whenExtractFile(_path);
 			}
 
 			if(!only.length)
@@ -1475,13 +1489,18 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				{
 					let file = files[i];
 
-					if(fs.existsSync(p.join(this.tmp, file.pathInCompressed)))
+					const _path = p.join(this.path, file.pathInCompressed);
+					const globalExtracting = getGlobalExtracting(_path);
+
+					if(globalExtracting || fs.existsSync(p.join(this.tmp, file.pathInCompressed)))
 					{
-						this.whenExtractFile(p.join(this.path, file.pathInCompressed));
+						if(globalExtracting) await globalExtracting.promise;
+						this.whenExtractFile(_path);
 						someIsExtracted = true;
 					}
 					else
 					{
+						setGlobalExtracting(_path);
 						only.push(file.pathInCompressed);
 					}
 				}
@@ -1700,6 +1719,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				compressed: this.isCompressed(name),
 			};
 
+			globalWhenExtractFile(path);
 			this.callbackWhenFileExtracted(file);
 		}
 
@@ -2717,6 +2737,48 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+}
+
+var extractingPromises = {};
+var extractingPromisesST = {};
+
+function setGlobalExtracting(path)
+{
+	extractingPromisesST[path] = setTimeout(function(){
+
+		globalWhenExtractFile(path);
+
+	}, 60000);
+
+	let _resolve = false;
+
+	extractingPromises[path] = {
+		promise: new Promise(async function(resolve, reject) {
+
+			_resolve = resolve;
+
+		}),
+		resolve: false,
+	};
+
+	extractingPromises[path].resolve = _resolve;
+}
+
+function getGlobalExtracting(path)
+{
+	return extractingPromises[path] || false;
+}
+
+function globalWhenExtractFile(path)
+{
+	if(extractingPromisesST[path]) clearTimeout(extractingPromisesST[path]);
+	
+	if(extractingPromises[path])
+	{
+		const globalExtracting = extractingPromises[path];
+		delete extractingPromises[path];
+		globalExtracting.resolve();
+	}
 }
 
 // Use this to remove generated vector images if window.devicePixelRatio is changed
