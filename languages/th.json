@@ -271,6 +271,7 @@
 			"gamepadMenu": "เมนูเกมแพด",
 			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
 			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
+			"gamepadDeadZone": "",
 			"screen": "",
 			"zoom": "",
 			"menus": "",

@@ -271,6 +271,7 @@
 			"gamepadMenu": "Menú del comandament",
 			"useGamepad": "Fes servir un comandament per canviar l'acció",
 			"restoreDefaults": "Restaurar valors per defecte",
+			"gamepadDeadZone": "Zona morta del comandament",
 			"screen": "Pantalla",
 			"zoom": "Zoom",
 			"menus": "Menús",

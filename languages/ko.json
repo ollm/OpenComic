@@ -271,6 +271,7 @@
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "단축키 설정을 초기화",
+			"gamepadDeadZone": "",
 			"screen": "",
 			"zoom": "",
 			"menus": "",

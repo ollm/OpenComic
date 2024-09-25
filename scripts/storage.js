@@ -127,7 +127,7 @@ var storageDefault = {
 			play: true,
 			volume: 1.0,
 		},
-		controllerDeadZone: 0.06,
+		controllerDeadZone: 0.1,
 		disableGamepadInput: false,
 		startInFullScreen: false,
 		startInContinueReading: false,

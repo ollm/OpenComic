@@ -271,6 +271,7 @@
 			"gamepadMenu": "Gamepadmeny",
 			"useGamepad": "Använd en gamepad för att ändra funktionen",
 			"restoreDefaults": "Återställ standardvärden",
+			"gamepadDeadZone": "",
 			"screen": "",
 			"zoom": "",
 			"menus": "",

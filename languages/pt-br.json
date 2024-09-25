@@ -271,6 +271,7 @@
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "",
+			"gamepadDeadZone": "",
 			"screen": "",
 			"zoom": "",
 			"menus": "",

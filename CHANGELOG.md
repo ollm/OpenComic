@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to set an image from the folder as a poster [`0a952da`](https://github.com/ollm/OpenComic/commit/0a952da7d4d79de384a327695377dae9b5ad073b)
 - Multiple configurable tap zones from settings [`c7ee38f`](https://github.com/ollm/OpenComic/commit/c7ee38f2b85d85896bd197a8be4a68abd8bb300f)
 - More available shortcuts [`9201e1f`](https://github.com/ollm/OpenComic/commit/9201e1fcf06401e498d3996bb45be314905b0fde)
+- Custom gamepad death zone
 
 ##### 🐛 Bug Fixes
 

@@ -8,6 +8,20 @@
 	</div>
 </div>
 
+<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+	<div class="simple-slider-text">{{language.settings.shortcuts.gamepadDeadZone}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0.1" style="right: 70px;">undo</i><span>{{config.controllerDeadZone}}</span></div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="0.3" min="0" step="0.01" value="{{config.controllerDeadZone}}" onrange="settings.set('controllerDeadZone', \{{value}})">
+	</div>
+</div>
+
 {{#each shortcutsGroups}}
 <table class="body-large">
 	{{#if name}}
