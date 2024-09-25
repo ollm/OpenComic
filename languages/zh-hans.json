@@ -144,6 +144,8 @@
 			"integrated": "整体",
 			"ebookTheme": "电子书主题",
 			"fontSize": "字体大小",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "字体系列",
 			"useEbookFont": "使用电子书字体",
 			"useEbookTheme": "使用电子书主题",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "游戏手柄菜单",
 			"useGamepad": "使用游戏手柄来改变动作",
 			"restoreDefaults": "恢复默认值",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "动作",
 			"key1": "快捷键 1",
 			"key2": "快捷键 2",
@@ -339,6 +344,10 @@
 			"originalSize": "原始尺寸",
 			"zoomIn": "放大",
 			"zoomOut": "缩小",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "全屏"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "取消",
 		"ok": "确定",
+		"on": "",
+		"off": "",
 		"save": "保存",
 		"undo": "撤消",
 		"dismiss": "去除",

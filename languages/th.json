@@ -144,6 +144,8 @@
 			"integrated": "ผนวกรวม",
 			"ebookTheme": "ธีมอีบุ๊ก",
 			"fontSize": "ขนาดอักษร",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "แบบอักษร",
 			"useEbookFont": "ใช้แบบอักษรจากอีบุ๊ก",
 			"useEbookTheme": "ใช้ธีมจากอีบุ๊ก",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "เมนูเกมแพด",
 			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
 			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "การกระทำ",
 			"key1": "คีย์ 1",
 			"key2": "คีย์ 2",
@@ -339,6 +344,10 @@
 			"originalSize": "ขนาดเดิม",
 			"zoomIn": "ซูมเข้า",
 			"zoomOut": "ซูมออก",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "เต็มจอ"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "ยกเลิก",
 		"ok": "ตกลง",
+		"on": "",
+		"off": "",
 		"save": "จัดเก็บ",
 		"undo": "ย้อนกลับ",
 		"dismiss": "ปิด",

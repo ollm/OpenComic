@@ -144,6 +144,8 @@
 			"integrated": "Integrat",
 			"ebookTheme": "Tema de l'eBook",
 			"fontSize": "Tamany de la font",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "Família tipogràfica",
 			"useEbookFont": "Utilitza la lletra de l'eBook",
 			"useEbookTheme": "Utilitza el tema de l'eBook",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "Menú del comandament",
 			"useGamepad": "Fes servir un comandament per canviar l'acció",
 			"restoreDefaults": "Restaurar valors per defecte",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "Acció",
 			"key1": "Tecla 1",
 			"key2": "Tecla 2",
@@ -339,6 +344,10 @@
 			"originalSize": "Mida original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reduir zoom",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "Pantalla completa"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "Cancel·lar",
 		"ok": "Ok",
+		"on": "Encès",
+		"off": "Apagat",
 		"save": "Guardar",
 		"undo": "Desfer",
 		"dismiss": "Descarta",

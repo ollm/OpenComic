@@ -29,6 +29,9 @@ function inputIsFocused()
 
 function clickTapZone(event, button)
 {
+	if(reading.abortClick(event))
+		return;
+
 	const contentRight = template._contentRight();
 	const rect = contentRight.getBoundingClientRect();
 
@@ -41,14 +44,29 @@ function clickTapZone(event, button)
 	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
 	const horizontal = (pageX > 0.66666 ? 'right' : (pageX > 0.33333 ? 'center' : 'left'));
 
-	console.log(vertical, horizontal);
-
 	const action = shortcuts[currentlyRegistered].tapZones[vertical][horizontal][button];
 
 	if(shortcuts[currentlyRegistered].actions[action])
 		shortcuts[currentlyRegistered].actions[action].function();
+}
 
-	// Check if reading has zoom, etc (leftClick(event))
+function shortcutSnackbar(string, status = null)
+{
+	events.closeSnackbar();
+	
+	string = string+(status !== null ? ': '+(status ? language.buttons.on : language.buttons.off) : '');
+
+	events.snackbar({
+		key: string,
+		text: string,
+		duration: 2,
+		buttons: [
+			{
+				text: language.buttons.dismiss,
+				function: 'events.closeSnackbar();',
+			},
+		],
+	});
 }
 
 function loadShortcuts()
@@ -142,17 +160,114 @@ function loadShortcuts()
 				'prevComic',
 				'nextComic',
 				'magnifyingGlass',
+				'createAndDeleteBookmark',
+				'pageLayout',
+				'slide',
+				'scroll',
+				'roughPageTurn',
+				'smoothPageTurn',
+				'fade',
+				'readingManga',
+				'readingWebtoon',
+				'doublePage',
+				'doNotApplyToHorizontals',
+				'blankPage',
+				'adjustToWidth',
+				'notEnlargeMoreThanOriginalSize',
+				'rotateHorizontals',
+				'ebookLayout',
+				'increaseFontSize',
+				'decreaseFontSize',
 				'hideBarHeader',
 				'hideContentLeft',
-				'createAndDeleteBookmark',
+				'fullscreen',
 				'zoomIn',
 				'zoomOut',
+				'zoomUp',
+				'zoomDown',
+				'zoomLeft',
+				'zoomRight',
 				'resetZoom',
-				'fullscreen',
 				'goBack',
 				'goForwards',
 				'contextMenu',
 				'gamepadMenu',
+			],
+			actionsGroups: [
+				{
+					name: language.settings.general,
+					items: [
+						'prev',
+						'next',
+						'start',
+						'end',
+						'prevComic',
+						'nextComic',
+						'magnifyingGlass',
+						'createAndDeleteBookmark',
+					],
+				},
+				{
+					name: language.reading.pages.pageLayout,
+					items: [
+						'pageLayout',
+						'slide',
+						'scroll',
+						'roughPageTurn',
+						'smoothPageTurn',
+						'fade',
+						'readingManga',
+						'readingWebtoon',
+						'doublePage',
+						'doNotApplyToHorizontals',
+						'blankPage',
+						'adjustToWidth',
+						'notEnlargeMoreThanOriginalSize',
+						'rotateHorizontals',
+					],
+				},
+				{
+					name: language.reading.pages.ebookLayout,
+					items: [
+						'ebookLayout',
+						'increaseFontSize',
+						'decreaseFontSize',
+					],
+				},
+				{
+					name: language.settings.shortcuts.screen,
+					items: [
+						'hideBarHeader',
+						'hideContentLeft',
+						'fullscreen',
+					],
+				},
+				{
+					name: language.settings.shortcuts.zoom,
+					items: [
+						'zoomIn',
+						'zoomOut',
+						'zoomUp',
+						'zoomDown',
+						'zoomLeft',
+						'zoomRight',
+						'resetZoom',
+					],
+				},
+				{
+					name: language.settings.navigation.main,
+					items: [
+						'goBack',
+						'goForwards',
+					],
+				},
+				{
+					name: language.settings.shortcuts.menus,
+					items: [
+						'contextMenu',
+						'gamepadMenu',
+					],
+				},
 			],
 			actions: {
 				prev: {
@@ -322,6 +437,38 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				zoomUp: {
+					name: language.menu.view.zoomUp,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.zoomUp();
+						return true;
+					},
+				},
+				zoomDown: {
+					name: language.menu.view.zoomDown,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.zoomDown();
+						return true;
+					},
+				},
+				zoomLeft: {
+					name: language.menu.view.zoomLeft,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.zoomLeft();
+						return true;
+					},
+				},
+				zoomRight: {
+					name: language.menu.view.zoomRight,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.zoomRight();
+						return true;
+					},
+				},
 				resetZoom: {
 					name: language.menu.view.resetZoom+'<br>'+language.menu.view.originalSize,
 					function: function(){
@@ -374,6 +521,223 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				pageLayout: {
+					name: language.reading.pages.pageLayout,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						reading.loadReadingPages(false, false, 'page-layout');
+						events.activeMenu('#reading-pages', '.bar-right-buttons .button-page-layout', 'right');
+						events.eventsTab();
+
+						return true;
+					},
+				},
+				slide: {
+					name: language.reading.pages.slide,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
+						reading.changePagesView(1, 'slide', false);
+
+						shortcutSnackbar(language.reading.pages.slide);
+
+						return true;
+					},
+				},
+				scroll: {
+					name: language.reading.pages.scroll,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
+						reading.changePagesView(1, 'scroll', false);
+
+						shortcutSnackbar(language.reading.pages.scroll);
+
+						return true;
+					},
+				},
+				roughPageTurn: {
+					name: language.reading.pages.roughPageTurn,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
+						reading.changePagesView(1, 'rough-page-turn', false);
+
+						shortcutSnackbar(language.reading.pages.roughPageTurn);
+
+						return true;
+					},
+				},
+				smoothPageTurn: {
+					name: language.reading.pages.smoothPageTurn,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
+						reading.changePagesView(1, 'smooth-page-turn', false);
+
+						shortcutSnackbar(language.reading.pages.smoothPageTurn);
+
+						return true;
+					},
+				},
+				fade: {
+					name: language.reading.pages.fade,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
+						reading.changePagesView(1, 'fade', false);
+
+						shortcutSnackbar(language.reading.pages.fade);
+
+						return true;
+					},
+				},
+				readingManga: {
+					name: language.reading.pages.readingManga,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(!_config.readingWebtoon)
+						{
+							reading.changePagesView(8, !_config.readingManga, false);
+							shortcutSnackbar(language.reading.pages.readingManga, _config.readingManga);
+						}
+
+						return true;
+					},
+				},
+				readingWebtoon: {
+					name: language.reading.pages.readingWebtoon,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						reading.changePagesView(9, !_config.readingWebtoon, false);
+						shortcutSnackbar(language.reading.pages.readingWebtoon, _config.readingWebtoon);
+
+						return true;
+					},
+				},
+				doublePage: {
+					name: language.reading.pages.doublePage,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(!_config.readingWebtoon)
+						{
+							reading.changePagesView(6, !_config.readingDoublePage, false);
+							shortcutSnackbar(language.reading.pages.doublePage, _config.readingDoublePage);
+						}
+
+						return true;
+					},
+				},
+				doNotApplyToHorizontals: {
+					name: language.reading.pages.doNotApplyToHorizontals+' ('+language.reading.pages.doublePage+')',
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(!_config.readingWebtoon && _config.readingDoublePage)
+						{
+							reading.changePagesView(7, !_config.readingDoNotApplyToHorizontals, false);
+							shortcutSnackbar(language.reading.pages.doNotApplyToHorizontals, _config.readingDoNotApplyToHorizontals);
+						}
+
+						return true;
+					},
+				},
+				blankPage: {
+					name: language.reading.pages.blankPage+' ('+language.reading.pages.doublePage+')',
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(!_config.readingWebtoon && _config.readingDoublePage)
+						{
+							reading.changePagesView(12, !_config.readingBlankPage, false);
+							shortcutSnackbar(language.reading.pages.blankPage, _config.readingBlankPage);
+						}
+
+						return true;
+					},
+				},
+				adjustToWidth: {
+					name: language.reading.pages.adjustToWidth+' ('+language.reading.pages.scroll+')',
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(reading.readingViewIs('scroll') && !_config.readingWebtoon)
+						{
+							reading.changePagesView(3, !_config.readingViewAdjustToWidth, false);
+							shortcutSnackbar(language.reading.pages.adjustToWidth, _config.readingViewAdjustToWidth);
+						}
+
+						return true;
+					},
+				},
+				notEnlargeMoreThanOriginalSize: {
+					name: language.reading.pages.notEnlargeMoreThanOriginalSize,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						if(!_config.readingWebtoon)
+						{
+							reading.changePagesView(18, !_config.readingNotEnlargeMoreThanOriginalSize, false);
+							shortcutSnackbar(language.reading.pages.notEnlargeMoreThanOriginalSize, _config.readingNotEnlargeMoreThanOriginalSize);
+						}
+
+						return true;
+					},
+				},
+				rotateHorizontals: {
+					name: language.reading.pages.rotateHorizontals,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						reading.changePagesView(19, !_config.readingRotateHorizontals, false);
+						shortcutSnackbar(language.reading.pages.rotateHorizontals, _config.readingRotateHorizontals);
+
+						return true;
+					},
+				},
+				ebookLayout: {
+					name: language.reading.pages.ebookLayout,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						reading.loadReadingPages(false, false, 'ebook-layout');
+						events.activeMenu('#reading-pages', '.bar-right-buttons .button-ebook-layout', 'right');
+						events.eventsTab();
+
+						return true;
+					},
+				},
+				increaseFontSize: {
+					name: language.reading.pages.increaseFontSize,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						reading.ebook.increase('fontSize');
+
+						return true;
+					},
+				},
+				decreaseFontSize: {
+					name: language.reading.pages.decreaseFontSize,
+					function: function(){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+
+						reading.ebook.decrease('fontSize');
+
+						return true;
+					},
+				},
+
+
 				leftClick: {
 					name: '',
 					function: function(event){
@@ -410,10 +774,10 @@ function loadShortcuts()
 				'Space': 'next',
 				'Mouse3': 'next',
 				'Up': 'start',
-				'W': 'start',
+				//'W': 'start',
 				'Home': 'start',
 				'Down': 'end',
-				'S': 'end',
+				//'S': 'end',
 				'End': 'end',
 				'Ctrl+Up': 'prevComic',
 				'Ctrl+Left': 'prevComic',
@@ -426,9 +790,37 @@ function loadShortcuts()
 				'P': 'hideContentLeft',
 				'B': 'createAndDeleteBookmark',
 				'C': 'contextMenu',
+				'Ctrl+P': 'pageLayout',
+				'Ctrl+0': 'pageLayout',
+				'Ctrl+1': 'slide',
+				'Ctrl+2': 'scroll',
+				'Ctrl+3': 'roughPageTurn',
+				'Ctrl+4': 'smoothPageTurn',
+				'Ctrl+5': 'fade',
+				'Ctrl+M': 'readingManga',
+				'Ctrl+W': 'readingWebtoon',
+				'Ctrl+D': 'doublePage',
+				'Ctrl+H': 'doNotApplyToHorizontals',
+				'Ctrl+B': 'blankPage',
+				'Ctrl+A': 'adjustToWidth',
+				'Ctrl+L': 'notEnlargeMoreThanOriginalSize',
+				'Ctrl+R': 'rotateHorizontals',
+				'Shift+E': 'ebookLayout',
+				'Shift+2': 'increaseFontSize',
+				'Shift+.': 'increaseFontSize',
+				'Shift+1': 'decreaseFontSize',
+				'Shift+,': 'decreaseFontSize',
+				'Q': 'zoomIn',
+				'E': 'zoomOut',
+				'W': 'zoomUp',
+				'S': 'zoomDown',
+				'Shift+A': 'zoomLeft',
+				'Shift+D': 'zoomRight',
+				'Z': 'resetZoom',
 				'Esc': 'goBack',
 				'Backspace': 'goBack',
 				'F11': 'fullscreen',
+				'G': 'gamepadMenu',
 			},
 			_shortcutsForce: {
 				'LeftClick': 'leftClick',

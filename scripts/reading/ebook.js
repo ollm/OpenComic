@@ -53,6 +53,59 @@ function change(key, value, save = false, saveInApply = true)
 		reading.updateReadingPagesConfig('readingEbook', readingEbook);
 }
 
+function limits(key)
+{
+	let max, min, steps;
+
+	switch (key)
+	{
+		case 'fontSize':
+
+			max = 68;
+			min = 10;
+			steps = 1;
+
+			break;
+
+		default:
+			return;
+	}
+
+	return {
+		max: max,
+		min: min,
+		steps: steps,
+	};
+}
+
+function increase(key)
+{
+	const limit = limits(key);
+	if(!limit) return;
+
+	let value = _config.readingEbook[key];
+	value += limit.steps;
+
+	if(value > limit.max)
+		value = limit.max;
+
+	change(key, value, true);
+}
+
+function decrease(key)
+{
+	const limit = limits(key);
+	if(!limit) return;
+
+	let value = _config.readingEbook[key];
+	value -= limit.steps;
+
+	if(value < limit.min)
+		value = limit.min;
+
+	change(key, value, true);
+}
+
 function textAlign(align)
 {
 	let readingEbook = structuredClone(_config.readingEbook);
@@ -324,6 +377,8 @@ function processContext()
 
 module.exports = {
 	change: change,
+	increase: increase,
+	decrease: decrease,
 	textAlign: textAlign,
 	bold: bold,
 	italic: italic,

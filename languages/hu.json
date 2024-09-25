@@ -144,6 +144,8 @@
 			"integrated": "",
 			"ebookTheme": "",
 			"fontSize": "",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "",
 			"useEbookFont": "",
 			"useEbookTheme": "",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "",
 			"key1": "",
 			"key2": "",
@@ -339,6 +344,10 @@
 			"originalSize": "",
 			"zoomIn": "Nagyítás",
 			"zoomOut": "Kicsinyítés",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "Teljes képernyő"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "Cancel",
 		"ok": "Ok",
+		"on": "",
+		"off": "",
 		"save": "",
 		"undo": "Undo",
 		"dismiss": "Dismiss",

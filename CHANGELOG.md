@@ -19,7 +19,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Library Navigation using side mouse buttons [`96f4bb8`](https://github.com/ollm/OpenComic/commit/96f4bb8e0033bd58b78e9ec29155ae332c72ec8b)
 - Move to trash and Delete permanently options [`2737fbe`](https://github.com/ollm/OpenComic/commit/2737fbe2b9a318c9e5a8b27885e153caa5e9b327)
 - Improved reading load and memory usage [`f12cbdb`](https://github.com/ollm/OpenComic/commit/f12cbdbade5e487f5c608e253a6c82b8e7c554a4)
-- Option to set an image from the folder as a poster
+- Option to set an image from the folder as a poster [`0a952da`](https://github.com/ollm/OpenComic/commit/0a952da7d4d79de384a327695377dae9b5ad073b)
+- Multiple configurable tap zones from settings [`c7ee38f`](https://github.com/ollm/OpenComic/commit/c7ee38f2b85d85896bd197a8be4a68abd8bb300f)
+- More available shortcuts
 
 
 ##### 🐛 Bug Fixes
@@ -37,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Extracting 7zip in separate stacks to avoid errors when extracting many files [`061827f`](https://github.com/ollm/OpenComic/commit/061827fc737aa8edfde14e7b092a8b44e571bf08)
 - Prevent scroll event while reading is loading [`4c93a72`](https://github.com/ollm/OpenComic/commit/4c93a724220fc820347464a988727ef4649052fe)
 - Multiple errors managing cache of files in servers [`7e739da`](https://github.com/ollm/OpenComic/commit/7e739dae8cbcef9691efd0a0cfbfbfa62ce192a4)
+- 7zip binary does not have correct permissions on macOS arm64 [`91c8d1d`](https://github.com/ollm/OpenComic/commit/91c8d1d798e2b11b3f9d1cfdfe5698774dd00f05)
 
 ## [v1.2.0](https://github.com/ollm/OpenComic/releases/tag/v1.2.0) (29-03-2024)
 

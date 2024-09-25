@@ -144,6 +144,8 @@
 			"integrated": "Integrerad",
 			"ebookTheme": "e-boktema",
 			"fontSize": "Teckenstorlek",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "Typsnitt",
 			"useEbookFont": "Använd e-bokens typsnitt",
 			"useEbookTheme": "Använd e-bokens tema",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "Gamepadmeny",
 			"useGamepad": "Använd en gamepad för att ändra funktionen",
 			"restoreDefaults": "Återställ standardvärden",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "Funktion",
 			"key1": "Knapp 1",
 			"key2": "Knapp 2",
@@ -339,6 +344,10 @@
 			"originalSize": "Standardstorlek",
 			"zoomIn": "Zooma in",
 			"zoomOut": "Zooma ut",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "Helskärmsläge"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "Avbryt",
 		"ok": "Ok",
+		"on": "",
+		"off": "",
 		"save": "Spara",
 		"undo": "Ångra",
 		"dismiss": "Avvisa",

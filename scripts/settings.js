@@ -539,6 +539,48 @@ function generateShortcutsTable(highlightItem = false)
 		buttons[action].push(button);
 	}
 
+	// actionsGroups
+	let actionsGroups = [];
+
+	for(let key in list.reading.actionsGroups)
+	{
+		const group = list.reading.actionsGroups[key];
+		const actions = [];
+
+		for(let key2 in group.items)
+		{
+			let action = group.items[key2];
+			let data = list.reading.actions[action];
+
+			let _keys = keys[action] || {};
+			let _buttons = buttons[action] || {};
+
+			let shortcut = {
+				action: action,
+				name: data.name,
+				key1: _keys[0] || '',
+				key2: _keys[1] || '',
+				key3: _keys[2] || '',
+				key4: _keys[3] || '',
+				key5: _keys[4] || '',
+				gamepad1: (_buttons[0] || '').toLowerCase(),
+				gamepad1_: _buttons[0] || '',
+				gamepad2: (_buttons[1] || '').toLowerCase(),
+				gamepad2_: _buttons[1] || '',
+			};
+
+			actions.push(shortcut);
+		}
+
+		actionsGroups.push({
+			name: group.name,
+			shortcuts: actions,
+		});
+	}
+
+	handlebarsContext.shortcutsGroups = actionsGroups;
+	// handlebarsContext.shortcutsGroups = false;
+
 	let actions = [];
 
 	for(let key in list.reading.actionsOrder)

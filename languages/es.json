@@ -144,6 +144,8 @@
 			"integrated": "Integrado",
 			"ebookTheme": "Tema del eBook",
 			"fontSize": "Tamaño de la fuente",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "Familia tipográfica",
 			"useEbookFont": "Utilizar la letra del eBook",
 			"useEbookTheme": "Utilizar el tema del eBook",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "Menú del mando",
 			"useGamepad": "Utiliza un mando para cambiar la acción",
 			"restoreDefaults": "Restaurar valores por defecto",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "Acción",
 			"key1": "Tecla 1",
 			"key2": "Tecla 2",
@@ -339,6 +344,10 @@
 			"originalSize": "Tamaño original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reducir zoom",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "Pantalla completa"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "Cancelar",
 		"ok": "Ok",
+		"on": "Encendido",
+		"off": "Apagado",
 		"save": "Guardar",
 		"undo": "Deshacer",
 		"dismiss": "Descartar",

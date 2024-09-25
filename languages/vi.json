@@ -144,6 +144,8 @@
 			"integrated": "Định sẵn",
 			"ebookTheme": "Chủ đề eBook",
 			"fontSize": "Cỡ chữ",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "Phông chữ",
 			"useEbookFont": "Dùng font của eBook",
 			"useEbookTheme": "Dùng chủ đề của eBook",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "Menu gamepad",
 			"useGamepad": "Dùng gamepad để thay đổi hành động",
 			"restoreDefaults": "Trở về mặc định",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "Hành động",
 			"key1": "Phím 1",
 			"key2": "Phím 2",
@@ -339,6 +344,10 @@
 			"originalSize": "Độ lớn mặc định",
 			"zoomIn": "Phóng to",
 			"zoomOut": "Thu nhỏ",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "Toàn màn hình"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "Hủy",
 		"ok": "Ok",
+		"on": "",
+		"off": "",
 		"save": "Lưu",
 		"undo": "Hoàn tác",
 		"dismiss": "Ẩn",

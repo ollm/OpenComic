@@ -144,6 +144,8 @@
 			"integrated": "",
 			"ebookTheme": "",
 			"fontSize": "",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "",
 			"useEbookFont": "",
 			"useEbookTheme": "",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "",
 			"key1": "",
 			"key2": "",
@@ -339,6 +344,10 @@
 			"originalSize": "",
 			"zoomIn": "縮小",
 			"zoomOut": "拡大",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "全画面"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "キャンセル",
 		"ok": "Ok",
+		"on": "",
+		"off": "",
 		"save": "",
 		"undo": "やり直し",
 		"dismiss": "閉じる",

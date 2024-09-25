@@ -70,16 +70,7 @@ function setImagesData(_imagesData)
 
 function setMagnifyingGlassStatus(active = false)
 {
-	if(renderImages) return;
-
-	if(active)
-	{
-		scaleMagnifyingGlass = active;
-	}
-	else
-	{
-		scaleMagnifyingGlass = false;
-	}
+	scaleMagnifyingGlass = !!active;
 }
 
 var sendToQueueST = false;
@@ -398,8 +389,6 @@ async function render(index, _scale = false, magnifyingGlass = false)
 		}
 		else if(renderImages)
 		{
-			if(magnifyingGlass) return;
-
 			let cssMethods = {
 				'pixelated': 'pixelated',
 				'webkit-optimize-contrast': '-webkit-optimize-contrast',
@@ -426,7 +415,13 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 			if(isNaN(originalWidth) || isNaN(originalHeight)) return;
 
-			rendered[index] = _scale;
+			if(magnifyingGlass)
+				_scale = scale * scaleMagnifyingGlass;
+
+			if(magnifyingGlass)
+				renderedMagnifyingGlass[index] = _scale;
+			else
+				rendered[index] = _scale;
 
 			_scale = _scale * window.devicePixelRatio;
 
@@ -442,7 +437,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			let src = img.dataset.src;
 			let key = src+'|'+_config.width+'x'+_config.height;
 
-			if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium')
+			if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
 			{
 				if(cssMethods[_config.kernel])
 				{

@@ -144,6 +144,8 @@
 			"integrated": "",
 			"ebookTheme": "",
 			"fontSize": "",
+			"increaseFontSize": "",
+			"decreaseFontSize": "",
 			"fontFamily": "",
 			"useEbookFont": "",
 			"useEbookTheme": "",
@@ -269,6 +271,9 @@
 			"gamepadMenu": "",
 			"useGamepad": "",
 			"restoreDefaults": "단축키 설정을 초기화",
+			"screen": "",
+			"zoom": "",
+			"menus": "",
 			"action": "",
 			"key1": "",
 			"key2": "",
@@ -339,6 +344,10 @@
 			"originalSize": "원본 크기",
 			"zoomIn": "확대",
 			"zoomOut": "축소",
+			"zoomUp": "",
+			"zoomDown": "",
+			"zoomLeft": "",
+			"zoomRight": "",
 			"toggleFullScreen": "전체 화면으로 보기"
 		},
 		"goto": {
@@ -463,6 +472,8 @@
 	"buttons": {
 		"cancel": "취소",
 		"ok": "확인",
+		"on": "",
+		"off": "",
 		"save": "저장",
 		"undo": "실행 취소",
 		"dismiss": "무시",

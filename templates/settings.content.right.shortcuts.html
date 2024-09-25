@@ -1,15 +1,50 @@
 <h2 class="headline-small">{{language.settings.shortcuts.whenReading}}</h2>
 
-<table class="body-large">
-
-	<div class="menu-simple-text gamepad-item">
-		<span>{{language.settings.shortcuts.disableGamepadInput}}</span>
-		<div class="switch{{#if config.disableGamepadInput}} a{{/if}}" on="settings.set('disableGamepadInput', true)" off="settings.set('disableGamepadInput', false)">
-			<div></div>
-			<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
-		</div>
+<div class="menu-simple-text gamepad-item">
+	<span>{{language.settings.shortcuts.disableGamepadInput}}</span>
+	<div class="switch{{#if config.disableGamepadInput}} a{{/if}}" on="settings.set('disableGamepadInput', true)" off="settings.set('disableGamepadInput', false)">
+		<div></div>
+		<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 	</div>
+</div>
 
+{{#each shortcutsGroups}}
+<table class="body-large">
+	{{#if name}}
+	<div class="menu-simple-text gamepad-item" style="margin-top: 18px; margin-bottom: -18px;">
+		<span>{{name}}</span>
+	</div>
+	{{/if}}
+
+	<thead>
+		<tr>
+			<th>{{../language.settings.shortcuts.action}}</th>
+			<th>{{../language.settings.shortcuts.key1}}</th>
+			<th>{{../language.settings.shortcuts.key2}}</th>
+			<th>{{../language.settings.shortcuts.key3}}</th>
+			<th>{{../language.settings.shortcuts.key4}}</th>
+			<th>{{../language.settings.shortcuts.key5}}</th>
+			<th>{{../language.settings.shortcuts.gamepad1}}</th>
+			<th>{{../language.settings.shortcuts.gamepad2}}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each shortcuts}}
+		<tr>
+			<td>{{{name}}}</td>
+			<td onclick="settings.changeShortcut('{{action}}', '{{key1}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key1}}')">{{key1}}</td>
+			<td onclick="settings.changeShortcut('{{action}}', '{{key2}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key2}}')">{{key2}}</td>
+			<td onclick="settings.changeShortcut('{{action}}', '{{key3}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key3}}')">{{key3}}</td>
+			<td onclick="settings.changeShortcut('{{action}}', '{{key4}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key4}}')">{{key4}}</td>
+			<td onclick="settings.changeShortcut('{{action}}', '{{key5}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key5}}')">{{key5}}</td>
+			<td class="gamepad-item lh0{{#if @first}} gamepad-to-hightlight{{/if}}" onclick="settings.changeButton('{{action}}', '{{gamepad1_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad1_}}')">{{#if gamepad1}}<span class="gamepad-image gamepad-image-{{gamepad1}}">{{/if}}</td>
+			<td class="gamepad-item lh0" onclick="settings.changeButton('{{action}}', '{{gamepad2_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad2_}}')">{{#if gamepad2}}<span class="gamepad-image gamepad-image-{{gamepad2}}">{{/if}}</td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+{{else}}
+<table class="body-large">
 	<thead>
 		<tr>
 			<th>{{language.settings.shortcuts.action}}</th>
@@ -37,6 +72,7 @@
 		{{/each}}
 	</tbody>
 </table>
+{{/each}}
 
 <div class="simple-button filled-tonal gamepad-item" onclick="settings.restoreShortcuts();">
 	<div class="touch-effect"><i class="icon-24 material-icon">undo</i>{{language.settings.shortcuts.restoreDefaults}}</div>

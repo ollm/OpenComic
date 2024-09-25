@@ -1634,6 +1634,23 @@ function onScroll(event)
 		magnifyingGlassControlPrev();
 }
 
+function abortClick(event)
+{
+	if(event.target.classList.contains('folder') || event.target.closest('.folder'))
+		return true;
+
+	const pageX = app.pageX(event);
+	const pageY = app.pageY(event);
+
+	const maxDiff = Math.max(Math.abs(pageX - zoomMoveData.x), Math.abs(pageY - zoomMoveData.y));
+	const isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
+
+	if((!reading.haveZoom() || config.readingMoveZoomWithMouse || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
+		return false;
+
+	return true;
+}
+
 function leftClick(event)
 {
 	if(event.target.classList.contains('folder') || event.target.closest('.folder')) return;
@@ -2220,6 +2237,33 @@ function zoomOut(animation = true, center = false)
 	applyScale(animation, currentScale, center, true);
 }
 
+function zoomUp()
+{
+	zoomMove(0, 20);
+}
+
+function zoomDown()
+{
+	zoomMove(0, -20);
+}
+
+function zoomLeft()
+{
+	zoomMove(-20, 0);
+}
+
+function zoomRight()
+{
+	zoomMove(20, 0);
+}
+
+function zoomMove(x = 0, y = 0)
+{
+	if(!haveZoom) return;
+
+	dragZoom(x, y);
+	dragZoomEnd(true);
+}
 
 // Reset zoom or show in original size if is current in 1 scale
 function resetZoom(animation = true, index = false, apply = true, center = true, delayed = false)
@@ -2453,7 +2497,7 @@ function dragZoom(x, y)
 	}
 }
 
-function dragZoomEnd()
+function dragZoomEnd(force = false)
 {
 	if(zoomMoveData.active || force)
 	{
@@ -2496,7 +2540,7 @@ function scrollWithMouse()
 {
 	if(!scrollWithMouseStatus.active) return;
 
-	if(onReading && readingViewIs('scroll'))
+	if(onReading && isLoaded && readingViewIs('scroll'))
 	{
 		let contentScrollTop = scrollWithMouseStatus.content.scrollTop;
 		let scrollTop = scrollWithMouseStatus.scrollTop;
@@ -4647,7 +4691,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight('.reading-lens').on('mousewheel', function(e) {
 
-		if(onReading && (!haveZoom || !e.originalEvent.ctrlKey) && readingViewIs('scroll'))
+		if(onReading && isLoaded && (!haveZoom || !e.originalEvent.ctrlKey) && readingViewIs('scroll'))
 		{
 			e.preventDefault();
 
@@ -4675,7 +4719,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight('.reading-body, .reading-lens').on('pointerdown', function(e) {
 
-		if(onReading && (!haveZoom || config.readingGlobalZoom) && !config.readingScrollWithMouse && readingViewIs('scroll'))
+		if(onReading && isLoaded && (!haveZoom || config.readingGlobalZoom) && !config.readingScrollWithMouse && readingViewIs('scroll'))
 		{
 			if(e.originalEvent.pointerType != 'touch' && e.originalEvent.button >= 0 && e.originalEvent.button <= 2)
 			{
@@ -4817,7 +4861,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	gamepad.setAxesStepsEvent('reading', [0, 1], function(key, axes) {
 
-		if(onReading && !document.querySelector('.menu-simple.a'))
+		if(onReading && isLoaded && !document.querySelector('.menu-simple.a'))
 		{
 			if(!haveZoom && !readingViewIs('scroll'))
 			{
@@ -4865,7 +4909,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	$(window).on('touchstart', function(e) {
 
-		if(onReading && config.readingMagnifyingGlass)
+		if(onReading && isLoaded && config.readingMagnifyingGlass)
 		{
 			touchStart = e;
 
@@ -4888,7 +4932,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			y: y,
 		};
 
-		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			var readingBody = template.contentRight('.reading-body');
 
@@ -4912,7 +4956,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight('.reading-body').on('mouseout', function(e) {
 
-		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseout.body = true;
 
@@ -4923,7 +4967,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight('.reading-body').on('mouseenter', function(e) {
 
-		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseout.body = false;
 		}
@@ -4932,7 +4976,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	$(window).on('mouseout', function(e) {
 
-		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseout.lens = true;
 
@@ -4954,7 +4998,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight('.reading-lens').on('mouseenter', function(e) {
 
-		if(onReading && config.readingMagnifyingGlass && !readingTouchEvent)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
 			mouseout.lens = false;
 		}
@@ -4974,7 +5018,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			y: pageY,
 		};
 
-		if(onReading && config.readingMagnifyingGlass && !haveZoom)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && !haveZoom)
 		{
 			let readingLens = template.contentRight('.reading-lens');
 
@@ -5094,7 +5138,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	$(window).on('click', function(e) {
 
-		if(onReading && config.readingMagnifyingGlass && readingTouchEvent)
+		if(onReading && isLoaded && config.readingMagnifyingGlass && readingTouchEvent)
 		{
 			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
 			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
@@ -5213,7 +5257,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	}
 	else
 	{
-		render.setFile(false, false, 'images');
+		render.setFile(false, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false), 'images');
 
 		const sizes = await image.getSizes(_images);
 
@@ -5298,10 +5342,15 @@ module.exports = {
 	pageRange: pageRange,
 	goBackPageRangeHistory: goBackPageRangeHistory,
 	goPageDialog: goPageDialog,
+	abortClick: abortClick,
 	leftClick: leftClick,
 	rightClick: rightClick,
 	zoomIn: zoomIn,
 	zoomOut: zoomOut,
+	zoomUp: zoomUp,
+	zoomDown: zoomDown,
+	zoomLeft: zoomLeft,
+	zoomRight: zoomRight,
 	resetZoom: resetZoom,
 	dragZoom: dragZoom,
 	fixBlurOnZoom: fixBlurOnZoom,
