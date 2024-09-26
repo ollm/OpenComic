@@ -1,6 +1,6 @@
 let current = false, audio = false;
 
-async function has(files)
+async function has(files, findParent = false)
 {
 	for(let i = 0, len = files.length; i < len; i++)
 	{
@@ -8,6 +8,28 @@ async function has(files)
 
 		if(inArray(fileExtension(_file.name), audioExtensions.all))
 			return _file;
+	}
+
+	if(findParent)
+	{
+		const file = fileManager.file(findParent);
+		let files = [];
+
+		try
+		{
+			files = await file.read({filtered: false});
+		}
+		catch(error)
+		{
+			console.error(error);
+			dom.compressedError(error);
+
+			return false;
+		}
+
+		file.destroy();
+
+		return has(files);
 	}
 
 	return false;

@@ -2188,7 +2188,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		return;
 	}
 
-	let hasMusic = await reading.music.has(files);
+	let hasMusic = await reading.music.has(files, p.dirname(path));
 	handlebarsContext.hasMusic = hasMusic;
 
 	files = fileManager.filtered(files);
