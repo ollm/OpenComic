@@ -1939,6 +1939,7 @@ a:hover
 	border-radius: 12px;
 	width: 12px;
 	height: 12px;
+	min-height: 60px;
 	background-clip: padding-box;
 	background-color: rgba(0, 0, 0, 0.12);
 	border: 4px solid transparent;
