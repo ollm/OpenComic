@@ -1,4 +1,4 @@
-var changes = 84; // Update this if readingPagesConfig is updated
+var changes = 85; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -102,6 +102,7 @@ var storageDefault = {
 		},
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
+		showLibraryPath: false,
 		...readingPagesConfig,
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,

@@ -243,7 +243,8 @@
 			"whenOpenFolderContinueReading": "Open directly in continue reading instead of the file list",
 			"useTheFirstImageAsPoster": "Use the first image as a poster (Only if there is none currently)",
 			"showFullPathLibrary": "Show full path when opening library comics",
-			"showFullPathOpened": "Show full path when opening a file or folder"
+			"showFullPathOpened": "Show full path when opening a file or folder",
+			"showLibraryPath": "Show library in header path"
 		},
 		"startupBehavior": {
 			"main": "Startup behavior",

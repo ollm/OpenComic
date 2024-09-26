@@ -1016,6 +1016,9 @@ function headerPath(path, mainPath, windowTitle = false)
 		path.push({name: metadataPathName({path: _path, name: files[i]}, true), path: _path, mainPath: mainPath});
 	}
 
+	if(config.showLibraryPath)
+		path.unshift({name: language.global.library, path: '', mainPath: ''});
+
 	let len = path.length;
 
 	if(len > 0)

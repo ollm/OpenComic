@@ -243,7 +243,8 @@
 			"whenOpenFolderContinueReading": "Öppna den senaste läsningen direkt i stället för fillistan",
 			"useTheFirstImageAsPoster": "Använd den första bilden som affisch (endast om det inte redan finns någon)",
 			"showFullPathLibrary": "Visa fullständig filväg när du öppnar serietidningar i biblioteket",
-			"showFullPathOpened": "Visa fullständig filväg när en fil eller mapp öppnas"
+			"showFullPathOpened": "Visa fullständig filväg när en fil eller mapp öppnas",
+			"showLibraryPath": ""
 		},
 		"startupBehavior": {
 			"main": "Startbeteende",

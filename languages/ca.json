@@ -243,7 +243,8 @@
 			"whenOpenFolderContinueReading": "Obrir directament en continuar llegint en lloc de la llista de fitxers",
 			"useTheFirstImageAsPoster": "Utilitzar la primera imatge com a pòster (Només si no n'hi ha cap actualment)",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
-			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta"
+			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta",
+			"showLibraryPath": "Mostra la biblioteca a la ruta de la capçalera"
 		},
 		"startupBehavior": {
 			"main": "Comportament d'inici",

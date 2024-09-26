@@ -243,7 +243,8 @@
 			"whenOpenFolderContinueReading": "Abrir directamente en continuar leyendo en lugar de la lista de archivos",
 			"useTheFirstImageAsPoster": "Utilizar la primera imagen como póster (Solo si no hay ninguno actualmente)",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los cómics de la biblioteca",
-			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta"
+			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta",
+			"showLibraryPath": "Mostrar la biblioteca en la ruta del encabezado"
 		},
 		"startupBehavior": {
 			"main": "Comportamiento de inicio",

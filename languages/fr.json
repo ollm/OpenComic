@@ -243,7 +243,8 @@
 			"whenOpenFolderContinueReading": "",
 			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "",
-			"showFullPathOpened": ""
+			"showFullPathOpened": "",
+			"showLibraryPath": ""
 		},
 		"startupBehavior": {
 			"main": "",
