@@ -12,7 +12,9 @@ async function has(files, findParent = false)
 
 	if(findParent)
 	{
-		const file = fileManager.file(findParent);
+		const lastCompressedFile = fileManager.lastCompressedFile(findParent);
+		const file = fileManager.file(p.dirname(lastCompressedFile || findParent));
+
 		let files = [];
 
 		try
