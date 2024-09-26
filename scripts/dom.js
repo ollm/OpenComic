@@ -1348,11 +1348,11 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 	{
 		mainPathR = addSepToEnd(p.dirname(mainPath));
 
-		let files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+		const files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
+		const index = files.length - 1;
 
-		let index = files.length - 1;
-
-		let len = indexPathControlA.length;
+		const len = indexPathControlA.length;
+		const prev = len > 0 ? indexPathControlA[len - 1] : false;
 
 		if(index >= 0)
 		{
@@ -1360,7 +1360,7 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 			{
 				indexPathControlA[len-1] = {file: files[index], path: path, mainPath: mainPath, isComic: isComic};
 			}
-			else
+			else if(!prev || prev.path !== path || prev.mainPath !== mainPath || prev.isComic !== isComic)
 			{
 				indexPathControlA.push({file: files[index], path: path, mainPath: mainPath, isComic: isComic});
 				if(!fromGoForwards) indexPathControlForwards = [];
