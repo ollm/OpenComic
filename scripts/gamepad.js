@@ -84,7 +84,7 @@ function gamepadLoop()
 			}
 
 			// Avoid controller dead zone
-			let deadZone = config.controllerDeadZone || 0.06;
+			let deadZone = config.controllerDeadZone;
 
 			let aAbs0 = Math.abs(controller.axes[0]), aAbs1 = Math.abs(controller.axes[1]), aAbs2 = Math.abs(controller.axes[2]), aAbs3 = Math.abs(controller.axes[3]);
 
