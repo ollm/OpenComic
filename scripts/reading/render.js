@@ -190,7 +190,7 @@ async function setEbookConfigChanged(ebookConfig)
 		ebook.updateConfig(ebookConfig);
 }
 
-async function focusIndex(index)
+async function focusIndex(index, doublePage = false)
 {
 	if(!file && !renderImages) return;
 
@@ -200,7 +200,7 @@ async function focusIndex(index)
 
 	currentIndex = index;
 
-	setRenderQueue(maxPrev, maxNext);
+	setRenderQueue(maxPrev, maxNext, false, false, (doublePage ? 2 : false));
 
 	sendToQueueST = setTimeout(function(){
 
@@ -221,11 +221,14 @@ function revokeAllObjectURL()
 	renderedObjectsURLCache = {};
 }
 
-async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false)
+async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false, prioritizeNext = false)
 {
 	//console.time('readingRender');
 
 	let _rendered = magnifyingGlass ? renderedMagnifyingGlass : rendered;
+
+	if(prioritizeNext)
+		prev = prev + prioritizeNext;
 
 	for(let i = 0, len = Math.max(next, prev); i < len; i++)
 	{
@@ -250,19 +253,24 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 		}
 
 		// Prev pages
-		if(i < prev && nextI != prevI && (!_rendered[prevI] || (scale !== false && _rendered[prevI] !== scale)) && imagesData[prevI])
+		if(!prioritizeNext || i > prioritizeNext)
 		{
-			if(renderEbook) // Render ebook instantly
-			{
-				render(prevI, scale, magnifyingGlass);
-			}
-			else
-			{
-				queue.add('readingRender', async function() {
+			if(prioritizeNext) prevI += prioritizeNext;
 
-					return render(prevI, scale, magnifyingGlass);
+			if(i < prev && nextI != prevI && (!_rendered[prevI] || (scale !== false && _rendered[prevI] !== scale)) && imagesData[prevI])
+			{
+				if(renderEbook) // Render ebook instantly
+				{
+					render(prevI, scale, magnifyingGlass);
+				}
+				else
+				{
+					queue.add('readingRender', async function() {
 
-				});
+						return render(prevI, scale, magnifyingGlass);
+
+					});
+				}
 			}
 		}
 	}

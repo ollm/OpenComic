@@ -1234,7 +1234,7 @@ function calculateVisibleItems(view, scrollTop = false)
 	if(rect.width == 0 || rect.height == 0)
 		rect = {width: window.innerWidth, height: window.innerHeight};
 
-	scrollTop = scrollTop || element.scrollTop;
+	scrollTop = scrollTop || 0; // element.scrollTop;
 
 	let start = 0;
 	let end = 100;

@@ -896,7 +896,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 
 	if(!fromPageRange)
 	{
-		render.focusIndex(index);
+		render.focusIndex(index, readingDoublePage());
 		filters.focusIndex(index);
 	}
 
