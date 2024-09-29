@@ -5309,7 +5309,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		disposeImages();
 		calculateView(true);
 
-		currentIndex = imagesData[currentIndex].position + 1;
+		currentIndex = imagesData[currentIndex] ? (imagesData[currentIndex].position + 1) : currentIndex;
 
 		var newIndex = currentIndex;
 

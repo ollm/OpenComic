@@ -30,7 +30,7 @@ function inputIsFocused()
 function clickTapZone(event, button)
 {
 	if(reading.abortClick(event))
-		return;
+		return false;
 
 	const contentRight = template._contentRight();
 	const rect = contentRight.getBoundingClientRect();
@@ -48,6 +48,8 @@ function clickTapZone(event, button)
 
 	if(shortcuts[currentlyRegistered].actions[action])
 		shortcuts[currentlyRegistered].actions[action].function();
+
+	return true;
 }
 
 function shortcutSnackbar(string, status = null)
@@ -742,8 +744,7 @@ function loadShortcuts()
 					name: '',
 					function: function(event){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
-						clickTapZone(event, 'leftClick');
-						return true;
+						return clickTapZone(event, 'leftClick');
 					},
 				},
 				rightClick: {
@@ -751,16 +752,14 @@ function loadShortcuts()
 					function: function(event){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
 						if(event.button == 2 && event.type != 'contextmenu') return false;
-						clickTapZone(event, 'rightClick');
-						return true;
+						return clickTapZone(event, 'rightClick');
 					},
 				},
 				middleClick: {
 					name: '',
 					function: function(event){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
-						clickTapZone(event, 'middleClick');
-						return true;
+						return clickTapZone(event, 'middleClick');
 					},
 				},
 			},
