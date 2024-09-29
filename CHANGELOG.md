@@ -22,7 +22,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to set an image from the folder as a poster [`0a952da`](https://github.com/ollm/OpenComic/commit/0a952da7d4d79de384a327695377dae9b5ad073b)
 - Multiple configurable tap zones from settings [`c7ee38f`](https://github.com/ollm/OpenComic/commit/c7ee38f2b85d85896bd197a8be4a68abd8bb300f)
 - More available shortcuts [`9201e1f`](https://github.com/ollm/OpenComic/commit/9201e1fcf06401e498d3996bb45be314905b0fde)
-- Custom gamepad death zone
+- Custom gamepad death zone [`1b364c9`](https://github.com/ollm/OpenComic/commit/1b364c93974e4ccb5f3011653d05e543fa171188)
+- Play background music also from parent folder [`6caf9f4`](https://github.com/ollm/OpenComic/commit/6caf9f4b27768fc3e604b4769afb3d7d97697846)
+- Show library, favorites, labels, etc in header path [`123cd2c`](https://github.com/ollm/OpenComic/commit/123cd2cfc15956a2c8bed4531c6448774a6d3c71)
+- Continue reading and Recently added section in library, favorites, labels, etc
 
 ##### 🐛 Bug Fixes
 
