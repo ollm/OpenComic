@@ -74,6 +74,7 @@
 	"comics": {
 		"continueReading": "Fortsätt läsa",
 		"continueReadingNotExists": "Filen som är sparad i \"Fortsätt läsa\" finns inte",
+		"recentlyAdded": "",
 		"emptyIndex": "Det finns inga serier i biblioteket",
 		"emptyFolder": "Det finns ingen kompatibel fil i denna mapp",
 		"emptyRecentlyOpened": "Inga nyligen öppnade filer",

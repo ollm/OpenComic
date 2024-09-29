@@ -16,6 +16,7 @@
 @import url('./gamepad.css');
 @import url('./title-bar.css');
 @import url('./file-info.css');
+@import url('./boxes.css');
 @import url('./colors/all.colors.css');
 
 /* Animations */
@@ -1653,6 +1654,107 @@ a:hover
 	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
 }
+
+/* Sise 100 */
+.content-view-module-100
+{
+	grid-template-columns: repeat(auto-fill, 116px);
+}
+
+@media(max-width: 540px)
+{
+	.content-view-module-100
+	{
+		justify-content: center;
+	}
+}
+
+.content-view-module-100 > div
+{
+	width: 100px;
+	height: 198px;
+	margin: 16px 0px 16px 16px;
+	margin: 8px -8px 8px 8px;
+	padding: 8px;
+	content-visibility: auto;
+	contain-intrinsic-size: 100px 198px;
+}
+
+.content-view-module-100 .v-folder
+{
+	width: 100px;
+	height: 150px;
+	border-radius: 12px;
+}
+
+.content-view-module-100 .v-folder:before
+{
+	border-radius: 12px;
+}
+
+.content-view-module-100 .v-folder:after
+{
+	border-radius: 14px;
+}
+
+
+.content-view-module-100 .v-img
+{
+	width: 100px;
+	height: 150px;
+}
+
+.content-view-module-100 .v-img img
+{
+	max-width: 100px;
+	max-height: 150px;
+	border-radius: 12px;
+}
+
+.content-view-module-100 .v-img picture:after
+{
+	border-radius: 14px;
+}
+
+
+.content-view-module-100 .v-img picture:before
+{
+	border-radius: 12px;
+}
+
+.content-view-module-100 .v-text
+{
+	height: 48px;
+	width: 100px;
+	line-height: 48px;
+}
+
+.content-view-module-100 .folder-images
+{
+	width: 41px;
+	height: 64px;
+	margin: 6px 0px 0px 6px;
+}
+
+.content-view-module-100 .folder-images > img
+{
+	max-width: 41px;
+	max-height: 64px;
+	border-radius: 6px;
+}
+
+.content-view-module-100 .folder-poster
+{
+	top: 2px;
+	left: 2px;
+	border-radius: 10px;
+}
+
+.content-view-module-100 .folder-poster > img
+{
+	border-radius: 10px;
+}
+
 
 /* Continue reading */
 

@@ -74,6 +74,7 @@
 	"comics": {
 		"continueReading": "Continue lendo",
 		"continueReadingNotExists": "",
+		"recentlyAdded": "",
 		"emptyIndex": "Não há quadrinhos nesta coleção.",
 		"emptyFolder": "Não há arquivo compatível nesta pasta.",
 		"emptyRecentlyOpened": "",

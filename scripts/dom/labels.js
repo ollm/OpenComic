@@ -447,6 +447,16 @@ function menuItemSelector(labels)
 	return '';
 }
 
+function getName(indexLabel, recentlyOpened)
+{
+	if(indexLabel)
+		return indexLabel.name;
+	else if(recentlyOpened)
+		return language.global.recentlyOpened;
+
+	return language.global.library;
+}
+
 module.exports = {
 	masterFolder: masterFolder,
 	setFavorite: setFavorite,
@@ -460,4 +470,5 @@ module.exports = {
 	deleteLabel: deleteLabel,
 	deleteFromSortAndView: deleteFromSortAndView,
 	menuItemSelector: menuItemSelector,
+	getName: getName,
 };

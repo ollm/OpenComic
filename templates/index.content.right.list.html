@@ -1,25 +1,5 @@
-<div class="continue-reading-list{{#if comicsReadingProgress}}{{#if comicsReadingProgressCurrentPath}} continue-reading-list-double{{/if}}{{/if}}">
-	{{#if comicsReadingProgress}}
-	<div class="continue-reading gamepad-item body-medium{{#unless comicsReadingProgress.exists}} continue-reading-not-exists{{/unless}}" onclick="{{#if comicsReadingProgress.exists}}{{#if comicsReadingProgress.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgress.chapterIndex}}, {{comicsReadingProgress.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');{{else}}dom.continueReadingError();{{/if}}">
-		<div>
-			<div>
-				<img class="sha-image-{{comicsReadingProgress.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}}">
-			</div>
-			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
-		</div>
-	</div>
-	{{/if}}
-	{{#if comicsReadingProgressCurrentPath}}
-	<div class="continue-reading gamepad-item body-medium{{#unless comicsReadingProgressCurrentPath.exists}} continue-reading-not-exists{{/unless}}" onclick="{{#if comicsReadingProgressCurrentPath.exists}}{{#if comicsReadingProgressCurrentPath.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgressCurrentPath.chapterIndex}}, {{comicsReadingProgressCurrentPath.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.mainPath}}');{{else}}dom.continueReadingError();{{/if}}">
-		<div>
-			<div>
-				<img class="sha-image-{{comicsReadingProgressCurrentPath.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.thumbnail}}">
-			</div>
-			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgressCurrentPath.pathText}}}</span>
-		</div>
-	</div>
-	{{/if}}
-</div>
+{{> index.content.right.boxes.html}}
+{{> index.content.right.continue.reading.html}}
 <div class="content-view-list">
 	{{#each comics}}
 	<div class="medium-list body-medium{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}{{onclick}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', {{#if @root.comicsIndex}}{{#unless fromRecentlyOpened}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">
@@ -27,36 +7,7 @@
 		<div class="medium-list-text">{{name}}</div>
 	</div>
 	{{else}}
-	<div class="content-empty{{#if serverLastError}} content-empty-server{{/if}}">
-		{{#if serverLastError}}
-
-			{{{serverLastError}}}
-			<br>
-			<div class="server-connection-error">
-				<div class="simple-button filled-tonal gamepad-item" onclick="dom.reloadIndex();">
-					<div class="touch-effect"><i class="icon-24 material-icon">refresh</i>{{language.global.retry}}</div>
-				</div>
-				{{#if serverHasCache}}
-				<div class="simple-button filled-tonal gamepad-item" onclick="fileManager.setServerInOfflineMode(true); dom.reloadIndex(true);">
-					<div class="touch-effect"><i class="icon-24 material-icon">cloud_off</i>{{language.servers.offlineMode}}</div>
-				</div>
-				{{/if}}
-			</div>
-
-		{{else}}
-			{{#compare page.key '==' 'recently-opened'}}
-				{{language.comics.emptyRecentlyOpened}}
-			{{else compare page.key '==' 'favorites'}}
-				{{language.comics.emptyFavorites}}
-			{{else compare page.key '==' 'label'}}
-				{{language.comics.emptyLabel}}
-			{{else compare page.key '==' 'index'}}
-				{{language.comics.emptyIndex}}
-			{{else}}
-				{{language.comics.emptyFolder}}
-			{{/compare}}
-		{{/if}}
-	</div>
+		{{> index.content.right.else.html}}
 	{{/each}}
 	<br>
 </div>

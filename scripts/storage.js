@@ -102,7 +102,7 @@ var storageDefault = {
 		},
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
-		showLibraryPath: false,
+		showLibraryPath: true,
 		...readingPagesConfig,
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,

@@ -1,0 +1,20 @@
+{{#if boxes}}
+
+<div class="boxes">
+	{{#each boxes}}
+
+		<div class="box">
+			<div class="box-title body-medium">{{title}}</div>
+			<div class="box-content">
+				<div class="content-view-module content-view-module-100">
+					{{#each comics}}
+						{{> index.content.right.module.item.html}}
+					{{/each}}
+				</div>
+			</div>
+		</div>
+
+	{{/each}}
+</div>
+
+{{/if}}

@@ -74,6 +74,7 @@
 	"comics": {
 		"continueReading": "Continue reading",
 		"continueReadingNotExists": "The file saved in continue reading does not currently exist",
+		"recentlyAdded": "Recently added",
 		"emptyIndex": "There are no comics in the library",
 		"emptyFolder": "There is no compatible file in this folder",
 		"emptyRecentlyOpened": "No recently opened files",
@@ -244,7 +245,7 @@
 			"useTheFirstImageAsPoster": "Use the first image as a poster (Only if there is none currently)",
 			"showFullPathLibrary": "Show full path when opening library comics",
 			"showFullPathOpened": "Show full path when opening a file or folder",
-			"showLibraryPath": "Show library in header path"
+			"showLibraryPath": "Show library, favorites, labesl, etc in header path"
 		},
 		"startupBehavior": {
 			"main": "Startup behavior",

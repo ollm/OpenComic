@@ -1,0 +1,30 @@
+<div class="content-empty{{#if serverLastError}} content-empty-server{{/if}}">
+	{{#if serverLastError}}
+
+		{{{serverLastError}}}
+		<br>
+		<div class="server-connection-error">
+			<div class="simple-button filled-tonal gamepad-item" onclick="dom.reloadIndex();">
+				<div class="touch-effect"><i class="icon-24 material-icon">refresh</i>{{language.global.retry}}</div>
+			</div>
+			{{#if serverHasCache}}
+			<div class="simple-button filled-tonal gamepad-item" onclick="fileManager.setServerInOfflineMode(true); dom.reloadIndex(true);">
+				<div class="touch-effect"><i class="icon-24 material-icon">cloud_off</i>{{language.servers.offlineMode}}</div>
+			</div>
+			{{/if}}
+		</div>
+
+	{{else}}
+		{{#compare page.key '==' 'recently-opened'}}
+			{{language.comics.emptyRecentlyOpened}}
+		{{else compare page.key '==' 'favorites'}}
+			{{language.comics.emptyFavorites}}
+		{{else compare page.key '==' 'label'}}
+			{{language.comics.emptyLabel}}
+		{{else compare page.key '==' 'index'}}
+			{{language.comics.emptyIndex}}
+		{{else}}
+			{{language.comics.emptyFolder}}
+		{{/compare}}
+	{{/if}}
+</div>

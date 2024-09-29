@@ -74,6 +74,7 @@
 	"comics": {
 		"continueReading": "Continuar llegint",
 		"continueReadingNotExists": "El fitxer desat a continuar llegint no existeix actualment",
+		"recentlyAdded": "Afegit recentment",
 		"emptyIndex": "No hi ha cap còmic en la biblioteca",
 		"emptyFolder": "No hi ha cap arxiu compatible en aquesta carpeta",
 		"emptyRecentlyOpened": "No hi ha fitxers oberts recentment",
@@ -244,7 +245,7 @@
 			"useTheFirstImageAsPoster": "Utilitzar la primera imatge com a pòster (Només si no n'hi ha cap actualment)",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta",
-			"showLibraryPath": "Mostra la biblioteca a la ruta de la capçalera"
+			"showLibraryPath": "Mostra la biblioteca, favorits, etiquetes, etc a la ruta de la capçalera"
 		},
 		"startupBehavior": {
 			"main": "Comportament d'inici",

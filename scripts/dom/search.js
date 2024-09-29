@@ -39,7 +39,7 @@ async function search(text)
 	if(!text)
 	{
 		if(filterCurrentPage)
-			dom.queryAll('.content-view-module > div, .content-view-list > div').css({display: 'block'});
+			dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 
 		showRecentlySearched();
 
@@ -119,17 +119,19 @@ async function search(text)
 		}
 
 		let contentRight = template._contentRight();
-		let elements = contentRight.querySelectorAll('.content-view-module > div, .content-view-list > div');
+		let elements = contentRight.querySelectorAll('div:not(.box-content) > .content-view-module > div, div:not(.box-content) > .content-view-list > div');
 
 		for(let i = 0, len = elements.length; i < len; i++)
 		{
 			let element = elements[i];
 
 			if(indexs[i])
-				element.style.display = 'block';
+				element.style.display = '';
 			else
 				element.style.display = 'none';
 		}
+
+		dom.queryAll('.boxes').css({display: 'none'});
 
 		setResults([]);
 	}
@@ -223,7 +225,7 @@ function searchClick(event)
 			let gamepadItem = event.target.closest('.gamepad-item');
 
 			if((!gamepadItem || !gamepadItem.closest('.content-right')))
-				dom.queryAll('.content-view-module > div, .content-view-list > div').css({display: 'block'});
+				dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 			else
 				saveRecentlySearched();
 		}
@@ -553,7 +555,7 @@ async function hide(fromSearchClick = false)
 	app.eventOff(window, 'click', searchClick, {capture: true});
 
 	if(filterCurrentPage && !fromSearchClick)
-		dom.queryAll('.content-view-module > div, .content-view-list > div').css({display: 'block'});
+		dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 
 	hideST = setTimeout(showRecentlySearched, 500);
 

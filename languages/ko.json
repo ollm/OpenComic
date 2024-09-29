@@ -74,6 +74,7 @@
 	"comics": {
 		"continueReading": "",
 		"continueReadingNotExists": "",
+		"recentlyAdded": "",
 		"emptyIndex": "",
 		"emptyFolder": "",
 		"emptyRecentlyOpened": "",

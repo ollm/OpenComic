@@ -1,0 +1,22 @@
+<div class="continue-reading-list{{#if comicsReadingProgress}}{{#if comicsReadingProgressCurrentPath}} continue-reading-list-double{{/if}}{{/if}}">
+	{{#if comicsReadingProgress}}
+	<div class="continue-reading gamepad-item body-medium{{#unless comicsReadingProgress.exists}} continue-reading-not-exists{{/unless}}" onclick="{{#if comicsReadingProgress.exists}}{{#if comicsReadingProgress.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgress.chapterIndex}}, {{comicsReadingProgress.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.mainPath}}');{{else}}dom.continueReadingError();{{/if}}">
+		<div>
+			<div>
+				<img class="sha-image-{{comicsReadingProgress.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgress.thumbnail}}">
+			</div>
+			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgress.pathText}}}</span>
+		</div>
+	</div>
+	{{/if}}
+	{{#if comicsReadingProgressCurrentPath}}
+	<div class="continue-reading gamepad-item body-medium{{#unless comicsReadingProgressCurrentPath.exists}} continue-reading-not-exists{{/unless}}" onclick="{{#if comicsReadingProgressCurrentPath.exists}}{{#if comicsReadingProgressCurrentPath.ebook}}reading.setNextOpenChapterProgress({{comicsReadingProgressCurrentPath.chapterIndex}}, {{comicsReadingProgressCurrentPath.chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.mainPath}}');{{else}}dom.continueReadingError();{{/if}}">
+		<div>
+			<div>
+				<img class="sha-image-{{comicsReadingProgressCurrentPath.sha}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' comicsReadingProgressCurrentPath.thumbnail}}">
+			</div>
+			<span>{{language.comics.continueReading}}:&nbsp&nbsp&nbsp{{{comicsReadingProgressCurrentPath.pathText}}}</span>
+		</div>
+	</div>
+	{{/if}}
+</div>

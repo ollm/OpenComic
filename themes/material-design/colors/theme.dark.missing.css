@@ -14,4 +14,6 @@
 	--md-sys-color-on-surface-variant-5: var(--md-ref-palette-on-surface-variant-5-dark);
 
 	--md-sys-color-background-1: var(--md-ref-palette-background-1-dark);
+	--md-sys-color-force-background: var(--md-sys-color-background-dark);
+	--md-sys-color-force-surface: var(--md-sys-color-surface-dark);
 }

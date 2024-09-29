@@ -14,4 +14,6 @@
 	--md-sys-color-on-surface-variant-5: var(--md-ref-palette-on-surface-variant-5-light);
 
 	--md-sys-color-background-1: var(--md-ref-palette-background-1-light);
+	--md-sys-color-force-background: var(--md-sys-color-background-light);
+	--md-sys-color-force-surface: var(--md-sys-color-surface-light);
 }

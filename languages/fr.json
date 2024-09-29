@@ -74,6 +74,7 @@
 	"comics": {
 		"continueReading": "Continuer à lire",
 		"continueReadingNotExists": "",
+		"recentlyAdded": "",
 		"emptyIndex": "Il n'y a aucun comics dans cette collection.",
 		"emptyFolder": "Il n'y a aucun fichier compatible dans ce dossier.",
 		"emptyRecentlyOpened": "",

@@ -416,7 +416,7 @@ async function startApp()
 
 	loadContextMenu();
 
-	handlebarsContext.indexHeaderTitle = language.global.comics;
+	handlebarsContext.indexHeaderTitle = language.global.library;
 
 	template.loadContentRight('index.content.right.empty.html', false);
 	template.loadHeader('index.header.html', false);

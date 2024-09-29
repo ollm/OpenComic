@@ -2,7 +2,8 @@ const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	domManager = require(p.join(appDir, 'scripts/dom/dom.js')),
 	labels = require(p.join(appDir, 'scripts/dom/labels.js')),
 	fileInfo = require(p.join(appDir, 'scripts/dom/file-info.js')),
-	search = require(p.join(appDir, 'scripts/dom/search.js'));
+	search = require(p.join(appDir, 'scripts/dom/search.js')),
+	boxes = require(p.join(appDir, 'scripts/dom/boxes.js'));
 
 /*Page - Index*/
 
@@ -239,6 +240,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 						mainPath: mainPath,
 						poster: images.poster,
 						images: images.images,
+						addToQueue: images.addToQueue,
 						folder: true,
 						compressed: file.compressed,
 					});
@@ -475,7 +477,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 							comics.push({
 								name: metadataPathName(folder),
 								path: folder.path,
-								added: Math.round(fs.statSync(folder.path).mtimeMs / 1000),
+								added: Math.round(fs.statSync(folder.path).ctimeMs / 1000),
 								folder: true,
 								compressed: folder.compressed,
 								fromMasterFolder: true,
@@ -523,7 +525,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 							comics.push({
 								name: metadataPathName(folder),
 								path: folder.path,
-								added: folder.mtime,
+								added: Math.round(folder.mtime / 1000),
 								folder: true,
 								compressed: folder.compressed,
 								fromMasterFolder: true,
@@ -621,12 +623,17 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[i].sha = sha1(comics[i].path);
 				comics[i].poster = images.poster;
 				comics[i].images = images.images;
+				comics[i].addToQueue = images.addToQueue;
 				comics[i].mainPath = comics[i].path;
 			}
 		}
 
 		// Avoid continue if another loadIndexPage has been run
 		if(contentRightIndex != template.contentRightIndex()) return;
+
+		dom.boxes.reset();
+		if(sort != 'last-reading') await dom.boxes.continueReading(comics);
+		if(sort != 'last-add') await dom.boxes.recentlyAdded(comics);
 
 		handlebarsContext.comics = comics;
 		handlebarsContext.comicsIndex = true;
@@ -662,6 +669,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		generateAppMenu();
 
+		dom.boxes.reset();
 		handlebarsContext.comics = [];
 		handlebarsContext.comicsIndex = false;
 		handlebarsContext.comicsDeep2 = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep).length >= 2 ? true : false;
@@ -828,7 +836,7 @@ function loadIndexContentLeft(animation)
 	for(let i = 0, len = masterFolders.length; i < len; i++)
 	{
 		_masterFolders.push({
-			id: 'masterFolder-'+i,
+			id: 'master-folder-'+i,
 			key: i,
 			name: p.basename(masterFolders[i]),
 			path: masterFolders[i],
@@ -905,13 +913,13 @@ function loadIndexContentLeft(animation)
 
 function loadIndexHeader(title = false, animation = true)
 {
-	handlebarsContext.indexHeaderTitle = title || language.global.comics;
+	handlebarsContext.indexHeaderTitle = title || language.global.library;
 	template.loadHeader('index.header.html', animation);
 }
 
 function indexHeader(title = false)
 {
-	handlebarsContext.indexHeaderTitle = title || language.global.comics;
+	handlebarsContext.indexHeaderTitle = title || language.global.library;
 	return template.load('index.header.html');
 }
 
@@ -1016,8 +1024,8 @@ function headerPath(path, mainPath, windowTitle = false)
 		path.push({name: metadataPathName({path: _path, name: files[i]}, true), path: _path, mainPath: mainPath});
 	}
 
-	if(config.showLibraryPath)
-		path.unshift({name: language.global.library, path: '', mainPath: ''});
+	if(config.showLibraryPath && (isFromLibrary || isFromIndexLabel || isFromRecentlyOpened))
+		path.unshift({name: labels.getName(isFromIndexLabel, isFromRecentlyOpened), path: '', mainPath: ''});
 
 	let len = path.length;
 
@@ -1193,7 +1201,7 @@ async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
 		{
 			if(error.message && /notCacheOnly/.test(error.message))
 			{
-				addToQueue = true;
+				addToQueue = 1;
 			}
 			else
 			{
@@ -1204,7 +1212,7 @@ async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
 	}
 	else
 	{
-		addToQueue = true;
+		addToQueue = 2;
 	}
 
 	if(addToQueue)
@@ -1223,7 +1231,7 @@ async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
 		}, path, folderSha);
 	}
 
-	return {poster: poster, images: images};
+	return {poster: poster, images: images, addToQueue: addToQueue};
 }
 
 function calculateVisibleItems(view, scrollTop = false)
@@ -1233,6 +1241,8 @@ function calculateVisibleItems(view, scrollTop = false)
 
 	if(rect.width == 0 || rect.height == 0)
 		rect = {width: window.innerWidth, height: window.innerHeight};
+
+	console.log(scrollTop);
 
 	scrollTop = scrollTop || 0; // element.scrollTop;
 
@@ -1297,6 +1307,17 @@ function indexPathControlGoBack()
 			return indexPathControlGoBack();
 		}
 	}
+}
+
+function goStartPath()
+{
+	if(isFromIndexLabel && !isFromRecentlyOpened)
+		indexLabel = isFromIndexLabel;
+
+	if(isFromRecentlyOpened)
+		recentlyOpened.load(true);
+	else
+		loadIndexPage(true, false);
 }
 
 function indexPathControlGoForwards()
@@ -2418,6 +2439,7 @@ module.exports = {
 	indexPathControlA: function(){return indexPathControlA},
 	indexPathControlGoBack: indexPathControlGoBack,
 	indexPathControlGoForwards: indexPathControlGoForwards,
+	goStartPath: goStartPath,
 	selectElement: selectElement,
 	openComic: openComic,
 	nextComic: function(){return skipNextComic},
@@ -2449,6 +2471,7 @@ module.exports = {
 	search: search,
 	labels: labels,
 	fileInfo: fileInfo,
+	boxes: boxes,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,
