@@ -1,6 +1,13 @@
 
-async function box(comics, title, order, orderKey = false, orderKey2 = false)
+async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 {
+	let comics = [];
+
+	for(let i = 0, len = _comics.length; i < len; i++)
+	{
+		comics.push(_comics[i]);
+	}
+
 	comics.sort(function(a, b){
 		return -(dom.orderBy(a, b, order, orderKey, orderKey2));
 	});
