@@ -27,8 +27,6 @@ async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 			comics[i].poster = images.poster;
 			comics[i].images = images.images;
 		}
-
-		console.log(comics[i].added);
 	}
 
 	const box = {
@@ -36,7 +34,7 @@ async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 		comics: comics,
 	};
 
-	if(len)
+	if(len > 1)
 		handlebarsContext.boxes.push(box);
 }
 
