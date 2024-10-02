@@ -193,7 +193,9 @@
 		},
 		"music": {
 			"main": "音乐",
-			"volume": "卷"
+			"volume": "卷",
+			"pageSoundEffect": "",
+			"adaptToAnimationSpeed": ""
 		},
 		"moreOptions": {
 			"main": "更多选项",

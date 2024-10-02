@@ -104,6 +104,14 @@ Available builds types:
 
 Now the build files are located in `dist` folder.
 
+## Translation
+
+If you want to see OpenComic in your language, please help us to [Translate](https://github.com/ollm/OpenComic/blob/master/).
+
+<a href="https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md">
+	<img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated.svg" />
+</a>
+
 ## Contributors
 
 <a href="https://github.com/ollm/OpenComic/graphs/contributors">

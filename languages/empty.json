@@ -1,9 +1,9 @@
 {
 	"appName": "OpenComic",
 	"global": {
-		"and": "e",
-		"comics": "Quadrinhos",
-		"collection": "Coleção",
+		"and": "",
+		"comics": "",
+		"collection": "",
 		"library": "",
 		"recents": "",
 		"recentlyOpened": "",
@@ -12,20 +12,20 @@
 		"editLabels": "",
 		"images": "",
 		"sort": {
-			"main": "Classificar",
-			"name": "Nome",
-			"number": "Número",
-			"nameNumber": "Nome / Número",
-			"lastAdd": "Último adicionado",
-			"lastReading": "Última leitura",
+			"main": "",
+			"name": "",
+			"number": "",
+			"nameNumber": "",
+			"lastAdd": "",
+			"lastReading": "",
 			"lastOpened": "",
-			"foldersFirst": "Pastas primeiro",
-			"invert": "Inverter"
+			"foldersFirst": "",
+			"invert": ""
 		},
 		"view": {
-			"main": "Visualização",
-			"module": "Grade",
-			"list": "Lista"
+			"main": "",
+			"module": "",
+			"list": ""
 		},
 		"contextMenu": {
 			"undo": "",
@@ -34,7 +34,7 @@
 			"copy": "",
 			"paste": "",
 			"selectAll": "",
-			"remove": "Remover",
+			"remove": "",
 			"moveToTrash": "",
 			"deletePermanently": "",
 			"deletePermanentlyConfirm": "",
@@ -52,31 +52,31 @@
 			"posterSetSuccessfully": "",
 			"closeApp": ""
 		},
-		"back": "Voltar",
+		"back": "",
 		"goBack": "",
 		"goForwards": "",
 		"open": "",
-		"add": "Adicionar",
+		"add": "",
 		"addToLibrary": "",
 		"unsupportedFile": "",
 		"reload": "",
 		"retry": "",
 		"search": "",
 		"filterCurrentPage": "",
-		"language": "Linguagem",
+		"language": "",
 		"settings": "",
-		"theme": "Tema",
+		"theme": "",
 		"days": "",
 		"pageAndNumber": "",
 		"valueCannotBeEmpty": "",
-		"nightMode": "Modo Noturno"
+		"nightMode": ""
 	},
 	"comics": {
-		"continueReading": "Continue lendo",
+		"continueReading": "",
 		"continueReadingNotExists": "",
 		"recentlyAdded": "",
-		"emptyIndex": "Não há quadrinhos nesta coleção.",
-		"emptyFolder": "Não há arquivo compatível nesta pasta.",
+		"emptyIndex": "",
+		"emptyFolder": "",
 		"emptyRecentlyOpened": "",
 		"emptyFavorites": "",
 		"emptyLabel": ""
@@ -90,34 +90,34 @@
 	},
 	"reading": {
 		"prevChapter": "",
-		"firstPage": "Primeira página",
-		"previous": "Anterior",
-		"next": "Próximo",
-		"lastPage": "Última página",
+		"firstPage": "",
+		"previous": "",
+		"next": "",
+		"lastPage": "",
 		"nextChapter": "",
 		"pages": {
-			"main": "Páginas",
+			"main": "",
 			"pageLayout": "",
 			"ebookLayout": "",
 			"colorFilters": "",
-			"slide": "Deslizar",
-			"scroll": "Rolar para baixo",
+			"slide": "",
+			"scroll": "",
 			"roughPageTurn": "",
 			"smoothPageTurn": "",
 			"fade": "",
-			"adjustToWidth": "Ajustar a largura",
+			"adjustToWidth": "",
 			"notEnlargeMoreThanOriginalSize": "",
 			"rotateHorizontals": "",
-			"margin": "Margem",
+			"margin": "",
 			"marginHorizontal": "",
 			"marginVertical": "",
 			"differentMarginInHorizontals": "",
-			"doublePage": "Página dupla",
-			"doNotApplyToHorizontals": "Não aplicar a horizontais",
+			"doublePage": "",
+			"doNotApplyToHorizontals": "",
 			"blankPage": "",
-			"readingDelaySkip": "Atraso na mudança de histórias em quadrinhos",
-			"animationSpeed": "Velocidade da animação",
-			"readingManga": "Ler mangá (invertida)",
+			"readingDelaySkip": "",
+			"animationSpeed": "",
+			"readingManga": "",
 			"readingWebtoon": "",
 			"readingGlobal": "",
 			"readingConfigNew": "",
@@ -171,12 +171,12 @@
 			"background": ""
 		},
 		"magnifyingGlass": {
-			"main": "Lupa",
-			"activate": "Ativar",
-			"zoom": "Zoom",
-			"size": "Tamanho",
-			"ratio": "Proporção",
-			"radius": "Raio"
+			"main": "",
+			"activate": "",
+			"zoom": "",
+			"size": "",
+			"ratio": "",
+			"radius": ""
 		},
 		"tracking": {
 			"main": "",
@@ -202,11 +202,11 @@
 			"hideBarHeader": "",
 			"hideContentLeft": ""
 		},
-		"viewBookmarks": "Visualizar favoritos",
-		"addBookmark": "Adicionar a favorito",
-		"removeBookmark": "Remover favorito",
-		"emptyBookmarks": "Sem favoritos",
-		"currentReading": "Leitura atual"
+		"viewBookmarks": "",
+		"addBookmark": "",
+		"removeBookmark": "",
+		"emptyBookmarks": "",
+		"currentReading": ""
 	},
 	"settings": {
 		"general": "",
@@ -336,37 +336,37 @@
 	},
 	"menu": {
 		"file": {
-			"main": "Arquivo",
-			"openFile": "Abrir arquivo",
-			"openFolder": "Abrir pasta",
-			"addFile": "Adicionar arquivo",
-			"addFolder": "Adicionar pasta",
-			"quit": "Sair"
+			"main": "",
+			"openFile": "",
+			"openFolder": "",
+			"addFile": "",
+			"addFolder": "",
+			"quit": ""
 		},
 		"view": {
-			"main": "Visualização",
-			"resetZoom": "Redefinir zoom",
+			"main": "",
+			"resetZoom": "",
 			"originalSize": "",
-			"zoomIn": "Mais zoom",
-			"zoomOut": "Reduzir zoom",
+			"zoomIn": "",
+			"zoomOut": "",
 			"zoomUp": "",
 			"zoomDown": "",
 			"zoomLeft": "",
 			"zoomRight": "",
-			"toggleFullScreen": "Tela cheia"
+			"toggleFullScreen": ""
 		},
 		"goto": {
-			"main": "Ir para"
+			"main": ""
 		},
 		"debug": {
-			"main": "Depuração",
-			"reload": "Recarregar",
-			"forceReload": "Forçar recarregar",
-			"toggleDevTools": "Ativar Ferramentas de Desenvolvimento"
+			"main": "",
+			"reload": "",
+			"forceReload": "",
+			"toggleDevTools": ""
 		},
 		"help": {
-			"main": "Ajuda",
-			"about": "Sobre o OpenComic",
+			"main": "",
+			"about": "",
 			"funding": "",
 			"bug": ""
 		}
@@ -488,19 +488,19 @@
 	},
 	"error": {
 		"uncompress": {
-			"title": "Erro ao descompactar",
-			"message": "Ocorreu um erro ao tentar descompactar o arquivo."
+			"title": "",
+			"message": ""
 		}
 	},
 	"about": {
-		"version": "Versão",
-		"translatedBy": "Traduzido para o Português Brasileiro por",
-		"contributedBy": "Contribuído por",
+		"version": "",
+		"translatedBy": "",
+		"contributedBy": "",
 		"translators": [
 			{
-				"name": "LoadSec",
-				"email": "loadsec@ggames.com.br",
-				"url": "https://ggames.com.br"
+				"name": "",
+				"email": "",
+				"url": ""
 			}
 		]
 	}

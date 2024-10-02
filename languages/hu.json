@@ -193,7 +193,9 @@
 		},
 		"music": {
 			"main": "",
-			"volume": ""
+			"volume": "",
+			"pageSoundEffect": "",
+			"adaptToAnimationSpeed": ""
 		},
 		"moreOptions": {
 			"main": "",

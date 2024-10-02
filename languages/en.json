@@ -193,7 +193,9 @@
 		},
 		"music": {
 			"main": "Music",
-			"volume": "Volume"
+			"volume": "Volume",
+			"pageSoundEffect": "Page turn sound effect",
+			"adaptToAnimationSpeed": "Adapt to the speed of animation"
 		},
 		"moreOptions": {
 			"main": "More options",
@@ -245,7 +247,7 @@
 			"useTheFirstImageAsPoster": "Use the first image as a poster (Only if there is none currently)",
 			"showFullPathLibrary": "Show full path when opening library comics",
 			"showFullPathOpened": "Show full path when opening a file or folder",
-			"showLibraryPath": "Show library, favorites, labesl, etc in header path"
+			"showLibraryPath": "Show library, favorites, labels, etc in header path"
 		},
 		"startupBehavior": {
 			"main": "Startup behavior",
