@@ -23,6 +23,7 @@ You can send a pull request with the new translated file, it is not necessary th
 ## Translation Status
 
 <!-- translation --><!-- translation -->
+OpenComic has translations into 17 languages.
 
 ### Català
 

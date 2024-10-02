@@ -119,7 +119,17 @@ function generateMD()
 {
 	const languagesList = JSON.parse(fs.readFileSync('./languages/languagesList.json', 'utf8'));
 
-	let markdown = '\n\n';
+	let num = 0;
+
+	for(let key in languagesPercentage)
+	{
+		if(key !== 'empty.json')
+		{
+			num++;
+		}
+	}
+
+	let markdown = '\n\OpenComic has translations into '+num+' languages.\n\n';
 
 	for(let key in languagesPercentage)
 	{
