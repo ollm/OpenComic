@@ -1,13 +1,13 @@
 <div align="center" >
-  <img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/logo-mac.svg" width="128px" height="128px"/>
+	<img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/icon-border-transparent.png" width="128px" height="128px"/>
 </div>
 
 <h1 align="center">
-  OpenComic
+	OpenComic
 </h1>
 
 <h3 align="center">
-  Comic and Manga reader
+	Comic and Manga reader
 </h3>
 
 <div align="center">
@@ -104,6 +104,38 @@ Available builds types:
 
 Now the build files are located in `dist` folder.
 
+## Contributors
+
+<a href="https://github.com/ollm/OpenComic/graphs/contributors">
+	<img src="https://opencollective.com/opencomic/contributors.svg?width=830&button=false&avatarHeight=42" />
+</a>
+
+<!--
+
+## Backers
+
+<a href="https://opencollective.com/opencomic#support">
+	<img src="https://opencollective.com/opencomic/tiers/backers.svg?width=830"></a>
+</a>
+
+## Sponsors
+
+<a href="https://opencollective.com/opencomic#support">
+	<img src="https://opencollective.com/opencomic/tiers/sponsors.svg?width=830"></a>
+</a>
+
+## Mega Sponsors
+
+<a href="https://opencollective.com/opencomic#support">
+	<img src="https://opencollective.com/opencomic/tiers/sponsor.svg?width=830"></a>
+</a>
+
+-->
+
+<!-- ## GitHub Sponsors -->
+
+<!-- sponsors --><!-- sponsors -->
+
 ## Pepper & Carrot
 
 This application contains as example the webcomic [Pepper&Carrot](https://www.peppercarrot.com) by David Revoy
@@ -112,7 +144,3 @@ licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](
 Based on the universe of Hereva created by David Revoy with contributions by Craig Maloney.
 Corrections by Willem Sonke, Moini, Hali, CGand and Alex Gryson.
 Translated into Spanish by TheFaico
-
-## GitHub Sponsors
-
-<!-- sponsors --><!-- sponsors -->
