@@ -24,9 +24,10 @@
 	},
 	"scripts": {
 		"start": "npm run prebuild && electron scripts/main.js",
+		"test": "node scripts/test.js",
 		"rebuild": "electron-rebuild -f -w sharp",
 		"rebuild2": "electron-builder node-gyp-rebuild",
-		"prebuild": "node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
+		"prebuild": "npm run test && node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
 		"prebuild-store": "node scripts/build-store.js",
 		"watch": "nodemon --ignore 'dist/' --ignore scripts/builded --watch * --exec npm run start",
 		"build": "npm run prebuild && electron-builder build",
