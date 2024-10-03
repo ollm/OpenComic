@@ -1,0 +1,12 @@
+<div>
+	{{#each soundGroups}}
+		<div class="menu-simple-text-small menu-simple-text-grey">
+			<span>{{name}}</span>
+		</div>
+		{{#each sounds}}
+			<div class="menu-sounds--{{key}} menu-simple-element menu-simple-element-padding-left gamepad-item{{#if select}} s{{/if}}" onclick="reading.music.soundEffect.change('{{soundEffect}}', 'sound', '{{key}}', '{{name}}'); reading.music.soundEffect.page(true); /* events.hideSelect(true);*/ events.select(this);">
+				<span>{{name}}</span>
+			</div>
+		{{/each}}
+	{{/each}}
+</div>

@@ -33,6 +33,11 @@
 	width: calc(100% - 12px);
 }
 
+.box-content .content-view-module
+{
+	padding-right: 10px;
+}
+
 .box-content .content-view-module .v-folder
 {
 	background-color: var(--md-sys-color-force-surface);

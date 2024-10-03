@@ -5,7 +5,7 @@
 			<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(false, false, document.querySelector('#reading-pages .tabs > div > div.active').dataset.name); reading.changePagesView(0);">arrow_back</i>
 			<span class="menu-simple-element-icon2">{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
 			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
-			{{#compare _config.key '!==' 0}}<i class="material-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
+			{{#compare _config.key '!==' 0}}<i class="material-icon menu-simple-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
 		</div>
 
 	{{else}}
@@ -300,6 +300,15 @@
 					<div></div><i class="icon-24 material-icon" onclick="">transition_fade</i> {{language.reading.pages.fade}}
 				</div>
 
+			</div>
+
+			<div class="menu-simple-text reading-page-sound-effect gamepad-item">
+				{{language.reading.music.pageSoundEffect}}
+				<div class="switch{{#if _config.readingSoundEffect.page.play}} a{{/if}}" on="reading.music.soundEffect.change('page', 'play', true)" off="reading.music.soundEffect.change('page', 'play', false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+				<i class="material-icon menu-simple-icon" onclick="reading.music.soundEffect.pageDialog()">settings</i>
 			</div>
 
 			<div class="menu-simple-separator-min"></div>

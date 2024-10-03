@@ -1,4 +1,4 @@
-var changes = 85; // Update this if readingPagesConfig is updated
+var changes = 86; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -34,6 +34,14 @@ var readingPagesConfig = {
 	readingBlankPage: false,
 	readingManga: false,
 	readingWebtoon: false,
+	readingSoundEffect: {
+		page: {
+			play: false,
+			volume: 1.0,
+			adaptive: true,
+			sound: 'page-1',
+		},
+	},
 	readingFilters: {
 		brightness: 100,
 		saturation: 100,

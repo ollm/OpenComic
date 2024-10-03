@@ -195,7 +195,13 @@
 			"main": "เพลง",
 			"volume": "ระดับเสียง",
 			"pageSoundEffect": "",
-			"adaptToAnimationSpeed": ""
+			"adaptToAnimationSpeed": "",
+			"soundEffect": {
+				"pageTurn": "",
+				"pageTurnAndNumber": "",
+				"otherSounds": "",
+				"otherSoundsAndNumber": ""
+			}
 		},
 		"moreOptions": {
 			"main": "ตัวเลือกเพิ่มเติม",

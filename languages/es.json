@@ -195,7 +195,13 @@
 			"main": "Música",
 			"volume": "Volumen",
 			"pageSoundEffect": "Efecto de sonido al pasar la página",
-			"adaptToAnimationSpeed": "Adaptarse a la velocidad de la animación"
+			"adaptToAnimationSpeed": "Adaptarse a la velocidad de la animación",
+			"soundEffect": {
+				"pageTurn": "Pasar página",
+				"pageTurnAndNumber": "Pasar página $1",
+				"otherSounds": "Otros sonidos",
+				"otherSoundsAndNumber": "Otros sonidos $1"
+			}
 		},
 		"moreOptions": {
 			"main": "Más opciones",

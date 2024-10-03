@@ -195,7 +195,13 @@
 			"main": "Musik",
 			"volume": "Volym",
 			"pageSoundEffect": "",
-			"adaptToAnimationSpeed": ""
+			"adaptToAnimationSpeed": "",
+			"soundEffect": {
+				"pageTurn": "",
+				"pageTurnAndNumber": "",
+				"otherSounds": "",
+				"otherSoundsAndNumber": ""
+			}
 		},
 		"moreOptions": {
 			"main": "Fler alternativ",

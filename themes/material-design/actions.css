@@ -564,7 +564,7 @@
 .menu-simple-element i
 {
 	float: right;
-	padding: 8px 0px 8px 8px;	
+	padding: 8px 0px 8px 8px;
 }
 
 .menu-simple-element i.menu-simple-icon
@@ -785,6 +785,13 @@
 	line-height: 52px;
 	transition: background-color 0.2s, opacity 0.2s;
 	position: relative;
+}
+
+.menu-simple-text > i
+{
+	float: right;
+	padding: 14px;
+	cursor: pointer;
 }
 
 .menu-simple-text > span
@@ -1157,7 +1164,7 @@
 	padding: 0px 0px;
 	color: var(--md-sys-color-on-surface);
 	font-weight: 500;
-	padding: 24px 10px 16px 24px;
+	padding: 24px 12px 16px 24px;
 }
 
 .dialog-text
@@ -1167,12 +1174,12 @@
 	padding: 0px 0px;
 	color: var(--md-sys-color-on-surface);
 	font-weight: 500;
-	padding: 0px 10px 0px 24px;
+	padding: 0px 12px 0px 24px;
 }
 
 .dialog-not-header
 {
-	padding: 20px 10px 20px 24px;
+	padding: 20px 12px 20px 24px;
 	height: 100%;
 	box-sizing: border-box;
 }
@@ -1180,7 +1187,7 @@
 .dialog-buttons
 {
 	float: right;
-	padding: 24px 10px 24px 24px;
+	padding: 24px 12px 24px 24px;
 }
 
 .dialog-buttons .simple-button
@@ -1505,6 +1512,7 @@
 	cursor: pointer;
 	contain: style layout;
 	float: right;
+	margin-left: 20px;
 }
 
 .switch > div

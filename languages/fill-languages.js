@@ -124,9 +124,7 @@ function generateMD()
 	for(let key in languagesPercentage)
 	{
 		if(key !== 'empty.json')
-		{
 			num++;
-		}
 	}
 
 	let markdown = '\n\OpenComic has translations into '+num+' languages.\n\n';

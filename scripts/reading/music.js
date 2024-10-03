@@ -1,3 +1,5 @@
+const soundEffect = require(p.join(appDir, 'scripts/reading/music/sound-effect.js'));
+
 let current = false, audio = false;
 
 async function has(files, findParent = false)
@@ -128,4 +130,5 @@ module.exports = {
 	volume: volume,
 	setPlay: setPlay,
 	loadMenu: loadMenu,
+	soundEffect: soundEffect,
 };

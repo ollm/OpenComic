@@ -1,0 +1,33 @@
+
+<div class="select reading-sound-effect-page body-large gamepad-item have-select-wa" onclick="reading.music.soundEffect.loadPageSounds(); events.showSelect(this, 'reading-sound-effect-page', true);" style="height: 60px; padding: 0px;">
+	<div>
+		<div class="select-border">
+			<div class="bottom"><div></div></div>
+		</div>
+		<div class="text" style="opacity: 1;">{{currentSoundEffect}}</div>
+		<div class="placeholder">{{language.reading.music.pageSoundEffect}}</div>
+		<i class="material-icon">arrow_drop_down</i>
+	</div>
+</div>
+
+<div style="padding-left: 0px; padding-right: 0px;" class="simple-slider gamepad-item" data-margin="0,24,0,24" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+	<div class="simple-slider-text">{{language.reading.music.volume}}<div><span>{{volumePercent}}</span>%</div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="100" min="0" step="1" value="{{volumePercent}}" onrange="reading.music.soundEffect.change('page', 'volume', \{{value}})">
+	</div>
+</div>
+
+<div class="menu-simple-text gamepad-item">
+	{{language.reading.music.adaptToAnimationSpeed}}
+	<div class="switch{{#if _config.readingSoundEffect.page.adaptive}} a{{/if}}" on="reading.music.soundEffect.change('page', 'adaptive', true); reading.music.soundEffect.page(true);" off="reading.music.soundEffect.change('page', 'adaptive', false); reading.music.soundEffect.page(true);">
+		<div></div>
+		<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+	</div>
+</div>

@@ -1374,13 +1374,22 @@ function goNext()
 	readingDirection = realReadingDirection = true;
 
 	if(currentIndex < 1)
+	{
 		showPreviousComic(2, true);
+	}
 	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
+	{
 		goToIndex(nextIndex, true, true);
+		music.soundEffect.page();
+	}
 	else if(currentIndex == indexNum && dom.nextComic() && (!_config.readingManga || readingViewIs('scroll')))
+	{
 		showNextComic(1, true);
+	}
 	else if(currentIndex == indexNum && dom.previousComic() && _config.readingManga && !readingViewIs('scroll'))
+	{
 		showNextComic(1, true, true);
+	}
 }
 
 //Go to the previous comic page
@@ -1393,13 +1402,22 @@ function goPrevious()
 	readingDirection = realReadingDirection = false;
 
 	if(currentIndex > indexNum)
+	{
 		showNextComic(2, true);
+	}
 	else if(previousIndex > 0 || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
-		goToIndex(previousIndex, true, true)
+	{
+		goToIndex(previousIndex, true, true);
+		music.soundEffect.page();
+	}
 	else if(previousIndex == 0 && dom.previousComic() && (!_config.readingManga || readingViewIs('scroll')))
+	{
 		showPreviousComic(1, true);
+	}
 	else if(previousIndex == 0 && dom.nextComic() && _config.readingManga && !readingViewIs('scroll'))
+	{
 		showPreviousComic(1, true, true);
+	}
 }
 
 //Go to the start of the comic
@@ -2613,7 +2631,7 @@ function activeMagnifyingGlass(active = null, gamepad = false)
 	if(active)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
-		render.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom);
+		render.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom, readingDoublePage());
 	
 		if(gamepad)
 		{
@@ -2649,7 +2667,7 @@ function changeMagnifyingGlass(mode, value, save)
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassZoom', value);
 
-		render.setScaleMagnifyingGlass(value);
+		render.setScaleMagnifyingGlass(value, readingDoublePage());
 	}
 	else if(mode == 2) //Set the size
 	{
@@ -3215,6 +3233,19 @@ function changePagesView(mode, value, save)
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
+}
+
+function change(key, value)
+{
+	/*switch (key)
+	{
+		case 'pageSoundEffect':
+
+			_config.readingSoundEffect.page.play = value;
+			updateReadingPagesConfig('readingSoundEffect', _config.readingSoundEffect);
+
+			break;
+	}*/
 }
 
 //Change the bookmark icon
@@ -4078,7 +4109,7 @@ async function getEbookConfig(configReadingEbook = false)
 	}
 
 	let renderZone = {
-		width: (rect.width - (readingMargin().left * (readingDoublePage() ? 3 : 2))) / (readingDoublePage() ? 2 : 1),
+		width: ((rect.width - (readingMargin().left * (readingDoublePage() ? 3 : 2))) / (readingDoublePage() ? 2 : 1)) - (readingViewIs('scroll') ? 12 : 0),
 		height: (rect.height - (readingMargin().top * 2)),
 	};
 
@@ -4109,7 +4140,7 @@ async function getEbookConfig(configReadingEbook = false)
 
 	let maxWidth = configReadingEbook.maxWidth;
 	let minMargin = configReadingEbook.minMargin;
-	let verticalMargin = /*readingViewIs('scroll') ? 0 : */configReadingEbook.verticalMargin;
+	let verticalMargin = (readingViewIs('scroll') && !readingDoublePage()) ? 0 : configReadingEbook.verticalMargin;
 
 	let horizontalMargin = Math.round((width - maxWidth) / 2);
 
@@ -5382,6 +5413,7 @@ module.exports = {
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	changePagesView: changePagesView,
+	change: change,
 	magnifyingGlassControl: magnifyingGlassControl,
 	addHtmlImages: addHtmlImages,
 	disposeImages: disposeImages,

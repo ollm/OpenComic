@@ -29,8 +29,15 @@ async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 		}
 	}
 
+	if(len)
+	{
+		comics[0] = app.copy(comics[0]);
+		comics[0].noHighlight = true;
+	}
+
 	const box = {
 		title: title,
+		boxes: true,
 		comics: comics,
 	};
 

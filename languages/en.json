@@ -195,7 +195,13 @@
 			"main": "Music",
 			"volume": "Volume",
 			"pageSoundEffect": "Page turn sound effect",
-			"adaptToAnimationSpeed": "Adapt to the speed of animation"
+			"adaptToAnimationSpeed": "Adapt to the speed of animation",
+			"soundEffect": {
+				"pageTurn": "Page turn",
+				"pageTurnAndNumber": "Page turn $1",
+				"otherSounds": "Other sounds",
+				"otherSoundsAndNumber": "Other sounds $1"
+			}
 		},
 		"moreOptions": {
 			"main": "More options",

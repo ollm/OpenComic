@@ -68,9 +68,12 @@ function setImagesData(_imagesData)
 	imagesData = _imagesData;
 }
 
-function setMagnifyingGlassStatus(active = false)
+function setMagnifyingGlassStatus(active = false, doublePage = false)
 {
-	scaleMagnifyingGlass = !!active;
+	scaleMagnifyingGlass = active;
+
+	if(active)
+		setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
 }
 
 var sendToQueueST = false;
@@ -132,7 +135,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 	}
 }
 
-function setScaleMagnifyingGlass(_scale = 1)
+function setScaleMagnifyingGlass(_scale = 1, doublePage = false)
 {
 	if(!file || !scaleMagnifyingGlass) return;
 	if(renderEbook) return;
@@ -302,7 +305,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 	{
 		let contentRight = template._contentRight();
 
-		let rImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens .r-img-i'+index : '.r-img-i'+index);
+		let rImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens > div > div > div.r-flex .r-img-i'+index : '.reading-body > div > div.r-flex .r-img-i'+index);
 		if(!rImg) return;
 
 		if(renderCanvas)

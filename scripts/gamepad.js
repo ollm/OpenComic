@@ -433,6 +433,8 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 	has = hasMenu || has;
 
 	// Content right
+	const rectCache = {};
+
 	if(!has && !ignore.right)
 	{
 		let items = template._contentRight().querySelectorAll('.gamepad-item');
@@ -448,7 +450,18 @@ function updateBrowsableItems(key = false, force = false, _highlightItem = true,
 			if((toHighlight === false && item.classList.contains('gamepad-to-highlight')) || item.classList.contains('gamepad-highlight'))
 				toHighlight = index;
 
-			if(rect.height != 0 || rect.width != 0)
+			const gamepadNotOutside = item.closest('.gamepad-not-outside');
+			let outside = false;
+
+			if(gamepadNotOutside)
+			{
+				let rectNotOutside = rectCache[gamepadNotOutside] = rectCache[gamepadNotOutside] || gamepadNotOutside.getBoundingClientRect();
+
+				if(rect.top > rectNotOutside.bottom || rect.left > rectNotOutside.right)
+					outside = true;
+			}
+
+			if((rect.height != 0 || rect.width != 0) && !outside)
 			{
 				currentScreenItems.push({
 					inScroll: true,
