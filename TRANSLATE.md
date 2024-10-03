@@ -4,7 +4,9 @@ If you want to see OpenComic in your language, please help us to Translate.
 
 ## New translation
 
-To create a new translation, you can create one from [empty.json](https://github.com/ollm/OpenComic/blob/master/languages/empty.json) file and compare to other some of translation (Preferably [English](https://github.com/ollm/OpenComic/blob/master/languages/en.json) or [Spanish](https://github.com/ollm/OpenComic/blob/master/languages/es.json)) using some diff app/web, like [Meld diff](https://meld.app/) or any other method that you prefer.
+To create a new translation, you can create one from [empty.json](https://github.com/ollm/OpenComic/blob/master/languages/empty.json) file and compare to other translations (Preferably [English](https://github.com/ollm/OpenComic/blob/master/languages/en.json) or [Spanish](https://github.com/ollm/OpenComic/blob/master/languages/es.json)) using some diff app like [Meld](https://meld.app/), [WinMerge](https://winmerge.org/) or webs like [Mergely](https://editor.mergely.com/) (Or any other method that you prefer).
+
+https://winmerge.org/
 
 Don't forget to activate the language by editing the [`languagesList`](https://github.com/ollm/OpenComic/blob/master/languages/languagesList.json) file and adding `"active": true` to the language, if the language is not in the list you can add it.
 
@@ -14,7 +16,7 @@ The list of translators appears in the `About OpenComic` window.
 
 ## Update translation
 
-To update a translation, get the current translated file and compare to other some of translation (Preferably [English](https://github.com/ollm/OpenComic/blob/master/languages/en.json) or [Spanish](https://github.com/ollm/OpenComic/blob/master/languages/es.json)) using some diff app/web, like [Meld diff](https://meld.app/) or any other method that you prefer, you can also search to find empty strings `""` in translation.
+To update a translation, get the current translated file and compare to other some of translation (Preferably [English](https://github.com/ollm/OpenComic/blob/master/languages/en.json) or [Spanish](https://github.com/ollm/OpenComic/blob/master/languages/es.json)) using some diff app like [Meld](https://meld.app/), [WinMerge](https://winmerge.org/) or webs like [Mergely](https://editor.mergely.com/) (Or any other method that you prefer), you can also search to find empty strings `""` in translation.
 
 If you consider it appropriate, you can add your data to the list of translators in the file. This data will appear when the `About OpenComic` window.
 

@@ -106,7 +106,7 @@ Now the build files are located in `dist` folder.
 
 ## Translation
 
-If you want to see OpenComic in your language, please help us to [Translate](https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md)
+If you want to see OpenComic in your language, please help us to [Translate](https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md).
 
 <a href="https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md">
 	<img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated.svg" />
@@ -151,4 +151,4 @@ licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](
 
 Based on the universe of Hereva created by David Revoy with contributions by Craig Maloney.
 Corrections by Willem Sonke, Moini, Hali, CGand and Alex Gryson.
-Translated into Spanish by TheFaico
+Translated into Spanish by TheFaico.
