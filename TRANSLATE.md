@@ -18,7 +18,7 @@ The list of translators appears in the `About OpenComic` window.
 
 To update a translation, get the current translated file and compare to other some of translation (Preferably [English](https://github.com/ollm/OpenComic/blob/master/languages/en.json) or [Spanish](https://github.com/ollm/OpenComic/blob/master/languages/es.json)) using some diff app like [Meld](https://meld.app/), [WinMerge](https://winmerge.org/) or webs like [Mergely](https://editor.mergely.com/) (Or any other method that you prefer), you can also search to find empty strings `""` in translation.
 
-If you consider it appropriate, you can add your data to the list of translators in the file. This data will appear when the `About OpenComic` window.
+If you consider it appropriate, you can add your data to the list of translators in the file. This data appears in the `About OpenComic` window.
 
 You can send a pull request with the new translated file, it is not necessary that the translation is complete.
 
