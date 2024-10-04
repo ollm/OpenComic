@@ -50,6 +50,9 @@
 			"setAsPoster": "Définir comme affiche",
 			"setAsPosterFolders": "Définir comme affiche pour les dossiers",
 			"posterSetSuccessfully": "Affiche définie avec succès",
+			"saveImage": "",
+			"saveAllImages": "",
+			"saveImagesMessage": "",
 			"closeApp": "Fermer l'application"
 		},
 		"back": "Retour",

@@ -171,6 +171,40 @@
 	<div class="menu-close" onclick="events.desactiveMenu('#reading-menu-gamepad');"></div>
 </div>
 
+<div class="menu" id="reading-context-menu">
+	<div class="menu-simple elevation-2" onclick="events.desactiveMenu('#reading-context-menu');">
+		<div class="menu-simple-content">
+			<div>
+
+
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-save-image gamepad-item" onclick="reading.contextMenu.saveImage();">
+					<i class="material-icon menu-simple-icon-first">image</i>
+					<span>{{language.global.contextMenu.saveImage}}</span>
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-save-all-images gamepad-item" onclick="reading.contextMenu.saveAllImages();">
+					<i class="material-icon menu-simple-icon-first">photo_library</i>
+					<span>{{language.global.contextMenu.saveAllImages}}</span>
+				</div>
+
+				<div class="menu-simple-separator separator-save-images"></div>
+
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-open-file-location gamepad-item" onclick="reading.contextMenu.openFileLocation();">
+					<i class="material-icon menu-simple-icon-first">folder_open</i>
+					<span>{{language.global.contextMenu.openFileLocation}}</span>
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-file-info gamepad-item" onclick="reading.contextMenu.aboutFile();">
+					<i class="material-icon menu-simple-icon-first">info</i>
+					<span>{{language.global.contextMenu.aboutFile}}</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#reading-context-menu');" oncontextmenu="events.desactiveMenu('#reading-context-menu');"></div>
+</div>
+
 <div class="menu" id="index-file-info-find-on">
 	<div class="menu-simple menu-simple-header elevation-2" style="width: 552px; z-index: 125;">
 		<div class="menu-simple-content">

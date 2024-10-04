@@ -50,6 +50,9 @@
 			"setAsPoster": "Usar imagen como póster",
 			"setAsPosterFolders": "Usar imagen como poster de otra carpeta",
 			"posterSetSuccessfully": "La imagen se ha establecido como póster",
+			"saveImage": "Guardar imagen",
+			"saveAllImages": "Guardar todas las imágenes",
+			"saveImagesMessage": "Se han guardado correctamente las imágenes",
 			"closeApp": "Cerrar OpenComic"
 		},
 		"back": "Atrás",

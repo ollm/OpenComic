@@ -1,6 +1,7 @@
 const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	filters = require(p.join(appDir, 'scripts/reading/filters.js')),
 	music = require(p.join(appDir, 'scripts/reading/music.js')),
+	contextMenu = require(p.join(appDir, 'scripts/reading/context-menu.js')),
 	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js'));
 
@@ -5476,6 +5477,7 @@ module.exports = {
 	ebook: readingEbook,
 	filters: filters,
 	music: music,
+	contextMenu: contextMenu,
 	pageTransitions: pageTransitions,
 	render: render,
 };

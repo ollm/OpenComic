@@ -50,6 +50,9 @@
 			"setAsPoster": "",
 			"setAsPosterFolders": "",
 			"posterSetSuccessfully": "",
+			"saveImage": "",
+			"saveAllImages": "",
+			"saveImagesMessage": "",
 			"closeApp": "关闭 OpenComic"
 		},
 		"back": "返回",

@@ -515,11 +515,9 @@ function loadShortcuts()
 				},
 				contextMenu: {
 					name: language.settings.shortcuts.contextMenu,
-					function: function(){
+					function: function(event, gamepad = false){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
-						
-						console.log('contextMenu');
-
+						reading.contextMenu.show(!!gamepad);
 						return true;
 					},
 				},

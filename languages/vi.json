@@ -50,6 +50,9 @@
 			"setAsPoster": "",
 			"setAsPosterFolders": "",
 			"posterSetSuccessfully": "",
+			"saveImage": "",
+			"saveAllImages": "",
+			"saveImagesMessage": "",
 			"closeApp": "Đóng OpenComic"
 		},
 		"back": "Trở về",
