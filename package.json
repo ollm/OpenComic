@@ -79,7 +79,7 @@
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
 		"fast-xml-parser": "^4.5.0",
-		"file-type": "^19.5.0",
+		"file-type": "^16.5.4",
 		"font-list": "^1.5.1",
 		"fs-extra": "^11.2.0",
 		"gm": "^1.25.0",

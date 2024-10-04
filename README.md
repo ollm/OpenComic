@@ -118,8 +118,6 @@ If you want to see OpenComic in your language, please help us to [Translate](htt
 	<img src="https://opencollective.com/opencomic/contributors.svg?width=830&button=false&avatarHeight=42" />
 </a>
 
-<!--
-
 ## Backers
 
 <a href="https://opencollective.com/opencomic#support">
@@ -137,8 +135,6 @@ If you want to see OpenComic in your language, please help us to [Translate](htt
 <a href="https://opencollective.com/opencomic#support">
 	<img src="https://opencollective.com/opencomic/tiers/sponsor.svg?width=830"></a>
 </a>
-
--->
 
 <!-- ## GitHub Sponsors -->
 
