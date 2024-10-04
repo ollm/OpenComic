@@ -2,7 +2,7 @@
 function show(gamepad = false)
 {
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
-	dom.queryAll('.separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images').css({display: saveImages ? '' : 'none'});
+	dom.queryAll('.separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
 
 	if(gamepad)
 		events.activeMenu('#reading-context-menu', false, 'gamepad');
@@ -37,6 +37,38 @@ function aboutFile()
 	const vars = getVars();
 
 	dom.fileInfo.show(vars.pathIsFolder ? vars.currentPath : fileManager.lastCompressedFile(vars.currentPath));
+}
+
+function getCurrentImage()
+{
+	const currentIndex = reading.currentIndex() - 1;
+
+	const images = reading.images();
+	const imagesData = reading.imagesData();
+
+	for(let key in images)
+	{
+		if(currentIndex == imagesData[key].position)
+			return images[key].path;
+	}
+
+	return false;	
+}
+
+function setAsPoster()
+{
+	const image = getCurrentImage();
+	if(!image) return;
+
+	dom.poster.setAsPoster(image);
+}
+
+function setAsPosterFolders()
+{
+	const image = getCurrentImage();
+	if(!image) return;
+
+	dom.poster.setAsPosterFolders(image, dom.indexMainPathA());
 }
 
 function saveImage()
@@ -102,6 +134,8 @@ module.exports = {
 	show: show,
 	openFileLocation: openFileLocation,
 	aboutFile: aboutFile,
+	setAsPoster: setAsPoster,
+	setAsPosterFolders: setAsPosterFolders,
 	saveImage: saveImage,
 	saveAllImages: saveAllImages,
 };
