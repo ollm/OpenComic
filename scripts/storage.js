@@ -1,4 +1,4 @@
-var changes = 86; // Update this if readingPagesConfig is updated
+var changes = 87; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -101,11 +101,17 @@ var storageDefault = {
 		sortInvert: false,
 		sortInvertIndex: false,
 		sortInvertRecentlyOpened: false,
+		continueReadingIndex: true,
+		continueReadingRecentlyOpened: true,
+		recentlyAddedIndex: true,
+		recentlyAddedRecentlyOpened: true,
 		sortAndView: {
 			wildcard: {
 				view: 'module',
 				sort: 'name',
 				sortInvert: false,
+				continueReading: true,
+				recentlyAdded: true,
 			}
 		},
 		showFullPathLibrary: false,

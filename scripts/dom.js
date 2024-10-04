@@ -396,6 +396,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		let sort = config.sortIndex;
 		let sortInvert = config.sortInvertIndex;
+		let continueReading = config.continueReadingIndex;
+		let recentlyAdded = config.recentlyAddedIndex;
 
 		let sortAndView = false;
 
@@ -416,10 +418,14 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				view: 'module',
 				sort: 'name',
 				sortInvert: false,
+				continueReading: true,
+				recentlyAdded: true,
 			};
 
 			sort = sortAndView.sort;
 			sortInvert = sortAndView.sortInvert;
+			continueReading = sortAndView.continueReading;
+			recentlyAdded = sortAndView.recentlyAdded;
 		}
 
 		let order = '';
@@ -632,11 +638,12 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		if(contentRightIndex != template.contentRightIndex()) return;
 
 		dom.boxes.reset();
-		if(sort != 'last-reading') await dom.boxes.continueReading(comics);
-		if(sort != 'last-add') await dom.boxes.recentlyAdded(comics);
+		if(sort != 'last-reading' && continueReading) await dom.boxes.continueReading(comics);
+		if(sort != 'last-add' && recentlyAdded) await dom.boxes.recentlyAdded(comics);
 
 		handlebarsContext.comics = comics;
 		handlebarsContext.comicsIndex = true;
+		handlebarsContext.sortAndView = sortAndView || false;
 		handlebarsContext.comicsReadingProgress = false;
 		dom.setCurrentPageVars('index', _indexLabel);
 
@@ -672,6 +679,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		dom.boxes.reset();
 		handlebarsContext.comics = [];
 		handlebarsContext.comicsIndex = false;
+		handlebarsContext.sortAndView = false;
 		handlebarsContext.comicsDeep2 = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep).length >= 2 ? true : false;
 		dom.setCurrentPageVars('browsing');
 
@@ -1682,6 +1690,8 @@ function setCurrentPageVars(page, _indexLabel = false)
 			view: 'module',
 			sort: 'name',
 			sortInvert: false,
+			continueReading: true,
+			recentlyAdded: true,
 		};
 	}
 
@@ -1699,6 +1709,9 @@ function setCurrentPageVars(page, _indexLabel = false)
 		sort: sortAndView ? sortAndView.sort : config['sort'+extraKey],
 		sortInvert: sortAndView ? sortAndView.sortInvert : config['sortInvert'+extraKey],
 		foldersFirst: sortAndView ? false : (config['foldersFirst'+extraKey] || false),
+		boxes: (page == 'recently-opened') ? false : true,
+		continueReading: sortAndView ? sortAndView.continueReading : config['continueReading'+extraKey],
+		recentlyAdded: sortAndView ? sortAndView.recentlyAdded : config['recentlyAdded'+extraKey],
 	};
 }
 
@@ -1715,6 +1728,8 @@ function changeView(mode, page)
 			view: 'module',
 			sort: 'name',
 			sortInvert: false,
+			continueReading: true,
+			recentlyAdded: true,
 		};
 	}
 
@@ -1771,6 +1786,8 @@ function changeSort(type, mode, page)
 			view: 'module',
 			sort: 'name',
 			sortInvert: false,
+			continueReading: true,
+			recentlyAdded: true,
 		};
 	}
 
@@ -1848,6 +1865,53 @@ function changeSort(type, mode, page)
 		else
 			reloadIndex();
 	}
+}
+
+function changeBoxes(box, value, page)
+{
+	let labelKey = false;
+	let sortAndView = false;
+
+	if(/favorites|masterFolder|server|label/.test(page))
+	{
+		labelKey = page;
+
+		sortAndView = config.sortAndView[labelKey] || {
+			view: 'module',
+			sort: 'name',
+			sortInvert: false,
+			continueReading: true,
+			recentlyAdded: true,
+		};
+	}
+
+	let changed = false;
+
+	if(sortAndView)
+	{
+		sortAndView[box] = value;
+
+		config.sortAndView[labelKey] = sortAndView;
+		storage.updateVar('config', 'sortAndView', config.sortAndView);
+	}
+	else
+	{
+		let extraKey = '';
+
+		if(page == 'recently-opened')
+			extraKey = 'RecentlyOpened';
+		else if(page == 'index')
+			extraKey = 'Index';
+
+		storage.updateVar('config', box+extraKey, value);
+	}
+
+	console.log(box, value, page);
+
+	if(page == 'recently-opened')
+		recentlyOpened.reload();
+	else
+		reloadIndex();
 }
 
 function selectElement(element)
@@ -2433,6 +2497,7 @@ module.exports = {
 	setCurrentPageVars: setCurrentPageVars,
 	changeView: changeView,
 	changeSort: changeSort,
+	changeBoxes: changeBoxes,
 	indexPathControl: indexPathControl,
 	indexPathControlA: function(){return indexPathControlA},
 	indexPathControlGoBack: indexPathControlGoBack,
