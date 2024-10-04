@@ -28,7 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Continue reading and Recently added section in library, favorites, labels, etc [`6938f19`](https://github.com/ollm/OpenComic/commit/6938f199fab46aee0fa454effecd3238038daac0)
 - Sound effect on page turn [`d9957da`](https://github.com/ollm/OpenComic/commit/d9957da8c3266127802a03812f158f06e831dffd)
 - Setting to set the number of items in recent [`386a4f5`](https://github.com/ollm/OpenComic/commit/386a4f5bfeb38bc3752695fd8482a6c61c543491)
-- Reading context menu and save images
+- Reading context menu and save images [`64f7fc9`](https://github.com/ollm/OpenComic/commit/64f7fc9a0f3204effc9ac4243bc360427d4e7663)
 
 ##### 🐛 Bug Fixes
 

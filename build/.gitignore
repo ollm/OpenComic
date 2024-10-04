@@ -1,1 +1,2 @@
 *.provisionprofile
+node_gyp_bins

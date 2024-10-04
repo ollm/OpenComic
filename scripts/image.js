@@ -32,28 +32,23 @@ async function resize(fromImage, toImage, config = {})
 					{
 						if(!graphicsMagick) graphicsMagick = require('gm').subClass({imageMagick: false});
 
-						graphicsMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, function(error){
+						graphicsMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, async function(error){
 
 							if(error)
 							{
-								if(jimp === false) jimp = require('jimp');
+								if(jimp === false) jimp = require('jimp').Jimp;
 
-								jimp.read(fromImage, function(error, lenna) {
+								try
+								{
+									const jimpImage = await jimp.read(fromImage);
+									await jimpImage.resize({w: config.width}).write(toImage, {quality: config.quality});
 
-									if(error)
-									{
-										reject(error);
-									}
-									else
-									{
-										lenna.resize(config.width, jimp.AUTO).quality(config.quality).background(0xFFFFFFFF).write(toImage, function(){
-
-											resolve(toImage);
-
-										});
-									}
-
-								});
+									resolve(toImage);
+								}
+								catch(error)
+								{
+									reject(error);
+								}
 							}
 							else
 							{

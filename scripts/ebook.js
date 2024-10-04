@@ -1,8 +1,6 @@
 const sanitizeHtml = require('sanitize-html'),
 	url = require('url');
 
-var html2canvas = false;
-
 var ebook = function(book, config = {}) {
 
 	this.book = book;
@@ -840,56 +838,6 @@ var ebook = function(book, config = {}) {
 
 		return iframe;
 
-	}
-
-	this.renderHtmlToCanvas = async function(html, scale) {
-
-		if(!html2canvas) html2canvas = require('html2canvas');
-
-		console.time('Load iframe');
-
-		let iframe = document.createElement('iframe');
-
-		iframe.style.width = this.config.width+'px';
-		iframe.style.height = this.config.height+'px';
-		iframe.style.position = 'absolute';
-		iframe.style.zIndex = '1000';
-		iframe.style.backgroundColor = 'white';
-		iframe.style.visibility = 'hidden';
-		iframe.sandbox = 'allow-same-origin';
-		iframe.srcdoc = html;
-
-		return new Promise(async function(resolve, reject) {
-
-			iframe.addEventListener('load', async function(event) {
-
-				console.timeEnd('Load iframe');
-				console.time('html2canvas');
-
-				// Make a capture using https://stackoverflow.com/questions/62565587/how-do-i-capture-an-image-from-a-electron-window
-
-				let canvas = await html2canvas(iframe.contentDocument.body, {
-					useCORS: false,
-					logging: false,
-					backgroundColor: '#ffffff',
-					scale: scale,
-					x: 0,
-					y: 0,
-					scrollX: 0,
-					scrollY: 0,
-				});
-
-				console.timeEnd('html2canvas');
-
-				iframe.remove();
-
-				resolve(canvas);
-
-			});
-
-			document.body.appendChild(iframe);
-
-		});
 	}
 
 	this.pagesToOnedimension = function(pages) {
