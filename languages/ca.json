@@ -168,7 +168,9 @@
 			"textColors": "Colors del text",
 			"text": "Text",
 			"links": "Enllaços",
-			"background": "Fons"
+			"background": "Fons",
+			"perspective": "Perspectiva",
+			"angle": "Angle"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

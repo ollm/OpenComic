@@ -168,7 +168,9 @@
 			"textColors": "Text colors",
 			"text": "Text",
 			"links": "Links",
-			"background": "Background"
+			"background": "Background",
+			"perspective": "Perspective",
+			"angle": "Angle"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",

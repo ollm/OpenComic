@@ -137,7 +137,7 @@ function generateMD()
 			const percentage = Math.round(languagesPercentage[key].percentage * 10) / 10;
 			const color = getColor(percentage);
 
-			markdown += '### '+languagesList[lang].nativeName+'\n\n['+key+'](https://github.com/ollm/OpenComic/blob/master/languages/'+key+')\n\n`'+percentage+'% | Remain '+(languagesPercentage[key].total - languagesPercentage[key].translated)+' | Translated '+languagesPercentage[key].translated+'` \n\n';
+			markdown += '### '+languagesList[lang].nativeName+'\n\n['+key+'](https://github.com/ollm/OpenComic/blob/master/languages/'+key+')\n\n`'+percentage+'% | Remain '+(languagesPercentage[key].total - languagesPercentage[key].translated)+' | Translated '+languagesPercentage[key].translated+'`\n\n';
 			markdown += '<a href="https://github.com/ollm/OpenComic/blob/master/languages/'+key+'"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/'+lang+'.svg" /></a>\n\n\n';
 
 			let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="830" height="10">\n	<g>';

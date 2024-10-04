@@ -168,7 +168,9 @@
 			"textColors": "",
 			"text": "",
 			"links": "",
-			"background": ""
+			"background": "",
+			"perspective": "",
+			"angle": ""
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

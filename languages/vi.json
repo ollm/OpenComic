@@ -168,7 +168,9 @@
 			"textColors": "Màu chữ",
 			"text": "Chữ",
 			"links": "Đường dẫn",
-			"background": "Ảnh nền"
+			"background": "Ảnh nền",
+			"perspective": "",
+			"angle": ""
 		},
 		"magnifyingGlass": {
 			"main": "Kính lúp",

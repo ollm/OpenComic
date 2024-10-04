@@ -1,8 +1,16 @@
-var changes = 87; // Update this if readingPagesConfig is updated
+var changes = 88; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
 	readingView: 'slide',
+	readingViewConfig: {
+		roughPageTurn: {
+			perspective: 6000,
+		},
+		smoothPageTurn: {
+			angle: 30,
+		},
+	},
 	readingViewSpeed: 0.3,
 	readingViewAdjustToWidth: false,
 	readingNotEnlargeMoreThanOriginalSize: false,

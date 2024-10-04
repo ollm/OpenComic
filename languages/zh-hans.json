@@ -168,7 +168,9 @@
 			"textColors": "文本颜色",
 			"text": "文本",
 			"links": "链接",
-			"background": "背景"
+			"background": "背景",
+			"perspective": "",
+			"angle": ""
 		},
 		"magnifyingGlass": {
 			"main": "放大镜",

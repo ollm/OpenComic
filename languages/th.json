@@ -168,7 +168,9 @@
 			"textColors": "สีอักษร",
 			"text": "ข้อความ",
 			"links": "ลิ้งก์",
-			"background": "พื้นหลัง"
+			"background": "พื้นหลัง",
+			"perspective": "",
+			"angle": ""
 		},
 		"magnifyingGlass": {
 			"main": "แว่นขยาย",

@@ -270,10 +270,16 @@ function pageTurnAnimation(animationDuration, startNow, startPercent, readingDir
 		percent = startPercent + ((1 - startPercent) * (ease.y / 1000));
 	}
 
-	//if(startVertical === false) startVertical = 0.8;
-	//if(vertical === false) vertical = 0.6;
-	if(startVertical === false) startVertical = 1;
-	if(vertical === false) vertical = 0.6;
+	if(vertical === false)
+	{
+		let angle = _config.readingViewConfig.smoothPageTurn.angle;
+		angle = ((angle + 45) / 90);
+
+		if(angle == 0.5) angle = 0.505;
+
+		startVertical = angle;
+		vertical = 0.5;
+	}
 
 	_pageTurnPercent(percent, vertical, startVertical, readingDirection, leftPrev, rightPrev, leftCurrent, rightCurrent);
 

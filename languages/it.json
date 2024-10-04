@@ -168,7 +168,9 @@
 			"textColors": "Colori testo",
 			"text": "Testo",
 			"links": "Link",
-			"background": "Sfondo"
+			"background": "Sfondo",
+			"perspective": "",
+			"angle": ""
 		},
 		"magnifyingGlass": {
 			"main": "Lente d'ingrandimento",

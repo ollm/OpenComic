@@ -530,6 +530,112 @@ async function preparePageTurn(index, prev, current, next, animationDuration = f
 	}
 }
 
+var perspectives = [
+	1000000,
+	36696,
+	33360,
+	30327,
+	27570,
+	25064,
+	22785,
+	20714,
+	18831,
+	17119,
+	15563,
+	14148,
+	12862,
+	11693,
+	10630,
+	9664,
+	8785,
+	7986,
+	7260,
+	6600,
+	6000,
+	5217,
+	4537,
+	3945,
+	3430,
+	2983,
+	2594,
+	2256,
+	1962,
+	1706,
+	1483,
+	1290,
+	1122,
+	976,
+	849,
+	738,
+	642,
+	558,
+	485,
+	422,
+	367,
+];
+
+function change(transition, key, value)
+{
+	switch (key)
+	{
+		case 'perspective':
+
+			value = perspectives[value];
+
+			break;
+	}
+
+	_config.readingViewConfig[transition][key] = value;
+	reading.updateReadingPagesConfig('readingViewConfig', _config.readingViewConfig);
+}
+
+function configDialog(event, transition)
+{
+	event.stopPropagation();
+
+	if(transition == 'roughPageTurn')
+	{
+		const keys = perspectives.reduce(function(obj, value, index) {
+			obj[value] = index;
+			return obj;
+		}, {});
+
+		handlebarsContext.perspective = keys[_config.readingViewConfig.roughPageTurn.perspective];
+
+		events.dialog({
+			header: language.reading.pages.roughPageTurn,
+			width: 500,
+			height: 234,
+			content: template.load('dialog.reading.transition.config.rough.html'),
+			buttons: [
+				{
+					text: language.buttons.close,
+					function: 'events.closeDialog();',
+				}
+			],
+		});
+	}
+	else if(transition == 'smoothPageTurn')
+	{
+		handlebarsContext.angle = _config.readingViewConfig.smoothPageTurn.angle;
+
+		events.dialog({
+			header: language.reading.pages.smoothPageTurn,
+			width: 500,
+			height: 234,
+			content: template.load('dialog.reading.transition.config.smooth.html'),
+			buttons: [
+				{
+					text: language.buttons.close,
+					function: 'events.closeDialog();',
+				}
+			],
+		});
+	}
+
+	events.events();
+}
+
 module.exports = {
 	goToIndex: goToIndex,
 	touchstart: touchstart,
@@ -546,4 +652,7 @@ module.exports = {
 	easeBezier: easeBezier,
 	easeInBezier: easeInBezier,
 	easeOutQuadBezier: easeOutQuadBezier,
+
+	change: change,
+	configDialog: configDialog,
 };

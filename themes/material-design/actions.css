@@ -2697,6 +2697,28 @@ table tbody td.lh0
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
 
+.chip > span
+{
+	max-width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	display: inline-block;
+	margin-bottom: -5px;
+}
+
+.chip-icon-left > span,
+.chip-icon-right > span
+{
+	max-width: calc(100% - 42px);
+}
+
+.chip-icon-left.chip-icon-right > span
+{
+	max-width: calc(100% - 84px);
+}
+
 .reading-chips .chip
 {
 	float: left;
@@ -2705,6 +2727,16 @@ table tbody td.lh0
 .chip-big
 {
 	padding: 9px 12px 9px 0px;
+}
+
+.chip-big.chip-icon-left
+{
+	padding-left: 0px;
+}
+
+.chip-big.chip-icon-right
+{
+	padding-right: 0px;
 }
 
 .chip-big .chip-icon-left

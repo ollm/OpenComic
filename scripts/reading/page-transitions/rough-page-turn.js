@@ -121,6 +121,8 @@ function _pageTurnPercent(percent, readingDirection, leftPrev, rightPrev, leftCu
 	const bBezier = reading.pageTransitions.bottomBezier2.get(percent);
 	const percentBezier = bBezier.y / 225;
 
+	const perspective = _config.readingViewConfig.roughPageTurn.perspective;
+
 	if(readingDirection)
 	{
 		rightCurrent.firstElementChild.style.clipPath = 'inset('+pageTurn.generateClipPath(rightPrev, rightCurrent, percent, true)+')';
@@ -131,15 +133,15 @@ function _pageTurnPercent(percent, readingDirection, leftPrev, rightPrev, leftCu
 
 		if(percent >= 0 && percent < 0.5)
 		{
-			rightPrev.style.transform = 'perspective(6000px) rotateY(-'+(90 * percentFirst)+'deg)';
-			leftCurrent.style.transform = 'perspective(6000px) rotateY(-90deg)';
+			rightPrev.style.transform = 'perspective('+perspective+'px) rotateY(-'+(90 * percentFirst)+'deg)';
+			leftCurrent.style.transform = 'perspective('+perspective+'px) rotateY(-90deg)';
 
 			dom.this(rightPrev).find('oc-img', true).css({boxShadow: generateBoxShadow(percentFirst)});
 		}
 		else if(percent >= 0.5)
 		{
-			rightPrev.style.transform = 'perspective(6000px) rotateY(-90deg)';
-			leftCurrent.style.transform = 'perspective(6000px) rotateY('+(90 * percentLast)+'deg)';
+			rightPrev.style.transform = 'perspective('+perspective+'px) rotateY(-90deg)';
+			leftCurrent.style.transform = 'perspective('+perspective+'px) rotateY('+(90 * percentLast)+'deg)';
 
 			dom.this(leftCurrent).find('oc-img', true).css({boxShadow: generateBoxShadow(percentLast)});
 		}
@@ -154,15 +156,15 @@ function _pageTurnPercent(percent, readingDirection, leftPrev, rightPrev, leftCu
 
 		if(percent >= 0 && percent < 0.5)
 		{
-			leftPrev.style.transform = 'perspective(6000px) rotateY('+(90 * percentFirst)+'deg)';
-			rightCurrent.style.transform = 'perspective(6000px) rotateY(90deg)';
+			leftPrev.style.transform = 'perspective('+perspective+'px) rotateY('+(90 * percentFirst)+'deg)';
+			rightCurrent.style.transform = 'perspective('+perspective+'px) rotateY(90deg)';
 
 			dom.this(leftPrev).find('oc-img', true).css({boxShadow: generateBoxShadow(percentFirst)});
 		}
 		else if(percent >= 0.5)
 		{
-			leftPrev.style.transform = 'perspective(6000px) rotateY(90deg)';
-			rightCurrent.style.transform = 'perspective(6000px) rotateY(-'+(90 * percentLast)+'deg)';
+			leftPrev.style.transform = 'perspective('+perspective+'px) rotateY(90deg)';
+			rightCurrent.style.transform = 'perspective('+perspective+'px) rotateY(-'+(90 * percentLast)+'deg)';
 
 			dom.this(rightCurrent).find('oc-img', true).css({boxShadow: generateBoxShadow(percentLast)});
 		}

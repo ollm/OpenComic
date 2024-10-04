@@ -168,7 +168,9 @@
 			"textColors": "Textfärger",
 			"text": "Text",
 			"links": "Länkar",
-			"background": "Bakgrund"
+			"background": "Bakgrund",
+			"perspective": "",
+			"angle": ""
 		},
 		"magnifyingGlass": {
 			"main": "Förstoringsglas",
