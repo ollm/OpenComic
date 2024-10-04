@@ -255,7 +255,8 @@
 			"useTheFirstImageAsPoster": "Utilitzar la primera imatge com a pòster (Només si no n'hi ha cap actualment)",
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta",
-			"showLibraryPath": "Mostra la biblioteca, favorits, etiquetes, etc a la ruta de la capçalera"
+			"showLibraryPath": "Mostra la biblioteca, favorits, etiquetes, etc a la ruta de la capçalera",
+			"recentlyOpenedItems": "Nombre d'elements a guardar a Obert recentment"
 		},
 		"startupBehavior": {
 			"main": "Comportament d'inici",

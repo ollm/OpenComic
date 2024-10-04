@@ -111,7 +111,7 @@ async function load(animation = true, content = false)
 		});
 	}
 
-	handlebarsContext.comics = comics;
+	handlebarsContext.comics = comics.slice(0, config.recentlyOpenedItems);
 	handlebarsContext.comicsReadingProgress = false;
 	dom.setCurrentPageVars('recently-opened');
 
@@ -155,7 +155,7 @@ function set(mainPath)
 		recentlyOpenedA.push(recentlyOpened[path]);
 	}
 
-	if(recentlyOpenedA.length > 100)
+	if(recentlyOpenedA.length > config.recentlyOpenedItems)
 	{
 		recentlyOpenedA.sort(function(a, b) {
 		
@@ -166,7 +166,7 @@ function set(mainPath)
 			
 		});
 	
-		for(let i = 100, len = recentlyOpenedA.length; i < len; i++)
+		for(let i = config.recentlyOpenedItems, len = recentlyOpenedA.length; i < len; i++)
 		{
 			delete recentlyOpened[recentlyOpenedA[i].path];
 		}

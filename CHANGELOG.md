@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Show library, favorites, labels, etc in header path [`123cd2c`](https://github.com/ollm/OpenComic/commit/123cd2cfc15956a2c8bed4531c6448774a6d3c71)
 - Continue reading and Recently added section in library, favorites, labels, etc [`6938f19`](https://github.com/ollm/OpenComic/commit/6938f199fab46aee0fa454effecd3238038daac0)
 - Sound effect on page turn [`d9957da`](https://github.com/ollm/OpenComic/commit/d9957da8c3266127802a03812f158f06e831dffd)
+- Setting to set the number of items in recent
 
 ##### 🐛 Bug Fixes
 

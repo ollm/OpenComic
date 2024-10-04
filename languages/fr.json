@@ -255,7 +255,8 @@
 			"useTheFirstImageAsPoster": "Utiliser la première image comme affiche",
 			"showFullPathLibrary": "Afficher le chemin complet de la bibliothèque",
 			"showFullPathOpened": "Afficher le chemin complet ouvert",
-			"showLibraryPath": "Afficher le chemin de la bibliothèque"
+			"showLibraryPath": "Afficher le chemin de la bibliothèque",
+			"recentlyOpenedItems": ""
 		},
 		"startupBehavior": {
 			"main": "",

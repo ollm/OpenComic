@@ -255,7 +255,8 @@
 			"useTheFirstImageAsPoster": "ใช้ภาพแรกเป็นภาพปก (กรณีที่ที่อยู่ปัจจุบันไม่ม่)",
 			"showFullPathLibrary": "แสดงที่ตั้งแบบเต็มเมื่อเปิดห้องสมุดคอมมิกส์",
 			"showFullPathOpened": "แสดงที่ตั้งแบบเต็มเมื่อเปิดไฟล์หรือโฟลเดอร์",
-			"showLibraryPath": ""
+			"showLibraryPath": "",
+			"recentlyOpenedItems": ""
 		},
 		"startupBehavior": {
 			"main": "การกระทำเมื่อเริ่มต้น",

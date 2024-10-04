@@ -255,7 +255,8 @@
 			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "",
 			"showFullPathOpened": "",
-			"showLibraryPath": ""
+			"showLibraryPath": "",
+			"recentlyOpenedItems": ""
 		},
 		"startupBehavior": {
 			"main": "",

@@ -255,7 +255,8 @@
 			"useTheFirstImageAsPoster": "Utilizar la primera imagen como póster (Solo si no hay ninguno actualmente)",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los cómics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta",
-			"showLibraryPath": "Mostrar la biblioteca, favoritos, etiquetas, etc en la ruta del encabezado"
+			"showLibraryPath": "Mostrar la biblioteca, favoritos, etiquetas, etc en la ruta del encabezado",
+			"recentlyOpenedItems": "Número de elementos a guardar en Abierto recientemente"
 		},
 		"startupBehavior": {
 			"main": "Comportamiento de inicio",

@@ -1,4 +1,4 @@
-var changes = 88; // Update this if readingPagesConfig is updated
+var changes = 89; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -122,6 +122,7 @@ var storageDefault = {
 				recentlyAdded: true,
 			}
 		},
+		recentlyOpenedItems: 100,
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
 		showLibraryPath: true,

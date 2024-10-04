@@ -255,7 +255,8 @@
 			"useTheFirstImageAsPoster": "使用第一张图片作为海报（当前没有海报时）",
 			"showFullPathLibrary": "打开库时显示漫画完整路径",
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径",
-			"showLibraryPath": ""
+			"showLibraryPath": "",
+			"recentlyOpenedItems": ""
 		},
 		"startupBehavior": {
 			"main": "启动行为",
