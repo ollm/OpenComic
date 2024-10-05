@@ -1,6 +1,9 @@
 
 function showReleaseDialog(release)
 {
+	release.releases_url = 'https://github.com/ollm/OpenComic/releases';
+	release.html_url = release.releases_url;
+
 	events.dialog({
 		header: hb.compile(language.dialog.release.title)({releaseName: release.name}),
 		width: 360,
@@ -13,7 +16,7 @@ function showReleaseDialog(release)
 			},
 			{
 				text: language.buttons.download,
-				function: 'electron.shell.openExternal(\''+release.html_url+'\');',
+				function: 'electron.shell.openExternal(\''+release.releases_url+'\');',
 			}
 		],
 	});
