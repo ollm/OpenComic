@@ -108,9 +108,9 @@ function saveAllImages(index = false)
 
 				for(let i = 0, len = toSave.length; i < len; i++)
 				{
-					if(first === '') first = p.basename(realPath);
 					const realPath = fileManager.realPath(toSave[i].path);
 					const saveImageTo = p.join(saveTo, p.basename(realPath));
+					if(first === '') first = p.basename(realPath);
 
 					if(!fs.existsSync(saveImageTo))
 						fs.copyFileSync(realPath, saveImageTo);
