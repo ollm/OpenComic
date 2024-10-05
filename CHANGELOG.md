@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🐛 Bug Fixes
 
 - Dependency file-type not working [`7730e46`](https://github.com/ollm/OpenComic/commit/7730e46c8eb9e43196e50bd557f03132968eb534)
-- Open file location not working in some cases
+- Open file location not working in some cases [`a4bc25b`](https://github.com/ollm/OpenComic/commit/a4bc25b3005c097a7852a96c8c41fd866b28ed1c)
 
 ## [v1.3.0](https://github.com/ollm/OpenComic/releases/tag/v1.3.0) (04-10-2024)
 

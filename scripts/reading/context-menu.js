@@ -97,6 +97,8 @@ function saveAllImages(index = false)
 					toSave.push({path: path});
 			}
 
+			let first = '';
+
 			if(toSave.length)
 			{
 				let file = fileManager.file(p.dirname(toSave[0].path));
@@ -106,6 +108,7 @@ function saveAllImages(index = false)
 
 				for(let i = 0, len = toSave.length; i < len; i++)
 				{
+					if(first === '') first = p.basename(realPath);
 					const realPath = fileManager.realPath(toSave[i].path);
 					const saveImageTo = p.join(saveTo, p.basename(realPath));
 
@@ -121,7 +124,7 @@ function saveAllImages(index = false)
 				buttons: [
 					{
 						text: language.global.open,
-						function: 'electron.shell.openPath(\''+escapeQuotes(escapeBackSlash(saveTo), 'simples')+'\');',
+						function: 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(p.join(saveTo, first)), 'simples')+'\');',
 					},
 				],
 			});
