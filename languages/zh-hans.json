@@ -35,9 +35,9 @@
 			"paste": "粘贴",
 			"selectAll": "全选",
 			"remove": "移除",
-			"moveToTrash": "",
-			"deletePermanently": "",
-			"deletePermanentlyConfirm": "",
+			"moveToTrash": "移至垃圾箱",
+			"deletePermanently": "永久删除",
+			"deletePermanentlyConfirm": "确实要永久删除此文件吗？此操作无法撤消",
 			"favorite": "收藏",
 			"openFileLocation": "打开文件所在位置",
 			"openFolderLocation": "打开文件夹位置",
@@ -47,17 +47,17 @@
 			"deletePoster": "删除封面",
 			"cannotAddPoster": "如果文件夹位于压缩文件内，则无法添加封面，您必须使用 7-zip、unrar 等编辑文件",
 			"cannotDeletePoster": "如果封面位于压缩文件内，则无法删除，您必须使用 7-zip、unrar 等编辑该文件",
-			"setAsPoster": "",
-			"setAsPosterFolders": "",
-			"posterSetSuccessfully": "",
-			"saveImage": "",
-			"saveAllImages": "",
-			"saveImagesMessage": "",
+			"setAsPoster": "将图片设置为封面",
+			"setAsPosterFolders": "将图片设置为另一个文件夹的封面",
+			"posterSetSuccessfully": "该图片已设置为封面",
+			"saveImage": "保存图片",
+			"saveAllImages": "保存所有图片",
+			"saveImagesMessage": "图片已成功保存",
 			"closeApp": "关闭 OpenComic"
 		},
 		"back": "返回",
-		"goBack": "",
-		"goForwards": "",
+		"goBack": "返回",
+		"goForwards": "前进",
 		"open": "打开",
 		"add": "添加",
 		"addToLibrary": "添加到库",
@@ -77,12 +77,12 @@
 	"comics": {
 		"continueReading": "继续阅读",
 		"continueReadingNotExists": "继续阅读中保存的文件当前不存在",
-		"recentlyAdded": "",
+		"recentlyAdded": "最近添加",
 		"emptyIndex": "库里还没有漫画。",
 		"emptyFolder": "此文件夹中没有兼容的文件。",
 		"emptyRecentlyOpened": "没有最近打开的文件。",
 		"emptyFavorites": "没有收藏的漫画",
-		"emptyLabel": "没有该标签下漫画"
+		"emptyLabel": "此标签下没有漫画"
 	},
 	"servers": {
 		"offlineMode": "离线模式",
@@ -103,14 +103,14 @@
 			"pageLayout": "页面布局",
 			"ebookLayout": "电子书布局",
 			"colorFilters": "颜色滤镜",
-			"slide": "横向翻页",
-			"scroll": "纵向翻页",
-			"roughPageTurn": "",
-			"smoothPageTurn": "",
-			"fade": "",
+			"slide": "横向阅读",
+			"scroll": "垂直阅读",
+			"roughPageTurn": "翻页",
+			"smoothPageTurn": "平滑翻页",
+			"fade": "淡出",
 			"adjustToWidth": "适应屏幕",
 			"notEnlargeMoreThanOriginalSize": "请勿放大超过原始尺寸",
-			"rotateHorizontals": "",
+			"rotateHorizontals": "旋转水平线",
 			"margin": "边距",
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",
@@ -120,8 +120,8 @@
 			"blankPage": "开头空白页",
 			"readingDelaySkip": "漫画切换延迟",
 			"animationSpeed": "动效速度",
-			"readingManga": "阅读方向（反转）",
-			"readingWebtoon": "阅读网络漫画（瀑布流）",
+			"readingManga": "阅读方向（倒序）",
+			"readingWebtoon": "阅读网络漫画（条漫）",
 			"readingGlobal": "阅读全局",
 			"readingConfigNew": "新建配置",
 			"clipHorizontal": "水平裁切",
@@ -148,8 +148,8 @@
 			"integrated": "整体",
 			"ebookTheme": "电子书主题",
 			"fontSize": "字体大小",
-			"increaseFontSize": "",
-			"decreaseFontSize": "",
+			"increaseFontSize": "增加字体大小",
+			"decreaseFontSize": "减小字体大小",
 			"fontFamily": "字体系列",
 			"useEbookFont": "使用电子书字体",
 			"useEbookTheme": "使用电子书主题",
@@ -172,8 +172,8 @@
 			"text": "文本",
 			"links": "链接",
 			"background": "背景",
-			"perspective": "",
-			"angle": ""
+			"perspective": "看法",
+			"angle": "角度"
 		},
 		"magnifyingGlass": {
 			"main": "放大镜",
@@ -199,13 +199,13 @@
 		"music": {
 			"main": "音乐",
 			"volume": "卷",
-			"pageSoundEffect": "",
-			"adaptToAnimationSpeed": "",
+			"pageSoundEffect": "翻页音效",
+			"adaptToAnimationSpeed": "适应动画速度",
 			"soundEffect": {
-				"pageTurn": "",
-				"pageTurnAndNumber": "",
-				"otherSounds": "",
-				"otherSoundsAndNumber": ""
+				"pageTurn": "翻页",
+				"pageTurnAndNumber": "翻页 $1",
+				"otherSounds": "其他音效",
+				"otherSoundsAndNumber": "其他音效 $1"
 			}
 		},
 		"moreOptions": {
@@ -229,7 +229,7 @@
 			"moveZoomWithMouse": "使用鼠标移动缩放（禁用通过拖放移动）",
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
 			"goNextPrevChapterWithScroll": "使用鼠标滚动转到下一章/上一章（垂直阅读）",
-			"rotateHorizontalsAnticlockwise": "",
+			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
 		},
@@ -243,10 +243,10 @@
 			"upscalingDescription": "此方法仅在需要放大图像分辨率时使用，插值方法不适用于 PDF、EPUB 或动态图像。警告：锐利的方法在放大时可能会很慢"
 		},
 		"colorProfile": {
-			"main": "",
-			"force": "",
-			"forceDescription": "",
-			"default": ""
+			"main": "颜色配置",
+			"force": "强制颜色配置",
+			"forceDescription": "强制 OpenComic 使用特定颜色配置文件，而不是操作系统指定的窗口当前显示器的颜色。这需要重新启动应用程序",
+			"default": "默认"
 		},
 		"navigation": {
 			"main": "导航",
@@ -258,8 +258,8 @@
 			"useTheFirstImageAsPoster": "使用第一张图片作为海报（当前没有海报时）",
 			"showFullPathLibrary": "打开库时显示漫画完整路径",
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径",
-			"showLibraryPath": "",
-			"recentlyOpenedItems": ""
+			"showLibraryPath": "在标题路径中显示库、收藏夹、标签等",
+			"recentlyOpenedItems": "最近打开的要保存的项目数"
 		},
 		"startupBehavior": {
 			"main": "启动行为",
@@ -270,8 +270,8 @@
 		},
 		"theme": {
 			"systemNightMode": "当操作系统执行此操作时切换到夜间/明亮模式",
-			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeBlackBackground": "夜间模式中使用黑色作为背景",
+			"nightModeWhiteBlankPage": "夜间模式下空白页显示为白色"
 		},
 		"releases": {
 			"main": "检查新版本",
@@ -282,15 +282,15 @@
 			"main": "快捷键",
 			"keyboard": "键盘",
 			"whenReading": "阅读时",
-			"disableGamepadInput": "",
-			"contextMenu": "",
+			"disableGamepadInput": "禁用游戏手柄输入",
+			"contextMenu": "上下文菜单",
 			"gamepadMenu": "游戏手柄菜单",
 			"useGamepad": "使用游戏手柄来改变动作",
 			"restoreDefaults": "恢复默认值",
-			"gamepadDeadZone": "",
-			"screen": "",
-			"zoom": "",
-			"menus": "",
+			"gamepadDeadZone": "游戏手柄盲区",
+			"screen": "屏幕",
+			"zoom": "缩放",
+			"menus": "菜单",
 			"action": "动作",
 			"key1": "快捷键 1",
 			"key2": "快捷键 2",
@@ -301,10 +301,10 @@
 			"gamepad2": "按键 2"
 		},
 		"tapZones": {
-			"main": "",
-			"leftClick": "",
-			"rightClick": "",
-			"middleClick": ""
+			"main": "点击区域",
+			"leftClick": "左键单击",
+			"rightClick": "右键单击",
+			"middleClick": "单击鼠标中键"
 		},
 		"masterFolders": {
 			"main": "主文件夹",
@@ -361,10 +361,10 @@
 			"originalSize": "原始尺寸",
 			"zoomIn": "放大",
 			"zoomOut": "缩小",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
+			"zoomUp": "向上缩放",
+			"zoomDown": "向下缩放",
+			"zoomLeft": "向左缩放",
+			"zoomRight": "向右缩放",
 			"toggleFullScreen": "全屏"
 		},
 		"goto": {
@@ -489,11 +489,11 @@
 	"buttons": {
 		"cancel": "取消",
 		"ok": "确定",
-		"on": "",
-		"off": "",
+		"on": "开",
+		"off": "关",
 		"save": "保存",
 		"undo": "撤消",
-		"dismiss": "去除",
+		"dismiss": "屏除",
 		"remove": "删除",
 		"download": "下载",
 		"close": "关闭"

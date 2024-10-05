@@ -8,9 +8,9 @@ To create a new translation, you can create one from [empty.json](https://github
 
 https://winmerge.org/
 
-Don't forget to activate the language by editing the [`languagesList`](https://github.com/ollm/OpenComic/blob/master/languages/languagesList.json) file and adding `"active": true` to the language, if the language is not in the list you can add it.
+Don't forget to activate the language by editing the [`languagesList.json`](https://github.com/ollm/OpenComic/blob/master/languages/languagesList.json) file and adding `"active": true` to the language, if the language is not in the list you can add it.
 
-You can send a pull request with the new translated file, it is not necessary that the translation is complete.
+You can send a pull request or open a issue with the new translated file and the updated `languagesList.json`, it is not necessary that the translation is complete.
 
 The list of translators appears in the `About OpenComic` window.
 
@@ -20,7 +20,7 @@ To update a translation, get the current translated file and compare to other so
 
 If you consider it appropriate, you can add your data to the list of translators in the file. This data appears in the `About OpenComic` window.
 
-You can send a pull request with the new translated file, it is not necessary that the translation is complete.
+You can send a pull request or open a issue with the new translated file, it is not necessary that the translation is complete.
 
 ## Translation Status
 
@@ -166,7 +166,7 @@ OpenComic has translations into 17 languages.
 
 [zh-hans.json](https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json)
 
-`87.9% | Remain 51 | Translated 371`
+`100% | Remain 0 | Translated 422`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hans.svg" /></a>
 
