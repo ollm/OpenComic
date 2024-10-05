@@ -27,7 +27,7 @@ function openFileLocation()
 	const vars = getVars();
 
 	if(vars.pathIsFolder)
-		electron.shell.showItemInFolder(p.join(vars.currentPath, '.null'))
+		electron.shell.openPath(vars.currentPath)
 	else
 		electron.shell.showItemInFolder(fileManager.firstCompressedFile(vars.currentPath))
 }
@@ -121,7 +121,7 @@ function saveAllImages(index = false)
 				buttons: [
 					{
 						text: language.global.open,
-						function: 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(p.join(saveTo, '.null')), 'simples')+'\');',
+						function: 'electron.shell.openPath(\''+escapeQuotes(escapeBackSlash(saveTo), 'simples')+'\');',
 					},
 				],
 			});
