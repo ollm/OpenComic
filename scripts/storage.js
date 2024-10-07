@@ -13,7 +13,7 @@ var readingPagesConfig = {
 	},
 	readingViewSpeed: 0.3,
 	readingViewAdjustToWidth: false,
-	readingNotEnlargeMoreThanOriginalSize: false,
+	readingNotEnlargeMoreThanOriginalSize: true,
 	readingRotateHorizontals: false,
 	readingMargin: {
 		margin: 16,

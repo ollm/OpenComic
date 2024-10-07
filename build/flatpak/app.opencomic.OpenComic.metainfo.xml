@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>org.opencomic.app</id>
-    <launchable type="desktop-id">org.opencomic.app.desktop</launchable>
+    <id>app.opencomic.OpenComic</id>
+    <launchable type="desktop-id">app.opencomic.OpenComic.desktop</launchable>
     <name>OpenComic</name>
     <summary>Comic and Manga reader</summary>
     <metadata_license>CC0-1.0</metadata_license>

@@ -1,31 +1,32 @@
-app-id: org.opencomic.app
+app-id: app.opencomic.OpenComic
 runtime: org.freedesktop.Platform
-runtime-version: '22.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 base: org.electronjs.Electron2.BaseApp
-base-version: '22.08'
+base-version: '24.08'
 command: run.sh
 separate-locales: false
 finish-args:
-  - --device=dri
-  - --share=ipc
   - --socket=x11
   - --socket=pulseaudio
+  - --device=dri
   - --share=network
+  - --share=ipc
+  - --filesystem=host
 modules:
-  - name: opencomic
+  - name: OpenComic
     buildsystem: simple
     build-commands:
       - mkdir -p /app/main/
       - cp -r  * /app/main/
-      - install -D 16x16.png --target-directory=/app/share/icons/hicolor/16x16/apps/org.opencomic.app.png
-      - install -D 32x32.png --target-directory=/app/share/icons/hicolor/32x32/apps/org.opencomic.app.png
-      - install -D 48x48.png --target-directory=/app/share/icons/hicolor/48x48/apps/org.opencomic.app.png
-      - install -D 64x64.png --target-directory=/app/share/icons/hicolor/64x64/apps/org.opencomic.app.png
-      - install -D 128x128.png --target-directory=/app/share/icons/hicolor/128x128/apps/org.opencomic.app.png
-      - install -D 256x256.png --target-directory=/app/share/icons/hicolor/256x256/apps/org.opencomic.app.png
-      - install -D org.opencomic.app.metainfo.xml --target-directory=/app/share/metainfo/
-      - install -D org.opencomic.app.desktop --target-directory=/app/share/applications/
+      - install -D 16x16.png --target-directory=/app/share/icons/hicolor/16x16/apps/app.opencomic.OpenComic.png
+      - install -D 32x32.png --target-directory=/app/share/icons/hicolor/32x32/apps/app.opencomic.OpenComic.png
+      - install -D 48x48.png --target-directory=/app/share/icons/hicolor/48x48/apps/app.opencomic.OpenComic.png
+      - install -D 64x64.png --target-directory=/app/share/icons/hicolor/64x64/apps/app.opencomic.OpenComic.png
+      - install -D 128x128.png --target-directory=/app/share/icons/hicolor/128x128/apps/app.opencomic.OpenComic.png
+      - install -D 256x256.png --target-directory=/app/share/icons/hicolor/256x256/apps/app.opencomic.OpenComic.png
+      - install -D app.opencomic.OpenComic.metainfo.xml --target-directory=/app/share/metainfo/
+      - install -D app.opencomic.OpenComic.desktop --target-directory=/app/share/applications/
       - install -D run.sh --target-directory=/app/bin/
     sources:
       - type: archive
@@ -39,9 +40,9 @@ modules:
         only-arches:
           - aarch64
       - type: file
-        path: org.opencomic.app.desktop
+        path: app.opencomic.OpenComic.desktop
       - type: file
-        path: org.opencomic.app.metainfo.xml
+        path: app.opencomic.OpenComic.metainfo.xml
       - type: file
         path: 16x16.png
       - type: file
