@@ -65,6 +65,7 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 - [.deb](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic_1.3.1_amd64.deb)
 - [.rpm](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.x86_64.rpm)
 - [.7z](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.7z)
+- [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.tar.gz)
 - [.snap](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic_1.3.1_amd64.snap)
 - [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-x86_64.flatpak)
 - [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1.AppImage)
@@ -73,6 +74,7 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 - [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic_1.3.1_arm64.deb)
 - [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.aarch64.rpm)
 - [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1-arm64.7z)
+- [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1-arm64.tar.gz)
 - [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-aarch64.flatpak)
 - [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-arm64.AppImage)
 

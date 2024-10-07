@@ -61,7 +61,7 @@ function createWindow() {
 			backgroundThrottling: false,
 			nativeWindowOpen: false,
 		},
-		titleBarStyle: (process.platform == 'linux') ? 'native' : 'hidden',
+		titleBarStyle: (process.platform == 'linux' && !configInit.forceLinuxHiddenTitleBar) ? 'native' : 'hidden',
 		titleBarOverlay: {
 			color: '#242a3000',
 			symbolColor: '#c2c7cf',
@@ -69,7 +69,6 @@ function createWindow() {
 		},
 		trafficLightPosition: {x: 10, y: 7},
 		backgroundColor: '#242a30',
-		//icon: __dirname + '/icon.svg',
 	});
 
 	require("@electron/remote/main").enable(win.webContents)

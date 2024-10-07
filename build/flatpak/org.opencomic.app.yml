@@ -1,0 +1,60 @@
+app-id: org.opencomic.app
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '22.08'
+command: run.sh
+separate-locales: false
+finish-args:
+  - --device=dri
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --share=network
+modules:
+  - name: opencomic
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/main/
+      - cp -r  * /app/main/
+      - install -D 16x16.png --target-directory=/app/share/icons/hicolor/16x16/apps/org.opencomic.app.png
+      - install -D 32x32.png --target-directory=/app/share/icons/hicolor/32x32/apps/org.opencomic.app.png
+      - install -D 48x48.png --target-directory=/app/share/icons/hicolor/48x48/apps/org.opencomic.app.png
+      - install -D 64x64.png --target-directory=/app/share/icons/hicolor/64x64/apps/org.opencomic.app.png
+      - install -D 128x128.png --target-directory=/app/share/icons/hicolor/128x128/apps/org.opencomic.app.png
+      - install -D 256x256.png --target-directory=/app/share/icons/hicolor/256x256/apps/org.opencomic.app.png
+      - install -D org.opencomic.app.metainfo.xml --target-directory=/app/share/metainfo/
+      - install -D org.opencomic.app.desktop --target-directory=/app/share/applications/
+      - install -D run.sh --target-directory=/app/bin/
+    sources:
+      - type: archive
+        url: https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.tar.gz
+        sha256: 6bb0e222783cbf529ead024c7bcf30cdc0e83bdb074db38ed0ff9c21547e3a33
+        only-arches:
+          - x86_64
+      - type: archive
+        url: https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1-arm64.tar.gz
+        sha256: c4bbbb8dbabc7ca4af0417dedb3dc6c7eb2888a4c55b78974555725101db4412
+        only-arches:
+          - aarch64
+      - type: file
+        path: org.opencomic.app.desktop
+      - type: file
+        path: org.opencomic.app.metainfo.xml
+      - type: file
+        path: 16x16.png
+      - type: file
+        path: 32x32.png
+      - type: file
+        path: 48x48.png
+      - type: file
+        path: 64x64.png
+      - type: file
+        path: 128x128.png
+      - type: file
+        path: 256x256.png
+      - type: script
+        dest-filename: run.sh
+        commands:
+          - zypak-wrapper /app/main/opencomic "$@"

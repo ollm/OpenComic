@@ -882,8 +882,8 @@ function showAboutWindow()
 	var about = new electronRemote.BrowserWindow({
 		show: false,
 		title: language.menu.help.about,
-		width: 380,
-		height: 260,
+		width: 460,
+		height: 320,
 		minWidth: 380,
 		minHeight: 260,
 		//resizable: false,

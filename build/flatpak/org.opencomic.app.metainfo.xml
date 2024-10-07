@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>org.opencomic.app</id>
+    <launchable type="desktop-id">org.opencomic.app.desktop</launchable>
+    <name>OpenComic</name>
+    <summary>Comic and Manga reader</summary>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-only</project_license>
+    <developer id="dev.ollm">
+        <name>Oleguer Llopart</name>
+    </developer>
+    <description>
+        <p>OpenComic is a comic/manga reader, can also open PDF files and ebooks (epub) among other features.</p>
+    </description>
+    <url type="homepage">https://github.com/ollm/OpenComic</url>
+    <url type="bugtracker">https://github.com/ollm/OpenComic/issues</url>
+    <url type="help">https://github.com/ollm/OpenComic/issues</url>
+    <url type="translate">https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md/</url>
+    <url type="donation">https://github.com/ollm/OpenComic/blob/master/FUNDING.md</url>
+    <url type="vcs-browser">https://github.com/ollm/OpenComic</url>
+    <icon type="remote">https://raw.githubusercontent.com/ollm/OpenComic/master/images/icon-border-transparent.png</icon>
+    <screenshots>
+        <screenshot type="default">
+            <caption>OpenComic</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/main.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Colorize</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Colorize menu</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize-menu.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>eBook</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ebook.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>eBook menu</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ebook-menu.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Master folders</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/master-folders.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Shortcuts (Keyboard and Gamepad)</caption>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/shortcuts.png</image>
+        </screenshot>
+    </screenshots>
+    <content_rating type="oars-1.1"/>
+    <categories>
+        <category>Graphics</category>
+    </categories>
+    <branding>
+        <color type="primary" scheme_preference="light">#fde4e5</color>
+        <color type="primary" scheme_preference="dark">#fde4e5</color>
+    </branding>
+    <releases>
+        <release version="1.3.1" date="2024-10-05">
+            <description>
+                <p>Release to Flathub.</p>
+            </description>
+        </release>
+    </releases>
+</component>

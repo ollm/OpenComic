@@ -1,2 +1,5 @@
 *.provisionprofile
 node_gyp_bins
+
+# OSX
+.DS_Store

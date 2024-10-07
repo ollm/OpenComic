@@ -39,21 +39,15 @@ if(process.platform == 'darwin')
 else if(process.platform == 'linux')
 {	
 	// Node ZSTD All
-	exists('./node_modules/@toondepauw/node-zstd-linux-x64-musl/node-zstd.linux-x64-musl.node', fs.constants.R_OK);
 	exists('./node_modules/@toondepauw/node-zstd-linux-x64-gnu/node-zstd.linux-x64-gnu.node', fs.constants.R_OK);
-	exists('./node_modules/@toondepauw/node-zstd-linux-arm64-musl/node-zstd.linux-arm64-musl.node', fs.constants.R_OK);
 	exists('./node_modules/@toondepauw/node-zstd-linux-arm64-gnu/node-zstd.linux-arm64-gnu.node', fs.constants.R_OK);
 
 	// Sharp x64
-	exists('./node_modules/@img/sharp-libvips-linuxmusl-x64/lib/libvips-cpp.so.42', fs.constants.R_OK);
 	exists('./node_modules/@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.42', fs.constants.R_OK);
-	exists('./node_modules/@img/sharp-linuxmusl-x64/lib/sharp-linuxmusl-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/@img/sharp-linux-x64/lib/sharp-linux-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 	// Sharp arm64
-	exists('./node_modules/@img/sharp-libvips-linuxmusl-arm64/lib/libvips-cpp.so.42', fs.constants.R_OK);
 	exists('./node_modules/@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.42', fs.constants.R_OK, 'npm install --cpu=arm64 --os=linux --libc=glibc sharp');
-	exists('./node_modules/@img/sharp-linuxmusl-arm64/lib/sharp-linuxmusl-arm64.node', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/@img/sharp-linux-arm64/lib/sharp-linux-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=linux --libc=glibc sharp');
 
 	// 7zip
