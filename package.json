@@ -23,7 +23,7 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "npm run prebuild-start && electron scripts/main.js",
+		"start": "npm run prebuild-start && electron scripts/main.js --no-sandbox",
 		"test": "node scripts/test.js",
 		"rebuild": "electron-rebuild -f -w sharp",
 		"rebuild2": "electron-builder node-gyp-rebuild",
@@ -70,7 +70,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.664.0",
+		"@aws-sdk/client-s3": "^3.670.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -95,7 +95,7 @@
 		"node-7z": "^3.0.0",
 		"node-scp": "^0.0.23",
 		"node-unrar-js": "^2.0.2",
-		"pdfjs-dist": "^4.6.82",
+		"pdfjs-dist": "^4.7.76",
 		"sanitize-html": "^2.13.1",
 		"sha1": "^1.1.1",
 		"sharp": "^0.33.5",
@@ -107,9 +107,9 @@
 		"webdav": "^5.7.1"
 	},
 	"devDependencies": {
-		"@electron/rebuild": "^3.6.2",
-		"electron": "^31.6.0",
-		"electron-builder": "^25.1.7",
+		"@electron/rebuild": "^3.7.0",
+		"electron": "^32.2.0",
+		"electron-builder": "^26.0.0-alpha.1",
 		"node-abi": "^3.68.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.1.7"

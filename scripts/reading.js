@@ -4713,7 +4713,16 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		if(onReading && isLoaded)
 		{
-			if(e.originalEvent.ctrlKey || !readingViewIs('scroll'))
+			if(config.readingTurnPagesWithMouseWheel && !e.originalEvent.ctrlKey && !readingViewIs('scroll'))
+			{
+				e.preventDefault();
+				
+				if(e.originalEvent.wheelDelta / 120 > 0)
+					reading.goPrev();
+				else
+					reading.goNext();
+			}
+			else if(e.originalEvent.ctrlKey || !readingViewIs('scroll'))
 			{
 				e.preventDefault();
 
