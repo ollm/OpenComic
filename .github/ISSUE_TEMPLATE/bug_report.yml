@@ -27,6 +27,13 @@ body:
     placeholder: "e.g. Windows 10 version 1909, macOS Catalina 10.15.7, or Ubuntu 20.04"
   validations:
     required: true
+- type: input
+  attributes:
+    label: Installed via
+    description: How did you install OpenComic?.
+    placeholder: ".exe, .portable.exe, .deb, .pkg, etc or like Windows Store, macOS, etc"
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: Steps to reproduce

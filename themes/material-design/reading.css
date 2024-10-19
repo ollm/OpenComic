@@ -180,6 +180,7 @@
 	left: 0px;
 	top: 0px;
 	background-color: var(--md-sys-color-background);
+	transition: background-color 0.2s;
 	z-index: 0;
 	content-visibility: hidden;
 }
