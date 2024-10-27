@@ -200,7 +200,7 @@
 			"main": "Musica",
 			"volume": "Volume",
 			"pageSoundEffect": "Effetto sonoro giramento pagina",
-			"adaptToAnimationSpeed": "Effetto sonoro giramento pagina",
+			"adaptToAnimationSpeed": "Adatta alla velocità di animazione",
 			"soundEffect": {
 				"pageTurn": "Giramento pagina",
 				"pageTurnAndNumber": "Giramento pagina $1",
