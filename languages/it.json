@@ -50,9 +50,9 @@
 			"setAsPoster": "Imposta immagine come poster",
 			"setAsPosterFolders": "Imposta immagine come poster di un'altra cartella",
 			"posterSetSuccessfully": "L'immagine è stata impostata come poster con successo",
-			"saveImage": "",
-			"saveAllImages": "",
-			"saveImagesMessage": "",
+			"saveImage": "Salva immagine",
+			"saveAllImages": "Salva tutte le immagini",
+			"saveImagesMessage": "Le immagini sono state salvate con successo",
 			"closeApp": "Chiudi OpenComic"
 		},
 		"back": "Indietro",
@@ -77,7 +77,7 @@
 	"comics": {
 		"continueReading": "Continua a leggere",
 		"continueReadingNotExists": "Il file salvato per continua a leggere non esiste",
-		"recentlyAdded": "",
+		"recentlyAdded": "Aggiunti di recente",
 		"emptyIndex": "Non ci sono fumetti in questa libreria",
 		"emptyFolder": "Non ci sono file compatibili in questa cartella",
 		"emptyRecentlyOpened": "Nessun file aperto recentemente",
@@ -105,8 +105,8 @@
 			"colorFilters": "Filtri colori",
 			"slide": "Slide",
 			"scroll": "Scorrimento verticale",
-			"roughPageTurn": "Sfogliamento pagina",
-			"smoothPageTurn": "Sfogliamento pagina lisco",
+			"roughPageTurn": "Giramento pagina",
+			"smoothPageTurn": "Giramento pagina lisco",
 			"fade": "Svanimento pagina",
 			"adjustToWidth": "Regola per larghezza",
 			"notEnlargeMoreThanOriginalSize": "Non ingrandire più della dimensione originale",
@@ -172,8 +172,8 @@
 			"text": "Testo",
 			"links": "Link",
 			"background": "Sfondo",
-			"perspective": "",
-			"angle": ""
+			"perspective": "Prospettiva",
+			"angle": "Angolo"
 		},
 		"magnifyingGlass": {
 			"main": "Lente d'ingrandimento",
@@ -199,13 +199,13 @@
 		"music": {
 			"main": "Musica",
 			"volume": "Volume",
-			"pageSoundEffect": "",
-			"adaptToAnimationSpeed": "",
+			"pageSoundEffect": "Effetto sonoro giramento pagina",
+			"adaptToAnimationSpeed": "Effetto sonoro giramento pagina",
 			"soundEffect": {
-				"pageTurn": "",
-				"pageTurnAndNumber": "",
-				"otherSounds": "",
-				"otherSoundsAndNumber": ""
+				"pageTurn": "Giramento pagina",
+				"pageTurnAndNumber": "Giramento pagina $1",
+				"otherSounds": "Altri effetti sonori",
+				"otherSoundsAndNumber": "Altri effetti sonori $1"
 			}
 		},
 		"moreOptions": {
@@ -229,7 +229,7 @@
 			"moveZoomWithMouse": "Sposta zoom tramite cursore (Disabilita movimento tramite drag e drop)",
 			"scrollWithMouse": "Scrolla spostando il cursore lungo i bordi dello schermo (Disabilita scrollamento tramite drag e drop)",
 			"goNextPrevChapterWithScroll": "Passa al capitolo precedente/successivo con la rotella del mouse (Scorrimento)",
-			"turnPagesWithMouseWheel": "",
+			"turnPagesWithMouseWheel": "Gira pagina con la rotella del mouse",
 			"rotateHorizontalsAnticlockwise": "Ruota immagini orizzontali, ma in senso antiorario",
 			"startReadingInFullScreen": "Inizia a leggere a schermo intero",
 			"trackingAtTheEnd": "Tracking a fine capitolo/volume"
@@ -260,7 +260,7 @@
 			"showFullPathLibrary": "Mostra percorso intero quando apri la libreria dei fumetti",
 			"showFullPathOpened": "Mostra percorso intero quando apri un file o una cartella",
 			"showLibraryPath": "Mostra percorso libreria nella barra superiore",
-			"recentlyOpenedItems": ""
+			"recentlyOpenedItems": "Numero di elementi da salvare negli Aggiunti di recente"
 		},
 		"startupBehavior": {
 			"main": "Comportamento all'avvio",
