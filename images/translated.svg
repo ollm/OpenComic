@@ -15,7 +15,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="124" transform="rotate(-90)">HU</text>
 		<rect style="fill: #f6664c;" height="33.75886524822695" width="6" rx="2" y="106.24113475177305" x="118" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="142" transform="rotate(-90)">IT</text>
-		<rect style="fill: #2eccaa;" height="135.36643026004728" width="6" rx="2" y="4.633569739952719" x="136" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="136" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="160" transform="rotate(-90)">JA</text>
 		<rect style="fill: #f6664c;" height="33.75886524822695" width="6" rx="2" y="106.24113475177305" x="154" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="178" transform="rotate(-90)">KO</text>
