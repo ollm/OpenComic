@@ -6,8 +6,6 @@ If you want to see OpenComic in your language, please help us to Translate.
 
 To create a new translation, you can create one from [empty.json](https://github.com/ollm/OpenComic/blob/master/languages/empty.json) file and compare to other translations (Preferably [English](https://github.com/ollm/OpenComic/blob/master/languages/en.json) or [Spanish](https://github.com/ollm/OpenComic/blob/master/languages/es.json)) using some diff app like [Meld](https://meld.app/), [WinMerge](https://winmerge.org/) or webs like [Mergely](https://editor.mergely.com/) (Or any other method that you prefer).
 
-https://winmerge.org/
-
 Don't forget to activate the language by editing the [`languagesList.json`](https://github.com/ollm/OpenComic/blob/master/languages/languagesList.json) file and adding `"active": true` to the language, if the language is not in the list you can add it.
 
 You can send a pull request or open a issue with the new translated file and the updated `languagesList.json`, it is not necessary that the translation is complete.
