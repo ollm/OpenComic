@@ -108,8 +108,8 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.7.0",
-		"electron": "^32.2.0",
-		"electron-builder": "^26.0.0-alpha.1",
+		"electron": "^31.6.0",
+		"electron-builder": "^25.1.8",
 		"node-abi": "^3.68.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.1.7"
