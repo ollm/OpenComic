@@ -43,20 +43,33 @@ function setMenu(_menu)
 	if(process.platform == 'darwin') // Keep native menu in macOS
 		_menu = [];
 
+	let menu = [];
+
 	for(let i = 0, len = _menu.length; i < len; i++)
 	{
 		let m = _menu[i];
+		let submenus = [];
 
 		for(let i2 = 0, len2 = m.submenu.length; i2 < len2; i2++)
 		{
 			let submenu = m.submenu[i2];
 
-			submenu.enabled = submenu.enabled === undefined ? true : submenu.enabled;
-			submenu.shortcut = submenu.accelerator ? submenu.accelerator.replace(/CmdOrCtrl/iu, cmdOrCtrl).replace(/Plus/iu, '+') : false;
+			if(submenu.visible || submenu.visible === undefined)
+			{
+				submenus.push({
+					...submenu,
+					enabled: submenu.enabled === undefined ? true : submenu.enabled,
+					shortcut: submenu.accelerator ? submenu.accelerator.replace(/CmdOrCtrl/iu, cmdOrCtrl).replace(/Plus/iu, '+') : false,
+				});
+			}
 		}
+
+		menu.push({
+			...m,
+			submenu: submenus,
+		});
 	}
 
-	menu = _menu;
 	handlebarsContext.titleBarMenu = menu;
 
 	let titleBar = document.querySelector('.title-bar');
