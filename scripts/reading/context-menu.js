@@ -132,14 +132,14 @@ function saveAllImages(index = false)
 	saveImages(toSave, String(highestPage).length);
 }
 
-function saveBookmarksImages()
+function saveBookmarksImages(loadBookmarks = false)
 {
-	saveAllBookmarksImages(true);
+	saveAllBookmarksImages(loadBookmarks, true);
 }
 
-function saveAllBookmarksImages(onlyCurrent = false)
+function saveAllBookmarksImages(loadBookmarks = false, onlyCurrent = false)
 {
-	reading.loadBookmarks();
+	if(loadBookmarks) reading.loadBookmarks();
 	const bookmarks = handlebarsContext.bookmarks;
 
 	const toSave = [];
