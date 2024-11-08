@@ -5386,6 +5386,7 @@ module.exports = {
 	read: read,
 	images: function(){return images},
 	imagesNum: imagesNum,
+	indexNum: function(){return indexNum},
 	contentNum: function(){return contentNum},
 	imagesNumLoad: imagesNumLoad,
 	imagesData: function(){return imagesData},

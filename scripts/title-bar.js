@@ -43,7 +43,7 @@ function setMenu(_menu)
 	if(process.platform == 'darwin') // Keep native menu in macOS
 		_menu = [];
 
-	let menu = [];
+	menu = [];
 
 	for(let i = 0, len = _menu.length; i < len; i++)
 	{

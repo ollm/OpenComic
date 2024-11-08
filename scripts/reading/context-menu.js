@@ -82,6 +82,12 @@ function saveAllImages(index = false)
 	const images = reading.images();
 	const imagesData = reading.imagesData();
 
+	if(index !== false)
+	{
+		if(_config.readingManga && !reading.readingViewIs('scroll'))
+			index = (reading.indexNum() - index) - 1;
+	}
+
 	electronRemote.dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save}).then(async function(files) {
 
 		if(files.filePaths && files.filePaths[0] && fs.statSync(files.filePaths[0]).isDirectory())
