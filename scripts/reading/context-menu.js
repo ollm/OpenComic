@@ -115,6 +115,7 @@ function saveAllImages(index = false)
 			index = (reading.indexNum() - index) - 1;
 	}
 
+	const currentTime = new Date();
 	const saveDialog = macosMAS ? saveDialogDirectory : saveDialogFile;
 
 	saveDialog(async function(saveTo, fileName){
@@ -150,7 +151,10 @@ function saveAllImages(index = false)
 				if(first === '') first = saveImageTo;
 
 				if(!fs.existsSync(saveImageTo))
+				{
 					fs.copyFileSync(realPath, saveImageTo);
+					fs.utimes(saveImageTo, currentTime, currentTime, function(){});
+				}
 			}
 		}
 
