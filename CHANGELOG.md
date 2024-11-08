@@ -8,19 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Turn pages with mouse wheel
+- Turn pages with mouse wheel [`f164068`](https://github.com/ollm/OpenComic/commit/f16406851b7adee7609004c95d4a0fec25f2f025)
+- Custom name in image saving function [`4b01440`](https://github.com/ollm/OpenComic/commit/4b01440b70b52e10c3cbcb37f1379081242c523f)
+- Option to save bookmarked images
+
+##### 🐛 Bug Fixes
+
+- Save image not saving the correct page in manga mode [`b14a26e`](https://github.com/ollm/OpenComic/commit/b14a26eacdc77d37cdeb578fc203438058c7c5e2)
 
 ## [v1.3.1](https://github.com/ollm/OpenComic/releases/tag/v1.3.1) (05-10-2024)
-
-##### 🚀 New Features
-
-- Custom name in image saving function [`4b01440`](https://github.com/ollm/OpenComic/commit/4b01440b70b52e10c3cbcb37f1379081242c523f)
 
 ##### 🐛 Bug Fixes
 
 - Dependency file-type not working [`7730e46`](https://github.com/ollm/OpenComic/commit/7730e46c8eb9e43196e50bd557f03132968eb534)
 - Open file location not working in some cases [`a4bc25b`](https://github.com/ollm/OpenComic/commit/a4bc25b3005c097a7852a96c8c41fd866b28ed1c)
-- Save image not saving the correct page in manga mode [`b14a26e`](https://github.com/ollm/OpenComic/commit/b14a26eacdc77d37cdeb578fc203438058c7c5e2)
 
 ## [v1.3.0](https://github.com/ollm/OpenComic/releases/tag/v1.3.0) (04-10-2024)
 

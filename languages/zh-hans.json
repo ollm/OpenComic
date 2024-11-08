@@ -52,6 +52,8 @@
 			"posterSetSuccessfully": "该图片已设置为封面",
 			"saveImage": "保存图片",
 			"saveAllImages": "保存所有图片",
+			"saveBookmarksImages": "",
+			"saveAllBookmarksImages": "",
 			"saveImagesMessage": "图片已成功保存",
 			"closeApp": "关闭 OpenComic"
 		},

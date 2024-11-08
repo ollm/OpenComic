@@ -52,6 +52,8 @@
 			"posterSetSuccessfully": "La imatge s'ha establert com a pòster",
 			"saveImage": "Guardar imatge",
 			"saveAllImages": "Guardar totes les imatges",
+			"saveBookmarksImages": "Guardar les imatges marcades actuals",
+			"saveAllBookmarksImages": "Guardar totes les imatges marcades",
 			"saveImagesMessage": "S'han guardat correctament les imatges",
 			"closeApp": "Tancar OpenComic"
 		},

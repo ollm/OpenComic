@@ -20,6 +20,16 @@
 		{{else}}
 			<div class="menu-simple-text">{{language.reading.emptyBookmarks}}</div>
 		{{/each}}
+		{{#if bookmarksSaveImages}}
+			<div class="bookmarks-buttons">
+				<div class="simple-button filled-tonal gamepad-item" onclick="reading.contextMenu.saveBookmarksImages();">
+					<div class="touch-effect"><i class="icon-24 material-icon">book</i>{{language.global.contextMenu.saveBookmarksImages}}</div>
+				</div>
+				<div class="simple-button filled-tonal gamepad-item" onclick="reading.contextMenu.saveAllBookmarksImages();">
+					<div class="touch-effect"><i class="icon-24 material-icon">collections_bookmark</i>{{language.global.contextMenu.saveAllBookmarksImages}}</div>
+				</div>
+			</div>
+		{{/if}}
 	</div>
 {{#unless bookmarksChild}}
 </div>

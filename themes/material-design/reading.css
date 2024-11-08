@@ -499,6 +499,21 @@
 	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
+/* Bookmarks  */
+.bookmarks-buttons
+{
+	padding: 16px 24px 12px 24px;
+	display: flex;
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
+}
+
+.bookmarks-buttons > div
+{
+	margin-left: 8px;
+	margin-bottom: 8px;
+}
+
 /* Tracking */
 
 .tracking-search
@@ -662,7 +677,7 @@
 
 .filters-buttons
 {
-	padding: 16px 24px 16px 24px;
+	padding: 16px 24px 12px 24px;
 	display: flex;
 	flex-direction: row-reverse;
 	flex-wrap: wrap;

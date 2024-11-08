@@ -52,6 +52,8 @@
 			"posterSetSuccessfully": "L'immagine è stata impostata come poster con successo",
 			"saveImage": "Salva immagine",
 			"saveAllImages": "Salva tutte le immagini",
+			"saveBookmarksImages": "",
+			"saveAllBookmarksImages": "",
 			"saveImagesMessage": "Le immagini sono state salvate con successo",
 			"closeApp": "Chiudi OpenComic"
 		},

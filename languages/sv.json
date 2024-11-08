@@ -52,6 +52,8 @@
 			"posterSetSuccessfully": "",
 			"saveImage": "",
 			"saveAllImages": "",
+			"saveBookmarksImages": "",
+			"saveAllBookmarksImages": "",
 			"saveImagesMessage": "",
 			"closeApp": "Stäng OpenComic"
 		},

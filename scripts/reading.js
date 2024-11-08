@@ -3604,6 +3604,7 @@ function loadBookmarks(bookmarksChild = false)
 
 	handlebarsContext.bookmarks = bookmarks;
 	handlebarsContext.bookmarksChild = bookmarksChild;
+	handlebarsContext.bookmarksSaveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
 
 	dom.query(!bookmarksChild ? '#collections-bookmark .menu-simple' : '#collections-bookmark .menu-simple > div').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }

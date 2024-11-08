@@ -52,6 +52,8 @@
 			"posterSetSuccessfully": "La imagen se ha establecido como póster",
 			"saveImage": "Guardar imagen",
 			"saveAllImages": "Guardar todas las imágenes",
+			"saveBookmarksImages": "Guardar las imágenes marcadas actuales",
+			"saveAllBookmarksImages": "Guardar todas las imágenes marcadas",
 			"saveImagesMessage": "Se han guardado correctamente las imágenes",
 			"closeApp": "Cerrar OpenComic"
 		},

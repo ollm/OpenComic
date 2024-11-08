@@ -2,7 +2,7 @@
 function show(gamepad = false)
 {
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
-	dom.queryAll('.separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
+	dom.queryAll('.separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
 
 	if(gamepad)
 		events.activeMenu('#reading-context-menu', false, 'gamepad');
@@ -71,12 +71,6 @@ function setAsPosterFolders()
 	dom.poster.setAsPosterFolders(image, dom.indexMainPathA());
 }
 
-function saveImage()
-{
-	const currentIndex = reading.currentIndex();
-	saveAllImages(currentIndex - 1);
-}
-
 function generateFileName(path, page, leadingZeros, fileName)
 {
 	// Parent folder name
@@ -104,6 +98,12 @@ function generateFileName(path, page, leadingZeros, fileName)
 	return fileName;
 }
 
+function saveImage()
+{
+	const currentIndex = reading.currentIndex();
+	saveAllImages(currentIndex - 1);
+}
+
 function saveAllImages(index = false)
 {
 	const images = reading.images();
@@ -115,26 +115,64 @@ function saveAllImages(index = false)
 			index = (reading.indexNum() - index) - 1;
 	}
 
+	const toSave = [];
+	let highestPage = 0;
+
+	for(let key in images)
+	{
+		const path = images[key].path;
+
+		if(index === false || index == imagesData[key].position)
+			toSave.push({path: path, page: key});
+
+		if(+key > highestPage)
+			highestPage = +key;
+	}
+
+	saveImages(toSave, String(highestPage).length);
+}
+
+function saveBookmarksImages()
+{
+	saveAllBookmarksImages(true);
+}
+
+function saveAllBookmarksImages(onlyCurrent = false)
+{
+	reading.loadBookmarks();
+	const bookmarks = handlebarsContext.bookmarks;
+
+	const toSave = [];
+	let highestPage = 0;
+
+	for(let i = 0, len = bookmarks.length; i < len; i++)
+	{
+		const folder = bookmarks[i];
+
+		if((!onlyCurrent || folder.current) && !folder.continueReading)
+		{
+			for(let i = 0, len = folder.bookmarks.length; i < len; i++)
+			{
+				const bookmark = folder.bookmarks[i];
+
+				toSave.push({path: bookmark.path, page: bookmark.index});
+
+				if(bookmark.index > highestPage)
+					highestPage = bookmark.index;
+			}
+		}
+	}
+
+	saveImages(toSave, String(highestPage).length);
+}
+
+function saveImages(toSave = [], leadingZeros = 3)
+{
 	const currentTime = new Date();
 	const saveDialog = macosMAS ? saveDialogDirectory : saveDialogFile;
 
 	saveDialog(async function(saveTo, fileName){
 
-		const toSave = [];
-		let highestPage = 0;
-
-		for(let key in images)
-		{
-			const path = images[key].path;
-
-			if(index === false || index == imagesData[key].position)
-				toSave.push({path: path, page: key});
-
-			if(+key > highestPage)
-				highestPage = +key;
-		}
-
-		const leadingZeros = String(highestPage).length;
 		let first = '';
 
 		if(toSave.length)
@@ -156,19 +194,23 @@ function saveAllImages(index = false)
 					fs.utimes(saveImageTo, currentTime, currentTime, function(){});
 				}
 			}
+		
+			events.snackbar({
+				key: 'saveAllImages',
+				text: language.global.contextMenu.saveImagesMessage,
+				duration: 6,
+				buttons: [
+					{
+						text: language.global.open,
+						function: 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(first), 'simples')+'\');',
+					},
+				],
+			});
 		}
-
-		events.snackbar({
-			key: 'saveAllImages',
-			text: language.global.contextMenu.saveImagesMessage,
-			duration: 6,
-			buttons: [
-				{
-					text: language.global.open,
-					function: 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(first), 'simples')+'\');',
-				},
-			],
-		});
+		else
+		{
+			console.error('No images to save');
+		}
 
 	});
 }
@@ -201,4 +243,6 @@ module.exports = {
 	setAsPosterFolders: setAsPosterFolders,
 	saveImage: saveImage,
 	saveAllImages: saveAllImages,
+	saveBookmarksImages: saveBookmarksImages,
+	saveAllBookmarksImages: saveAllBookmarksImages,
 };
