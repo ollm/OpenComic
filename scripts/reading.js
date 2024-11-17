@@ -4600,7 +4600,7 @@ function mousedown(event)
 {
 	if(haveZoom)
 	{
-		if((!config.readingMoveZoomWithMouse || !(event instanceof MouseEvent)) || (readingViewIs('scroll') && !config.readingScrollWithMouse))
+		if(((!config.readingMoveZoomWithMouse || !(event instanceof MouseEvent)) || (readingViewIs('scroll') && !config.readingScrollWithMouse)) && event.button == 0)
 		{
 			if(!(event instanceof TouchEvent))
 				event.preventDefault();

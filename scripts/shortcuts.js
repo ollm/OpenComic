@@ -29,7 +29,7 @@ function inputIsFocused()
 
 function clickTapZone(event, button)
 {
-	if(reading.abortClick(event))
+	if(reading.abortClick(event) && button != 'rightClick')
 		return false;
 
 	const contentRight = template._contentRight();

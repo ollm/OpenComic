@@ -10,11 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Turn pages with mouse wheel [`f164068`](https://github.com/ollm/OpenComic/commit/f16406851b7adee7609004c95d4a0fec25f2f025)
 - Custom name in image saving function [`4b01440`](https://github.com/ollm/OpenComic/commit/4b01440b70b52e10c3cbcb37f1379081242c523f)
-- Option to save bookmarked images
+- Option to save bookmarked images [`7def9ec`](https://github.com/ollm/OpenComic/commit/7def9eca58ceb24fb3444a3daf3ed81178a13fd1)
 
 ##### 🐛 Bug Fixes
 
 - Save image not saving the correct page in manga mode [`b14a26e`](https://github.com/ollm/OpenComic/commit/b14a26eacdc77d37cdeb578fc203438058c7c5e2)
+- Sometimes right click on reading fails
 
 ## [v1.3.1](https://github.com/ollm/OpenComic/releases/tag/v1.3.1) (05-10-2024)
 
