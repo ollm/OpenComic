@@ -138,7 +138,7 @@ If you want to see OpenComic in your language, please help us to [Translate](htt
 	<img src="https://opencollective.com/opencomic/tiers/sponsor.svg?width=830"></a>
 </a>
 
-<!-- ## GitHub Sponsors -->
+## GitHub Sponsors
 
 <!-- sponsors --><!-- sponsors -->
 
