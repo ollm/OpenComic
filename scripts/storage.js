@@ -149,7 +149,7 @@ var storageDefault = {
 		readingImageInterpolationMethodDownscaling: 'lanczos3',
 		readingImageInterpolationMethodUpscaling: 'chromium',
 		readingMusic: {
-			play: true,
+			play: false,
 			volume: 1.0,
 		},
 		controllerDeadZone: 0.1,
