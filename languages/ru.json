@@ -18,7 +18,7 @@
 			"nameNumber": "По названию/номер",
 			"lastAdd": "По последнему добавленному",
 			"lastReading": "По последнему читавшему",
-			"lastOpened": "",
+			"lastOpened": "По последнему открытию",
 			"foldersFirst": "Сначала папки",
 			"invert": "Инвертировать"
 		},
@@ -112,7 +112,7 @@
 			"fade": "Затухание",
 			"adjustToWidth": "Отрегулировать по ширине",
 			"notEnlargeMoreThanOriginalSize": "Не увеличивать больше оригинального размера",
-			"rotateHorizontals": "",
+			"rotateHorizontals": "Поворачивать горизонтальные",
 			"margin": "Края",
 			"marginHorizontal": "Горизонтальный край",
 			"marginVertical": "Вертикальный край",
@@ -361,13 +361,13 @@
 		"view": {
 			"main": "Вид",
 			"resetZoom": "Сбросить масштаб",
-			"originalSize": "",
+			"originalSize": "Оригинальный размер",
 			"zoomIn": "Приблизить",
 			"zoomOut": "Отдалить",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
+			"zoomUp": "Масштаб вверх",
+			"zoomDown": "Масштаб вниз",
+			"zoomLeft": "Масштаб влево",
+			"zoomRight": "Масштаб вправо",
 			"toggleFullScreen": "На весь экран"
 		},
 		"goto": {
@@ -382,8 +382,8 @@
 		"help": {
 			"main": "Помощь",
 			"about": "О OpenComic",
-			"funding": "",
-			"bug": ""
+			"funding": "Поддержать проект",
+			"bug": "Сообщить об ошибке"
 		}
 	},
 	"dialog": {
