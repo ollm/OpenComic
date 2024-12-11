@@ -931,7 +931,7 @@
 	width: 50% !important;
 	left: 50% !important;
 	max-width: 640px;
-	transform: translateY(-50%) translateX(-50%) !important;
+	transform: translateY(-50%) translateX(-50%) !important; /*! Keep this line */
 	transform: translateY(round(-50%, 1px)) translateX(round(-50%, 1px)) !important;
 	padding: 0px;
 	border-radius: 24px;

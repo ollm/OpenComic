@@ -20,60 +20,82 @@ async function resize(fromImage, toImage, config = {})
 		if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
 			return reject({});
 
-		sharp(fromImage, {failOn: 'none'}).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
-		
-			if(error && /unsupported image format/iu.test(error?.message || ''))
-			{
-				if(!imageMagick) imageMagick = require('gm').subClass({imageMagick: true});
+		_resize(fromImage, toImage, config, resolve, reject);
 
-				imageMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, function(error){
+	});
+}
 
-					if(error)
-					{
-						if(!graphicsMagick) graphicsMagick = require('gm').subClass({imageMagick: false});
+async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 0)
+{
+	let options = {}
 
-						graphicsMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, async function(error){
+	if(deep > 3)
+		options = {failOn: 'none'};
 
-							if(error)
+	sharp(fromImage, options).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
+
+		if(error && /unsupported image format/iu.test(error?.message || ''))
+		{
+			if(!imageMagick) imageMagick = require('gm').subClass({imageMagick: true});
+
+			imageMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, function(error){
+
+				if(error)
+				{
+					if(!graphicsMagick) graphicsMagick = require('gm').subClass({imageMagick: false});
+
+					graphicsMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, async function(error){
+
+						if(error)
+						{
+							if(jimp === false) jimp = require('jimp').Jimp;
+
+							try
 							{
-								if(jimp === false) jimp = require('jimp').Jimp;
+								const jimpImage = await jimp.read(fromImage);
+								await jimpImage.resize({w: config.width}).write(toImage, {quality: config.quality});
 
-								try
-								{
-									const jimpImage = await jimp.read(fromImage);
-									await jimpImage.resize({w: config.width}).write(toImage, {quality: config.quality});
-
-									resolve(toImage);
-								}
-								catch(error)
-								{
-									reject(error);
-								}
-							}
-							else
-							{
 								resolve(toImage);
 							}
-						});
+							catch(error)
+							{
+								reject(error);
+							}
+						}
+						else
+						{
+							resolve(toImage);
+						}
+					});
 
-					}
-					else
-					{
-						resolve(toImage);
-					}
-				});
-			}
-			else if(error)
+				}
+				else
+				{
+					resolve(toImage);
+				}
+			});
+		}
+		else if(error)
+		{
+			if(deep > 3)
 			{
 				console.error(fromImage, error);
 				reject(error);
 			}
 			else
 			{
-				resolve(toImage);
-			}
-		});
+				deep++;
 
+				console.error('Error: '+(deep > 3 ? 'Trying once more' : 'Trying again')+' in '+(100 * deep)+'ms'+(deep > 3 ? ' with failOn: none' : '')+' | '+fromImage, error);
+
+				await app.sleep(100 * deep);
+				_resize(fromImage, toImage, config, resolve, reject, deep);
+			}
+		}
+		else
+		{
+			resolve(toImage);
+		}
 	});
 }
 
