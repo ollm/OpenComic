@@ -86,7 +86,10 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 			{
 				deep++;
 
-				console.error('Error: '+(deep > 3 ? 'Trying once more' : 'Trying again')+' in '+(100 * deep)+'ms'+(deep > 3 ? ' with failOn: none' : '')+' | '+fromImage, error);
+				if(deep > 3)
+					console.warn('Warning: Trying once more in '+(100 * deep)+'ms with failOn: none | '+fromImage, error);
+				else
+					console.log('Log: Trying again in '+(100 * deep)+'ms | '+fromImage, error);
 
 				await app.sleep(100 * deep);
 				_resize(fromImage, toImage, config, resolve, reject, deep);
