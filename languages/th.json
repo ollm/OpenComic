@@ -35,9 +35,9 @@
 			"paste": "วาง",
 			"selectAll": "เลือกทั้งหมด",
 			"remove": "นำออก",
-			"moveToTrash": "",
-			"deletePermanently": "",
-			"deletePermanentlyConfirm": "",
+			"moveToTrash": "ย้ายไปถังขยะ",
+			"deletePermanently": "ลบอย่างถาวร",
+			"deletePermanentlyConfirm": "คุณต้องการลบไฟล์นี้อย่างถาวรจริงหรือไม่? การกระทำนี้ไม่สามารถยกเลิกได้",
 			"favorite": "เรื่องที่ชอบ",
 			"openFileLocation": "เปิดตำแหน่งไฟล์",
 			"openFolderLocation": "เปิดตำแหน่งโฟลเดอร์",
@@ -47,19 +47,19 @@
 			"deletePoster": "ลบปก",
 			"cannotAddPoster": "ไม่สามารถเพิ่มรูปภาพปกกรณีที่โฟลเดอร์อยู่ในไฟล์บีบอัดได้ คุณจะต้องแก้ไขไฟล์โดยใช้ 7-zip, unrar เป็นต้น",
 			"cannotDeletePoster": "ไม่สามารถนำรูปภาพปกกรณีที่โฟลเดอร์อยู่ในไฟล์บีบอัดออกได้ คุณจะต้องแก้ไขไฟล์โดยใช้ 7-zip, unrar เป็นต้น",
-			"setAsPoster": "",
-			"setAsPosterFolders": "",
-			"posterSetSuccessfully": "",
-			"saveImage": "",
-			"saveAllImages": "",
-			"saveBookmarksImages": "",
-			"saveAllBookmarksImages": "",
-			"saveImagesMessage": "",
+			"setAsPoster": "ตั้งรูปเป็นรูปปก",
+			"setAsPosterFolders": "ตั้งรูปเป็นรูปปกของโฟลเดอร์อื่น",
+			"posterSetSuccessfully": "รูปถูกตั้งเป็นรูปปกแล้ว",
+			"saveImage": "จัดเก็บรูป",
+			"saveAllImages": "จัดเก็บรูปทั้งหมด",
+			"saveBookmarksImages": "จัดเก็บรูปจากคลังปัจจุบัน",
+			"saveAllBookmarksImages": "จัดเก็บรูปจากคลังทั้งหมด",
+			"saveImagesMessage": "จัดเก็บรูปทั้งหมดเสร็จสิ้น",
 			"closeApp": "ปิด OpenComic"
 		},
 		"back": "กลับ",
-		"goBack": "",
-		"goForwards": "",
+		"goBack": "ย้อนกลับ",
+		"goForwards": "ไปข้างหน้า",
 		"open": "เปิด",
 		"add": "เพิ่ม",
 		"addToLibrary": "เพิ่มไปห้องสมุด",
@@ -79,7 +79,7 @@
 	"comics": {
 		"continueReading": "อ่านต่อ",
 		"continueReadingNotExists": "ไม่พบไฟล์ที่บันทึกในการอ่านต่ออยู่อีกต่อไป",
-		"recentlyAdded": "",
+		"recentlyAdded": "ที่เพิ่มล่าสุด",
 		"emptyIndex": "ไม่มีคอมมิกส์ในห้องสมุด",
 		"emptyFolder": "ไม่มีไฟล์ที่รองรับในโฟลเดอร์นี้",
 		"emptyRecentlyOpened": "ไม่มีไฟล์ที่เปิดล่าสุด",
@@ -107,12 +107,12 @@
 			"colorFilters": "ฟิลเตอร์สี",
 			"slide": "อ่านแบบเลื่อนข้าง",
 			"scroll": "อ่านแบบเลื่อนลง",
-			"roughPageTurn": "",
-			"smoothPageTurn": "",
-			"fade": "",
+			"roughPageTurn": "พลิกหน้า",
+			"smoothPageTurn": "พลิกหน้าอย่างลื่นไหล",
+			"fade": "จางหาย",
 			"adjustToWidth": "ปรับตามความกว้าง",
 			"notEnlargeMoreThanOriginalSize": "ห้ามขยายเกินขนาดดั้งเดิม",
-			"rotateHorizontals": "",
+			"rotateHorizontals": "หมุนแนวนอน",
 			"margin": "ระยะขอบ",
 			"marginHorizontal": "ขอบแนวนอน",
 			"marginVertical": "ขอบแนวตั้ง",
@@ -150,8 +150,8 @@
 			"integrated": "ผนวกรวม",
 			"ebookTheme": "ธีมอีบุ๊ก",
 			"fontSize": "ขนาดอักษร",
-			"increaseFontSize": "",
-			"decreaseFontSize": "",
+			"increaseFontSize": "เพิ่มขนาดอักษร",
+			"decreaseFontSize": "ลดขนาดอักษร",
 			"fontFamily": "แบบอักษร",
 			"useEbookFont": "ใช้แบบอักษรจากอีบุ๊ก",
 			"useEbookTheme": "ใช้ธีมจากอีบุ๊ก",
@@ -174,8 +174,8 @@
 			"text": "ข้อความ",
 			"links": "ลิ้งก์",
 			"background": "พื้นหลัง",
-			"perspective": "",
-			"angle": ""
+			"perspective": "มุมการมอง",
+			"angle": "มุม"
 		},
 		"magnifyingGlass": {
 			"main": "แว่นขยาย",
@@ -201,13 +201,13 @@
 		"music": {
 			"main": "เพลง",
 			"volume": "ระดับเสียง",
-			"pageSoundEffect": "",
-			"adaptToAnimationSpeed": "",
+			"pageSoundEffect": "เอฟเฟกต์เสียงพลิกหน้า",
+			"adaptToAnimationSpeed": "ปรับให้เข้ากับความเร็วการเคลื่อนไหว",
 			"soundEffect": {
-				"pageTurn": "",
-				"pageTurnAndNumber": "",
-				"otherSounds": "",
-				"otherSoundsAndNumber": ""
+				"pageTurn": "พลิกหน้า",
+				"pageTurnAndNumber": "พลิกหน้า $1",
+				"otherSounds": "เสียงอื่น",
+				"otherSoundsAndNumber": "เสียงอื่น $1"
 			}
 		},
 		"moreOptions": {
@@ -231,8 +231,8 @@
 			"moveZoomWithMouse": "ย้ายซูมโดยใช้เคอร์เซอร์ (ปิดการย้ายโดยลากวาง)",
 			"scrollWithMouse": "เลื่อนโดยย้ายเคอร์เซอร์ไปตามขอบจอ (ปิดการเลื่อนแบบลากและวาง)",
 			"goNextPrevChapterWithScroll": "ไปตอนถัดไป / ก่อนหน้าด้านการเลื่อนเม้าส์ (การอ่านแนวตั้ง)",
-			"turnPagesWithMouseWheel": "",
-			"rotateHorizontalsAnticlockwise": "",
+			"turnPagesWithMouseWheel": "พลิกหน้าด้วยล้อเลื่อนเม้าส์ (ซูมเมื่อกด Ctrl ค้างไว้เท่านั้น)",
+			"rotateHorizontalsAnticlockwise": "เมื่อหมุนรูปแนวนอนให้ทำแบบทวนเข็มนาฬิกา",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
 		},
@@ -246,10 +246,10 @@
 			"upscalingDescription": "วิธีนี้จะใช้เมื่อต้องการเพิ่มความละเอียดของรูปภาพเท่านั้น ซึ่งวิธีการปรับปรุงรูปภาพจะไม่สามารถใช้ได้กับ PDF และ EPUB หรือรูปภาพเคลื่อนไหว คำเตือน: วิธีเพิ่มความคมชัดอาจทำให้การขยายช้าลง"
 		},
 		"colorProfile": {
-			"main": "",
-			"force": "",
-			"forceDescription": "",
-			"default": ""
+			"main": "โปรไฟล์สี",
+			"force": "บังคับใช้โปรไฟล์สี",
+			"forceDescription": "บังคับให้ OpenComic ใช้โปรไฟล์สีเฉพาะแทนสีของหน้าจอมอนิเตอร์ปัจจุบันของหน้าต่างตามที่ระบบปฏิบัติการกำหนด ซึ่งจำเป็นต้องรีสตาร์ทแอป",
+			"default": "ค่าพื้นฐาน"
 		},
 		"navigation": {
 			"main": "การนำทาง",
@@ -261,8 +261,8 @@
 			"useTheFirstImageAsPoster": "ใช้ภาพแรกเป็นภาพปก (กรณีที่ที่อยู่ปัจจุบันไม่ม่)",
 			"showFullPathLibrary": "แสดงที่ตั้งแบบเต็มเมื่อเปิดห้องสมุดคอมมิกส์",
 			"showFullPathOpened": "แสดงที่ตั้งแบบเต็มเมื่อเปิดไฟล์หรือโฟลเดอร์",
-			"showLibraryPath": "",
-			"recentlyOpenedItems": ""
+			"showLibraryPath": "แสดงเส้นทางห้องสมุด เรื่องที่ชอบ ป้ายกำกับ และอื่น ๆ บนส่วนหัว",
+			"recentlyOpenedItems": "จำนวนรายการที่จัดเก็บในรายการที่เปิดล่าสุด"
 		},
 		"startupBehavior": {
 			"main": "การกระทำเมื่อเริ่มต้น",
@@ -273,8 +273,8 @@
 		},
 		"theme": {
 			"systemNightMode": "สลับโหมดกลางวัน/กลางคืนตามระบบ",
-			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeBlackBackground": "ใช้สีดำเป็นพื้นหลังเมื่อใช้โหมดกลางคืน",
+			"nightModeWhiteBlankPage": "แสดงหน้าว่างสีขาวในโหมดกลางคืน"
 		},
 		"releases": {
 			"main": "ตรวจหาเวอร์ชั่นใหม่",
@@ -285,15 +285,15 @@
 			"main": "ทางลัด",
 			"keyboard": "คีย์บอร์ด",
 			"whenReading": "เมื่ออ่าน",
-			"disableGamepadInput": "",
-			"contextMenu": "",
+			"disableGamepadInput": "ปิดใช้งานการป้อนข้อมูลจากเกมแพด",
+			"contextMenu": "เมนูบริบท",
 			"gamepadMenu": "เมนูเกมแพด",
 			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
 			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
-			"gamepadDeadZone": "",
-			"screen": "",
-			"zoom": "",
-			"menus": "",
+			"gamepadDeadZone": "ระยะเฉยของเกมแพด",
+			"screen": "หน้าจอ",
+			"zoom": "ขยาย",
+			"menus": "เมนู",
 			"action": "การกระทำ",
 			"key1": "คีย์ 1",
 			"key2": "คีย์ 2",
@@ -304,10 +304,10 @@
 			"gamepad2": "ปุ่ม 2"
 		},
 		"tapZones": {
-			"main": "",
-			"leftClick": "",
-			"rightClick": "",
-			"middleClick": ""
+			"main": "โซนแตะ",
+			"leftClick": "คลิกซ้าย",
+			"rightClick": "คลิกขวา",
+			"middleClick": "คลิกกลาง"
 		},
 		"masterFolders": {
 			"main": "โฟลเดอร์ตั้งต้น",
@@ -364,10 +364,10 @@
 			"originalSize": "ขนาดเดิม",
 			"zoomIn": "ซูมเข้า",
 			"zoomOut": "ซูมออก",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
+			"zoomUp": "ซูมขึ้น",
+			"zoomDown": "ซูมลง",
+			"zoomLeft": "ซูมซ้าย",
+			"zoomRight": "ซูมขวา",
 			"toggleFullScreen": "เต็มจอ"
 		},
 		"goto": {
@@ -492,8 +492,8 @@
 	"buttons": {
 		"cancel": "ยกเลิก",
 		"ok": "ตกลง",
-		"on": "",
-		"off": "",
+		"on": "เปิด",
+		"off": "ปิด",
 		"save": "จัดเก็บ",
 		"undo": "ย้อนกลับ",
 		"dismiss": "ปิด",
