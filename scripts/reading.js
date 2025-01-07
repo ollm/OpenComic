@@ -5265,7 +5265,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	readingFile = fileManager.file();
 	readingFileC = false;
 
-	render.setOnRender((readingDoublePage() ? 2 : 1), function(){
+	render.setOnRender((readingDoublePage() && imagesNum > 1 ? 2 : 1), function(){
 
 		const contentRight = template._contentRight();
 
