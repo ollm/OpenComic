@@ -90,6 +90,14 @@ function getColor(percentage)
 		return '#f6664c';
 }
 
+function round(number, precision = 0) {
+
+	multipler = Math.pow(10, precision);
+
+	return Math.round(number * multipler) / multipler;
+
+}
+
 function generateGraph()
 {
 	let languagesSVG = '';
@@ -101,10 +109,10 @@ function generateGraph()
 		{
 			const percentage = languagesPercentage[key].percentage;
 			const color = getColor(percentage);
-			const height = percentage * 1.4;
+			const height = round(percentage * 1.4, 1);
 
 			languagesSVG += '		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="'+(index * 18 + 16)+'" transform="rotate(-90)">'+key.replace(/\.json/, '').toUpperCase()+'</text>\n';
-			languagesSVG += '		<rect style="fill: '+color+';" height="'+height+'" width="6" rx="2" y="'+(140 - height)+'" x="'+(index * 18 + 10)+'" />\n';
+			languagesSVG += '		<rect style="fill: '+color+';" height="'+height+'" width="6" rx="2" y="'+round(140 - height, 1)+'" x="'+(index * 18 + 10)+'" />\n';
 
 			index++;
 		}
@@ -134,7 +142,7 @@ function generateMD()
 		if(key !== 'empty.json')
 		{
 			const lang = key.replace(/\.json/, '');
-			const percentage = Math.round(languagesPercentage[key].percentage * 10) / 10;
+			const percentage = round(languagesPercentage[key].percentage, 1);
 			const color = getColor(percentage);
 
 			markdown += '### '+languagesList[lang].nativeName+'\n\n['+key+'](https://github.com/ollm/OpenComic/blob/master/languages/'+key+')\n\n`'+percentage+'% | Remain '+(languagesPercentage[key].total - languagesPercentage[key].translated)+' | Translated '+languagesPercentage[key].translated+'`\n\n';
@@ -142,7 +150,7 @@ function generateMD()
 
 			let svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="830" height="10">\n	<g>';
 			svg += '\n		<rect style="fill: #ddd;" height="10" width="830" rx="4" y="0" x="0" />';
-			svg += '\n		<rect style="fill: '+color+';" height="10" width="'+(percentage * 8.3)+'" rx="4" y="0" x="0" />';
+			svg += '\n		<rect style="fill: '+color+';" height="10" width="'+round(percentage * 8.3, 1)+'" rx="4" y="0" x="0" />';
 			svg += '\n	</g>\n</svg>';
 
 			fs.writeFileSync('./images/translated/'+lang+'.svg', svg);

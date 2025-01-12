@@ -5,6 +5,8 @@ function start()
 	handlebarsContext.readingImageInterpolationMethodDownscaling = getInterpolationMethodName(config.readingImageInterpolationMethodDownscaling);
 	handlebarsContext.readingImageInterpolationMethodUpscaling = getInterpolationMethodName(config.readingImageInterpolationMethodUpscaling);
 	handlebarsContext.readingColorProfile = getColorProfileName(configInit.forceColorProfile);
+	handlebarsContext.openingBehaviorFolder = getOpeningBehaviorName(config.openingBehaviorFolder);
+	handlebarsContext.openingBehaviorFile = getOpeningBehaviorName(config.openingBehaviorFile);
 }
 
 function startSecond()
@@ -748,6 +750,7 @@ function changeTapZone(y, x, This)
 		tapZone[button] = {
 			button: button,
 			name: list.reading.actions[action].name.replace(/\<br\s*\/?\>/, ' | '),
+			action: action,
 		};
 	}
 
@@ -797,10 +800,12 @@ function getTapZoneActions(button)
 		const action = list.reading.actionsOrder[key];
 		const data = list.reading.actions[action];
 
+		console.log(currentTapZone.tapZone[button], button, action);
+
 		actions.push({
 			key: action,
-			name: data.name,
-			select: (currentTapZone.tapZone[button] == action ? true : false),
+			name: data.name.replace(/\<br\s*\/?\>/, ' | '),
+			select: (currentTapZone.tapZone[button].action == action ? true : false),
 		});
 	}
 
@@ -1002,6 +1007,82 @@ function getColorProfileName(key = '')
 		return app.capitalize(key);
 }
 
+function getOpeningBehavior(folder = false)
+{
+	const current = folder ? config.openingBehaviorFolder : config.openingBehaviorFile;
+
+	let items = [
+		{
+			text: 'File list',
+		},
+		{
+			key: 'file-list',
+			name: 'File list',
+		},
+		{
+			text: 'Only in last folder (Has no subfolders)',
+		},
+		{
+			key: 'first-page-last',
+			name: 'First page (Last folder)',
+		},
+		{
+			key: 'continue-reading-last',
+			name: 'Continue reading (Last folder)',
+		},
+		{
+			key: 'continue-reading-first-page-last',
+			name: 'Continue reading or first page (Last folder)',
+		},
+		{
+			text: 'Any folder',
+		},
+		{
+			key: 'first-page',
+			name: 'First page',
+		},
+		{
+			key: 'continue-reading',
+			name: 'Continue reading',
+		},
+		{
+			key: 'continue-reading-first-page',
+			name: 'Continue reading or first page',
+		},
+	];
+
+	for(let i = 0, len = items.length; i < len; i++)
+	{
+		const item = items[i];
+		if(item.text) continue;
+
+		item.function = 'settings.set(\''+(folder ? 'openingBehaviorFolder' : 'openingBehaviorFile')+'\', \''+item.key+'\');';
+		item.select = item.key == current ? true : false;
+	}
+
+	handlebarsContext.menu = {
+		items: items,
+	};
+
+	document.querySelector('#menu-simple-element .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
+}
+
+function getOpeningBehaviorName(key = '')
+{
+	let names = {
+		'': 'File list',
+		'file-list': 'File list',
+		'first-page-last': 'First page (Last folder)',
+		'continue-reading-last': 'Continue reading (Last folder)',
+		'continue-reading-first-page-last': 'Continue reading or first page (Last folder)',
+		'first-page': 'First page',
+		'continue-reading': 'Continue reading',
+		'continue-reading-first-page': 'Continue reading or first page',
+	};
+
+	return names[key];
+}
+
 function setMaxMargin(value, save = false)
 {
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
@@ -1096,21 +1177,15 @@ function set(key, value, save = true)
 {
 	switch (key)
 	{
-		case 'whenOpenFolderFirstImageOrContinueReading':
+		case 'openingBehaviorFolder':
 
-			if(!value)
-				dom.queryAll('.settings-when-open-folder-continue-reading').removeClass('disable-pointer');
-			else
-				dom.queryAll('.settings-when-open-folder-continue-reading').addClass('disable-pointer');
+			dom.queryAll('.settings-opening-behavior-folder .text').html(getOpeningBehaviorName(value));
 
 			break;
 
-		case 'whenOpenFileFirstImageOrContinueReading':
+		case 'openingBehaviorFile':
 
-			if(!value)
-				dom.queryAll('.settings-when-open-file-continue-reading').removeClass('disable-pointer');
-			else
-				dom.queryAll('.settings-when-open-file-continue-reading').addClass('disable-pointer');
+			dom.queryAll('.settings-opening-behavior-file .text').html(getOpeningBehaviorName(value));
 
 			break;
 
@@ -1185,6 +1260,7 @@ module.exports = {
 	showOnLibrary: showOnLibrary,
 	getImageInterpolationMethods: getImageInterpolationMethods,
 	getColorProfiles: getColorProfiles,
+	getOpeningBehavior: getOpeningBehavior,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,

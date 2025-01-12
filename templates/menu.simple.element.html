@@ -1,0 +1,13 @@
+<div>
+	{{#each menu.items}}
+		{{#if text}}
+		<div class="menu-simple-text-small menu-simple-text-grey">
+			<span>{{text}}</span>
+		</div>
+		{{else}}
+		<div class="menu-simple-element menu-simple-element-padding-left gamepad-item{{#if select}} s{{/if}}" onclick="{{function}} events.hideSelect(true);">
+			<span>{{name}}</span>
+		</div>
+		{{/if}}
+	{{/each}}
+</div>

@@ -75,6 +75,14 @@ function fixEpubWrongFilenames(data)
 	return data;
 }
 
+function migrateOpeningBehavior(data)
+{
+	data.config.openingBehaviorFolder = data.config.whenOpenFolderFirstImageOrContinueReading ? 'continue-reading-first-page' : (data.config.whenOpenFolderContinueReading ? 'continue-reading' : 'file-list');
+	data.config.openingBehaviorFile = data.config.whenOpenFileFirstImageOrContinueReading ? 'continue-reading-first-page' : (data.config.whenOpenFileContinueReading ? 'continue-reading' : 'file-list');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -86,6 +94,9 @@ function start(data)
 		data = fixEpubWrongFilenames(data);
 	else if(changes < 79)
 		removeJsonCache();
+
+	if(changes < 92) // Change the old opening behavior setting
+		data = migrateOpeningBehavior(data);
 
 	return data;
 }

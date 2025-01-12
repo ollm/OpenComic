@@ -5,7 +5,7 @@
 			<span>{{text}}</span>
 		</div>
 		{{else}}
-		<div class="menu-interpolation-method--{{key}} menu-simple-element menu-simple-element-padding-left gamepad-item{{#if select}} s{{/if}}" onclick="settings.setInit('forceColorProfile', '{{key}}'); events.hideSelect(true);">
+		<div class="menu-simple-element menu-simple-element-padding-left gamepad-item{{#if select}} s{{/if}}" onclick="settings.setInit('forceColorProfile', '{{key}}'); events.hideSelect(true);">
 			<span>{{name}}</span>
 		</div>
 		{{/if}}

@@ -721,31 +721,60 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let readingProgress = _readingProgress[mainPath] || false;
 		let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
 
-		let isCompressed = fileManager.isCompressed(path);
+		// const isCompressed = fileManager.isCompressed(fileManager.firstCompressedFile(path));
+		const isCompressed = fileManager.isCompressed(path);
+		const openingBehavior = isCompressed ? config.openingBehaviorFile : config.openingBehaviorFolder;
 
-		let openContinueReading = false;
-		let openFirstImage = ((!isCompressed && config.whenOpenFolderFirstImageOrContinueReading) || (isCompressed && config.whenOpenFileFirstImageOrContinueReading)) ? true : false;
+		const lastFolder = ['first-page-last', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
+		let openFirstPage = ['first-page', 'continue-reading-first-page', 'first-page-last', 'continue-reading-first-page-last'].includes(openingBehavior);
+		let openContinueReading = ['continue-reading', 'continue-reading-first-page', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
 
-		if((config.whenOpenFolderContinueReading || config.whenOpenFileContinueReading || config.whenOpenFolderFirstImageOrContinueReading || config.whenOpenFileFirstImageOrContinueReading) && !fromGoBack && !notAutomaticBrowsing && readingProgress)
+		if(openContinueReading && !fromGoBack && !notAutomaticBrowsing && readingProgress)
 		{
-			let isParentPath = fileManager.isParentPath(path, readingProgress.path);
+			const isParentPath = fileManager.isParentPath(path, readingProgress.path);
 
 			if(isParentPath || readingProgressCurrentPath)
 			{
 				if(!isParentPath && readingProgressCurrentPath)
 					readingProgress = readingProgressCurrentPath;
-
-				if((!isCompressed && (config.whenOpenFolderContinueReading || config.whenOpenFolderFirstImageOrContinueReading)))
-					openContinueReading = true;
-				else if((isCompressed && (config.whenOpenFileContinueReading || config.whenOpenFileFirstImageOrContinueReading)))
-					openContinueReading = true;
+			}
+			else
+			{
+				openContinueReading = false;
 			}
 
 			if(openContinueReading && !fileManager.simpleExists(readingProgress.path))
 				openContinueReading = false;
 		}
+		else
+		{
+			openContinueReading = false;
+		}
 
-		let file = fileManager.file(path);
+		const file = fileManager.file(path);
+		let indexData = false;
+
+		if(lastFolder)
+		{
+			indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+
+			let hasFolder = false;
+
+			for(let i = 0, len = indexData.files.length; i < len; i++)
+			{
+				if(indexData.files[i].folder || indexData.files[i].compressed)
+				{
+					hasFolder = true;
+					break;
+				}
+			}
+
+			if(hasFolder)
+			{
+				openFirstPage = false;
+				openContinueReading = false;
+			}
+		}
 
 		if(openContinueReading && !fromGoBack && !notAutomaticBrowsing)
 		{
@@ -761,7 +790,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			return;
 		}
-		else if(openFirstImage && !fromGoBack && !notAutomaticBrowsing)
+		else if(openFirstPage && !fromGoBack && !notAutomaticBrowsing)
 		{
 			let first;
 
@@ -790,7 +819,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			}
 		}
 
-		let indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
+		if(indexData === false) indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath);
 		file.destroy();
 
 		// Avoid continue if another loadIndexPage has been run
@@ -1428,7 +1457,7 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 	}
 }
 
-/* Page - Settings */
+/* Page - Recently Opened */
 
 function loadRecentlyOpened(animation = true)
 {
