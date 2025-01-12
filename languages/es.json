@@ -260,6 +260,13 @@
 			"openingBehaviorFolderDescription": "Establece el comportamiento deseado al abrir carpetas durante la navegación",
 			"openingBehaviorFile": "Comportamiento al abrir archivos",
 			"openingBehaviorFileDescription": "Establece el comportamiento deseado al abrir archivos durante la navegación",
+			"openingBehavior": {
+				"fileList": "Lista de archivos",
+				"lastFolder": "Última carpeta",
+				"onlyLastFolder": "Solo en la última carpeta (No tiene subcarpetas)",
+				"anyFolder": "Cualquier carpeta",
+				"continueReadingOrFirstPage": "Continuar leyendo o primera página"
+			},
 			"useTheFirstImageAsPoster": "Utilizar la primera imagen como póster (Solo si no hay ninguno actualmente)",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los cómics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta",

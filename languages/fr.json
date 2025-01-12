@@ -260,6 +260,13 @@
 			"openingBehaviorFolderDescription": "",
 			"openingBehaviorFile": "",
 			"openingBehaviorFileDescription": "",
+			"openingBehavior": {
+				"fileList": "",
+				"lastFolder": "",
+				"onlyLastFolder": "",
+				"anyFolder": "",
+				"continueReadingOrFirstPage": ""
+			},
 			"useTheFirstImageAsPoster": "Utiliser la première image comme affiche",
 			"showFullPathLibrary": "Afficher le chemin complet de la bibliothèque",
 			"showFullPathOpened": "Afficher le chemin complet ouvert",

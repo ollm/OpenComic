@@ -1137,7 +1137,7 @@ function calculateRealReadingDirection(index)
 }
 
 //Go to a specific comic index
-function goToIndex(index, animation = true, nextPrevious = false, end = false)
+function goToIndex(index, animation = true, nextPrevious = false, end = false, direction = 0)
 {
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 	let animationDurationMS = animationDurationS * 1000;
@@ -1257,6 +1257,8 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		let largerImage = returnLargerImage(eIndex-1);
 		let scrollTop = (largerImage.top - rect.top) + content.scrollTop;
 
+		console.log(largerImage.top, rect.top);
+
 		let scrollSum = 0;
 
 		if((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && pageVisibilityIndex !== false)
@@ -1274,6 +1276,8 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 				scrollSum = ((contentHeight - contentHeightRes) - contentHeight / pageVisibility) * pageVisibilityIndex;
 			}		
 		}
+
+		console.log(content.scrollTop, scrollTop, scrollSum);
 
 		clearTimeout(disableOnScrollST);
 
@@ -1380,7 +1384,7 @@ function goNext()
 	}
 	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
-		goToIndex(nextIndex, true, true);
+		goToIndex(nextIndex, true, true, false, 1);
 		music.soundEffect.page();
 	}
 	else if(currentIndex == indexNum && dom.nextComic() && (!_config.readingManga || readingViewIs('scroll')))
@@ -1408,7 +1412,7 @@ function goPrevious()
 	}
 	else if(previousIndex > 0 || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
 	{
-		goToIndex(previousIndex, true, true);
+		goToIndex(previousIndex, true, true, false, -1);
 		music.soundEffect.page();
 	}
 	else if(previousIndex == 0 && dom.previousComic() && (!_config.readingManga || readingViewIs('scroll')))

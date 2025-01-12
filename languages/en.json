@@ -260,6 +260,13 @@
 			"openingBehaviorFolderDescription": "Sets the desired behavior when opening folders while navigation",
 			"openingBehaviorFile": "Behavior when opening files",
 			"openingBehaviorFileDescription": "Sets the desired behavior when opening files while navigation",
+			"openingBehavior": {
+				"fileList": "File list",
+				"lastFolder": "Last folder",
+				"onlyLastFolder": "Only in last folder (Has no subfolders)",
+				"anyFolder": "Any folder",
+				"continueReadingOrFirstPage": "Continue reading or first page"
+			},
 			"useTheFirstImageAsPoster": "Use the first image as a poster (Only if there is none currently)",
 			"showFullPathLibrary": "Show full path when opening library comics",
 			"showFullPathOpened": "Show full path when opening a file or folder",

@@ -260,6 +260,13 @@
 			"openingBehaviorFolderDescription": "",
 			"openingBehaviorFile": "",
 			"openingBehaviorFileDescription": "",
+			"openingBehavior": {
+				"fileList": "",
+				"lastFolder": "",
+				"onlyLastFolder": "",
+				"anyFolder": "",
+				"continueReadingOrFirstPage": ""
+			},
 			"useTheFirstImageAsPoster": "Использовать первое изображение как обложку",
 			"showFullPathLibrary": "Показывать полный путь в библиотеке",
 			"showFullPathOpened": "Показывать полный путь при открытии",

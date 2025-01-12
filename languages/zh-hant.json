@@ -260,6 +260,13 @@
 			"openingBehaviorFolderDescription": "",
 			"openingBehaviorFile": "",
 			"openingBehaviorFileDescription": "",
+			"openingBehavior": {
+				"fileList": "",
+				"lastFolder": "",
+				"onlyLastFolder": "",
+				"anyFolder": "",
+				"continueReadingOrFirstPage": ""
+			},
 			"useTheFirstImageAsPoster": "",
 			"showFullPathLibrary": "",
 			"showFullPathOpened": "",

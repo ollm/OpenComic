@@ -1010,44 +1010,45 @@ function getColorProfileName(key = '')
 function getOpeningBehavior(folder = false)
 {
 	const current = folder ? config.openingBehaviorFolder : config.openingBehaviorFile;
+	const lang = language.settings.navigation.openingBehavior;
 
 	let items = [
 		{
-			text: 'File list',
+			text: lang.fileList,
 		},
 		{
 			key: 'file-list',
-			name: 'File list',
+			name: lang.fileList,
 		},
 		{
-			text: 'Only in last folder (Has no subfolders)',
+			text: lang.onlyLastFolder,
 		},
 		{
 			key: 'first-page-last',
-			name: 'First page (Last folder)',
+			name: language.reading.firstPage+' ('+lang.lastFolder+')',
 		},
 		{
 			key: 'continue-reading-last',
-			name: 'Continue reading (Last folder)',
+			name: language.comics.continueReading+' ('+lang.lastFolder+')',
 		},
 		{
 			key: 'continue-reading-first-page-last',
-			name: 'Continue reading or first page (Last folder)',
+			name: lang.continueReadingOrFirstPage+' ('+lang.lastFolder+')',
 		},
 		{
-			text: 'Any folder',
+			text: lang.anyFolder,
 		},
 		{
 			key: 'first-page',
-			name: 'First page',
+			name: language.reading.firstPage,
 		},
 		{
 			key: 'continue-reading',
-			name: 'Continue reading',
+			name: language.comics.continueReading,
 		},
 		{
 			key: 'continue-reading-first-page',
-			name: 'Continue reading or first page',
+			name: lang.continueReadingOrFirstPage,
 		},
 	];
 
@@ -1069,15 +1070,17 @@ function getOpeningBehavior(folder = false)
 
 function getOpeningBehaviorName(key = '')
 {
+	const lang = language.settings.navigation.openingBehavior;
+
 	let names = {
-		'': 'File list',
-		'file-list': 'File list',
-		'first-page-last': 'First page (Last folder)',
-		'continue-reading-last': 'Continue reading (Last folder)',
-		'continue-reading-first-page-last': 'Continue reading or first page (Last folder)',
-		'first-page': 'First page',
-		'continue-reading': 'Continue reading',
-		'continue-reading-first-page': 'Continue reading or first page',
+		'': lang.fileList,
+		'file-list': lang.fileList,
+		'first-page-last': language.reading.firstPage+' ('+lang.lastFolder+')',
+		'continue-reading-last': language.comics.continueReading+' ('+lang.lastFolder+')',
+		'continue-reading-first-page-last': lang.continueReadingOrFirstPage+' ('+lang.lastFolder+')',
+		'first-page': language.reading.firstPage,
+		'continue-reading': language.comics.continueReading,
+		'continue-reading-first-page': lang.continueReadingOrFirstPage,
 	};
 
 	return names[key];

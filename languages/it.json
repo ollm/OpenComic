@@ -260,6 +260,13 @@
 			"openingBehaviorFolderDescription": "",
 			"openingBehaviorFile": "",
 			"openingBehaviorFileDescription": "",
+			"openingBehavior": {
+				"fileList": "",
+				"lastFolder": "",
+				"onlyLastFolder": "",
+				"anyFolder": "",
+				"continueReadingOrFirstPage": ""
+			},
 			"useTheFirstImageAsPoster": "Usa prima immagine come poster (Solo se non c'è nessuna attualmente)",
 			"showFullPathLibrary": "Mostra percorso intero quando apri la libreria dei fumetti",
 			"showFullPathOpened": "Mostra percorso intero quando apri un file o una cartella",
