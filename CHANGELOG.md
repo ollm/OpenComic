@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Custom name in image saving function [`4b01440`](https://github.com/ollm/OpenComic/commit/4b01440b70b52e10c3cbcb37f1379081242c523f)
 - Option to save bookmarked images [`7def9ec`](https://github.com/ollm/OpenComic/commit/7def9eca58ceb24fb3444a3daf3ed81178a13fd1)
 - Improved opening behavior options for files and folders [`07ee1f5`](https://github.com/ollm/OpenComic/commit/07ee1f5007576016a709e45d4649319129f75911)
-- Make the Ignore single folders option work for images too
+- Make the Ignore single folders option work for images too [`cc9f9c7`](https://github.com/ollm/OpenComic/commit/cc9f9c727ec11b1a12fd4c8dac90506f7e01b378)
 
 ##### 🐛 Bug Fixes
 
