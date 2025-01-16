@@ -4,7 +4,7 @@ runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 base: org.electronjs.Electron2.BaseApp
 base-version: '24.08'
-command: opencomic
+command: run.sh
 separate-locales: false
 finish-args:
   - --socket=x11
@@ -22,25 +22,28 @@ modules:
       - install -Dm0644 ${FLATPAK_ID}.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/${FLATPAK_ID}.png
       - install -Dm0644 ${FLATPAK_ID}.metainfo.xml --target-directory=${FLATPAK_DEST}/share/metainfo/
       - install -Dm0644 ${FLATPAK_ID}.desktop --target-directory=${FLATPAK_DEST}/share/applications/
-      - install -Dm0755 opencomic --target-directory=${FLATPAK_DEST}/bin/
+      - install -Dm0755 run.sh --target-directory=${FLATPAK_DEST}/bin/
     sources:
       - type: archive
-        url: https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.flathub.tar.gz
-        sha256: 32dc17d0e73646962d6927816ffbbefe8aa80cdb803c1fda165f770162f0b64c
+        url: https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.tar.gz
+        sha256: 6bb0e222783cbf529ead024c7bcf30cdc0e83bdb074db38ed0ff9c21547e3a33
         only-arches:
           - x86_64
       - type: archive
-        url: https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.flathub-arm64.tar.gz
-        sha256: 9b164c33ed989321c60bd0781febb51d2d5329e4574a2a6e85697cc5b83245ff
+        url: https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1-arm64.tar.gz
+        sha256: c4bbbb8dbabc7ca4af0417dedb3dc6c7eb2888a4c55b78974555725101db4412
         only-arches:
           - aarch64
       - type: file
-        path: app.opencomic.OpenComic.desktop
+        url: https://raw.githubusercontent.com/ollm/OpenComic/c1a9583dbb503f85343b6f78a6e76fbdd0480697/build/flatpak/app.opencomic.OpenComic.desktop
+        sha256: 8b3d0e7508929309ade925b3db25c26150af4b3af716b6568fcca89d95b3f97c
       - type: file
-        path: app.opencomic.OpenComic.metainfo.xml
+        url: https://raw.githubusercontent.com/ollm/OpenComic/c1a9583dbb503f85343b6f78a6e76fbdd0480697/build/flatpak/app.opencomic.OpenComic.metainfo.xml
+        sha256: fcb6086001d62d9b05cc260baa1b00ee6ae3bdf6fbd08c6a3394288bc3cb787d
       - type: file
-        path: app.opencomic.OpenComic.png
+        url: https://raw.githubusercontent.com/ollm/OpenComic/c1a9583dbb503f85343b6f78a6e76fbdd0480697/build/flatpak/app.opencomic.OpenComic.png
+        sha256: 6736412d20cc5e24599ad0a07fc668d27d577d7f271e8916de110a5b9c75a679
       - type: script
-        dest-filename: opencomic
+        dest-filename: run.sh
         commands:
           - zypak-wrapper /app/main/opencomic "$@"
