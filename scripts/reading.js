@@ -1421,14 +1421,11 @@ function goNext()
 	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
 		if(_config.readingWebtoon)
-		{
 			goScrollPercent(70, true);
-		}
 		else
-		{
 			goToIndex(nextIndex, true, true);
-			music.soundEffect.page();
-		}
+
+		music.soundEffect.page();
 	}
 	else if(currentIndex == indexNum && dom.nextComic() && (!_config.readingManga || readingViewIs('scroll')))
 	{
@@ -1456,14 +1453,11 @@ function goPrevious()
 	else if(previousIndex > 0 || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
 	{
 		if(_config.readingWebtoon)
-		{
 			goScrollPercent(-70, true);
-		}
 		else
-		{
 			goToIndex(previousIndex, true, true);
-			music.soundEffect.page();
-		}
+
+		music.soundEffect.page();
 	}
 	else if(previousIndex == 0 && dom.previousComic() && (!_config.readingManga || readingViewIs('scroll')))
 	{
