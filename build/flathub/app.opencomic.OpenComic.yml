@@ -12,7 +12,10 @@ finish-args:
   - --device=dri
   - --share=network
   - --share=ipc
-  - --filesystem=host
+  - --filesystem=home
+  - --filesystem=/media
+  - --filesystem=/run/media
+  - --filesystem=/mnt
 modules:
   - name: OpenComic
     buildsystem: simple
