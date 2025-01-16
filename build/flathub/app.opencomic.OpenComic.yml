@@ -38,13 +38,13 @@ modules:
         only-arches:
           - aarch64
       - type: file
-        url: https://raw.githubusercontent.com/ollm/OpenComic/c1a9583dbb503f85343b6f78a6e76fbdd0480697/build/flatpak/app.opencomic.OpenComic.desktop
+        url: https://raw.githubusercontent.com/ollm/OpenComic/7261aec137d3b7da51727d283e8895ffd735215a/build/flatpak/app.opencomic.OpenComic.desktop
         sha256: 8b3d0e7508929309ade925b3db25c26150af4b3af716b6568fcca89d95b3f97c
       - type: file
-        url: https://raw.githubusercontent.com/ollm/OpenComic/c1a9583dbb503f85343b6f78a6e76fbdd0480697/build/flatpak/app.opencomic.OpenComic.metainfo.xml
-        sha256: fcb6086001d62d9b05cc260baa1b00ee6ae3bdf6fbd08c6a3394288bc3cb787d
+        url: https://raw.githubusercontent.com/ollm/OpenComic/7261aec137d3b7da51727d283e8895ffd735215a/build/flatpak/app.opencomic.OpenComic.metainfo.xml
+        sha256: 47980f136e8e8e45c25b451c033c26c14914601c0936b35f6b177c792b5b9d4e
       - type: file
-        url: https://raw.githubusercontent.com/ollm/OpenComic/c1a9583dbb503f85343b6f78a6e76fbdd0480697/build/flatpak/app.opencomic.OpenComic.png
+        url: https://raw.githubusercontent.com/ollm/OpenComic/7261aec137d3b7da51727d283e8895ffd735215a/build/flatpak/app.opencomic.OpenComic.png
         sha256: 6736412d20cc5e24599ad0a07fc668d27d577d7f271e8916de110a5b9c75a679
       - type: script
         dest-filename: run.sh
