@@ -273,6 +273,12 @@
 			"showLibraryPath": "Mostra percorso libreria nella barra superiore",
 			"recentlyOpenedItems": "Numero di elementi da salvare negli Aggiunti di recente"
 		},
+		"saveImages": {
+			"main": "",
+			"filenameTemplate": "",
+			"filenameTemplateDescription": "",
+			"autoSave": ""
+		},
 		"startupBehavior": {
 			"main": "Comportamento all'avvio",
 			"startInFullScreen": "Avvia OpenComic a schermo intero",

@@ -273,6 +273,12 @@
 			"showLibraryPath": "在标题路径中显示库、收藏夹、标签等",
 			"recentlyOpenedItems": "最近打开的要保存的项目数"
 		},
+		"saveImages": {
+			"main": "",
+			"filenameTemplate": "",
+			"filenameTemplateDescription": "",
+			"autoSave": ""
+		},
 		"startupBehavior": {
 			"main": "启动行为",
 			"startInFullScreen": "全屏启动 OpenComic",

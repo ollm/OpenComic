@@ -98,6 +98,24 @@ function generateFileName(path, page, leadingZeros, fileName)
 	return fileName;
 }
 
+function genearteFilePath(saveTo, fileName)
+{
+	let path = p.join(saveTo, fileName);
+
+	const extension = p.extname(fileName);
+	const imageName = p.basename(fileName, extension);
+
+	for(let i = 1; i < 100; i++)
+	{
+		if(!fs.existsSync(path))
+			break;
+
+		path = p.join(saveTo, imageName+' ('+i+')'+extension);
+	}
+
+	return path;
+}
+
 function saveImage()
 {
 	const currentIndex = reading.currentIndex();
@@ -168,56 +186,69 @@ function saveAllBookmarksImages(loadBookmarks = false, onlyCurrent = false)
 
 function saveImages(toSave = [], leadingZeros = 3)
 {
+	if(config.saveImageToFolder)
+	{
+		_saveImages(toSave, leadingZeros, config.saveImageFolder, config.saveImageTemplate);
+	}
+	else
+	{
+		const saveDialog = macosMAS ? saveDialogDirectory : saveDialogFile;ç
+
+		saveDialog(async function(saveTo, fileName){
+
+			_saveImages(toSave, leadingZeros, saveTo, fileName);
+
+		});
+	}
+
+}
+
+async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
+{
 	const currentTime = new Date();
-	const saveDialog = macosMAS ? saveDialogDirectory : saveDialogFile;
+	let first = '';
 
-	saveDialog(async function(saveTo, fileName){
+	if(toSave.length)
+	{
+		let file = fileManager.file(p.dirname(toSave[0].path));
+		await file.makeAvailable(toSave);
+		file.destroy();
 
-		let first = '';
-
-		if(toSave.length)
+		for(let i = 0, len = toSave.length; i < len; i++)
 		{
-			let file = fileManager.file(p.dirname(toSave[0].path));
-			await file.makeAvailable(toSave);
-			file.destroy();
+			const image = toSave[i];
+			const realPath = fileManager.realPath(image.path);
+			const saveImageTo = genearteFilePath(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName));
+			if(first === '') first = saveImageTo;
 
-			for(let i = 0, len = toSave.length; i < len; i++)
+			if(!fs.existsSync(saveImageTo))
 			{
-				const image = toSave[i];
-				const realPath = fileManager.realPath(image.path);
-				const saveImageTo = p.join(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName));
-				if(first === '') first = saveImageTo;
-
-				if(!fs.existsSync(saveImageTo))
-				{
-					fs.copyFileSync(realPath, saveImageTo);
-					fs.utimes(saveImageTo, currentTime, currentTime, function(){});
-				}
+				fs.copyFileSync(realPath, saveImageTo);
+				fs.utimes(saveImageTo, currentTime, currentTime, function(){});
 			}
-		
-			events.snackbar({
-				key: 'saveAllImages',
-				text: language.global.contextMenu.saveImagesMessage,
-				duration: 6,
-				buttons: [
-					{
-						text: language.global.open,
-						function: 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(first), 'simples')+'\');',
-					},
-				],
-			});
 		}
-		else
-		{
-			console.error('No images to save');
-		}
-
-	});
+	
+		events.snackbar({
+			key: 'saveAllImages',
+			text: language.global.contextMenu.saveImagesMessage,
+			duration: 6,
+			buttons: [
+				{
+					text: language.global.open,
+					function: 'electron.shell.showItemInFolder(\''+escapeQuotes(escapeBackSlash(first), 'simples')+'\');',
+				},
+			],
+		});
+	}
+	else
+	{
+		console.error('No images to save');
+	}
 }
 
 function saveDialogFile(callback)
 {
-	electronRemote.dialog.showSaveDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save, defaultPath: '[parentFolder] - [folder] - [image] - [page]'}).then(function(result) {
+	electronRemote.dialog.showSaveDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save, defaultPath: config.saveImageTemplate}).then(function(result) {
 
 		if(!result.canceled && result.filePath)
 			callback(p.dirname(result.filePath), p.basename(result.filePath));
@@ -230,7 +261,7 @@ function saveDialogDirectory(callback)
 	electronRemote.dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save}).then(function(files) {
 
 		if(files.filePaths && files.filePaths[0] && fs.statSync(files.filePaths[0]).isDirectory())
-			callback(files.filePaths[0], '[folder] - [image] - [page]');
+			callback(files.filePaths[0], (config.saveImageTemplate === '[parentFolder] - [folder] - [image] - [page]' ? '[folder] - [image] - [page]' : config.saveImageTemplate));
 
 	});
 }

@@ -273,6 +273,12 @@
 			"showLibraryPath": "",
 			"recentlyOpenedItems": ""
 		},
+		"saveImages": {
+			"main": "",
+			"filenameTemplate": "",
+			"filenameTemplateDescription": "",
+			"autoSave": ""
+		},
 		"startupBehavior": {
 			"main": "Tùy chọn khởi động",
 			"startInFullScreen": "Khởi động OpenComic ở chế độ toàn màn hình",

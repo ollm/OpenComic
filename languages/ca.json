@@ -273,6 +273,12 @@
 			"showLibraryPath": "Mostra la biblioteca, favorits, etiquetes, etc a la ruta de la capçalera",
 			"recentlyOpenedItems": "Nombre d'elements a guardar a Obert recentment"
 		},
+		"saveImages": {
+			"main": "Guardar imatges",
+			"filenameTemplate": "Plantilla de nom d'arxiu",
+			"filenameTemplateDescription": "Aquesta és la plantilla per defecte que s'utilitzarà al guarda les imatges, si ja hi ha una imatge amb el mateix nom, es guardarà amb un número incremental. Variables:",
+			"autoSave": "Guardar automàticament les imatges a la carpeta següent"
+		},
 		"startupBehavior": {
 			"main": "Comportament d'inici",
 			"startInFullScreen": "Inicia OpenComic a pantalla completa",

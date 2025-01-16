@@ -273,6 +273,12 @@
 			"showLibraryPath": "Показывать путь библиотеки",
 			"recentlyOpenedItems": "Недавно открытые элементы"
 		},
+		"saveImages": {
+			"main": "",
+			"filenameTemplate": "",
+			"filenameTemplateDescription": "",
+			"autoSave": ""
+		},
 		"startupBehavior": {
 			"main": "Поведение при запуске",
 			"startInFullScreen": "Запускать в полноэкранном режиме",

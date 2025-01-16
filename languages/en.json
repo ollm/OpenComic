@@ -273,6 +273,12 @@
 			"showLibraryPath": "Show library, favorites, labels, etc in header path",
 			"recentlyOpenedItems": "Number of items to save in Recently opened"
 		},
+		"saveImages": {
+			"main": "Save images",
+			"filenameTemplate": "Filename template",
+			"filenameTemplateDescription": "This is the default template that will be used when saving images, if there is already an image with the same name it will be saved with an incremental number. Variables:",
+			"autoSave": "Automatically save images to the following folder"
+		},
 		"startupBehavior": {
 			"main": "Startup behavior",
 			"startInFullScreen": "Start OpenComic in full screen",

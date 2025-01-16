@@ -14,7 +14,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improved opening behavior options for files and folders [`07ee1f5`](https://github.com/ollm/OpenComic/commit/07ee1f5007576016a709e45d4649319129f75911)
 - Make the Ignore single folders option work for images too [`cc9f9c7`](https://github.com/ollm/OpenComic/commit/cc9f9c727ec11b1a12fd4c8dac90506f7e01b378)
 - Scroll by screen percentage in webtoon mode [`9a86a30`](https://github.com/ollm/OpenComic/commit/9a86a30ab5e599734503812ff274122bca103ac0)
-- Shortcuts for saving images
+- Shortcuts for saving images [`05c9b31`](https://github.com/ollm/OpenComic/commit/05c9b315788fec63aee2333b0bfb0588cfcf536a)
+
+
 
 ##### 🐛 Bug Fixes
 

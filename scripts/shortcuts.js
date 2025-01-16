@@ -765,7 +765,7 @@ function loadShortcuts()
 					name: language.global.contextMenu.saveBookmarksImages,
 					function: function(event){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.contextMenu.saveBookmarksImages();
+						reading.contextMenu.saveBookmarksImages(true);
 						return true;
 					},
 				},
@@ -773,7 +773,7 @@ function loadShortcuts()
 					name: language.global.contextMenu.saveAllBookmarksImages,
 					function: function(event){
 						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.contextMenu.saveAllBookmarksImages();
+						reading.contextMenu.saveAllBookmarksImages(true);
 						return true;
 					},
 				},

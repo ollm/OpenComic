@@ -273,6 +273,12 @@
 			"showLibraryPath": "Mostrar la biblioteca, favoritos, etiquetas, etc en la ruta del encabezado",
 			"recentlyOpenedItems": "Número de elementos a guardar en Abierto recientemente"
 		},
+		"saveImages": {
+			"main": "Guardar imágenes",
+			"filenameTemplate": "Plantilla de nombre de archivo",
+			"filenameTemplateDescription": "Esta es la plantilla por defecto que se utilizara al guardar imágenes, si ya hay una imagen con el mismo nombre se guardará con un número incremental. Variables:",
+			"autoSave": "Guardar automáticamente las imágenes en la siguiente carpeta"
+		},
 		"startupBehavior": {
 			"main": "Comportamiento de inicio",
 			"startInFullScreen": "Iniciar OpenComic en pantalla completa",

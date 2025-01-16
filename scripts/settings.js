@@ -1086,6 +1086,24 @@ function getOpeningBehaviorName(key = '')
 	return names[key];
 }
 
+function selectSaveImageFolder()
+{
+	let dialog = electronRemote.dialog;
+
+	dialog.showOpenDialog({properties: ['openDirectory'], filters: [{name: language.settings.saveImages.autoSave}], securityScopedBookmarks: macosMAS}).then(async function (files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
+
+		if(files.filePaths && files.filePaths[0])
+		{
+			const folder = files.filePaths[0];
+			settings.set('saveImageFolder', folder);
+			dom.query('.settings-save-image-folder .chip span').html(folder);
+		}
+
+	});
+}
+
 function setMaxMargin(value, save = false)
 {
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
@@ -1204,6 +1222,11 @@ function set(key, value, save = true)
 
 			break;
 
+		case 'saveImageToFolder':
+
+			dom.query('.settings-save-image-folder').class(!value, 'disable-pointer');
+
+			break;
 	}
 
 	if(save)
@@ -1264,6 +1287,7 @@ module.exports = {
 	getImageInterpolationMethods: getImageInterpolationMethods,
 	getColorProfiles: getColorProfiles,
 	getOpeningBehavior: getOpeningBehavior,
+	selectSaveImageFolder: selectSaveImageFolder,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,

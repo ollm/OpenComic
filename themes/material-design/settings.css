@@ -46,7 +46,8 @@
 }
 
 .settings-master-folders,
-.settings-servers
+.settings-servers,
+.settings-save-image-folder
 {
 	padding: 0px 24px;
 }
@@ -62,6 +63,12 @@
 .settings-servers-list
 {
 	margin: 19px 0px 13px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.settings-save-image-folder
+{
 	display: flex;
 	flex-wrap: wrap;
 }

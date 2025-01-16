@@ -273,6 +273,12 @@
 			"showLibraryPath": "Afficher le chemin de la bibliothèque",
 			"recentlyOpenedItems": ""
 		},
+		"saveImages": {
+			"main": "",
+			"filenameTemplate": "",
+			"filenameTemplateDescription": "",
+			"autoSave": ""
+		},
 		"startupBehavior": {
 			"main": "",
 			"startInFullScreen": "",

@@ -273,6 +273,12 @@
 			"showLibraryPath": "",
 			"recentlyOpenedItems": ""
 		},
+		"saveImages": {
+			"main": "",
+			"filenameTemplate": "",
+			"filenameTemplateDescription": "",
+			"autoSave": ""
+		},
 		"startupBehavior": {
 			"main": "Startbeteende",
 			"startInFullScreen": "Starta OpenComic i helskärmsläge",

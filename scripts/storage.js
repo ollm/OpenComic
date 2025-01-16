@@ -1,4 +1,4 @@
-var changes = 92; // Update this if readingPagesConfig is updated
+var changes = 93; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -154,6 +154,9 @@ var storageDefault = {
 		},
 		controllerDeadZone: 0.1,
 		disableGamepadInput: false,
+		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
+		saveImageToFolder: false,
+		saveImageFolder: electronRemote.app.getPath('downloads') || '',
 		startInFullScreen: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,
