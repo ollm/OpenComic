@@ -108,7 +108,7 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.7.1",
-		"electron": "^33.3.1",
+		"electron": "^31.7.7",
 		"electron-builder": "^25.1.8",
 		"node-abi": "^3.71.0",
 		"node-yaml": "^4.0.1",
@@ -138,7 +138,8 @@
 			"images/logo.svg",
 			"templates/index.html",
 			"templates/about.html",
-			"templates/ebook.render.html"
+			"templates/ebook.render.html",
+			"build/flatpak"
 		],
 		"asarUnpack": [
 			"node_modules/sharp",
@@ -149,7 +150,8 @@
 			"node_modules/@toondepauw",
 			"node_modules/pdfjs-dist",
 			"node_modules/webdav",
-			"Pepper & Carrot"
+			"Pepper & Carrot",
+			"build/flatpak"
 		],
 		"win": {
 			"target": [

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=OpenComic
-Exec=/app/bin/run.sh %U
+Exec=opencomic %U
 Terminal=false
 Type=Application
 Icon=app.opencomic.OpenComic

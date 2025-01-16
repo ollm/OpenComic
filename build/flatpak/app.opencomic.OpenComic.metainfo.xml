@@ -10,7 +10,29 @@
         <name>Oleguer Llopart</name>
     </developer>
     <description>
-        <p>OpenComic is a comic/manga reader, can also open PDF files and ebooks (epub) among other features.</p>
+        <p>Comic and manga reader.</p>
+        <p><em>Features</em></p>
+        <p>
+            <ul>
+                <li>🖼 Support this image formats: <code>JPG</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
+                <li>🗄 Support this compressed formats: <code>RAR</code>, <code>ZIP</code>, <code>7Z</code>, <code>TAR</code>, <code>CBR</code>, <code>CBZ</code>, <code>CB7</code>, <code>CBT</code></li>
+                <li>📄 Support this documents/ebook formats: <code>PDF</code>, <code>EPUB</code> (Alpha)</li>
+                <li>🎵 Support background music from folder: <code>MP3</code>, <code>M4A</code>, <code>WEBM</code>, <code>WEBA</code>, <code>OGG</code>, <code>OPUS</code>, <code>WAV</code>, <code>FLAC</code></li>
+                <li>📁 Master folders support</li>
+                <li>☁️ Server connection support: <code>smb://</code>, <code>ftp://</code>, <code>ftps://</code>, <code>scp://</code>, <code>sftp://</code>, <code>ssh://</code>, <code>s3://</code>, <code>webdav://</code>, <code>webdavs://</code></li>
+                <li>🇯🇵 Manga read mode</li>
+                <li>🇰🇷 Webtoon read mode</li>
+                <li>📖 Double page view</li>
+                <li>🔖 Bookmarks and continue reading</li>
+                <li>🔍 Floating magnifying glass</li>
+                <li>🖱 Reading in scroll or slide</li>
+                <li>⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors</li>
+                <li>🎨 Colorize black and white images</li>
+                <li>🔄 Tracking with sites (AniList)</li>
+                <li>🎮 Gamepad navigation</li>
+                <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>nearest</code> and others</li>
+            </ul>
+        </p>
     </description>
     <url type="homepage">https://github.com/ollm/OpenComic</url>
     <url type="bugtracker">https://github.com/ollm/OpenComic/issues</url>
@@ -18,35 +40,35 @@
     <url type="translate">https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md</url>
     <url type="donation">https://github.com/ollm/OpenComic/blob/master/FUNDING.md</url>
     <url type="vcs-browser">https://github.com/ollm/OpenComic</url>
-    <icon type="remote">https://raw.githubusercontent.com/ollm/OpenComic/master/images/icon-border-transparent.png</icon>
+    <icon type="remote">https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/icon-border-transparent.png</icon>
     <screenshots>
         <screenshot type="default">
             <caption>OpenComic</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/main.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/main.png</image>
         </screenshot>
         <screenshot>
             <caption>Colorize</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/colorize.png</image>
         </screenshot>
         <screenshot>
             <caption>Colorize menu</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize-menu.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/colorize-menu.png</image>
         </screenshot>
         <screenshot>
             <caption>eBook</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ebook.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/ebook.png</image>
         </screenshot>
         <screenshot>
             <caption>eBook menu</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ebook-menu.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/ebook-menu.png</image>
         </screenshot>
         <screenshot>
             <caption>Master folders</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/master-folders.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/master-folders.png</image>
         </screenshot>
         <screenshot>
             <caption>Shortcuts (Keyboard and Gamepad)</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/shortcuts.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/shortcuts.png</image>
         </screenshot>
     </screenshots>
     <content_rating type="oars-1.1"/>
