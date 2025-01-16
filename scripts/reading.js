@@ -1136,6 +1136,46 @@ function calculateRealReadingDirection(index)
 		realReadingDirection = true;
 }
 
+goScrollPercentST = false;
+
+function goScrollPercent(screenPercent = 50, animation = true)
+{
+	if(_config.readingWebtoon || readingViewIs('scroll'))
+	{
+		let animationDurationMS = (animation ? _config.readingViewSpeed : 0) * 1000;
+
+		const content = template._contentRight().firstElementChild;
+		const rect = content.getBoundingClientRect();
+
+		const now = Date.now();
+		const prevNow = +content.dataset.now;
+
+		if(now - prevNow < animationDurationMS)
+			animationDurationMS = (now - prevNow);
+
+		const scrollHeight = content.scrollHeight - rect.height;
+		let scrollTop = (+content.dataset.scrollTop || content.scrollTop) + (screenPercent / 100 * rect.height);
+
+		if(scrollTop < 0)
+			scrollTop = 0;
+		else if(scrollTop > scrollHeight)
+			scrollTop = scrollHeight;
+
+		content.dataset.scrollTop = scrollTop;
+		content.dataset.now = now;
+
+		clearTimeout(goScrollPercentST);
+		goScrollPercentST = setTimeout(function(){
+
+			content.dataset.scrollTop = '';
+			content.dataset.now = '';
+
+		}, animationDurationMS);
+
+		$(content).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+	}
+}
+
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
@@ -1380,8 +1420,15 @@ function goNext()
 	}
 	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
-		goToIndex(nextIndex, true, true);
-		music.soundEffect.page();
+		if(_config.readingWebtoon)
+		{
+			goScrollPercent(70, true);
+		}
+		else
+		{
+			goToIndex(nextIndex, true, true);
+			music.soundEffect.page();
+		}
 	}
 	else if(currentIndex == indexNum && dom.nextComic() && (!_config.readingManga || readingViewIs('scroll')))
 	{
@@ -1408,8 +1455,15 @@ function goPrevious()
 	}
 	else if(previousIndex > 0 || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
 	{
-		goToIndex(previousIndex, true, true);
-		music.soundEffect.page();
+		if(_config.readingWebtoon)
+		{
+			goScrollPercent(-70, true);
+		}
+		else
+		{
+			goToIndex(previousIndex, true, true);
+			music.soundEffect.page();
+		}
 	}
 	else if(previousIndex == 0 && dom.previousComic() && (!_config.readingManga || readingViewIs('scroll')))
 	{
