@@ -264,6 +264,15 @@ function loadShortcuts()
 					],
 				},
 				{
+					name: language.global.contextMenu.saveImage,
+					items: [
+						'saveImage',
+						'saveAllImages',
+						'saveBookmarksImages',
+						'saveAllBookmarksImages',
+					],
+				},
+				{
 					name: language.settings.shortcuts.menus,
 					items: [
 						'contextMenu',
@@ -736,7 +745,38 @@ function loadShortcuts()
 						return true;
 					},
 				},
-
+				saveImage: {
+					name: language.global.contextMenu.saveImage,
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.contextMenu.saveImage();
+						return true;
+					},
+				},
+				saveAllImages: {
+					name: language.global.contextMenu.saveAllImages,
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.contextMenu.saveAllImages();
+						return true;
+					},
+				},
+				saveBookmarksImages: {
+					name: language.global.contextMenu.saveBookmarksImages,
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.contextMenu.saveBookmarksImages();
+						return true;
+					},
+				},
+				saveAllBookmarksImages: {
+					name: language.global.contextMenu.saveAllBookmarksImages,
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.contextMenu.saveAllBookmarksImages();
+						return true;
+					},
+				},
 
 				leftClick: {
 					name: '',
@@ -816,6 +856,7 @@ function loadShortcuts()
 				'Z': 'resetZoom',
 				'Esc': 'goBack',
 				'Backspace': 'goBack',
+				'Ctrl+S': 'saveImage',
 				'F11': 'fullscreen',
 				'G': 'gamepadMenu',
 			},
