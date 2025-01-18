@@ -25,7 +25,8 @@
 		"view": {
 			"main": "视图",
 			"module": "网格",
-			"list": "列表"
+			"list": "列表",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "撤消",

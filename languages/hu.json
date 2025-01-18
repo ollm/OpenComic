@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Nézet",
 			"module": "Rács",
-			"list": "Lista"
+			"list": "Lista",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

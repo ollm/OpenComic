@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Vy",
 			"module": "Rutnät",
-			"list": "Lista"
+			"list": "Lista",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Vista",
 			"module": "Quadrícula",
-			"list": "Llista"
+			"list": "Llista",
+			"moduleSize": "Mida de la quadrícula"
 		},
 		"contextMenu": {
 			"undo": "Desfer",

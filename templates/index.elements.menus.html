@@ -39,6 +39,21 @@
 			<div>
 				<div class="menu-simple-element view-module gamepad-item{{#compare page.view '==' 'module'}} s{{/compare}}" onclick="dom.changeView('module', '{{page.name}}');"><i class="material-icon menu-simple-icon-first">view_module</i>{{language.global.view.module}}</div>
 				<div class="menu-simple-element view-list gamepad-item{{#compare page.view '==' 'list'}} s{{/compare}}" onclick="dom.changeView('list', '{{page.name}}');"><i class="material-icon menu-simple-icon-first">view_list</i>{{language.global.view.list}}</div>
+
+				<div class="simple-slider gamepad-item view-module-size {{#compare page.view '==' 'list'}} disable-pointer{{/compare}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
+					<div class="simple-slider-text">{{language.global.view.moduleSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="150">undo</i><span>{{page.viewModuleSize}}</span></div></div>
+					<div class="range">
+						<div class="range-position">
+							<span class="range-line" style="width: 100%"></span>
+							<span class="range-steps"></span>
+							<div>
+								<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+							</div>
+						</div>
+						<input type="range" min="100" max="300" step="50" value="{{page.viewModuleSize}}" onrange="dom.changeViewModuleSize(\{{value}}, \{{toEnd}}, '{{page.name}}')">
+					</div>
+				</div>
+
 				{{#if page.boxes}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.comics.continueReading}}

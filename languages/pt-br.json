@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Visualização",
 			"module": "Grade",
-			"list": "Lista"
+			"list": "Lista",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

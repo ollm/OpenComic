@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Vista",
 			"module": "Griglia",
-			"list": "Lista"
+			"list": "Lista",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "Undo",

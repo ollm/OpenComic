@@ -25,7 +25,8 @@
 		"view": {
 			"main": "มุมมอง",
 			"module": "ตาราง",
-			"list": "รายการ"
+			"list": "รายการ",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "ย้อนกลับ",

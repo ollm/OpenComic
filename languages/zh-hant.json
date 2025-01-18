@@ -25,7 +25,8 @@
 		"view": {
 			"main": "檢視",
 			"module": "格子",
-			"list": "列表"
+			"list": "列表",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

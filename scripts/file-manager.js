@@ -970,7 +970,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	this.config = this._config = {
 		// only: false,
 		cache: true,
-		width: window.devicePixelRatio * 150, // Vector width
+		//width: window.devicePixelRatio * (handlebarsContext.page.viewModuleSize || 150), // Vector width
+		width: window.devicePixelRatio * 300, // Vector width
 		height: false, // Vector height
 		force: false, // Forces the extraction even if the file exists
 	};

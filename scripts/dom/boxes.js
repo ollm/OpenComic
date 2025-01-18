@@ -1,6 +1,8 @@
 
 async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 {
+	const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
+
 	let comics = [];
 
 	for(let i = 0, len = _comics.length; i < len; i++)
@@ -14,15 +16,15 @@ async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 
 	const maxItems = Math.floor((window.innerWidth - 16) / 116);
 
-	comics = comics.slice(0, maxItems);
+	comics = app.copy(comics.slice(0, maxItems));
 	const len = comics.length;
 
 	// Find images here
 	for(let i = 0; i < len; i++)
 	{
-		if(comics[i].addToQueue === 2)
+		if(comics[i].addToQueue === 2 || (viewModuleSize !== 100 && viewModuleSize !== 150))
 		{
-			const images = await dom.getFolderThumbnails(comics[i].path);
+			const images = await dom.getFolderThumbnails(comics[i].path, (viewModuleSize === 100 ? 100 : 150));
 
 			comics[i].poster = images.poster;
 			comics[i].images = images.images;

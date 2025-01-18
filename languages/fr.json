@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Vue",
 			"module": "Grille",
-			"list": "Liste"
+			"list": "Liste",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "Annuler",

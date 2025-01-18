@@ -166,15 +166,18 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 		if(files)
 		{
+			const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
 			let images = [];
 
 			for(let i = 0, len = files.length; i < len; i++)
 			{
-				let _file = files[i];
+				const file = files[i];
 
-				if(inArray(mime.getType(_file.path), compatibleMime))
+				if(inArray(mime.getType(file.path), compatibleMime))
 				{
-					images.push(files[i]);
+					file.forceSize = viewModuleSize;
+					file.sha = cache.imageSizeSha(file);
+					images.push(file);
 				}
 			}
 
@@ -231,7 +234,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 				}
 				else if(file.folder || file.compressed)
 				{
-					let images = await getFolderThumbnails(filePath, i, visibleItems.start, visibleItems.end);
+					let images = await getFolderThumbnails(filePath, false, i, visibleItems.start, visibleItems.end);
 
 					pathFiles.push({
 						sha: file.sha,
@@ -394,6 +397,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		if(!fromSetOfflineMode)
 			fileManager.setServerInOfflineMode(false);
 
+		dom.setCurrentPageVars('index', _indexLabel);
+
 		let sort = config.sortIndex;
 		let sortInvert = config.sortInvertIndex;
 		let continueReading = config.continueReadingIndex;
@@ -414,13 +419,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			else if(_indexLabel.label)
 				labelKey = 'label-'+_indexLabel.index;
 
-			sortAndView = config.sortAndView[labelKey] || {
-				view: 'module',
-				sort: 'name',
-				sortInvert: false,
-				continueReading: true,
-				recentlyAdded: true,
-			};
+			sortAndView = config.sortAndView[labelKey] || defaultSortAndView;
 
 			sort = sortAndView.sort;
 			sortInvert = sortAndView.sortInvert;
@@ -624,7 +623,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			for(let i = 0; i < len; i++)
 			{
-				let images = await getFolderThumbnails(comics[i].path, i, visibleItems.start, visibleItems.end);
+				let images = await getFolderThumbnails(comics[i].path, false, i, visibleItems.start, visibleItems.end);
 
 				comics[i].sha = sha1(comics[i].path);
 				comics[i].poster = images.poster;
@@ -645,7 +644,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		handlebarsContext.comicsIndex = true;
 		handlebarsContext.sortAndView = sortAndView || false;
 		handlebarsContext.comicsReadingProgress = false;
-		dom.setCurrentPageVars('index', _indexLabel);
 
 		template.loadContentRight('index.content.right.'+(sortAndView ? sortAndView.view : config.viewIndex)+'.html', animation, keepScroll);
 
@@ -1139,13 +1137,14 @@ async function showIfHasPrevOrNext(path, mainPath)
 	}
 }
 
-async function _getFolderThumbnails(file, images, _images, path, folderSha, isAsync = false)
+async function _getFolderThumbnails(file, images, _images, path, folderSha, isAsync = false, forceSize = false)
 {
-	let shaIndex = {};
+	const viewModuleSize = forceSize ? forceSize : (handlebarsContext.page.viewModuleSize || 150);
 
+	let shaIndex = {};
 	let poster = false;
 
-	if(Array.isArray(_images))
+	if(Array.isArray(_images)) // 4 Images
 	{
 		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-poster').remove();
 
@@ -1179,11 +1178,11 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 			}
 		}
 	}
-	else
+	else // Poster
 	{
 		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-images').remove();
 
-		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha, type: 'poster'}, function(data){
+		poster = cache.returnThumbnailsImages({path: _images.path, sha: _images.sha, type: 'poster', forceSize: viewModuleSize}, function(data){
 
 			addImageToDom(data.sha, data.path);
 			addImageToDom(folderSha+'-0', data.path);
@@ -1204,9 +1203,9 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 	return {poster: poster, images: images};
 }
 
-async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
+async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0, end = 99999)
 {
-	let folderSha = sha1(path);
+	let folderSha = sha1(path+(forceSize ? '?size='+forceSize : ''));
 
 	let poster = {cache: false, path: '', sha: folderSha+'-0'};
 
@@ -1227,7 +1226,7 @@ async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
 			file.updateConfig({cacheOnly: true});
 			let _images = await file.images(4, false, true);
 
-			_images = await _getFolderThumbnails(file, images, _images, path, folderSha);
+			_images = await _getFolderThumbnails(file, images, _images, path, folderSha, false, forceSize);
 
 			file.destroy();
 
@@ -1259,7 +1258,7 @@ async function getFolderThumbnails(path, index = 0, start = 0, end = 99999)
 			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
 			let _images = await file.images(4, false, true);
 
-			await _getFolderThumbnails(file, images, _images, path, folderSha, true);
+			await _getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
 
 			file.destroy();
 
@@ -1286,9 +1285,36 @@ function calculateVisibleItems(view, scrollTop = false)
 
 	if(view == 'module')
 	{
-		const itemsPerLine =  Math.floor((rect.width - 16) / 166);
-		const lines = Math.ceil(rect.height / 305);
-		const line = Math.floor(scrollTop / 305);
+		const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
+
+		const sizes = {
+			100: {
+				width: 116,
+				height: 230,
+			},
+			150: {
+				width: 166,
+				height: 305,
+			},
+			200: {
+				width: 216,
+				height: 380,
+			},
+			250: {
+				width: 266,
+				height: 455,
+			},
+			300: {
+				width: 316,
+				height: 530,
+			},
+		};
+
+		const size = sizes[viewModuleSize];
+
+		const itemsPerLine =  Math.floor((rect.width - 16) / size.width);
+		const lines = Math.ceil(rect.height / size.height);
+		const line = Math.floor(scrollTop / size.height);
 
 		start = scrollTop ? (line - 1) * itemsPerLine : 0; // 1 margin line
 		end = (line + lines + 1) * itemsPerLine; // 1 margin line
@@ -1686,6 +1712,15 @@ function floatingActionButton(active, callback)
 	}
 }
 
+const defaultSortAndView = {
+	view: 'module',
+	sort: 'name',
+	sortInvert: false,
+	continueReading: true,
+	recentlyAdded: true,
+	viewModuleSize: 150,
+};
+
 function setCurrentPageVars(page, _indexLabel = false)
 {
 	let labelKey = false;
@@ -1715,13 +1750,7 @@ function setCurrentPageVars(page, _indexLabel = false)
 			key = 'label';
 		}
 
-		sortAndView = config.sortAndView[labelKey] || {
-			view: 'module',
-			sort: 'name',
-			sortInvert: false,
-			continueReading: true,
-			recentlyAdded: true,
-		};
+		sortAndView = config.sortAndView[labelKey] || defaultSortAndView;
 	}
 
 	let extraKey = '';
@@ -1741,6 +1770,7 @@ function setCurrentPageVars(page, _indexLabel = false)
 		boxes: (page == 'recently-opened') ? false : true,
 		continueReading: sortAndView ? sortAndView.continueReading : config['continueReading'+extraKey],
 		recentlyAdded: sortAndView ? sortAndView.recentlyAdded : config['recentlyAdded'+extraKey],
+		viewModuleSize: sortAndView ? sortAndView.viewModuleSize : config['viewModuleSize'+extraKey],
 	};
 }
 
@@ -1753,13 +1783,7 @@ function changeView(mode, page)
 	{
 		labelKey = page;
 
-		sortAndView = config.sortAndView[labelKey] || {
-			view: 'module',
-			sort: 'name',
-			sortInvert: false,
-			continueReading: true,
-			recentlyAdded: true,
-		};
+		sortAndView = config.sortAndView[labelKey] || defaultSortAndView;
 	}
 
 	let changed = false;
@@ -1795,6 +1819,60 @@ function changeView(mode, page)
 
 	if(changed)
 	{
+		dom.this(template._globalElement().querySelector('.view-module-size')).class(!(mode == 'module'), 'disable-pointer');
+
+		if(page == 'recently-opened')
+			recentlyOpened.reload();
+		else
+			reloadIndex();
+	}
+}
+
+function changeViewModuleSize(size, end, page)
+{
+	if(!end) return;
+
+	let labelKey = false;
+	let sortAndView = false;
+
+	if(/favorites|masterFolder|server|label/.test(page))
+	{
+		labelKey = page;
+
+		sortAndView = config.sortAndView[labelKey] || defaultSortAndView;
+	}
+
+	let changed = false;
+
+	if(sortAndView)
+	{
+		if(size != sortAndView.viewModuleSize)
+		{
+			sortAndView.viewModuleSize = size;
+			config.sortAndView[labelKey] = sortAndView;
+
+			storage.updateVar('config', 'sortAndView', config.sortAndView);
+			changed = true;
+		}
+	}
+	else
+	{
+		let extraKey = '';
+
+		if(page == 'recently-opened')
+			extraKey = 'RecentlyOpened';
+		else if(page == 'index')
+			extraKey = 'Index';
+
+		if(size != config['viewModuleSize'+extraKey])
+		{
+			storage.updateVar('config', 'viewModuleSize'+extraKey, size);
+			changed = true;
+		}
+	}
+
+	if(changed)
+	{
 		if(page == 'recently-opened')
 			recentlyOpened.reload();
 		else
@@ -1811,13 +1889,7 @@ function changeSort(type, mode, page)
 	{
 		labelKey = page;
 
-		sortAndView = config.sortAndView[labelKey] || {
-			view: 'module',
-			sort: 'name',
-			sortInvert: false,
-			continueReading: true,
-			recentlyAdded: true,
-		};
+		sortAndView = config.sortAndView[labelKey] || defaultSortAndView;
 	}
 
 	let changed = false;
@@ -1905,13 +1977,7 @@ function changeBoxes(box, value, page)
 	{
 		labelKey = page;
 
-		sortAndView = config.sortAndView[labelKey] || {
-			view: 'module',
-			sort: 'name',
-			sortInvert: false,
-			continueReading: true,
-			recentlyAdded: true,
-		};
+		sortAndView = config.sortAndView[labelKey] || defaultSortAndView;
 	}
 
 	let changed = false;
@@ -1934,8 +2000,6 @@ function changeBoxes(box, value, page)
 
 		storage.updateVar('config', box+extraKey, value);
 	}
-
-	console.log(box, value, page);
 
 	if(page == 'recently-opened')
 		recentlyOpened.reload();
@@ -2525,6 +2589,7 @@ module.exports = {
 	floatingActionButton: floatingActionButton,
 	setCurrentPageVars: setCurrentPageVars,
 	changeView: changeView,
+	changeViewModuleSize: changeViewModuleSize,
 	changeSort: changeSort,
 	changeBoxes: changeBoxes,
 	indexPathControl: indexPathControl,

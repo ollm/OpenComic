@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Вид",
 			"module": "Сетка",
-			"list": "Список"
+			"list": "Список",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "Отменить",

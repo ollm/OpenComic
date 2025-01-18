@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Ansicht",
 			"module": "Raster",
-			"list": "Liste"
+			"list": "Liste",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

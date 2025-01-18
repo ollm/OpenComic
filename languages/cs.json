@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Zobrazit",
 			"module": "Jako mřížku",
-			"list": "Jako seznam"
+			"list": "Jako seznam",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

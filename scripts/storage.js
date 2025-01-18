@@ -1,4 +1,4 @@
-var changes = 93; // Update this if readingPagesConfig is updated
+var changes = 94; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -113,6 +113,9 @@ var storageDefault = {
 		continueReadingRecentlyOpened: true,
 		recentlyAddedIndex: true,
 		recentlyAddedRecentlyOpened: true,
+		viewModuleSize: 150,
+		viewModuleSizeIndex: 150,
+		viewModuleSizeRecentlyOpened: 150,
 		sortAndView: {
 			wildcard: {
 				view: 'module',
@@ -120,6 +123,7 @@ var storageDefault = {
 				sortInvert: false,
 				continueReading: true,
 				recentlyAdded: true,
+				viewModuleSize: 150,
 			}
 		},
 		recentlyOpenedItems: 100,

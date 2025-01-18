@@ -25,7 +25,8 @@
 		"view": {
 			"main": "ビュー",
 			"module": "グリッド",
-			"list": "一覧"
+			"list": "一覧",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

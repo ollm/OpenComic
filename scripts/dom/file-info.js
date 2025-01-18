@@ -168,7 +168,7 @@ async function show(path)
 
 	if(Array.isArray(images) || !bigPoster)
 	{
-		images = await dom.getFolderThumbnails(path);
+		images = await dom.getFolderThumbnails(path, 150);
 	}
 	else
 	{

@@ -16,12 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Scroll by screen percentage in webtoon mode [`9a86a30`](https://github.com/ollm/OpenComic/commit/9a86a30ab5e599734503812ff274122bca103ac0)
 - Shortcuts for saving images [`05c9b31`](https://github.com/ollm/OpenComic/commit/05c9b315788fec63aee2333b0bfb0588cfcf536a)
 - Personalize save images template and save automatically to custom folder [`47e8de7`](https://github.com/ollm/OpenComic/commit/47e8de7b73b1ec354000c1455ff651039abd49e1)
+- Multiple poster/folder sizes
 
 ##### 🐛 Bug Fixes
 
 - Save image not saving the correct page in manga mode [`b14a26e`](https://github.com/ollm/OpenComic/commit/b14a26eacdc77d37cdeb578fc203438058c7c5e2)
 - Sometimes right click on reading fails [`b14a26e`](https://github.com/ollm/OpenComic/commit/1a8e145a997c67494e1a6c70c5f73acee7720000)
-- Avoid generating thumbnails of images that are still being extracted (Extractions with 7-Zip)
+- Avoid generating thumbnails of images that are still being extracted (Extractions with 7-Zip) [`c415b3f`](https://github.com/ollm/OpenComic/commit/c415b3f0f6eb4bd6eb1bdd6cdd8a191b809df91e)
 
 ## [v1.3.1](https://github.com/ollm/OpenComic/releases/tag/v1.3.1) (05-10-2024)
 

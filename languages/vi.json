@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Hiển thị",
 			"module": "Lưới",
-			"list": "Danh sách"
+			"list": "Danh sách",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

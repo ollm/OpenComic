@@ -25,7 +25,8 @@
 		"view": {
 			"main": "View",
 			"module": "Grid",
-			"list": "List"
+			"list": "List",
+			"moduleSize": "Grid size"
 		},
 		"contextMenu": {
 			"undo": "Undo",

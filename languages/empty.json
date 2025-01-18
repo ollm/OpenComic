@@ -25,7 +25,8 @@
 		"view": {
 			"main": "",
 			"module": "",
-			"list": ""
+			"list": "",
+			"moduleSize": ""
 		},
 		"contextMenu": {
 			"undo": "",

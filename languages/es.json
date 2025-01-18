@@ -25,7 +25,8 @@
 		"view": {
 			"main": "Vista",
 			"module": "Cuadricula",
-			"list": "Lista"
+			"list": "Lista",
+			"moduleSize": "Tamaño de la cuadrícula"
 		},
 		"contextMenu": {
 			"undo": "Deshacer",

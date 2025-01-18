@@ -1424,6 +1424,7 @@ a:hover
 	transition: transform 0.2s, background-color 0.2s;
 	display: flex;
 	flex-wrap: wrap;
+	align-content: flex-start;
 }
 
 .content-view-module .v-folder:before
@@ -1629,7 +1630,6 @@ a:hover
 	position: absolute;
 	top: 2px;
 	left: 2px;
-	border-radius: 10px;
 }
 
 .content-view-module .folder-poster > img
@@ -1655,7 +1655,7 @@ a:hover
 	animation-fill-mode: forwards;
 }
 
-/* Sise 100 */
+/* Size 100 */
 .content-view-module-100
 {
 	grid-template-columns: repeat(auto-fill, 116px);
@@ -1697,7 +1697,6 @@ a:hover
 	border-radius: 14px;
 }
 
-
 .content-view-module-100 .v-img
 {
 	width: 100px;
@@ -1716,7 +1715,6 @@ a:hover
 	border-radius: 14px;
 }
 
-
 .content-view-module-100 .v-img picture:before
 {
 	border-radius: 12px;
@@ -1732,22 +1730,15 @@ a:hover
 .content-view-module-100 .folder-images
 {
 	width: 41px;
-	height: 64px;
+	height: 66px;
 	margin: 6px 0px 0px 6px;
 }
 
 .content-view-module-100 .folder-images > img
 {
 	max-width: 41px;
-	max-height: 64px;
+	max-height: 66px;
 	border-radius: 6px;
-}
-
-.content-view-module-100 .folder-poster
-{
-	top: 2px;
-	left: 2px;
-	border-radius: 10px;
 }
 
 .content-view-module-100 .folder-poster > img
@@ -1755,6 +1746,289 @@ a:hover
 	border-radius: 10px;
 }
 
+
+/* Size 200 */
+.content-view-module-200
+{
+	grid-template-columns: repeat(auto-fill, 216px);
+}
+
+@media(max-width: 640px)
+{
+	.content-view-module-200
+	{
+		justify-content: center;
+	}
+}
+
+.content-view-module-200 > div
+{
+	width: 200px;
+	height: 348px;
+	margin: 16px 0px 16px 16px;
+	margin: 8px -8px 8px 8px;
+	padding: 8px;
+	content-visibility: auto;
+	contain-intrinsic-size: 200px 348px;
+}
+
+.content-view-module-200 .v-folder
+{
+	width: 200px;
+	height: 300px;
+	border-radius: 15px;
+}
+
+.content-view-module-200 .v-folder:before
+{
+	border-radius: 15px;
+}
+
+.content-view-module-200 .v-folder:after
+{
+	border-radius: 17px;
+}
+
+.content-view-module-200 .v-img
+{
+	width: 200px;
+	height: 300px;
+}
+
+.content-view-module-200 .v-img img
+{
+	max-width: 200px;
+	max-height: 300px;
+	border-radius: 15px;
+}
+
+.content-view-module-200 .v-img picture:after
+{
+	border-radius: 17px;
+}
+
+.content-view-module-200 .v-img picture:before
+{
+	border-radius: 15px;
+}
+
+.content-view-module-200 .v-text
+{
+	width: 200px;
+}
+
+.content-view-module-200 .folder-images
+{
+	width: 79px;
+	height: 129px;
+	margin: 14px 0px 0px 14px;
+}
+
+.content-view-module-200 .folder-images > img
+{
+	max-width: 79px;
+	max-height: 129px;
+	border-radius: 8px;
+}
+
+.content-view-module-200 .folder-poster > img
+{
+	border-radius: 13px;
+}
+
+.content-view-module-200 .gamepad-highlight .v-folder
+{
+	transform: scale(1.033);
+}
+
+
+/* Size 250 */
+.content-view-module-250
+{
+	grid-template-columns: repeat(auto-fill, 266px);
+}
+
+@media(max-width: 740px)
+{
+	.content-view-module-250
+	{
+		justify-content: center;
+	}
+}
+
+.content-view-module-250 > div
+{
+	width: 250px;
+	height: 423px;
+	margin: 16px 0px 16px 16px;
+	margin: 8px -8px 8px 8px;
+	padding: 8px;
+	content-visibility: auto;
+	contain-intrinsic-size: 250px 423px;
+}
+
+.content-view-module-250 .v-folder
+{
+	width: 250px;
+	height: 375px;
+	border-radius: 18px;
+}
+
+.content-view-module-250 .v-folder:before
+{
+	border-radius: 18px;
+}
+
+.content-view-module-250 .v-folder:after
+{
+	border-radius: 20px;
+}
+
+.content-view-module-250 .v-img
+{
+	width: 250px;
+	height: 375px;
+}
+
+.content-view-module-250 .v-img img
+{
+	max-width: 250px;
+	max-height: 375px;
+	border-radius: 18px;
+}
+
+.content-view-module-250 .v-img picture:after
+{
+	border-radius: 20px;
+}
+
+.content-view-module-250 .v-img picture:before
+{
+	border-radius: 18px;
+}
+
+.content-view-module-250 .v-text
+{
+	width: 250px;
+}
+
+.content-view-module-250 .folder-images
+{
+	width: 95px;
+	height: 157px;
+	margin: 20px 0px 0px 20px;
+}
+
+.content-view-module-250 .folder-images > img
+{
+	max-width: 95px;
+	max-height: 157px;
+	border-radius: 10px;
+}
+
+.content-view-module-250 .folder-poster > img
+{
+	border-radius: 16px;
+}
+
+.content-view-module-250 .gamepad-highlight .v-folder
+{
+	transform: scale(1.027);
+}
+
+/* Size 300 */
+.content-view-module-300
+{
+	grid-template-columns: repeat(auto-fill, 316px);
+}
+
+@media(max-width: 840px)
+{
+	.content-view-module-300
+	{
+		justify-content: center;
+	}
+}
+
+.content-view-module-300 > div
+{
+	width: 300px;
+	height: 498px;
+	margin: 16px 0px 16px 16px;
+	margin: 8px -8px 8px 8px;
+	padding: 8px;
+	content-visibility: auto;
+	contain-intrinsic-size: 300px 498px;
+}
+
+.content-view-module-300 .v-folder
+{
+	width: 300px;
+	height: 450px;
+	border-radius: 22px;
+}
+
+.content-view-module-300 .v-folder:before
+{
+	border-radius: 22px;
+}
+
+.content-view-module-300 .v-folder:after
+{
+	border-radius: 24px;
+}
+
+.content-view-module-300 .v-img
+{
+	width: 300px;
+	height: 450px;
+}
+
+.content-view-module-300 .v-img img
+{
+	max-width: 300px;
+	max-height: 450px;
+	border-radius: 22px;
+}
+
+.content-view-module-300 .v-img picture:after
+{
+	border-radius: 24px;
+}
+
+.content-view-module-300 .v-img picture:before
+{
+	border-radius: 22px;
+}
+
+.content-view-module-300 .v-text
+{
+	width: 300px;
+}
+
+.content-view-module-300 .folder-images
+{
+	width: 114px;
+	height: 189px;
+	margin: 24px 0px 0px 24px;
+}
+
+.content-view-module-300 .folder-images > img
+{
+	max-width: 114px;
+	max-height: 189px;
+	border-radius: 12px;
+}
+
+.content-view-module-300 .folder-poster > img
+{
+	border-radius: 20px;
+}
+
+.content-view-module-300 .gamepad-highlight .v-folder
+{
+	transform: scale(1.02);
+}
 
 /* Continue reading */
 
