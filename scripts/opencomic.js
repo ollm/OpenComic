@@ -1020,9 +1020,11 @@ function callbackString(callback)
 
 hb.registerHelper('chain', function() {
 
-	var helpers = [], value;
+	let helpers = [], value;
 
-	$.each(arguments, function (i, arg) {
+	for(let i = 0, len = arguments.length; i < len; i++)
+	{
+		const arg = arguments[i];
 
 		if(hb.helpers[arg])
 		{
@@ -1032,13 +1034,15 @@ hb.registerHelper('chain', function() {
 		{
 			value = arg;
 
-			$.each(helpers, function (j, helper) {
+			for(let j = 0, len = helpers.length; j < len; j++)
+			{
+				const helper = helpers[j];
 				value = helper(value, arguments[i + 1]);
-			});
+			}
 
-			return false;
+			break;
 		}
-	});
+	}
 
 	return value;
 });
