@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.3.2 (dd-mm-yyyy)
+## v1.4.0 (dd-mm-yyyy)
 
 ##### 🚀 New Features
 
@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Save image not saving the correct page in manga mode [`b14a26e`](https://github.com/ollm/OpenComic/commit/b14a26eacdc77d37cdeb578fc203438058c7c5e2)
 - Sometimes right click on reading fails [`b14a26e`](https://github.com/ollm/OpenComic/commit/1a8e145a997c67494e1a6c70c5f73acee7720000)
 - Avoid generating thumbnails of images that are still being extracted (Extractions with 7-Zip) [`c415b3f`](https://github.com/ollm/OpenComic/commit/c415b3f0f6eb4bd6eb1bdd6cdd8a191b809df91e)
+- Error attempting to open the bookmarks menu after navigating to a bookmark
 
 ## [v1.3.1](https://github.com/ollm/OpenComic/releases/tag/v1.3.1) (05-10-2024)
 
