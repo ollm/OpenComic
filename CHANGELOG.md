@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Shortcuts for saving images [`05c9b31`](https://github.com/ollm/OpenComic/commit/05c9b315788fec63aee2333b0bfb0588cfcf536a)
 - Personalize save images template and save automatically to custom folder [`47e8de7`](https://github.com/ollm/OpenComic/commit/47e8de7b73b1ec354000c1455ff651039abd49e1)
 - Multiple poster/folder sizes [`c64222a`](https://github.com/ollm/OpenComic/commit/c64222a1b697f6de3f64f0ed79f1a7f293337bcf)
-- Implement header scrolling functionality
+- Implement header scrolling functionality [`cf5615e`](https://github.com/ollm/OpenComic/commit/cf5615eee312dcc4e1239528866bfcbfb86e0b23)
 
 ##### 🐛 Bug Fixes
 

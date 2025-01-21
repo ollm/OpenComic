@@ -9,8 +9,6 @@ function wheel(event)
 
 	let scrollLeft = (+this.dataset.scrollLeft || this.scrollLeft);
 
-	console.log(scrollLeft);
-
 	if(event.wheelDelta / 120 > 0)
 		scrollLeft -= 120;
 	else
