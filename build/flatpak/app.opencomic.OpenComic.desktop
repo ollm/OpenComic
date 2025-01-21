@@ -8,3 +8,4 @@ StartupWMClass=OpenComic
 Comment=Comic and manga reader
 MimeType=application/x-cbz;application/x-cbr;application/x-cb7;application/x-cbt;application/pdf;application/x-bzpdf;application/x-gzpdf;application/epub+zip;
 Categories=Graphics;
+Keywords=reader;viewer;comic;manga;epub;pdf;manhwa;manhua;webtoon;webcomic;offline
