@@ -116,6 +116,8 @@ function changeHeader(html, animation = true)
 	}, 300, headerZindex);
 
 	headerZindex++;
+
+	dom.header.event();
 }
 
 function loadHeader(template, animation)

@@ -3,6 +3,7 @@ const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	labels = require(p.join(appDir, 'scripts/dom/labels.js')),
 	fileInfo = require(p.join(appDir, 'scripts/dom/file-info.js')),
 	search = require(p.join(appDir, 'scripts/dom/search.js')),
+	header = require(p.join(appDir, 'scripts/dom/header.js')),
 	boxes = require(p.join(appDir, 'scripts/dom/boxes.js'));
 
 /*Page - Index*/
@@ -2629,6 +2630,7 @@ module.exports = {
 	labels: labels,
 	fileInfo: fileInfo,
 	boxes: boxes,
+	header: header,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

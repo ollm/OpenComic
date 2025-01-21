@@ -1150,9 +1150,6 @@ function goScrollPercent(screenPercent = 50, animation = true)
 		const now = Date.now();
 		const prevNow = +content.dataset.now;
 
-		if(now - prevNow < animationDurationMS)
-			animationDurationMS = (now - prevNow);
-
 		const scrollHeight = content.scrollHeight - rect.height;
 		let scrollTop = (+content.dataset.scrollTop || content.scrollTop) + (screenPercent / 100 * rect.height);
 
@@ -1172,7 +1169,7 @@ function goScrollPercent(screenPercent = 50, animation = true)
 
 		}, animationDurationMS);
 
-		$(content).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
+		$(content).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS, ((now - prevNow) < animationDurationMS ? 'linear' : 'swing'));
 	}
 }
 
