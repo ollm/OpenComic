@@ -565,7 +565,8 @@ var ebook = function(book, config = {}) {
 	// Apply here margin, letter space, font size, justify, etc
 	this.applyGeneralStyle = function(head) {
 
-		let bodyCss = [];
+		const allCss = [];
+		const bodyCss = [];
 
 		if(this.config.colors && this.config.colors.background)
 		{
@@ -574,16 +575,16 @@ var ebook = function(book, config = {}) {
 		}
 
 		if(this.config.fontFamily)
-			bodyCss.push('font-family: "'+this.config.fontFamily+'" !important');
+			allCss.push('font-family: "'+this.config.fontFamily+'" !important');
 
 		if(this.config.fontSize > 10)
 			bodyCss.push('font-size: '+this.config.fontSize+'px !important');
 
 		if(this.config.fontWeight > 0)
-			bodyCss.push('font-weight: '+this.config.fontWeight+' !important');
+			allCss.push('font-weight: '+this.config.fontWeight+' !important');
 
 		if(this.config.italic)
-			bodyCss.push('font-style: italic !important');
+			allCss.push('font-style: italic !important');
 
 		if(this.config.textAlign)
 			bodyCss.push('text-align: '+this.config.textAlign+' !important');
@@ -592,10 +593,10 @@ var ebook = function(book, config = {}) {
 			bodyCss.push('margin: '+this.config.margin.top+'px '+this.config.margin.right+'px '+this.config.margin.bottom+'px '+this.config.margin.left+'px !important');
 
 		if(this.config.letterSpacing > -0.1)
-			bodyCss.push('letter-spacing: '+this.config.letterSpacing+'em !important');
+			allCss.push('letter-spacing: '+this.config.letterSpacing+'em !important');
 
 		if(this.config.wordSpacing > -0.4)
-			bodyCss.push('word-spacing: '+this.config.wordSpacing+'em !important');
+			allCss.push('word-spacing: '+this.config.wordSpacing+'em !important');
 
 		if(this.config.lineHeight > 0.3)
 			bodyCss.push('line-height: '+this.config.lineHeight+'em !important');
@@ -613,6 +614,7 @@ var ebook = function(book, config = {}) {
 
 			body * {
 				`+(this.config.textAlign ? 'text-align: '+this.config.textAlign+' !important;' : '')+`
+				`+(allCss.join('; '))+`
 			}
 
 			body p {
