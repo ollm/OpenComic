@@ -625,6 +625,7 @@ var ebook = function(book, config = {}) {
 			body img {
 				max-width: calc(100vw - `+(horizontalMargin * 2)+`px) !important;
 				max-height: calc(100vh - `+(verticalMargin * 2)+`px) !important;
+				width: initial !important;
 			}
 
 			body p img {
@@ -882,13 +883,15 @@ var ebook = function(book, config = {}) {
 
 	this._generateTocWithPages = function(items, hrefPage) {
 
-		let toc = [];
+		const toc = [];
 
 		for(let i = 0, len = items.length; i < len; i++)
 		{
-			let item = items[i];
+			const item = items[i];
+			const href = item.href || '';
+			const _href = href.replace(/^\.+[\/\\]/, '');
 
-			let page = hrefPage[item.href] !== undefined ? hrefPage[item.href] : false;
+			const page = hrefPage[href] !== undefined ? hrefPage[href] : (hrefPage[_href] !== undefined ? hrefPage[_href] : false);
 
 			this.tocPages.push(page);
 

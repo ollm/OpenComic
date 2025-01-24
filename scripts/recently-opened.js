@@ -15,6 +15,7 @@ async function load(animation = true, content = false)
 	dom.boxes.reset();
 	dom.fromLibrary(false);
 	dom.indexPathControl(false, false, false, false, true);
+	dom.setCurrentPageVars('recently-opened');
 
 	template.loadContentRight('index.content.right.loading.html', animation);
 	template.loadHeader('recently.opened.header.html', animation);
@@ -113,7 +114,6 @@ async function load(animation = true, content = false)
 
 	handlebarsContext.comics = comics.slice(0, config.recentlyOpenedItems);
 	handlebarsContext.comicsReadingProgress = false;
-	dom.setCurrentPageVars('recently-opened');
 
 	if(Date.now() - now < 300)
 		template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.'+config.viewRecentlyOpened+'.html');
