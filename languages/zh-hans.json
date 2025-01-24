@@ -56,6 +56,8 @@
 			"saveBookmarksImages": "",
 			"saveAllBookmarksImages": "",
 			"saveImagesMessage": "图片已成功保存",
+			"clearFileCache": "",
+			"clearFileCacheSuccessfully": "",
 			"closeApp": "关闭 OpenComic"
 		},
 		"back": "返回",

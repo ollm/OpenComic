@@ -88,7 +88,7 @@ function loadShortcuts()
 				reload: {
 					name: language.reading.prev,
 					function: function(){
-						dom.reloadIndex();
+						dom.reload();
 						return true;
 					},
 				},

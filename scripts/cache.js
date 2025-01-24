@@ -158,6 +158,13 @@ function getSizes()
 	if(sizesCache[devicePixelRatio]) return sizesCache[devicePixelRatio];
 
 	return sizesCache[devicePixelRatio] = {
+		list: [
+			100,
+			150,
+			200,
+			250,
+			300,
+		],
 		image: {
 			100: Math.round(devicePixelRatio * 100),
 			150: Math.round(devicePixelRatio * 150),
@@ -210,7 +217,7 @@ function addImageVars(image)
 	if(image.type)
 		vars.push('type='+image.type);
 
-	if(image.forceSize != 150)
+	if(image.forceSize && image.forceSize != 150)
 		vars.push('size='+image.forceSize);
 
 	return image.path+(vars.length ? '?'+vars.join('&') : '');
@@ -562,6 +569,23 @@ function existsJson(name)
 		return false;
 }
 
+function deleteJson(name)
+{
+	let path = p.join(cacheFolder, (zstd !== false) ? name+'.zstd' : name);
+
+	if(fs.existsSync(path))
+	{
+		fs.unlinkSync(path);
+		delete jsonMemory[name];
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 function addCacheVars(path, size, sha)
 {
 	return path+'?size='+size+(cacheImagesDeleted[sha] ? '&a='+cacheImagesDeleted[sha] : '');
@@ -569,10 +593,9 @@ function addCacheVars(path, size, sha)
 
 var cacheImagesDeleted = [];
 
-async function deleteInCache(path, type = false)
+async function _deleteInCache(sha)
 {
-	let sha = (type) ? sha1(path+'?type='+type) : sha1(path);
-	let cachePath = p.join(cacheFolder, sha+'.jpg');
+	const cachePath = p.join(cacheFolder, sha+'.jpg');
 
 	if(data[sha])
 		delete data[sha];
@@ -580,17 +603,45 @@ async function deleteInCache(path, type = false)
 	if(fs.existsSync(cachePath))
 	{
 		fs.unlinkSync(cachePath);
-	
-		let size = Math.round(window.devicePixelRatio * 150);
+
+		cacheImagesDeleted[sha] = cacheImagesDeleted[sha] ? cacheImagesDeleted[sha] + 1 : 1;
 	}
-
-	cacheImagesDeleted[sha] = cacheImagesDeleted[sha] ? cacheImagesDeleted[sha] + 1 : 1;
-
-	if(!type)
-		await deleteInCache(path, 'poster');
 		
 	return;
 }
+
+async function deleteInCache(path)
+{
+	const sizes = getSizes();
+	const variants = [];
+
+	for(let i = 0, len = sizes.list.length; i < len; i++)
+	{
+		const size = sizes.list[i];
+
+		variants.push({
+			path: path,
+			forceSize: size,
+		});
+
+		variants.push({
+			path: path,
+			type: 'poster',
+			forceSize: size,
+		});
+	}
+
+	for(let i = 0, len = variants.length; i < len; i++)
+	{
+		const variant = variants[i];
+
+		const sha = imageSizeSha(variant);
+		await _deleteInCache(sha);
+	}
+
+	return;
+}
+
 
 function deleteInCacheSha(sha, returnFileSize = false)
 {
@@ -820,6 +871,7 @@ module.exports = {
 	readFile: readFile,
 	readJson: readJson,
 	existsJson: existsJson,
+	deleteJson: deleteJson,
 	existsFile: existsFile,
 	deleteInCache: deleteInCache,
 	flushJsonMemory: flushJsonMemory,

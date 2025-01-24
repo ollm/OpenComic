@@ -56,6 +56,8 @@
 			"saveBookmarksImages": "Save current bookmarked images",
 			"saveAllBookmarksImages": "Save all bookmarked images",
 			"saveImagesMessage": "Images have been saved successfully",
+			"clearFileCache": "Clear file cache",
+			"clearFileCacheSuccessfully": "File cache has been successfully cleared",
 			"closeApp": "Close OpenComic"
 		},
 		"back": "Back",

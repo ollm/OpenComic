@@ -19,7 +19,7 @@ function setFavorite(path)
 	let prevIndexLabel = dom.prevIndexLabel();
 
 	if(prevIndexLabel.favorites)
-		dom.reloadIndex();
+		dom.reload();
 }
 
 function favorites()
@@ -104,7 +104,7 @@ function setLabels(path, save = false)
 		let prevIndexLabel = dom.prevIndexLabel();
 
 		if(prevIndexLabel.label)
-			dom.reloadIndex();
+			dom.reload();
 	}
 	else
 	{

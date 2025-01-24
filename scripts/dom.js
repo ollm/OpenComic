@@ -2,6 +2,7 @@ const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	domManager = require(p.join(appDir, 'scripts/dom/dom.js')),
 	labels = require(p.join(appDir, 'scripts/dom/labels.js')),
 	fileInfo = require(p.join(appDir, 'scripts/dom/file-info.js')),
+	clearFileCache = require(p.join(appDir, 'scripts/dom/clear-file-cache.js')),
 	search = require(p.join(appDir, 'scripts/dom/search.js')),
 	header = require(p.join(appDir, 'scripts/dom/header.js')),
 	boxes = require(p.join(appDir, 'scripts/dom/boxes.js'));
@@ -346,6 +347,14 @@ async function reloadIndex(fromSetOfflineMode = false)
 	indexLabel = prevIndexLabel;
 	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true, false, fromSetOfflineMode);
 	if(indexPathA) indexPathControlA.pop();
+}
+
+function reload(fromSetOfflineMode = false)
+{
+	if(handlebarsContext.page.key == 'recently-opened')
+		recentlyOpened.reload();
+	else
+		reloadIndex(fromSetOfflineMode);
 }
 
 var indexLabel = false, prevIndexLabel = false;
@@ -1821,11 +1830,7 @@ function changeView(mode, page)
 	if(changed)
 	{
 		dom.this(template._globalElement().querySelector('.view-module-size')).class(!(mode == 'module'), 'disable-pointer');
-
-		if(page == 'recently-opened')
-			recentlyOpened.reload();
-		else
-			reloadIndex();
+		dom.reload();
 	}
 }
 
@@ -1873,12 +1878,7 @@ function changeViewModuleSize(size, end, page)
 	}
 
 	if(changed)
-	{
-		if(page == 'recently-opened')
-			recentlyOpened.reload();
-		else
-			reloadIndex();
-	}
+		dom.reload();
 }
 
 function changeSort(type, mode, page)
@@ -1961,12 +1961,7 @@ function changeSort(type, mode, page)
 	}
 
 	if(changed)
-	{
-		if(page == 'recently-opened')
-			recentlyOpened.reload();
-		else
-			reloadIndex();
-	}
+		dom.reload();
 }
 
 function changeBoxes(box, value, page)
@@ -2002,10 +1997,7 @@ function changeBoxes(box, value, page)
 		storage.updateVar('config', box+extraKey, value);
 	}
 
-	if(page == 'recently-opened')
-		recentlyOpened.reload();
-	else
-		reloadIndex();
+	dom.reload();
 }
 
 function selectElement(element)
@@ -2155,10 +2147,16 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 		let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
 		let deletePoster = document.querySelector('#index-context-menu .context-menu-delete-poster');
+		let clearFileCache = document.querySelector('#index-context-menu .context-menu-clear-file-cache');
+		let setAsPoster = document.querySelector('#index-context-menu .context-menu-set-as-poster');
+		let setAsPosterFolders = document.querySelector('#index-context-menu .context-menu-set-as-poster-folders');
 
 		openFileLocation.style.display = 'none';
 		addPoster.style.display = 'none';
 		deletePoster.style.display = 'none';
+		clearFileCache.style.display = 'none';
+		setAsPoster.style.display = 'none';
+		setAsPosterFolders.style.display = 'none';
 	}
 	else
 	{
@@ -2231,6 +2229,12 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 			setAsPoster.style.display = 'none';
 			setAsPosterFolders.style.display = 'none';
 		}
+
+		// Clear file cache
+		let clearFileCache = document.querySelector('#index-context-menu .context-menu-clear-file-cache');
+
+		clearFileCache.setAttribute('onclick', 'dom.clearFileCache.clear(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+		clearFileCache.style.display = folder ? 'block' : 'none';
 	}
 
 	// File info
@@ -2238,7 +2242,6 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	fileInfo.setAttribute('onclick', 'dom.fileInfo.show(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
 	fileInfo.style.display = folder ? 'block' : 'none';
-
 
 	if(gamepad)
 		events.activeMenu('#index-context-menu', false, 'gamepad');
@@ -2259,7 +2262,7 @@ function removeComic(path, confirm = false, reload = true)
 
 	storage.update('comics', _comics);
 
-	if(reload) dom.reloadIndex();
+	if(reload) dom.reload();
 }
 
 async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = false)
@@ -2270,7 +2273,7 @@ async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = fa
 	if(fromIndexNotMasterFolders)
 		dom.removeComic(path, true, false);
 
-	dom.reloadIndex();
+	dom.reload();
 }
 
 async function deletePermanently(path, fromIndexNotMasterFolders = false, confirm = false)
@@ -2284,7 +2287,7 @@ async function deletePermanently(path, fromIndexNotMasterFolders = false, confir
 		if(fromIndexNotMasterFolders)
 			dom.removeComic(path, true, false);
 
-		dom.reloadIndex();
+		dom.reload();
 	}
 	else
 	{
@@ -2581,6 +2584,7 @@ module.exports = {
 	setIndexLabel: setIndexLabel,
 	prevIndexLabel: function(){return prevIndexLabel},
 	reloadIndex: reloadIndex,
+	reload: reload,
 	loadRecentlyOpened: loadRecentlyOpened,
 	loadLanguagesPage: loadLanguagesPage,
 	loadSettingsPage: loadSettingsPage,
@@ -2629,6 +2633,7 @@ module.exports = {
 	search: search,
 	labels: labels,
 	fileInfo: fileInfo,
+	clearFileCache: clearFileCache,
 	boxes: boxes,
 	header: header,
 	this: domManager.this,

@@ -56,6 +56,8 @@
 			"saveBookmarksImages": "Guardar les imatges marcades actuals",
 			"saveAllBookmarksImages": "Guardar totes les imatges marcades",
 			"saveImagesMessage": "S'han guardat correctament les imatges",
+			"clearFileCache": "Netejar la memòria cau de l'arxiu",
+			"clearFileCacheSuccessfully": "S'ha netejat correctament la memòria cau de l'arxiu",
 			"closeApp": "Tancar OpenComic"
 		},
 		"back": "Enrere",

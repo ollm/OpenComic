@@ -100,7 +100,7 @@ function setNewPoster(path, reload = true, message = false)
 					});
 				}
 
-				if(reload) dom.reloadIndex();
+				if(reload) dom.reload();
 			}
 			else
 			{
@@ -155,7 +155,7 @@ async function _delete(currentPoster = false, moveToTrash = false, silent = fals
 
 		await cache.deleteInCache(currentPoster);
 
-		if(!silent) dom.reloadIndex();
+		if(!silent) dom.reload();
 	}
 	else if(!silent)
 	{

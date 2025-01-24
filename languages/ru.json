@@ -56,6 +56,8 @@
 			"saveBookmarksImages": "Сохранить изображения закладок",
 			"saveAllBookmarksImages": "Сохранить все изображения закладок",
 			"saveImagesMessage": "Изображения будут сохранены в выбранной папке",
+			"clearFileCache": "",
+			"clearFileCacheSuccessfully": "",
 			"closeApp": "Закрыть приложение"
 		},
 		"back": "Назад",

@@ -56,6 +56,8 @@
 			"saveBookmarksImages": "จัดเก็บรูปจากคลังปัจจุบัน",
 			"saveAllBookmarksImages": "จัดเก็บรูปจากคลังทั้งหมด",
 			"saveImagesMessage": "จัดเก็บรูปทั้งหมดเสร็จสิ้น",
+			"clearFileCache": "",
+			"clearFileCacheSuccessfully": "",
 			"closeApp": "ปิด OpenComic"
 		},
 		"back": "กลับ",
