@@ -295,6 +295,8 @@ function disposeImages(data = false)
 	let marginVertical = _margin.top;
 	let marginHorizontalsHorizontal = readingHorizontalsMargin(data).left;
 
+	const forceSinglePage = (_config.readingForceSinglePage && !_config.readingWebtoon) ? true : false;
+
 	let contentRight = template._contentRight();
 	let rect = contentRight.firstElementChild.getBoundingClientRect();
 
@@ -384,7 +386,7 @@ function disposeImages(data = false)
 				marginTop0 = marginTop1 = contentHeight / 2 - imageHeight / 2;
 			}
 
-			if(readingViewIs('scroll'))
+			if(readingViewIs('scroll') && !forceSinglePage)
 				marginTop0 = marginTop1 = marginVertical;
 
 			let imgHeight0 = (clipVertical > 0 ? (imageHeight0 / (1 - clipVertical)) : imageHeight0);
@@ -570,7 +572,7 @@ function disposeImages(data = false)
 				}
 			}
 
-			if(readingViewIs('scroll'))
+			if(readingViewIs('scroll') && !forceSinglePage)
 				marginTop = marginVertical;
 
 			let imgHeight = (clipVertical > 0 ? (imageHeight / (1 - clipVertical)) : imageHeight);
@@ -3076,9 +3078,9 @@ function changePagesView(mode, value, save)
 		dom.query('.reading-view-'+value).addClass('active');
 
 		if(value != 'scroll')
-			template.globalElement('.reading-ajust-to-width').addClass('disable-pointer');
+			template.globalElement('.reading-ajust-to-width, .reading-force-single-page').addClass('disable-pointer');
 		else
-			template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
+			template.globalElement('.reading-ajust-to-width, .reading-force-single-page').removeClass('disable-pointer');
 
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
@@ -3151,12 +3153,12 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').addClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
 		}
 		else
 		{
 			if(_config.readingView == 'scroll')
-				template.globalElement('.reading-ajust-to-width').removeClass('disable-pointer');
+				template.globalElement('.reading-ajust-to-width, .reading-force-single-page').removeClass('disable-pointer');
 			
 			if(_config.readingDoublePage)
 				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
@@ -3278,6 +3280,17 @@ function changePagesView(mode, value, save)
 		template.loadContentRight('reading.content.right.html', true);
 
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+	}
+	else if(mode == 20) // Force show single page in scroll mode
+	{
+		updateReadingPagesConfig('readingForceSinglePage', value);
+
+		disposeImages();
+		calculateView();
+		stayInLine();
+
+		render.resized(readingDoublePage());
+		// updateEbook(true);
 	}
 }
 

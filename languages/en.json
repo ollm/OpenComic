@@ -116,6 +116,7 @@
 			"adjustToWidth": "Adjust to width",
 			"notEnlargeMoreThanOriginalSize": "Do not enlarge more than its original size",
 			"rotateHorizontals": "Rotate horizontals",
+			"forceSinglePage": "Show only one page at a time",
 			"margin": "Margin",
 			"marginHorizontal": "Horizontal margin",
 			"marginVertical": "Vertical margin",

@@ -1,4 +1,4 @@
-var changes = 95; // Update this if readingPagesConfig is updated
+var changes = 96; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -15,6 +15,7 @@ var readingPagesConfig = {
 	readingViewAdjustToWidth: false,
 	readingNotEnlargeMoreThanOriginalSize: true,
 	readingRotateHorizontals: false,
+	readingForceSinglePage: false,
 	readingMargin: {
 		margin: 16,
 		top: 16,

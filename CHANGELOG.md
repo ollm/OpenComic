@@ -19,7 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Multiple poster/folder sizes [`c64222a`](https://github.com/ollm/OpenComic/commit/c64222a1b697f6de3f64f0ed79f1a7f293337bcf)
 - Implement header scrolling functionality [`cf5615e`](https://github.com/ollm/OpenComic/commit/cf5615eee312dcc4e1239528866bfcbfb86e0b23)
 - Clear cache for individual files [`45e2e99`](https://github.com/ollm/OpenComic/commit/45e2e99114c031f64c3b4ba218f3412273a7a169)
-- Add support in server settings for show in library the files in subfolders
+- Add support in server settings for show in library the files in subfolders [`e2fa97a`](https://github.com/ollm/OpenComic/commit/e2fa97aea24424499910eb90843150f93e6e0c12)
+- Option to show only one page at a time in Vertical Reader
 
 ##### 🐛 Bug Fixes
 
