@@ -1,8 +1,8 @@
 
 function showReleaseDialog(release)
 {
-	release.releases_url = 'https://github.com/ollm/OpenComic/releases';
-	release.html_url = release.releases_url;
+	release.releases_url = 'https://github.com/ollm/OpenComic?tab=readme-ov-file#download';
+	release.html_url = 'https://github.com/ollm/OpenComic/releases';
 
 	events.dialog({
 		header: hb.compile(language.dialog.release.title)({releaseName: release.name}),
