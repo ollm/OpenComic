@@ -116,6 +116,7 @@
 			"adjustToWidth": "适应屏幕",
 			"notEnlargeMoreThanOriginalSize": "请勿放大超过原始尺寸",
 			"rotateHorizontals": "旋转水平线",
+			"forceSinglePage": "",
 			"margin": "边距",
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",

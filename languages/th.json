@@ -116,6 +116,7 @@
 			"adjustToWidth": "ปรับตามความกว้าง",
 			"notEnlargeMoreThanOriginalSize": "ห้ามขยายเกินขนาดดั้งเดิม",
 			"rotateHorizontals": "หมุนแนวนอน",
+			"forceSinglePage": "",
 			"margin": "ระยะขอบ",
 			"marginHorizontal": "ขอบแนวนอน",
 			"marginVertical": "ขอบแนวตั้ง",

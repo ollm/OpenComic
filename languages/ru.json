@@ -116,6 +116,7 @@
 			"adjustToWidth": "Отрегулировать по ширине",
 			"notEnlargeMoreThanOriginalSize": "Не увеличивать больше оригинального размера",
 			"rotateHorizontals": "Поворачивать горизонтальные",
+			"forceSinglePage": "",
 			"margin": "Края",
 			"marginHorizontal": "Горизонтальный край",
 			"marginVertical": "Вертикальный край",

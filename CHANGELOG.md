@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Implement header scrolling functionality [`cf5615e`](https://github.com/ollm/OpenComic/commit/cf5615eee312dcc4e1239528866bfcbfb86e0b23)
 - Clear cache for individual files [`45e2e99`](https://github.com/ollm/OpenComic/commit/45e2e99114c031f64c3b4ba218f3412273a7a169)
 - Add support in server settings for show in library the files in subfolders [`e2fa97a`](https://github.com/ollm/OpenComic/commit/e2fa97aea24424499910eb90843150f93e6e0c12)
-- Option to show only one page at a time in Vertical Reader
+- Option to show only one page at a time in Vertical Reader [`65f83db`](https://github.com/ollm/OpenComic/commit/65f83db6269717d2b798d49c2a3cb4190547b14f)
 
 ##### 🐛 Bug Fixes
 
