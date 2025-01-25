@@ -70,7 +70,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.726.1",
+		"@aws-sdk/client-s3": "^3.735.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -83,7 +83,7 @@
 		"fast-xml-parser": "^4.5.1",
 		"file-type": "^16.5.4",
 		"font-list": "^1.5.1",
-		"fs-extra": "^11.2.0",
+		"fs-extra": "^11.3.0",
 		"gm": "^1.25.0",
 		"handlebars": "^4.7.8",
 		"jimp": "^1.6.0",
@@ -101,16 +101,16 @@
 		"sharp": "^0.33.5",
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
-		"ssh2-sftp-client": "^11.0.0",
-		"tar-fs": "^3.0.7",
+		"ssh2-sftp-client": "github:theophilusx/ssh2-sftp-client",
+		"tar-fs": "^3.0.8",
 		"unzipper": "^0.12.3",
 		"webdav": "^5.7.1"
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.7.1",
-		"electron": "^31.7.7",
+		"electron": "^32.3.0",
 		"electron-builder": "^25.1.8",
-		"node-abi": "^3.71.0",
+		"node-abi": "^3.73.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.1.9"
 	},
