@@ -348,7 +348,7 @@
 			"domain": "Domain",
 			"onlyIn": "Only used in",
 			"showOnLibrary": "Show comics in the library",
-			"filesInSubfolders": "In the library show files in subfolders"
+			"filesInSubfolders": "In the library show files from subfolders"
 		},
 		"storage": {
 			"main": "Storage",
