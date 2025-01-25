@@ -3,7 +3,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="16" transform="rotate(-90)">CA</text>
 		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="10" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="34" transform="rotate(-90)">CS</text>
-		<rect style="fill: #f6664c;" height="37" width="6" rx="2" y="103" x="28" />
+		<rect style="fill: #f6664c;" height="36.9" width="6" rx="2" y="103.1" x="28" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="52" transform="rotate(-90)">DE</text>
 		<rect style="fill: #f6664c;" height="32.5" width="6" rx="2" y="107.5" x="46" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="70" transform="rotate(-90)">EN</text>
@@ -11,28 +11,28 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="88" transform="rotate(-90)">ES</text>
 		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="82" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="106" transform="rotate(-90)">FR</text>
-		<rect style="fill: #2eccaa;" height="109.1" width="6" rx="2" y="30.9" x="100" />
+		<rect style="fill: #2eccaa;" height="108.8" width="6" rx="2" y="31.2" x="100" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="124" transform="rotate(-90)">HU</text>
 		<rect style="fill: #f6664c;" height="32.5" width="6" rx="2" y="107.5" x="118" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="142" transform="rotate(-90)">IT</text>
-		<rect style="fill: #2eccaa;" height="134.3" width="6" rx="2" y="5.7" x="136" />
+		<rect style="fill: #2eccaa;" height="134" width="6" rx="2" y="6" x="136" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="160" transform="rotate(-90)">JA</text>
 		<rect style="fill: #f6664c;" height="32.5" width="6" rx="2" y="107.5" x="154" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="178" transform="rotate(-90)">KO</text>
 		<rect style="fill: #f6664c;" height="30.9" width="6" rx="2" y="109.1" x="172" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="196" transform="rotate(-90)">PT-BR</text>
-		<rect style="fill: #f6664c;" height="23" width="6" rx="2" y="117" x="190" />
+		<rect style="fill: #f6664c;" height="22.9" width="6" rx="2" y="117.1" x="190" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="214" transform="rotate(-90)">RU</text>
-		<rect style="fill: #2eccaa;" height="134.9" width="6" rx="2" y="5.1" x="208" />
+		<rect style="fill: #2eccaa;" height="134.6" width="6" rx="2" y="5.4" x="208" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="232" transform="rotate(-90)">SV</text>
-		<rect style="fill: #2eccaa;" height="96" width="6" rx="2" y="44" x="226" />
+		<rect style="fill: #2eccaa;" height="95.8" width="6" rx="2" y="44.2" x="226" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="250" transform="rotate(-90)">TH</text>
-		<rect style="fill: #2eccaa;" height="134.9" width="6" rx="2" y="5.1" x="244" />
+		<rect style="fill: #2eccaa;" height="134.6" width="6" rx="2" y="5.4" x="244" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="268" transform="rotate(-90)">VI</text>
-		<rect style="fill: #2eccaa;" height="94.7" width="6" rx="2" y="45.3" x="262" />
+		<rect style="fill: #2eccaa;" height="94.5" width="6" rx="2" y="45.5" x="262" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="286" transform="rotate(-90)">ZH-HANS</text>
-		<rect style="fill: #2eccaa;" height="133.9" width="6" rx="2" y="6.1" x="280" />
+		<rect style="fill: #2eccaa;" height="133.6" width="6" rx="2" y="6.4" x="280" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="304" transform="rotate(-90)">ZH-HANT</text>
-		<rect style="fill: #f6664c;" height="23" width="6" rx="2" y="117" x="298" />
+		<rect style="fill: #f6664c;" height="22.9" width="6" rx="2" y="117.1" x="298" />
 	</g>
 </svg>

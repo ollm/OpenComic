@@ -347,7 +347,8 @@
 			"pass": "รหัสผ่าน",
 			"domain": "โดเมน",
 			"onlyIn": "ใช้เฉพาะกับ",
-			"showOnLibrary": "แสดงคอมมิกส์ในห้องสมุด"
+			"showOnLibrary": "แสดงคอมมิกส์ในห้องสมุด",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "พื้นที่จัดเก็บ",

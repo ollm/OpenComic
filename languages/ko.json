@@ -347,7 +347,8 @@
 			"pass": "비밀 번호",
 			"domain": "도메인",
 			"onlyIn": "",
-			"showOnLibrary": ""
+			"showOnLibrary": "",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "",

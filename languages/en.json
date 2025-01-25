@@ -347,7 +347,8 @@
 			"pass": "Password",
 			"domain": "Domain",
 			"onlyIn": "Only used in",
-			"showOnLibrary": "Show comics in the library"
+			"showOnLibrary": "Show comics in the library",
+			"filesInSubfolders": "In the library show files in subfolders"
 		},
 		"storage": {
 			"main": "Storage",

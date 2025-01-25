@@ -347,7 +347,8 @@
 			"pass": "",
 			"domain": "",
 			"onlyIn": "",
-			"showOnLibrary": ""
+			"showOnLibrary": "",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "",

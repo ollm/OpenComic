@@ -347,7 +347,8 @@
 			"pass": "Пароль",
 			"domain": "Домен",
 			"onlyIn": "Только в",
-			"showOnLibrary": "Показывать в библиотеке"
+			"showOnLibrary": "Показывать в библиотеке",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "Хранилище",

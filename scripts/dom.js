@@ -521,19 +521,43 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				contentRightIndex = template.contentRightIndex();
 			}
 
-			for(let i = 0, len = servers.length; i < len; i++)
+			for(let i = 0, len2 = servers.length; i < len2; i++)
 			{
-				if((((servers[i].showOnLibrary || _indexLabel.favorites || _indexLabel.label) && !_indexLabel.server) || _indexLabel.server == servers[i].path) && !_indexLabel.masterFolder)
+				const server = servers[i];
+
+				if((((server.showOnLibrary || _indexLabel.favorites || _indexLabel.label) && !_indexLabel.server) || _indexLabel.server == server.path) && !_indexLabel.masterFolder)
 				{
-					let file = fileManager.file(servers[i].path);
+					const file = fileManager.file(server.path);
 					if(!_indexLabel.server) file.updateConfig({cacheServer: true});
 					let files = await file.readServer();
 
-					let len = files.length;
-
-					for(let i = 0; i < len; i++)
+					if(server.filesInSubfolders && !_indexLabel.server)
 					{
-						let folder = files[i];
+						let _files = [];
+
+						for(let j = 0, len = files.length; j < len; j++)
+						{
+							const folder = files[j];
+
+							if(folder.folder || folder.compressed)
+							{
+								const _file = fileManager.file(folder.path);
+								_file.updateConfig({cacheServer: true});
+								_files = _files.concat(await _file.readServer());
+							}
+						}
+
+						if(_indexLabel)
+							_files = _files.concat(files);
+
+						files = _files;
+					}
+
+					const len = files.length;
+
+					for(let j = 0; j < len; j++)
+					{
+						const folder = files[j];
 
 						if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
 						{
@@ -551,7 +575,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 					if(!len && _indexLabel.server && serverClient.serverLastError())
 					{
 						handlebarsContext.serverLastError = serverClient.serverLastError();
-						handlebarsContext.serverHasCache = file.serverHasCache(servers[i].path);
+						handlebarsContext.serverHasCache = file.serverHasCache(server.path);
 					}
 
 					file.destroy();

@@ -347,7 +347,8 @@
 			"pass": "Password",
 			"domain": "Dominio",
 			"onlyIn": "Usato solo in",
-			"showOnLibrary": "Mostra fumetti nella libreria"
+			"showOnLibrary": "Mostra fumetti nella libreria",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "Memoria",

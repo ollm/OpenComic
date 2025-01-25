@@ -347,7 +347,8 @@
 			"pass": "密码",
 			"domain": "范围",
 			"onlyIn": "仅用于",
-			"showOnLibrary": "在库展示漫画"
+			"showOnLibrary": "在库展示漫画",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "存储",

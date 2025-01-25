@@ -283,6 +283,7 @@ function getServerInputValues()
 	let pass = document.querySelector('.input-pass').value;
 	let domain = document.querySelector('.input-domain').value;
 	let showOnLibrary = !!+document.querySelector('.input-show-on-library').dataset.value;
+	let filesInSubfolders = !!+document.querySelector('.input-files-in-subfolders').dataset.value;
 
 	return {
 		name: name,
@@ -291,6 +292,7 @@ function getServerInputValues()
 		pass: pass,
 		domain: domain,
 		showOnLibrary: showOnLibrary,
+		filesInSubfolders: filesInSubfolders,
 	};
 }
 
@@ -489,6 +491,18 @@ function removeServer(key, confirm = false)
 function showOnLibrary(value = 0)
 {
 	document.querySelector('.input-show-on-library').dataset.value = value;
+
+	const filesInSubfolders = document.querySelector('.files-in-subfolders');
+
+	if(value)
+		filesInSubfolders.classList.remove('disable-pointer');
+	else
+		filesInSubfolders.classList.add('disable-pointer');
+}
+
+function filesInSubfolders(value = 0)
+{
+	document.querySelector('.input-files-in-subfolders').dataset.value = value;
 }
 
 function updateServers()
@@ -1284,6 +1298,7 @@ module.exports = {
 	editServer: editServer,
 	removeServer: removeServer,
 	showOnLibrary: showOnLibrary,
+	filesInSubfolders: filesInSubfolders,
 	getImageInterpolationMethods: getImageInterpolationMethods,
 	getColorProfiles: getColorProfiles,
 	getOpeningBehavior: getOpeningBehavior,

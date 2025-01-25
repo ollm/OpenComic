@@ -347,7 +347,8 @@
 			"pass": "Lösenord",
 			"domain": "Domän",
 			"onlyIn": "Används endast med",
-			"showOnLibrary": "Visa serier i biblioteket"
+			"showOnLibrary": "Visa serier i biblioteket",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "Lagring",

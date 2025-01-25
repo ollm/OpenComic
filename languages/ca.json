@@ -347,7 +347,8 @@
 			"pass": "Contrasenya",
 			"domain": "Domini",
 			"onlyIn": "Només s'utilitza a",
-			"showOnLibrary": "Mostra còmics a la biblioteca"
+			"showOnLibrary": "Mostra còmics a la biblioteca",
+			"filesInSubfolders": "A la biblioteca mostrar arxius de les subcarpetes"
 		},
 		"storage": {
 			"main": "Emmagatzematge",

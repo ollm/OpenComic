@@ -347,7 +347,8 @@
 			"pass": "Contraseña",
 			"domain": "Dominio",
 			"onlyIn": "Sólo usado en",
-			"showOnLibrary": "Mostrar cómics en la biblioteca"
+			"showOnLibrary": "Mostrar cómics en la biblioteca",
+			"filesInSubfolders": "En la biblioteca mostrar archivos en las subcarpetas"
 		},
 		"storage": {
 			"main": "Almacenamiento",

@@ -1,4 +1,4 @@
-var changes = 94; // Update this if readingPagesConfig is updated
+var changes = 95; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -251,6 +251,7 @@ var storageDefault = {
 		pass: '',
 		domain: '',
 		showOnLibrary: false,
+		filesInSubfolders: false,
 	}],
 	favorites: {
 		wildcard: {

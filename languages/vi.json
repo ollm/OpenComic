@@ -347,7 +347,8 @@
 			"pass": "Mật khẩu",
 			"domain": "Tên miền",
 			"onlyIn": "Chỉ hiển thị trong",
-			"showOnLibrary": "Hiển thị truyện trong thư viện"
+			"showOnLibrary": "Hiển thị truyện trong thư viện",
+			"filesInSubfolders": ""
 		},
 		"storage": {
 			"main": "Lưu trữ",
