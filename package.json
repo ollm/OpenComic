@@ -209,7 +209,8 @@
 			"type": "distribution",
 			"entitlements": "build/entitlements.mas.plist",
 			"entitlementsInherit": "build/entitlements.mas.inherit.plist",
-			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2024_10_test.provisionprofile"
+			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2024_10_test.provisionprofile",
+			"singleArchFiles": "node_modules/**"
 		},
 		"linux": {
 			"target": [
