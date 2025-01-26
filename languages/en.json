@@ -504,6 +504,10 @@
 				"GTIN": "GTIN"
 			}
 		},
+		"requestFileAccess": {
+			"title": "Access to certain files has been lost",
+			"description": "You can grant permissions again from this dialog to ensure proper functioning of OpenComic"
+		},
 		"release": {
 			"title": "New version available <b>{{releaseName}}</b>",
 			"body": "You can see the implemented changes from the {{{linkStart}}}release page{{{linkEnd}}}"

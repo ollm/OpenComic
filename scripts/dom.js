@@ -334,7 +334,9 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 	}).catch(function(error){
 
 		console.error(error);
+
 		dom.compressedError(error);
+		fileManager.requestFileAccess.check(path, error);
 
 		return {files: [], readingProgress: {}, readingProgressCurrentPath: {}, html: ''};
 
@@ -1276,7 +1278,9 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 			else
 			{
 				console.error(error);
+
 				dom.compressedError(error, false);
+				fileManager.requestFileAccess.check(path, error);
 			}
 		}
 	}

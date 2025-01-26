@@ -504,6 +504,10 @@
 				"GTIN": "GTIN"
 			}
 		},
+		"requestFileAccess": {
+			"title": "",
+			"description": ""
+		},
 		"release": {
 			"title": "Nuova versione disponibile <b>{{releaseName}}</b>",
 			"body": "Puoi vedere i cambiamenti implentati su {{{linkStart}}}release page{{{linkEnd}}}"

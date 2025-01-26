@@ -1,3 +1,5 @@
+const requestFileAccess = require(p.join(appDir, 'scripts/file-manager/request-file-access.js'));
+
 var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false/*, unpdf = false*/, fastXmlParser = false, fileType = false;
 
 var file = function(path, _config = false) {
@@ -1361,6 +1363,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 			else
 			{
+				fileManager.requestFileAccess.check(false, error);
 				reject(error);
 			}
 
@@ -3333,4 +3336,5 @@ module.exports = {
 	copyToTmp: copyToTmp,
 	fileToBlob: fileToBlob,
 	revokeAllObjectURL: revokeAllObjectURL,
+	requestFileAccess: requestFileAccess,
 }

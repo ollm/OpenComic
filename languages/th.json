@@ -504,6 +504,10 @@
 				"GTIN": "GTIN"
 			}
 		},
+		"requestFileAccess": {
+			"title": "",
+			"description": ""
+		},
 		"release": {
 			"title": "มีเวอร์ชั่นใหม่พร้อมใช้งาน <b>{{releaseName}}</b>",
 			"body": "คุณสามารถดูการเปลี่ยนแปลงจาก {{{linkStart}}}หน้าปล่อยซอฟแวร์{{{linkEnd}}}"

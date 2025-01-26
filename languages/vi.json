@@ -504,6 +504,10 @@
 				"GTIN": ""
 			}
 		},
+		"requestFileAccess": {
+			"title": "",
+			"description": ""
+		},
 		"release": {
 			"title": "Đã có phiên bản mới <b>{{releaseName}}</b>",
 			"body": "Bạn có thể xem nội dung cập nhật trên {{{linkStart}}}trang tải về{{{linkEnd}}}"

@@ -504,6 +504,10 @@
 				"GTIN": ""
 			}
 		},
+		"requestFileAccess": {
+			"title": "",
+			"description": ""
+		},
 		"release": {
 			"title": "Titre",
 			"body": "Corps"

@@ -504,6 +504,10 @@
 				"GTIN": "GTIN (штрих-код)"
 			}
 		},
+		"requestFileAccess": {
+			"title": "",
+			"description": ""
+		},
 		"release": {
 			"title": "Доступно новое обновление",
 			"body": "Доступна новая версия OpenComic. Хотите обновить?"
