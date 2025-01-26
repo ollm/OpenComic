@@ -46,7 +46,7 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 
 <a id="download"></a>
 
-## Download [`v1.3.1`](https://github.com/ollm/OpenComic/releases)
+## Download [`v1.4.0`](https://github.com/ollm/OpenComic/releases)
 
 ###### Stores
 <a href="https://apps.microsoft.com/detail/9PDCMVNFZ2KK"><img height="50" alt="Get it from Microsoft" title="Get it from Microsoft" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/microsoft-store.svg" /></a>
@@ -55,36 +55,36 @@ You can see the changes between versions in the [Changelog 📝](https://github.
 &nbsp;&nbsp;&nbsp;<a href="https://flathub.org/apps/app.opencomic.OpenComic"><img height="50" alt="Get it on Flathub" title="Get it on Flathub" src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/store/flathub-store.svg" /></a>
 
 ###### Windows
-- [.exe](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic.Setup.1.3.1.exe)
-- [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic.Portable.1.3.1.exe)
+- [.exe](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic.Setup.1.4.0.exe)
+- [portable.exe](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic.Portable.1.4.0.exe)
   
 ###### macOS
-- [.dmg](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1.dmg)
-- [.pkg](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1.pkg)
-- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-mac.7z)
+- [.dmg](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0.dmg)
+- [.pkg](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0.pkg)
+- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-mac.7z)
   
 ###### macOS Arm64
-- [arm64.dmg](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-arm64.dmg)
-- [arm64.pkg](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-arm64.pkg)
-- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-arm64-mac.7z)
+- [arm64.dmg](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-arm64.dmg)
+- [arm64.pkg](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-arm64.pkg)
+- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-arm64-mac.7z)
   
 ###### Linux
-- [.deb](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic_1.3.1_amd64.deb)
-- [.rpm](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.x86_64.rpm)
-- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.7z)
-- [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.tar.gz)
-- [.snap](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic_1.3.1_amd64.snap)
-- [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-x86_64.flatpak)
-- [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1.AppImage)
+- [.deb](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic_1.4.0_amd64.deb)
+- [.rpm](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0.x86_64.rpm)
+- [.7z](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0.7z)
+- [.tar.gz](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0.tar.gz)
+- [.snap](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic_1.4.0_amd64.snap)
+- [.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-x86_64.flatpak)
+- [.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0.AppImage)
 - [AUR](https://aur.archlinux.org/packages/opencomic-bin/) by [@z00rat](https://github.com/z00rat)
   
 ###### Linux Arm64
-- [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic_1.3.1_arm64.deb)
-- [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1.aarch64.rpm)
-- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1-arm64.7z)
-- [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v1.3.1/opencomic-1.3.1-arm64.tar.gz)
-- [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-aarch64.flatpak)
-- [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.3.1/OpenComic-1.3.1-arm64.AppImage)
+- [arm64.deb](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic_1.4.0_arm64.deb)
+- [arm64.rpm](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0.aarch64.rpm)
+- [arm64.7z](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0-arm64.7z)
+- [arm64.tar.gz](https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0-arm64.tar.gz)
+- [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-aarch64.flatpak)
+- [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.4.0/OpenComic-1.4.0-arm64.AppImage)
 
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM
