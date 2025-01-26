@@ -642,6 +642,8 @@ var file = function(path, _config = false) {
 
 			if(!macosMAS)
 				throw new Error(error);
+			//else
+			//	fileManager.requestFileAccess.check(this.path, error);
 		}
 
 		return false;
@@ -1132,7 +1134,17 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(fileType === false) fileType = require('file-type').fromFile;
 
-		let type = await fileType(this.realPath);
+		let type;
+
+		try
+		{
+			type = await fileType(this.realPath);
+		}
+		catch(error)
+		{
+			fileManager.requestFileAccess.check(false, error);
+			throw new Error(error);
+		}
 
 		if(inArray(type.ext, compressedExtensions.all) && type.ext != 'epub')
 			return type.ext;
@@ -1363,7 +1375,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 			else
 			{
-				fileManager.requestFileAccess.check(false, error);
 				reject(error);
 			}
 
