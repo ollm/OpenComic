@@ -7,8 +7,7 @@ function check(path, error)
 
 	if(macosMAS && /operation not permitted|EPERM/.test(error))
 	{
-		console.log(app.extract(/(?:scandir|open)\s*['"](.+?)['"]\s*^/m, error));
-		path = app.extract(/(?:scandir|open)\s*['"](.+?)['"]\s*^/m, error) || path;
+		path = app.extract(/(?:scandir|open)\s*['"](.+?)['"]\s*$/m, error) || path;
 		if(path) setFile(path);
 	}
 }
