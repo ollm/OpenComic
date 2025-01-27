@@ -123,9 +123,6 @@ function changeHeader(html, animation = true)
 function loadHeader(template, animation)
 {
 	changeHeader(loadTemplate(template), animation);
-
-	let barTitle = _barHeader.querySelector('.bar-title');
-	if(barTitle) barTitle.scrollLeft = barTitle.scrollWidth;
 }
 
 function changeGlobalElement(html, element)
