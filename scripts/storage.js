@@ -380,6 +380,7 @@ storageJson = {};
 
 function getDownloadsPath()
 {
+	const macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
 	let path = electronRemote.app.getPath('downloads') || '';
 
 	if(macosMAS)
@@ -731,4 +732,5 @@ module.exports = {
 	getLocaleUserLanguage: getLocaleUserLanguage,
 	readingPagesConfig: readingPagesConfig,
 	changes: changes,
+	getDownloadsPath: getDownloadsPath,
 };
