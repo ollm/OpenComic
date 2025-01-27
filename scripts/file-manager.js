@@ -907,7 +907,6 @@ var file = function(path, _config = false) {
 				segments.pop();
 			}
 		}
-
 	}
 
 	this.destroy = function() {
@@ -3210,6 +3209,38 @@ function macosSecurityScopedBookmarks(files)
 	}
 }
 
+var macosScopedResources = [];
+
+function macosStartAccessingSecurityScopedResource(path) {
+
+	if(macosMAS)
+	{
+		const securityScopedBookmarks = storage.get('securityScopedBookmarks');
+		const segments = splitPath(path);
+
+		if(!segments[0])
+			segments[0] = p.sep;
+
+		for(let i = 1, len = segments.length; i < len; i++)
+		{
+			const _path = p.join(...segments);
+			const bookmark = securityScopedBookmarks[_path] || false;
+
+			if(bookmark)
+			{
+				try
+				{
+					macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+					break;
+				}
+				catch {}
+			}
+
+			segments.pop();
+		}
+	}
+}
+
 async function dirSize(dir)
 {
 	let stat = await fsp.stat(dir);
@@ -3342,6 +3373,7 @@ module.exports = {
 	simpleExists: simpleExists,
 	replaceReservedCharacters: replaceReservedCharacters,
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
+	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
 	copyToTmp: copyToTmp,

@@ -188,6 +188,7 @@ function saveImages(toSave = [], leadingZeros = 3)
 {
 	if(config.saveImageToFolder)
 	{
+		fileManager.macosStartAccessingSecurityScopedResource(config.saveImageFolder);
 		_saveImages(toSave, leadingZeros, config.saveImageFolder, config.saveImageTemplate);
 	}
 	else
