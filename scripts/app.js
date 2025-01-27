@@ -3,7 +3,7 @@ function event(selector, eventsNames, listener, options = false)
 {
 	if(typeof selector == 'string')
 		selector = document.querySelectorAll(selector);
-	else if(selector === window || selector === document)
+	else if(selector === window || selector === document || (!selector.length && selector.length !== 0))
 		selector = [selector];
 
 	eventsNames = eventsNames.split(' ');
@@ -26,7 +26,7 @@ function eventOff(selector, eventsNames, listener, options = false)
 {
 	if(typeof selector == 'string')
 		selector = document.querySelectorAll(selector);
-	else if(selector === window || selector === document)
+	else if(selector === window || selector === document || (!selector.length && selector.length !== 0))
 		selector = [selector];
 
 	eventsNames = eventsNames.split(' ');

@@ -822,6 +822,7 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMe
 	let menu = document.querySelector(query);
 	let menuSimple = menu.querySelector('.menu-simple');
 	let menuSimpleContent = menu.querySelector('.menu-simple-content');
+	let menuClose = menu.querySelector('.menu-close');
 
 	let top = 0,
 		left = 0,
@@ -931,14 +932,17 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMe
 
 	fromGamepadMenu = (posX == 'gamepad' && posY == 'gamepad') ? true : false;
 
+	if(!menuClose.getAttribute('onclick'))
+		addCloseEvents(menuClose);
+
 	if(!insideMenu) shortcuts.pause();
 	gamepad.updateBrowsableItems('menu');
 }
 
-
 function activeContextMenu(query)
 {
 	let menu = (typeof query === 'string' ? document.querySelector(query) : query);
+	let menuClose = menu.querySelector('.menu-close');
 	dom.this(menu).children(false, true).removeClass('d').addClass('a');
 
 	let menuSimple = menu.querySelector('.menu-simple');
@@ -966,11 +970,30 @@ function activeContextMenu(query)
 	}).class((pos2 == 'top') ? true : false, 'top').class((pos2 == 'top') ? false : true, 'bottom');
 
 	menu.classList.remove('menu-gamepad');
+
+	if(!menuClose.getAttribute('onclick'))
+		addCloseEvents(menuClose);
 }
 
-function desactiveMenu(query, query2 = false, insideMenu = false)
+async function addCloseEvents(menuClose)
 {
-	dom.queryAll(query).children(false, true).removeClass('a').addClass('d')
+	app.event(menuClose, 'mousedown', menuCloseEvent);
+}
+
+async function menuCloseEvent(event)
+{
+	const menu = this.closest('.menu');
+	if(menu) desactiveMenu(menu);
+}
+
+async function desactiveMenu(query, query2 = false, insideMenu = false)
+{
+	await app.sleep(5);
+
+	if(typeof query2 === 'string')
+		dom.queryAll(query).children(false, true).removeClass('a').addClass('d');
+	else
+		dom.this(query).children(false, true).removeClass('a').addClass('d');
 
 	if(query2)
 	{
