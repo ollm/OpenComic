@@ -1003,7 +1003,7 @@ async function desactiveMenu(query, query2 = false, insideMenu = false)
 {
 	await app.sleep(5);
 
-	if(typeof query2 === 'string')
+	if(typeof query === 'string')
 		dom.queryAll(query).children(false, true).removeClass('a').addClass('d');
 	else
 		dom.this(query).children(false, true).removeClass('a').addClass('d');
