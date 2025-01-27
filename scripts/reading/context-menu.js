@@ -192,7 +192,7 @@ function saveImages(toSave = [], leadingZeros = 3)
 	}
 	else
 	{
-		const saveDialog = macosMAS ? saveDialogDirectory : saveDialogFile;ç
+		const saveDialog = macosMAS ? saveDialogDirectory : saveDialogFile;
 
 		saveDialog(async function(saveTo, fileName){
 
