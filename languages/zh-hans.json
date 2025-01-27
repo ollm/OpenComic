@@ -26,7 +26,7 @@
 			"main": "视图",
 			"module": "网格",
 			"list": "列表",
-			"moduleSize": ""
+			"moduleSize": "网格大小"
 		},
 		"contextMenu": {
 			"undo": "撤消",
@@ -53,11 +53,11 @@
 			"posterSetSuccessfully": "该图片已设置为封面",
 			"saveImage": "保存图片",
 			"saveAllImages": "保存所有图片",
-			"saveBookmarksImages": "",
-			"saveAllBookmarksImages": "",
+			"saveBookmarksImages": "保存当前已加书签的图片",
+			"saveAllBookmarksImages": "保存所有已加书签的图片",
 			"saveImagesMessage": "图片已成功保存",
-			"clearFileCache": "",
-			"clearFileCacheSuccessfully": "",
+			"clearFileCache": "清除文件缓存",
+			"clearFileCacheSuccessfully": "文件缓存已成功清除",
 			"closeApp": "关闭 OpenComic"
 		},
 		"back": "返回",
@@ -116,7 +116,7 @@
 			"adjustToWidth": "适应屏幕",
 			"notEnlargeMoreThanOriginalSize": "请勿放大超过原始尺寸",
 			"rotateHorizontals": "旋转水平线",
-			"forceSinglePage": "",
+			"forceSinglePage": "每次只显示一页",
 			"margin": "边距",
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",
@@ -235,7 +235,7 @@
 			"moveZoomWithMouse": "使用鼠标移动缩放（禁用通过拖放移动）",
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
 			"goNextPrevChapterWithScroll": "使用鼠标滚动转到下一章/上一章（垂直阅读）",
-			"turnPagesWithMouseWheel": "",
+			"turnPagesWithMouseWheel": "使用鼠标滚轮翻页（按住 Ctrl 键才可缩放）",
 			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
@@ -260,16 +260,16 @@
 			"folders": "导航（文件夹）",
 			"files": "导航（文件）",
 			"ignoreSingleFoldersLibrary": "忽略单个文件夹（自动打开）",
-			"openingBehaviorFolder": "",
-			"openingBehaviorFolderDescription": "",
-			"openingBehaviorFile": "",
-			"openingBehaviorFileDescription": "",
+			"openingBehaviorFolder": "打开文件夹时的行为",
+			"openingBehaviorFolderDescription": "设置导航时打开文件夹时所需的行为",
+			"openingBehaviorFile": "打开文件时的行为",
+			"openingBehaviorFileDescription": "设置导航时打开文件时所需的行为",
 			"openingBehavior": {
-				"fileList": "",
-				"lastFolder": "",
-				"onlyLastFolder": "",
-				"anyFolder": "",
-				"continueReadingOrFirstPage": ""
+				"fileList": "文件列表",
+				"lastFolder": "最后一个文件夹",
+				"onlyLastFolder": "仅在最后一个文件夹中（没有子文件夹）",
+				"anyFolder": "任何文件夹",
+				"continueReadingOrFirstPage": "继续阅读或第一页"
 			},
 			"useTheFirstImageAsPoster": "使用第一张图片作为海报（当前没有海报时）",
 			"showFullPathLibrary": "打开库时显示漫画完整路径",
@@ -278,10 +278,10 @@
 			"recentlyOpenedItems": "最近打开的要保存的项目数"
 		},
 		"saveImages": {
-			"main": "",
-			"filenameTemplate": "",
-			"filenameTemplateDescription": "",
-			"autoSave": ""
+			"main": "保存图片",
+			"filenameTemplate": "文件名模板",
+			"filenameTemplateDescription": "这是保存图片时使用的默认模板，如果已经存在同名图片，则将使用增量数字保存。变量：",
+			"autoSave": "自动将图片保存到以下文件夹"
 		},
 		"startupBehavior": {
 			"main": "启动行为",
@@ -349,7 +349,7 @@
 			"domain": "范围",
 			"onlyIn": "仅用于",
 			"showOnLibrary": "在库展示漫画",
-			"filesInSubfolders": ""
+			"filesInSubfolders": "在库中显示子文件夹中的文件"
 		},
 		"storage": {
 			"main": "存储",
@@ -505,8 +505,8 @@
 			}
 		},
 		"requestFileAccess": {
-			"title": "",
-			"description": ""
+			"title": "某些文件的访问权限已丢失",
+			"description": "您可以从此对话框再次授予权限，以确保 OpenComic 正常运行"
 		},
 		"release": {
 			"title": "新版本可用<b>{{releaseName}}</b>",
@@ -537,9 +537,9 @@
 		"contributedBy": "贡献由",
 		"translators": [
 			{
-				"name": "wuqingtian",
+				"name": "無情天",
 				"email": "kofzhanganguo@126.com",
-				"url": "https://github.com/inkiron"
+				"url": "https://github.com/kofzhanganguo"
 			}
 		]
 	}

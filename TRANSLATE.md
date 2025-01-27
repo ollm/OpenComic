@@ -164,7 +164,7 @@ OpenComic has translations into 17 languages.
 
 [zh-hans.json](https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json)
 
-`94.8% | Remain 23 | Translated 420`
+`100% | Remain 0 | Translated 443`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hans.svg" /></a>
 
