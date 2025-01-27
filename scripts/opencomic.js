@@ -390,7 +390,10 @@ window.onload = function() {
 
 		config = storage.get('config');
 		_config = copy(config);
+
 		handlebarsContext.config = config;
+		handlebarsContext.installedFromStore = installedFromStore.check();
+		handlebarsContext.macosMAS = macosMAS;
 
 		if(config.zoomFactor != 1)
 			electron.webFrame.setZoomFactor(Math.round(config.zoomFactor * 100) / 100);

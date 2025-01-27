@@ -161,7 +161,7 @@ var storageDefault = {
 		disableGamepadInput: false,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
 		saveImageToFolder: false,
-		saveImageFolder: electronRemote.app.getPath('downloads') || '',
+		saveImageFolder: getDownloadsPath(),
 		startInFullScreen: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,
@@ -377,6 +377,24 @@ var storageDefault = {
 	},
 },
 storageJson = {};
+
+function getDownloadsPath()
+{
+	let path = electronRemote.app.getPath('downloads') || '';
+
+	if(macosMAS)
+	{
+		const downloads = p.basename(path);
+		let segments = path.split(p.sep).filter(Boolean);
+
+		segments = segments.slice(0, 2);
+		segments.push(downloads);
+
+		path = p.join('/', ...segments);
+	}
+
+	return path;
+}
 
 var languagesList = false, getLocaleUserLanguageCache = {};
 
