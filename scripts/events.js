@@ -817,7 +817,7 @@ function select(This)
 
 var fromGamepadMenu = false;
 
-function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMenu = false)
+async function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMenu = false)
 {
 	let menu = document.querySelector(query);
 	let menuSimple = menu.querySelector('.menu-simple');
@@ -846,8 +846,13 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMe
 
 	for(let i = 0, len = menu.children.length; i < len; i++)
 	{
-		menu.children[i].classList.remove('d');
-		menu.children[i].classList.add('a');
+		const child = menu.children[i];
+
+		if(!child.classList.contains('menu-close'))
+		{
+			child.classList.remove('d');
+			child.classList.add('a');
+		}
 	}
 
 	let pos = {
@@ -932,18 +937,22 @@ function activeMenu(query, query2 = false, posX = 'left', posY = 'top', insideMe
 
 	fromGamepadMenu = (posX == 'gamepad' && posY == 'gamepad') ? true : false;
 
-	if(!menuClose.getAttribute('onclick'))
-		addCloseEvents(menuClose);
-
 	if(!insideMenu) shortcuts.pause();
 	gamepad.updateBrowsableItems('menu');
+
+	await app.sleep(5);
+	menuClose.classList.remove('d');
+	menuClose.classList.add('a');
+
+	if(!menuClose.getAttribute('onclick'))
+		addCloseEvents(menuClose);
 }
 
-function activeContextMenu(query)
+async function activeContextMenu(query)
 {
 	let menu = (typeof query === 'string' ? document.querySelector(query) : query);
 	let menuClose = menu.querySelector('.menu-close');
-	dom.this(menu).children(false, true).removeClass('d').addClass('a');
+	dom.this(menu).children('*:not(.menu-close)', true).removeClass('d').addClass('a');
 
 	let menuSimple = menu.querySelector('.menu-simple');
 	let rect = menuSimple.getBoundingClientRect();
@@ -970,6 +979,10 @@ function activeContextMenu(query)
 	}).class((pos2 == 'top') ? true : false, 'top').class((pos2 == 'top') ? false : true, 'bottom');
 
 	menu.classList.remove('menu-gamepad');
+
+	await app.sleep(5);
+	menuClose.classList.remove('d');
+	menuClose.classList.add('a');
 
 	if(!menuClose.getAttribute('onclick'))
 		addCloseEvents(menuClose);
