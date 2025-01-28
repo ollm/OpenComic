@@ -75,18 +75,22 @@ function handleDrop(event)
 {
 	event.preventDefault();
 
-	if(dragAndDropFocus && event.dataTransfer.files && event.dataTransfer.files[0] && event.dataTransfer.files[0].path)
-	{
-		let type = dragAndDropFocus.dataset.type;
+	const firstPath = event.dataTransfer?.files?.[0] ? electron.webUtils.getPathForFile(event.dataTransfer.files[0]) : false;
 
-		if(pathIsSupported(event.dataTransfer.files[0].path))
+	if(dragAndDropFocus && firstPath)
+	{
+		const type = dragAndDropFocus.dataset.type;
+
+		if(pathIsSupported(firstPath))
 		{
-			let files = [];
+			const files = [];
 
 			for(let i = 0, len = event.dataTransfer.files.length; i < len; i++)
 			{
-				if(pathIsSupported(event.dataTransfer.files[i].path))
-					files.push(event.dataTransfer.files[i].path);
+				const path = electron.webUtils.getPathForFile(event.dataTransfer.files[i]);
+
+				if(pathIsSupported(path))
+					files.push(path);
 			}
 
 			if(type == 'add')
