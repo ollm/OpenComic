@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🐛 Bug Fixes
 
 - Error saving images with dialog [`f2445de`](https://github.com/ollm/OpenComic/commit/f2445de4af8e515fe9dda2ed7dc71e3213922b8e)
-- Drag and Drop not working due an Electron breaking change
+- Drag and Drop not working due an Electron breaking change [`a830bf8`](https://github.com/ollm/OpenComic/commit/a830bf8a11f62eb9daeafcf56fd59e0489ce42d0)
 
 ## [v1.4.0](https://github.com/ollm/OpenComic/releases/tag/v1.4.0) (26-01-2025)
 
