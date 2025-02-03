@@ -133,7 +133,7 @@ function createWindow() {
 
 	let windowShowed = false;
 
-	let showTimeout = setTimeout(function(){
+	let showTimeout = setTimeout(function() {
 
 		win.show();
 		windowShowed = true;
@@ -201,11 +201,17 @@ app.on('activate', () => {
 	}
 })
 
-ipcMain.on('open-at-login', function(event, active = false){
+ipcMain.on('open-at-login', function(event, active = false) {
 
 	app.setLoginItemSettings({
 		openAtLogin: active,
 	})
+
+});
+
+ipcMain.handle('move-to-trash', function(event, path) {
+
+	return shell.trashItem(path);
 
 });
 

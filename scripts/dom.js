@@ -2296,7 +2296,7 @@ function removeComic(path, confirm = false, reload = true)
 async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = false)
 {
 	await dom.poster.findAndDelete(path, true, true);
-	await electron.shell.trashItem(path);
+	await electron.ipcRenderer.invoke('move-to-trash', path);
 
 	if(fromIndexNotMasterFolders)
 		dom.removeComic(path, true, false);
