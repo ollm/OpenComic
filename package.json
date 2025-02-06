@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"main": "scripts/main.js",
 	"type": "commonjs",
 	"keywords": [
@@ -23,7 +23,7 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "npm run prebuild-start && electron scripts/main.js --no-sandbox",
+		"start": "npm run prebuild-start && electron scripts/main.js",
 		"test": "node scripts/test.js",
 		"rebuild": "electron-rebuild -f -w sharp",
 		"rebuild2": "electron-builder node-gyp-rebuild",
