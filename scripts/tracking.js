@@ -575,13 +575,13 @@ function getTitle()
 
 function getChapter()
 {
-	let regexs = [
+	const regexs = [
 		/chapters?|episodes?|issues?/, // English
 		/caps?|cap[íi]tulos?|episodios/, // Spanish
 		/cap[íi]tols?|episodis?/, // Catalan
 	];
 
-	let regexsMin = [
+	const regexsMin = [
 		/ch?|ep?/, // English
 	];
 
@@ -594,29 +594,32 @@ function getChapter()
 
 	let chapter = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
 
-	if(chapter.length == 0)
+	if(!chapter)
 	{
 		chapter = extract(new RegExp(/(^|[\.\-_:;\s])/.source+'('+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 3);
 
-		if(chapter.length == 0) // Start with chapter number
-			chapter = extract(/^\s*([0-9]+)/iu, name, 3);
+		if(!chapter) // Start with chapter number
+			chapter = extract(/^\s*([0-9]+)/iu, name, 1);
+
+		if(!chapter) // Has a 2 or 3 digit number
+			chapter = extract(/\s([0-9]{2,3})(?:\s|\.|$)/iu, name, 1);
 	}
 
-	if(chapter.length == 0 && /^\d+$/.test(name)) // the folder name is numeric
+	if(!chapter && /^\d+$/.test(name)) // the folder name is numeric
 		chapter = name;
 
-	return chapter.length > 0 ? +chapter : false;
+	return chapter > 0 ? +chapter : false;
 }
 
 function getVolume()
 {
-	let regexs = [
+	const regexs = [
 		/volumes?/, // English
 		/tomos?|volumen|volumenes/, // Spanish
 		/toms?/, // Catalan
 	];
 
-	let regexsMin = [
+	const regexsMin = [
 		/vo?|vol/, // English
 	];
 
@@ -629,10 +632,10 @@ function getVolume()
 
 	let volume = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
 
-	if(volume.length == 0)
+	if(!volume)
 		volume = extract(new RegExp(/(^|[\.\-_:;\s])/.source+'('+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 3);
 
-	return volume.length > 0 ? +volume : false;
+	return volume > 0 ? +volume : false;
 }
 
 
