@@ -78,6 +78,16 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.4.1" date="2025-02-08">
+            <description>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Error saving images with dialog</li>
+                    <li>Drag and Drop not working due an Electron breaking change</li>
+                    <li>Move to trash not working in Windows</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.4.0" date="2025-01-26">
             <description>
                 <p><em>🚀 New Features</em></p>
