@@ -601,8 +601,13 @@ function getChapter()
 		if(!chapter) // Start with chapter number
 			chapter = extract(/^\s*([0-9]+)/iu, name, 1);
 
-		if(!chapter) // Has a 2 or 3 digit number
-			chapter = extract(/\s([0-9]{2,3})(?:\s|\.|$)/iu, name, 1);
+		if(!chapter)
+		{
+			const volume = getVolume();
+
+ 			if(!volume) // Has a 2 or 3 digit number (Only if no volume are detected)
+				chapter = extract(/\s([0-9]{2,3})(?:\s|\.|$)/iu, name, 1);
+		}
 	}
 
 	if(!chapter && /^\d+$/.test(name)) // the folder name is numeric
