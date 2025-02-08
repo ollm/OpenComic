@@ -28,23 +28,23 @@ modules:
       - install -Dm0755 run.sh --target-directory=${FLATPAK_DEST}/bin/
     sources:
       - type: archive
-        url: https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0.tar.gz
-        sha256: 4ae4973fcf552e9618d1dcf51d788ebb2b99a5f3ffa4bd7c20a1828845542b38
+        url: https://github.com/ollm/OpenComic/releases/download/v1.4.1/opencomic-1.4.1.tar.gz
+        sha256: d03777f1fb7961e1b9a7d62a024c48f3815bbdb69b4188c8c6ef009a35f7c685
         only-arches:
           - x86_64
       - type: archive
-        url: https://github.com/ollm/OpenComic/releases/download/v1.4.0/opencomic-1.4.0-arm64.tar.gz
-        sha256: 5843b44dc641ecc4ce1675f73deeb1d9a986b40215f413d4fd31cff0a8265ba4
+        url: https://github.com/ollm/OpenComic/releases/download/v1.4.1/opencomic-1.4.1-arm64.tar.gz
+        sha256: c62133166f3b11e92d048cb8a817551983263c8b6829eb00936b4276e5255dd7
         only-arches:
           - aarch64
       - type: file
-        url: https://raw.githubusercontent.com/ollm/OpenComic/74225d18d54a51ce4ead8d9b6c13c455252ccbc6/build/flatpak/app.opencomic.OpenComic.desktop
+        url: https://raw.githubusercontent.com/ollm/OpenComic/431c65f5edb87914ea714f83c2076103ab939e32/build/flatpak/app.opencomic.OpenComic.desktop
         sha256: fb40a6589a02f3577f85a4922c54ebb470934dea1039ad7f040836713ec9fa2d
       - type: file
-        url: https://raw.githubusercontent.com/ollm/OpenComic/74225d18d54a51ce4ead8d9b6c13c455252ccbc6/build/flatpak/app.opencomic.OpenComic.metainfo.xml
-        sha256: 0884b819e225de8889fbc681abad4d083fb803c31bbc4282a3785629403bb3be
+        url: https://raw.githubusercontent.com/ollm/OpenComic/431c65f5edb87914ea714f83c2076103ab939e32/build/flatpak/app.opencomic.OpenComic.metainfo.xml
+        sha256: 208fdba6e5a44cd6cc6ab1b3f6596dbd3885ebe28cfa8284b868b00d9af437c1
       - type: file
-        url: https://raw.githubusercontent.com/ollm/OpenComic/74225d18d54a51ce4ead8d9b6c13c455252ccbc6/build/flatpak/app.opencomic.OpenComic.png
+        url: https://raw.githubusercontent.com/ollm/OpenComic/431c65f5edb87914ea714f83c2076103ab939e32/build/flatpak/app.opencomic.OpenComic.png
         sha256: 6736412d20cc5e24599ad0a07fc668d27d577d7f271e8916de110a5b9c75a679
       - type: script
         dest-filename: run.sh
