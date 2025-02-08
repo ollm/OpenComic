@@ -778,7 +778,7 @@ function changeTapZone(y, x, This)
 	handlebarsContext.tapZone = tapZone;
 
 	events.dialog({
-		header: language.settings.servers.main,
+		header: language.settings.tapZones.main,
 		width: 400,
 		height: false,
 		content: template.load('dialog.tap.zone.html'),

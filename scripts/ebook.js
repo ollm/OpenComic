@@ -1267,7 +1267,7 @@ async function showRenders()
 	for(let i = 0, len = renders.length; i < len; i++)
 	{
 		renders[i].render.show();
-		renders[i].render.setPosition(i * 100, 0)
+		renders[i].render.setPosition(i * 100, 0);
 	}
 }
 
