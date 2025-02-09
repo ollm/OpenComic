@@ -27,7 +27,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="232" transform="rotate(-90)">SV</text>
 		<rect style="fill: #2eccaa;" height="95.1" width="6" rx="2" y="44.9" x="226" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="250" transform="rotate(-90)">TH</text>
-		<rect style="fill: #2eccaa;" height="133.7" width="6" rx="2" y="6.3" x="244" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="244" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="268" transform="rotate(-90)">VI</text>
 		<rect style="fill: #2eccaa;" height="93.9" width="6" rx="2" y="46.1" x="262" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="286" transform="rotate(-90)">ZH-HANS</text>
