@@ -135,6 +135,7 @@
 			"node_modules/7zip-bin/${os}/${arch}",
 			"node_modules/pdfjs-dist/build/pdf.mjs",
 			"node_modules/pdfjs-dist/build/pdf.worker.mjs",
+			"node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs",
 			"node_modules/mime",
 			"node_modules/jxl-oxide-wasm",
 			"images/icon-border-transparent.png",
