@@ -196,7 +196,7 @@ async function resizeToBlob(fromImage, config = {})
 
 }
 
-async function rawToPng(fromBuffer, toImage, width, height, channels = 3, config = {})
+async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
@@ -205,9 +205,11 @@ async function rawToPng(fromBuffer, toImage, width, height, channels = 3, config
 		compressionLevel: 2,
 	}, ...config};
 
+	console.log({raw: raw});
+
 	return new Promise(function(resolve, reject) {
 
-		sharp(fromBuffer, {raw: {width: width, height: height, channels: channels}}).png({force: true, compressionLevel: config.compressionLevel}).toFile(toImage, function(error) {
+		sharp(fromBuffer, {raw: raw}).keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').removeAlpha().toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({force: true, compressionLevel: config.compressionLevel}).toFile(toImage, function(error) {
 		
 			if(error)
 				reject();

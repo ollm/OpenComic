@@ -141,6 +141,8 @@ var compatibleMime = [
 	'image/jp2',
 	'image/jpx',
 	'image/jpm',
+	'image/jxr',
+	'image/vnd.ms-photo',
 	'image/png',
 	'image/apng',
 	'image/svg',
@@ -157,9 +159,13 @@ var compatibleMime = [
 
 // This image formats requires conversion to PNG to be displayed
 var convertMime = [
+	// jp2
 	'image/jp2',
 	'image/jpx',
 	'image/jpm',
+	// jxr
+	'image/jxr',
+	'image/vnd.ms-photo',
 ];
 
 var compressedMime = {
@@ -287,6 +293,7 @@ var imageExtensions = {
 		'avifs',
 	],
 	convert: [ // This image formats requires conversion to PNG to be displayed
+		// jp2
 		'jp2',
 		'j2k',
 		'jpf',
@@ -295,6 +302,10 @@ var imageExtensions = {
 		'j2c',
 		'jpc',
 		'jpx',
+		// jxr
+		'jxr',
+		'hdp',
+		'wdp',
 	],
 	jpg: [
 		'jpg',
@@ -314,6 +325,11 @@ var imageExtensions = {
 		'j2c',
 		'jpc',
 		'jpx',
+	],
+	jxr: [
+		'jxr',
+		'hdp',
+		'wdp',
 	],
 	png: [
 		'png',

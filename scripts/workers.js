@@ -132,6 +132,37 @@ function work(options = {})
 
 }
 
+function float32To16Array(uint8Buffer)
+{
+	const floatData = new Float32Array(
+		uint8Buffer.buffer,
+		uint8Buffer.byteOffset,
+		uint8Buffer.byteLength / Float32Array.BYTES_PER_ELEMENT
+	);
+
+	const uint16Data = new Uint16Array(floatData.length);
+
+	for(let i = 0, len = floatData.length; i < len; i++)
+	{
+		const clamped = Math.max(0, Math.min(1, floatData[i]));
+		uint16Data[i] = Math.round(clamped * 65535);
+	}
+
+	return uint16Data;
+}
+
+function convertBuffer(buffer, bits, bitsString = false)
+{
+	if(bits >= 32 && bitsString.toLowerCase() === '32float')
+		buffer = float32To16Array(buffer);
+	else if(bits >= 32)
+		buffer = new Uint16Array(new Uint32Array(buffer.buffer));
+	else if(bits >= 16)
+		buffer = new Uint16Array(buffer.buffer);
+
+	return buffer;
+}
+
 async function convertImage(path)
 {
 	const webpPath = fileManager.realPath(path);
@@ -156,7 +187,18 @@ async function convertImage(path)
 		if(!fs.existsSync(parentPath))
 			fs.mkdirSync(parentPath);
 
-		await image.rawToPng(result.buffer, webpPath, result.width, result.height, result.channels, {
+		const bits = result.bits;
+
+		if(bits > 8 && result.buffer instanceof Uint8Array)
+			result.buffer = convertBuffer(result.buffer, bits, result.bitsString);
+
+		await image.rawToPng(result.buffer, webpPath, {
+			width: result.width,
+			height: result.height,
+			channels: result.channels,
+			rgb16: bits > 8 ? true : false,
+			premultiplied: result.premultiplied || false,
+		}, {
 			compressionLevel: 2,
 		});
 

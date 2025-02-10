@@ -87,6 +87,7 @@
 		"gm": "^1.25.0",
 		"handlebars": "^4.7.8",
 		"jimp": "^1.6.0",
+		"jpegxr": "^0.3.0",
 		"jquery": "^3.7.1",
 		"jquery-bez": "^1.0.11",
 		"lodash.isequal": "^4.5.0",
