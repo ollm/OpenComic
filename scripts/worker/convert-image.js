@@ -70,6 +70,7 @@ async function jxr(path)
 			bitsPerPixel: pixelInfo.bitsPerPixel,
 			premultiplied: pixelInfo.premultipledAlpha,
 			pixelInfo: pixelInfo,
+			removeAlpha: true,
 		};
 	}
 	catch(error)

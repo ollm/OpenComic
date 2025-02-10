@@ -205,11 +205,14 @@ async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 		compressionLevel: 2,
 	}, ...config};
 
-	console.log({raw: raw});
-
 	return new Promise(function(resolve, reject) {
 
-		sharp(fromBuffer, {raw: raw}).keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').removeAlpha().toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({force: true, compressionLevel: config.compressionLevel}).toFile(toImage, function(error) {
+		const _sharp = sharp(fromBuffer, {raw: raw});
+
+		if(config.removeAlpha)
+			_sharp.removeAlpha();
+
+		_sharp.keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({force: true, compressionLevel: config.compressionLevel}).toFile(toImage, function(error) {
 		
 			if(error)
 				reject();

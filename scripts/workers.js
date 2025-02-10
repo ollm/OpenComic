@@ -132,14 +132,35 @@ function work(options = {})
 
 }
 
+/*function float32To16Array(uint8Buffer)
+{
+	const floatData = new Float32Array(uint8Buffer.buffer);
+	const uint16Data = new Uint16Array(floatData.length);
+
+	let max = 1;
+	let min = 0;
+
+	for(let i = 0, len = floatData.length; i < len; i++)
+	{
+		if(floatData[i] > max)
+			max = floatData[i];
+		else if(floatData[i] < min)
+			min = floatData[i];
+	}
+
+	const multiplier = 65535 / (max - min);
+
+	for(let i = 0, len = floatData.length; i < len; i++)
+	{
+		uint16Data[i] = Math.round((floatData[i] - min) * multiplier);
+	}
+
+	return uint16Data;
+}*/
+
 function float32To16Array(uint8Buffer)
 {
-	const floatData = new Float32Array(
-		uint8Buffer.buffer,
-		uint8Buffer.byteOffset,
-		uint8Buffer.byteLength / Float32Array.BYTES_PER_ELEMENT
-	);
-
+	const floatData = new Float32Array(uint8Buffer.buffer);
 	const uint16Data = new Uint16Array(floatData.length);
 
 	for(let i = 0, len = floatData.length; i < len; i++)
@@ -200,6 +221,7 @@ async function convertImage(path)
 			premultiplied: result.premultiplied || false,
 		}, {
 			compressionLevel: 2,
+			removeAlpha: result.removeAlpha,
 		});
 
 		return webpPath;
