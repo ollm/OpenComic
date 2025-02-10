@@ -60,7 +60,7 @@ window.addEventListener('error', function(evt) {
 				type: 'error',
 				title: 'Linenumber '+evt.lineno+':'+evt.colno,
 				message: error,
-				detail: evt.error.stack ? evt.error.stack : error,
+				detail: evt?.error?.stack ? evt.error.stack : error,
 			});
 		}
 		else if(evt.filename || evt.lineno || evt.colno)
@@ -138,6 +138,9 @@ handlebarsContext.packageJson = _package;
 var compatibleMime = [
 	'image/jpeg',
 	'image/pjpeg',
+	'image/jp2',
+	'image/jpx',
+	'image/jpm',
 	'image/png',
 	'image/apng',
 	'image/svg',
@@ -150,6 +153,13 @@ var compatibleMime = [
 	'image/webp',
 	'image/avif',
 	'image/avif-sequence',
+];
+
+// This image formats requires conversion to PNG to be displayed
+var convertMime = [
+	'image/jp2',
+	'image/jpx',
+	'image/jpm',
 ];
 
 var compressedMime = {
@@ -255,6 +265,14 @@ var imageExtensions = {
 		'jfif',
 		'jfif-tbnl',
 		'jpe',
+		'jp2',
+		'j2k',
+		'jpf',
+		'jpm',
+		'jpg2',
+		'j2c',
+		'jpc',
+		'jpx',
 		'png',
 		'x-png',
 		'apng',
@@ -268,6 +286,16 @@ var imageExtensions = {
 		'avif',
 		'avifs',
 	],
+	convert: [ // This image formats requires conversion to PNG to be displayed
+		'jp2',
+		'j2k',
+		'jpf',
+		'jpm',
+		'jpg2',
+		'j2c',
+		'jpc',
+		'jpx',
+	],
 	jpg: [
 		'jpg',
 		'jpeg',
@@ -276,6 +304,16 @@ var imageExtensions = {
 		'jfif',
 		'jfif-tbnl',
 		'jpe',
+	],
+	jp2: [
+		'jp2',
+		'j2k',
+		'jpf',
+		'jpm',
+		'jpg2',
+		'j2c',
+		'jpc',
+		'jpx',
 	],
 	png: [
 		'png',
@@ -308,6 +346,8 @@ var imageExtensions = {
 var compatibleImageExtensions = [
 	...imageExtensions.all,
 ];
+
+var compatibleImageExtensionsWithoutConvert = removeElements(imageExtensions.all, imageExtensions.convert);
 
 var compatibleCompressedExtensions = [
 	...compressedExtensions.all,
@@ -350,6 +390,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	dom = require(p.join(appDir, 'scripts/dom.js')),
 	events = require(p.join(appDir, 'scripts/events.js')),
 	ebook = require(p.join(appDir, 'scripts/ebook.js')),
+	workers = require(p.join(appDir, 'scripts/workers.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
 	serverClient = require(p.join(appDir, 'scripts/server-client.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
@@ -602,7 +643,13 @@ function copy(data)
 
 function inArray(string, array)
 {
-	return (array.indexOf(string) != -1) ? true : false;
+	return array.includes(string) ? true : false;
+}
+
+function removeElements(array1, array2)
+{
+    const set2 = new Set(array2);
+    return array1.filter(element => !set2.has(element));
 }
 
 function fileExtension(path)

@@ -784,7 +784,7 @@ var file = function(path, _config = false) {
 			}
 
 			if(_path !== file.path) // If it is different it is because it is not a compressed file
-				this.setTmpUsage(_path);
+				fileManager.setTmpUsage(_path);
 		}
 
 		if(filesToDecompress)
@@ -842,39 +842,7 @@ var file = function(path, _config = false) {
 			}
 		}
 
-		this.saveTmpUsage();
-
 		return filesToDecompressNum;
-	}
-
-	this.tmpUsage = [];
-
-	this.setTmpUsage = function(path) {
-
-		this.tmpUsage.push(path);
-
-	}
-
-	this.saveTmpUsage = function() {
-
-		let len = this.tmpUsage.length;
-
-		if(len === 0) return;
-
-		let time = app.time();
-		let tmpUsage = storage.get('tmpUsage');
-
-		for(let i = 0; i < len; i++)
-		{
-			let path = this.tmpUsage[i];
-
-			if(!tmpUsage[path]) tmpUsage[path] = {};
-			tmpUsage[path].lastAccess = time;
-		}
-
-		storage.setThrottle('tmpUsage', tmpUsage);
-		this.tmpUsage = [];
-
 	}
 
 	this.macosScopedResources = [];
@@ -1105,15 +1073,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	this.setTmpUsage = function() {
 
 		if(this.path !== this.realPath)
-		{
-			let time = app.time();
-			let tmpUsage = storage.get('tmpUsage');
-
-			if(!tmpUsage[this.realPath]) tmpUsage[this.realPath] = {};
-			tmpUsage[this.realPath].lastAccess = time;
-
-			storage.setThrottle('tmpUsage', tmpUsage);
-		}
+			fileManager.setTmpUsage(this.realPath);
 
 	}
 
@@ -2893,13 +2853,13 @@ function downloadedCompressedFile(path)
 
 function realPath(path, index = 0, prefixes = false)
 {
-	let segments = splitPath(path);
-	let len = segments.length;
+	const segments = splitPath(path);
+	const len = segments.length;
+	const numSegments = len + index;
 
 	let virtualPath;
 
 	let newPath = virtualPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
-	let numSegments = len + index;
 
 	if(isServer(path))
 	{
@@ -2923,29 +2883,92 @@ function realPath(path, index = 0, prefixes = false)
 		{
 			let extension = fileExtension(newPath);
 
-			if(extension && inArray(extension, compressedExtensions.all)/* && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory()*/)
+			if(extension)
 			{
-				let sha = sha1(p.normalize(virtualPath));
-
-				if(prefixes)
+				if(inArray(extension, compressedExtensions.all) /* && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory()*/)
 				{
-					for(let ext in prefixes)
-					{
-						if(inArray(extension, compressedExtensions[ext]))
-						{
-							sha = prefixes[ext]+'-'+sha;
+					let sha = sha1(p.normalize(virtualPath));
 
-							break;
+					if(prefixes)
+					{
+						for(let ext in prefixes)
+						{
+							if(inArray(extension, compressedExtensions[ext]))
+							{
+								sha = prefixes[ext]+'-'+sha;
+
+								break;
+							}
 						}
 					}
-				}
 
-				newPath = p.join(tempFolder, sha);
+					newPath = p.join(tempFolder, sha);
+				}
+				else if(inArray(extension, imageExtensions.convert) && i + 1 === len)
+				{
+					const sha = sha1(p.dirname(p.normalize(virtualPath)));
+
+					let image = p.basename(virtualPath);
+					image = image+'.png';
+
+					newPath = p.join(tempFolder, sha, image);
+				}
 			}
 		}
 	}
 
 	return newPath;
+}
+
+async function convertUnsupportedImages(files)
+{
+	const promises = [];
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+		const path = file.path;
+
+		if(inArray(fileExtension(path), imageExtensions.convert)) // Convert unsupported images
+			promises.push(workers.convertImage(path));
+	}
+
+	await Promise.all(promises);
+
+	return true;
+}
+
+var tmpUsageST = false, tmpUsageQueue = [];
+
+function setTmpUsage(path)
+{
+	tmpUsageQueue.push(path);
+
+	if(tmpUsageST === false)
+	{
+		tmpUsageST = setTimeout(function() {
+
+			tmpUsageST = false;
+
+			const len = tmpUsageQueue.length;
+			if(len === 0) return;
+
+			const time = app.time();
+			const tmpUsage = storage.get('tmpUsage');
+
+			for(let i = 0; i < len; i++)
+			{
+				const path = tmpUsageQueue[i];
+
+				if(!tmpUsage[path]) tmpUsage[path] = {};
+				tmpUsage[path].lastAccess = time;
+			}
+
+			storage.setThrottle('tmpUsage', tmpUsage);
+			tmpUsageQueue = [];
+
+		}, 1000);
+	}
 }
 
 var serverInOfflineMode = false;
@@ -3372,6 +3395,8 @@ module.exports = {
 	isParentPath: isParentPath,
 	simpleExists: simpleExists,
 	replaceReservedCharacters: replaceReservedCharacters,
+	convertUnsupportedImages: convertUnsupportedImages,
+	setTmpUsage: setTmpUsage,
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
 	dirSize: dirSize,

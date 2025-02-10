@@ -102,46 +102,6 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 	});
 }
 
-async function resizeToCanvas(fromImage, config = {})
-{
-	if(sharp === false) sharp = require('sharp');
-
-	fromImage = app.shortWindowsPath(fromImage);
-
-	config = {...{
-		kernel: 'lanczos3',
-	}, ...config};
-
-	return new Promise(function(resolve, reject) {
-
-		// pipelineColourspace('rgb16').toColourspace('rgb16')
-		sharp(fromImage).ensureAlpha(1).toColourspace('rgb8').raw({depth: 'uchar'}).resize(config).toBuffer(function(error, data, info) {
-		
-			if(error)
-			{
-				reject(error);
-			}
-			else
-			{
-				let imageData;
-
-				try
-				{
-					imageData = new ImageData(new Uint8ClampedArray(data), info.width, info.height);
-				}
-				catch(error)
-				{
-					console.error(error);
-				}
-
-				resolve({data: imageData, info: info});
-			}
-
-		});
-
-	});
-}
-
 async function resizeToBlob(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
@@ -236,23 +196,18 @@ async function resizeToBlob(fromImage, config = {})
 
 }
 
-async function convertToPng(fromImage, toImage, config = {})
+async function rawToPng(fromBuffer, toImage, width, height, channels = 3, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = app.shortWindowsPath(fromImage);
-
 	config = {...{
 		kernel: 'nearest',
-		compressionLevel: 0,
-		quality: 100,
+		compressionLevel: 2,
 	}, ...config};
-
-	// await image.metadata();
 
 	return new Promise(function(resolve, reject) {
 
-		sharp(fromImage).png({force: true, compressionLevel: config.compressionLevel}).resize(config).toFile(toImage, function(error) {
+		sharp(fromBuffer, {raw: {width: width, height: height, channels: channels}}).png({force: true, compressionLevel: config.compressionLevel}).toFile(toImage, function(error) {
 		
 			if(error)
 				reject();
@@ -260,25 +215,23 @@ async function convertToPng(fromImage, toImage, config = {})
 				resolve(toImage);
 
 		});
+
 	});
 }
 
-async function convertToWebp(fromImage, toImage, config = {})
+async function rawToWebp(fromBuffer, toImage, width, height, channels = 3, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = app.shortWindowsPath(fromImage);
-
 	config = {...{
 		kernel: 'nearest',
-		compressionLevel: 0,
+		effort: 0,
 		quality: 100,
-		lossless: true,
 	}, ...config};
 
 	return new Promise(function(resolve, reject) {
 
-		sharp(fromImage).webp({force: true, lossless: config.lossless, quality: config.quality}).resize(config).toFile(toImage, function(error) {
+		sharp(fromBuffer, {raw: {width: width, height: height, channels: channels}}).webp({force: true, quality: config.quality, effort: config.effort}).toFile(toImage, function(error) {
 		
 			if(error)
 				reject();
@@ -286,6 +239,7 @@ async function convertToWebp(fromImage, toImage, config = {})
 				resolve(toImage);
 
 		});
+
 	});
 }
 
@@ -460,10 +414,9 @@ async function getSizes(images)
 
 module.exports = {
 	resize: resize,
-	resizeToCanvas: resizeToCanvas,
 	resizeToBlob: resizeToBlob,
-	convertToPng: convertToPng,
-	convertToWebp: convertToWebp,
+	rawToPng: rawToPng,
+	rawToWebp: rawToWebp,
 	isAnimated: isAnimated,
 	sharpSupportedFormat: sharpSupportedFormat,
 	loadImage: loadImage,

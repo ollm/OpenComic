@@ -56,7 +56,7 @@ function openDialog(path)
 {
 	let dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: ['openFile'], defaultPath: fileManager.containsCompressed(path) ? p.dirname(path) : path, filters: [{name: language.global.comics, extensions: [...compatibleImageExtensions, ...compatibleSpecialExtensions]}]}).then(function (files) {
+	dialog.showOpenDialog({properties: ['openFile'], defaultPath: fileManager.containsCompressed(path) ? p.dirname(path) : path, filters: [{name: language.global.comics, extensions: [...compatibleImageExtensionsWithoutConvert, ...compatibleSpecialExtensions]}]}).then(function (files) {
 
 		if(files.filePaths && files.filePaths[0])
 			setNewPoster(files.filePaths[0]);

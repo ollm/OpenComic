@@ -781,7 +781,7 @@ function fromImage()
 
 	let dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: ['openFile'], filters: [{name: language.global.comics, extensions: [...compatibleImageExtensions, ...compatibleSpecialExtensions]}]}).then(async function (files) {
+	dialog.showOpenDialog({properties: ['openFile'], filters: [{name: language.global.comics, extensions: [...compatibleImageExtensionsWithoutConvert, ...compatibleSpecialExtensions]}]}).then(async function (files) {
 
 		if(files.filePaths && files.filePaths[0])
 		{

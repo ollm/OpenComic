@@ -31,7 +31,9 @@ var imagesWithoutSaving = 0;
 
 function processTheImageQueue()
 {
-	let img = queuedImages[0];
+	let img = queuedImages.shift();
+	if(!img) return;
+
 	let sha = img.sha;
 
 	let realPath = fileManager.realPath(img.file);
@@ -51,8 +53,6 @@ function processTheImageQueue()
 		data[sha].size = img.size;
 
 		img.callback({cache: true, path: escapeBackSlash(addCacheVars(toImage, img.size, img.sha)), sha: sha}, img.vars);
-
-		queuedImages.splice(0, 1);
 
 		if(queuedImages.length > 0)
 		{
@@ -80,8 +80,6 @@ function processTheImageQueue()
 
 		img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
 
-		queuedImages.splice(0, 1);
-
 		if(queuedImages.length > 0)
 		{
 			imagesWithoutSaving++;
@@ -107,8 +105,13 @@ function processTheImageQueue()
 	});
 }
 
-function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
+async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 {
+	const extention = fileExtension(file);
+
+	if(inArray(extention, imageExtensions.convert)) // Convert unsupported images
+		await workers.convertImage(file);
+
 	queuedImages.push({file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
 
 	if(!processingTheImageQueue && !stopTheImageQueue)

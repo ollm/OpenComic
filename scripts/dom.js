@@ -2452,6 +2452,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		await file.makeAvailable(files, false, true);
 	}
 
+	await fileManager.convertUnsupportedImages(files);
+
 	if(hasMusic) files.pop(); // Remove now
 
 	file.destroy();
