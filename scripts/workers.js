@@ -186,13 +186,13 @@ function convertBuffer(buffer, bits, bitsString = false)
 
 async function convertImage(path)
 {
-	const webpPath = fileManager.realPath(path);
+	const pngPath = fileManager.realPath(path);
 	const realPath = fileManager.realPath(path, -1);
 
-	fileManager.setTmpUsage(webpPath);
+	fileManager.setTmpUsage(pngPath);
 
-	if(fs.existsSync(webpPath))
-		return webpPath;
+	if(fs.existsSync(pngPath))
+		return pngPath;
 
 	const result = await work({
 		job: 'convertImage',
@@ -201,30 +201,38 @@ async function convertImage(path)
 		mime: mime.getType(realPath),
 	});
 
+	const parentPath = p.dirname(pngPath);
+
+	if(!fs.existsSync(parentPath))
+		fs.mkdirSync(parentPath);
+
 	if(result.buffer)
 	{
-		const parentPath = p.dirname(webpPath);
-
-		if(!fs.existsSync(parentPath))
-			fs.mkdirSync(parentPath);
-
 		const bits = result.bits;
 
 		if(bits > 8 && result.buffer instanceof Uint8Array)
 			result.buffer = convertBuffer(result.buffer, bits, result.bitsString);
 
-		await image.rawToPng(result.buffer, webpPath, {
+		const raw = {
 			width: result.width,
 			height: result.height,
 			channels: result.channels,
 			rgb16: bits > 8 ? true : false,
 			premultiplied: result.premultiplied || false,
-		}, {
+		};
+
+		await image.rawToPng(result.buffer, pngPath, raw, {
 			compressionLevel: 2,
 			removeAlpha: result.removeAlpha,
 		});
 
-		return webpPath;
+		return pngPath;
+	}
+	else if(result.png && result.png instanceof Uint8Array)
+	{
+		fs.writeFileSync(pngPath, Buffer.from(result.png), function(){});
+
+		return pngPath;
 	}
 
 	if(result.error)

@@ -81,6 +81,36 @@ async function jxr(path)
 	return false;
 }
 
+async function jxl(path)
+{
+	const buffer = fs.readFileSync(path);
+
+	if(JxlImage === false)
+		await loadJxlImage();
+
+	try
+	{
+		const image = new JxlImage();
+		image.feedBytes(buffer);
+
+		if(!image.tryInit())
+			throw new Error('Partial image, no frame data');
+
+		const renderResult = image.render();
+		const png = renderResult.encodeToPng();
+
+		return {
+			png: png,
+		};
+	}
+	catch(error)
+	{
+		return {error: error};
+	}
+
+	return false;
+}
+
 async function convert(path, mime)
 {
 	switch (mime)
@@ -96,6 +126,11 @@ async function convert(path, mime)
 		case 'image/vnd.ms-photo':
 
 			return jxr(path);
+
+			break;
+		case 'image/jxl':
+
+			return jxl(path);
 
 			break;
 	}

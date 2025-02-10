@@ -26,6 +26,20 @@ async function loadPdfjs()
 	return true;
 }
 
+JxlImage = false;
+
+async function loadJxlImage()
+{
+	if(JxlImage) return;
+
+	JxlImage = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/jxl-oxide-wasm/jxl_oxide_wasm.js')));
+
+	await JxlImage.default();
+	JxlImage = JxlImage.JxlImage;
+
+	return true;
+}
+
 self.addEventListener('message', async function(message) {
 
 	const data = message.data;

@@ -79,7 +79,6 @@ const electron = require('electron'),
 	hb = require('handlebars'),
 	os = require('os'),
 	ejs = require('electron-json-storage'),
-	mime = require('mime'),
 	sha1 = require('sha1'),
 	p = require('path'),
 	isEqual = require('lodash.isequal'),
@@ -143,6 +142,7 @@ var compatibleMime = [
 	'image/jpm',
 	'image/jxr',
 	'image/vnd.ms-photo',
+	'image/jxl',
 	'image/png',
 	'image/apng',
 	'image/svg',
@@ -166,6 +166,8 @@ var convertMime = [
 	// jxr
 	'image/jxr',
 	'image/vnd.ms-photo',
+	// jxl
+	'image/jxl',
 ];
 
 var compressedMime = {
@@ -279,6 +281,10 @@ var imageExtensions = {
 		'j2c',
 		'jpc',
 		'jpx',
+		'jxr',
+		'hdp',
+		'wdp',
+		'jxl',
 		'png',
 		'x-png',
 		'apng',
@@ -306,6 +312,8 @@ var imageExtensions = {
 		'jxr',
 		'hdp',
 		'wdp',
+		// jxl
+		'jxl',
 	],
 	jpg: [
 		'jpg',
@@ -330,6 +338,9 @@ var imageExtensions = {
 		'jxr',
 		'hdp',
 		'wdp',
+	],
+	jxl: [
+		'jxl',
 	],
 	png: [
 		'png',
@@ -471,6 +482,8 @@ window.onload = function() {
 
 async function startApp()
 {
+	await loadMime();
+
 	if(config.checkReleases)
 		checkReleases.check();
 
@@ -640,6 +653,18 @@ async function loadPdfjs()
 
 	unpdf = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs')));
 	unpdf.GlobalWorkerOptions.workerSrc = asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.mjs'));
+
+	return true;
+}
+
+var mime = false;
+
+async function loadMime()
+{
+	if(mime) return;
+
+	mime = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index.js')));
+	mime = mime.default;
 
 	return true;
 }
