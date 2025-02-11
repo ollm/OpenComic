@@ -118,20 +118,14 @@ function genearteFilePath(saveTo, fileName)
 
 function saveImage()
 {
-	const currentIndex = reading.currentIndex();
-	saveAllImages(currentIndex - 1);
+	const position = reading.currentImagePosition();
+	saveAllImages(position);
 }
 
-function saveAllImages(index = false)
+function saveAllImages(position = false)
 {
 	const images = reading.images();
 	const imagesData = reading.imagesData();
-
-	if(index !== false)
-	{
-		if(_config.readingManga && !reading.readingViewIs('scroll'))
-			index = (reading.indexNum() - index) - 1;
-	}
 
 	const toSave = [];
 	let highestPage = 0;
@@ -140,7 +134,7 @@ function saveAllImages(index = false)
 	{
 		const path = images[key].path;
 
-		if(index === false || index == imagesData[key].position)
+		if(position === false || position == imagesData[key].position)
 			toSave.push({path: path, page: key});
 
 		if(+key > highestPage)

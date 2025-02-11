@@ -157,17 +157,21 @@ var compatibleMime = [
 	'image/avif-sequence',
 ];
 
-// This image formats requires conversion to PNG to be displayed
-var convertMime = [
+// This image formats requires conversion to Blob to be displayed
+var blobMime = [
 	// jp2
 	'image/jp2',
 	'image/jpx',
-	'image/jpm',
+	'image/jpm', 
+	// jxl
+	'image/jxl',
+];
+
+// This image formats requires conversion to PNG to be displayed
+var convertMime = [
 	// jxr
 	'image/jxr',
 	'image/vnd.ms-photo',
-	// jxl
-	'image/jxl',
 ];
 
 var compressedMime = {
@@ -298,7 +302,7 @@ var imageExtensions = {
 		'avif',
 		'avifs',
 	],
-	convert: [ // This image formats requires conversion to PNG to be displayed
+	blob: [ // This image formats requires conversion to Blob to be displayed
 		// jp2
 		'jp2',
 		'j2k',
@@ -308,12 +312,14 @@ var imageExtensions = {
 		'j2c',
 		'jpc',
 		'jpx',
+		// jxl
+		'jxl',
+	],
+	convert: [ // This image formats requires conversion to PNG to be displayed
 		// jxr
 		'jxr',
 		'hdp',
 		'wdp',
-		// jxl
-		'jxl',
 	],
 	jpg: [
 		'jpg',
@@ -374,7 +380,7 @@ var compatibleImageExtensions = [
 	...imageExtensions.all,
 ];
 
-var compatibleImageExtensionsWithoutConvert = removeElements(imageExtensions.all, imageExtensions.convert);
+var compatibleImageExtensionsWithoutConvert = removeElements(imageExtensions.all, [...imageExtensions.blob, ...imageExtensions.convert]);
 
 var compatibleCompressedExtensions = [
 	...compressedExtensions.all,
@@ -653,6 +659,17 @@ async function loadPdfjs()
 
 	unpdf = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs')));
 	unpdf.GlobalWorkerOptions.workerSrc = asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.mjs'));
+
+	return true;
+}
+
+pdfjsDecoders = false;
+
+async function loadPdfjsDecoders()
+{
+	if(pdfjsDecoders) return;
+
+	pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
 
 	return true;
 }

@@ -4399,6 +4399,26 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 	hasGenerateEbookPages = false;
 }
 
+function currentImagePosition()
+{
+	let index = currentIndex - 1;
+
+	if(_config.readingManga && !reading.readingViewIs('scroll'))
+		index = (indexNum - index) - 1;
+
+	return index;
+}
+
+function currentImagePage()
+{
+	return imagesDistribution[currentImagePosition()][0].index;
+}
+
+function currentImageIndex()
+{
+	return currentImagePage() - 1;
+}
+
 // Events functions
 
 var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'};
@@ -5323,12 +5343,27 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	readingFile = fileManager.file();
 	readingFileC = false;
 
-	render.setOnRender((readingDoublePage() && imagesNum > 1 ? 2 : 1), function(){
+	render.setOnRender((readingDoublePage() && imagesNum > 1 ? 2 : 1), function() {
 
 		const contentRight = template._contentRight();
 
 		dom.this(contentRight).find('.loading').remove();
 		dom.this(contentRight).find('.reading-body').css({opacity: 1});
+
+		// Priorize closest images
+		const index = reading.currentImageIndex();
+		const images = [];
+
+		for(let i = 0, len = _images.length; i < len; i++)
+		{
+			const image1 = _images[index+i] || false;
+			const image2 = _images[index-i] || false;
+
+			if(image1) images.push(image1);
+			if(image2 && image1.sha !== image2.sha) images.push(image2);
+		}
+
+		fileManager.blobUnsupportedImages(images, 0.49);
 
 	});
 
@@ -5503,6 +5538,9 @@ module.exports = {
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	deleteBookmark: deleteBookmark,
 	currentIndex: function(){return currentIndex},
+	currentImagePosition: currentImagePosition,
+	currentImagePage: currentImagePage,
+	currentImageIndex: currentImageIndex,
 	currentPageVisibility: function(){return currentPageVisibility},
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,

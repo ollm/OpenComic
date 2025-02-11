@@ -29,7 +29,7 @@ if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 
 var imagesWithoutSaving = 0;
 
-function processTheImageQueue()
+async function processTheImageQueue()
 {
 	let img = queuedImages.shift();
 	if(!img) return;
@@ -46,7 +46,14 @@ function processTheImageQueue()
 	const ratios = getRatios();
 	const forceSize = img.forceSize || 150;
 
-	image.resize(realPath, toImage, {width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
+	let blob = false;
+
+	if(inArray(fileExtension(realPath), imageExtensions.blob)) // Convert unsupported images to blob
+		blob = await workers.convertImageToBlob(realPath);
+
+	image.resize(blob || realPath, toImage, {blob: blob ? true : false, width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
+
+		//if(blob) fileManager.revokeObjectURL(path);
 
 		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: app.time()};
 
@@ -77,6 +84,8 @@ function processTheImageQueue()
 		}
 
 	}).catch(function(){
+
+		//if(blob) fileManager.revokeObjectURL(path);
 
 		img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
 

@@ -2929,8 +2929,26 @@ async function convertUnsupportedImages(files)
 		const file = files[i];
 		const path = file.path;
 
-		if(inArray(fileExtension(path), imageExtensions.convert)) // Convert unsupported images
+		if(!file.folder && !file.compressed && inArray(fileExtension(path), imageExtensions.convert)) // Convert unsupported images
 			promises.push(workers.convertImage(path));
+	}
+
+	await Promise.all(promises);
+
+	return true;
+}
+
+async function blobUnsupportedImages(files, useThreads = 1)
+{
+	const promises = [];
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+		const path = file.path;
+
+		if(!file.folder && !file.compressed && inArray(fileExtension(path), imageExtensions.blob)) // Convert unsupported images to Blob
+			promises.push(workers.convertImageToBlob(path, {useThreads: useThreads}));
 	}
 
 	await Promise.all(promises);
@@ -3348,6 +3366,31 @@ function fileToBlob(path)
 	return blobObjectsURL[path];
 }
 
+function bufferToBlob(path, buffer, mime = 'image/png')
+{
+	if(blobObjectsURL[path]) return blobObjectsURL[path];
+
+	const blob = new Blob([buffer], {type: mime});
+	const blobURL = URL.createObjectURL(blob);
+
+	blobObjectsURL[path] = blobURL;
+	return blobObjectsURL[path];
+}
+
+function getBlob(path)
+{
+	if(blobObjectsURL[path]) return blobObjectsURL[path];
+	return false;
+}
+
+function revokeObjectURL(path)
+{
+	if(!blobObjectsURL[key]) return;
+
+	URL.revokeObjectURL(blobObjectsURL[key]);
+	delete blobObjectsURL[key];
+}
+
 function revokeAllObjectURL()
 {
 	for(let key in blobObjectsURL)
@@ -3396,6 +3439,7 @@ module.exports = {
 	simpleExists: simpleExists,
 	replaceReservedCharacters: replaceReservedCharacters,
 	convertUnsupportedImages: convertUnsupportedImages,
+	blobUnsupportedImages: blobUnsupportedImages,
 	setTmpUsage: setTmpUsage,
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
@@ -3403,6 +3447,9 @@ module.exports = {
 	dirSizeSync: dirSizeSync,
 	copyToTmp: copyToTmp,
 	fileToBlob: fileToBlob,
+	bufferToBlob: bufferToBlob,
+	getBlob: getBlob,
+	revokeObjectURL: revokeObjectURL,
 	revokeAllObjectURL: revokeAllObjectURL,
 	requestFileAccess: requestFileAccess,
 }

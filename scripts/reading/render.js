@@ -448,11 +448,17 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			let src = img.dataset.src;
 			let key = src+'|'+_config.width+'x'+_config.height;
 
+			if(inArray(fileExtension(src), imageExtensions.blob)) // Convert unsupported images to blob
+			{
+				src = await workers.convertImageToBlob(src, {priorize: true});
+				_config.blob = true;
+			}
+
 			if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
 			{
 				if(cssMethods[_config.kernel])
 				{
-					img.src = app.encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
+					img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 					img.classList.remove('blobRendered', 'blobRender');
 					img.style.imageRendering = cssMethods[_config.kernel];
 				}
@@ -487,21 +493,21 @@ async function render(index, _scale = false, magnifyingGlass = false)
 					{
 						console.error(error);
 
-						img.src = app.encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
+						img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 						img.classList.remove('blobRendered', 'blobRender');
 						img.style.imageRendering = '';
 					}
 				}
 				else
 				{
-					img.src = app.encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
+					img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 					img.classList.remove('blobRendered', 'blobRender');
 					img.style.imageRendering = '';
 				}
 			}
 			else
 			{
-				img.src = app.encodeSrcURI(app.shortWindowsPath(img.dataset.src, true));
+				img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 				img.classList.remove('blobRendered', 'blobRender');
 				img.style.imageRendering = '';
 			}

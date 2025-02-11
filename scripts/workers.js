@@ -1,33 +1,55 @@
-var cpus = false;
+var threads = false;
 var workers = {};
 var promisses = {};
 var queue = [];
 
+function clean(job = false)
+{
+	if(job)
+	{
+
+	}
+	else
+	{
+		queue = [];
+	}
+}
+
 async function addToQueue(options, promise)
 {
-	queue.push({
-		options: options,
-		promise: promise,
-	});
+	if(options.priorize)
+	{
+		queue.unshift({
+			options: options,
+			promise: promise,
+		});
+	}
+	else
+	{
+		queue.push({
+			options: options,
+			promise: promise,
+		});
+	}
 
 	processQueue();
 }
 
 function processQueue()
 {
-	if(!cpus)
-		cpus = os.cpus().length || 1;
+	if(!threads)
+		threads = os.cpus().length || 1;
 
-	for(let cpu = 0; cpu < cpus; cpu++)
+	for(let thread = 0; thread < threads; thread++)
 	{
-		const status = processJob(cpu);
+		const status = processJob(thread);
 		if(status === null) break;
 	}
 }
 
-function processJob(cpu = 0)
+function processJob(thread = 0)
 {
-	const worker = getWorker(cpu);
+	const worker = getWorker(thread);
 
 	if(worker.busy)
 		return false;
@@ -38,7 +60,7 @@ function processJob(cpu = 0)
 		{
 			worker.setTimeout = setTimeout(function(){
 
-				closeWorker(cpu);
+				closeWorker(thread);
 
 			}, 10000);
 		}
@@ -51,56 +73,67 @@ function processJob(cpu = 0)
 
 	const job = queue.shift();
 
+	if(job.options.useThreads < 1)
+	{
+		const useThreads = thread / threads;
+
+		if(useThreads > job.options.useThreads)
+		{
+			queue.unshift(job);
+			return;
+		}
+	}
+
 	worker.busy = true;
 	worker.currentJob = job;
 	worker.worker.postMessage(job.options);
 }
 
-function getWorker(cpu = 0)
+function getWorker(thread = 0)
 {
-	if(workers[cpu])
-		return workers[cpu];
+	if(workers[thread])
+		return workers[thread];
 
 	const worker = new Worker(p.join(appDir, 'scripts/worker.js'));
 
 	worker.addEventListener('message', function(result) {
 
-		workerMessage(cpu, result);
+		workerMessage(thread, result);
 
 	});
 
-	workers[cpu] = {
-		cpu: cpu,
+	workers[thread] = {
+		thread: thread,
 		worker: worker,
 		busy: false,
 		currentJob: false,
 		setTimeout: false,
 	};
 
-	return workers[cpu];
+	return workers[thread];
 }
 
-function closeWorker(cpu = 0)
+function closeWorker(thread = 0)
 {
-	if(!workers[cpu])
+	if(!workers[thread])
 		return;
 
-	console.log('Closing worker', cpu);
+	console.log('Closing worker', thread);
 
-	workers[cpu].worker.terminate();
-	delete workers[cpu];
+	workers[thread].worker.terminate();
+	delete workers[thread];
 }
 
-function workerMessage(cpu, result)
+function workerMessage(thread, result)
 {
-	const worker = workers[cpu];
+	const worker = workers[thread];
 
 	delete promisses[worker.currentJob.options.key];
 	worker.currentJob.promise.resolve(result.data);
 	worker.currentJob = false;
 	worker.busy = false;
 
-	processJob(cpu);
+	processJob(thread);
 }
 
 function work(options = {})
@@ -184,7 +217,7 @@ function convertBuffer(buffer, bits, bitsString = false)
 	return buffer;
 }
 
-async function convertImage(path)
+async function convertImage(path, options = {})
 {
 	const pngPath = fileManager.realPath(path);
 	const realPath = fileManager.realPath(path, -1);
@@ -199,6 +232,8 @@ async function convertImage(path)
 		key: 'convertImage-'+realPath,
 		path: realPath,
 		mime: mime.getType(realPath),
+		priorize: options.priorize || false,
+		useThreads: options.useThreads || 1,
 	});
 
 	const parentPath = p.dirname(pngPath);
@@ -244,6 +279,55 @@ async function convertImage(path)
 	return true;
 }
 
+async function convertImageToBlob(path, options = {})
+{
+	const realPath = fileManager.realPath(path, -1);
+	const blob = fileManager.getBlob(realPath);
+
+	if(blob)
+		return blob;
+
+	const result = await work({
+		job: 'convertImageToBlob',
+		key: 'convertImageToBlob-'+realPath,
+		path: realPath,
+		mime: mime.getType(realPath),
+		priorize: options.priorize || false,
+		useThreads: options.useThreads || 1,
+	});
+
+	if(result.buffer)
+	{
+		const bits = result.bits;
+
+		if(bits > 8 && result.buffer instanceof Uint8Array)
+			result.buffer = convertBuffer(result.buffer, bits, result.bitsString);
+
+		const raw = {
+			width: result.width,
+			height: result.height,
+			channels: result.channels,
+			rgb16: bits > 8 ? true : false,
+			premultiplied: result.premultiplied || false,
+		};
+
+		const buffer = await image.rawToBuffer(result.buffer, raw, {
+			compressionLevel: 0,
+			removeAlpha: result.removeAlpha,
+		});
+
+		return fileManager.bufferToBlob(realPath, buffer, 'image/png');
+	}
+	else if(result.png && result.png instanceof Uint8Array)
+	{
+		return fileManager.bufferToBlob(realPath, result.png, 'image/png');
+	}
+
+	return false;
+}
+
 module.exports = {
 	convertImage: convertImage,
+	convertImageToBlob: convertImageToBlob,
+	clean: clean,
 }

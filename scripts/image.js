@@ -1,10 +1,10 @@
-var sharp = false, jimp = false, imageMagick = false, graphicsMagick = false;
+var sharp = false, jimp = false, imageMagick = false, graphicsMagick = false, imageSize = false;
 
 async function resize(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = app.shortWindowsPath(fromImage);
+	if(!config.blob) fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		width: 200,
@@ -15,10 +15,13 @@ async function resize(fromImage, toImage, config = {})
 
 	return new Promise(function(resolve, reject) {
 
-		const extension = fileExtension(fromImage);
+		if(!config.blob)
+		{
+			const extension = fileExtension(fromImage);
 
-		if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
-			return reject({});
+			if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
+				return reject({});
+		}
 
 		_resize(fromImage, toImage, config, resolve, reject);
 
@@ -32,9 +35,12 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 	if(deep > 3)
 		options = {failOn: 'none'};
 
+	if(config.blob)
+		fromImage = await (await fetch(fromImage)).arrayBuffer();
+
 	sharp(fromImage, options).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
 
-		if(error && /unsupported image format/iu.test(error?.message || ''))
+		if(error && /unsupported image format/iu.test(error?.message || '') && !config.blob)
 		{
 			if(!imageMagick) imageMagick = require('gm').subClass({imageMagick: true});
 
@@ -106,7 +112,7 @@ async function resizeToBlob(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	fromImage = app.shortWindowsPath(fromImage);
+	if(!config.blob) fromImage = app.shortWindowsPath(fromImage);
 
 	config = {...{
 		kernel: 'lanczos3',
@@ -119,9 +125,12 @@ async function resizeToBlob(fromImage, config = {})
 	if(config.height && config.height < 1)
 		config.height = 1;
 
-	return new Promise(function(resolve, reject) {
+	return new Promise(async function(resolve, reject) {
 
 		// pipelineColourspace('rgb16').toColourspace('rgb16')
+
+		if(config.blob)
+			fromImage = await (await fetch(fromImage)).arrayBuffer();
 
 		let _sharp = sharp(fromImage).keepIccProfile();
 
@@ -224,24 +233,28 @@ async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 	});
 }
 
-async function rawToWebp(fromBuffer, toImage, width, height, channels = 3, config = {})
+async function rawToBuffer(fromBuffer, raw = {}, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
 	config = {...{
 		kernel: 'nearest',
-		effort: 0,
-		quality: 100,
+		compressionLevel: 0,
 	}, ...config};
 
 	return new Promise(function(resolve, reject) {
 
-		sharp(fromBuffer, {raw: {width: width, height: height, channels: channels}}).webp({force: true, quality: config.quality, effort: config.effort}).toFile(toImage, function(error) {
+		const _sharp = sharp(fromBuffer, {raw: raw});
+
+		if(config.removeAlpha)
+			_sharp.removeAlpha();
+
+		_sharp.keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({force: true, compressionLevel: config.compressionLevel}).toBuffer(function(error, buffer, info) {
 		
-			if(error)
-				reject();
+			if(error || !buffer)
+				reject(error);
 			else
-				resolve(toImage);
+				resolve(buffer);
 
 		});
 
@@ -369,7 +382,57 @@ async function getSizes(images)
 
 							try
 							{
-								if(sharpSupportedFormat(image.image))
+								const extension = fileExtension(image.image);
+
+								if(inArray(extension, imageExtensions.jp2))
+								{
+									if(pdfjsDecoders === false)
+										await loadPdfjsDecoders();
+
+									const buffer = await fsp.readFile(image.image);
+									const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
+
+									size = {
+										width: properties.width,
+										height: properties.height,
+									};
+								}
+								else if(inArray(extension, imageExtensions.blob))
+								{
+									if(imageSize === false)
+										imageSize = require('image-size');
+
+									const promise = new Promise(function(resolve, reject) {
+
+										imageSize(image.image, async function(error, dimensions) {
+
+											if(error)
+											{
+												const blob = await workers.convertImageToBlob(image.image);
+												const buffer = await (await fetch(blob)).arrayBuffer();
+
+												const _sharp = sharp(buffer);
+												const metadata = await _sharp.metadata();
+
+												resolve({
+													width: metadata.width,
+													height: metadata.height,
+												});
+											}
+											else
+											{
+												resolve({
+													width: dimensions.width,
+													height: dimensions.height,
+												});
+											}
+										})
+
+									});
+
+									size = await promise;
+								}
+								else if(sharpSupportedFormat(image.image, extension))
 								{
 									const _sharp = sharp(app.shortWindowsPath(image.image));
 									const metadata = await _sharp.metadata();
@@ -421,7 +484,7 @@ module.exports = {
 	resize: resize,
 	resizeToBlob: resizeToBlob,
 	rawToPng: rawToPng,
-	rawToWebp: rawToWebp,
+	rawToBuffer: rawToBuffer,
 	isAnimated: isAnimated,
 	sharpSupportedFormat: sharpSupportedFormat,
 	loadImage: loadImage,

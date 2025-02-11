@@ -15,7 +15,7 @@ function asarToAsarUnpacked(path)
 	return path;
 }
 
-pdfjs = false;
+var pdfjs = false;
 
 async function loadPdfjs()
 {
@@ -26,7 +26,7 @@ async function loadPdfjs()
 	return true;
 }
 
-JxlImage = false;
+var JxlImage = false;
 
 async function loadJxlImage()
 {
@@ -48,6 +48,7 @@ self.addEventListener('message', async function(message) {
 	switch (job)
 	{
 		case 'convertImage':
+		case 'convertImageToBlob':
 
 			if(convertImage === false)
 				convertImage = require(p.join(__dirname, '../scripts/worker/convert-image.js'));

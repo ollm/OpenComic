@@ -348,7 +348,6 @@ async function reloadIndex(fromSetOfflineMode = false)
 {
 	indexLabel = prevIndexLabel;
 	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true, false, fromSetOfflineMode);
-	if(indexPathA) indexPathControlA.pop();
 }
 
 function reload(fromSetOfflineMode = false)
