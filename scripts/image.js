@@ -1,4 +1,4 @@
-var sharp = false, jimp = false, imageMagick = false, graphicsMagick = false, imageSize = false;
+var sharp = false, jimp = false, imageMagick = false, graphicsMagick = false, imageSize = false, heic = false;
 
 async function resize(fromImage, toImage, config = {})
 {
@@ -384,7 +384,21 @@ async function getSizes(images)
 							{
 								const extension = fileExtension(image.image);
 
-								if(inArray(extension, imageExtensions.jp2))
+								if(inArray(extension, imageExtensions.heic))
+								{
+									if(heic === false)
+										heic = require('heic-decode');
+
+									const buffer = await fsp.readFile(image.image);
+									const images = await heic.all({buffer});
+									const properties = images[0] || {width: 1, height: 1};
+
+									size = {
+										width: properties.width,
+										height: properties.height,
+									};
+								}
+								else if(inArray(extension, imageExtensions.jp2))
 								{
 									if(pdfjsDecoders === false)
 										await loadPdfjsDecoders();

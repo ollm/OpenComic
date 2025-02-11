@@ -245,7 +245,7 @@ async function convertImage(path, options = {})
 	{
 		const bits = result.bits;
 
-		if(bits > 8 && result.buffer instanceof Uint8Array)
+		if(bits > 8 && (result.buffer instanceof Uint8Array || result.buffer instanceof Uint8ClampedArray))
 			result.buffer = convertBuffer(result.buffer, bits, result.bitsString);
 
 		const raw = {
@@ -300,7 +300,7 @@ async function convertImageToBlob(path, options = {})
 	{
 		const bits = result.bits;
 
-		if(bits > 8 && result.buffer instanceof Uint8Array)
+		if(bits > 8 && (result.buffer instanceof Uint8Array || result.buffer instanceof Uint8ClampedArray))
 			result.buffer = convertBuffer(result.buffer, bits, result.bitsString);
 
 		const raw = {

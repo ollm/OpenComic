@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-var jpegxr = false;
+var jpegxr = false, heic = false;
 
 async function jp2(path)
 {
@@ -69,7 +69,6 @@ async function jxr(path)
 			bitsString: pixelInfo.bitDepth,
 			bitsPerPixel: pixelInfo.bitsPerPixel,
 			premultiplied: pixelInfo.premultipledAlpha,
-			pixelInfo: pixelInfo,
 			removeAlpha: true,
 		};
 	}
@@ -111,6 +110,41 @@ async function jxl(path)
 	return false;
 }
 
+async function _heic(path)
+{
+	const buffer = fs.readFileSync(path);
+
+	if(heic === false)
+		heic = require('heic-decode');
+
+	try
+	{
+		const image = await heic({buffer});
+
+		const len = image.data.length;
+
+		const width = image.width;
+		const height = image.height;
+
+		const channels = Math.round(len / (width * height));
+
+		return {
+			buffer: image.data,
+			width: width,
+			height: height,
+			length: len,
+			channels: channels,
+			bits: channels > 4 ? 16 : 8,
+		};
+	}
+	catch(error)
+	{
+		return {error: error};
+	}
+
+	return false;
+}
+
 async function convert(path, mime)
 {
 	switch (mime)
@@ -133,6 +167,15 @@ async function convert(path, mime)
 			return jxl(path);
 
 			break;
+		case 'image/heic':
+		case 'image/heif':
+		case 'image/heic-sequence':
+		case 'image/heif-sequence':
+
+			return _heic(path);
+
+			break;
+
 	}
 
 	return false;

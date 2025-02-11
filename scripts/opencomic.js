@@ -155,6 +155,10 @@ var compatibleMime = [
 	'image/webp',
 	'image/avif',
 	'image/avif-sequence',
+	'image/heic',
+	'image/heif',
+	'image/heic-sequence',
+	'image/heif-sequence',
 ];
 
 // This image formats requires conversion to Blob to be displayed
@@ -165,6 +169,11 @@ var blobMime = [
 	'image/jpm', 
 	// jxl
 	'image/jxl',
+	// heic
+	'image/heic',
+	'image/heif',
+	'image/heic-sequence',
+	'image/heif-sequence',
 ];
 
 // This image formats requires conversion to PNG to be displayed
@@ -301,6 +310,8 @@ var imageExtensions = {
 		'webp',
 		'avif',
 		'avifs',
+		'heic',
+		'heif',
 	],
 	blob: [ // This image formats requires conversion to Blob to be displayed
 		// jp2
@@ -314,6 +325,9 @@ var imageExtensions = {
 		'jpx',
 		// jxl
 		'jxl',
+		// heic
+		'heic',
+		'heif',
 	],
 	convert: [ // This image formats requires conversion to PNG to be displayed
 		// jxr
@@ -373,6 +387,10 @@ var imageExtensions = {
 	avif: [
 		'avif',
 		'avifs',
+	],
+	heic: [
+		'heic',
+		'heif',
 	],
 };
 

@@ -86,6 +86,7 @@
 		"fs-extra": "^11.3.0",
 		"gm": "^1.25.0",
 		"handlebars": "^4.7.8",
+		"heic-decode": "^2.0.0",
 		"image-size": "^1.2.0",
 		"jimp": "^1.6.0",
 		"jpegxr": "^0.3.0",
