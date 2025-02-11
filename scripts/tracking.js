@@ -605,7 +605,7 @@ function getChapter()
 		{
 			const volume = getVolume();
 
- 			if(!volume) // Has a 2 or 3 digit number (Only if no volume are detected)
+ 			if(!volume) // Has a 1 or 4 digit number (Only if no volume are detected)
 				chapter = extract(/\s([0-9]{1,4})(?:\s|\.|$)/iu, name, 1);
 		}
 	}
