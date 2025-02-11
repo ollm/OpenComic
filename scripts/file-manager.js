@@ -2938,7 +2938,7 @@ async function convertUnsupportedImages(files)
 	return true;
 }
 
-async function blobUnsupportedImages(files, useThreads = 1)
+async function blobUnsupportedImages(files, options = {useThreads: 1})
 {
 	const promises = [];
 
@@ -2948,7 +2948,7 @@ async function blobUnsupportedImages(files, useThreads = 1)
 		const path = file.path;
 
 		if(!file.folder && !file.compressed && inArray(fileExtension(path), imageExtensions.blob)) // Convert unsupported images to Blob
-			promises.push(workers.convertImageToBlob(path, {useThreads: useThreads}));
+			promises.push(workers.convertImageToBlob(path, options));
 	}
 
 	await Promise.all(promises);

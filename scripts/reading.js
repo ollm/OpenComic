@@ -4411,7 +4411,7 @@ function currentImagePosition()
 
 function currentImagePage()
 {
-	return imagesDistribution[currentImagePosition()][0].index;
+	return imagesDistribution?.[currentImagePosition()]?.[0]?.index || 0;
 }
 
 function currentImageIndex()
@@ -5363,7 +5363,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			if(image2 && image1.sha !== image2.sha) images.push(image2);
 		}
 
-		fileManager.blobUnsupportedImages(images, 0.49);
+		fileManager.blobUnsupportedImages(images, {useThreads: 0.3/*0.4*/});
 
 	});
 

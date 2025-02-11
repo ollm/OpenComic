@@ -42,7 +42,7 @@ async function processTheImageQueue(img = false)
 	let blob = false;
 
 	if(inArray(fileExtension(realPath), imageExtensions.blob)) // Convert unsupported images to blob
-		blob = await workers.convertImageToBlob(realPath);
+		blob = await workers.convertImageToBlob(realPath, {useThreads: 0.3/*0.4*/});
 
 	return new Promise(function(resolve, reject) {
 
@@ -80,7 +80,7 @@ async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 	if(inArray(extention, imageExtensions.convert)) // Convert unsupported images
 		await workers.convertImage(file);
 
-	threads.job('cache', {useThreads: 0.49}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
+	threads.job('cache', {useThreads: 1}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
 
 	threads.end('cache', function(){
 
