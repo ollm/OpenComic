@@ -16,8 +16,6 @@ catch (error)
 	zstd = zstdEncoder = zstdDecoder = false;
 }
 
-var queuedImages = [], processingTheImageQueue = false;
-
 var cacheFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic');
 
 if(process.platform == 'win32' || process.platform == 'win64')
@@ -27,13 +25,8 @@ if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 cacheFolder = p.join(cacheFolder, 'cache');
 if(!fs.existsSync(cacheFolder)) fs.mkdirSync(cacheFolder);
 
-var imagesWithoutSaving = 0;
-
-async function processTheImageQueue()
+async function processTheImageQueue(img = false)
 {
-	let img = queuedImages.shift();
-	if(!img) return;
-
 	let sha = img.sha;
 
 	let realPath = fileManager.realPath(img.file);
@@ -51,65 +44,31 @@ async function processTheImageQueue()
 	if(inArray(fileExtension(realPath), imageExtensions.blob)) // Convert unsupported images to blob
 		blob = await workers.convertImageToBlob(realPath);
 
-	image.resize(blob || realPath, toImage, {blob: blob ? true : false, width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
+	return new Promise(function(resolve, reject) {
 
-		//if(blob) fileManager.revokeObjectURL(path);
+		image.resize(blob || realPath, toImage, {blob: blob ? true : false, width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
 
-		if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: app.time()};
+			//if(blob) fileManager.revokeObjectURL(path);
 
-		data[sha].size = img.size;
+			if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: app.time()};
 
-		img.callback({cache: true, path: escapeBackSlash(addCacheVars(toImage, img.size, img.sha)), sha: sha}, img.vars);
+			data[sha].size = img.size;
 
-		if(queuedImages.length > 0)
-		{
-			imagesWithoutSaving++;
+			img.callback({cache: true, path: escapeBackSlash(addCacheVars(toImage, img.size, img.sha)), sha: sha}, img.vars);
 
-			process.nextTick(function() {
-				processTheImageQueue();
-			});
+			checkImagesWithoutSaving();
+			resolve();
 
-			if(imagesWithoutSaving > 50)
-			{
-				imagesWithoutSaving = 0;
-				storage.setThrottle('cache', data);
-			}
-		}
-		else
-		{
-			imagesWithoutSaving = 0;
-			processingTheImageQueue = false;
+		}).catch(function(){
 
-			storage.setThrottle('cache', data);
-		}
+			//if(blob) fileManager.revokeObjectURL(path);
 
-	}).catch(function(){
+			img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
 
-		//if(blob) fileManager.revokeObjectURL(path);
+			checkImagesWithoutSaving();
+			resolve();
 
-		img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
-
-		if(queuedImages.length > 0)
-		{
-			imagesWithoutSaving++;
-
-			process.nextTick(function() {
-				processTheImageQueue();
-			});
-
-			if(imagesWithoutSaving > 50)
-			{
-				imagesWithoutSaving = 0;
-				storage.setThrottle('cache', data);
-			}
-		}
-		else
-		{
-			imagesWithoutSaving = 0;
-			processingTheImageQueue = false;
-
-			storage.setThrottle('cache', data);
-		}
+		});
 
 	});
 }
@@ -121,44 +80,42 @@ async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 	if(inArray(extention, imageExtensions.convert)) // Convert unsupported images
 		await workers.convertImage(file);
 
-	queuedImages.push({file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
+	threads.job('cache', {useThreads: 0.49}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
 
-	if(!processingTheImageQueue && !stopTheImageQueue)
-	{
-		processingTheImageQueue = true;
+	threads.end('cache', function(){
 
-		setTimeout(function(){
+		imagesWithoutSaving = 0;
+		storage.setThrottle('cache', data);
 
-			process.nextTick(function() {
-				processTheImageQueue();
-			});
-
-		}, 0);
-	}
+	});
 }
-
-var stopTheImageQueue = false;
 
 function stopQueue()
 {
-	stopTheImageQueue = true;
+	threads.stop('cache');
 }
 
 function resumeQueue()
 {
-	stopTheImageQueue = false;
+	threads.resume('cache');
+}
 
-	if(!processingTheImageQueue && queuedImages.length > 0)
+function cleanQueue()
+{
+	threads.clean('cache');
+	if(data !== false) storage.setThrottle('cache', data);
+}
+
+var imagesWithoutSaving = 0;
+
+function checkImagesWithoutSaving()
+{
+	imagesWithoutSaving++;
+
+	if(imagesWithoutSaving > 50)
 	{
-		processingTheImageQueue = true;
-
-		setTimeout(function(){
-
-			process.nextTick(function() {
-				processTheImageQueue();
-			});
-
-		}, 0);
+		imagesWithoutSaving = 0;
+		storage.setThrottle('cache', data);
 	}
 }
 
@@ -233,12 +190,6 @@ function addImageVars(image)
 		vars.push('size='+image.forceSize);
 
 	return image.path+(vars.length ? '?'+vars.join('&') : '');
-}
-
-function cleanQueue()
-{
-	queuedImages.splice(1, queuedImages.length - 1);
-	if(data !== false) storage.setThrottle('cache', data);
 }
 
 var data = false;
@@ -890,8 +841,6 @@ module.exports = {
 	imageSizeSha: imageSizeSha,
 	addImageVars: addImageVars,
 	jsonMemory: function(){return jsonMemory},
-	queuedImages: function(){return queuedImages},
-	processingTheImageQueue: function(){return processingTheImageQueue},
 	stopQueue: stopQueue,
 	resumeQueue: resumeQueue,
 	purge: purge,

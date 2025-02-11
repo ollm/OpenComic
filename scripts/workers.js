@@ -73,14 +73,14 @@ function processJob(thread = 0)
 
 	const job = queue.shift();
 
-	if(job.options.useThreads < 1)
+	if(job.options.useThreads < 1 && thread !== 0)
 	{
 		const useThreads = thread / threads;
 
 		if(useThreads > job.options.useThreads)
 		{
 			queue.unshift(job);
-			return;
+			return null;
 		}
 	}
 

@@ -11,7 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improve chapter detection in tracking [`ad05a23`](https://github.com/ollm/OpenComic/commit/ad05a2364882227688cccfa2fdf58a21f8e9615c)
 - Support for `JP2` image format [`e11046b`](https://github.com/ollm/OpenComic/commit/e11046b4eca758f8b15c1caeb831a235a5f3d62c)
 - Support for `JXR` image format [`0e24922`](https://github.com/ollm/OpenComic/commit/0e2492264e1dbc94126c7d79e3e3c50fc426846c)
-- Support for `JXL` image format
+- Support for `JXL` image format [`bd6fb0a`](https://github.com/ollm/OpenComic/commit/bd6fb0a8c8be3685b48c88fa21bbe2d3c384a491)
+- Thumbnail generation speed has been improved
+
 
 ## [v1.4.1](https://github.com/ollm/OpenComic/releases/tag/v1.4.1) (08-02-2025)
 
