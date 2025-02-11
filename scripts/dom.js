@@ -372,6 +372,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	onReading = _onReading = false;
 
 	fileManager.revokeAllObjectURL();
+	workers.clean('convertImageToBlob');
 
 	reading.hideContent();
 	reading.music.pause();
@@ -679,6 +680,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		handlebarsContext.comicsIndex = true;
 		handlebarsContext.sortAndView = sortAndView || false;
 		handlebarsContext.comicsReadingProgress = false;
+		handlebarsContext.comicsReadingProgressCurrentPath = false;
 
 		template.loadContentRight('index.content.right.'+(sortAndView ? sortAndView.view : config.viewIndex)+'.html', animation, keepScroll);
 
@@ -2343,7 +2345,8 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false, fromDeepLoad = false)
 {
 	fileManager.revokeAllObjectURL();
-	
+	workers.clean('convertImageToBlob');
+
 	// Start reading comic
 	if(config.readingStartReadingInFullScreen && !fromNextAndPrev && !fromGoBack)
 	{

@@ -522,7 +522,7 @@ var file = function(path, _config = false) {
 	}
 
 	// Get the first images of a folder/compressed
-	this.images = async function(only = 1, from = false, poster = false, _files = false, _path = false) {
+	this.images = async function(only = 1, from = false, poster = false, _files = false, _path = false, _isCompressed = false) {
 
 		if(poster) this.updateConfig({specialFiles: true});
 		if(!this.alreadyRead) await this.read({cacheServer: true});
@@ -530,18 +530,20 @@ var file = function(path, _config = false) {
 		_files = _files || this.files;
 		_path = _path || this.path;
 
+		_isCompressed = _isCompressed || isCompressed(_path);
+
 		if(config.ignoreSingleFoldersLibrary && _files.length == 1 && (_files[0].folder || _files[0].compressed))
 		{
 			const file = _files[0];
 			_files = file.files || await this.read({cacheServer: true}, file.path);
 
-			return this.images(only, from, poster, _files, file.path);
+			return this.images(only, from, poster, _files, file.path, _isCompressed);
 		}
 
 		if(poster)
 		{
 			let _poster = await this.poster();
-			if(!_poster) _poster = this._poster(_files, _path, true);
+			if(!_poster) _poster = this._poster(_files, _path, true, _isCompressed);
 
 			if(_poster) return _poster;
 		}
@@ -559,7 +561,7 @@ var file = function(path, _config = false) {
 		return (Math.abs(only) == 1) ? (images[0] || false) : images;
 	}
 
-	this._poster = function(files, path = false, inside = false) {
+	this._poster = function(files, path = false, inside = false, _isCompressed = false) {
 
 		path = path || this.path;
 
@@ -592,7 +594,7 @@ var file = function(path, _config = false) {
 
 		if(!poster && inside && len && (config.useTheFirstImageAsPosterInFolders || config.useTheFirstImageAsPosterInFiles))
 		{
-			let _isCompressed = isCompressed(path);
+			_isCompressed = _isCompressed || isCompressed(path);
 
 			if((!_isCompressed && config.useTheFirstImageAsPosterInFolders) || (_isCompressed && config.useTheFirstImageAsPosterInFiles))
 			{

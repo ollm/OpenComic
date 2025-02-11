@@ -7,11 +7,24 @@ function clean(job = false)
 {
 	if(job)
 	{
+		for(let i = 0, len = queue.length; i < len; i++)
+		{
+			const item = queue[i];
 
+			if(item.options.job === job)
+			{
+				queue.splice(i, 1);
+				delete promisses[item.options.key];
+
+				i--;
+				len--;
+			}
+		}
 	}
 	else
 	{
 		queue = [];
+		promisses = {};
 	}
 }
 
