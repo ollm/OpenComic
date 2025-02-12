@@ -14,6 +14,7 @@ function clean(job = false)
 			if(item.options.job === job)
 			{
 				queue.splice(i, 1);
+				promisses[item.options.key].resolve(false);
 				delete promisses[item.options.key];
 
 				i--;
@@ -289,7 +290,7 @@ async function convertImage(path, options = {})
 		return false;
 	}
 
-	return true;
+	return false;
 }
 
 async function convertImageToBlob(path, options = {})
