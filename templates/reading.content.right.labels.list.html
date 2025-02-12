@@ -1,0 +1,5 @@
+{{#each readingLabels}}
+<div class="chip chip-icon-left chip-icon-right label-large" onclick="dom.labels.applyShortcutPageConfigToAll('{{chain 'escapeBackSlash' 'escapeQuotesSimples' @this}}');">
+	<div></div><i class="icon-18 material-icon" onclick="">label</i>{{@this}}<i class="icon-18 material-icon right gamepad-item" onclick="event.stopPropagation(); dom.labels.removeLabelFromShortcutPageConfig('{{chain 'escapeBackSlash' 'escapeQuotesSimples' @this}}');">close</i>
+</div>
+{{/each}}

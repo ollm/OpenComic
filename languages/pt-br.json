@@ -427,6 +427,9 @@
 			"readingConfigName": "",
 			"readingConfigRemoveHeader": "",
 			"readingConfigRemove": "",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "",
 			"readingPresetName": "",
 			"readingGotoPage": ""
@@ -523,6 +526,7 @@
 		"dismiss": "",
 		"remove": "",
 		"download": "",
+		"apply": "",
 		"close": ""
 	},
 	"error": {

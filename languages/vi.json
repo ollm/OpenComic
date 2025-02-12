@@ -427,6 +427,9 @@
 			"readingConfigName": "Tên cấu hình",
 			"readingConfigRemoveHeader": "Xóa cấu hình",
 			"readingConfigRemove": "Bạn chắc chắn muốn xóa cấu hình này?",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "Số trang màu để khởi tạo",
 			"readingPresetName": "Cấu hình đã lưu",
 			"readingGotoPage": "Đi đến trang"
@@ -523,6 +526,7 @@
 		"dismiss": "Ẩn",
 		"remove": "Xóa",
 		"download": "Tải về",
+		"apply": "",
 		"close": "Đóng"
 	},
 	"error": {

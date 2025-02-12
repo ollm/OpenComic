@@ -427,6 +427,9 @@
 			"readingConfigName": "配置名称",
 			"readingConfigRemoveHeader": "删除配置",
 			"readingConfigRemove": "您确定要删除此配置吗？",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "要生成的颜色数量",
 			"readingPresetName": "预设名称",
 			"readingGotoPage": "转到页面"
@@ -523,6 +526,7 @@
 		"dismiss": "屏除",
 		"remove": "删除",
 		"download": "下载",
+		"apply": "",
 		"close": "关闭"
 	},
 	"error": {

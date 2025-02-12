@@ -937,6 +937,33 @@
 	background-color: red;
 }
 
+.reading-labels
+{
+	padding: 0px 24px;
+	margin-bottom: 16px;
+}
+
+.reading-labels-title
+{
+	padding: 0px;
+	margin-bottom: -10px;
+	margin-top: -4px;
+}
+
+.reading-labels-empty
+{
+	padding: 0px;
+	margin-top: 1px;
+	margin-bottom: 7px;
+}
+
+.reading-labels-list
+{
+	margin: 10px 0px 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
 /*{
 	image-rendering: initial;
 }*/

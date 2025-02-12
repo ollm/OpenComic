@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support for `JXL` image format [`bd6fb0a`](https://github.com/ollm/OpenComic/commit/bd6fb0a8c8be3685b48c88fa21bbe2d3c384a491)
 - Thumbnail generation speed has been improved [`155f064`](https://github.com/ollm/OpenComic/commit/155f064b4c9716c050a6231e44323169686997ea)
 - Support for `HEIC` image format [`4f4b5a1`](https://github.com/ollm/OpenComic/commit/4f4b5a16572ea2bd5aff2e519d473b42d80312fb)
+- Option to apply configuration profile based on folder/file label
 
 
 ## [v1.4.1](https://github.com/ollm/OpenComic/releases/tag/v1.4.1) (08-02-2025)

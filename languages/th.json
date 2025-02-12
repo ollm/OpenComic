@@ -427,6 +427,9 @@
 			"readingConfigName": "ชื่อการกำหนดค่า",
 			"readingConfigRemoveHeader": "นำการกำหนดค่าออก",
 			"readingConfigRemove": "คุณต้องการนำการกำหนดค่านี้ออกหรือไม่?",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "จำนวนสีที่จะสร้าง",
 			"readingPresetName": "ชื่อการตั้งค่า",
 			"readingGotoPage": "ไปยังหน้า"
@@ -523,6 +526,7 @@
 		"dismiss": "ปิด",
 		"remove": "นำออก",
 		"download": "ดาวน์โหลด",
+		"apply": "",
 		"close": "ปิด"
 	},
 	"error": {

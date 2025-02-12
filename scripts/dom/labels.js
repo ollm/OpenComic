@@ -92,7 +92,7 @@ function setLabels(path, save = false)
 				_labels.push(labels[key]);
 		}
 
-		if(isEmpty(_labels))
+		if(!_labels.length)
 			delete comicLabels[labelsDialogPath];
 		else
 			comicLabels[labelsDialogPath] = _labels;
@@ -190,6 +190,8 @@ function newLabel(save = false, fromEditLabels = false)
 				editLabels();
 			else if(labelsDialogPath)
 				setLabels(labelsDialogPath);
+			else if(labelsShortcutPageConfig)
+				setShortcutPageConfigLabels();
 
 			dom.loadIndexContentLeft(true, false);
 		}
@@ -285,6 +287,7 @@ function editLabel(key, save = false)
 
 		let labels = storage.get('labels');
 		let comicLabels = storage.get('comicLabels');
+		let readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
 
 		let prevName = labels[key];
 		let exists = false;
@@ -304,24 +307,48 @@ function editLabel(key, save = false)
 		{
 			labels[key] = name;
 
+			// Update label name in comicLabels
 			for(let path in comicLabels)
 			{
-				let _labels = [];
+				const _labels = [];
 
 				for(let i = 0, len = comicLabels[path].length; i < len; i++)
 				{
-					if(comicLabels[path][i] === prevName)
+					const label = comicLabels[path][i];
+
+					if(label === prevName)
 						_labels.push(name);
 					else
-						_labels.push(comicLabels[path][i]);
+						_labels.push(label);
 				}
 
-				comicLabels[path] = _labels;
+				if(!_labels.length)
+					delete comicLabels[path];
+				else
+					comicLabels[path] = _labels;
+			}
+
+			// Update label name in readingShortcutPagesConfig
+			for(let index in readingShortcutPagesConfig)
+			{
+				const _labels = [];
+
+				for(let i = 0, len = readingShortcutPagesConfig[index].labels.length; i < len; i++)
+				{
+					const label = readingShortcutPagesConfig[index].labels[i];
+
+					if(label === prevName)
+						_labels.push(name);
+					else
+						_labels.push(label);
+				}
+
+				readingShortcutPagesConfig[index].labels = _labels;
 			}
 
 			storage.set('labels', labels);
 			storage.set('comicLabels', comicLabels);
-
+			storage.set('readingShortcutPagesConfig', readingShortcutPagesConfig);
 
 			editLabels();
 
@@ -377,13 +404,15 @@ function deleteLabel(key, confirm = false)
 	{
 		let labels = storage.get('labels');
 		let comicLabels = storage.get('comicLabels');
+		let readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
 
 		let name = labels[key];
 		labels.splice(key, 1);
 
+		// Delete label name in comicLabels
 		for(let path in comicLabels)
 		{
-			let _labels = [];
+			const _labels = [];
 
 			for(let i = 0, len = comicLabels[path].length; i < len; i++)
 			{
@@ -391,16 +420,33 @@ function deleteLabel(key, confirm = false)
 					_labels.push(comicLabels[path][i]);
 			}
 
-			if(isEmpty(_labels))
+			if(!_labels.length)
 				delete comicLabels[path];
 			else
 				comicLabels[path] = _labels;
+		}
+
+		// Delete label name in readingShortcutPagesConfig
+		for(let index in readingShortcutPagesConfig)
+		{
+			const _labels = [];
+
+			for(let i = 0, len = readingShortcutPagesConfig[index].labels.length; i < len; i++)
+			{
+				const label = readingShortcutPagesConfig[index].labels[i];
+
+				if(label !== prevName)
+					_labels.push(label);
+			}
+
+			readingShortcutPagesConfig[index].labels = _labels;
 		}
 
 		deleteFromSortAndView('label', key);
 
 		storage.set('labels', labels);
 		storage.set('comicLabels', comicLabels);
+		storage.set('readingShortcutPagesConfig', readingShortcutPagesConfig);
 
 		dom.loadIndexContentLeft(true, false);
 
@@ -410,6 +456,8 @@ function deleteLabel(key, confirm = false)
 			dom.loadIndexPage(true);
 
 		editLabels();
+
+		reading.purgeGlobalReadingPagesConfig();
 	}
 	else
 	{
@@ -457,6 +505,164 @@ function getName(indexLabel, recentlyOpened)
 	return language.global.library;
 }
 
+function has(path, parents = false)
+{
+	const comicLabels = storage.get('comicLabels');
+
+	if(comicLabels[path])
+		return comicLabels[path];
+
+	if(parents)
+	{
+		while(path)
+		{
+			path = p.dirname(path);
+
+			if(comicLabels[path])
+				return comicLabels[path];
+
+			const sections = path.split(p.sep).filter(Boolean);
+
+			if(sections.length <= 1)
+				break;
+		}
+	}
+
+	return false;
+}
+
+// Labels functions related to reading shortcut page config
+var labelsShortcutPageConfig = false;
+
+function setShortcutPageConfigLabels(save = false)
+{
+	if(save)
+	{
+		const labels = storage.get('labels');
+		const _labels = [];
+
+		const inputs = template._globalElement().querySelectorAll('.dialog .checkbox input');
+
+		for(let i = 0, len = inputs.length; i < len; i++)
+		{
+			const input = inputs[i];
+			const key = +input.dataset.key;
+			const value = +input.value;
+
+			if(value && labels[key])
+				_labels.push(labels[key]);
+		}
+
+		labelsShortcutPageConfig = false;
+
+		reading.updateReadingPagesConfig('labels', _labels);
+		reading.updateConfigLabels();
+		reading.purgeGlobalReadingPagesConfig();
+	}
+	else
+	{
+		const labels = storage.get('labels');
+		const _labels = [];
+
+		for(let i = 0, len = labels.length; i < len; i++)
+		{
+			const label = labels[i];
+
+			_labels.push({
+				key: i,
+				name: label,
+				active: _config.labels.includes(label),
+			});
+		}
+
+		_labels.sort(function(a, b){
+
+			if(a.name === b.name)
+				return 0;
+
+			return a.name > b.name ? 1 : -1;
+
+		});
+
+		handlebarsContext.labels = _labels;
+
+		events.dialog({
+			header: language.global.labels,
+			width: 400,
+			height: false,
+			content: template.load('dialog.labels.set.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.save,
+					function: 'events.closeDialog(); dom.labels.setShortcutPageConfigLabels(true);',
+				}
+			],
+		});
+
+		// events.eventCheckbox();
+	}
+}
+
+function removeLabelFromShortcutPageConfig(label = '')
+{
+	const labels = [];
+
+	for(let i = 0, len = _config.labels.length; i < len; i++)
+	{
+		const _label = _config.labels[i];
+
+		if(_label !== label)
+			labels.push(_label);
+	}
+
+	reading.updateReadingPagesConfig('labels', labels);
+	reading.updateConfigLabels();
+	reading.purgeGlobalReadingPagesConfig();
+}
+
+function applyShortcutPageConfigToAll(label = '', apply = false)
+{
+	if(apply)
+	{
+		console.log(label);
+
+		const readingPagesConfig = storage.get('readingPagesConfig');
+
+		for(let path in readingPagesConfig)
+		{
+			const labels = has(path);
+
+			if(labels && labels.includes(label))
+				delete readingPagesConfig[path];
+		}
+
+		storage.set('readingPagesConfig', readingPagesConfig);
+	}
+	else
+	{
+		events.dialog({
+			header: language.dialog.pages.readingConfigApplyToAllLabel,
+			width: 400,
+			height: false,
+			content: language.dialog.pages.readingConfigApplyToAllLabelDescription,
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.apply,
+					function: 'events.closeDialog(); dom.labels.applyShortcutPageConfigToAll(\''+escapeQuotes(escapeBackSlash(label), 'simples')+'\', true);',
+				}
+			],
+		});
+	}
+}
+
 module.exports = {
 	masterFolder: masterFolder,
 	setFavorite: setFavorite,
@@ -469,6 +675,11 @@ module.exports = {
 	editLabel: editLabel,
 	deleteLabel: deleteLabel,
 	deleteFromSortAndView: deleteFromSortAndView,
+	has: has,
 	menuItemSelector: menuItemSelector,
 	getName: getName,
+
+	setShortcutPageConfigLabels: setShortcutPageConfigLabels,
+	removeLabelFromShortcutPageConfig: removeLabelFromShortcutPageConfig,
+	applyShortcutPageConfigToAll: applyShortcutPageConfigToAll,
 };

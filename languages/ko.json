@@ -427,6 +427,9 @@
 			"readingConfigName": "",
 			"readingConfigRemoveHeader": "",
 			"readingConfigRemove": "",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "",
 			"readingPresetName": "",
 			"readingGotoPage": ""
@@ -523,6 +526,7 @@
 		"dismiss": "무시",
 		"remove": "삭제",
 		"download": "다운로드",
+		"apply": "",
 		"close": "닫기"
 	},
 	"error": {

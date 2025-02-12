@@ -1,4 +1,4 @@
-var changes = 96; // Update this if readingPagesConfig is updated
+var changes = 97; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -203,6 +203,9 @@ var storageDefault = {
 	readingShortcutPagesConfig: {
 		wildcard: {
 			key: 0,
+			labels: [
+				'',
+			],
 			...readingPagesConfig,
 		}
 	},
@@ -581,6 +584,16 @@ function updateVar(key, keyVar, value)
 	ejs.set(key, storageJson[key], function(error){});
 }
 
+function deleteVar(key, keyVar)
+{
+	if(typeof storageJson[key] === 'undefined')
+		storageJson[key] = {};
+
+	delete storageJson[key][keyVar];
+
+	ejs.set(key, storageJson[key], function(error){});
+}
+
 function update(key, value)
 {
 	storageJson[key] = value;
@@ -722,6 +735,7 @@ module.exports = {
 	getKey: getKey,
 	updateVar: updateVar,
 	setVar: updateVar,
+	deleteVar: deleteVar,
 	set: update,
 	setThrottle: setThrottle,
 	update: update,

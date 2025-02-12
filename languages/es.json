@@ -427,6 +427,9 @@
 			"readingConfigName": "Nombre de la configuración",
 			"readingConfigRemoveHeader": "Eliminar configuración",
 			"readingConfigRemove": "¿Seguro que quiere eliminar esta configuración?",
+			"readingConfigApplyToLabels": "Autoaplicar esta configuración a carpetas/archivos con estas etiquetas",
+			"readingConfigApplyToAllLabel": "Aplicar esta configuración a carpetas/archivos con esta etiqueta",
+			"readingConfigApplyToAllLabelDescription": "Esto fuerza a aplicar esta configuración a todas las carpetas/archivos que tengan la etiqueta, incluso si la configuración se ha modificado manualmente",
 			"readingNumColorsGenerate": "Número de colores a generar",
 			"readingPresetName": "Nombre del preajuste",
 			"readingGotoPage": "Ir a la página"
@@ -523,6 +526,7 @@
 		"dismiss": "Descartar",
 		"remove": "Eliminar",
 		"download": "Descargar",
+		"apply": "Aplicar",
 		"close": "Cerrar"
 	},
 	"error": {

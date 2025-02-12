@@ -427,6 +427,9 @@
 			"readingConfigName": "Nome configurazione",
 			"readingConfigRemoveHeader": "Rimuovi configurazione",
 			"readingConfigRemove": "Sei sicuro di voler rimuovere questa configurazione?",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "Numero di colori da generare",
 			"readingPresetName": "Nome preset",
 			"readingGotoPage": "Vai alla pagina"
@@ -523,6 +526,7 @@
 		"dismiss": "Dismiss",
 		"remove": "Rimuovi",
 		"download": "Download",
+		"apply": "",
 		"close": "Chiudi"
 	},
 	"error": {

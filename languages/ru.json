@@ -427,6 +427,9 @@
 			"readingConfigName": "Название конфигурации",
 			"readingConfigRemoveHeader": "Удалить конфигурацию",
 			"readingConfigRemove": "Вы уверены, что хотите удалить эту конфигурацию?",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "Количество цветов для генерации",
 			"readingPresetName": "Имя пресета",
 			"readingGotoPage": "Перейти к странице"
@@ -523,6 +526,7 @@
 		"dismiss": "Отклонить",
 		"remove": "Удалить",
 		"download": "Скачать",
+		"apply": "",
 		"close": "Закрыть"
 	},
 	"error": {

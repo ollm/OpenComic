@@ -3688,7 +3688,8 @@ function loadReadingConfig(key = false)
 		}
 		else
 		{
-			_config.key = 0;
+			key = getLabelConfigKey();
+			_config.key = key;
 		}
 	}
 
@@ -3711,6 +3712,80 @@ function loadReadingConfig(key = false)
 	handlebarsContext._config = _config;
 }
 
+function updateConfigLabels()
+{
+	let globalElement = template._globalElement();
+
+	let empty = globalElement.querySelector('.reading-labels-empty');
+	let list = globalElement.querySelector('.reading-labels-list');
+
+	if(!empty || !list)
+		return;
+
+	const labels = _config.labels || [];
+
+	if(labels.length)
+	{
+		empty.style.display = 'none';
+		list.style.display = '';
+	}
+	else
+	{
+		empty.style.display = '';
+		list.style.display = 'none';
+	}
+
+	handlebarsContext.readingLabels = labels;
+	list.innerHTML = template.load('reading.content.right.labels.list.html');
+}
+
+function getLabelConfigKey(path = false)
+{
+	path = path || dom.indexMainPathA();
+	const labels = dom.labels.has(path);
+
+	if(labels.length)
+	{
+		const readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
+
+		toBreak:
+		for(let index in readingShortcutPagesConfig)
+		{
+			const shortcutConfig = readingShortcutPagesConfig[index];
+
+			for(let i = 0, len = shortcutConfig.labels.length; i < len; i++)
+			{
+				const label = shortcutConfig.labels[i];
+
+				if(labels.includes(label))
+				{
+					return shortcutConfig.key;
+				}
+			}
+		}
+	}
+
+	return 0;
+}
+
+function purgeGlobalReadingPagesConfig()
+{
+	const readingPagesConfig = storage.get('readingPagesConfig');
+
+	for(let path in readingPagesConfig)
+	{
+		const configKey = readingPagesConfig[path].configKey;
+
+		if(configKey === 0)
+		{
+			const labelConfigKey = getLabelConfigKey(path);
+
+			if(labelConfigKey === 0)
+				storage.deleteVar('readingPagesConfig', path);
+		}
+	}
+}
+
 function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 {
 	loadReadingConfig(key);
@@ -3729,6 +3804,8 @@ function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 	let menuSimpleContent = document.querySelector('#reading-pages .menu-simple-content');
 	menuSimpleContent.innerHTML = template.load('reading.elements.menus.pages.html');
 
+	updateConfigLabels();
+
 	events.events();
 }
 
@@ -3736,7 +3813,12 @@ function setReadingShortcutPagesConfig(key = 0, desactiveMenu = true)
 {
 	if(key == 0)
 	{
-		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), null);
+		const labelConfigKey = getLabelConfigKey();
+
+		if(labelConfigKey)
+			storage.updateVar('readingPagesConfig', dom.indexMainPathA(), {configKey: 0});
+		else
+			storage.deleteVar('readingPagesConfig', dom.indexMainPathA());
 	}
 	else
 	{
@@ -3886,6 +3968,7 @@ function newReadingShortcutPagesConfig(save = false)
 				...storage.readingPagesConfig,
 				key: newKey,
 				readingConfigName: name,
+				labels: [],
 			};
 
 			storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
@@ -3942,7 +4025,7 @@ function removeReadingShortcutPagesConfig(key, confirm = false)
 		}
 
 		storage.update('readingShortcutPagesConfig', readingShortcutPagesConfig);
-
+		purgeGlobalReadingPagesConfig();
 
 		// Reload
 		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
@@ -5552,6 +5635,8 @@ module.exports = {
 	newReadingShortcutPagesConfig: newReadingShortcutPagesConfig,
 	removeReadingShortcutPagesConfig: removeReadingShortcutPagesConfig,
 	currentReadingConfigKey: function(){return currentReadingConfigKey},
+	purgeGlobalReadingPagesConfig: purgeGlobalReadingPagesConfig,
+	updateConfigLabels: updateConfigLabels,
 	onReading: function(){return onReading},
 	calculateImagesDistribution: calculateImagesDistribution,
 	imagesDistribution: function(){return imagesDistribution},

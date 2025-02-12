@@ -427,6 +427,9 @@
 			"readingConfigName": "Konfigurationsnamn",
 			"readingConfigRemoveHeader": "Ta bort konfiguration",
 			"readingConfigRemove": "Är du säker på att du vill ta bort den här konfigurationen?",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "Antal färger att generera",
 			"readingPresetName": "Förinställningsnamn",
 			"readingGotoPage": "Gå till sida"
@@ -523,6 +526,7 @@
 		"dismiss": "Avvisa",
 		"remove": "Ta bort",
 		"download": "Ladda ned",
+		"apply": "",
 		"close": "Stäng"
 	},
 	"error": {

@@ -8,6 +8,24 @@
 			{{#compare _config.key '!==' 0}}<i class="material-icon menu-simple-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
 		</div>
 
+		{{#compare _config.key '!==' 0}}
+		<div class="menu-simple-separator"></div>
+		<div class="reading-labels">
+			<div class="menu-simple-text reading-labels-title">
+				<span>{{language.dialog.pages.readingConfigApplyToLabels}}</span>
+			</div>
+			<div class="menu-simple-text menu-grey reading-labels-empty"{{#if _config.labels}} style="display: none;"{{/if}}>
+				<span>{{language.dialog.labels.empty}}</span>
+			</div>
+			<div class="reading-labels-list"{{#unless _config.labels}} style="display: none;"{{/unless}}>
+			</div>
+			<div class="simple-button filled-tonal gamepad-item" onclick="dom.labels.setShortcutPageConfigLabels();">
+				<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.dialog.labels.newLabel}}</div>
+			</div>
+			<cb></cb>
+		</div>
+		{{/compare}}
+
 	{{else}}
 		<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-0 gamepad-item" onclick="reading.setReadingShortcutPagesConfig(0);">
 			<i class="material-icon menu-simple-icon-first">language</i>
@@ -30,7 +48,6 @@
 		</div>
 	{{/if}}
 	<div class="menu-simple-separator"></div>
-
 
 
 	<div class="tabs outline-tabs" style="margin: 16px 24px;">

@@ -427,6 +427,9 @@
 			"readingConfigName": "Název nastavení",
 			"readingConfigRemoveHeader": "Odstranit nastavení",
 			"readingConfigRemove": "Opravdu chcete toto nastavení odstranit?",
+			"readingConfigApplyToLabels": "",
+			"readingConfigApplyToAllLabel": "",
+			"readingConfigApplyToAllLabelDescription": "",
 			"readingNumColorsGenerate": "",
 			"readingPresetName": "",
 			"readingGotoPage": ""
@@ -523,6 +526,7 @@
 		"dismiss": "Dobře",
 		"remove": "Odstranit",
 		"download": "",
+		"apply": "",
 		"close": ""
 	},
 	"error": {

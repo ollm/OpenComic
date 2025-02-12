@@ -427,6 +427,9 @@
 			"readingConfigName": "Configuration name",
 			"readingConfigRemoveHeader": "Remove configuration",
 			"readingConfigRemove": "Are you sure you want to remove this configuration?",
+			"readingConfigApplyToLabels": "Auto-apply this configuration to folders/files with these labels",
+			"readingConfigApplyToAllLabel": "Apply this configuration to folders/files with this label",
+			"readingConfigApplyToAllLabelDescription": "This forces to apply this configuration to all folders/files that have the label, even if the configuration has been modified manually",
 			"readingNumColorsGenerate": "Number of colors to generate",
 			"readingPresetName": "Preset name",
 			"readingGotoPage": "Go to page"
@@ -523,6 +526,7 @@
 		"dismiss": "Dismiss",
 		"remove": "Remove",
 		"download": "Download",
+		"apply": "Apply",
 		"close": "Close"
 	},
 	"error": {
