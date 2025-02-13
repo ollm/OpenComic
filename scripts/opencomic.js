@@ -193,6 +193,7 @@ var compressedMime = {
 		'application/x-cbr',
 		'application/x-rar',
 		'application/x-rar-compressed',
+		'application/vnd.rar',
 		'application/7z',
 		'application/x-cb7',
 		'application/x-7z',
@@ -214,6 +215,7 @@ var compressedMime = {
 		'application/x-cbr',
 		'application/x-rar',
 		'application/x-rar-compressed',
+		'application/vnd.rar',
 	],
 	'7z': [
 		'application/7z',
@@ -699,8 +701,19 @@ async function loadMime()
 {
 	if(mime) return;
 
-	mime = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index.js')));
-	mime = mime.default;
+	const Mime = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index_lite.js')))).Mime;
+
+	const standardTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/standard.js')))).default;
+	const otherTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/other.js')))).default;
+
+	mime = new Mime(standardTypes, otherTypes);
+
+	// Define mime types not included in the mime package
+	mime.define({'image/jpeg': ['jif', 'jfi', 'jfif', 'jfif-tbnl']});
+	mime.define({'image/jp2': ['j2k', 'j2c', 'jpc']});
+	mime.define({'image/vnd.ms-photo': ['hdp']});
+	mime.define({'image/avif-sequence': ['avifs']});
+	mime.define({'application/epub+zip': ['epub3']});
 
 	return true;
 }
