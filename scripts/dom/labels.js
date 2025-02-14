@@ -193,7 +193,7 @@ function newLabel(save = false, fromEditLabels = false)
 			else if(labelsShortcutPageConfig)
 				setShortcutPageConfigLabels();
 
-			dom.loadIndexContentLeft(true, false);
+			if(!labelsShortcutPageConfig) dom.loadIndexContentLeft(true, false);
 		}
 		else
 		{
@@ -435,7 +435,7 @@ function deleteLabel(key, confirm = false)
 			{
 				const label = readingShortcutPagesConfig[index].labels[i];
 
-				if(label !== prevName)
+				if(label !== name)
 					_labels.push(label);
 			}
 
@@ -603,6 +603,8 @@ function setShortcutPageConfigLabels(save = false)
 			],
 		});
 
+		labelsShortcutPageConfig  = true;
+
 		// events.eventCheckbox();
 	}
 }
@@ -628,8 +630,6 @@ function applyShortcutPageConfigToAll(label = '', apply = false)
 {
 	if(apply)
 	{
-		console.log(label);
-
 		const readingPagesConfig = storage.get('readingPagesConfig');
 
 		for(let path in readingPagesConfig)
