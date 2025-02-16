@@ -267,11 +267,14 @@ function saveDialogDirectory(callback)
 async function copyImageToClipboard()
 {
 	const position = reading.currentImagePosition();
-	const images = saveAllImages(position, true);
-	const len = images.length;
+	let images = saveAllImages(position, true);
+	let len = images.length;
 
 	if(!len)
 		return;
+
+	if(_config.readingManga && !reading.readingViewIs('scroll'))
+		images = images.reverse();
 
 	for(let i = 0; i < len; i++)
 	{
@@ -346,10 +349,7 @@ async function copyImageToClipboard()
 		URL.revokeObjectURL(data.blob);
 	}
 
-	const nativeImage = electron.nativeImage.createFromDataURL(canvas.toDataURL(), {
-		width: sumWidth,
-		height: maxHeight,
-	});
+	const nativeImage = electron.nativeImage.createFromDataURL(canvas.toDataURL());
 
 	electron.clipboard.writeImage(nativeImage, 'clipboard');
 

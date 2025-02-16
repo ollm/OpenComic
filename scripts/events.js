@@ -955,7 +955,9 @@ async function activeContextMenu(query)
 	dom.this(menu).children('*:not(.menu-close)', true).removeClass('d').addClass('a');
 
 	let menuSimple = menu.querySelector('.menu-simple');
-	let rect = menuSimple.getBoundingClientRect();
+	let menuSimpleContent = menu.querySelector('.menu-simple-content');
+	let rect = menuSimpleContent.firstElementChild.getBoundingClientRect();
+	let height = rect.height + 16;
 
 	let pos, pos2;
 
@@ -964,7 +966,7 @@ async function activeContextMenu(query)
 	else
 		pos = 'right';
 
-	if(currentPageY + rect.height + 16 < window.innerHeight)
+	if(currentPageY + height + 16 < window.innerHeight || currentPageY < height + 16 + titleBar.height())
 		pos2 = 'top';
 	else
 		pos2 = 'bottom';
@@ -977,6 +979,11 @@ async function activeContextMenu(query)
 		bottom: (pos2 == 'top') ? '' : ((window.innerHeight - currentPageY) + 4)+'px',
 		top: (pos2 == 'top') ? (currentPageY + 4)+'px' : '',
 	}).class((pos2 == 'top') ? true : false, 'top').class((pos2 == 'top') ? false : true, 'bottom');
+
+	if(pos2 === 'top' && !(currentPageY + height + 16 < window.innerHeight))
+		menuSimpleContent.style.maxHeight = (window.innerHeight - currentPageY - 32)+'px';
+	else
+		menuSimpleContent.style.maxHeight = '';
 
 	menu.classList.remove('menu-gamepad');
 
