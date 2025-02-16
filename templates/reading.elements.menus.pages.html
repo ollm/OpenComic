@@ -358,6 +358,13 @@
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 				</div>
 			</div>
+			<div class="menu-simple-text reading-align-with-next-horizontal gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
+				{{language.reading.pages.alignWithNextHorizontal}}
+				<div class="switch{{#if _config.readingAlignWithNextHorizontal}} a{{/if}}" on="reading.changePagesView(21, true, false)" off="reading.changePagesView(21, false, false)">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+			</div>
 			<div class="menu-simple-text reading-blank-page gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
 				{{language.reading.pages.blankPage}}
 				<div class="switch{{#if _config.readingBlankPage}} a{{/if}}" on="reading.changePagesView(12, true, false)" off="reading.changePagesView(12, false, false)">

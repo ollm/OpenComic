@@ -10,6 +10,9 @@ var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNu
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
 {
+	if(!_config.readingAlignWithNextHorizontal)
+		return false;
+
 	var key = 0;
 
 	if(readingDoublePage() && _config.readingDoNotApplyToHorizontals)
@@ -3116,9 +3119,9 @@ function changePagesView(mode, value, save)
 	else if(mode == 6) // Set the reading to double page
 	{
 		if(value)
-			$('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
+			$('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
 		else
-			$('.reading-do-not-apply-to-horizontals, .reading-blank-page').addClass('disable-pointer');
+			$('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').addClass('disable-pointer');
 
 		updateReadingPagesConfig('readingDoublePage', value);
 
@@ -3153,7 +3156,7 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
 		}
 		else
 		{
@@ -3161,7 +3164,7 @@ function changePagesView(mode, value, save)
 				template.globalElement('.reading-ajust-to-width, .reading-force-single-page').removeClass('disable-pointer');
 			
 			if(_config.readingDoublePage)
-				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page').removeClass('disable-pointer');
+				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
 
 			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').removeClass('disable-pointer');
 		}
@@ -3291,6 +3294,15 @@ function changePagesView(mode, value, save)
 
 		render.resized(readingDoublePage());
 		// updateEbook(true);
+	}
+	else if(mode == 21) // Align double pages with the next horizontal image
+	{
+		updateReadingPagesConfig('readingAlignWithNextHorizontal', value);
+
+		if(readingIsEbook) handlebarsContext.loading = true;
+		template.loadContentRight('reading.content.right.html', true);
+
+		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 }
 

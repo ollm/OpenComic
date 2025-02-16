@@ -1,4 +1,4 @@
-var changes = 97; // Update this if readingPagesConfig is updated
+var changes = 98; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -40,6 +40,7 @@ var readingPagesConfig = {
 	readingDelayComicSkip: 1,
 	readingDoublePage: false,
 	readingDoNotApplyToHorizontals: true,
+	readingAlignWithNextHorizontal: true,
 	readingBlankPage: false,
 	readingManga: false,
 	readingWebtoon: false,
