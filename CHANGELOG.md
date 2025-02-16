@@ -15,8 +15,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Thumbnail generation speed has been improved [`155f064`](https://github.com/ollm/OpenComic/commit/155f064b4c9716c050a6231e44323169686997ea)
 - Support for `HEIC` image format [`4f4b5a1`](https://github.com/ollm/OpenComic/commit/4f4b5a16572ea2bd5aff2e519d473b42d80312fb)
 - Option to apply configuration profile based on folder/file label [`71d9ff5`](https://github.com/ollm/OpenComic/commit/71d9ff5655f934e4d710e1833b081e4fddf8d428)
-- Option to disable `Align with next horizontal` when reading on double page
+- Option to disable `Align with next horizontal` when reading on double page [`97d8ecd`](https://github.com/ollm/OpenComic/commit/97d8ecdde04c2a5c418440d8fbbf06496b16c8ba)
 
+##### 🐛 Bug Fixes
+
+- Gamepad menus do not work correctly
 
 ## [v1.4.1](https://github.com/ollm/OpenComic/releases/tag/v1.4.1) (08-02-2025)
 

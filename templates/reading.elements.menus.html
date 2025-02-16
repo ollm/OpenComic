@@ -126,37 +126,37 @@
 	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadBookmarks(); events.activeMenu('#collections-bookmark', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadBookmarks(); events.activeMenu('#collections-bookmark', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">collections_bookmark</i>
 					{{language.reading.viewBookmarks}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item gamepad-reading-music" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.music.loadMenu(); events.activeMenu('#reading-music', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item gamepad-reading-music" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.music.loadMenu(); events.activeMenu('#reading-music', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">queue_music</i>
 					{{language.reading.music.main}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadTrackigSites(); events.activeMenu('#tracking-sites', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadTrackigSites(); events.activeMenu('#tracking-sites', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">sync</i>
 					{{language.reading.tracking.main}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); events.activeMenu('#reading-magnifying-glass', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); events.activeMenu('#reading-magnifying-glass', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">search</i>
 					{{language.reading.magnifyingGlass.main}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'ebook-layout'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'ebook-layout'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">format_size</i>
 					{{language.reading.pages.ebookLayout}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'page-layout'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'page-layout'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">auto_stories</i>
 					{{language.reading.pages.pageLayout}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'filters'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'filters'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">invert_colors</i>
 					{{language.reading.pages.colorFilters}}
 				</div>

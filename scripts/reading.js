@@ -3819,6 +3819,15 @@ function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 	updateConfigLabels();
 
 	events.events();
+
+	// Fix error in gamepad menus
+	(async function(){
+
+		await app.sleep(5);
+
+		events.events();
+
+	})();
 }
 
 function setReadingShortcutPagesConfig(key = 0, desactiveMenu = true)

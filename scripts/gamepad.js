@@ -715,12 +715,12 @@ function showMenu()
 {
 	let query = !onReading ? '#index-menu-gamepad' : '#reading-menu-gamepad';
 
+	dom.query('.gamepad-reading-music').css({display: !handlebarsContext.hasMusic ? 'none' : ''});
+
 	if(document.querySelector(query+' .menu-simple.a'))
 		events.desactiveMenu(query);
 	else
 		events.activeMenu(query, false, 'gamepad');
-
-	dom.query('.gamepad-reading-music').css({display: !handlebarsContext.hasMusic ? 'none' : ''});
 
 	if(!onReading)
 	{
@@ -814,7 +814,8 @@ function goBack(fromKeyboard = false)
 
 	if(menuActive)
 	{
-		eval(menuActive.getAttribute('onclick'));
+		const menu = menuActive.closest('.menu');
+		if(menu) events.desactiveMenu(menu);
 
 		return;
 	}
@@ -849,7 +850,8 @@ function goForwards(fromKeyboard = false)
 
 	if(menuActive)
 	{
-		eval(menuActive.getAttribute('onclick'));
+		const menu = menuActive.closest('.menu');
+		if(menu) events.desactiveMenu(menu);
 
 		return;
 	}

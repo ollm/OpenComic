@@ -167,12 +167,12 @@
 					{{language.global.filterCurrentPage}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-view', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first menu-gamepad-view-icon">view_module</i>
 					{{language.global.view.main}}
 				</div>
 
-				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad', 'gamepad');">
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#index-menu-gamepad'); events.activeMenu('#index-sort', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">sort</i>
 					{{language.global.sort.main}}
 				</div>
