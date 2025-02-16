@@ -122,7 +122,7 @@ function saveImage()
 	saveAllImages(position);
 }
 
-function saveAllImages(position = false)
+function saveAllImages(position = false, _return = false)
 {
 	const images = reading.images();
 	const imagesData = reading.imagesData();
@@ -140,6 +140,9 @@ function saveAllImages(position = false)
 		if(+key > highestPage)
 			highestPage = +key;
 	}
+
+	if(_return)
+		return toSave;
 
 	saveImages(toSave, String(highestPage).length);
 }
@@ -261,6 +264,108 @@ function saveDialogDirectory(callback)
 	});
 }
 
+async function copyImageToClipboard()
+{
+	const position = reading.currentImagePosition();
+	const images = saveAllImages(position, true);
+	const len = images.length;
+
+	if(!len)
+		return;
+
+	for(let i = 0; i < len; i++)
+	{
+		images[i].image = fileManager.realPath(images[i].path);
+	}
+
+	const sizes = await image.getSizes(images);
+	let maxHeight = 0;
+
+	for(let i = 0; i < len; i++)
+	{
+		const size = sizes[i];
+
+		if(size.height > maxHeight)
+			maxHeight = size.height;
+	}
+
+	// Generate new sizes
+	const resizes = [];
+	let sumWidth = 0;
+
+	for(let i = 0; i < len; i++)
+	{
+		const size = sizes[i];
+		const factor = maxHeight / size.height;
+		const width = Math.round(size.width * factor);
+
+		resizes.push({
+			width: width,
+			height: Math.round(size.height * factor),
+		});
+
+		sumWidth += width;
+	}
+
+	// Resize images to blob and put them on canvas
+	const canvas = document.createElement('canvas');
+	canvas.width = sumWidth;
+	canvas.height = maxHeight;
+	const ctx = canvas.getContext('2d');
+
+	let left = 0;
+
+	for(let i = 0; i < len; i++)
+	{
+		let src = images[i].image;
+
+		const size = resizes[i];
+		const options = {
+			width: size.width,
+			height: size.height,
+			kernel: 'lanczos3',
+			compressionLevel: 0,
+		};
+
+		if(imageExtensions.blob.includes(app.extname(src))) // Convert unsupported images to blob
+		{
+			src = await workers.convertImageToBlob(src, {priorize: true});
+			options.blob = true;
+		}
+
+		let data = await image.resizeToBlob(src, options);
+
+		// Draw image
+		const img = new Image();
+		img.src = data.blob;
+		await img.decode();
+		ctx.drawImage(img, left, 0);
+
+		left += size.width;
+
+		URL.revokeObjectURL(data.blob);
+	}
+
+	const nativeImage = electron.nativeImage.createFromDataURL(canvas.toDataURL(), {
+		width: sumWidth,
+		height: maxHeight,
+	});
+
+	electron.clipboard.writeImage(nativeImage, 'clipboard');
+
+	events.snackbar({
+		key: 'copyImageToClipboard',
+		text: language.global.contextMenu.copyImageMessage,
+		duration: 6,
+		buttons: [
+			{
+				text: language.buttons.dismiss,
+				function: 'events.closeSnackbar();',
+			},
+		],
+	});
+}
+
 module.exports = {
 	show: show,
 	openFileLocation: openFileLocation,
@@ -271,4 +376,5 @@ module.exports = {
 	saveAllImages: saveAllImages,
 	saveBookmarksImages: saveBookmarksImages,
 	saveAllBookmarksImages: saveAllBookmarksImages,
+	copyImageToClipboard: copyImageToClipboard,
 };

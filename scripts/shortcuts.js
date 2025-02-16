@@ -191,6 +191,7 @@ function loadShortcuts()
 				'zoomRight',
 				'saveImage',
 				'saveAllImages',
+				'copyImage',
 				'saveBookmarksImages',
 				'saveAllBookmarksImages',
 				'resetZoom',
@@ -272,6 +273,7 @@ function loadShortcuts()
 					items: [
 						'saveImage',
 						'saveAllImages',
+						'copyImage',
 						'saveBookmarksImages',
 						'saveAllBookmarksImages',
 					],
@@ -765,6 +767,14 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				copyImage: {
+					name: language.global.contextMenu.copyImage,
+					function: function(event){
+						if(inputIsFocused() || !reading.isLoaded()) return false;
+						reading.contextMenu.copyImageToClipboard();
+						return true;
+					},
+				},
 				saveBookmarksImages: {
 					name: language.global.contextMenu.saveBookmarksImages,
 					function: function(event){
@@ -861,6 +871,7 @@ function loadShortcuts()
 				'Esc': 'goBack',
 				'Backspace': 'goBack',
 				'Ctrl+S': 'saveImage',
+				'Ctrl+C': 'copyImage',
 				'F11': 'fullscreen',
 				'G': 'gamepadMenu',
 			},
