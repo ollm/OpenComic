@@ -310,6 +310,7 @@
 			"gamepadMenu": "Menú del mando",
 			"useGamepad": "Utiliza un mando para cambiar la acción",
 			"restoreDefaults": "Restaurar valores por defecto",
+			"gamepadSensitivity": "Sensibilidad del mando",
 			"gamepadDeadZone": "Zona muerta del mando",
 			"screen": "Pantalla",
 			"zoom": "Zoom",

@@ -310,6 +310,7 @@
 			"gamepadMenu": "Gamepad menu",
 			"useGamepad": "Use a gamepad to change the action",
 			"restoreDefaults": "Restore default values",
+			"gamepadSensitivity": "Gamepad sensitivity",
 			"gamepadDeadZone": "Gamepad dead zone",
 			"screen": "Screen",
 			"zoom": "Zoom",

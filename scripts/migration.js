@@ -83,6 +83,13 @@ function migrateOpeningBehavior(data)
 	return data;
 }
 
+function migrateControllerDeadZone(data)
+{
+	data.config.gamepadDeadZone = data.config.controllerDeadZone;
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -97,6 +104,9 @@ function start(data)
 
 	if(changes < 92) // Change the old opening behavior setting
 		data = migrateOpeningBehavior(data);
+
+	if(changes < 99) // Change controllerDeadZone to gamepadDeadZone
+		data = migrateControllerDeadZone(data);
 
 	return data;
 }

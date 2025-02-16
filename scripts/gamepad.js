@@ -68,34 +68,35 @@ function gamepadLoop()
 	let buttons = [];
 	let axes = false;
 
-	// Merge all connected gamepad into one
+	// Merge all connected gamepads into one
 	for(let i = 0, len = gamepads.length; i < len; i++)
 	{
 		if(gamepads[i])
 		{
-			let controller = gamepads[i];
+			let gamepad = gamepads[i];
 
-			for(let i = 0, len = controller.buttons.length; i < len; i++)
+			for(let i = 0, len = gamepad.buttons.length; i < len; i++)
 			{
-				let button = controller.buttons[i];
+				let button = gamepad.buttons[i];
 
 				if(button.value == 1 || !buttons[i])
 					buttons[i] = button;
 			}
 
-			// Avoid controller dead zone
-			let deadZone = config.controllerDeadZone;
+			// Avoid gamepad dead zone
+			let deadZone = config.gamepadDeadZone;
+			let aAbs0 = Math.abs(gamepad.axes[0]), aAbs1 = Math.abs(gamepad.axes[1]), aAbs2 = Math.abs(gamepad.axes[2]), aAbs3 = Math.abs(gamepad.axes[3]);
 
-			let aAbs0 = Math.abs(controller.axes[0]), aAbs1 = Math.abs(controller.axes[1]), aAbs2 = Math.abs(controller.axes[2]), aAbs3 = Math.abs(controller.axes[3]);
-
-			// Prioritize first controller
+			// Prioritize first gamepad
 			if(!axes && (aAbs0 > deadZone || aAbs1 > deadZone || aAbs2 > deadZone || aAbs3 > deadZone))
 			{
+				let sensitivity = config.gamepadSensitivity / 5;
+
 				axes = [
-					(aAbs0 > deadZone ? controller.axes[0] : 0),
-					(aAbs1 > deadZone ? controller.axes[1] : 0),
-					(aAbs2 > deadZone ? controller.axes[2] : 0),
-					(aAbs3 > deadZone ? controller.axes[3] : 0),
+					(aAbs0 > deadZone ? gamepad.axes[0] * sensitivity : 0),
+					(aAbs1 > deadZone ? gamepad.axes[1] * sensitivity : 0),
+					(aAbs2 > deadZone ? gamepad.axes[2] * sensitivity : 0),
+					(aAbs3 > deadZone ? gamepad.axes[3] * sensitivity : 0),
 				];
 			}
 		}

@@ -1,4 +1,4 @@
-var changes = 98; // Update this if readingPagesConfig is updated
+var changes = 99; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -158,7 +158,8 @@ var storageDefault = {
 			play: false,
 			volume: 1.0,
 		},
-		controllerDeadZone: 0.1,
+		gamepadSensitivity: 5,
+		gamepadDeadZone: 0.1,
 		disableGamepadInput: false,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
 		saveImageToFolder: false,
