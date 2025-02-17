@@ -15,6 +15,6 @@ jobs:
             This issue was closed because it has been stalled for 30 days with no activity.
             Please feel free to re-open it is still a concern, possibly with additional data.
           stale-issue-label: 'stale'
-          only-labels: 'stale'
+          only-labels: 'awaiting answers'
           days-before-stale: 30
           days-before-close: 30
