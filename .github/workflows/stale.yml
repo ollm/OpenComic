@@ -6,7 +6,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v7
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: >
@@ -15,6 +15,6 @@ jobs:
             This issue was closed because it has been stalled for 90 days with no activity.
             Please feel free to re-open it is still a concern, possibly with additional data.
           stale-issue-label: 'stale'
-          only-labels: 'awaiting%20answers'
+          only-labels: 'awaiting answers'
           days-before-stale: 30
           days-before-close: 90
