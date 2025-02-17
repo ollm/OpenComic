@@ -17,5 +17,5 @@ jobs:
             Please feel free to re-open it is still a concern, possibly with additional data.
           stale-issue-label: 'stale'
           only-labels: 'awaiting answers'
-          days-before-stale: 30
+          days-before-stale: 0
           days-before-close: 90
