@@ -11,11 +11,11 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: >
-            This issue is stale and will be closed in 90 days unless new activity is seen.
+            This issue is marked as stale and will be closed in 90 days unless new activity is seen.
           close-issue-message: >
             This issue was closed because it has been stalled for 90 days with no activity.
-            Please feel free to re-open it is still a concern, possibly with additional data.
+            Please feel free to reopen it if it is still a concern, possibly with additional data.
           stale-issue-label: 'stale'
-          only-labels: 'awaiting answers'
+          any-of-labels: 'awaiting answers,need info'
           days-before-stale: 0
           days-before-close: 90
