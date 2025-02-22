@@ -2087,7 +2087,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.openRar = async function(extract = false, only = '') {
 
-		if(this.rar) return this.rar;
+		// Also has extract issues with this cache
+		// if(this.rar) return this.rar;
 
 		if(unrar === false) unrar = require('node-unrar-js');
 
@@ -2193,6 +2194,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		// Not support this cache
 		// if(this.tar) return this.tar;
+		if(this.tar) this.tar.destroy();
 
 		if(untar === false) untar = require('tar-fs');
 
