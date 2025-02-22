@@ -1093,13 +1093,14 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.detectFileTypeFromBinary = async function() {
 
-		if(fileType === false) fileType = require('file-type').fromFile;
+		if(fileType === false) fileType = require('file-type').fromBuffer;
 
 		let type;
 
 		try
 		{
-			type = await fileType(this.realPath);
+			const buffer = await readChunk(this.realPath, {length: 4100});
+			type = await fileType(buffer);
 		}
 		catch(error)
 		{
@@ -3286,6 +3287,30 @@ function macosStartAccessingSecurityScopedResource(path) {
 	}
 }
 
+// Code from https://github.com/sindresorhus/read-chunk 
+async function readChunk(filePath, {length, startPosition})
+{
+	const fileDescriptor = await fsp.open(filePath, 'r');
+
+	try
+	{
+		let {bytesRead, buffer} = await fileDescriptor.read({
+			buffer: new Uint8Array(length),
+			length,
+			position: startPosition,
+		});
+
+		if(bytesRead < length)
+			buffer = buffer.subarray(0, bytesRead);
+
+		return buffer;
+	}
+	finally
+	{
+		await fileDescriptor?.close();
+	}
+}
+
 async function dirSize(dir)
 {
 	let stat = await fsp.stat(dir);
@@ -3447,6 +3472,7 @@ module.exports = {
 	setTmpUsage: setTmpUsage,
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
+	readChunk: readChunk,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
 	copyToTmp: copyToTmp,
