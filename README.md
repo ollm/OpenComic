@@ -148,7 +148,7 @@ If you want to see OpenComic in your language, please help us to [Translate](htt
 
 ## GitHub Sponsors
 
-<!-- sponsors --><!-- sponsors -->
+<!-- sponsors --><a href="https://github.com/matheusnienow"><img src="https://github.com/matheusnienow.png" width="50px" style="border-radius: 50px;" alt="matheusnienow" /></a>&nbsp;&nbsp;<!-- sponsors -->
 
 ## Pepper & Carrot
 

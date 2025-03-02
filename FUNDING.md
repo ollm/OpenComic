@@ -26,4 +26,4 @@ With your support you help to continue the maintenance and development of OpenCo
 
 ## GitHub Sponsors
 
-<!-- sponsors --><!-- sponsors -->
+<!-- sponsors --><a href="https://github.com/matheusnienow"><img src="https://github.com/matheusnienow.png" width="50px" style="border-radius: 50px;" alt="matheusnienow" /></a>&nbsp;&nbsp;<!-- sponsors -->
