@@ -2272,6 +2272,29 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	fileInfo.setAttribute('onclick', 'dom.fileInfo.show(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
 	fileInfo.style.display = folder ? 'block' : 'none';
 
+	if(/app\.asar\.unpacked/.test(path)) // Is the Pepper & Carrot example comic
+	{
+		let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
+		let deletePoster = document.querySelector('#index-context-menu .context-menu-delete-poster');
+		let setAsPoster = document.querySelector('#index-context-menu .context-menu-set-as-poster');
+		let setAsPosterFolders = document.querySelector('#index-context-menu .context-menu-set-as-poster-folders');
+		let moveToTrash = document.querySelector('#index-context-menu .context-menu-move-to-trash');
+		let deletePermanently = document.querySelector('#index-context-menu .context-menu-delete-permanently');
+
+		addPoster.style.display = 'none';
+		deletePoster.style.display = 'none';
+		setAsPoster.style.display = 'none';
+		setAsPosterFolders.style.display = 'none';
+		moveToTrash.style.display = 'none';
+		deletePermanently.style.display = 'none';
+
+		if(!fromIndex)
+		{
+			dom.query('#index-context-menu .separator-poster').css({display: 'none'});
+			dom.query('#index-context-menu .separator-remove').css({display: 'none'});
+		}
+	}
+
 	if(gamepad)
 		events.activeMenu('#index-context-menu', false, 'gamepad');
 	else
