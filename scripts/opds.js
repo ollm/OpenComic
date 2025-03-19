@@ -45,7 +45,7 @@ const defaultCatalogs = [
 
 function addNewDefaultCatalogs(data, changes)
 {
-	data.opdsCatalogs = data.opdsCatalogs || [];
+	data.opdsCatalogs = (data.opdsCatalogs && data.opdsCatalogs.length) ? data.opdsCatalogs : [];
 	let added = false;
 
 	for(let i = 0, len = defaultCatalogs.length; i < len; i++)
