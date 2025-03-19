@@ -12,7 +12,7 @@
 
 <div align="center">
 
-[Screenshots](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD) | [Features](#features) | [Changelog](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md) | [Download](#download)
+[Screenshots](/SCREENSHOTS.MD) | [Features](#features) | [Changelog](/CHANGELOG.md) | [Download](#download)
 
 </div>
 
@@ -20,7 +20,7 @@
 
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/main.png "Screenshot")
 
-More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOTS.MD)
+More [Screenshots 📸](/SCREENSHOTS.MD)
 
 ## Features
 
@@ -42,7 +42,7 @@ More [Screenshots 📸](https://github.com/ollm/OpenComic/blob/master/SCREENSHOT
 - 🎮 Gamepad navigation
 - 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `nearest` and others
 
-You can see the changes between versions in the [Changelog 📝](https://github.com/ollm/OpenComic/blob/master/CHANGELOG.md)
+You can see the changes between versions in the [Changelog 📝](/CHANGELOG.md)
 
 <a id="download"></a>
 
@@ -93,7 +93,6 @@ __Requirements__: Git, Node and NPM
 git clone https://github.com/ollm/OpenComic.git
 cd OpenComic
 npm install
-npm run rebuild
 npm start
 ```
 
@@ -114,11 +113,13 @@ Available builds types:
 
 Now the build files are located in `dist` folder.
 
+If the build fails with error `Not exists` (Linux or macOS), you probably need to run a `npm install --force` inside the folder `./build/node-zstd-native-dependencies` and then run `npm install` again in the main folder.
+
 ## Translation
 
-If you want to see OpenComic in your language, please help us to [Translate](https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md).
+If you want to see OpenComic in your language, please help us to [Translate](/TRANSLATE.md).
 
-<a href="https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md">
+<a href="/TRANSLATE.md">
 	<img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated.svg" />
 </a>
 

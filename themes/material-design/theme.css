@@ -17,6 +17,7 @@
 @import url('./title-bar.css');
 @import url('./file-info.css');
 @import url('./boxes.css');
+@import url('./opds.css');
 @import url('./colors/all.colors.css');
 
 /* Animations */
@@ -1390,6 +1391,14 @@ a:hover
 	justify-content: space-between;
 }
 
+.content-view-module-horizontal
+{
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	justify-content: flex-start;
+}
+
 @media(max-width: 540px)
 {
 	.content-view-module
@@ -1407,6 +1416,7 @@ a:hover
 	padding: 8px;
 	content-visibility: auto;
 	contain-intrinsic-size: 150px 273px;
+	flex-shrink: 0;
 }
 
 .content-view-module .v-folder
@@ -1577,14 +1587,29 @@ a:hover
 
 .content-view-module .v-text
 {
-	height: 48px;
 	width: 150px;
+	height: 48px;
 	line-height: 48px;
 	text-align: center;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
+}
+
+.content-view-module .v-secondary-text
+{
+	width: 150px;
+	height: 28px;
+	line-height: 28px;
+	margin-top: -18px;
+	text-align: center;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	color: var(--md-sys-color-on-surface-variant);
+	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
 }
 
 .content-view-module .folder-images
@@ -2266,7 +2291,7 @@ a:hover
 	r: 32;
 	fill: none;
 	stroke-width: 6;
-	stroke-linecap: square;
+	stroke-linecap: round;
 }
 
 .loading48 > svg > circle
@@ -2276,7 +2301,7 @@ a:hover
 	r: 18;
 	fill: none;
 	stroke-width: 4;
-	stroke-linecap: square;
+	stroke-linecap: round;
 }
 
 .loading36 > svg > circle
@@ -2286,17 +2311,24 @@ a:hover
 	r: 11;
 	fill: none;
 	stroke-width: 3;
-	stroke-linecap: square;
+	stroke-linecap: round;
 }
 
 .loading24 > svg > circle
 {
-	cx: 24;
+	/*cx: 24;
 	cy: 24;
 	r: 9;
 	fill: none;
 	stroke-width: 2;
-	stroke-linecap: square;
+	stroke-width: 2.5;
+	stroke-linecap: round;*/
+	cx: 24;
+	cy: 24;
+	r: 9;
+	fill: none;
+	stroke-width: 2.5;
+	stroke-linecap: round;
 }
 
 /* Scroll */
@@ -2338,7 +2370,8 @@ a:hover
 }
 
 .bar-right-buttons::-webkit-scrollbar,
-.bar-title::-webkit-scrollbar
+.bar-title::-webkit-scrollbar,
+.small-scrollbar::-webkit-scrollbar
 {
 	width: 10px;
 	height: 10px;
@@ -2348,7 +2381,8 @@ a:hover
 }
 
 .bar-right-buttons::-webkit-scrollbar-thumb,
-.bar-title::-webkit-scrollbar-thumb
+.bar-title::-webkit-scrollbar-thumb,
+.small-scrollbar::-webkit-scrollbar-thumb
 {
 	border-radius: 12px;
 	width: 10px;
@@ -2363,19 +2397,22 @@ a:hover
 }
 
 .bar-right-buttons::-webkit-scrollbar-thumb:hover,
-.bar-title::-webkit-scrollbar-thumb:hover
+.bar-title::-webkit-scrollbar-thumb:hover,
+.small-scrollbar::-webkit-scrollbar-thumb:hover
 {
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
 .bar-right-buttons::-webkit-scrollbar-thumb:active,
-.bar-title::-webkit-scrollbar-thumb:active
+.bar-title::-webkit-scrollbar-thumb:active,
+.small-scrollbar::-webkit-scrollbar-thumb:active
 {
 	background-color: rgba(0, 0, 0, 0.3);
 }
 
 .bar-right-buttons::-webkit-scrollbar-thumb:window-inactive,
-.bar-title::-webkit-scrollbar-thumb:window-inactive
+.bar-title::-webkit-scrollbar-thumb:window-inactive,
+.small-scrollbar::-webkit-scrollbar-thumb:window-inactive
 {
 	background-color: rgba(0, 0, 0, 0.03);
 }
@@ -2401,25 +2438,29 @@ a:hover
 }
 
 .night-mode .bar-right-buttons::-webkit-scrollbar-thumb,
-.night-mode .bar-title::-webkit-scrollbar-thumb
+.night-mode .bar-title::-webkit-scrollbar-thumb,
+.night-mode .small-scrollbar::-webkit-scrollbar-thumb
 {
 	background-color: rgba(255, 255, 255, 0.06);
 }
 
 .night-mode .bar-right-buttons::-webkit-scrollbar-thumb:hover,
-.night-mode .bar-title::-webkit-scrollbar-thumb:hover
+.night-mode .bar-title::-webkit-scrollbar-thumb:hover,
+.night-mode .small-scrollbar::-webkit-scrollbar-thumb:hover
 {
 	background-color: rgba(255, 255, 255, 0.2);
 }
 
 .night-mode .bar-right-buttons::-webkit-scrollbar-thumb:active,
-.night-mode .bar-title::-webkit-scrollbar-thumb:active
+.night-mode .bar-title::-webkit-scrollbar-thumb:active,
+.night-mode .small-scrollbar::-webkit-scrollbar-thumb:active
 {
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
 .night-mode .bar-right-buttons::-webkit-scrollbar-thumb:window-inactive,
-.night-mode .bar-title::-webkit-scrollbar-thumb:window-inactive
+.night-mode .bar-title::-webkit-scrollbar-thumb:window-inactive,
+.night-mode .small-scrollbar::-webkit-scrollbar-thumb:window-inactive
 {
 	background-color: rgba(255, 255, 255, 0.03);
 }

@@ -1,4 +1,4 @@
-var changes = 99; // Update this if readingPagesConfig is updated
+var changes = 102; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -162,8 +162,10 @@ var storageDefault = {
 		gamepadDeadZone: 0.1,
 		disableGamepadInput: false,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
-		saveImageToFolder: false,
 		saveImageFolder: getDownloadsPath(),
+		saveImageToFolder: false,
+		downloadOpdsFolder: p.join(getDocumentsPath(), 'OPDS'),
+		downloadOpdsToFolder: false,
 		startInFullScreen: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,
@@ -313,8 +315,34 @@ var storageDefault = {
 			},
 		}
 	},
+	opdsCatalogs: [{
+		title: '',
+		subtitle: '',
+		url: '',
+		showOnLeft: false,
+	}],
 	shortcuts: {
 		browse: {
+			actionsConfigured: [
+				'',
+			],
+			shortcuts: {
+				wildcard: '',
+			},
+			tapZones: {
+				wildcard: {
+					wildcard: {
+						leftClick: '',
+						rightClick: '',
+						middleClick: '',
+					},
+				},
+			},
+			gamepad: {
+				wildcard: '',
+			},
+		},
+		opds: {
 			actionsConfigured: [
 				'',
 			],
@@ -395,6 +423,25 @@ function getDownloadsPath()
 
 		segments = segments.slice(0, 2);
 		segments.push(downloads);
+
+		path = p.join('/', ...segments);
+	}
+
+	return path;
+}
+
+function getDocumentsPath()
+{
+	const macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
+	let path = electronRemote.app.getPath('documents') || '';
+
+	if(macosMAS)
+	{
+		const documents = p.basename(path);
+		let segments = path.split(p.sep).filter(Boolean);
+
+		segments = segments.slice(0, 2);
+		segments.push(documents);
 
 		path = p.join('/', ...segments);
 	}

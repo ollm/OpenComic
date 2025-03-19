@@ -98,6 +98,12 @@ function processJob(thread = 0)
 		}
 	}
 
+	if(job.options.prework)
+	{
+		job.options.prework(job.options);
+		delete job.options.prework;
+	}
+
 	worker.busy = true;
 	worker.currentJob = job;
 	worker.worker.postMessage(job.options);
@@ -248,6 +254,11 @@ async function convertImage(path, options = {})
 		mime: mime.getType(realPath),
 		priorize: options.priorize || false,
 		useThreads: options.useThreads || 1,
+		prework: function(options){
+
+			fileManager.macosStartAccessingSecurityScopedResource(options.path);
+
+		}
 	});
 
 	const parentPath = p.dirname(pngPath);
@@ -308,6 +319,11 @@ async function convertImageToBlob(path, options = {})
 		mime: mime.getType(realPath),
 		priorize: options.priorize || false,
 		useThreads: options.useThreads || 1,
+		prework: function(options){
+
+			fileManager.macosStartAccessingSecurityScopedResource(options.path);
+
+		}
 	});
 
 	if(result.buffer)

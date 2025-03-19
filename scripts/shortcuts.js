@@ -153,6 +153,58 @@ function loadShortcuts()
 				'RB': 'nextChapter',
 			},
 		},
+		opds: {
+			actionsOrder: [
+				'reload',
+				'search',
+				'goBack',
+				'goForwards',
+			],
+			actions: {
+				reload: {
+					name: language.reading.prev,
+					function: function(){
+						dom.reload();
+						return true;
+					},
+				},
+				search: {
+					name: language.global.search,
+					function: function(){
+						opds.search.show();
+						return true;
+					},
+				},
+				goBack: {
+					name: language.global.goBack,
+					function: function(){
+						gamepad.goBack();
+						return true;
+					},
+				},
+				goForwards: {
+					name: language.global.goForwards,
+					function: function(){
+						gamepad.goForwards();
+						return true;
+					},
+				},
+			},
+			shortcuts: {},
+			_shortcuts: {
+				'F5': 'reload',
+				'Ctrl+F': 'search',
+				'Mouse3': 'goBack',
+				'Mouse4': 'goForwards',
+			},
+			_shortcutsForce: {},
+			tapZones: {},
+			_tapZones: {},
+			gamepad: {},
+			_gamepad: {
+				'X': 'reload',
+			},
+		},
 		reading: {
 			actionsOrder: [
 				'prev',
@@ -1203,6 +1255,10 @@ function restoreDefaults()
 	saved.browse.shortcuts = {};
 	saved.browse.gamepad = {};
 
+	saved.opds.actionsConfigured = [];
+	saved.opds.shortcuts = {};
+	saved.opds.gamepad = {};
+
 	saved.reading.actionsConfigured = [];
 	saved.reading.shortcuts = {};
 	saved.reading.gamepad = {};
@@ -1215,6 +1271,7 @@ function restoreDefaultsTapZones()
 	const saved = storage.get('shortcuts');
 
 	saved.browse.tapZones = {};
+	saved.opds.tapZones = {};
 	saved.reading.tapZones = {};
 
 	storage.set('shortcuts', saved);

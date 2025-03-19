@@ -1,0 +1,41 @@
+<br>
+
+<div class="input">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.global.title}}</div>
+		<input type="text" value="{{opdsCatalog.title}}" class="input-title">
+	</div>
+</div>
+
+<div class="input">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">URL</div>
+		<input type="text" value="{{opdsCatalog.url}}" class="input-url">
+	</div>
+</div>
+
+<div class="menu-simple-text gamepad-item">
+	<span>{{language.dialog.opds.showOnLeft}}</span>
+	<div class="switch input-show-on-left{{#if opdsCatalog.showOnLeft}} a{{/if}}" data-value="{{#if opdsCatalog.showOnLeft}}1{{else}}0{{/if}}">
+		<div></div>
+		<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+	</div>
+</div>

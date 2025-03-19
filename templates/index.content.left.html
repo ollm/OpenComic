@@ -17,6 +17,20 @@
 		{{language.global.favorites}}
 	</div>
 
+	<div class="menu-item menu-item-opds body-medium gamepad-item{{#compare isFrom '==' 'opds'}} active{{/compare}}" onclick="dom.labels.opds();">
+		<div class="icon-24 material-icon">local_library<!-- storefront --></div>
+		{{language.global.catalogs}}
+	</div>
+
+	{{#each opdsCatalogsLeft}}
+		{{#if showOnLeft}}
+		<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.opds('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}', {{key}}, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' title}}');">
+			<div class="icon-24 material-icon">rss_feed</div>
+			{{title}}
+		</div>
+		{{/if}}
+	{{/each}}
+
 	{{#each masterFolders}}
 	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.masterFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{key}});">
 		<div class="icon-24 material-icon">folder</div>

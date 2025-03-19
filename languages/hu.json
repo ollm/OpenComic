@@ -10,6 +10,7 @@
 		"favorites": "",
 		"labels": "",
 		"editLabels": "",
+		"catalogs": "",
 		"images": "",
 		"sort": {
 			"main": "Rendezés",
@@ -79,6 +80,8 @@
 		"days": "",
 		"pageAndNumber": "",
 		"valueCannotBeEmpty": "",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "Sötét téma"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "",
 			"confirmDelete": ""
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "",
 			"findOn": "",
@@ -494,6 +507,7 @@
 				"coverArtist": "",
 				"editor": "",
 				"translator": "",
+				"narrator": "",
 				"compiler": "",
 				"adapter": "",
 				"commentator": "",
@@ -530,6 +544,12 @@
 		"dismiss": "Dismiss",
 		"remove": "",
 		"download": "",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": ""
 	},

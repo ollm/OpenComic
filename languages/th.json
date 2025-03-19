@@ -10,6 +10,7 @@
 		"favorites": "เรื่องที่ชอบ",
 		"labels": "ป้ายกำกับ",
 		"editLabels": "แก้ไขป้ายกำกับ",
+		"catalogs": "",
 		"images": "รูปภาพ",
 		"sort": {
 			"main": "เรียงตาม",
@@ -79,6 +80,8 @@
 		"days": "วัน",
 		"pageAndNumber": "หน้า $1",
 		"valueCannotBeEmpty": "ค่าต้องไม่ว่าง",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "โหมดมืด"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "ลบป้ายกำกับ",
 			"confirmDelete": "คุณต้องการลบป้ายกำกับนี้หรือไม่?"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "คำอธิบาย",
 			"findOn": "ค้นหาบน Amazon, Goodreads, GoogleReads...",
@@ -494,6 +507,7 @@
 				"coverArtist": "ผู้ทำภาพปก",
 				"editor": "บรรณาธิการ",
 				"translator": "ผู้แปล",
+				"narrator": "",
 				"compiler": "ผู้รวบรวม",
 				"adapter": "ผู้ปรับปรุง",
 				"commentator": "ผู้วิจารณ์",
@@ -530,6 +544,12 @@
 		"dismiss": "ปิด",
 		"remove": "นำออก",
 		"download": "ดาวน์โหลด",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "ปิด"
 	},

@@ -46,6 +46,13 @@ async function search(text)
 		return;
 	}
 
+	if(fileManager.isOpds(dom.indexPathA()))
+	{
+		setResults([]);
+
+		return;
+	}
+
 	abortAll();
 
 	const index = searchAbortIndex++;
@@ -234,21 +241,28 @@ function searchClick(event)
 	}
 }
 
+var fromFillInput = false;
+
 function keyup(event)
 {
-	let text = this.value;
+	const text = this.value;
 
 	if(event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40 && event.keyCode != 13)
 	{
 		search(text);
 	}
-	else if(text && filterCurrentPage && (event.keyCode == 13 || event.keyCode == 40))
+	else if(text && filterCurrentPage && (event.keyCode == 13 || event.keyCode == 40) && !fromFillInput)
 	{
+		if(fileManager.isOpds(dom.indexPathA()))
+			opds.search.request(text);
+
 		hide(true);
 		saveRecentlySearched();
 
 		gamepad.updateBrowsableItems('search', true);
 	}
+
+	fromFillInput = false;
 }
 
 function showRecentlySearched()
@@ -462,6 +476,9 @@ async function indexFiles()
 
 async function indexFilesDom()
 {
+	if(fileManager.isOpds(dom.indexPathA()))
+		return;
+
 	let currentFiles = handlebarsContext.comics;
 
 	let _files = [];
@@ -566,10 +583,22 @@ async function hide(fromSearchClick = false)
 
 function fillInput(text)
 {
+	fromFillInput = true;
+
 	let input = document.querySelector('.search-bar > div input');
 	input.value = text;
 
 	search(text);
+
+	if(fileManager.isOpds(dom.indexPathA()))
+	{
+		opds.search.request(text);
+
+		hide(true);
+		saveRecentlySearched();
+
+		gamepad.updateBrowsableItems('search', true);
+	}
 }
 
 module.exports = {

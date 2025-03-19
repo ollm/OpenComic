@@ -10,6 +10,7 @@
 		"favorites": "收藏",
 		"labels": "标签",
 		"editLabels": "编辑标签",
+		"catalogs": "",
 		"images": "图片",
 		"sort": {
 			"main": "排列",
@@ -79,6 +80,8 @@
 		"days": "天",
 		"pageAndNumber": "页 $1",
 		"valueCannotBeEmpty": "值不能为空",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "夜间模式"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "删除标签",
 			"confirmDelete": "您确定要删除此标签吗？"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "描述",
 			"findOn": "在亚马逊、Goodreads、GoodReads 上查找...",
@@ -494,6 +507,7 @@
 				"coverArtist": "封面艺术家",
 				"editor": "编辑",
 				"translator": "翻译",
+				"narrator": "",
 				"compiler": "编译器",
 				"adapter": "适配器",
 				"commentator": "评论员",
@@ -530,6 +544,12 @@
 		"dismiss": "屏除",
 		"remove": "删除",
 		"download": "下载",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "关闭"
 	},

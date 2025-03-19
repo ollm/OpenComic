@@ -1,0 +1,19 @@
+<div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.goBack}}" onclick="dom.indexPathControlGoBack()">arrow_back</div>
+<div class="bar-title title-small" style="max-width: calc(100% - (364px + 68px));">
+	{{#if headerTitlePath}}
+		{{#each headerTitlePath}}
+			<span class="bar-title-a" onclick="{{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}">{{name}}</span>
+			{{#unless last}} <i class="material-icon navegation">chevron_right</i> {{/unless}}
+		{{/each}}
+	{{else}}
+		{{language.global.catalogs}}
+	{{/if}}
+</div>
+<div class="bar-right-buttons">
+	<div>
+		<div class="material-icon button button2 hover-text" hover-text="{{language.global.reload}}" onclick="dom.reload();">refresh</div>
+		<div class="material-icon button button2 button-opds-search hover-text" hover-text="{{language.global.search}}" onclick="opds.search.show();">search</div>
+		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode();">{{#if config.nightMode}}dark_mode{{else}}light_mode{{/if}}</div>
+	</div>
+</div>

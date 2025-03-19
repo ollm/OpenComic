@@ -104,12 +104,17 @@ function setNewPoster(path, reload = true, message = false)
 			}
 			else
 			{
-				console.log(error);
+				console.error(error);
+
+				error = error.message || error;
+
+				if(/EPERM/i.test(error))
+					error = 'No writing permissions: ' + error;
 
 				events.snackbar({
 					key: 'setNewPoster',
-					text: 'Error',
-					duration: 6,
+					text: error,
+					duration: 10,
 					update: true,
 					buttons: [
 						{

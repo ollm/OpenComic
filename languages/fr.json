@@ -10,6 +10,7 @@
 		"favorites": "",
 		"labels": "",
 		"editLabels": "",
+		"catalogs": "",
 		"images": "",
 		"sort": {
 			"main": "Trier",
@@ -79,6 +80,8 @@
 		"days": "Jours",
 		"pageAndNumber": "Page et numéro",
 		"valueCannotBeEmpty": "",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "Mode nuit"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "Supprimer l'Étiquette",
 			"confirmDelete": "Confirmer la Suppression"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "Description",
 			"findOn": "Trouver sur",
@@ -494,6 +507,7 @@
 				"coverArtist": "Artiste de la Couverture",
 				"editor": "Éditeur",
 				"translator": "Traducteur",
+				"narrator": "",
 				"compiler": "Compilateur",
 				"adapter": "Adaptateur",
 				"commentator": "Commentateur",
@@ -530,6 +544,12 @@
 		"dismiss": "Abandonner",
 		"remove": "",
 		"download": "",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": ""
 	},

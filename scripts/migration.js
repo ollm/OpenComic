@@ -108,6 +108,8 @@ function start(data)
 	if(changes < 99) // Change controllerDeadZone to gamepadDeadZone
 		data = migrateControllerDeadZone(data);
 
+	data = opds.addNewDefaultCatalogs(data, changes);
+
 	return data;
 }
 

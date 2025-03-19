@@ -10,6 +10,7 @@
 		"favorites": "Favorites",
 		"labels": "Labels",
 		"editLabels": "Edit labels",
+		"catalogs": "Catalogs",
 		"images": "Images",
 		"sort": {
 			"main": "Sort",
@@ -79,6 +80,8 @@
 		"days": "Days",
 		"pageAndNumber": "Page $1",
 		"valueCannotBeEmpty": "Value cannot be empty",
+		"viewAll": "View all",
+		"title": "Title",
 		"nightMode": "Night mode"
 	},
 	"comics": {
@@ -284,7 +287,7 @@
 			"main": "Save images",
 			"filenameTemplate": "Filename template",
 			"filenameTemplateDescription": "This is the default template that will be used when saving images, if there is already an image with the same name it will be saved with an incremental number. Variables:",
-			"autoSave": "Automatically save images to the following folder"
+			"autoSave": "Automatically save images to this folder"
 		},
 		"startupBehavior": {
 			"main": "Startup behavior",
@@ -446,6 +449,16 @@
 			"deleteLabel": "Delete label",
 			"confirmDelete": "Are you sure you want to delete this label?"
 		},
+		"opds": {
+			"add": "Add catalog",
+			"delete": "Delete catalog",
+			"confirmDelete": "Are you sure you want to delete this catalog?",
+			"showOnLeft": "Show in navigation drawer",
+			"downloadTitle": "OPDS folder",
+			"downloadDescription": "Folder where files downloaded via OPDS will be saved",
+			"autoSave": "Automatically download files to this folder",
+			"downloadSuccess": "The file has been downloaded successfully"
+		},
 		"fileInfo": {
 			"description": "Description",
 			"findOn": "Find on Amazon, Goodreads, GoogleReads...",
@@ -494,6 +507,7 @@
 				"coverArtist": "Cover artist",
 				"editor": "Editor",
 				"translator": "Translator",
+				"narrator": "Narrator",
 				"compiler": "Compiler",
 				"adapter": "Adapter",
 				"commentator": "Commentator",
@@ -530,6 +544,12 @@
 		"dismiss": "Dismiss",
 		"remove": "Remove",
 		"download": "Download",
+		"buy": "Buy",
+		"sample": "Sample",
+		"borrow": "Borrow",
+		"subscribe": "Subscribe",
+		"preview": "Preview",
+		"change": "Change",
 		"apply": "Apply",
 		"close": "Close"
 	},

@@ -10,6 +10,7 @@
 		"favorites": "Yêu thích",
 		"labels": "Nhãn",
 		"editLabels": "Sửa nhãn",
+		"catalogs": "",
 		"images": "Hình ảnh",
 		"sort": {
 			"main": "Lọc",
@@ -79,6 +80,8 @@
 		"days": "Ngày",
 		"pageAndNumber": "Trang $1",
 		"valueCannotBeEmpty": "Giá trị không được để trống",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "Chế độ tối"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "Xóa nhãn",
 			"confirmDelete": "Bạn có chắc chắn muốn xóa nhãn này?"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "",
 			"findOn": "",
@@ -494,6 +507,7 @@
 				"coverArtist": "",
 				"editor": "",
 				"translator": "",
+				"narrator": "",
 				"compiler": "",
 				"adapter": "",
 				"commentator": "",
@@ -530,6 +544,12 @@
 		"dismiss": "Ẩn",
 		"remove": "Xóa",
 		"download": "Tải về",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "Đóng"
 	},

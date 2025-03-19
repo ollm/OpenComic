@@ -28,6 +28,23 @@ function favorites()
 	dom.loadIndexPage(true);
 }
 
+function _opds(url = false, index = false, title = false)
+{
+	dom.setIndexLabel({opds: true, index: index, name: language.global.catalogs});
+	dom.loadIndexPage(true);
+
+	if(url)
+	{
+		dom.setIndexLabel({opds: true, index: index, name: title});
+
+		const base64 = opds.opds.base64(url);
+		opds.addPathName(base64, title);
+
+		const path = 'opds:/'+base64;
+		dom.loadIndexPage(true, path, false, false, path);
+	}
+}
+
 function label(name, index)
 {
 	dom.setIndexLabel({label: name, index: index, name: name});
@@ -485,6 +502,8 @@ function menuItemSelector(labels)
 {
 	if(labels.favorites)
 		return 'favorites';
+	else if(labels.opds)
+		return 'opds'+(labels.index !== false ? '-'+labels.index : '');
 	else if(labels.masterFolder)
 		return 'master-folder-'+labels.index;
 	else if(labels.label)
@@ -667,6 +686,7 @@ module.exports = {
 	masterFolder: masterFolder,
 	setFavorite: setFavorite,
 	favorites: favorites,
+	opds: _opds,
 	label: label,
 	server: server,
 	setLabels: setLabels,

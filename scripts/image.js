@@ -4,7 +4,11 @@ async function resize(fromImage, toImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	if(!config.blob) fromImage = app.shortWindowsPath(fromImage);
+	if(!config.blob)
+	{
+		fromImage = app.shortWindowsPath(fromImage);
+		fileManager.macosStartAccessingSecurityScopedResource(fromImage);
+	}
 
 	config = {...{
 		width: 200,
@@ -112,7 +116,11 @@ async function resizeToBlob(fromImage, config = {})
 {
 	if(sharp === false) sharp = require('sharp');
 
-	if(!config.blob) fromImage = app.shortWindowsPath(fromImage);
+	if(!config.blob)
+	{
+		fromImage = app.shortWindowsPath(fromImage);
+		fileManager.macosStartAccessingSecurityScopedResource(fromImage);
+	}
 
 	config = {...{
 		kernel: 'lanczos3',
@@ -448,6 +456,7 @@ async function getSizes(images)
 								}
 								else if(sharpSupportedFormat(image.image, extension))
 								{
+									fileManager.macosStartAccessingSecurityScopedResource(image.image);
 									const _sharp = sharp(app.shortWindowsPath(image.image));
 									const metadata = await _sharp.metadata();
 

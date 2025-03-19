@@ -10,6 +10,7 @@
 		"favorites": "Favorits",
 		"labels": "Etiquetes",
 		"editLabels": "Editar etiquetes",
+		"catalogs": "Catàlegs",
 		"images": "Imatges",
 		"sort": {
 			"main": "Ordenar",
@@ -45,9 +46,9 @@
 			"aboutFile": "Sobre aquest arxiu",
 			"addPoster": "Afegeix pòster",
 			"changePoster": "Canviar el pòster",
-			"deletePoster": "Esborrar pòster",
+			"deletePoster": "Eliminar pòster",
 			"cannotAddPoster": "No es pot afegir el pòster si la carpeta és dins d'un arxiu comprimit, haurà d'editar l'arxiu mitjançant 7-zip, unrar, etc",
-			"cannotDeletePoster": "No es pot esborrar el pòster si està dins d'un arxiu comprimit, haurà d'editar l'arxiu mitjançant 7-zip, unrar, etc",
+			"cannotDeletePoster": "No es pot eliminar el pòster si està dins d'un arxiu comprimit, haurà d'editar l'arxiu mitjançant 7-zip, unrar, etc",
 			"setAsPoster": "Usar imatge com a pòster",
 			"setAsPosterFolders": "Usar imatge com a pòster d'una altra carpeta",
 			"posterSetSuccessfully": "La imatge s'ha establert com a pòster",
@@ -79,6 +80,8 @@
 		"days": "Dies",
 		"pageAndNumber": "Pàgina $1",
 		"valueCannotBeEmpty": "El valor no pot estar buit",
+		"viewAll": "Veure-ho tot",
+		"title": "Títol",
 		"nightMode": "Mode nit"
 	},
 	"comics": {
@@ -284,7 +287,7 @@
 			"main": "Guardar imatges",
 			"filenameTemplate": "Plantilla de nom d'arxiu",
 			"filenameTemplateDescription": "Aquesta és la plantilla per defecte que s'utilitzarà al guarda les imatges, si ja hi ha una imatge amb el mateix nom, es guardarà amb un número incremental. Variables:",
-			"autoSave": "Guardar automàticament les imatges a la carpeta següent"
+			"autoSave": "Guardar automàticament les imatges en aquesta carpeta"
 		},
 		"startupBehavior": {
 			"main": "Comportament d'inici",
@@ -341,8 +344,8 @@
 			"main": "Servidors",
 			"add": "Afegir servidor",
 			"noServers": "Sense servidors",
-			"deleteServer": "Esborrar servidor",
-			"confirmDelete": "Esteu segur que voleu esborrar aquest servidor?",
+			"deleteServer": "Eliminar servidor",
+			"confirmDelete": "Esteu segur que voleu eliminar aquest servidor?",
 			"supportedProtocols": "Protocols suportats",
 			"protocolsDescription": "Connecteu-vos només a servidors de confiança i utilitzant protocols segurs sempre que sigui possible",
 			"serverNameExists": "Aquest nom de servidor ja existeix",
@@ -446,6 +449,16 @@
 			"deleteLabel": "Eliminar etiqueta",
 			"confirmDelete": "Esteu segur que voleu eliminar aquesta etiqueta?"
 		},
+		"opds": {
+			"add": "Afegir catàleg",
+			"delete": "Eliminar catàleg",
+			"confirmDelete": "Esteu segur que voleu eliminar aquest catàleg?",
+			"showOnLeft": "Mostra el tauler de navegació",
+			"downloadTitle": "Carpeta OPDS",
+			"downloadDescription": "Carpeta on es guardaran els arxius descarregats a través de OPDS",
+			"autoSave": "Descarregar automàticament els arxius en aquesta carpeta",
+			"downloadSuccess": "L'arxiu s'ha descarregat correctament"
+		},
 		"fileInfo": {
 			"description": "Descripció",
 			"findOn": "Buscar a Amazon, Goodreads, GoogleReads...",
@@ -494,6 +507,7 @@
 				"coverArtist": "Artista de la portada",
 				"editor": "Editor",
 				"translator": "Traductor",
+				"narrator": "Narrador",
 				"compiler": "Compilador",
 				"adapter": "Adaptador",
 				"commentator": "Comentarista",
@@ -530,6 +544,12 @@
 		"dismiss": "Descarta",
 		"remove": "Eliminar",
 		"download": "Descarregar",
+		"buy": "Comprar",
+		"sample": "Mostra",
+		"borrow": "Prestar",
+		"subscribe": "Subscriure's",
+		"preview": "Vista prèvia",
+		"change": "Canviar",
 		"apply": "Aplicar",
 		"close": "Tancar"
 	},

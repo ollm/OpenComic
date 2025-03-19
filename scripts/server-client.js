@@ -9,6 +9,13 @@ function getHost(path)
 	return app.extract(/^[a-z0-9]+\:\/\/?([^\/\\:]+)(:[0-9]+)?/, path, 1);
 }
 
+function getBaseUrl(path)
+{
+	path = posixPath(path);
+
+	return app.extract(/^([a-z0-9]+\:\/\/?[^\/\\:]+)(:[0-9]+)?/, path, 1);
+}
+
 function getShare(path)
 {
 	path = posixPath(path);
@@ -41,8 +48,8 @@ function getAdress(path)
 {
 	path = posixPath(path);
 
-	if(/^(?:smb|ftps?|sftp|ssh|scp|s3|webdavs?)\:\//.test(path))
-		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3|webdavs?)\:\/\/[^\/\\]+)/, path, 1);
+	if(/^(?:smb|ftps?|sftp|ssh|scp|s3|webdavs?|opdsfs?)\:\//.test(path))
+		return app.extract(/^((?:smb|ftps?|sftp|ssh|scp|s3|webdavs?|opdsfs?)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -53,8 +60,8 @@ function getTypeAdress(path)
 
 	if(/^(?:smb|s3)\:\//.test(path))
 		return app.extract(/^((?:smb|s3)\:\/\/[^\/\\]+\/[^\/\\]+)/, path, 1);
-	else if(/^(?:ftps?|sftp|ssh|scp|webdavs?)\:\//.test(path))
-		return app.extract(/^((?:ftps?|sftp|ssh|scp|webdavs?)\:\/\/[^\/\\]+)/, path, 1);
+	else if(/^(?:ftps?|sftp|ssh|scp|webdavs?|opdsfs?)\:\//.test(path))
+		return app.extract(/^((?:ftps?|sftp|ssh|scp|webdavs?|opdsfs?)\:\/\/[^\/\\]+)/, path, 1);
 
 	return '';
 }
@@ -67,7 +74,7 @@ function posixPath(path)
 
 function fixPath(path)
 {
-	path = p.normalize(path);
+	path = p.normalize(path).replace(/\/+$/, '');
 	return path.replace(/^([a-z0-9]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
 }
 
@@ -227,6 +234,12 @@ var client = function(path) {
 			progress: true,
 			secure: true,
 		},
+		opdsf: {
+			read: false,
+			single: true,
+			progress: true,
+			secure: false,
+		}
 	};
 
 	this.features = false;
@@ -287,6 +300,8 @@ var client = function(path) {
 				force = 'webdav';
 			else if(/^(?:webdavs)\:\//.test(this.path))
 				force = 'webdavs';
+			else if(/^(?:opdsfs?)\:\//.test(this.path))
+				force = 'opdsf';
 		}
 
 		this.features = this._features[force];
@@ -375,6 +390,8 @@ var client = function(path) {
 			return this.readS3(path);
 		else if(this.features.webdav || this.features.webdavs)
 			return this.readWebdav(path);
+		else if(this.features.opdsf)
+			return this.readOpds(path);
 
 		return false;
 	}
@@ -420,7 +437,9 @@ var client = function(path) {
 		else if(this.features.s3)
 			return this.downloadS3(path, callbackWhenFileDownload, index);
 		else if(this.features.webdav || this.features.webdavs)
-			return this.downloadWebdav(path);
+			return this.downloadWebdav(path, callbackWhenFileDownload, index);
+		else if(this.features.opdsf)
+			return this.downloadOpds(path, callbackWhenFileDownload, index);
 
 		return false;
 	}
@@ -652,6 +671,7 @@ var client = function(path) {
 			user: server.user,
 			pass: server.pass,
 			share: getShare(server.path),
+			path: server.path,
 		};
 
 	}
@@ -1528,9 +1548,6 @@ var client = function(path) {
 		}
 		catch(error)
 		{
-			if(this.webdav)
-				await this.scp.close();
-
 			this.webdav = false;
 
 			throw new Error('connection | '+error.message);
@@ -1609,8 +1626,6 @@ var client = function(path) {
 					{
 						let downloading = _this.setDownloading(path, filePath);
 
-						console.log('/'+posixPath(getPath(path)));
-
 						const fileContents = await webdav.getFileContents('/'+posixPath(getPath(path)), {format: 'binary'});
 						await fsp.writeFile(filePath, Buffer.from(fileContents));
 
@@ -1640,6 +1655,89 @@ var client = function(path) {
 	}
 
 
+	// opds
+	this.readOpds = async function(path) {
+
+		return [];
+
+	}
+
+	this.downloadOpds = async function(_path, callbackWhenFileDownload, contentRightIndex) {
+
+		const files = [];
+		const _this = this;
+		const _only = this.config._only;
+
+		const promises = [];
+
+		let progressIndex = 0;
+
+		console.time('downloadOpds');
+
+		for(let i = 0, len = _only.length; i < len; i++)
+		{
+			const inTask = this.inTask(20);
+			if(inTask) await inTask;
+
+			const task = this.setTask(inTask);
+
+			promises.push(new Promise(async function(resolve, reject) {
+
+				const path = _only[i];
+
+				const filePath = fileManager.realPath(path, -1);
+				const folderPath = p.dirname(filePath);
+
+				if(!fs.existsSync(folderPath))
+					fs.mkdirSync(folderPath, {recursive: true});
+
+				// Avoid downloading the same files at the same time
+				if(!serverClient.existsOrDownloading(filePath))
+				{
+					const isDownloading = _this.isDownloadingPath(path);
+
+					if(isDownloading)
+					{
+						await isDownloading;
+					}
+					else
+					{
+						const downloading = _this.setDownloading(path, filePath);
+
+						const dirname = p.dirname(path);
+						const basename = p.basename(path).replace(/\.[^\.]*$/, '');
+
+						let url = p.join(dirname, opds.opds.atob(basename));
+						url = posixPath(url).replace(/^opdsf/, 'http');
+
+						const response = await fetch(url);
+						const fileContents = await response.arrayBuffer();
+						await fsp.writeFile(filePath, Buffer.from(fileContents));
+
+						downloading.resolve();
+					}
+				}
+
+				progressIndex++;
+
+				_this.file.setProgress(progressIndex / len, contentRightIndex);
+				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
+
+				task.resolve();
+				resolve();
+
+			}));
+		}
+
+		await Promise.all(promises);
+
+		this.file.setProgress(1, contentRightIndex);
+
+		console.timeEnd('downloadOpds');
+
+		return;
+
+	}
 
 	this.destroy = async function() {
 
@@ -1649,6 +1747,8 @@ var client = function(path) {
 		if(this.ssh) await this.ssh.end();
 		if(this.scp) await this.scp.close();
 		if(this.s3) delete this.s3;
+		if(this.webdav) delete this.webdav;
+		//if(this.opds) delete this.opds;
 
 	}
 
@@ -1658,6 +1758,7 @@ module.exports = {
 	read: read,
 	download: download,
 	getHost: getHost,
+	getBaseUrl: getBaseUrl,
 	getShare: getShare,
 	getPath: getPath,
 	getPathWithoutShare: getPathWithoutShare,
@@ -1665,6 +1766,7 @@ module.exports = {
 	getAdress: getAdress,
 	getTypeAdress: getTypeAdress,
 	fixPath: fixPath,
+	posixPath: posixPath,
 	servers: function(){return servers},
 	serverLastError: _serverLastError,
 	existsOrDownloading: existsOrDownloading,

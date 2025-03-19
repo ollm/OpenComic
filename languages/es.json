@@ -10,6 +10,7 @@
 		"favorites": "Favoritos",
 		"labels": "Etiquetas",
 		"editLabels": "Editar etiquetas",
+		"catalogs": "Catálogos",
 		"images": "Imágenes",
 		"sort": {
 			"main": "Ordenar",
@@ -79,6 +80,8 @@
 		"days": "Días",
 		"pageAndNumber": "Página $1",
 		"valueCannotBeEmpty": "El valor no puede estar vació",
+		"viewAll": "Ver todo",
+		"title": "Título",
 		"nightMode": "Modo noche"
 	},
 	"comics": {
@@ -284,7 +287,7 @@
 			"main": "Guardar imágenes",
 			"filenameTemplate": "Plantilla de nombre de archivo",
 			"filenameTemplateDescription": "Esta es la plantilla por defecto que se utilizara al guardar imágenes, si ya hay una imagen con el mismo nombre se guardará con un número incremental. Variables:",
-			"autoSave": "Guardar automáticamente las imágenes en la siguiente carpeta"
+			"autoSave": "Guardar automáticamente las imágenes en esta carpeta"
 		},
 		"startupBehavior": {
 			"main": "Comportamiento de inicio",
@@ -446,6 +449,16 @@
 			"deleteLabel": "Eliminar etiqueta",
 			"confirmDelete": "¿Seguro que quiere eliminar esta etiqueta?"
 		},
+		"opds": {
+			"add": "Añadir catálogo",
+			"delete": "Eliminar catálogo",
+			"confirmDelete": "¿Está seguro de que desea eliminar este catálogo?",
+			"showOnLeft": "Mostrar en el panel de navegación",
+			"downloadTitle": "Carpeta OPDS",
+			"downloadDescription": "Carpeta donde se guardarán los archivos descargados a través de OPDS",
+			"autoSave": "Descargar automáticamente los archivos en esta carpeta",
+			"downloadSuccess": "El archivo se ha descargado correctamente"
+		},
 		"fileInfo": {
 			"description": "Descripción",
 			"findOn": "Buscar en Amazon, Goodreads, GoogleReads...",
@@ -494,6 +507,7 @@
 				"coverArtist": "Artista de la portada",
 				"editor": "Editor",
 				"translator": "Traductor",
+				"narrator": "Narrador",
 				"compiler": "Compilador",
 				"adapter": "Adaptador",
 				"commentator": "Comentarista",
@@ -530,6 +544,12 @@
 		"dismiss": "Descartar",
 		"remove": "Eliminar",
 		"download": "Descargar",
+		"buy": "Comprar",
+		"sample": "Muestra",
+		"borrow": "Prestar",
+		"subscribe": "Suscribirse",
+		"preview": "Vista previa",
+		"change": "Cambiar",
 		"apply": "Aplicar",
 		"close": "Cerrar"
 	},

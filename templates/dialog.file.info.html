@@ -1,7 +1,7 @@
 <div class="file-info{{#if fileInfo.bigPoster}} poster{{/if}}">
 	{{#if fileInfo.bigPoster}}
-	<div class="file-info-poster" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
-		<img src="{{chain 'encodeSrcURI' 'invertBackslash' fileInfo.poster.realPath}}">
+	<div class="file-info-poster" onclick="{{#unless fileInfo.opds}}electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');{{/unless}}">
+		<img src="{{fileInfo.poster.realPath}}">
 	</div>
 	{{/if}}
 	<div class="file-info-content">
@@ -9,7 +9,7 @@
 			{{#unless fileInfo.bigPoster}}
 			<div class="content-view-module">
 				<div>
-					<div class="v-folder item-image" onclick="electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');">
+					<div class="v-folder item-image" onclick="{{#unless fileInfo.opds}}electron.shell.showItemInFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.firstCompressedFile}}');{{/unless}}">
 						{{#if fileInfo.poster}}
 							<div class="folder-poster">
 								<img{{#if fileInfo.poster.path}} class="has-poster" src="{{fileInfo.poster.path}}"{{else}} class="sha-image-{{fileInfo.poster.sha}} folder-poster-img"{{/if}}>
@@ -34,10 +34,23 @@
 			{{/unless}}
 			<div class="file-info-title">
 				<div class="title-large">{{fileInfo.title}}</div>
-				<div class="body-medium">{{fileInfo.author}}</div>
-				<div class="simple-button filled-tonal gamepad-item file-info-findOn file-info-find-on" onclick="dom.fileInfo.findOn.get('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.title}}'); events.showSelect(this, 'index-file-info-find-on', true, true);">
+				{{#if fileInfo.subtitle}}<div class="title-small">{{fileInfo.subtitle}}</div>{{/if}}
+				<div class="body-medium">{{{fileInfo.author}}}</div>
+				{{#if fileInfo.opds}}
+
+				<div class="file-info-odps-buttons">
+				{{#each opdsAcquisitionLinks}}
+					<div class="simple-button file-info-odps-button-{{type}} {{#if fill}}filled{{else}}filled-tonal{{/if}} gamepad-item" onclick="opds.downloadOrSelect('{{type}}');">
+						<div class="touch-effect"><i class="icon-24 material-icon">{{icon}}</i>{{name}}{{#if price}}<span class="simple-button-variation">{{price.format}}</span>{{/if}}</div>
+					</div>
+				{{/each}}
+				</div>
+
+				{{else}}
+				<div class="simple-button filled-tonal gamepad-item file-info-find-on" onclick="dom.fileInfo.findOn.get('{{chain 'escapeBackSlash' 'escapeQuotesSimples' fileInfo.title}}'); events.showSelect(this, 'index-file-info-find-on', true, true);">
 					<div class="touch-effect"><i class="icon-24 material-icon">search</i>{{language.dialog.fileInfo.findOn}}</div>
 				</div>
+				{{/if}}
 			</div>
 		</div>
 

@@ -202,6 +202,9 @@ var compressedMime = {
 		'application/x-cbt',
 		'application/x-tar',
 		'application/x-tar-compressed',
+		'application/pdf',
+		'application/x-bzpdf',
+		'application/x-gzpdf',
 		'application/epub+zip',
 	],
 	zip: [
@@ -447,6 +450,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	threads = require(p.join(appDir, 'scripts/threads.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
 	serverClient = require(p.join(appDir, 'scripts/server-client.js')),
+	opds = require(p.join(appDir, 'scripts/opds.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	recentlyOpened = require(p.join(appDir, 'scripts/recently-opened.js')),
 	settings = require(p.join(appDir, 'scripts/settings.js')),
@@ -684,13 +688,24 @@ async function loadPdfjs()
 	return true;
 }
 
-pdfjsDecoders = false;
+var pdfjsDecoders = false;
 
 async function loadPdfjsDecoders()
 {
 	if(pdfjsDecoders) return;
 
 	pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
+
+	return true;
+}
+
+var foliateJs = {};
+
+async function loadFoliateJs()
+{
+	if(foliateJs.opds) return;
+
+	foliateJs.opds = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/foliate-js/opds.js')));
 
 	return true;
 }
@@ -702,7 +717,6 @@ async function loadMime()
 	if(mime) return;
 
 	const Mime = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index_lite.js')))).Mime;
-
 	const standardTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/standard.js')))).default;
 	const otherTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/other.js')))).default;
 
@@ -713,7 +727,7 @@ async function loadMime()
 	mime.define({'image/jp2': ['j2k', 'j2c', 'jpc']});
 	mime.define({'image/vnd.ms-photo': ['hdp']});
 	mime.define({'image/avif-sequence': ['avifs']});
-	mime.define({'application/epub+zip': ['epub3']});
+	mime.define({'application/epub+zip': ['epub']});
 
 	return true;
 }
@@ -993,7 +1007,7 @@ function generateAppMenu(force = false)
 				submenu: [
 					{label: language.menu.help.bug, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/issues');}},
 					{type: 'separator'},
-					{label: language.menu.help.funding, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/blob/master/FUNDING.md');}},
+					{label: language.menu.help.funding, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/blob/master/FUNDING.md');}, visible: !macosMAS},
 					{label: language.menu.help.about, click: function(){showAboutWindow();}},
 				]
 			}
@@ -1458,7 +1472,7 @@ function addComic(folders = false)
 
 }
 
-function addComicsToLibrary(files)
+function addComicsToLibrary(files, reload = true)
 {
 	let added = false;
 
@@ -1528,7 +1542,7 @@ function addComicsToLibrary(files)
 		}
 	}
 
-	if(added)
+	if(added && reload)
 	{
 		if(onReading)
 			reading.saveReadingProgress();

@@ -81,7 +81,7 @@ function empty(mixedVar)
 
 function extname(path)
 {
-	return p.extname(path).replace(/^.*\./, '').toLowerCase();
+	return p.extname(path).substr(1).toLowerCase();
 }
 
 function round(number, precision = 0) {
@@ -291,7 +291,6 @@ async function setThrottle(key, callback, debounce = 300, throttle = 3000)
 		}, throttle);
 	}
 }
-
 
 function time()
 {

@@ -10,6 +10,7 @@
 		"favorites": "Избранное",
 		"labels": "Метки",
 		"editLabels": "Редактировать метки",
+		"catalogs": "",
 		"images": "Изображения",
 		"sort": {
 			"main": "Сортировка",
@@ -79,6 +80,8 @@
 		"days": "дней",
 		"pageAndNumber": "Страница {{number}}",
 		"valueCannotBeEmpty": "Значение не может быть пустым",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "Ночной режим"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "Удалить метку",
 			"confirmDelete": "Вы уверены, что хотите удалить эту метку?"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "Описание",
 			"findOn": "Найти на",
@@ -494,6 +507,7 @@
 				"coverArtist": "Художник обложки",
 				"editor": "Редактор",
 				"translator": "Переводчик",
+				"narrator": "",
 				"compiler": "Составитель",
 				"adapter": "Адаптировщик",
 				"commentator": "Комментатор",
@@ -530,6 +544,12 @@
 		"dismiss": "Отклонить",
 		"remove": "Удалить",
 		"download": "Скачать",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "Закрыть"
 	},

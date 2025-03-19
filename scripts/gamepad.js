@@ -585,6 +585,14 @@ function scrollToItem(item)
 	prevScrollTop = scrollTop;
 }
 
+function bestDistance(start, end, start1, end1)
+{
+	if(start > start1 && start < end1)
+		return 0;
+
+	return start - start1;
+}
+
 function highlightClosestItem(key)
 {
 	// left: 0, right: 1, top: 2, bottom: 3
@@ -617,14 +625,14 @@ function highlightClosestItem(key)
 					else if(key == 1)
 						x = current.right - item.left;
 					else
-						x = current.x - item.x;
+						x = bestDistance(current.left, current.right, item.left, item.right);
 
 					if(key == 2)
 						y = current.top - item.bottom;
 					else if(key == 3)
 						y = current.bottom - item.top;
 					else
-						y = current.y - item.y;
+						y = bestDistance(current.top, current.bottom, item.top, item.bottom);
 
 					let d = Math.sqrt(x ** 2 + y ** 2); // Distance
 					

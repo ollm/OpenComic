@@ -10,6 +10,7 @@
 		"favorites": "Favoriter",
 		"labels": "Etiketter",
 		"editLabels": "Redigera etiketter",
+		"catalogs": "",
 		"images": "Bilder",
 		"sort": {
 			"main": "Sortera",
@@ -79,6 +80,8 @@
 		"days": "Dagar",
 		"pageAndNumber": "Sida $1",
 		"valueCannotBeEmpty": "Värdet får inte vara tomt",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "Nattläge"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "Ta bort etikett",
 			"confirmDelete": "Är du säker på att du vill ta bort den här etiketten?"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "",
 			"findOn": "",
@@ -494,6 +507,7 @@
 				"coverArtist": "",
 				"editor": "",
 				"translator": "",
+				"narrator": "",
 				"compiler": "",
 				"adapter": "",
 				"commentator": "",
@@ -530,6 +544,12 @@
 		"dismiss": "Avvisa",
 		"remove": "Ta bort",
 		"download": "Ladda ned",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "Stäng"
 	},

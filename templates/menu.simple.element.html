@@ -5,7 +5,8 @@
 			<span>{{text}}</span>
 		</div>
 		{{else}}
-		<div class="menu-simple-element menu-simple-element-padding-left gamepad-item{{#if select}} s{{/if}}" onclick="{{function}} events.hideSelect(true);">
+		<div class="menu-simple-element{{#if paddingLeft}} menu-simple-element-padding-left{{/if}} gamepad-item{{#if select}} s{{/if}}" onclick="{{function}} events.hideSelect(true);">
+			{{#if icon}}<i class="material-icon menu-simple-icon-first">{{icon}}</i>{{/if}}
 			<span>{{name}}</span>
 		</div>
 		{{/if}}

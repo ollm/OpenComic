@@ -10,6 +10,7 @@
 		"favorites": "즐겨찾기",
 		"labels": "라벨",
 		"editLabels": "라벨 관리",
+		"catalogs": "",
 		"images": "",
 		"sort": {
 			"main": "정렬",
@@ -79,6 +80,8 @@
 		"days": "",
 		"pageAndNumber": "$1 페이지",
 		"valueCannotBeEmpty": "",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "야간 모드"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "라벨 삭제",
 			"confirmDelete": "라벨을 삭제할까요?"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "",
 			"findOn": "",
@@ -494,6 +507,7 @@
 				"coverArtist": "",
 				"editor": "",
 				"translator": "",
+				"narrator": "",
 				"compiler": "",
 				"adapter": "",
 				"commentator": "",
@@ -530,6 +544,12 @@
 		"dismiss": "무시",
 		"remove": "삭제",
 		"download": "다운로드",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "닫기"
 	},

@@ -898,7 +898,6 @@ var file = function(path, _config = false) {
 	};
 }
 
-
 // Compressed files
 var fileCompressed = function(path, _realPath = false, forceType = false, prefixes = false) {
 
@@ -1723,29 +1722,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(this.progress && this.progress.multiply)
 			progress = progress * this.progress.multiply;
 
-		let svg = document.querySelector('.content-right .content-right-'+index+' .loading.loading96 svg');
-
-		if(svg)
-		{
-			svg.style.animation = 'none';
-			svg.style.transform = 'rotate(-90deg)';
-		}
-
-		let circle = document.querySelector('.content-right .content-right-'+index+' .loading.loading96 circle');
-
-		if(circle)
-		{
-			let now = Date.now();
-
-			let speed = this.progressPrev ? Math.round(now - this.progressPrev) : 0;
-
-			this.progressPrev = now;
-
-			circle.style.animation = 'none';
-			circle.style.transition = speed+'ms stroke-dasharray';
-			circle.style.strokeDashoffset = 225;
-			circle.style.strokeDasharray = 226 + ((422 - 226) * progress);
-		}
+		const loading = document.querySelector('.content-right .content-right-'+index+' .loading.loading96');
+		events.loadingProgress(loading, progress);
 
 	}
 
@@ -3003,7 +2981,15 @@ function setServerInOfflineMode(value = false)
 
 function isServer(path)
 {
-	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdavs?)\:[\/\\]{1,2}/.test(path))
+	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdavs?|opdsfs?)\:[\/\\]{1,2}/.test(path))
+		return true;
+
+	return false;
+}
+
+function isOpds(path)
+{
+	if(/^(?:opds)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;
@@ -3173,7 +3159,7 @@ function pathType(path)
 
 function simpleExists(path)
 {
-	if(isServer(path))
+	if(isServer(path) || isOpds(path))
 	{
 		return true;
 	}
@@ -3191,6 +3177,24 @@ function simpleExists(path)
 function replaceReservedCharacters(filename)
 {
 	return filename.replace(/[/\\?%*:|"<>]/g, '-');
+}
+
+function genearteFilePath(saveTo, fileName)
+{
+	let path = p.join(saveTo, fileName);
+
+	const extension = p.extname(fileName);
+	const imageName = p.basename(fileName, extension);
+
+	for(let i = 1; i < 100; i++)
+	{
+		if(!fs.existsSync(path))
+			break;
+
+		path = p.join(saveTo, imageName+' ('+i+')'+extension);
+	}
+
+	return path;
 }
 
 function filtered(files, specialFiles = false)
@@ -3255,7 +3259,9 @@ function macosSecurityScopedBookmarks(files)
 	}
 }
 
-var macosScopedResources = [];
+var macosScopedResources = {};
+var macosScopedResourcesST1 = false;
+var macosScopedResourcesST2 = false;
 
 function macosStartAccessingSecurityScopedResource(path) {
 
@@ -3267,6 +3273,8 @@ function macosStartAccessingSecurityScopedResource(path) {
 		if(!segments[0])
 			segments[0] = p.sep;
 
+		let start = false;
+
 		for(let i = 1, len = segments.length; i < len; i++)
 		{
 			const _path = p.join(...segments);
@@ -3276,7 +3284,20 @@ function macosStartAccessingSecurityScopedResource(path) {
 			{
 				try
 				{
-					macosScopedResources.push(electronRemote.app.startAccessingSecurityScopedResource(bookmark));
+					if(macosScopedResources[_path])
+					{
+						macosScopedResources[_path].used = Date.now();
+					}
+					else
+					{
+						macosScopedResources[_path] = {
+							used: Date.now(),
+							stop: electronRemote.app.startAccessingSecurityScopedResource(bookmark),
+						};
+					}
+
+					start = true;
+
 					break;
 				}
 				catch {}
@@ -3284,6 +3305,44 @@ function macosStartAccessingSecurityScopedResource(path) {
 
 			segments.pop();
 		}
+
+		if(start)
+		{
+			// Throttling
+			if(macosScopedResourcesST1 === false)
+			{
+				macosScopedResourcesST1 = setTimeout(function(){
+
+					macosStopAccessingSecurityScopedResource();
+					macosScopedResourcesST1 = false;
+
+				}, 500);
+			}
+
+			// Debounce
+			if(macosScopedResourcesST2 !== false) clearTimeout(macosScopedResourcesST2);
+			macosScopedResourcesST2 = setTimeout(function(){
+
+				macosStopAccessingSecurityScopedResource();
+				macosScopedResourcesST2 = false;
+
+			}, 1000 * 5);
+		}
+	}
+}
+
+// Stop accessing security scoped resources
+function macosStopAccessingSecurityScopedResource()
+{
+	for(let path in macosScopedResources)
+	{
+		const resource = macosScopedResources[path];
+
+		if(Date.now() - resource.used > 1000 * 5)
+		{
+			resource.stop();
+			delete macosScopedResources[path];
+		}			
 	}
 }
 
@@ -3458,6 +3517,7 @@ module.exports = {
 	pathType: pathType,
 	isCompressed: isCompressed,
 	isServer: isServer,
+	isOpds: isOpds,
 	setServerInOfflineMode: setServerInOfflineMode,
 	serverInOfflineMode: function(){return serverInOfflineMode},
 	firstCompressedFile: firstCompressedFile,
@@ -3467,9 +3527,11 @@ module.exports = {
 	isParentPath: isParentPath,
 	simpleExists: simpleExists,
 	replaceReservedCharacters: replaceReservedCharacters,
+	genearteFilePath: genearteFilePath,
 	convertUnsupportedImages: convertUnsupportedImages,
 	blobUnsupportedImages: blobUnsupportedImages,
 	setTmpUsage: setTmpUsage,
+	macosScopedResources: function(){return macosScopedResources},
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
 	readChunk: readChunk,

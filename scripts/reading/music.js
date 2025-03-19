@@ -26,7 +26,9 @@ async function has(files, findParent = false)
 		catch(error)
 		{
 			console.error(error);
-			dom.compressedError(error);
+
+			if(!macosMAS)
+				dom.compressedError(error);
 
 			return false;
 		}

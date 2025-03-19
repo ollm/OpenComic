@@ -6,13 +6,13 @@ const _sanitizeHtml = require('sanitize-html'),
 
 var currentPath = false;
 
-var compactData = ['size', 'language', 'releaseDate', 'readingDate', 'modifiedDate', 'bookNumber', 'bookTotal', 'volume', 'pages', 'alternateBookNumber', 'alternateBookTotal'];
-var ignoreData = [
-	...['title', 'author', 'description', 'longDescription', 'metadata', 'year', 'month', 'day', 'poster', 'manga', 'writer', 'penciller', 'inker', 'colorist', 'letterer', 'coverArtist', 'editor', 'translator', 'imprint'],
+const compactData = ['size', 'language', 'releaseDate', 'readingDate', 'modifiedDate', 'bookNumber', 'bookTotal', 'volume', 'pages', 'alternateBookNumber', 'alternateBookTotal'];
+const ignoreData = [
+	...['title', 'subtitle', 'author', 'description', 'longDescription', 'metadata', 'year', 'month', 'day', 'poster', 'manga', 'writer', 'penciller', 'inker', 'colorist', 'letterer', 'coverArtist', 'illustrator', 'editor', 'translator', 'narrator', 'imprint'],
 	...compactData,
 ];
 
-var keyOrder = [
+const keyOrder = [
 
 	// dataCompactList
 	'bookNumber',
@@ -66,7 +66,7 @@ var keyOrder = [
 
 ];
 
-var contributorKeyOrder = [
+const contributorKeyOrder = [
 	'author',
 	'writer',
 	'penciller',
@@ -78,6 +78,7 @@ var contributorKeyOrder = [
 	'coverArtist',
 	'editor',
 	'translator',
+	'narrator',
 	'compiler',
 	'adapter',
 	'commentator',
@@ -88,11 +89,13 @@ var contributorKeyOrder = [
 	'contributor',
 ];
 
-var epubConvertKeys = {
+const epubConvertKeys = {
 	aut: 'author',
 	edt: 'editor',
+	art: 'coverArtist',
 	ill: 'illustrator',
 	trl: 'translator',
+	nar: 'narrator', // ??
 	ptg: 'photographer',
 	com: 'compiler',
 	adp: 'adapter',
@@ -103,30 +106,46 @@ var epubConvertKeys = {
 	ctb: 'contributor',
 };
 
-async function show(path)
+async function show(path, opds = false)
 {
-	currentPath = path;
-
-	let sha = sha1(p.normalize(path));
-	let cacheFile = 'compressed-files-'+sha+'.json';
-
 	let metadata = {};
 
-	if(cache.existsJson(cacheFile))
-		metadata = cache.readJson(cacheFile).metadata || {};
+	if(opds)
+	{
+		metadata = opds;
+	}
+	else
+	{
+		currentPath = path;
 
-	metadata.size = '<span class="file-info-size">...</span>';
+		let sha = sha1(p.normalize(path));
+		let cacheFile = 'compressed-files-'+sha+'.json';
+
+		if(cache.existsJson(cacheFile))
+			metadata = cache.readJson(cacheFile).metadata || {};
+
+		metadata.size = '<span class="file-info-size">...</span>';
+
+		let readingProgress = storage.get('readingProgress');
+		readingProgress = readingProgress[path] || false;
+
+		if(readingProgress)
+			metadata.readingDate = readingProgress.lastReading;	
+	}
+
 	metadata.contributor = parseContributor(metadata);
-
-	let readingProgress = storage.get('readingProgress');
-	readingProgress = readingProgress[path] || false;
-
-	if(readingProgress)
-		metadata.readingDate = readingProgress.lastReading;
 
 	let dataCompactList = [];
 
 	let dataList = [];
+
+	for(let key in metadata)
+	{
+		if(!inArray(key, keyOrder))
+		{
+			keyOrder.push(key);
+		}
+	}
 
 	for(let key in metadata)
 	{
@@ -163,45 +182,84 @@ async function show(path)
 	}
 
 	let bigPoster = true;
-	let file = fileManager.file(path);
-	let images = await file.images(4, false, true);
+	let images = {};
 
-	if(Array.isArray(images) || !bigPoster)
+	if(opds)
 	{
-		images = await dom.getFolderThumbnails(path, 150);
+		images = {
+			images: false,
+			poster: {
+				path: opds.poster.path,
+				realPath: opds.poster.path,
+				sha: opds.poster.sha,
+			},
+		};
+
+		bigPoster = false;
 	}
 	else
 	{
-		await file.makeAvailable([{path: images.path}]);
+		let file = fileManager.file(path);
+		images = await file.images(4, false, true);
 
-		images.realPath = fileManager.realPath(images.path);
+		if(Array.isArray(images) || !bigPoster)
+		{
+			images = await dom.getFolderThumbnails(path, 150);
+		}
+		else
+		{
+			await file.makeAvailable([{path: images.path}]);
 
-		images = {
-			images: false,
-			poster: images,
-		};
+			let src = fileManager.realPath(images.path);
+
+			const options = {
+				kernel: 'lanczos3',
+				fit: 'cover',
+				width: Math.round(400 * window.devicePixelRatio),
+				height: Math.round(600 * window.devicePixelRatio),
+			};
+
+			if(imageExtensions.blob.includes(app.extname(src))) // Convert unsupported images to blob
+			{
+				src = await workers.convertImageToBlob(src, {priorize: true});
+				options.blob = true;
+			}
+
+			let data = await image.resizeToBlob(src, options);
+			images.realPath = data.blob;
+
+			images = {
+				images: false,
+				poster: images,
+			};
+		}
+
+		file.destroy();
 	}
 
-	file.destroy();
-
-	if(images.poster)
+	if(images.poster && !/^blob/.test(images.poster.realPath) && !opds)
 		await image.loadImage(images.poster.realPath, true);
 
 	handlebarsContext.fileInfo = {
 		title: metadata.title || p.basename(path),
-		author: metadata.author,
+		subtitle: metadata.subtitle,
+		author: parseHtmlUrls(parseItems(metadata.author)),
 		poster: images.poster,
 		bigPoster: images.poster && bigPoster ? true : false,
 		images: images.images,
-		description: parseHtmlUrls(sanitizeHtml(metadata.longDescription || metadata.description)),
+		description: parseDescription(parseHtmlUrls(sanitizeHtml(metadata.longDescription || metadata.description))),
 		dataCompactList: dataCompactList,
 		dataList: dataList,
 		firstCompressedFile: fileManager.firstCompressedFile(path),
+		opds: opds,
 	};
 
+	//if(opds)
+	//	return template.load('dialog.file.info.html');
+
 	events.dialog({
-		width: images.poster && bigPoster ? 1000 : 600,
-		maxHeight: images.poster && bigPoster ? 600 : 800,
+		width: ((images.poster && bigPoster) || opds) ? 1000 : 600,
+		maxHeight: (images.poster && bigPoster) ? 600 : 800,
 		height: false,
 		overflowHidden: images.poster && bigPoster ? true : false,
 		content: template.load('dialog.file.info.html'),
@@ -211,7 +269,8 @@ async function show(path)
 	if(images.poster && bigPoster)
 		dom.fileInfo.resize(true);
 
-	getFileSize();
+	if(!opds)
+		getFileSize();
 }
 
 async function getFileSize()
@@ -244,7 +303,13 @@ function parseValue(value, key)
 		case 'tags':
 		case 'characters':
 
-			value = splitCommaSeparated(value).join(', ');
+			value = joinItems(splitCommaSeparated(value), (key === 'characters'));
+
+			break;
+
+		case 'language':
+
+			value = parseLanguage(value);
 
 			break;
 
@@ -257,6 +322,13 @@ function parseValue(value, key)
 		case 'subject':
 
 			value = parseSubject(value);
+
+			break;
+
+		case 'publisher':
+		case 'series':
+
+			value = parseItems(value);
 
 			break;
 	}
@@ -274,7 +346,23 @@ function parseValue(value, key)
 
 function parseHtmlUrls(html)
 {
-	return html.replace(/(\<a\s)/ig, '$1 target="_blank"');
+	if(!html) return html;
+
+	html = html.replace(/(\<a\s)\s*/ig, '$1 target="_blank"');
+	html = html.replace(/href="\/\/([^\/\>])/ig, 'href="https://$1');
+
+	const matches = [...html.matchAll(/\<a\s+target="_blank"\s*data-function="([0-9]+)"/ig)];
+
+	for(let i = 0, len = matches.length; i < len; i++)
+	{
+		const match = matches[i];
+		const index = +match[1];
+
+		html = html.replace(match[0], '<a href="javascript:void(0)" onclick="'+dataFunction[index]+'"');
+		delete  dataFunction[index];
+	}
+
+	return html;
 }
 
 function parseTextUrls(text)
@@ -285,9 +373,30 @@ function parseTextUrls(text)
 	return text;
 }
 
+function parseLanguage(lang)
+{
+	const languageNames = new Intl.DisplayNames([config.language], {type: 'language'}); // navigator.language?
+	return app.capitalize(languageNames.of(lang));
+}
+
 function parseUrl(url)
 {
 	return '<a href="'+url+'" target="_blank">'+url+'</a>';
+}
+
+var dataFunction = {}, dataFunctionIndex = 0;
+
+function parseUrlOrFunction(string, data)
+{
+	dataFunctionIndex++;
+	dataFunction[dataFunctionIndex] = data.function;
+
+	if(data.function)
+		return '<a data-function="'+dataFunctionIndex+'">'+string+'</a>';
+	else if(data.url)
+		return '<a href="'+data.url+'" target="_blank">'+string+'</a>';
+
+	return string;
 }
 
 function parseSubject(subject)
@@ -297,10 +406,29 @@ function parseSubject(subject)
 	for(let i = 0, len = subject.length; i < len; i++)
 	{
 		let value = subject[i];
-		html.push('<i class="material-icon">sell</i> '+value.name);
+		html.push('<span>'+parseUrlOrFunction('<i class="material-icon">sell</i> '+(value.name || value.code), value)+'</span>');
 	}
 
-	return '<div class="file-info-subject">'+html.join('<br>')+'</div>';
+	return '<div class="file-info-subject">'+html.join(' ')+'</div>';
+}
+
+function parseItems(items)
+{
+	if(typeof items !== 'object')
+		return items;
+
+	if(!items.length)
+		items = [items];
+
+	const _items = [];
+
+	for(let i = 0, len = items.length; i < len; i++)
+	{
+		let item = items[i];
+		_items.push(parseUrlOrFunction(item.name || item.title || item.code || '', item));
+	}
+
+	return joinItems(_items);
 }
 
 function _parseContributor(metadata, key)
@@ -309,11 +437,22 @@ function _parseContributor(metadata, key)
 
 	if(metadata[key])
 	{
-		let names = splitCommaSeparated(metadata[key]);
-
-		for(let i = 0, len = names.length; i < len; i++)
+		if(typeof metadata[key] === 'string')
 		{
-			metadata.contributor.push({name: names[i], role: key});
+			let names = splitCommaSeparated(metadata[key]);
+
+			for(let i = 0, len = names.length; i < len; i++)
+			{
+				metadata.contributor.push({name: names[i], role: key});
+			}
+		}
+		else
+		{
+			for(let i = 0, len = metadata[key].length; i < len; i++)
+			{
+				metadata[key].role = key;
+				metadata.contributor.push(metadata[key]);
+			}
 		}
 	}
 
@@ -328,8 +467,10 @@ function parseContributor(metadata)
 	metadata = _parseContributor(metadata, 'colorist');
 	metadata = _parseContributor(metadata, 'letterer');
 	metadata = _parseContributor(metadata, 'coverArtist');
+	metadata = _parseContributor(metadata, 'illustrator');
 	metadata = _parseContributor(metadata, 'editor');
 	metadata = _parseContributor(metadata, 'translator');
+	metadata = _parseContributor(metadata, 'narrator');
 	metadata = _parseContributor(metadata, 'imprint');
 
 	let html = '';
@@ -343,12 +484,12 @@ function parseContributor(metadata)
 		let key = contributor.role || 'contributor';
 		let langKey = epubConvertKeys[key] || key;
 
-		let value = contributor.name;
+		let value = contributor;
 
 		data.push({
 			key: langKey,
 			name: language.dialog.fileInfo.data[langKey] || app.capitalize(langKey),
-			value: parseValue(value, key),
+			value: parseValue(parseItems(value), key),
 		});
 	}
 
@@ -387,8 +528,20 @@ function splitCommaSeparated(string)
 	return _data;
 }
 
+function joinItems(items, and = true)
+{
+	if(!and)
+		return items.join(', ');
+
+	const last = items.pop();
+	return items.length ? items.join(', ')+' '+language.global.and+' '+last : last;
+}
+
 function parseDate(value)
 {
+	if(typeof value === 'string' && /^[0-9]{4}$/.test(value))
+		return value;
+
 	let date = new Date(typeof value === 'number' ? value : Date.parse(value));
 
 	let options = {
@@ -412,7 +565,23 @@ function sanitizeHtml(string)
 			div: ['file-info-subject'],
 			i: ['material-icon'],
 		},
+		allowedAttributes: {
+			'a': ['href', 'target', 'data-function'],
+		},
 	});
+}
+
+function parseDescription(string)
+{
+	if(!string) return string;
+
+	if(!/<\s*p[^>]*>/.test(string) && !/<\s*br[^>]*>/.test(string))
+		string = string.trim().replace(/\n/g, '<br>');
+
+	if(!/^\s*\<\s*p[^>]*>/.test(string))
+		string = '<p>'+string+'</p>';
+
+	return string;
 }
 
 var activeResize = false;

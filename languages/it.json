@@ -10,6 +10,7 @@
 		"favorites": "Preferiti",
 		"labels": "Etichette",
 		"editLabels": "Modifica Etichette",
+		"catalogs": "",
 		"images": "Immagini",
 		"sort": {
 			"main": "Ordina",
@@ -79,6 +80,8 @@
 		"days": "Giorni",
 		"pageAndNumber": "Pagina $1",
 		"valueCannotBeEmpty": "Il valore non può essere vuoto",
+		"viewAll": "",
+		"title": "",
 		"nightMode": "Tema scuro"
 	},
 	"comics": {
@@ -446,6 +449,16 @@
 			"deleteLabel": "Cancella etichetta",
 			"confirmDelete": "Sicuro di voler eliminare questa etichetta?"
 		},
+		"opds": {
+			"add": "",
+			"delete": "",
+			"confirmDelete": "",
+			"showOnLeft": "",
+			"downloadTitle": "",
+			"downloadDescription": "",
+			"autoSave": "",
+			"downloadSuccess": ""
+		},
 		"fileInfo": {
 			"description": "Descrizione",
 			"findOn": "Cerca su Amazon, Goodreads, GoogleReads...",
@@ -494,6 +507,7 @@
 				"coverArtist": "Artista copertina",
 				"editor": "Editore",
 				"translator": "Traduttore",
+				"narrator": "",
 				"compiler": "Compiler",
 				"adapter": "Adattatore",
 				"commentator": "Commentatore",
@@ -530,6 +544,12 @@
 		"dismiss": "Dismiss",
 		"remove": "Rimuovi",
 		"download": "Download",
+		"buy": "",
+		"sample": "",
+		"borrow": "",
+		"subscribe": "",
+		"preview": "",
+		"change": "",
 		"apply": "",
 		"close": "Chiudi"
 	},

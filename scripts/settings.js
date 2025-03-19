@@ -214,7 +214,7 @@ function addMasterFolder()
 {
 	let dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: ['openDirectory'], filters: [{name: language.settings.masterFolders.folder}], securityScopedBookmarks: macosMAS}).then(async function (files) {
+	dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], filters: [{name: language.settings.masterFolders.folder}], securityScopedBookmarks: macosMAS}).then(async function (files) {
 
 		fileManager.macosSecurityScopedBookmarks(files);
 
@@ -1073,6 +1073,7 @@ function getOpeningBehavior(folder = false)
 
 		item.function = 'settings.set(\''+(folder ? 'openingBehaviorFolder' : 'openingBehaviorFile')+'\', \''+item.key+'\');';
 		item.select = item.key == current ? true : false;
+		item.paddingLeft = true;
 	}
 
 	handlebarsContext.menu = {
@@ -1100,11 +1101,11 @@ function getOpeningBehaviorName(key = '')
 	return names[key];
 }
 
-function selectSaveImageFolder()
+function changeSaveImageFolder()
 {
-	let dialog = electronRemote.dialog;
+	const dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: ['openDirectory'], filters: [{name: language.settings.saveImages.autoSave}], securityScopedBookmarks: macosMAS}).then(async function (files) {
+	dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], filters: [{name: language.settings.saveImages.autoSave}], securityScopedBookmarks: macosMAS, defaultPath: config.saveImageFolder}).then(async function (files) {
 
 		fileManager.macosSecurityScopedBookmarks(files);
 
@@ -1112,7 +1113,25 @@ function selectSaveImageFolder()
 		{
 			const folder = files.filePaths[0];
 			settings.set('saveImageFolder', folder);
-			dom.query('.settings-save-image-folder .chip span').html(folder);
+			dom.queryAll('.settings-save-image-folder .path-selector span').html(folder);
+		}
+
+	});
+}
+
+function changeDownloadOpdsFolder()
+{
+	const dialog = electronRemote.dialog;
+
+	dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], filters: [{name: language.dialog.opds.autoSave}], securityScopedBookmarks: macosMAS, defaultPath: config.downloadOpdsFolder}).then(async function (files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
+
+		if(files.filePaths && files.filePaths[0])
+		{
+			const folder = files.filePaths[0];
+			settings.set('downloadOpdsFolder', folder);
+			dom.queryAll('.settings-download-opds-folder .path-selector span').html(folder);
 		}
 
 	});
@@ -1241,6 +1260,12 @@ function set(key, value, save = true)
 			dom.query('.settings-save-image-folder').class(!value, 'disable-pointer');
 
 			break;
+
+		case 'downloadOpdsToFolder': 
+
+			dom.query('.settings-body .settings-download-opds-folder').class(!value, 'disable-pointer');
+
+			break;
 	}
 
 	if(save)
@@ -1302,7 +1327,8 @@ module.exports = {
 	getImageInterpolationMethods: getImageInterpolationMethods,
 	getColorProfiles: getColorProfiles,
 	getOpeningBehavior: getOpeningBehavior,
-	selectSaveImageFolder: selectSaveImageFolder,
+	changeSaveImageFolder: changeSaveImageFolder,
+	changeDownloadOpdsFolder: changeDownloadOpdsFolder,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,

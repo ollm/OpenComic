@@ -2,7 +2,13 @@
 function show(gamepad = false)
 {
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
-	dom.queryAll('.separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
+	dom.queryAll('.separator-set-as-poster, .separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
+
+	if(saveImages)
+	{
+		const setAsPoster = /app\.asar\.unpacked/.test(reading.readingCurrentPath()) ? false : true;
+		dom.queryAll('.separator-set-as-poster, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: setAsPoster ? '' : 'none'});
+	}
 
 	if(gamepad)
 		events.activeMenu('#reading-context-menu', false, 'gamepad');
@@ -96,24 +102,6 @@ function generateFileName(path, page, leadingZeros, fileName)
 	if(!ext3 || ext3.length >= 6) fileName += extension;
 
 	return fileName;
-}
-
-function genearteFilePath(saveTo, fileName)
-{
-	let path = p.join(saveTo, fileName);
-
-	const extension = p.extname(fileName);
-	const imageName = p.basename(fileName, extension);
-
-	for(let i = 1; i < 100; i++)
-	{
-		if(!fs.existsSync(path))
-			break;
-
-		path = p.join(saveTo, imageName+' ('+i+')'+extension);
-	}
-
-	return path;
 }
 
 function saveImage()
@@ -216,7 +204,7 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 		{
 			const image = toSave[i];
 			const realPath = fileManager.realPath(image.path);
-			const saveImageTo = genearteFilePath(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName));
+			const saveImageTo = fileManager.genearteFilePath(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName));
 			if(first === '') first = saveImageTo;
 
 			if(!fs.existsSync(saveImageTo))

@@ -14,7 +14,7 @@ function eventsTab(activeTab = false)
 		tabs.siblings('.active').removeClass('active');
 	}*/
 
-	app.event('.tabs > div > div', 'click', _eventsTab, {capture: false});
+	app.event('.tabs:not(.not-tab-events) > div > div', 'click', _eventsTab, {capture: false});
 
 	let tabs = document.querySelectorAll('.tabs > div > div');
 
@@ -194,7 +194,10 @@ function windowDown()
 
 function windowMove1()
 {
+	if(eventHoverTimeout === false && !eventHoverTimeoutActive) return;
+
 	clearTimeout(eventHoverTimeout);
+	eventHoverTimeout = false;
 
 	if(eventHoverTimeoutActive)
 		eventHoverTimeout = setTimeout('events.showHoverText()', 300);
@@ -244,12 +247,14 @@ function swiftClick()
 {
 	if(this.classList.contains('a'))
 	{
+		this.dataset.value = 0;
 		this.classList.add('animeOff');
 		this.classList.remove('a', 'animeOn');
 		callbackString(this.getAttribute('off'));
 	}
 	else
 	{
+		this.dataset.value = 1;
 		this.classList.add('a', 'animeOn');
 		this.classList.remove('animeOff');
 		callbackString(this.getAttribute('on'));
@@ -752,7 +757,7 @@ function eventSelect(animation = true)
 
 let currentSelect = {};
 
-function showSelect(This, menu = false, insideMenu = false, ajustHeight = false)
+function showSelect(This, menu = false, insideMenu = false, ajustWidth = false)
 {
 	selectThis = This;
 	This.classList.add('active');
@@ -770,12 +775,12 @@ function showSelect(This, menu = false, insideMenu = false, ajustHeight = false)
 		}
 	}
 
-	if(ajustHeight)
+	if(ajustWidth)
 	{
 		let menuSimple = document.querySelector('#'+menu+' .menu-simple');
 
 		if(menuSimple)
-			menuSimple.style.width = This.getBoundingClientRect().width+'px';
+			menuSimple.style.width = (ajustWidth === 1 ? This.firstElementChild : This).getBoundingClientRect().width+'px';
 	}
 
 	if(menu)
@@ -1306,6 +1311,95 @@ function focus(query, end = true)
 	}
 }
 
+function loadingProgress(loading, progress = 0)
+{
+	if(!loading) return;
+
+	const strokes = {
+		96: {
+			array: 499,
+		},
+		48: {
+			array: 411,
+		},
+		36: {
+			array: 368,
+		},
+		24: {
+			array: 343,
+		},
+	}
+
+	let size = 96;
+
+	if(loading.classList.contains('loading96'))
+		size = 96;
+	else if(loading.classList.contains('loading48'))
+		size = 48;
+	else if(loading.classList.contains('loading36'))
+		size = 36;
+	else if(loading.classList.contains('loading24'))
+		size = 24;
+
+	const stroke = strokes[size];
+
+	const svg = loading.querySelector('.loading svg');
+
+	if(svg)
+	{
+		svg.style.animation = 'none';
+		svg.style.transform = 'rotate(-90deg)';
+	}
+
+	const circle = loading.querySelector('.loading circle');
+
+	if(circle)
+	{
+		const now = Date.now();
+		const prevNow = +loading.dataset.prevNow || false;
+		const prevProgress = +loading.dataset.prevProgress || 0;
+
+		let speed = prevNow ? Math.round(now - prevNow) : 0;
+		if(speed > 300) speed = 300;
+
+		if(prevProgress > progress)
+			progress = prevProgress;
+
+		loading.dataset.prevNow = now;
+		loading.dataset.prevProgress = progress;
+
+		circle.style.animation = 'none';
+		circle.style.transition = speed+'ms stroke-dasharray';
+		circle.style.strokeDashoffset = 300;
+		circle.style.strokeDasharray = 301 + ((stroke.array - 301) * progress);
+	}
+}
+
+function buttonLoading(button, progress = false)
+{
+	if(!button) return;
+
+	const children = button.firstElementChild;
+	let loading = children.querySelector('.button-loading');
+
+	if(progress)
+	{
+		if(!loading)
+		{
+			children.insertAdjacentHTML('beforeend', template.load('loading.button.html'));
+			loading = children.querySelector('.button-loading');
+		}
+
+		if(progress !== true)
+			loadingProgress(loading.querySelector('.loading'), progress);
+	}
+	else
+	{
+		if(loading)
+			loading.remove();
+	}
+}
+
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
@@ -1333,4 +1427,6 @@ module.exports = {
 	rangeMoveStep: rangeMoveStep,
 	resetRange: resetRange,
 	goRange: goRange,
+	loadingProgress: loadingProgress,
+	buttonLoading: buttonLoading,
 };

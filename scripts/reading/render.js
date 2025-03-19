@@ -448,6 +448,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			let src = img.dataset.src;
 			let key = src+'|'+_config.width+'x'+_config.height;
 
+			fileManager.macosStartAccessingSecurityScopedResource(src);
+
 			if(inArray(fileExtension(src), imageExtensions.blob)) // Convert unsupported images to blob
 			{
 				src = await workers.convertImageToBlob(src, {priorize: true});

@@ -1,0 +1,105 @@
+<div class="opds-browse-page">
+	<div class="opds-browse-content">
+		<div>
+		{{#if opds.loading}}
+			{{> index.content.right.loading.html}}
+		{{else}}
+			{{#if opds.metadata.title}}<h1 class="display-medium">{{opds.metadata.title}}</h1>{{/if}}
+			{{#if opds.metadata.subtitle}}<h2 class="body-large">{{opds.metadata.subtitle}}</h2>{{/if}}
+
+			{{#if opds.navigation}}
+			<div class="opds-browse-navigation">
+				{{#each opds.navigation}}
+				<div class="opds-browse-navigation-item gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if differentHost}}electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' differentHost}}');{{else}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}">
+					<span class="headline-small">{{title}}</span>
+					{{#if summary}}<span class="body-medium">{{summary}}</span>{{/if}}
+				</div>
+				{{/each}}
+			</div>
+			{{/if}}
+
+			{{#if opds.groups}}
+				{{#each opds.groups}}
+					{{#if publications}}
+					<div class="opds-browse-groups">
+						<span class="opds-browse-groups-title">
+							<div>
+								<h2 class="headline-small">{{metadata.title}}</h2>
+								{{#if metadata.description}}<h3 class="body-medium">{{metadata.description}}</h3>{{/if}}
+							</div>
+							{{#if path}}
+							<span>
+								<div class="simple-button filled-tonal gamepad-item" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');">
+									<div class="touch-effect">{{../language.global.viewAll}}{{#if metadata.numberOfItems}} ({{metadata.numberOfItems}}){{/if}}</div>
+								</div>
+							</span>
+							{{/if}}
+						</span>
+						<div class="opds-browse-groups-items">
+							<div class="content-view-module content-view-module-horizontal content-view-module-150 small-scrollbar">
+								{{#each filePublications}}
+									{{> index.content.right.module.item.html}}
+								{{/each}}
+							</div>
+						</div>
+					</div>
+					{{/if}}
+				{{/each}}
+			{{/if}}
+
+			{{#if opds.publications}}
+				<div class="opds-browse-publications">
+					<div class="content-view-module content-view-module-150">
+						{{#each opds.filePublications}}
+							{{> index.content.right.module.item.html}}
+						{{/each}}
+					</div>
+				</div>
+			{{/if}}
+
+			{{#if opds.pagination}}
+				<div class="opds-browse-pagination">
+					<div class="tabs outline-tabs not-tab-events">
+						<div>
+							<div class="label-large gamepad-item{{#unless opds.pagination.first}} disable-pointer{{/unless}}" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.first.path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.first.mainPath}}');">
+								<span class="material-icon">first_page</span>{{language.reading.firstPage}}
+							</div>
+							<div class="label-large gamepad-item{{#unless opds.pagination.prev}} disable-pointer{{/unless}}" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.prev.path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.prev.mainPath}}');">
+								<span class="material-icon">navigate_before</span>{{language.reading.previous}}
+							</div>
+							<div class="label-large gamepad-item{{#unless opds.pagination.next}} disable-pointer{{/unless}}" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.next.path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.next.mainPath}}');">
+								{{language.reading.next}}<span class="material-icon right">navigate_next</span>
+							</div>
+
+							<div class="label-large gamepad-item{{#unless opds.pagination.last}} disable-pointer{{/unless}}" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.last.path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opds.pagination.last.mainPath}}');">
+								{{language.reading.lastPage}}<span class="material-icon right">last_page</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+
+		{{/if}}
+		</div>
+	</div>
+	{{#if opds.showFacets}}
+	<div class="opds-browse-facets">
+		<div>
+			{{#each opds.facets}}
+			<div class="opds-browse-facets-group body-medium">
+				{{#if metadata.title}}<div class="opds-browse-facets-title">{{metadata.title}}</div>{{/if}}
+				<div class="opds-browse-facets-items">
+				{{#each links}}
+					<div class="opds-browse-facets-item label-large gamepad-item{{#if active}} active{{/if}}" onclick="opds.fromFacets(); dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');">
+						<div>{{title}}</div>
+						{{#if metadata.numberOfItems}}<span>{{metadata.numberOfItems}}</span>{{/if}}
+						{{#if properties.numberOfItems}}<span>{{properties.numberOfItems}}</span>{{/if}}
+					</div>
+				{{/each}}
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+	{{/if}}
+</div>

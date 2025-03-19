@@ -47,6 +47,11 @@ self.addEventListener('message', async function(message) {
 
 	switch (job)
 	{
+		case 'ping':
+
+			self.postMessage('pong');
+
+			break;
 		case 'convertImage':
 		case 'convertImageToBlob':
 

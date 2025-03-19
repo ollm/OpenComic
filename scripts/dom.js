@@ -142,7 +142,11 @@ function translatePageName(name)
 
 function metadataPathName(file, force = false)
 {
-	if(file.compressed || force)
+	if(fileManager.isOpds(file.path))
+	{
+		return opds.pathName(file.name);
+	}
+	else if(file.compressed || force)
 	{
 		let metadata = storage.getKey('compressedMetadata', file.path);
 		if(metadata && metadata.title) return metadata.title;
@@ -379,7 +383,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	setWindowTitle();
 
-	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
+	const isOpds = fileManager.isOpds(path);
+
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = isOpds ? template.contentRight().find('.opds-browse-content').scrollTop() : template.contentRight().children().scrollTop();
 
 	for(let _path in currentPathScrollTop)
 	{
@@ -399,7 +405,40 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	let contentRightIndex = template.contentRightIndex();
 
-	if(!path)
+	if(_indexLabel.opds || isOpds)
+	{
+		if(!path)
+		{
+			dom.fromLibrary(true);
+			dom.indexPathControl(false);
+
+			generateAppMenu();
+
+			dom.setCurrentPageVars('index', _indexLabel);
+			dom.floatingActionButton(false);
+
+			// OPDS
+			await opds.home();
+		}
+		else
+		{
+			if(!fromGoBack && !opds.isPublication(path))
+				indexPathControl(path, mainPath);
+
+			generateAppMenu();
+
+			dom.setCurrentPageVars('browsing');
+			dom.headerPath(path, mainPath);
+			dom.floatingActionButton(false);
+
+			// OPDS
+			await opds.browse(path, mainPath, keepScroll);
+
+			handlebarsContext.headerTitle = false;
+			handlebarsContext.headerTitlePath = false;
+		}
+	}
+	else if(!path)
 	{
 		dom.fromLibrary(true);
 		dom.indexPathControl(false);
@@ -424,6 +463,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			if(_indexLabel.favorites)
 				labelKey = 'favorites';
+			else if(_indexLabel.opds)
+				labelKey = 'opds';
 			else if(_indexLabel.masterFolder)
 				labelKey = 'masterFolder-'+_indexLabel.index;
 			else if(_indexLabel.server)
@@ -894,7 +935,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		selectMenuItem(dom.labels.menuItemSelector(isFromIndexLabel ? isFromIndexLabel : _indexLabel));
 	}
 
-	shortcuts.register('browse');
+	shortcuts.register(isOpds || _indexLabel.opds ? 'opds' : 'browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
 }
 
@@ -976,6 +1017,34 @@ function loadIndexContentLeft(animation)
 	});
 
 	handlebarsContext.servers = _servers;
+
+	// OPDS Catalogs
+	const opdsCatalogs = storage.get('opdsCatalogs');
+	const opdsCatalogsLeft = [];
+
+	for(let i = 0, len = opdsCatalogs.length; i < len; i++)
+	{
+		opdsCatalogsLeft.push({
+			id: 'opds-'+i,
+			key: i,
+			title: opdsCatalogs[i].title,
+			url: opdsCatalogs[i].url,
+			showOnLeft: opdsCatalogs[i].showOnLeft,
+		});
+	}
+
+	opdsCatalogsLeft.sort(function(a, b){
+
+		if(a.name === b.name)
+			return 0;
+
+		return a.name > b.name ? 1 : -1;
+
+	});
+
+	handlebarsContext.opdsCatalogsLeft = opdsCatalogsLeft;
+
+	// Is from
 	handlebarsContext.isFrom = currentSelectMenuItem;
 
 	template.loadContentLeft('index.content.left.html', animation);
@@ -1092,6 +1161,9 @@ function headerPath(path, mainPath, windowTitle = false)
 
 	for(let i = 0, len = files.length; i < len; i++)
 	{
+		if(!files[i] && i === len - 1)
+			continue;
+
 		_path = p.normalize(p.join(_path, files[i]));
 		path.push({name: metadataPathName({path: _path, name: files[i]}, true), path: _path, mainPath: mainPath});
 	}
@@ -1773,6 +1845,10 @@ function setCurrentPageVars(page, _indexLabel = false)
 		{
 			labelKey = key = 'favorites';
 		}
+		else if(_indexLabel.opds)
+		{
+			labelKey = key = 'opds';
+		}
 		else if(_indexLabel.masterFolder)
 		{
 			labelKey = 'masterFolder-'+_indexLabel.index;
@@ -1818,7 +1894,7 @@ function changeView(mode, page)
 	let labelKey = false;
 	let sortAndView = false;
 
-	if(/favorites|masterFolder|server|label/.test(page))
+	if(/favorites|opds|masterFolder|server|label/.test(page))
 	{
 		labelKey = page;
 
@@ -1870,7 +1946,7 @@ function changeViewModuleSize(size, end, page)
 	let labelKey = false;
 	let sortAndView = false;
 
-	if(/favorites|masterFolder|server|label/.test(page))
+	if(/favorites|opds|masterFolder|server|label/.test(page))
 	{
 		labelKey = page;
 
@@ -1915,7 +1991,7 @@ function changeSort(type, mode, page)
 	let labelKey = false;
 	let sortAndView = false;
 
-	if(/favorites|masterFolder|server|label/.test(page))
+	if(/favorites|opds|masterFolder|server|label/.test(page))
 	{
 		labelKey = page;
 
@@ -1998,7 +2074,7 @@ function changeBoxes(box, value, page)
 	let labelKey = false;
 	let sortAndView = false;
 
-	if(/favorites|masterFolder|server|label/.test(page))
+	if(/favorites|opds|masterFolder|server|label/.test(page))
 	{
 		labelKey = page;
 
@@ -2080,7 +2156,7 @@ function nightModeConfig(_app = false)
 async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
 {	
 	let isServer = fileManager.isServer(path);
-	if(!fromIndex && isServer) return;
+	if((!fromIndex && isServer) || fileManager.isOpds(path)) return;
 
 	const canBeDelete = (!fileManager.isServer(path) && !fileManager.lastCompressedFile(p.dirname(path))) ? true : false;
 
@@ -2632,6 +2708,7 @@ module.exports = {
 	loadIndexContentLeft: loadIndexContentLeft,
 	loadIndexHeader: loadIndexHeader,
 	indexHeader: indexHeader,
+	headerPath: headerPath,
 	setIndexLabel: setIndexLabel,
 	prevIndexLabel: function(){return prevIndexLabel},
 	reloadIndex: reloadIndex,

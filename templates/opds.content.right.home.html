@@ -1,0 +1,25 @@
+<h1 class="display-medium opds-page-title">{{language.global.catalogs}}</h1>
+
+<div class="opds-page">
+	{{#each opdsCatalogs}}
+		<div class="opds-page-item gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}{{#if subtitle}} opds-has-subtitle{{/if}}" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}');">
+			<div>
+				<span class="opds-page-item-buttons">
+					<div class="material-icon button button2" onclick="event.stopPropagation(); opds.delete({{@key}});">delete</div>
+					<div class="material-icon button button2" onclick="event.stopPropagation(); opds.edit({{@key}});">edit</div>
+				</span>
+				<div>
+			
+				</div>
+			</div>
+			<span class="headline-small">{{title}}</span>
+			{{#if subtitle}}<span class="body-medium">{{subtitle}}</span>{{/if}}
+		</div>
+	{{/each}}
+</div>
+
+<div class="opds-page-buttons">
+	<div class="simple-button filled-tonal gamepad-item" onclick="opds.add();">
+		<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.dialog.opds.add}}</div>
+	</div>
+</div>

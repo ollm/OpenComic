@@ -1180,7 +1180,7 @@
 .dialog-not-header
 {
 	padding: 20px 12px 20px 24px;
-	height: 100%;
+	min-height: 100%;
 	box-sizing: border-box;
 }
 
@@ -1422,6 +1422,7 @@
 	font-size: var(--md-sys-typescale-label-large-font-size);
 	letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
 	display: flex;
+	position: relative;
 }
 
 .simple-button > div i
@@ -1497,6 +1498,46 @@
 .simple-button.filled-tonal > div:hover
 {
 	box-shadow: var(--md-sys-elevation-level1);
+}
+
+.simple-button-variation
+{
+	opacity: 0.7;
+	margin-left: 8px;
+}
+
+.simple-button-square.simple-button > div,
+.simple-button-square.simple-button.filled > div,
+.simple-button-square.simple-button.filled-tonal > div
+{
+	border-radius: 8px;
+}
+
+/* Button Progress */
+
+.button-loading
+{
+	position: absolute;
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	left: 2px;
+	top: 2px;
+	border-radius: 100px;
+	background-color: var(--md-sys-color-secondary-container);
+}
+
+.simple-button.normal .button-loading,
+.simple-button.filled .button-loading,
+.simple-button.gamepad-highlight .button-loading
+{
+	background-color: var(--md-sys-color-primary);
+}
+
+.simple-button.normal .button-loading .loading > svg > circle,
+.simple-button.filled .button-loading .loading > svg > circle,
+.simple-button.gamepad-highlight .button-loading .loading > svg > circle
+{
+	stroke: var(--md-sys-color-on-primary) !important;
 }
 
 /* Controls */
@@ -2097,6 +2138,13 @@
 	/*transition: font-variation-settings 0.15s cubic-bezier(0.4, 0, 0.2, 1);*/
 }
 
+.tabs > div > div .material-icon.right
+{
+	margin-right: 0px;
+	margin-left: 8px;
+	margin-top: 28px;
+}
+
 .tabs > div > div.active .material-icon
 {
 	color: var(--md-sys-color-on-secondary-container);
@@ -2132,18 +2180,21 @@
 }
 
 /* Outline tabs */
-.menu:not(.menu-gamepad) .outline-tabs
+.menu:not(.menu-gamepad) .outline-tabs,
+.content-right .outline-tabs
 {
 	height: 40px;
 	line-height: 38px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div
+.menu:not(.menu-gamepad) .outline-tabs > div,
+.content-right .outline-tabs > div
 {
 	height: 40px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div
+.menu:not(.menu-gamepad) .outline-tabs > div > div,
+.content-right .outline-tabs > div > div
 {
 	height: 38px;
 	line-height: 38px;
@@ -2152,37 +2203,43 @@
 	border-right: 0px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div:first-child
+.menu:not(.menu-gamepad) .outline-tabs > div > div:first-child,
+.content-right .outline-tabs > div > div:first-child
 {
 	border-top-left-radius: 19px;
 	border-bottom-left-radius: 19px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div:last-child
+.menu:not(.menu-gamepad) .outline-tabs > div > div:last-child,
+.content-right .outline-tabs > div > div:last-child
 {
 	border-top-right-radius: 19px;
 	border-bottom-right-radius: 19px;
 	border-right: 1px solid var(--md-sys-color-outline);
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div:before
+.menu:not(.menu-gamepad) .outline-tabs > div > div:before,
+.content-right .outline-tabs > div > div:before
 {
 	border-radius: 0px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div:first-child:before
+.menu:not(.menu-gamepad) .outline-tabs > div > div:first-child:before,
+.content-right .outline-tabs > div > div:first-child:before
 {
 	border-top-left-radius: 19px;
 	border-bottom-left-radius: 19px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div:last-child:before
+.menu:not(.menu-gamepad) .outline-tabs > div > div:last-child:before,
+.content-right .outline-tabs > div > div:last-child:before
 {
 	border-top-right-radius: 19px;
 	border-bottom-right-radius: 19px;
 }
 
-.menu:not(.menu-gamepad) .outline-tabs > div > div .material-icon
+.menu:not(.menu-gamepad) .outline-tabs > div > div .material-icon,
+.content-right .outline-tabs > div > div .material-icon
 {
 	margin-top: 8px;
 }
@@ -3273,4 +3330,31 @@ table tbody td.lh0
 input, textarea
 {
 	outline: none;
+}
+
+
+
+.path-selector
+{
+	height: 40px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-bottom: 14px;
+}
+
+.path-selector > span
+{
+	border-radius: 8px;
+	border: 1px solid var(--md-sys-color-outline);
+	padding: 9px 12px;
+	margin: 0px 8px 0px 0px;
+	margin: 0px 16px 0px 0px;
+	background-color: var(--md-sys-color-surface-container-low);
+	color: var(--md-sys-color-on-surface);
+	display: inline-block;
+	transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	box-sizing: border-box;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
 }
