@@ -105,7 +105,6 @@
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "github:theophilusx/ssh2-sftp-client",
 		"tar-fs": "^3.0.8",
-		"unzipper": "^0.12.3",
 		"webdav": "^5.7.1"
 	},
 	"devDependencies": {

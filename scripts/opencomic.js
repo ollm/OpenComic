@@ -1029,15 +1029,13 @@ function generateAppMenu(force = false)
 	}
 }
 
-var about = false;
-
 function showAboutWindow()
 {
-	var about = new electronRemote.BrowserWindow({
+	const about = new electronRemote.BrowserWindow({
 		show: false,
 		title: language.menu.help.about,
-		width: 460,
-		height: 320,
+		width: 900,
+		height: 600,
 		minWidth: 380,
 		minHeight: 260,
 		//resizable: false,
@@ -1050,10 +1048,39 @@ function showAboutWindow()
 		},
 	});
 
+	const packageLock = JSON.parse(readFileApp('package-lock.json'));
+	const highlight = [
+		'electron',
+		'sharp',
+		'pdfjs-dist',
+	];
+
+	const allDependencies = {..._package.dependencies, ..._package.devDependencies};
+	const dependencies = [];
+
+	for(let key in allDependencies)
+	{
+		allDependencies[key] = packageLock.packages[key]?.version ?? packageLock.packages['node_modules/'+key]?.version ?? allDependencies[key];
+
+		if(!highlight.includes(key))
+			dependencies.push({package: key, version: allDependencies[key]});
+	}
+
+	const highlightDependencies = [];
+
+	for(let i = 0, len = highlight.length; i < len; i++)
+	{
+		const key = highlight[i];
+		highlightDependencies.push({package: key, version: allDependencies[key]});
+	}
+
+	handlebarsContext.highlightDependencies = highlightDependencies;
+	handlebarsContext.dependencies = dependencies;
+
 	about.removeMenu();
 	about.setMenuBarVisibility(false);
 
-	var url = require('url');
+	const url = require('url');
 
 	about.loadURL(url.format({
 		pathname: p.join(appDir, './templates/about.html'),

@@ -87,6 +87,28 @@ body
 	line-height: 20px;
 }
 
+.about-packages
+{
+	max-width: 800px;
+	line-height: 24px;
+}
+
+.about-packages > div
+{
+	height: 20px;
+}
+
+.about-packages > span
+{
+	margin: 0px 4px;
+	white-space: nowrap;
+}
+
+.about-packages > span span
+{
+	opacity: 0.6;
+}
+
 .night-mode
 {
 	background-color: #242a30;
@@ -103,6 +125,11 @@ body
 }
 
 .night-mode .about-text
+{
+	color: rgba(255, 255, 255, 1);
+}
+
+.night-mode .about-packages
 {
 	color: rgba(255, 255, 255, 1);
 }
@@ -142,6 +169,18 @@ a
 			{{#each language.about.translators}}{{#unless @first}}{{#if @last}} {{@root.language.global.and}} {{else}}, {{/if}}{{/unless}}
 			<a href="javascript:void(0);" onclick="shell.openExternal('{{#if url}}{{url}}{{else}}mailto:{{email}}{{/if}}')">{{name}}</a>
 			{{/each}}
+			<br>
+		</div>
+		<br><br>
+		<div class="about-packages">
+			{{#each highlightDependencies}}
+			<span><a href="javascript:void(0);" onclick="shell.openExternal('https://www.npmjs.com/package/{{package}}')">{{package}}</a> <span>v{{version}}</span></span>
+			{{/each}}
+			<div></div>
+			{{#each dependencies}}
+			<span><a href="javascript:void(0);" onclick="shell.openExternal('https://www.npmjs.com/package/{{package}}')">{{package}}</a> <span>v{{version}}</span></span>
+			{{/each}}
+			<br><br>
 		</div>
 	</div>
 </div>
