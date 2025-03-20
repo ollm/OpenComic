@@ -2949,6 +2949,7 @@ function loadReadingMoreOptions()
 	handlebarsContext.hideContent = {
 		barHeader: isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader,
 		contentLeft: isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft,
+		isFullScreen: isFullScreen,
 	};
 
 	$('#reading-more-options .menu-simple').html(template.load('reading.elements.menus.more.options.html'));
