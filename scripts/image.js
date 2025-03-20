@@ -1,4 +1,4 @@
-var sharp = false, jimp = false, imageMagick = false, graphicsMagick = false, imageSize = false, heic = false;
+var sharp = false, imageSize = false, heic = false;
 
 async function resize(fromImage, toImage, config = {})
 {
@@ -46,44 +46,7 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 
 		if(error && /unsupported image format/iu.test(error?.message || '') && !config.blob)
 		{
-			if(!imageMagick) imageMagick = require('gm').subClass({imageMagick: true});
-
-			imageMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, function(error){
-
-				if(error)
-				{
-					if(!graphicsMagick) graphicsMagick = require('gm').subClass({imageMagick: false});
-
-					graphicsMagick(fromImage).resize(config.width, null).quality(config.quality).noProfile().write(toImage, async function(error){
-
-						if(error)
-						{
-							if(jimp === false) jimp = require('jimp').Jimp;
-
-							try
-							{
-								const jimpImage = await jimp.read(fromImage);
-								await jimpImage.resize({w: config.width}).write(toImage, {quality: config.quality});
-
-								resolve(toImage);
-							}
-							catch(error)
-							{
-								reject(error);
-							}
-						}
-						else
-						{
-							resolve(toImage);
-						}
-					});
-
-				}
-				else
-				{
-					resolve(toImage);
-				}
-			});
+			reject(error);
 		}
 		else if(error)
 		{
