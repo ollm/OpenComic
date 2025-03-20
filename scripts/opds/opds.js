@@ -265,7 +265,7 @@ function convertPublicationsToFile(feed, path, mainPath, currentUrl)
 			}
 
 			const uuid = crypto.randomUUID();
-			const url = 'opds://publication:'+uuid;
+			const url = 'opds:'+p.sep+'publication:'+uuid;
 			const sha = sha1(url);
 
 			const poster = resolveUrl(currentUrl, image.href || '');

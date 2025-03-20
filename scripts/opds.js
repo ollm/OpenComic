@@ -113,7 +113,7 @@ function home()
 	{
 		const catalog = opdsCatalogs[i];
 		const base64 = opds.base64(catalog.url);
-		const url = 'opds:/'+base64;
+		const url = 'opds:'+p.sep+base64;
 
 		catalogs.push({
 			title: catalog.title,
@@ -584,7 +584,7 @@ function fromFacets(facets)
 
 function isPublication(path)
 {
-	if(/^opds:\/+publication:/.test(path))
+	if(/^opds:[\/\\]+publication:/.test(path))
 		return true;
 
 	return false;

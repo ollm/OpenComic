@@ -174,11 +174,11 @@ a
 		<br><br>
 		<div class="about-packages">
 			{{#each highlightDependencies}}
-			<span><a href="javascript:void(0);" onclick="shell.openExternal('https://www.npmjs.com/package/{{package}}')">{{package}}</a> <span>v{{version}}</span></span>
+			<span><a href="javascript:void(0);" onclick="shell.openExternal('https://www.npmjs.com/package/{{package}}')">{{package}}</a> <span>{{version}}</span></span>
 			{{/each}}
 			<div></div>
 			{{#each dependencies}}
-			<span><a href="javascript:void(0);" onclick="shell.openExternal('https://www.npmjs.com/package/{{package}}')">{{package}}</a> <span>v{{version}}</span></span>
+			<span><a href="javascript:void(0);" onclick="shell.openExternal('https://www.npmjs.com/package/{{package}}')">{{package}}</a> <span>{{version}}</span></span>
 			{{/each}}
 			<br><br>
 		</div>

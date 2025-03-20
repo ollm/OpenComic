@@ -2981,7 +2981,7 @@ function setServerInOfflineMode(value = false)
 
 function isServer(path)
 {
-	if(/^(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdavs?|opdsfs?)\:[\/\\]{1,2}/.test(path))
+	if(/^(?:\.[\/\\]+)?(?:smb|ssh|sftp|scp|ftp|ftps|s3|webdavs?|opdsfs?)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;
@@ -2989,7 +2989,7 @@ function isServer(path)
 
 function isOpds(path)
 {
-	if(/^(?:opds)\:[\/\\]{1,2}/.test(path))
+	if(/^(?:\.[\/\\]+)?(?:opds)\:[\/\\]{1,2}/.test(path))
 		return true;
 
 	return false;

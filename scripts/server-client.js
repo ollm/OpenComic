@@ -69,13 +69,13 @@ function getTypeAdress(path)
 function posixPath(path)
 {
 	path = path.split(p.sep).join(p.posix.sep);
-	return path.replace(/^([a-z0-9]+)\:[\/\\]{1,2}/, '$1://');
+	return path.replace(/^(?:\.[\/\\]+)?([a-z0-9]+)\:[\/\\]{1,2}/, '$1://');
 }
 
 function fixPath(path)
 {
 	path = p.normalize(path).replace(/\/+$/, '');
-	return path.replace(/^([a-z0-9]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
+	return path.replace(/^(?:\.[\/\\]+)?([a-z0-9]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
 }
 
 function isDomain(host)
