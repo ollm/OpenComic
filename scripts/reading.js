@@ -1349,6 +1349,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		currentZoomIndex = false;
 		currentScale = _currentScale;
 		reading.applyScale(false, _currentScale, true, _currentScale > 1 ? false : true);
+		zoomMove(0, readingDirection ? 99999 : -99999);
 	}
 
 	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
