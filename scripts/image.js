@@ -1,8 +1,33 @@
 var sharp = false, imageSize = false, heic = false;
 
+async function loadSharp()
+{
+	if(sharp !== false) return;
+
+	if(process.platform === 'linux')
+	{
+		const {version} = require('detect-libc');
+		const number = await version();
+
+		if(number)
+		{
+			const [major, minor, patch] = number.split('.');
+
+			if(major <= 2 && minor <= 39) // Glib 2.39 or less
+			{
+				sharp = require('sharp-33');
+
+				return;
+			}
+		}
+	}
+
+	sharp = require('sharp');
+}
+
 async function resize(fromImage, toImage, config = {})
 {
-	if(sharp === false) sharp = require('sharp');
+	await loadSharp();
 
 	if(!config.blob)
 	{
@@ -77,7 +102,7 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 
 async function resizeToBlob(fromImage, config = {})
 {
-	if(sharp === false) sharp = require('sharp');
+	await loadSharp();
 
 	if(!config.blob)
 	{
@@ -178,7 +203,7 @@ async function resizeToBlob(fromImage, config = {})
 
 async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 {
-	if(sharp === false) sharp = require('sharp');
+	await loadSharp();
 
 	config = {...{
 		kernel: 'nearest',
@@ -206,7 +231,7 @@ async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 
 async function rawToBuffer(fromBuffer, raw = {}, config = {})
 {
-	if(sharp === false) sharp = require('sharp');
+	await loadSharp();
 
 	config = {...{
 		kernel: 'nearest',
@@ -310,7 +335,7 @@ var threads = false, sizesCache = {};
 
 async function getSizes(images)
 {
-	if(sharp === false) sharp = require('sharp');
+	await loadSharp();
 	if(threads === false) threads = os.cpus().length || 1;
 
 	const sizes = [];

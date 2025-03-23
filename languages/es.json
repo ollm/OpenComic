@@ -391,10 +391,10 @@
 			"originalSize": "Tamaño original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reducir zoom",
-			"zoomUp": "Zoom cap amunt",
-			"zoomDown": "Zoom cap avall",
-			"zoomLeft": "Zoom cap a l'esquerra",
-			"zoomRight": "Zoom cap a la dreta",
+			"zoomUp": "Zoom hacia arriba",
+			"zoomDown": "Zoom hacia abajo",
+			"zoomLeft": "Zoom hacia la izquierda",
+			"zoomRight": "Zoom hacia la derecha",
 			"toggleFullScreen": "Pantalla completa"
 		},
 		"goto": {

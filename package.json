@@ -23,7 +23,7 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "npm run prebuild-start && electron scripts/main.js",
+		"start": "npm run prebuild-start && electron scripts/main.js --no-sandbox",
 		"test": "node scripts/test.js",
 		"prebuild": "npm run test && npm run prebuild-start",
 		"prebuild-start": "node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
@@ -76,6 +76,7 @@
 		"7zip-bin": "github:develar/7zip-bin",
 		"basic-ftp": "^5.0.5",
 		"bezier-js": "^6.1.4",
+		"detect-libc": "^2.0.3",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
@@ -100,7 +101,8 @@
 		"pdfjs-dist": "^4.10.38",
 		"sanitize-html": "^2.14.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.33.5",
+		"sharp": "^0.34.0-rc.0",
+		"sharp-33": "npm:sharp@^0.33.5",
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "github:theophilusx/ssh2-sftp-client",
@@ -140,6 +142,7 @@
 		],
 		"asarUnpack": [
 			"node_modules/sharp",
+			"node_modules/sharp-33",
 			"node_modules/@img",
 			"node_modules/node-7z",
 			"node_modules/7zip-bin",
