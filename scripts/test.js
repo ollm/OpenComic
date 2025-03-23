@@ -3,7 +3,7 @@ const fs = require('fs');
 function exists(path, permissions = false, fix = false)
 {
 	if(!fs.existsSync(path))
-		throw new Error('Not exists! '+path+(fix ? '\nTry "'+fix+'"' : '')+'\n');
+		throw new Error('Not exists! '+path+(fix ? '\n\nTry: '+fix : '')+'\n');
 
 	if(permissions !== false)
 	{
