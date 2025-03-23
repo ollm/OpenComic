@@ -1048,19 +1048,23 @@ function showAboutWindow()
 		},
 	});
 
-	const packageLock = JSON.parse(readFileApp('package-lock.json'));
+	const packageLock = require(p.join(appDir, 'scripts/builded/package-lock.js'));
 	const highlight = [
 		'electron',
 		'sharp',
 		'pdfjs-dist',
 	];
 
-	const allDependencies = {..._package.dependencies, ..._package.devDependencies};
+	const allDependencies = {
+		'electron': '',
+		..._package.dependencies,
+		..._package.devDependencies
+	};
 	const dependencies = [];
 
 	for(let key in allDependencies)
 	{
-		allDependencies[key] = packageLock.packages[key]?.version ?? packageLock.packages['node_modules/'+key]?.version ?? allDependencies[key];
+		allDependencies[key] = packageLock[key] ?? packageLock['node_modules/'+key] ?? allDependencies[key];
 
 		if(!highlight.includes(key))
 			dependencies.push({package: key, version: allDependencies[key]});

@@ -51,3 +51,14 @@ fs.writeFileSync(p.join(__dirname, '../scripts/builded/templates.js'), templates
 fs.writeFileSync(p.join(__dirname, '../scripts/installed-from-store.js'), `module.exports = {
 	check: function(){return false},
 };`);
+
+// Get package lock versions
+const packageLock = JSON.parse(fs.readFileSync(p.join(__dirname, '../package-lock.json'), 'utf8'));
+const packageVersions = {};
+
+for(let package in packageLock.packages)
+{
+	packageVersions[package] = packageLock.packages[package].version;
+}
+
+fs.writeFileSync(p.join(__dirname, '../scripts/builded/package-lock.js'), 'module.exports = '+JSON.stringify(packageVersions)+';');
