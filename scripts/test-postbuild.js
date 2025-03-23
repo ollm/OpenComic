@@ -23,7 +23,7 @@ const darwinArm = './dist/mac-arm/OpenComic.app/Contents/Resources/app.asar.unpa
 const darwinMas = './dist/mas-universal/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
 const linux = './dist/linux-unpacked/resources/app.asar.unpacked/node_modules';
 const linuxArm = './dist/linux-arm64-unpacked/resources/app.asar.unpacked/node_modules';
-const windows = './dist/unknown/resources/app.asar.unpacked/node_modules';
+const windows = './dist/win-unpacked/resources/app.asar.unpacked/node_modules';
 
 if(process.platform == 'darwin')
 {
