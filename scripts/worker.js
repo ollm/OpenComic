@@ -15,13 +15,19 @@ function asarToAsarUnpacked(path)
 	return path;
 }
 
-var pdfjs = false;
+var pdfjsDecoders = false;
 
-async function loadPdfjs()
+async function loadPdfjsDecoders()
 {
-	if(pdfjs) return;
+	if(pdfjsDecoders) return;
 
-	pdfjs = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
+	pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
+
+	pdfjsDecoders.JpxImage.setOptions({
+		useWasm: true,
+		useWorkerFetch: true,
+		wasmUrl: asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/wasm/')),
+	});
 
 	return true;
 }

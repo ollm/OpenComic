@@ -6,13 +6,13 @@ async function jp2(path)
 {
 	const buffer = fs.readFileSync(path);
 
-	if(pdfjs === false)
-		await loadPdfjs();
+	if(pdfjsDecoders === false)
+		await loadPdfjsDecoders();
 
 	try
 	{
-		const decodedBuffer = await pdfjs.JpxImage.decode(buffer);
-		const properties = pdfjs.JpxImage.parseImageProperties(buffer);
+		const decodedBuffer = await pdfjsDecoders.JpxImage.decode(buffer);
+		const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
 
 		const len = decodedBuffer.length;
 

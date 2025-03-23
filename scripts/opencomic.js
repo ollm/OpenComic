@@ -696,6 +696,12 @@ async function loadPdfjsDecoders()
 
 	pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
 
+	pdfjsDecoders.JpxImage.setOptions({
+		useWasm: true,
+		useWorkerFetch: true,
+		wasmUrl: asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/')),
+	});
+
 	return true;
 }
 

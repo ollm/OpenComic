@@ -2280,7 +2280,11 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(unpdf === false) await loadPdfjs();
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
-		this.pdf = await unpdf.getDocument({url: encodeURIComponent(this.realPath).replace(/\%2F/g,'/').replace(/\%5C/g,'\\').replace(/\%3A/g, ':')/*, nativeImageDecoderSupport: 'none', disableFontFace: true*/}).promise;
+		this.pdf = await unpdf.getDocument({
+			url: encodeURIComponent(this.realPath).replace(/\%2F/g,'/').replace(/\%5C/g,'\\').replace(/\%3A/g, ':'),
+			wasmUrl: asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/')),
+			/*nativeImageDecoderSupport: 'none', disableFontFace: true*/
+		}).promise;
 
 		return this.pdf;
 
