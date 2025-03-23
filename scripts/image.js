@@ -15,14 +15,14 @@ async function loadSharp()
 
 			if(major <= 2 && minor <= 39) // Glib 2.39 or less
 			{
-				sharp = require('sharp-33');
+				sharp = require('sharp');
 
 				return;
 			}
 		}
 	}
 
-	sharp = require('sharp');
+	sharp = require('sharp-34');
 }
 
 async function resize(fromImage, toImage, config = {})
