@@ -232,7 +232,7 @@
 		"currentReading": "Lendo atualmente"
 	},
 	"settings": {
-		"general": "",
+		"general": "Em geral",
 		"reading": {
 			"main": "Preferências de leitura",
 			"maxMargin": "Margem máxima horizontal e vertical",

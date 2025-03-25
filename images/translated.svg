@@ -21,7 +21,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="178" transform="rotate(-90)">KO</text>
 		<rect style="fill: #f6664c;" height="29" width="6" rx="2" y="111" x="172" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="196" transform="rotate(-90)">PT-BR</text>
-		<rect style="fill: #f6664c;" height="21.5" width="6" rx="2" y="118.5" x="190" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="190" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="214" transform="rotate(-90)">RU</text>
 		<rect style="fill: #2eccaa;" height="126.3" width="6" rx="2" y="13.7" x="208" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="232" transform="rotate(-90)">SV</text>
