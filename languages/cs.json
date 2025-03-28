@@ -241,7 +241,7 @@
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
-			"turnPagesWithMouseWheel": "",
+			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": ""

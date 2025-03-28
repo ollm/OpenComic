@@ -241,10 +241,11 @@
 			"moveZoomWithMouse": "Перемещать масштаб мышью",
 			"scrollWithMouse": "Прокручивать мышью",
 			"goNextPrevChapterWithScroll": "Переходить к следующей/предыдущей главе при прокрутке",
-			"turnPagesWithMouseWheel": "Переворачивать страницы колесиком мыши",
+			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "Поворачивать горизонтальные против часовой стрелки",
 			"startReadingInFullScreen": "Начинать чтение в полноэкранном режиме",
-			"trackingAtTheEnd": "Отслеживание в конце"
+			"trackingAtTheEnd": "Отслеживание в конце",
+			"turnPagesWithMouseWheel": "Переворачивать страницы колесиком мыши"
 		},
 		"imageInterpolation": {
 			"main": "Интерполяция изображений",

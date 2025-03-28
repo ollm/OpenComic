@@ -1,4 +1,4 @@
-var changes = 103; // Update this if readingPagesConfig is updated
+var changes = 104; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -160,6 +160,7 @@ var storageDefault = {
 		gamepadSensitivity: 5,
 		gamepadDeadZone: 0.1,
 		disableGamepadInput: false,
+		mouseWheelSensitivityInZoom: 10,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
 		saveImageFolder: getDownloadsPath(),
 		saveImageToFolder: false,

@@ -241,7 +241,7 @@
 			"moveZoomWithMouse": "Flytta zoom med hjälp av muspekare (inaktiverar flyttning med dra och släpp)",
 			"scrollWithMouse": "Bläddra genom att flytta muspekaren längs skärmens kanter (inaktiverar dra och släpp-rullning)",
 			"goNextPrevChapterWithScroll": "Gå till nästa/förra kapitlet med musrullning (vertikal bläddring)",
-			"turnPagesWithMouseWheel": "",
+			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
 			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen"

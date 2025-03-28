@@ -241,7 +241,7 @@
 			"moveZoomWithMouse": "Mover el zoom mediante el cursor (Desactiva mover mediante arrastrar y soltar)",
 			"scrollWithMouse": "Realizar desplazamiento moviendo el cursor por los bordes de la pantalla (Desactiva desplazamiento mediante arrastrar y soltar)",
 			"goNextPrevChapterWithScroll": "Ir al capítulo siguiente/anterior con el desplazamiento del mouse (Lectura vertical)",
-			"turnPagesWithMouseWheel": "Pasar páginas con la rueda del raton (Zoom solo con la tecla Ctrl presionada)",
+			"mouseWheelSensitivityInZoom": "Sensibilidad de la rueda del ratón al hacer zoom",
 			"rotateHorizontalsAnticlockwise": "Al rotar imágenes horizontales hacerlo en sentido antihorario",
 			"startReadingInFullScreen": "Empezar la lectura en pantalla completa",
 			"trackingAtTheEnd": "Seguimiento al final del capítulo/tomo"

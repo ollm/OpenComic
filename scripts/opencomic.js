@@ -79,7 +79,7 @@ const electron = require('electron'),
 	hb = require('handlebars'),
 	os = require('os'),
 	ejs = require('electron-json-storage'),
-	sha1 = require('sha1'),
+	_sha1 = require('sha1'),
 	p = require('path'),
 	isEqual = require('lodash.isequal'),
 	shortWindowsPath = require('short-windows-path'),
@@ -850,6 +850,18 @@ function loadLanguageMD(hbc, obj)
 function time()
 {
 	return Math.floor(Date.now() / 1000);
+}
+
+const shaCache = {};
+
+function sha1(string)
+{
+	if(string.length > 1000)
+		return _sha1(string);
+	else if(shaCache[string])
+		return shaCache[string];
+
+	return shaCache[string] = _sha1(string);
 }
 
 function loadLanguage(lan = false)

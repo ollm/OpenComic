@@ -2287,10 +2287,15 @@ function zoomScrollHeight()
 }
 
 // Zoom in
-function zoomIn(animation = true, center = false, delta = 120)
+function zoomIn(animation = true, center = false, delta = false)
 {
 	if(zoomMoveData.active)
 		return;
+
+	if(delta) // From MouseWheel event
+		delta = delta * (config.mouseWheelSensitivityInZoom / 10);
+	else
+		delta = 120;
 
 	const multipler = 0.25 * (delta / 120);
 
@@ -2301,10 +2306,15 @@ function zoomIn(animation = true, center = false, delta = 120)
 }
 
 // Zoom out
-function zoomOut(animation = true, center = false, delta = 120)
+function zoomOut(animation = true, center = false, delta = false)
 {
 	if(zoomMoveData.active)
 		return;
+
+	if(delta) // From MouseWheel event
+		delta = delta * (config.mouseWheelSensitivityInZoom / 10);
+	else
+		delta = 120;
 
 	const multipler = 0.25 * (delta / 120);
 

@@ -241,7 +241,7 @@
 			"moveZoomWithMouse": "Déplacer le zoom avec la souris",
 			"scrollWithMouse": "Faire défiler avec la souris",
 			"goNextPrevChapterWithScroll": "Aller au chapitre suivant/précédent avec le défilement",
-			"turnPagesWithMouseWheel": "",
+			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "Faire pivoter horizontalement dans le sens anti-horaire",
 			"startReadingInFullScreen": "Commencer la lecture en plein écran",
 			"trackingAtTheEnd": "Suivi à la fin"

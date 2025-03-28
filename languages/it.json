@@ -241,10 +241,11 @@
 			"moveZoomWithMouse": "Sposta zoom tramite cursore (Disabilita movimento tramite drag e drop)",
 			"scrollWithMouse": "Scrolla spostando il cursore lungo i bordi dello schermo (Disabilita scrollamento tramite drag e drop)",
 			"goNextPrevChapterWithScroll": "Passa al capitolo precedente/successivo con la rotella del mouse (Scorrimento)",
-			"turnPagesWithMouseWheel": "Gira pagina con la rotella del mouse",
+			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "Ruota immagini orizzontali, ma in senso antiorario",
 			"startReadingInFullScreen": "Inizia a leggere a schermo intero",
-			"trackingAtTheEnd": "Tracking a fine capitolo/volume"
+			"trackingAtTheEnd": "Tracking a fine capitolo/volume",
+			"turnPagesWithMouseWheel": "Gira pagina con la rotella del mouse"
 		},
 		"imageInterpolation": {
 			"main": "Interpolazione immagini",

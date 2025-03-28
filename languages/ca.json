@@ -241,7 +241,7 @@
 			"moveZoomWithMouse": "Moure el zoom mitjançant el cursor (Desactiva moure mitjançant arrossegar i deixar anar)",
 			"scrollWithMouse": "Realitzar desplaçament movent el cursor per les vores de la pantalla (Desactiva desplaçament mitjançant arrossegar i deixar anar)",
 			"goNextPrevChapterWithScroll": "Anar al capítol següent/anterior amb el desplaçament del ratolí (Lectura vertical)",
-			"turnPagesWithMouseWheel": "Passar pàgines amb la roda del ratolí (Zoom només amb la tecla Ctrl pressionada)",
+			"mouseWheelSensitivityInZoom": "Sensibilitat de la roda del ratolí en fer zoom",
 			"rotateHorizontalsAnticlockwise": "Al rotar imatges horitzontals fer-ho en sentit antihorari",
 			"startReadingInFullScreen": "Començar la lectura a pantalla completa",
 			"trackingAtTheEnd": "Seguiment al final del capítol/tom"
