@@ -31,8 +31,8 @@ if(process.platform == 'darwin')
 	{
 		// Node ZSTD All
 		exists(darwin+'/@toondepauw/node-zstd/index.js', fs.constants.R_OK);
-		exists(darwin+'/@toondepauw/node-zstd/node_modules/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
-		exists(darwin+'/@toondepauw/node-zstd/node_modules/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
+		exists(darwin+'/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
+		exists(darwin+'/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
 
 		// Sharp x64
 		exists(darwin+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp-34@npm:sharp@0.34.0-rc.0');
@@ -51,8 +51,8 @@ if(process.platform == 'darwin')
 	{
 		// Node ZSTD All
 		exists(darwinArm+'/@toondepauw/node-zstd/index.js', fs.constants.R_OK);
-		exists(darwinArm+'/@toondepauw/node-zstd/node_modules/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
-		exists(darwinArm+'/@toondepauw/node-zstd/node_modules/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
+		exists(darwinArm+'/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
+		exists(darwinArm+'/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
 
 		// Sharp x64
 		exists(darwinArm+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp-34@npm:sharp@0.34.0-rc.0');
@@ -71,8 +71,8 @@ if(process.platform == 'darwin')
 	{
 		// Node ZSTD All
 		exists(darwinMas+'/@toondepauw/node-zstd/index.js', fs.constants.R_OK);
-		exists(darwinMas+'/@toondepauw/node-zstd/node_modules/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
-		exists(darwinMas+'/@toondepauw/node-zstd/node_modules/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
+		exists(darwinMas+'/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
+		exists(darwinMas+'/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
 
 		// Sharp x64
 		exists(darwinMas+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp-34@npm:sharp@0.34.0-rc.0');
