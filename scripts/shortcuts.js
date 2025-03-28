@@ -1,3 +1,5 @@
+const MouseWheel = require(p.join(appDir, 'scripts/shortcuts/mouse-wheel.js'));
+
 var shosho = false;
 
 var shortcuts = false;
@@ -12,6 +14,11 @@ async function loadShoShoObject()
 	});
 
 	shoshoMouse = new ShoSho({
+		capture: true,
+		target: document.querySelector('.content-right'),
+	});
+
+	mouseWheel = new MouseWheel({
 		capture: true,
 		target: document.querySelector('.content-right'),
 	});
@@ -343,8 +350,6 @@ function loadShortcuts()
 					name: language.reading.previous,
 					function: function(event){
 
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-
 						if(event instanceof PointerEvent)
 						{
 							return reading.leftClick(event);
@@ -360,8 +365,6 @@ function loadShortcuts()
 				next: {
 					name: language.reading.next,
 					function: function(event){
-
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(event instanceof PointerEvent)
 						{
@@ -382,8 +385,6 @@ function loadShortcuts()
 					name: language.reading.firstPage,
 					function: function(event){
 
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
 							reading.goStart();
@@ -401,8 +402,6 @@ function loadShortcuts()
 				end: {
 					name: language.reading.lastPage,
 					function: function(event){
-
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
@@ -422,8 +421,6 @@ function loadShortcuts()
 					name: language.reading.prevChapter,
 					function: function(event){
 
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
 							reading.goPrevComic();
@@ -442,7 +439,6 @@ function loadShortcuts()
 					name: language.reading.nextChapter,
 					function: function(event){
 
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
@@ -461,7 +457,6 @@ function loadShortcuts()
 				magnifyingGlass: {
 					name: language.reading.magnifyingGlass.main,
 					function: function(event, gamepad = false){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.activeMagnifyingGlass(null, !!gamepad);
 						return true;
 					},
@@ -469,7 +464,6 @@ function loadShortcuts()
 				hideBarHeader: {
 					name: language.reading.moreOptions.hideBarHeader,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.hideBarHeader();
 						return true;
 					},
@@ -477,7 +471,6 @@ function loadShortcuts()
 				hideContentLeft: {
 					name: language.reading.moreOptions.hideContentLeft,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.hideContentLeft();
 						return true;
 					},
@@ -485,63 +478,73 @@ function loadShortcuts()
 				createAndDeleteBookmark: {
 					name: language.reading.addBookmark,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.createAndDeleteBookmark();
 						return true;
 					},
 				},
 				zoomIn: {
 					name: language.menu.view.zoomIn,
-					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.zoomIn(true, true);
+					function: function(event){
+
+						const delta = Math.abs(event.deltaX || event.deltaY);
+
+						if(event instanceof WheelEvent)
+							reading.zoomIn(true, false, delta);
+						else
+							reading.zoomIn(true, true);
+
 						return true;
 					},
 				},
 				zoomOut: {
 					name: language.menu.view.zoomOut,
-					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.zoomOut(true, true);
+					function: function(event){
+
+						const delta = Math.abs(event.deltaX || event.deltaY);
+
+						if(event instanceof WheelEvent)
+							reading.zoomOut(true, false, delta);
+						else
+							reading.zoomOut(true, true);
+
 						return true;
 					},
 				},
 				zoomUp: {
 					name: language.menu.view.zoomUp,
-					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.zoomUp();
+					function: function(event){
+						const delta = Math.abs(event.deltaY);
+						reading.zoomUp(delta || undefined, true);
 						return true;
 					},
 				},
 				zoomDown: {
 					name: language.menu.view.zoomDown,
-					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.zoomDown();
+					function: function(event){
+						const delta = Math.abs(event.deltaY);
+						reading.zoomDown(delta || undefined, true);
 						return true;
 					},
 				},
 				zoomLeft: {
 					name: language.menu.view.zoomLeft,
-					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.zoomLeft();
+					function: function(event){
+						const delta = Math.abs(event.deltaX);
+						reading.zoomLeft(delta || undefined, true);
 						return true;
 					},
 				},
 				zoomRight: {
 					name: language.menu.view.zoomRight,
-					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-						reading.zoomRight();
+					function: function(event){
+						const delta = Math.abs(event.deltaX);
+						reading.zoomRight(delta || undefined, true);
 						return true;
 					},
 				},
 				resetZoom: {
 					name: language.menu.view.resetZoom+'<br>'+language.menu.view.originalSize,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						let center = true;
 						if(event instanceof PointerEvent) center = false;
 						reading.resetZoom(true, false, true, center);
@@ -551,7 +554,6 @@ function loadShortcuts()
 				fullscreen: {
 					name: language.menu.view.toggleFullScreen,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						fullScreen();
 						return true;
 					},
@@ -559,7 +561,6 @@ function loadShortcuts()
 				goBack: {
 					name: language.global.goBack,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.goBack();
 						return true;
 					},
@@ -567,7 +568,6 @@ function loadShortcuts()
 				goForwards: {
 					name: language.global.goForwards,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.goForwards();
 						return true;
 					},
@@ -575,7 +575,6 @@ function loadShortcuts()
 				gamepadMenu: {
 					name: language.settings.shortcuts.gamepadMenu,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						gamepad.showMenu();
 						return true;
 					},
@@ -583,7 +582,6 @@ function loadShortcuts()
 				contextMenu: {
 					name: language.settings.shortcuts.contextMenu,
 					function: function(event, gamepad = false){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.contextMenu.show(!!gamepad);
 						return true;
 					},
@@ -591,7 +589,6 @@ function loadShortcuts()
 				pageLayout: {
 					name: language.reading.pages.pageLayout,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						reading.loadReadingPages(false, false, 'page-layout');
 						events.activeMenu('#reading-pages', '.bar-right-buttons .button-page-layout', 'right');
@@ -603,7 +600,6 @@ function loadShortcuts()
 				slide: {
 					name: language.reading.pages.slide,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
 						reading.changePagesView(1, 'slide', false);
@@ -616,7 +612,6 @@ function loadShortcuts()
 				scroll: {
 					name: language.reading.pages.scroll,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
 						reading.changePagesView(1, 'scroll', false);
@@ -629,7 +624,6 @@ function loadShortcuts()
 				roughPageTurn: {
 					name: language.reading.pages.roughPageTurn,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
 						reading.changePagesView(1, 'rough-page-turn', false);
@@ -642,7 +636,6 @@ function loadShortcuts()
 				smoothPageTurn: {
 					name: language.reading.pages.smoothPageTurn,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
 						reading.changePagesView(1, 'smooth-page-turn', false);
@@ -655,7 +648,6 @@ function loadShortcuts()
 				fade: {
 					name: language.reading.pages.fade,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
 						reading.changePagesView(1, 'fade', false);
@@ -668,7 +660,6 @@ function loadShortcuts()
 				readingManga: {
 					name: language.reading.pages.readingManga,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!_config.readingWebtoon)
 						{
@@ -682,7 +673,6 @@ function loadShortcuts()
 				readingWebtoon: {
 					name: language.reading.pages.readingWebtoon,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						reading.changePagesView(9, !_config.readingWebtoon, false);
 						shortcutSnackbar(language.reading.pages.readingWebtoon, _config.readingWebtoon);
@@ -693,7 +683,6 @@ function loadShortcuts()
 				doublePage: {
 					name: language.reading.pages.doublePage,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!_config.readingWebtoon)
 						{
@@ -707,7 +696,6 @@ function loadShortcuts()
 				doNotApplyToHorizontals: {
 					name: language.reading.pages.doNotApplyToHorizontals+' ('+language.reading.pages.doublePage+')',
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!_config.readingWebtoon && _config.readingDoublePage)
 						{
@@ -721,7 +709,6 @@ function loadShortcuts()
 				blankPage: {
 					name: language.reading.pages.blankPage+' ('+language.reading.pages.doublePage+')',
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!_config.readingWebtoon && _config.readingDoublePage)
 						{
@@ -735,7 +722,6 @@ function loadShortcuts()
 				adjustToWidth: {
 					name: language.reading.pages.adjustToWidth+' ('+language.reading.pages.scroll+')',
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(reading.readingViewIs('scroll') && !_config.readingWebtoon)
 						{
@@ -749,7 +735,6 @@ function loadShortcuts()
 				notEnlargeMoreThanOriginalSize: {
 					name: language.reading.pages.notEnlargeMoreThanOriginalSize,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						if(!_config.readingWebtoon)
 						{
@@ -763,7 +748,6 @@ function loadShortcuts()
 				rotateHorizontals: {
 					name: language.reading.pages.rotateHorizontals,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						reading.changePagesView(19, !_config.readingRotateHorizontals, false);
 						shortcutSnackbar(language.reading.pages.rotateHorizontals, _config.readingRotateHorizontals);
@@ -774,7 +758,6 @@ function loadShortcuts()
 				ebookLayout: {
 					name: language.reading.pages.ebookLayout,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 
 						reading.loadReadingPages(false, false, 'ebook-layout');
 						events.activeMenu('#reading-pages', '.bar-right-buttons .button-ebook-layout', 'right');
@@ -786,27 +769,20 @@ function loadShortcuts()
 				increaseFontSize: {
 					name: language.reading.pages.increaseFontSize,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-
 						reading.ebook.increase('fontSize');
-
 						return true;
 					},
 				},
 				decreaseFontSize: {
 					name: language.reading.pages.decreaseFontSize,
 					function: function(){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
-
 						reading.ebook.decrease('fontSize');
-
 						return true;
 					},
 				},
 				saveImage: {
 					name: language.global.contextMenu.saveImage,
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.contextMenu.saveImage();
 						return true;
 					},
@@ -814,7 +790,6 @@ function loadShortcuts()
 				saveAllImages: {
 					name: language.global.contextMenu.saveAllImages,
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.contextMenu.saveAllImages();
 						return true;
 					},
@@ -822,7 +797,6 @@ function loadShortcuts()
 				copyImage: {
 					name: language.global.contextMenu.copyImage,
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.contextMenu.copyImageToClipboard();
 						return true;
 					},
@@ -830,7 +804,6 @@ function loadShortcuts()
 				saveBookmarksImages: {
 					name: language.global.contextMenu.saveBookmarksImages,
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.contextMenu.saveBookmarksImages(true);
 						return true;
 					},
@@ -838,7 +811,6 @@ function loadShortcuts()
 				saveAllBookmarksImages: {
 					name: language.global.contextMenu.saveAllBookmarksImages,
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						reading.contextMenu.saveAllBookmarksImages(true);
 						return true;
 					},
@@ -847,14 +819,12 @@ function loadShortcuts()
 				leftClick: {
 					name: '',
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						return clickTapZone(event, 'leftClick');
 					},
 				},
 				rightClick: {
 					name: '',
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						if(event.button == 2 && event.type != 'contextmenu') return false;
 						return clickTapZone(event, 'rightClick');
 					},
@@ -862,7 +832,6 @@ function loadShortcuts()
 				middleClick: {
 					name: '',
 					function: function(event){
-						if(inputIsFocused() || !reading.isLoaded()) return false;
 						return clickTapZone(event, 'middleClick');
 					},
 				},
@@ -926,6 +895,17 @@ function loadShortcuts()
 				'Ctrl+C': 'copyImage',
 				'F11': 'fullscreen',
 				'G': 'gamepadMenu',
+				'MouseUp': 'zoomIn',
+				'MouseDown': 'zoomOut',
+				'Ctrl+MouseUp': 'zoomIn',
+				'Ctrl+MouseDown': 'zoomOut',
+				'Shift+MouseUp': 'zoomUp',
+				'Shift+MouseDown': 'zoomDown',
+				'Shift+MouseLeft': 'zoomLeft',
+				'Shift+MouseRight': 'zoomRight',
+				'Alt+MouseUp': 'prev',
+				'Alt+MouseDown': 'next',
+				'Ctrl+RightClick': 'contextMenu',
 			},
 			_shortcutsForce: {
 				'LeftClick': 'leftClick',
@@ -1081,20 +1061,33 @@ async function register(section = 'reading', force = false)
 
 	shosho.reset();
 	shoshoMouse.reset();
+	mouseWheel.reset();
 
 	for(let shortcut in shortcuts[section].shortcuts)
 	{
 		let actionKey = shortcuts[section].shortcuts[shortcut];
 		let action = shortcuts[section].actions[actionKey];
 
+		const callback = function(event) {
+
+			if(inputIsFocused() || !reading.isLoaded())
+				return false;
+
+			return action.function(event);
+
+		}
+
 		if(isMouseShortcut(shortcut))
-			shoshoMouse.register(shortcut, action.function);
+			shoshoMouse.register(shortcut, callback);
+		else if(isMouseWheelShortcut(shortcut))
+			mouseWheel.register(shortcut, callback);
 		else
-			shosho.register(shortcut, action.function);
+			shosho.register(shortcut, callback);
 	}
 
 	shosho.start();
 	shoshoMouse.start();
+	mouseWheel.start();
 
 	// Gamepad
 	gamepad.reset('shortcuts');
@@ -1125,11 +1118,11 @@ var mouse = [
 	'LeftClick',
 	'RightClick',
 	'ClickLeft',
-	'MouseLeft',
+	//'MouseLeft',
 	'ClickMiddle',
 	'MouseMiddle',
 	'ClickRight',
-	'MouseRight',
+	//'MouseRight',
 ];
 
 var mouseRegexp = new RegExp(mouse.join('|'), 'iu');
@@ -1137,6 +1130,11 @@ var mouseRegexp = new RegExp(mouse.join('|'), 'iu');
 function isMouseShortcut(shortcut)
 {
 	return mouseRegexp.test(shortcut);
+}
+
+function isMouseWheelShortcut(shortcut)
+{
+	return /MouseUp|MouseDown|MouseLeft|MouseRight/.test(shortcut);
 }
 
 var modifiers = [
@@ -1150,7 +1148,7 @@ var modifiers = [
 
 var modifiersRegexp = new RegExp('(?:'+modifiers.join('|')+')$', 'iu');
 
-var dispose = false;
+var dispose = false, disposeMouseWheel = false;
 
 function record(callback)
 {
@@ -1163,9 +1161,29 @@ function record(callback)
 		if(!modifiersRegexp.test(shortcut))
 		{
 			callback(shortcut);
+
 			dispose();
-			setTimeout(function(){dispose = false;}, 100);
+			disposeMouseWheel();
+
+			setTimeout(function(){
+				dispose = false;
+				disposeMouseWheel = false;
+			}, 100);
 		}
+
+	});
+
+	disposeMouseWheel = mouseWheel.record(function(shortcut){
+
+		callback(shortcut);
+
+		dispose();
+		disposeMouseWheel();
+
+		setTimeout(function(){
+			dispose = false;
+			disposeMouseWheel = false;
+		}, 100);
 
 	});
 }

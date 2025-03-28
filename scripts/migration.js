@@ -90,6 +90,27 @@ function migrateControllerDeadZone(data)
 	return data;
 }
 
+function migrateMouseWheelEvents(data)
+{
+	if(data.shortcuts.reading.actionsConfigured.length) // Has custom shortcuts
+	{
+		const shortcuts = data.shortcuts.reading.shortcuts;
+
+		shortcuts['MouseUp'] = data.config.readingTurnPagesWithMouseWheel ? 'prev' : 'zoomIn';
+		shortcuts['MouseDown'] = data.config.readingTurnPagesWithMouseWheel ? 'next' : 'zoomOut';
+		shortcuts['Ctrl+MouseUp'] = 'zoomIn';
+		shortcuts['Ctrl+MouseDown'] = 'zoomOut';
+		shortcuts['Shift+MouseUp'] = 'zoomUp';
+		shortcuts['Shift+MouseDown'] = 'zoomDown';
+		shortcuts['Shift+MouseLeft'] = 'zoomLeft';
+		shortcuts['Shift+MouseRight'] = 'zoomRight';
+		shortcuts['Alt+MouseUp'] = 'prev';
+		shortcuts['Alt+MouseDown'] = 'next';
+	}
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -107,6 +128,9 @@ function start(data)
 
 	if(changes < 99) // Change controllerDeadZone to gamepadDeadZone
 		data = migrateControllerDeadZone(data);
+
+	if(changes < 103) // Add the new mouse wheel events
+		data = migrateMouseWheelEvents(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

@@ -263,6 +263,62 @@ function _encodeSrcURI(path)
 	return /^blob/.test(path) ? path : encodeSrcURI(path);
 }
 
+var transitionPrev = {};
+
+// This need to be improved to smooth transitions
+function transition(key, transition = 0) 
+{
+	const seconds = transition < 50 ? true : false;
+
+	transition = seconds ? transition * 1000 : transition;
+	let _function = 'ease';
+
+	const now = performance.now();
+	const prev = transitionPrev[key] || 0;
+	transitionPrev[key] = now;
+
+	if(prev && now - prev < transition)
+	{
+		transition = now - prev;
+		_function = 'linear';
+	}
+
+	return {
+		speed: seconds ? transition / 1000 : transition,
+		function: _function,
+	};
+}
+
+function scrollTransition(key, transition = 0)
+{
+	const seconds = transition < 50 ? true : false;
+	transition = transition ? 200 : 0;
+
+	let _function = 'cubic-bezier(0.42, 0, 0.58, 1)';
+
+	const now = performance.now();
+	const prev = transitionPrev[key] || 0;
+	transitionPrev[key] = now;
+
+	if(prev && now - prev < transition)
+	{
+		transition = now - prev;
+		if(transition < 80) transition = 80;
+
+		_function = 'linear';
+	}
+
+	return {
+		speed: seconds ? transition / 1000 : transition,
+		function: _function,
+	};
+}
+
+function scrollAnimation()
+{
+
+}
+
 var throttles = {};
 var debounces = {};
 
@@ -338,6 +394,9 @@ module.exports = {
 	sleep: sleep,
 	setImmediate: setImmediate,
 	setThrottle: setThrottle,
+	transition: transition,
+	scrollTransition: scrollTransition,
+	scrollAnimation: scrollAnimation,
 	shortWindowsPath: _shortWindowsPath,
 	encodeSrcURI: _encodeSrcURI,
 };

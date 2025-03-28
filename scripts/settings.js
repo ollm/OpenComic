@@ -652,6 +652,8 @@ function changeShortcut(action, current, This)
 
 		generateShortcutsTable(gamepad.currentHighlightItem());
 
+		events.events();
+
 		setTimeout(function(){recording = false}, 100);
 
 	});
@@ -662,6 +664,8 @@ function removeShortcut(action, current)
 	shortcuts.change('reading', action, current, '');
 
 	generateShortcutsTable(gamepad.currentHighlightItem());
+
+	events.events();
 }
 
 function changeButton(action, current, This)

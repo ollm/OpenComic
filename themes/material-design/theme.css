@@ -111,8 +111,6 @@
 	}
 }
 
-
-
 @keyframes button-animation-1
 {
 	0%
@@ -650,6 +648,7 @@ body
 	transition: color 0.2s;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
+	touch-action: manipulation;
 }
 
 body .app

@@ -1349,7 +1349,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		currentZoomIndex = false;
 		currentScale = _currentScale;
 		reading.applyScale(false, _currentScale, true, _currentScale > 1 ? false : true);
-		zoomMove(0, readingDirection ? 99999 : -99999);
+		if(animation) zoomMove(0, readingDirection ? 99999 : -99999);
 	}
 
 	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
@@ -2287,54 +2287,58 @@ function zoomScrollHeight()
 }
 
 // Zoom in
-function zoomIn(animation = true, center = false)
+function zoomIn(animation = true, center = false, delta = 120)
 {
 	if(zoomMoveData.active)
 		return;
 
+	const multipler = 0.25 * (delta / 120);
+
 	if(currentScale < 8)
-		currentScale *= 1.25;
+		currentScale *= 1 + multipler;
 
 	applyScale(animation, currentScale, center);
 }
 
 // Zoom out
-function zoomOut(animation = true, center = false)
+function zoomOut(animation = true, center = false, delta = 120)
 {
 	if(zoomMoveData.active)
 		return;
 
+	const multipler = 0.25 * (delta / 120);
+
 	if(currentScale > 0.2)
-		currentScale /= 1.25;
+		currentScale /= 1 + multipler;
 
 	applyScale(animation, currentScale, center, true);
 }
 
-function zoomUp()
+function zoomUp(delta = 20, animation = false)
 {
-	zoomMove(0, 20);
+	zoomMove(0, delta, animation);
 }
 
-function zoomDown()
+function zoomDown(delta = 20, animation = false)
 {
-	zoomMove(0, -20);
+	zoomMove(0, -delta, animation);
 }
 
-function zoomLeft()
+function zoomLeft(delta = 20, animation = false)
 {
-	zoomMove(-20, 0);
+	zoomMove(-delta, 0, animation);
 }
 
-function zoomRight()
+function zoomRight(delta = 20, animation = false)
 {
-	zoomMove(20, 0);
+	zoomMove(delta, 0, animation);
 }
 
-function zoomMove(x = 0, y = 0)
+function zoomMove(x = 0, y = 0, animation = false)
 {
 	if(!haveZoom) return;
 
-	dragZoom(x, y);
+	dragZoom(x, y, animation);
 	dragZoomEnd(true);
 }
 
@@ -2537,9 +2541,10 @@ function notCrossZoomLimits(x, y, scale = false)
 }
 
 // Drag zoom
-function dragZoom(x, y)
+function dragZoom(x, y, animation = false)
 {
-	let withLimits = notCrossZoomLimits(scalePrevData.tranX2 + x, scalePrevData.tranY2 + y);
+	const transition = animation ? app.scrollTransition('dragZoom', _config.readingViewSpeed) : 0;
+	const withLimits = notCrossZoomLimits(scalePrevData.tranX2 + x, scalePrevData.tranY2 + y);
 
 	const diff = {
 		x: (scalePrevData.tranX2 + x) - withLimits.x,
@@ -2549,7 +2554,7 @@ function dragZoom(x, y)
 	x = withLimits.x;
 	y = withLimits.y;
 
-	let contentRight = template._contentRight();
+	const contentRight = template._contentRight();
 
 	if(config.readingGlobalZoom && readingViewIs('scroll'))
 	{
@@ -2557,7 +2562,7 @@ function dragZoom(x, y)
 		zoomMoveData.tranY = scalePrevData.tranY;
 
 		dom.this(contentRight).find('.reading-body > div').css({
-			transition: 'transform 0s, z-index 0s',
+			transition: 'transform '+transition.speed+'s '+transition.function+', z-index 0s',
 			transform: 'translateX('+app.roundDPR(x)+'px) translateY('+app.roundDPR(scalePrevData.tranY)+'px) scale('+scalePrevData.scale+')',
 			transformOrigin: 'top center',
 		});
@@ -2568,7 +2573,7 @@ function dragZoom(x, y)
 		zoomMoveData.tranY = y;
 
 		dom.this(contentRight).find('.image-position'+currentZoomIndex, true).css({
-			transition: 'transform 0s, z-index 0s',
+			transition: 'transform '+transition.speed+'s '+transition.function+', z-index 0s',
 			transform: 'translateX('+app.roundDPR(x)+'px) translateY('+app.roundDPR(y)+'px) scale('+scalePrevData.scale+')',
 			transformOrigin: 'center center',
 		});
@@ -4894,33 +4899,14 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	});
 	onLoadPromise = {promise: promise, resolve: resolve};
 
-	template.contentRight().on('mousewheel', function(e) {
+	template.contentRight().on('mousewheel', function(event) {
 
 		if(onReading && isLoaded)
 		{
-			if(config.readingTurnPagesWithMouseWheel && !e.originalEvent.ctrlKey && !readingViewIs('scroll'))
-			{
-				e.preventDefault();
-				
-				if(e.originalEvent.wheelDelta / 120 > 0)
-					reading.goPrev();
-				else
-					reading.goNext();
-			}
-			else if(e.originalEvent.ctrlKey || !readingViewIs('scroll'))
-			{
-				e.preventDefault();
+			const oEvent = event.originalEvent;
 
-				if(e.originalEvent.wheelDelta / 120 > 0)
-					reading.zoomIn();
-				else
-					reading.zoomOut();
-			}
-			else
-			{
-				if(reading.scrollNextOrPrevComic(e.originalEvent.wheelDelta / 120 > 0, true))
-					e.preventDefault();
-			}
+			if(readingViewIs('scroll') && !oEvent.altKey && !oEvent.metaKey && !oEvent.ctrlKey && !oEvent.shiftKey && reading.scrollNextOrPrevComic(oEvent.wheelDelta / 120 > 0, true))
+				event.preventDefault();
 		}
 
 	});

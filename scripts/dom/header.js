@@ -24,6 +24,12 @@ function wheel(event)
 	}, 160);
 
 	$(this).stop(true).animate({scrollLeft: scrollLeft+'px'}, 160, 'linear');
+
+	/*this.scrollTo({
+		top: 0,
+		left: scrollLeft,
+		behavior: 'smooth',
+	});*/
 }
 
 async function event()
