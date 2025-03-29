@@ -68,6 +68,7 @@ else if(process.platform == 'win32')
 
 	// 7zip
 	exists('./node_modules/7zip-bin/win/x64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/win/arm64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
 }
 
 console.log('Runed tests: Ok');

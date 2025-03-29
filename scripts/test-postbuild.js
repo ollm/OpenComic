@@ -24,6 +24,9 @@ const darwinMas = './dist/mas-universal/OpenComic.app/Contents/Resources/app.asa
 const linux = './dist/linux-unpacked/resources/app.asar.unpacked/node_modules';
 const linuxArm = './dist/linux-arm64-unpacked/resources/app.asar.unpacked/node_modules';
 const windows = './dist/win-unpacked/resources/app.asar.unpacked/node_modules';
+const windowsArm = './dist/win-arm64-unpacked/resources/app.asar.unpacked/node_modules';
+
+let checkSome = false;
 
 if(process.platform == 'darwin')
 {
@@ -45,6 +48,8 @@ if(process.platform == 'darwin')
 		// 7zip
 		exists(darwin+'/7zip-bin/mac/arm64/7za', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwin+'/7zip-bin/mac/x64/7za', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
 	}
 
 	if(fs.existsSync(darwinArm))
@@ -65,6 +70,8 @@ if(process.platform == 'darwin')
 		// 7zip
 		exists(darwinArm+'/7zip-bin/mac/arm64/7za', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinArm+'/7zip-bin/mac/x64/7za', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
 	}
 
 	if(fs.existsSync(darwinMas))
@@ -85,11 +92,13 @@ if(process.platform == 'darwin')
 		// 7zip
 		exists(darwinMas+'/7zip-bin/mac/arm64/7za', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinMas+'/7zip-bin/mac/x64/7za', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
 	}
 }
 else if(process.platform == 'linux')
 {
-	if(fs.existsSync('./dist/linux-unpacked/'))
+	if(fs.existsSync(linux))
 	{
 		// Node ZSTD All
 		exists(linux+'/@toondepauw/node-zstd/index.js', fs.constants.R_OK);
@@ -101,9 +110,11 @@ else if(process.platform == 'linux')
 
 		// 7zip
 		exists(linux+'/7zip-bin/linux/x64/7za', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
 	}
 
-	if(fs.existsSync('./dist/linux-arm64-unpacked/'))
+	if(fs.existsSync(linuxArm))
 	{
 		// Node ZSTD All
 		exists(linuxArm+'/@toondepauw/node-zstd/index.js', fs.constants.R_OK);
@@ -115,20 +126,46 @@ else if(process.platform == 'linux')
 
 		// 7zip
 		exists(linuxArm+'/7zip-bin/linux/arm64/7za', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
 	}
 }
 else if(process.platform == 'win32')
 {
-	// Node ZSTD All
-	exists(windows+'/@toondepauw/node-zstd-win32-x64-msvc/node-zstd.win32-x64-msvc.node', fs.constants.R_OK);
+	if(fs.existsSync(windows))
+	{
+		// Node ZSTD All
+		exists(windows+'/@toondepauw/node-zstd-win32-x64-msvc/node-zstd.win32-x64-msvc.node', fs.constants.R_OK);
 
-	// Sharp x64
-	exists(windows+'/@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
-	exists(windows+'/@img/sharp-win32-x64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
-	exists(windows+'/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
+		// Sharp x64
+		exists(windows+'/@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-x64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
-	// 7zip
-	exists(windows+'/7zip-bin/win/x64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
+		// 7zip
+		exists(windows+'/7zip-bin/win/x64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
+	}
+
+	if(fs.existsSync(windowsArm))
+	{
+		// Node ZSTD All
+		exists(windows+'/@toondepauw/node-zstd-win32-x64-msvc/node-zstd.win32-x64-msvc.node', fs.constants.R_OK);
+
+		// Sharp x64
+		exists(windows+'/@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-x64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
+
+		// 7zip
+		exists(windows+'/7zip-bin/win/arm64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
+
+		checkSome = true;
+	}
 }
+
+if(!checkSome)
+	throw new Error('No folders have been checked');
 
 console.log('Runed postbuild tests: Ok');
