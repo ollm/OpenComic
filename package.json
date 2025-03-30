@@ -45,6 +45,7 @@
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip && npm run postbuild",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z && npm run postbuild",
 		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run postbuild",
+		"build-win-arm": "npm run prebuild && electron-builder --arm64 --win nsis && npm run postbuild",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis && npm run postbuild",
 		"build-appx": "npm run prebuild && electron-builder --win appx && npm run postbuild",
 		"build-appx-store": "npm run prebuild && npm run prebuild-store && electron-builder --win appx && npm run postbuild",
