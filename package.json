@@ -111,7 +111,7 @@
 	},
 	"devDependencies": {
 		"electron": "^34.3.3",
-		"electron-builder": "^26.0.11",
+		"electron-builder": "^26.0.12",
 		"node-abi": "^4.1.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.1.9"
@@ -204,12 +204,16 @@
 				"pkg",
 				"mas"
 			],
+			"notarize": true,
+			"forceCodeSigning": true,
+			"gatekeeperAssess": true,
 			"icon": "images/icon-mac.icns",
 			"category": "public.app-category.graphics-design",
 			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2024_10_test.provisionprofile",
 			"minimumSystemVersion": "10.15.0"
 		},
 		"mas": {
+			"notarize": false,
 			"type": "distribution",
 			"entitlements": "build/entitlements.mas.plist",
 			"entitlementsInherit": "build/entitlements.mas.inherit.plist",
