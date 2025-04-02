@@ -23,7 +23,16 @@ You can send a pull request or open a issue with the new translated file, it is 
 ## Translation Status
 
 <!-- translation --><!-- translation -->
-OpenComic has translations into 17 languages.
+OpenComic has translations into 18 languages.
+
+### العربية
+
+[ar.json](https://github.com/ollm/OpenComic/blob/master/languages/ar.json)
+
+`100% | Remain 0 | Translated 469`
+
+<a href="https://github.com/ollm/OpenComic/blob/master/languages/ar.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ar.svg" /></a>
+
 
 ### Català
 
