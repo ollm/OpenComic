@@ -83,8 +83,8 @@
 		"viewAll": "عرض الكل",
 		"title": "العنوان",
 		"nightMode": "الوضع الليلي",
-		"beta": "",
-		"alpha": ""
+		"beta": "بيتا",
+		"alpha": "ألفا"
 	},
 	"comics": {
 		"continueReading": "متابعة القراءة",
@@ -303,10 +303,10 @@
 			"nightModeBlackBackground": "استخدم خلفية سوداء في الوضع الليلي",
 			"nightModeWhiteBlankPage": "أظهر الصفحات الفارغة بيضاء في الوضع الليلي",
 			"colors": {
-				"blue": "",
-				"green": "",
-				"red": "",
-				"yellow": ""
+				"blue": "أزرق",
+				"green": "أخضر",
+				"red": "أحمر",
+				"yellow": "أصفر"
 			}
 		},
 		"releases": {
