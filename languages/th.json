@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "ค่าต้องไม่ว่าง",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "โหมดมืด"
+		"nightMode": "โหมดมืด",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "อ่านต่อ",
@@ -300,7 +302,13 @@
 		"theme": {
 			"systemNightMode": "สลับโหมดกลางวัน/กลางคืนตามระบบ",
 			"nightModeBlackBackground": "ใช้สีดำเป็นพื้นหลังเมื่อใช้โหมดกลางคืน",
-			"nightModeWhiteBlankPage": "แสดงหน้าว่างสีขาวในโหมดกลางคืน"
+			"nightModeWhiteBlankPage": "แสดงหน้าว่างสีขาวในโหมดกลางคืน",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "ตรวจหาเวอร์ชั่นใหม่",

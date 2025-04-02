@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "夜間模式"
+		"nightMode": "夜間模式",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "繼續閱讀",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "",

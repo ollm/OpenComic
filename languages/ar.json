@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "القيمة لا يمكن أن تكون فارغة",
 		"viewAll": "عرض الكل",
 		"title": "العنوان",
-		"nightMode": "الوضع الليلي"
+		"nightMode": "الوضع الليلي",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "متابعة القراءة",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "التبديل بين الوضع الليلي/الفاتح حسب النظام",
 			"nightModeBlackBackground": "استخدم خلفية سوداء في الوضع الليلي",
-			"nightModeWhiteBlankPage": "أظهر الصفحات الفارغة بيضاء في الوضع الليلي"
+			"nightModeWhiteBlankPage": "أظهر الصفحات الفارغة بيضاء في الوضع الليلي",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "البحث عن التحديثات",

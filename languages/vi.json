@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "Giá trị không được để trống",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Chế độ tối"
+		"nightMode": "Chế độ tối",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Đọc tiếp",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "Chuyển sang chế độ sáng/tối theo hệ điều hành",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "Kiểm tra phiên bản mới",

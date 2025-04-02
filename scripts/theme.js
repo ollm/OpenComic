@@ -54,39 +54,35 @@ function systemNightMode()
 
 function start()
 {
-	if(!handlebarsContext.themeColors)
+	const themeColors = [];
+
+	for(let key in allColors.list)
 	{
-		let themeColors = [];
+		const color = allColors.list[key];
+		const tokens = getColorTokens(color);
 
-		for(let key in allColors.list)
-		{
-			let color = allColors.list[key];
+		themeColors.push({
+			key: color,
+			name: language.settings.theme.colors[color] || (color.charAt(0).toUpperCase() + color.slice(1)),
+			colors: [
+				getTokensColor(tokens, 'light', 'secondary-container'),
+				getTokensColor(tokens, 'light', 'surface-2'),
 
-			let tokens = getColorTokens(color);
-
-			themeColors.push({
-				key: color,
-				name: color.charAt(0).toUpperCase() + color.slice(1),
-				colors: [
-					getTokensColor(tokens, 'light', 'secondary-container'),
-					getTokensColor(tokens, 'light', 'surface-2'),
-
-				],
-				/*light: {
-					primary: getTokensColor(tokens, 'light', 'primary'),
-					secondary: getTokensColor(tokens, 'light', 'secondary'),
-					tertiary: getTokensColor(tokens, 'light', 'tertiary'),
-				},
-				dark: {
-					primary: getTokensColor(tokens, 'dark', 'primary'),
-					secondary: getTokensColor(tokens, 'dark', 'secondary'),
-					tertiary: getTokensColor(tokens, 'dark', 'tertiary'),
-				},*/
-			});
-		}
-
-		handlebarsContext.themeColors = themeColors;
+			],
+			/*light: {
+				primary: getTokensColor(tokens, 'light', 'primary'),
+				secondary: getTokensColor(tokens, 'light', 'secondary'),
+				tertiary: getTokensColor(tokens, 'light', 'tertiary'),
+			},
+			dark: {
+				primary: getTokensColor(tokens, 'dark', 'primary'),
+				secondary: getTokensColor(tokens, 'dark', 'secondary'),
+				tertiary: getTokensColor(tokens, 'dark', 'tertiary'),
+			},*/
+		});
 	}
+
+	handlebarsContext.themeColors = themeColors;
 
 	template.loadContentRight('theme.content.right.html', true);
 

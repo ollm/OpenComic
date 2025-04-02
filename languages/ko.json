@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "야간 모드"
+		"nightMode": "야간 모드",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "업데이트 확인",

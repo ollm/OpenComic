@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Sötét téma"
+		"nightMode": "Sötét téma",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Folytatás",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "",

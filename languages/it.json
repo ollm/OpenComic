@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "Il valore non può essere vuoto",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Tema scuro"
+		"nightMode": "Tema scuro",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Continua a leggere",
@@ -300,7 +302,13 @@
 		"theme": {
 			"systemNightMode": "Cambia a tema scuro/chiaro quando il sistema operativo lo fa",
 			"nightModeBlackBackground": "Utilizza il nero come sfondo con il tema scuro",
-			"nightModeWhiteBlankPage": "Mostra pagine vuote come bianche con il tema scuro"
+			"nightModeWhiteBlankPage": "Mostra pagine vuote come bianche con il tema scuro",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "Verifica aggiornamento",

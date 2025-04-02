@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "值不能为空",
 		"viewAll": "查看全部",
 		"title": "标题",
-		"nightMode": "夜间模式"
+		"nightMode": "夜间模式",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "继续阅读",
@@ -300,7 +302,13 @@
 		"theme": {
 			"systemNightMode": "当操作系统执行此操作时切换到夜间/明亮模式",
 			"nightModeBlackBackground": "夜间模式中使用黑色作为背景",
-			"nightModeWhiteBlankPage": "夜间模式下空白页显示为白色"
+			"nightModeWhiteBlankPage": "夜间模式下空白页显示为白色",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "检查新版本",

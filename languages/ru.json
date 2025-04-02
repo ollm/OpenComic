@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "Значение не может быть пустым",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Ночной режим"
+		"nightMode": "Ночной режим",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Продолжить чтение",
@@ -300,7 +302,13 @@
 		"theme": {
 			"systemNightMode": "Системный ночной режим",
 			"nightModeBlackBackground": "Черный фон в ночном режиме",
-			"nightModeWhiteBlankPage": "Белая пустая страница в ночном режиме"
+			"nightModeWhiteBlankPage": "Белая пустая страница в ночном режиме",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "Обновления",

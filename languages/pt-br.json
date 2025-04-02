@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "Valor não pode ser vazio",
 		"viewAll": "Ver tudo",
 		"title": "Título",
-		"nightMode": "Modo noturno"
+		"nightMode": "Modo noturno",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Continuar lendo",
@@ -300,7 +302,13 @@
 		"theme": {
 			"systemNightMode": "Muda para modo escuro/claro quando o SO faz",
 			"nightModeBlackBackground": "Usa preto como fundo em modo escuro",
-			"nightModeWhiteBlankPage": "Usa páginas brancas em modo escuro"
+			"nightModeWhiteBlankPage": "Usa páginas brancas em modo escuro",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "Verificar para novas versões",

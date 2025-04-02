@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Nachtmodus"
+		"nightMode": "Nachtmodus",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Lesen fortsetzen",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "",

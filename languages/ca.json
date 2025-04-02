@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "El valor no pot estar buit",
 		"viewAll": "Veure-ho tot",
 		"title": "Títol",
-		"nightMode": "Mode nit"
+		"nightMode": "Mode nit",
+		"beta": "Beta",
+		"alpha": "Alfa"
 	},
 	"comics": {
 		"continueReading": "Continuar llegint",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "Canviar al mode nit/clar quan el sistema operatiu ho faci",
 			"nightModeBlackBackground": "Utilitzar el color negre com a fons en el mode nit",
-			"nightModeWhiteBlankPage": "Mostra les pàgines en blanc de color blanc en el mode nit"
+			"nightModeWhiteBlankPage": "Mostra les pàgines en blanc de color blanc en el mode nit",
+			"colors": {
+				"blue": "Blau",
+				"green": "Verd",
+				"red": "Vermell",
+				"yellow": "Groc"
+			}
 		},
 		"releases": {
 			"main": "Comprovar noves versions",

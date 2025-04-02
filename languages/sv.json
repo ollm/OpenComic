@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "Värdet får inte vara tomt",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Nattläge"
+		"nightMode": "Nattläge",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Fortsätt läsa",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "Växla mellan nattläge och ljust läge när operativsystemet gör det",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "Sök efter nya versioner",

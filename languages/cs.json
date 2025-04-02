@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "Hodnota nesmí být prázdná",
 		"viewAll": "",
 		"title": "",
-		"nightMode": "Noční režim"
+		"nightMode": "Noční režim",
+		"beta": "",
+		"alpha": ""
 	},
 	"comics": {
 		"continueReading": "Pokračovat ve čtení",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "",
 			"nightModeBlackBackground": "",
-			"nightModeWhiteBlankPage": ""
+			"nightModeWhiteBlankPage": "",
+			"colors": {
+				"blue": "",
+				"green": "",
+				"red": "",
+				"yellow": ""
+			}
 		},
 		"releases": {
 			"main": "",

@@ -306,11 +306,11 @@
 				</div>
 
 				<div class="chip chip-big label-large chip-icon-left chip-icon-right reading-view-rough-page-turn gamepad-item{{#compare _config.readingView '==' 'rough-page-turn'}} active{{/compare}}" onclick="reading.changePagesView(1, 'rough-page-turn', false)">
-					<div></div><i class="material-icon" onclick="">import_contacts</i> <span>{{language.reading.pages.roughPageTurn}} (Beta)</span> <i class="material-icon right" onclick="reading.pageTransitions.configDialog(event, 'roughPageTurn')">settings</i>
+					<div></div><i class="material-icon" onclick="">import_contacts</i> <span>{{language.reading.pages.roughPageTurn}} ({{language.global.beta}})</span> <i class="material-icon right" onclick="reading.pageTransitions.configDialog(event, 'roughPageTurn')">settings</i>
 				</div>
 
 				<div class="chip chip-big label-large chip-icon-left chip-icon-right reading-view-smooth-page-turn gamepad-item{{#compare _config.readingView '==' 'smooth-page-turn'}} active{{/compare}}" onclick="reading.changePagesView(1, 'smooth-page-turn', false)">
-					<div></div><i class="material-icon" onclick="">auto_stories</i> <span>{{language.reading.pages.smoothPageTurn}} (Alpha)</span> <i class="material-icon right" onclick="reading.pageTransitions.configDialog(event, 'smoothPageTurn')">settings</i>
+					<div></div><i class="material-icon" onclick="">auto_stories</i> <span>{{language.reading.pages.smoothPageTurn}} ({{language.global.alpha}})</span> <i class="material-icon right" onclick="reading.pageTransitions.configDialog(event, 'smoothPageTurn')">settings</i>
 				</div>
 
 				<div class="chip chip-big label-large chip-icon-left reading-view-fade gamepad-item{{#compare _config.readingView '==' 'fade'}} active{{/compare}}" onclick="reading.changePagesView(1, 'fade', false)">

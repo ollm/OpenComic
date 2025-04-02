@@ -82,7 +82,9 @@
 		"valueCannotBeEmpty": "El valor no puede estar vació",
 		"viewAll": "Ver todo",
 		"title": "Título",
-		"nightMode": "Modo noche"
+		"nightMode": "Modo noche",
+		"beta": "Beta",
+		"alpha": "Alfa"
 	},
 	"comics": {
 		"continueReading": "Continuar leyendo",
@@ -299,7 +301,13 @@
 		"theme": {
 			"systemNightMode": "Cambiar al modo noche/claro cuando el sistema operativo lo haga",
 			"nightModeBlackBackground": "Utilizar el color negro como fondo en el modo noche",
-			"nightModeWhiteBlankPage": "Mostrar las páginas en blanco de color blanco en el modo noche"
+			"nightModeWhiteBlankPage": "Mostrar las páginas en blanco de color blanco en el modo noche",
+			"colors": {
+				"blue": "Azul",
+				"green": "Verde",
+				"red": "Rojo",
+				"yellow": "Amarillo"
+			}
 		},
 		"releases": {
 			"main": "Comprobar nuevas versiones",
