@@ -21,7 +21,7 @@
 			"lastReading": "المقروء مؤخراً",
 			"lastOpened": "المفتوح مؤخراً",
 			"foldersFirst": "المجلدات أولاً",
-			"invert": "العكس"
+			"invert": "عكس الترتيب"
 		},
 		"view": {
 			"main": "العرض",
@@ -36,8 +36,8 @@
 			"copy": "نسخ",
 			"paste": "لصق",
 			"selectAll": "تحديد الكل",
-			"remove": "إزالة",
-			"moveToTrash": "إزالة إلى المهملات",
+			"remove": "إزالة من المكتبة",
+			"moveToTrash": "نقل إلى سلة المهملات",
 			"deletePermanently": "الحذف نهائياً",
 			"deletePermanentlyConfirm": "هل تريد الحذف نهائياً؟ لا يمكن التراجع عن هذه الخطوة",
 			"favorite": "المفضلة",
@@ -73,7 +73,7 @@
 		"reload": "تحديث",
 		"retry": "إعادة المحاولة",
 		"search": "البحث",
-		"filterCurrentPage": "تصفية الصفحة الحالية",
+		"filterCurrentPage": "الحالية",
 		"language": "اللغة",
 		"settings": "الإعدادات",
 		"theme": "المظهر",
@@ -130,8 +130,8 @@
 			"doNotApplyToHorizontals": "مراعاة عرض الصفحة (وضع القراءة الأفقي)",
 			"alignWithNextHorizontal": "ملائمة مع الحافة الأفقية التالية",
 			"blankPage": "صفحة فارغة في البداية",
-			"readingDelaySkip": "التأخير في تغيير الكتب",
-			"animationSpeed": "سرعة الرسوميات",
+			"readingDelaySkip": "سرعة التبديل بين الفصول",
+			"animationSpeed": "سرعة الرسوميات في تقليب الصفحة",
 			"readingManga": "وضع قراءة المانجا (المعكوس)",
 			"readingWebtoon": "وضع قراءة الويبتون (الطولي)",
 			"readingGlobal": "الإعدادات العامة",
@@ -157,7 +157,7 @@
 			"savedPresets": "الأوضاع المحفوظة",
 			"multipleTonePresets": "أوضاع متعددة الطبقات",
 			"oneTonePresets": "أوضاع أحادية الطبقة",
-			"integrated": "الوضع الأساسي",
+			"integrated": "الوضع الإفتراضي",
 			"ebookTheme": "وضع الكتاب الإلكتروني",
 			"fontSize": "حجم الخط",
 			"increaseFontSize": "تكبير الخط",
@@ -165,7 +165,7 @@
 			"fontFamily": "نوع الخط",
 			"useEbookFont": "استخدم خط الكتاب الإلكتروني",
 			"useEbookTheme": "استخدم مظهر الكتاب الإلكتروني",
-			"useAppTheme": "استخدم مظهر التطبيق",
+			"useAppTheme": "استخدم مظهر البرنامج",
 			"fontWeight": "وزن الخط",
 			"bold": "غامق",
 			"italic": "مائل",
@@ -196,12 +196,12 @@
 			"radius": "الحواف"
 		},
 		"tracking": {
-			"main": "التتبع في المكتبات",
+			"main": "التتبع في المكتبات الإلكترونية",
 			"tracking": "التتبع",
 			"marked": "محدد",
-			"sites": "المواقع",
-			"favoriteSites": "المواقع المفضلة",
-			"emptyFavoriteSites": "لا توجد مواقع مفضلة",
+			"sites": "المكتبات الإلكترونية",
+			"favoriteSites": "المكتبات المفضلة",
+			"emptyFavoriteSites": "لا توجد مكتبات مفضلة",
 			"problemChapter": "لم يتم العثور على الفصل",
 			"chapters": "الفصول",
 			"chapter": "الفصل",
@@ -214,7 +214,7 @@
 			"pageSoundEffect": "تأثيرات صوتية لتقليب الصفحة",
 			"adaptToAnimationSpeed": "ملائمة مع سرعة الرسوميات",
 			"soundEffect": {
-				"pageTurn": "أصوات تقليب صفحات",
+				"pageTurn": "أصوات تقليب الصفحات",
 				"pageTurnAndNumber": "تقليب الصفحة $1",
 				"otherSounds": "أصوات أخرى",
 				"otherSoundsAndNumber": "صوات آخر $1"
@@ -243,7 +243,7 @@
 			"goNextPrevChapterWithScroll": "الانتقال للفصل التالي/السابق باستخدام التصفح بالماوس (وضع القراءة العمودي)",
 			"mouseWheelSensitivityInZoom": "حساسية عجلة الماوس عند التكبير",
 			"rotateHorizontalsAnticlockwise": "تدوير الصور الأفقية بعكس اتجاه عقارب الساعة",
-			"startReadingInFullScreen": "بداية القراءة في وضع كامل الشاشة",
+			"startReadingInFullScreen": "بدء القراءة في وضع كامل الشاشة",
 			"trackingAtTheEnd": "التتبع في نهاية الفصل/الجزء"
 		},
 		"imageInterpolation": {
@@ -253,7 +253,7 @@
 			"downscaling": "تصغير الصورة",
 			"downscalingDescription": "يتم استخدام هذه الطريقة فقط عندما تكون هناك حاجة لتقليل دقة الصورة، ولا تنطبق هذه الطريقة على ملفات PDF أو EPUB أو الصور المتحركة",
 			"upscaling": "تكبير الصورة",
-			"upscalingDescription": "يتم استخدام هذه الطريقة فقط عندما تكون هناك حاجة لتكبير دقة الصورة، ولا تُطبّق هذه الطريقة على ملفات PDF أو EPUB أو الصور المتحركة. تحذير: قد تكون طرق التكبير الحادة بطيئة."
+			"upscalingDescription": "يتم استخدام هذه الطريقة فقط عندما تكون هناك حاجة لتكبير دقة الصورة، ولا تُطبّق هذه الطريقة على ملفات PDF أو EPUB أو الصور المتحركة. تحذير: قد تكون طرق Sharp للتكبير بطيئة."
 		},
 		"colorProfile": {
 			"main": "وضع اللون",
@@ -278,7 +278,7 @@
 				"continueReadingOrFirstPage": "استكمال القراءة أو الصفحة الأولى"
 			},
 			"useTheFirstImageAsPoster": "استخدام الصورة الأولى كصورة غلاف (فقط عند عدم وجود صورة بالفعل)",
-			"showFullPathLibrary": "عرض المسار كاملاً عند فتح قصة في المكتلة",
+			"showFullPathLibrary": "عرض المسار كاملاً عند فتح قصة في المكتبة",
 			"showFullPathOpened": "عرض المسار كاملاً عند فتح ملف أو مجلد",
 			"showLibraryPath": "أظهر المكتبة، المفضلة، التصنيفات، إلخ في المسار العلوي",
 			"recentlyOpenedItems": "عدد العناصر المحفوظة في قائمة (المفتوح مؤخراً)"
@@ -292,7 +292,7 @@
 		"startupBehavior": {
 			"main": "التصرف عند فتح البرنامج",
 			"startInFullScreen": "فتح البرنامج في وضع كامل الشاشة",
-			"startInContinueReading": "الفتح مباشرة حيق انتهت القراءة الأخيرة",
+			"startInContinueReading": "الفتح مباشرة حيث انتهت القراءة الأخيرة",
 			"startOnlyFromLibrary": "فقط إذا كانت القراءة الأخيرة من المكتبة",
 			"startOnStartup": "تشغيل البرنامج مع بدء تشغيل النظام"
 		},
@@ -369,7 +369,7 @@
 			"clearCache": "تنظيف ذاكرة التخزين المؤقت",
 			"temporaryFiles": "الملفات المؤقتة",
 			"temporaryFilesDescription": "يتم تخزين الملفات المضغوطة عند فك ضغطها حسب الحاجة. يتم حذف هذه الملفات جزئياً عند إغلاق البرنامج.",
-			"removeTemporaryFiles": "إزالة الملفات المؤقتة",
+			"removeTemporaryFiles": "حذف الملفات المؤقتة",
 			"temporaryFilesMaxSize": "الحجم الأقصى للملفات المؤقتة",
 			"temporaryFilesMaxSizeDescription": "سيتم إزالة الملفات المؤقتة عندما تتجاوز هذا الحجم. يتم حذف الملفات القديمة غير المستخدمة أولا.",
 			"temporaryFilesMaxOld": "الزمن الأقصى للملفات المؤقتة",
@@ -387,7 +387,7 @@
 		},
 		"view": {
 			"main": "عرض",
-			"resetZoom": "إعادة تعيين الزوم",
+			"resetZoom": "موائمة مع الشاشة",
 			"originalSize": "الحجم الأصلي",
 			"zoomIn": "تكبير",
 			"zoomOut": "تصغير",
@@ -409,7 +409,7 @@
 		"help": {
 			"main": "المساعدة",
 			"about": "حول البرنامج",
-			"funding": "التمويل!",
+			"funding": "المساهمة",
 			"bug": "الإبلاغ عن مشكلة"
 		}
 	},
