@@ -2282,7 +2282,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		this.pdf = await unpdf.getDocument({
 			url: encodeURIComponent(this.realPath).replace(/\%2F/g,'/').replace(/\%5C/g,'\\').replace(/\%3A/g, ':'),
-			wasmUrl: asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/')),
+			wasmUrl: fileManager.posixPath(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/'))),
 			/*nativeImageDecoderSupport: 'none', disableFontFace: true*/
 		}).promise;
 
@@ -3161,6 +3161,11 @@ function pathType(path)
 		return false;
 }
 
+function posixPath(path)
+{
+	return path.split(p.sep).join(p.posix.sep);
+}
+
 function simpleExists(path)
 {
 	if(isServer(path) || isOpds(path))
@@ -3519,6 +3524,7 @@ module.exports = {
 	sort: sort,
 	realPath: realPath,
 	pathType: pathType,
+	posixPath: posixPath,
 	isCompressed: isCompressed,
 	isServer: isServer,
 	isOpds: isOpds,

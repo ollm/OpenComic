@@ -699,7 +699,7 @@ async function loadPdfjsDecoders()
 	pdfjsDecoders.JpxImage.setOptions({
 		useWasm: true,
 		useWorkerFetch: true,
-		wasmUrl: asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/')),
+		wasmUrl: fileManager.posixPath(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/'))),
 	});
 
 	return true;

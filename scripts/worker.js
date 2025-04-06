@@ -15,6 +15,11 @@ function asarToAsarUnpacked(path)
 	return path;
 }
 
+function posixPath(path)
+{
+	return path.split(p.sep).join(p.posix.sep);
+}
+
 var pdfjsDecoders = false;
 
 async function loadPdfjsDecoders()
@@ -26,7 +31,7 @@ async function loadPdfjsDecoders()
 	pdfjsDecoders.JpxImage.setOptions({
 		useWasm: true,
 		useWorkerFetch: true,
-		wasmUrl: asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/wasm/')),
+		wasmUrl: posixPath(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/wasm/'))),
 	});
 
 	return true;
