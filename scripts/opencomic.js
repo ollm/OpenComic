@@ -664,78 +664,151 @@ async function loadContextMenu()
 	});
 }
 
+var importPromises = {};
+
 var ShoSho = false;
 
 async function loadShoSho()
 {
+	if(importPromises.ShoSho) return importPromises.ShoSho;
 	if(ShoSho) return;
 
-	ShoSho = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/shosho/dist/index.js')));
-	ShoSho = ShoSho.default;
+	importPromises.ShoSho = new Promise(async function(resolve){
 
-	return true;
+		ShoSho = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/shosho/dist/index.js')));
+		ShoSho = ShoSho.default;
+
+		resolve();
+
+		importPromises.ShoSho = false;
+
+	});
+
+	return importPromises.ShoSho;
 }
 
 var unpdf = false;
 
 async function loadPdfjs()
 {
+	if(importPromises.unpdf) return importPromises.unpdf;
 	if(unpdf) return;
 
-	unpdf = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs')));
-	unpdf.GlobalWorkerOptions.workerSrc = asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.mjs'));
+	importPromises.unpdf = new Promise(async function(resolve){
 
-	return true;
+		unpdf = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs')));
+		unpdf.GlobalWorkerOptions.workerSrc = asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.mjs'));
+
+		resolve();
+
+		importPromises.unpdf = false;
+
+	});
+
+	return importPromises.unpdf;
+
 }
 
 var pdfjsDecoders = false;
 
 async function loadPdfjsDecoders()
 {
+	if(importPromises.pdfjsDecoders) return importPromises.pdfjsDecoders;
 	if(pdfjsDecoders) return;
 
-	pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
+	importPromises.pdfjsDecoders = new Promise(async function(resolve){
 
-	pdfjsDecoders.JpxImage.setOptions({
-		useWasm: true,
-		useWorkerFetch: true,
-		wasmUrl: fileManager.posixPath(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/'))),
+		pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
+
+		pdfjsDecoders.JpxImage.setOptions({
+			useWasm: true,
+			useWorkerFetch: true,
+			wasmUrl: fileManager.posixPath(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/'))),
+		});
+
+		resolve();
+
+		importPromises.pdfjsDecoders = false;
+
 	});
 
-	return true;
+	return importPromises.pdfjsDecoders;
+
+}
+
+var JxlImage = false;
+
+async function loadJxlImage()
+{
+	if(importPromises.JxlImage) return importPromises.JxlImage;
+	if(JxlImage) return;
+
+	importPromises.JxlImage = new Promise(async function(resolve){
+
+		JxlImage = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/jxl-oxide-wasm/jxl_oxide_wasm.js')));
+
+		await JxlImage.default();
+		JxlImage = JxlImage.JxlImage;
+
+		resolve();
+
+		importPromises.JxlImage = false;
+
+	});
+
+	return importPromises.JxlImage;
+	
 }
 
 var foliateJs = {};
 
 async function loadFoliateJs()
 {
+	if(importPromises.foliateJs) return importPromises.foliateJs;
 	if(foliateJs.opds) return;
 
-	foliateJs.opds = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/foliate-js/opds.js')));
+	importPromises.foliateJs = new Promise(async function(resolve){
 
-	return true;
+		foliateJs.opds = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/foliate-js/opds.js')));
+
+		resolve();
+
+		importPromises.foliateJs = false;
+
+	});
+
+	return importPromises.foliateJs;
 }
 
 var mime = false;
 
 async function loadMime()
 {
+	if(importPromises.mime) return importPromises.mime;
 	if(mime) return;
 
-	const Mime = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index_lite.js')))).Mime;
-	const standardTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/standard.js')))).default;
-	const otherTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/other.js')))).default;
+	importPromises.mime = new Promise(async function(resolve){
 
-	mime = new Mime(standardTypes, otherTypes);
+		const Mime = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index_lite.js')))).Mime;
+		const standardTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/standard.js')))).default;
+		const otherTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/other.js')))).default;
 
-	// Define mime types not included in the mime package
-	mime.define({'image/jpeg': ['jif', 'jfi', 'jfif', 'jfif-tbnl']});
-	mime.define({'image/jp2': ['j2k', 'j2c', 'jpc']});
-	mime.define({'image/vnd.ms-photo': ['hdp']});
-	mime.define({'image/avif-sequence': ['avifs']});
-	mime.define({'application/epub+zip': ['epub']});
+		mime = new Mime(standardTypes, otherTypes);
 
-	return true;
+		// Define mime types not included in the mime package
+		mime.define({'image/jpeg': ['jif', 'jfi', 'jfif', 'jfif-tbnl']});
+		mime.define({'image/jp2': ['j2k', 'j2c', 'jpc']});
+		mime.define({'image/vnd.ms-photo': ['hdp']});
+		mime.define({'image/avif-sequence': ['avifs']});
+		mime.define({'application/epub+zip': ['epub']});
+
+		resolve();
+
+		importPromises.mime = false;
+
+	});
+
+	return importPromises.mime;
 }
 
 async function loadWebdav()

@@ -92,7 +92,7 @@
 		"jpegxr": "^0.3.0",
 		"jquery": "^3.7.1",
 		"jquery-bez": "^1.0.11",
-		"jxl-oxide-wasm": "^0.11.1",
+		"jxl-oxide-wasm": "^0.11.3",
 		"lodash.isequal": "^4.5.0",
 		"mime": "^4.0.6",
 		"mv": "^2.1.1",

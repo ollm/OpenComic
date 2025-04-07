@@ -83,7 +83,10 @@ function processJob(thread = 0)
 	}
 
 	if(worker.setTimeout)
+	{
 		clearTimeout(worker.setTimeout);
+		worker.setTimeout = false;
+	}
 
 	const job = queue.shift();
 

@@ -388,6 +388,24 @@ async function getSizes(images)
 										height: properties.height,
 									};
 								}
+								else if(inArray(extension, imageExtensions.jxl))
+								{
+									if(JxlImage === false)
+										await loadJxlImage();
+
+									const buffer = await fsp.readFile(image.image);
+
+									const jxlImage = new JxlImage();
+									jxlImage.feedBytes(buffer);
+							
+									if(!jxlImage.tryInit())
+										throw new Error('Partial image, no frame data');
+
+									size = {
+										width: jxlImage.width,
+										height: jxlImage.height,
+									};
+								}
 								else if(inArray(extension, imageExtensions.blob))
 								{
 									if(imageSize === false)
