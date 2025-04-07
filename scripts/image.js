@@ -3,26 +3,7 @@ var sharp = false, imageSize = false, heic = false;
 async function loadSharp()
 {
 	if(sharp !== false) return;
-
-	if(process.platform === 'linux')
-	{
-		const {version} = require('detect-libc');
-		const number = await version();
-
-		if(number)
-		{
-			const [major, minor, patch] = number.split('.');
-
-			if(major <= 2 && minor <= 39) // Glib 2.39 or less
-			{
-				sharp = require('sharp');
-
-				return;
-			}
-		}
-	}
-
-	sharp = require('sharp-34');
+	sharp = require('sharp');
 }
 
 async function resize(fromImage, toImage, config = {})

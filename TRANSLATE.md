@@ -29,7 +29,7 @@ OpenComic has translations into 18 languages.
 
 [ar.json](https://github.com/ollm/OpenComic/blob/master/languages/ar.json)
 
-`98.7% | Remain 6 | Translated 469`
+`100% | Remain 0 | Translated 475`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ar.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ar.svg" /></a>
 
