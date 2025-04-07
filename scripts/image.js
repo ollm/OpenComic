@@ -391,37 +391,30 @@ async function getSizes(images)
 								else if(inArray(extension, imageExtensions.blob))
 								{
 									if(imageSize === false)
-										imageSize = require('image-size');
+										imageSize = require('image-size/fromFile').imageSizeFromFile;
 
-									const promise = new Promise(function(resolve, reject) {
+									try
+									{
+										const dimensions = await imageSize(image.image);
 
-										imageSize(image.image, async function(error, dimensions) {
+										size = {
+											width: dimensions.width,
+											height: dimensions.height,
+										};
+									}
+									catch(error)
+									{
+										const blob = await workers.convertImageToBlob(image.image);
+										const buffer = await (await fetch(blob)).arrayBuffer();
 
-											if(error)
-											{
-												const blob = await workers.convertImageToBlob(image.image);
-												const buffer = await (await fetch(blob)).arrayBuffer();
+										const _sharp = sharp(buffer);
+										const metadata = await _sharp.metadata();
 
-												const _sharp = sharp(buffer);
-												const metadata = await _sharp.metadata();
-
-												resolve({
-													width: metadata.width,
-													height: metadata.height,
-												});
-											}
-											else
-											{
-												resolve({
-													width: dimensions.width,
-													height: dimensions.height,
-												});
-											}
-										})
-
-									});
-
-									size = await promise;
+										size = {
+											width: metadata.width,
+											height: metadata.height,
+										};
+									}
 								}
 								else if(sharpSupportedFormat(image.image, extension))
 								{
