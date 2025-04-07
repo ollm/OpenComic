@@ -99,7 +99,7 @@
 		"node-7z": "^3.0.0",
 		"node-scp": "^0.0.23",
 		"node-unrar-js": "^2.0.2",
-		"pdfjs-dist": "^5.0.375",
+		"pdfjs-dist": "^5.1.91",
 		"sanitize-html": "^2.14.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.34.0",
