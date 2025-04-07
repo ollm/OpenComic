@@ -70,7 +70,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.744.0",
+		"@aws-sdk/client-s3": "^3.782.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -81,7 +81,7 @@
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
-		"fast-xml-parser": "^4.5.1",
+		"fast-xml-parser": "^5.2.0",
 		"file-type": "^16.5.4",
 		"foliate-js": "github:johnfactotum/foliate-js",
 		"font-list": "^1.5.1",
@@ -94,26 +94,26 @@
 		"jquery-bez": "^1.0.11",
 		"jxl-oxide-wasm": "^0.11.3",
 		"lodash.isequal": "^4.5.0",
-		"mime": "^4.0.6",
+		"mime": "^4.0.7",
 		"mv": "^2.1.1",
 		"node-7z": "^3.0.0",
 		"node-scp": "^0.0.23",
 		"node-unrar-js": "^2.0.2",
 		"pdfjs-dist": "^5.1.91",
-		"sanitize-html": "^2.14.0",
+		"sanitize-html": "^2.15.0",
 		"sha1": "^1.1.1",
 		"sharp": "^0.34.0",
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "github:theophilusx/ssh2-sftp-client",
 		"tar-fs": "^3.0.8",
-		"webdav": "^5.7.1"
+		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
 		"electron": "^34.3.3",
 		"electron-builder": "^26.0.12",
 		"env-cmd": "^10.1.0",
-		"node-abi": "^4.1.0",
+		"node-abi": "^4.2.0",
 		"node-yaml": "^4.0.1",
 		"nodemon": "^3.1.9"
 	},

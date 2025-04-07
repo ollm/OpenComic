@@ -796,7 +796,7 @@ async function loadMime()
 		mime = new Mime(standardTypes, otherTypes);
 
 		// Define mime types not included in the mime package
-		mime.define({'image/jpeg': ['jif', 'jfi', 'jfif', 'jfif-tbnl']});
+		mime.define({'image/jpeg': ['jif', 'jfi', 'jfif-tbnl']});
 		mime.define({'image/jp2': ['j2k', 'j2c', 'jpc']});
 		mime.define({'image/vnd.ms-photo': ['hdp']});
 		mime.define({'image/avif-sequence': ['avifs']});
