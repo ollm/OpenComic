@@ -135,8 +135,10 @@ var epub = function(path, config = {}) {
 
 		let prevName = '';
 		let prevNameNum = 2;
+		let len = this.epub.spine.items.length;
+		let leadingZeros = Math.max(String(len).length, 4);
 
-		for(let i = 0, len = this.epub.spine.items.length; i < len; i++)
+		for(let i = 0; i < len; i++)
 		{
 			let item = this.epub.spine.items[i];
 
@@ -152,7 +154,7 @@ var epub = function(path, config = {}) {
 				prevNameNum = 2;
 			}
 
-			this.epubFiles.push(i+'_sortonly - '+fileManager.replaceReservedCharacters(name)+'.jpg');
+			this.epubFiles.push(String(i).padStart(leadingZeros, '0')+'_sortonly - '+fileManager.replaceReservedCharacters(name)+'.jpg');
 		}
 
 		return this.epubFiles;

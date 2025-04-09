@@ -49,6 +49,35 @@ function clearCacheAndTemporaryFiles()
 	console.timeEnd('Migration: clearCacheAndTemporaryFiles');
 }
 
+function clearPdfAndEpubCache()
+{
+	console.time('Migration: clearPdfAndEpubCache');
+
+	const epubRegex = /([\/\\])([0-9]+)_sortonly/;
+	const pdfRegex = /(pdf[\/\\])page-([0-9]+)\./;
+
+	const files = fs.readdirSync(cache.folder);
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+
+		if(/\.json$/.test(file) || /\.json\.zstd$/.test(file))
+		{
+			const json = cache.readJson(file.replace(/\.zstd$/, ''));
+			const first = json.files[0] ?? false;
+
+			if(first)
+			{
+				if(epubRegex.test(first.path) || pdfRegex.test(first.path))
+					fs.unlinkSync(p.join(cache.folder, file));
+			}
+		}
+	}
+
+	console.timeEnd('Migration: clearPdfAndEpubCache');
+}
+
 function fixEpubWrongFilenames(data)
 {
 	console.time('Migration: fixEpubWrongFilenames');
@@ -71,6 +100,63 @@ function fixEpubWrongFilenames(data)
 	}
 
 	console.timeEnd('Migration: fixEpubWrongFilenames');
+
+	return data;
+}
+
+function addLeadingZeros(regex, path)
+{
+	const page = app.extract(regex, path, 2);
+	return String(page).padStart(4, '0');
+}
+
+function migrateEpubAndPdfToLeadingZeros(data)
+{
+	console.time('Migration: epubAndPdfToLeadingZeros');
+
+	const epubRegex = /([\/\\])([0-9]+)_sortonly/;
+	const pdfRegex = /(pdf[\/\\])page-([0-9]+)\./;
+
+	clearPdfAndEpubCache();
+
+	for(let path in data.bookmarks)
+	{
+		for(let i = 0, len = data.bookmarks[path].length; i < len; i++)
+		{
+			const _path = data.bookmarks[path][i].path;
+
+			if(epubRegex.test(_path))
+			{
+				const number = addLeadingZeros(epubRegex, _path)
+				data.bookmarks[path][i].path = _path.replace(epubRegex, '$1'+number+'_sortonly');
+			}
+
+			if(pdfRegex.test(_path))
+			{
+				const number = addLeadingZeros(pdfRegex, _path)
+				data.bookmarks[path][i].path = _path.replace(pdfRegex, '$1page-'+number+'.');
+			}
+		}
+	}
+
+	for(let path in data.readingProgress)
+	{
+		const _path = data.readingProgress[path].path;
+
+		if(epubRegex.test(_path))
+		{
+			const number = addLeadingZeros(epubRegex, _path)
+			data.readingProgress[path].path = _path.replace(epubRegex, '$1'+number+'_sortonly');
+		}
+
+		if(pdfRegex.test(_path))
+		{
+			const number = addLeadingZeros(pdfRegex, _path)
+			data.readingProgress[path].path = _path.replace(pdfRegex, '$1page-'+number+'.');
+		}
+	}
+
+	console.timeEnd('Migration: epubAndPdfToLeadingZeros');
 
 	return data;
 }
@@ -118,7 +204,7 @@ function start(data)
 	//if(changes < 75)
 	//	compressJsonCache();
 
-	if(changes < 77) // Fix ePub wrong filenames
+	if(changes < 77) // Fix ePub wrong filenames and clear cache
 		data = fixEpubWrongFilenames(data);
 	else if(changes < 79)
 		removeJsonCache();
@@ -131,6 +217,9 @@ function start(data)
 
 	if(changes < 103) // Add the new mouse wheel events
 		data = migrateMouseWheelEvents(data);
+
+	if(changes < 105) // Change page-1 to page-0001 and 1_sortonly to 0001_sortonly
+		data = migrateEpubAndPdfToLeadingZeros(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

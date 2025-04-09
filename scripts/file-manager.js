@@ -2300,10 +2300,11 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
+		let leadingZeros = Math.max(String(pages).length, 4);
 
 		for(let i = 1; i <= pages; i++)
 		{
-			let file = 'page-'+i+'.jpg';
+			let file = 'page-'+String(i).padStart(leadingZeros, '0')+'.jpg';
 
 			let page = await pdf.getPage(i);
 			let viewport = page.getViewport({scale: 1});
@@ -2373,6 +2374,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
+		let leadingZeros = Math.max(String(pages).length, 4);
 
 		let only = this.config.only; 
 
@@ -2381,7 +2383,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		for(let i = 1; i <= pages; i++)
 		{
-			let file = 'page-'+i+'.jpg';
+			let file = 'page-'+String(i).padStart(leadingZeros, '0')+'.jpg';
 			let path = p.join(this.tmp, file);
 			let virtualPath = p.join(this.path, file);
 

@@ -3598,7 +3598,7 @@ function loadBookmarks(bookmarksChild = false)
 			images.push({path: bookmark.path, sha: sha});
 
 			let name = p.basename(bookmark.path);
-			let chapterIndex = app.extract(/^([0-9]+)\_sortonly/, name, 1);
+			let chapterIndex = +app.extract(/^([0-9]+)\_sortonly/, name, 1);
 
 			bookmarksPath[bookmarkDirname].push({
 				key: key,
@@ -4492,7 +4492,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		if(imagePath)
 		{
 			let imageName = p.basename(imagePath);
-			let chapterIndex = app.extract(/^([0-9]+)\_sortonly/, imageName, 1);
+			let chapterIndex = +app.extract(/^([0-9]+)\_sortonly/, imageName, 1);
 
 			currentIndex = _ebook.chaptersPagesInfo[chapterIndex].startPage + 1;
 		}

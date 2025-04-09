@@ -1,4 +1,4 @@
-var changes = 104; // Update this if readingPagesConfig is updated
+var changes = 105; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',

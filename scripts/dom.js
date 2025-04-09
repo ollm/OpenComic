@@ -137,7 +137,7 @@ function translatePageName(name)
 {
 	name = name.replace(/^[0-9]+\_sortonly - /, '');
 
-	return name.replace(/^page\-([0-9]+)/, language.global.pageAndNumber);
+	return name.replace(/^page\-0*([0-9]+)/, language.global.pageAndNumber);
 }
 
 function metadataPathName(file, force = false)
