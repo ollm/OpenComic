@@ -1323,6 +1323,13 @@ function pause()
 	}, 50);
 }
 
+window.addEventListener('mousedown', function(event) {
+
+	if(event.button === 1 && !inputIsFocused()) // Middle mouse button
+		event.preventDefault();
+
+}, true);
+
 module.exports = {
 	register: register,
 	unregister: unregister,
