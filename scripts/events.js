@@ -1362,14 +1362,14 @@ function loadingProgress(loading, progress = 0)
 		let speed = prevNow ? Math.round(now - prevNow) : 0;
 		if(speed > 300) speed = 300;
 
-		if(prevProgress > progress)
+		if(prevProgress > progress && prevProgress !== 1)
 			progress = prevProgress;
 
 		loading.dataset.prevNow = now;
 		loading.dataset.prevProgress = progress;
 
 		circle.style.animation = 'none';
-		circle.style.transition = speed+'ms stroke-dasharray';
+		circle.style.transition = 'stroke-dashoffset '+speed+'ms linear';
 		circle.style.strokeDashoffset = 300;
 		circle.style.strokeDasharray = 301 + ((stroke.array - 301) * progress);
 	}

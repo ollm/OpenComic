@@ -4431,7 +4431,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		hasGenerateEbookPages = false;
 		generateEbookPages(end, reset, fast);
 	}
-	else if(!generateEbookPagesCancel)
+	else if(!generateEbookPagesCancel && onReading)
 	{
 		images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
 

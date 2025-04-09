@@ -2578,10 +2578,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let totalFiles = filesToRender.length;
 		let progressIndex = 1;
 
-		if(epub.extracted)
-			this.setProgress(0.5);
-		else
-			this.setProgress(0);
+		if(!onReading)
+		{
+			if(epub.extracted)
+				this.setProgress(0.5);
+			else
+				this.setProgress(0);
+		}
 
 		await epub.renderFiles(filesToRender, {width: this.config.width}, function(file){
 
@@ -2595,7 +2598,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		});
 
-		this.setProgress(1);
+		if(!onReading)
+			this.setProgress(1);
 
 		console.timeEnd('extractEpub: '+this.path);
 

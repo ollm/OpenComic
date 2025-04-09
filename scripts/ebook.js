@@ -1070,7 +1070,6 @@ async function nextJobToRender(index = false, maxThreads = false)
 						averageJobTime += averageJobTimes[i];
 					}
 
-
 					averageJobTimes = [];
 
 					// For check performance only
