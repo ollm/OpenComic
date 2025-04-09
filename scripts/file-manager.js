@@ -2283,6 +2283,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.pdf = await unpdf.getDocument({
 			url: encodeURIComponent(this.realPath).replace(/\%2F/g,'/').replace(/\%5C/g,'\\').replace(/\%3A/g, ':'),
 			wasmUrl: fileManager.posixPath(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/wasm/'))),
+			cMapUrl: fileManager.posixPath(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/cmaps/'))),
+			cMapPacked: true,
 			/*nativeImageDecoderSupport: 'none', disableFontFace: true*/
 		}).promise;
 
