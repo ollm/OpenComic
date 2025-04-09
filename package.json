@@ -102,7 +102,7 @@
 		"pdfjs-dist": "^5.1.91",
 		"sanitize-html": "^2.15.0",
 		"sha1": "^1.1.1",
-		"sharp": "^0.34.0",
+		"sharp": "^0.34.1",
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "github:theophilusx/ssh2-sftp-client",
@@ -162,7 +162,6 @@
 		],
 		"asarUnpack": [
 			"node_modules/sharp",
-			"node_modules/sharp-34",
 			"node_modules/@img",
 			"node_modules/node-7z",
 			"node_modules/7zip-bin",
