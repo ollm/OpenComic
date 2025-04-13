@@ -2101,6 +2101,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				});
 
 				content.scrollTop = scrollTop + (translateY - scalePrevData.tranY);
+				applyDiffScrolls((translateY - scalePrevData.tranY));
 
 				scalePrevData.tranY = translateY;
 
@@ -2244,6 +2245,22 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		};
 
 		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), readingDoublePage());
+	}
+}
+
+function applyDiffScrolls(diff = 0)
+{
+	if(gamepadScroll)
+		gamepadScroll.scrollTop = gamepadScroll.scrollTop + diff;
+
+	if(readingDragScroll)
+	{
+		readingDragScroll.content.stop(true);
+		readingDragScroll.scrollTop = readingDragScroll.scrollTop + diff;
+	}
+	else
+	{
+		template.contentRight().children().stop(true);
 	}
 }
 

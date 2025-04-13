@@ -1070,7 +1070,7 @@ async function register(section = 'reading', force = false)
 
 		const callback = function(event) {
 
-			if(inputIsFocused() || !reading.isLoaded())
+			if(inputIsFocused() || (section === 'reading' && !reading.isLoaded()))
 				return false;
 
 			return action.function(event);
