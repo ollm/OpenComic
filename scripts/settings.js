@@ -7,6 +7,7 @@ function start()
 	handlebarsContext.readingColorProfile = getColorProfileName(configInit.forceColorProfile);
 	handlebarsContext.openingBehaviorFolder = getOpeningBehaviorName(config.openingBehaviorFolder);
 	handlebarsContext.openingBehaviorFile = getOpeningBehaviorName(config.openingBehaviorFile);
+	handlebarsContext.turnPagesWithMouseWheelShortcut = getTurnPagesWithMouseWheelShortcut();
 }
 
 function startSecond()
@@ -527,6 +528,36 @@ function updateServers()
 	}
 
 	list.innerHTML = template.load('settings.content.right.servers.list.html');
+}
+
+function getTurnPagesWithMouseWheelShortcut()
+{
+	const list = shortcuts.shortcuts().reading.shortcuts;
+
+	if((list.MouseUp === 'prev' && list.MouseDown === 'next') || (list.MouseUp === 'next' && list.MouseDown === 'prev'))
+		return true;
+
+	return false;
+}
+
+function setTurnPagesWithMouseWheelShortcut(active, generate = true)
+{
+	if(active)
+	{
+		shortcuts.change('reading', 'prev', '', 'MouseUp');
+		shortcuts.change('reading', 'next', '', 'MouseDown');
+ 	}
+	else
+	{
+		shortcuts.change('reading', 'prev', 'MouseUp', '');
+		shortcuts.change('reading', 'next', 'MouseDown', '');
+ 	}
+
+ 	if(generate)
+ 	{
+		generateShortcutsTable(gamepad.currentHighlightItem());
+		events.events();
+ 	}
 }
 
 function generateShortcutsTable(highlightItem = false)
@@ -1312,6 +1343,7 @@ module.exports = {
 	setStartOnStartup: setStartOnStartup,
 	setCheckReleases: setCheckReleases,
 	setCheckPreReleases: setCheckPreReleases,
+	setTurnPagesWithMouseWheelShortcut: setTurnPagesWithMouseWheelShortcut,
 	changeShortcut: changeShortcut,
 	removeShortcut: removeShortcut,
 	changeButton: changeButton,
@@ -1338,4 +1370,5 @@ module.exports = {
 	clearCache: clearCache,
 	removeTemporaryFiles: removeTemporaryFiles,
 	purgeTemporaryFiles: purgeTemporaryFiles,
+	generateShortcutsTable: generateShortcutsTable,
 };

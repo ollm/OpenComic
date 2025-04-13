@@ -193,6 +193,11 @@ function migrateMouseWheelEvents(data)
 		shortcuts['Alt+MouseUp'] = 'prev';
 		shortcuts['Alt+MouseDown'] = 'next';
 	}
+	else if(data.config.readingTurnPagesWithMouseWheel) // Has turn pages with mouse wheel active but not custom shortcuts
+	{
+		settings = shortcuts.setTurnPagesWithMouseWheelShortcut(true);
+		data.shortcuts.reading.shortcuts = shortcuts.shortcuts().reading.shortcuts;
+	}
 
 	return data;
 }

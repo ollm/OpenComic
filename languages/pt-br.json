@@ -243,11 +243,11 @@
 			"moveZoomWithMouse": "Move o zoom usando o mouse (Desabilita mover por arrastar e soltar)",
 			"scrollWithMouse": "Rola movendo o cursor perto das bordas (Desabilita rolagem por arrastar e soltar)",
 			"goNextPrevChapterWithScroll": "Vá para o capítulo próximo/anterior com a roda do mouse (Rolar)",
+			"turnPagesWithMouseWheel": "Vire páginas com a roda do mouse (Zoom apenas com a tecla Ctrl pressionada)",
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "Quando rotacionar imagens horizontalmente, faça isso em sentido anti-horário",
 			"startReadingInFullScreen": "Começar a ler em tela cheia",
-			"trackingAtTheEnd": "Monitorar ao final do capítulo/volume",
-			"turnPagesWithMouseWheel": "Vire páginas com a roda do mouse (Zoom apenas com a tecla Ctrl pressionada)"
+			"trackingAtTheEnd": "Monitorar ao final do capítulo/volume"
 		},
 		"imageInterpolation": {
 			"main": "Interpolação de imagens",

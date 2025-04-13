@@ -243,6 +243,7 @@
 			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
 			"scrollWithMouse": "Scroll by moving the cursor along the edges of the screen (Disables drag and drop scrolling)",
 			"goNextPrevChapterWithScroll": "Go next/previous chapter with mouse scroll (Vertical reading)",
+			"turnPagesWithMouseWheel": "Turn pages with mouse wheel (Zoom only with Ctrl key pressed)",
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
 			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
 			"startReadingInFullScreen": "Start reading in full screen",

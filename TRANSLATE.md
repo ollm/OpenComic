@@ -29,7 +29,7 @@ OpenComic has translations into 18 languages.
 
 [ar.json](https://github.com/ollm/OpenComic/blob/master/languages/ar.json)
 
-`100% | Remain 0 | Translated 475`
+`99.8% | Remain 1 | Translated 475`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ar.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ar.svg" /></a>
 
@@ -38,7 +38,7 @@ OpenComic has translations into 18 languages.
 
 [ca.json](https://github.com/ollm/OpenComic/blob/master/languages/ca.json)
 
-`100% | Remain 0 | Translated 475`
+`100% | Remain 0 | Translated 476`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ca.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ca.svg" /></a>
 
@@ -47,7 +47,7 @@ OpenComic has translations into 18 languages.
 
 [cs.json](https://github.com/ollm/OpenComic/blob/master/languages/cs.json)
 
-`24.4% | Remain 359 | Translated 116`
+`24.4% | Remain 360 | Translated 116`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/cs.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/cs.svg" /></a>
 
@@ -56,7 +56,7 @@ OpenComic has translations into 18 languages.
 
 [de.json](https://github.com/ollm/OpenComic/blob/master/languages/de.json)
 
-`21.5% | Remain 373 | Translated 102`
+`21.4% | Remain 374 | Translated 102`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/de.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/de.svg" /></a>
 
@@ -65,7 +65,7 @@ OpenComic has translations into 18 languages.
 
 [en.json](https://github.com/ollm/OpenComic/blob/master/languages/en.json)
 
-`100% | Remain 0 | Translated 475`
+`100% | Remain 0 | Translated 476`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/en.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/en.svg" /></a>
 
@@ -74,7 +74,7 @@ OpenComic has translations into 18 languages.
 
 [es.json](https://github.com/ollm/OpenComic/blob/master/languages/es.json)
 
-`100% | Remain 0 | Translated 475`
+`99.8% | Remain 1 | Translated 475`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/es.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/es.svg" /></a>
 
@@ -83,7 +83,7 @@ OpenComic has translations into 18 languages.
 
 [fr.json](https://github.com/ollm/OpenComic/blob/master/languages/fr.json)
 
-`72% | Remain 133 | Translated 342`
+`71.8% | Remain 134 | Translated 342`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/fr.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/fr.svg" /></a>
 
@@ -92,7 +92,7 @@ OpenComic has translations into 18 languages.
 
 [hu.json](https://github.com/ollm/OpenComic/blob/master/languages/hu.json)
 
-`21.5% | Remain 373 | Translated 102`
+`21.4% | Remain 374 | Translated 102`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/hu.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/hu.svg" /></a>
 
@@ -110,7 +110,7 @@ OpenComic has translations into 18 languages.
 
 [ja.json](https://github.com/ollm/OpenComic/blob/master/languages/ja.json)
 
-`21.5% | Remain 373 | Translated 102`
+`21.4% | Remain 374 | Translated 102`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ja.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ja.svg" /></a>
 
@@ -119,7 +119,7 @@ OpenComic has translations into 18 languages.
 
 [ko.json](https://github.com/ollm/OpenComic/blob/master/languages/ko.json)
 
-`20.4% | Remain 378 | Translated 97`
+`20.4% | Remain 379 | Translated 97`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ko.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ko.svg" /></a>
 
@@ -146,7 +146,7 @@ OpenComic has translations into 18 languages.
 
 [sv.json](https://github.com/ollm/OpenComic/blob/master/languages/sv.json)
 
-`63.4% | Remain 174 | Translated 301`
+`63.2% | Remain 175 | Translated 301`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/sv.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/sv.svg" /></a>
 
@@ -164,7 +164,7 @@ OpenComic has translations into 18 languages.
 
 [vi.json](https://github.com/ollm/OpenComic/blob/master/languages/vi.json)
 
-`62.5% | Remain 178 | Translated 297`
+`62.4% | Remain 179 | Translated 297`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/vi.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/vi.svg" /></a>
 
@@ -182,7 +182,7 @@ OpenComic has translations into 18 languages.
 
 [zh-hant.json](https://github.com/ollm/OpenComic/blob/master/languages/zh-hant.json)
 
-`15.2% | Remain 403 | Translated 72`
+`15.1% | Remain 404 | Translated 72`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hant.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hant.svg" /></a>
 

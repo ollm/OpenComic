@@ -243,11 +243,11 @@
 			"moveZoomWithMouse": "ย้ายซูมโดยใช้เคอร์เซอร์ (ปิดการย้ายโดยลากวาง)",
 			"scrollWithMouse": "เลื่อนโดยย้ายเคอร์เซอร์ไปตามขอบจอ (ปิดการเลื่อนแบบลากและวาง)",
 			"goNextPrevChapterWithScroll": "ไปตอนถัดไป / ก่อนหน้าด้านการเลื่อนเม้าส์ (การอ่านแนวตั้ง)",
+			"turnPagesWithMouseWheel": "พลิกหน้าด้วยล้อเลื่อนเม้าส์ (ซูมเมื่อกด Ctrl ค้างไว้เท่านั้น)",
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "เมื่อหมุนรูปแนวนอนให้ทำแบบทวนเข็มนาฬิกา",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
-			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม",
-			"turnPagesWithMouseWheel": "พลิกหน้าด้วยล้อเลื่อนเม้าส์ (ซูมเมื่อกด Ctrl ค้างไว้เท่านั้น)"
+			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
 		},
 		"imageInterpolation": {
 			"main": "การปรับปรุงรูปภาพ",
