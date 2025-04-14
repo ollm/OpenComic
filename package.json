@@ -110,7 +110,7 @@
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
-		"electron": "^34.3.3",
+		"electron": "^34.5.1",
 		"electron-builder": "^26.0.12",
 		"env-cmd": "^10.1.0",
 		"node-abi": "^4.2.0",

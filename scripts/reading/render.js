@@ -44,6 +44,8 @@ async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'canv
 	if(renderImages)
 		revokeAllObjectURL();
 
+	createObserver();
+
 	return;
 }
 
@@ -495,24 +497,23 @@ async function render(index, _scale = false, magnifyingGlass = false)
 					{
 						console.error(error);
 
-						img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
-						img.classList.remove('blobRendered', 'blobRender');
-						img.style.imageRendering = '';
+						await srcToImage(src, img)
 					}
 				}
 				else
 				{
-					img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
-					img.classList.remove('blobRendered', 'blobRender');
-					img.style.imageRendering = '';
+					await srcToImage(src, img)
 				}
 			}
 			else
 			{
-				img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
-				img.classList.remove('blobRendered', 'blobRender');
-				img.style.imageRendering = '';
+				await srcToImage(src, img)
 			}
+
+			if((onRender && onRender.num > 0) || _scale)
+				await decodeImage(img, true);
+			else
+				decodeImage(img, false);
 		}
 
 		if(onRender)
@@ -541,6 +542,93 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 	return;
 }
+
+async function srcToImage(src, img)
+{
+	img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
+	img.classList.remove('blobRendered', 'blobRender');
+	img.style.imageRendering = '';
+
+	return true;
+}
+
+async function decodeImage(img, sync = false)
+{
+	if(sync)
+	{
+		try
+		{
+			await img.decode();
+		}
+		catch(e){}	
+	}
+
+	observer.observe(img);
+}
+
+var observer = false;
+
+function createObserver()
+{
+	if(observer)
+		observer.disconnect();
+
+	observer = new IntersectionObserver(function(entries) {
+
+		for(let i = 0, len = entries.length; i < len; i++)
+		{
+			const entry = entries[i];
+
+			if(entry.isIntersecting || entry.intersectionRatio > 0)
+			{				
+				try
+				{
+					entry.target.decode();
+				}
+				catch(e){}	
+			}
+		}
+
+	}, {
+		root: template._contentRight().firstElementChild,
+		rootMargin: '4000px',
+		threshold: 0,
+	});
+}
+
+/*function removeDecodeImageInCanvas(img, ocImg)
+{
+	const canvas = ocImg.querySelector('canvas');
+	if(canvas) canvas.remove();
+
+	img.style.display = '';
+}
+
+async function decodeImageInCanvas(src, img, ocImg)
+{
+	console.log(src);
+
+	const response = await fetch(app.shortWindowsPath(src, true));
+	const buffer = await response.blob();
+	const bitmap = await createImageBitmap(buffer);
+
+	let canvas = ocImg.querySelector('canvas');
+
+	if(!canvas)
+	{
+		canvas = document.createElement('canvas');
+		canvas.className = 'originalSize imageInCanvas';
+		canvas.width = bitmap.width;
+		canvas.height = bitmap.height;
+		ocImg.prepend(canvas);
+		img.style.display = 'none';
+	}
+
+	const ctx = canvas.getContext('2d');
+	ctx.drawImage(bitmap, 0, 0);
+
+	return true;
+}*/
 
 module.exports = {
 	setFile: setFile,

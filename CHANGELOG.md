@@ -30,7 +30,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Gamepad menus do not work correctly [`b997d6b`](https://github.com/ollm/OpenComic/commit/b997d6bb6e05c597306169cb4fbbe035a4ab12d1)
 - Sharp crashes on Arch Linux and other distributions [`d60620a`](https://github.com/ollm/OpenComic/commit/d60620a2d3a446fef51cd86eff2dc80b22ccf6ba)
 - Add cMap support for PDF.js [`3da7b8e`](https://github.com/ollm/OpenComic/commit/3da7b8ec651964209d1df04248dad2bb8ab693bd)
-- Page jumps during zoom animation in vertical reading
+- Page jumps during zoom animation in vertical reading [`d9f94e7`](https://github.com/ollm/OpenComic/commit/d9f94e7eb5e757a28c6b92f0c3a791fc3be61282)
+- Stuttering when decode big images (From sync decode to async when possible)
 
 ## [v1.4.1](https://github.com/ollm/OpenComic/releases/tag/v1.4.1) (08-02-2025)
 
