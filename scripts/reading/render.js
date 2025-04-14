@@ -596,40 +596,6 @@ function createObserver()
 	});
 }
 
-/*function removeDecodeImageInCanvas(img, ocImg)
-{
-	const canvas = ocImg.querySelector('canvas');
-	if(canvas) canvas.remove();
-
-	img.style.display = '';
-}
-
-async function decodeImageInCanvas(src, img, ocImg)
-{
-	console.log(src);
-
-	const response = await fetch(app.shortWindowsPath(src, true));
-	const buffer = await response.blob();
-	const bitmap = await createImageBitmap(buffer);
-
-	let canvas = ocImg.querySelector('canvas');
-
-	if(!canvas)
-	{
-		canvas = document.createElement('canvas');
-		canvas.className = 'originalSize imageInCanvas';
-		canvas.width = bitmap.width;
-		canvas.height = bitmap.height;
-		ocImg.prepend(canvas);
-		img.style.display = 'none';
-	}
-
-	const ctx = canvas.getContext('2d');
-	ctx.drawImage(bitmap, 0, 0);
-
-	return true;
-}*/
-
 module.exports = {
 	setFile: setFile,
 	reset: reset,

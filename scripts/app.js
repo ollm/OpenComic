@@ -268,6 +268,14 @@ var transitionPrev = {};
 // This need to be improved to smooth transitions
 function transition(key, transition = 0) 
 {
+	if(!transition)
+	{
+		return {
+			speed: 0,
+			function: 'linear',
+		};
+	}
+	
 	const seconds = transition < 50 ? true : false;
 
 	transition = seconds ? transition * 1000 : transition;
@@ -291,6 +299,14 @@ function transition(key, transition = 0)
 
 function scrollTransition(key, transition = 0)
 {
+	if(!transition)
+	{
+		return {
+			speed: 0,
+			function: 'linear',
+		};
+	}
+
 	const seconds = transition < 50 ? true : false;
 	transition = transition ? 200 : 0;
 

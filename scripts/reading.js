@@ -1349,7 +1349,14 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 		currentZoomIndex = false;
 		currentScale = _currentScale;
 		reading.applyScale(false, _currentScale, true, _currentScale > 1 ? false : true);
-		if(animation) zoomMove(0, readingDirection ? 99999 : -99999);
+
+		if(animation)
+		{
+			if(config.readingMoveZoomWithMouse)
+				applyMoveZoomWithMouse();
+			else
+				zoomMove(0, readingDirection ? 99999 : -99999);
+		}
 	}
 
 	//goToImageCL(imagesDistribution[eIndex-1][0].index, animation);
@@ -2133,7 +2140,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(originalRect === false)
 			{
-				originalRect = contentRight.querySelector('.image-position'+currentZoomIndex).getBoundingClientRect();
+				originalRect = !readingViewIs('scroll') ? contentRight.getBoundingClientRect() : contentRight.querySelector('.image-position'+currentZoomIndex).getBoundingClientRect();
 				originalRectReadingBody = content.getBoundingClientRect();
 			}
 
@@ -2227,6 +2234,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		{
 			zoomMoveData.x = (originalRect.left + originalRect.width / 2) - (translateX / scale);
 			zoomMoveData.y = (originalRect.top + originalRect.height / 2) - (translateY / scale);
+
+			console.log(zoomMoveData.x, zoomMoveData.y);
+			console.log(originalRect.left, originalRect.width, translateX);
 		}
 		else
 		{
@@ -2570,7 +2580,7 @@ function notCrossZoomLimits(x, y, scale = false)
 // Drag zoom
 function dragZoom(x, y, animation = false)
 {
-	const transition = animation ? app.scrollTransition('dragZoom', _config.readingViewSpeed) : 0;
+	const transition = app.scrollTransition('dragZoom', animation ? _config.readingViewSpeed : 0);
 	const withLimits = notCrossZoomLimits(scalePrevData.tranX2 + x, scalePrevData.tranY2 + y);
 
 	const diff = {
@@ -4557,8 +4567,27 @@ function currentImageIndex()
 	return currentImagePage() - 1;
 }
 
-// Events functions
+function applyMoveZoomWithMouse(pageX = false, pageY = false)
+{
+	pageX = pageX || currentMousePosition.pageX;
+	pageY = pageY || currentMousePosition.pageY;
 
+	const withLimits = notCrossZoomLimits(0, 0);
+
+	const widthM = contentRightRect.width / 2;
+	const heightM = contentRightRect.height / 2;
+
+	// Calculate multipler (1.5) from withLimits.height and withLimits.width
+	const x = -(pageX - zoomMoveData.x) * (withLimits.maxX / widthM * 1.5);
+	const y = -(pageY - zoomMoveData.y) * (withLimits.maxY / heightM * 1.5);
+
+	dragZoom(x, y);
+
+	scalePrevData.tranX = zoomMoveData.tranX;
+	scalePrevData.tranY = zoomMoveData.tranY;
+}
+
+// Events functions
 var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'};
 
 function pointermove(event)
@@ -4585,20 +4614,7 @@ function pointermove(event)
 			if(pageX > contentRightRect.left && pageY > contentRightRect.top)
 			{
 				event.preventDefault();
-
-				let withLimits = notCrossZoomLimits(0, 0);
-
-				let widthM = contentRightRect.width / 2;
-				let heightM = contentRightRect.height / 2;
-
-				// Calculate multipler (1.5) from withLimits.height and withLimits.width
-				let x = -(pageX - zoomMoveData.x) * (withLimits.maxX / widthM * 1.5);
-				let y = -(pageY - zoomMoveData.y) * (withLimits.maxY / heightM * 1.5);
-
-				dragZoom(x, y);
-
-				scalePrevData.tranX = zoomMoveData.tranX;
-				scalePrevData.tranY = zoomMoveData.tranY;
+				applyMoveZoomWithMouse(pageX, pageY);
 			}
 		}
 		else if(zoomMoveData.active && !(event instanceof TouchEvent))
