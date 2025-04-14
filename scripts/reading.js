@@ -2234,9 +2234,6 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		{
 			zoomMoveData.x = (originalRect.left + originalRect.width / 2) - (translateX / scale);
 			zoomMoveData.y = (originalRect.top + originalRect.height / 2) - (translateY / scale);
-
-			console.log(zoomMoveData.x, zoomMoveData.y);
-			console.log(originalRect.left, originalRect.width, translateX);
 		}
 		else
 		{
