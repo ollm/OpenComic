@@ -19,7 +19,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="160" transform="rotate(-90)">IT</text>
 		<rect style="fill: #2eccaa;" height="123.8" width="6" rx="2" y="16.2" x="154" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="178" transform="rotate(-90)">JA</text>
-		<rect style="fill: #f6664c;" height="30" width="6" rx="2" y="110" x="172" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="172" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="196" transform="rotate(-90)">KO</text>
 		<rect style="fill: #f6664c;" height="28.5" width="6" rx="2" y="111.5" x="190" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="214" transform="rotate(-90)">PT-BR</text>
