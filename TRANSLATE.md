@@ -127,7 +127,7 @@ Translate by [Tóth Róbert](https://github.com/Nekomajin42)
 
 [it.json](https://github.com/ollm/OpenComic/blob/master/languages/it.json)
 
-Translate by [Albano Battistella](www.zorinos.com), [Matteo Orlando](https://github.com/teor0), and [Simone Governatori](https://github.com/soggow)
+Translate by [Albano Battistella](https://www.zorinos.com), [Matteo Orlando](https://github.com/teor0), and [Simone Governatori](https://github.com/soggow)
 
 `88.4% | Remain 55 | Translated 421`
 
