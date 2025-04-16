@@ -143,7 +143,7 @@ var storageDefault = {
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
 		readingRotateHorizontalsAnticlockwise: false,
-		readingMaxMargin: 400,
+		readingMaxMargin: 800,
 		readingGlobalZoom: true,
 		readingGlobalZoomSlide: true,
 		readingMoveZoomWithMouse: false,

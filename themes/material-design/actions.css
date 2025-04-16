@@ -1423,6 +1423,7 @@
 	letter-spacing: var(--md-sys-typescale-label-large-letter-spacing);
 	display: flex;
 	position: relative;
+	white-space: nowrap;
 }
 
 .simple-button > div i
