@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to disable `Align with next horizontal` when reading on double page [`97d8ecd`](https://github.com/ollm/OpenComic/commit/97d8ecdde04c2a5c418440d8fbbf06496b16c8ba)
 - Option in setting to adjust gamepad sensitivity [`f309c27`](https://github.com/ollm/OpenComic/commit/f309c27195ccf91b0d20600c06f1af03deee5611)
 - Copy image to clipboard [`bb96cef`](https://github.com/ollm/OpenComic/commit/bb96cef97ee1783fc27f3600548a91bb37a96045)
-- OPDS support [`b72f32f`]actio(https://github.com/ollm/OpenComic/commit/b72f32f2445b90f13f5e2cc45865c2c17a72af82)
+- OPDS support [`b72f32f`](https://github.com/ollm/OpenComic/commit/b72f32f2445b90f13f5e2cc45865c2c17a72af82)
 - Button to enable/disable full screen from the more options menu [`5d2ac36`](https://github.com/ollm/OpenComic/commit/5d2ac367c61da97d04cd67526470fb7885c1b3bf)
 - Show package versions in About OpenComic [`888d9ba`](https://github.com/ollm/OpenComic/commit/888d9ba2e23241b1868b6a360e7bca1a0bef9586)
 - Custom mouse wheel shortcuts [`1db0fc7`](https://github.com/ollm/OpenComic/commit/1db0fc7721e33e0e423f0b57590fd65b80cd5df7)
