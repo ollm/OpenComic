@@ -3353,7 +3353,7 @@ input, textarea
 	background-color: var(--md-sys-color-surface-container-low);
 	color: var(--md-sys-color-on-surface);
 	display: inline-block;
-	transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: 0.2s;
 	box-sizing: border-box;
 	overflow: hidden;
 	position: relative;
@@ -3364,15 +3364,15 @@ input, textarea
 
 code
 {
-	padding: 3px 6px;
+	padding: 2px 6px;
 	margin: 0;
 	font-size: 85%;
 	white-space: break-spaces;
 	border-radius: 6px;
 	background-color: var(--md-sys-color-surface-container);
 	color: var(--md-sys-color-on-surface);
+	transition: background-color 0.2s;
 }
-
 
 .can-be-select
 {
