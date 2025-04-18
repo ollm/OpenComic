@@ -3359,3 +3359,23 @@ input, textarea
 	position: relative;
 	width: 100%;
 }
+
+
+
+code
+{
+	padding: 3px 6px;
+	margin: 0;
+	font-size: 85%;
+	white-space: break-spaces;
+	border-radius: 6px;
+	background-color: var(--md-sys-color-surface-container);
+	color: var(--md-sys-color-on-surface);
+}
+
+
+.can-be-select
+{
+	user-select: text;
+	cursor: text;
+}

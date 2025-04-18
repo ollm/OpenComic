@@ -269,6 +269,10 @@
 			"folders": "Navigation (Folders)",
 			"files": "Navigation (Files)",
 			"ignoreSingleFoldersLibrary": "Ignore single folders (Open automatically)",
+			"ignoreFilesRegex": "Ignore files and folders that match the following Regex or File pattern",
+			"ignoreFilesRegexDescription": "This is useful if you want to hide some files and folders.<br>Regex: {{{exampleRegex}}}, etc<br>File pattern: {{{examplePattern}}}, etc",
+			"regexPattern": "Regex or File pattern",
+			"invalidRegex": "Invalid Regex or File pattern",
 			"openingBehaviorFolder": "Behavior when opening folders",
 			"openingBehaviorFolderDescription": "Sets the desired behavior when opening folders while navigation",
 			"openingBehaviorFile": "Behavior when opening files",
@@ -289,7 +293,7 @@
 		"saveImages": {
 			"main": "Save images",
 			"filenameTemplate": "Filename template",
-			"filenameTemplateDescription": "This is the default template that will be used when saving images, if there is already an image with the same name it will be saved with an incremental number. Variables:",
+			"filenameTemplateDescription": "This is the default template that will be used when saving images, if there is already an image with the same name it will be saved with an incremental number.<br>Variables:",
 			"autoSave": "Automatically save images to this folder"
 		},
 		"startupBehavior": {

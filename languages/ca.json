@@ -269,6 +269,10 @@
 			"folders": "Navegació (Carpetes)",
 			"files": "Navegació (Arxius)",
 			"ignoreSingleFoldersLibrary": "Ignorar carpetes individuals (S'obren automàticament)",
+			"ignoreFilesRegex": "Ignorar arxius i carpetes que coincideixin amb la següent Regex o Patró d'arxiu",
+			"ignoreFilesRegexDescription": "Això és útil si es volen ocultar alguns fitxers i carpetes.<br>Regex: {{{exampleRegex}}}, etc<br>Patró d'arxiu: {{{examplePattern}}}, etc",
+			"regexPattern": "Regex o Patró d'arxiu",
+			"invalidRegex": "Regex o Patró d'arxiu invàlid",
 			"openingBehaviorFolder": "Comportament a l'obrir carpetes",
 			"openingBehaviorFolderDescription": "Estableix el comportament desitjat a l'obrir carpetes durant la navegació",
 			"openingBehaviorFile": "Comportament a l'obrir arxius",
@@ -289,7 +293,7 @@
 		"saveImages": {
 			"main": "Guardar imatges",
 			"filenameTemplate": "Plantilla de nom d'arxiu",
-			"filenameTemplateDescription": "Aquesta és la plantilla per defecte que s'utilitzarà al guarda les imatges, si ja hi ha una imatge amb el mateix nom, es guardarà amb un número incremental. Variables:",
+			"filenameTemplateDescription": "Aquesta és la plantilla per defecte que s'utilitzarà al guarda les imatges, si ja hi ha una imatge amb el mateix nom, es guardarà amb un número incremental.<br>Variables:",
 			"autoSave": "Guardar automàticament les imatges en aquesta carpeta"
 		},
 		"startupBehavior": {

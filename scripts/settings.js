@@ -8,6 +8,7 @@ function start()
 	handlebarsContext.openingBehaviorFolder = getOpeningBehaviorName(config.openingBehaviorFolder);
 	handlebarsContext.openingBehaviorFile = getOpeningBehaviorName(config.openingBehaviorFile);
 	handlebarsContext.turnPagesWithMouseWheelShortcut = getTurnPagesWithMouseWheelShortcut();
+	handlebarsContext.ignoreFilesRegexDescription = getIgnoreFilesRegexDescription();
 }
 
 function startSecond()
@@ -528,6 +529,14 @@ function updateServers()
 	}
 
 	list.innerHTML = template.load('settings.content.right.servers.list.html');
+}
+
+function getIgnoreFilesRegexDescription()
+{
+	const exampleRegex = '<code class="can-be-select">/copy|backup|bak|old/iu</code>, <code class="can-be-select">/^(cover|folder|poster|thumbnail)\\./iu</code>, <code class="can-be-select">/^\\./u</code>';
+	const examplePattern = '<code class="can-be-select">*+(copy|backup|bak|old)*</code>, <code class="can-be-select">+(cover|folder|poster|thumbnail).*</code> , <code class="can-be-select">.*</code>';
+
+	return hb.compile(language.settings.navigation.ignoreFilesRegexDescription)({exampleRegex: exampleRegex, examplePattern: examplePattern});
 }
 
 function getTurnPagesWithMouseWheelShortcut()
@@ -1299,6 +1308,40 @@ function set(key, value, save = true)
 		case 'downloadOpdsToFolder': 
 
 			dom.query('.settings-body .settings-download-opds-folder').class(!value, 'disable-pointer');
+
+			break;
+
+		case 'ignoreFilesRegex':
+
+			const current = config.ignoreFilesRegex;
+			config.ignoreFilesRegex = value;
+
+			if(value)
+			{
+				try
+				{
+					const ignore = fileManager.ignoreFilesRegex();
+					ignore.test('Test if Regex is valid');
+				}
+				catch(error)
+				{
+					value = current;
+
+					events.dialog({
+						header: language.settings.navigation.invalidRegex,
+						width: 400,
+						height: false,
+						content: error.message,
+						buttons: [
+							{
+								text: language.buttons.cancel,
+								function: 'events.closeDialog();',
+							}
+						],
+					});
+
+				}
+			}
 
 			break;
 	}

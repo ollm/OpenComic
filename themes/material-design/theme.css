@@ -642,7 +642,7 @@ body
 	font-weight: 400;
 	color: #333;
 	font-size: 13px;
-	-webkit-user-select: none;
+	user-select: none;
 	cursor: default;
 	overflow: hidden;
 	transition: color 0.2s;

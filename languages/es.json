@@ -269,6 +269,10 @@
 			"folders": "Navegación (Carpetas)",
 			"files": "Navegación (Archivos)",
 			"ignoreSingleFoldersLibrary": "Ignorar carpetas individuales (Se abren automáticamente)",
+			"ignoreFilesRegex": "Ignorar archivos y carpetas que coincidan con la siguiente Regex o Patrón de archivo",
+			"ignoreFilesRegexDescription": "Esto es útil si se quieren ocultar algunos archivos y carpetas.<br>Regex: {{{exampleRegex}}}, etc<br>Patrón de archivo: {{{examplePattern}}}, etc",
+			"regexPattern": "Regex o Patrón de archivo",
+			"invalidRegex": "Regex o Patrón de archivo invalido",
 			"openingBehaviorFolder": "Comportamiento al abrir carpetas",
 			"openingBehaviorFolderDescription": "Establece el comportamiento deseado al abrir carpetas durante la navegación",
 			"openingBehaviorFile": "Comportamiento al abrir archivos",
@@ -289,7 +293,7 @@
 		"saveImages": {
 			"main": "Guardar imágenes",
 			"filenameTemplate": "Plantilla de nombre de archivo",
-			"filenameTemplateDescription": "Esta es la plantilla por defecto que se utilizara al guardar imágenes, si ya hay una imagen con el mismo nombre se guardará con un número incremental. Variables:",
+			"filenameTemplateDescription": "Esta es la plantilla por defecto que se utilizara al guardar imágenes, si ya hay una imagen con el mismo nombre se guardará con un número incremental.<br>Variables:",
 			"autoSave": "Guardar automáticamente las imágenes en esta carpeta"
 		},
 		"startupBehavior": {

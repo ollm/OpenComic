@@ -511,6 +511,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 
 		let comics = [];
+		let ignore = fileManager.ignoreFilesRegex();
 
 		// Get comics in master folders
 		let masterFolders = storage.get('masterFolders');
@@ -529,6 +530,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 					for(let i = 0, len = files.length; i < len; i++)
 					{
 						let folder = files[i];
+
+						if(ignore && ignore.test(folder.name))
+							continue;
 
 						if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
 						{
@@ -601,6 +605,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 					for(let j = 0; j < len; j++)
 					{
 						const folder = files[j];
+
+						if(ignore && ignore.test(folder.name))
+							continue;
 
 						if((folder.folder || folder.compressed) && !pathInMasterFolder[folder.path])
 						{

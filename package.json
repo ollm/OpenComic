@@ -95,6 +95,7 @@
 		"jxl-oxide-wasm": "^0.11.3",
 		"lodash.isequal": "^4.5.0",
 		"mime": "^4.0.7",
+		"minimatch": "^10.0.1",
 		"mv": "^2.1.1",
 		"node-7z": "^3.0.0",
 		"node-scp": "^0.0.23",

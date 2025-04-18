@@ -1,6 +1,6 @@
 const requestFileAccess = require(p.join(appDir, 'scripts/file-manager/request-file-access.js'));
 
-var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false/*, unpdf = false*/, fastXmlParser = false, fileType = false;
+var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false/*, unpdf = false*/, fastXmlParser = false, fileType = false, Minimatch = false;
 
 var file = function(path, _config = false) {
 
@@ -3214,15 +3214,62 @@ function genearteFilePath(saveTo, fileName)
 	return path;
 }
 
+var _ignoreFilesRegex = false;
+
+function ignoreFilesRegex()
+{
+	if(!config.ignoreFilesRegex)
+		return false;
+
+	if(_ignoreFilesRegex && _ignoreFilesRegex.pattern === config.ignoreFilesRegex)
+		return _ignoreFilesRegex.regex;
+
+	let pattern = config.ignoreFilesRegex;
+	let flags = 'iu';
+
+	let regex = false;
+
+	if(/\/.*\/[a-z]*/.test(pattern)) // Is Regex
+	{
+		flags = app.extract(/\/.*\/([a-z]*)/, pattern, 1);
+		pattern = app.extract(/\/(.*)\/[a-z]*/, pattern, 1);
+	
+		regex = new RegExp(pattern, flags);
+	}
+	else // Is File Pattern
+	{
+		if(Minimatch === false)
+			Minimatch = require('minimatch').Minimatch;
+
+		const mm = new Minimatch(pattern, {
+			// noCase: true,
+			nocomment: true,
+		});
+
+		regex = mm.makeRe();
+	}
+
+	_ignoreFilesRegex = {
+		pattern: config.ignoreFilesRegex,
+		regex: regex,
+	};
+
+	return regex;
+}
+
 function filtered(files, specialFiles = false)
 {
-	let filtered = [];
+	const ignore = ignoreFilesRegex();
+	const filtered = [];
 
 	if(files)
 	{
 		for(let i = 0, len = files.length; i < len; i++)
 		{
 			let file = files[i];
+
+			if(ignore && ignore.test(file.name))
+				continue;
 
 			if(file.folder || file.compressed)
 				filtered.push(file);
@@ -3529,6 +3576,7 @@ module.exports = {
 	removeTmpVector: removeTmpVector,
 	removePathPart: removePathPart,
 	filtered: filtered,
+	ignoreFilesRegex: ignoreFilesRegex,
 	sort: sort,
 	realPath: realPath,
 	pathType: pathType,
