@@ -468,7 +468,7 @@ async function download(link = false)
 
 		if(!fs.existsSync(downloadPath))
 		{
-			const response = await fetch(link.href);
+			const response = await fetch(link.url);
 
 			if(response.ok)
 			{

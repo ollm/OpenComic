@@ -1445,14 +1445,18 @@ hb.registerHelper('shortWindowsPath', function(string) {
 
 hb.registerHelper('normalizeNumber', function(value, decimals) {
 
+	if(isNaN(value))
+		value = 0;
+	else
+		value = +value;
+
 	value = String(value);
 
-	var num_v = String(value).replace(/.*?(\.|$)/, '').length;
+	const has = value.replace(/.*?(\.|$)/, '').length;
+	decimals = decimals.replace(/.*?(\.|$)/, '').length;
 
-	var num_d = decimals.replace(/.*?(\.|$)/, '').length;
-
-	if(num_d != 0)
-		value = value+(/\./.test(value) ? '' : '.')+('0'.repeat(num_d - num_v));
+	if(decimals != 0)
+		value = value+(/\./.test(value) ? '' : '.')+('0'.repeat(decimals - has));
 
 	return value;
 

@@ -147,6 +147,14 @@ function closeWorker(thread = 0)
 	delete workers[thread];
 }
 
+function closeAllWorkers()
+{
+	for(let thread in workers)
+	{
+		closeWorker(thread);
+	}
+}
+
 function workerMessage(thread, result)
 {
 	const worker = workers[thread];
@@ -360,6 +368,7 @@ async function convertImageToBlob(path, options = {})
 }
 
 module.exports = {
+	closeAllWorkers: closeAllWorkers,
 	convertImage: convertImage,
 	convertImageToBlob: convertImageToBlob,
 	clean: clean,

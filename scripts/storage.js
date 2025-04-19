@@ -83,8 +83,8 @@ var readingPagesConfig = {
 		letterSpacing: 0,
 		wordSpacing: 0,
 		pSpacing: 4,
-		pLineHeight: 1.3,
-		lineHeight: false,
+		pLineHeight: 0.3,
+		lineHeight: 1.6,
 		colorsTheme: 'app',
 	},
 };

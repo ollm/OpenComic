@@ -356,7 +356,7 @@ function loadShortcuts()
 						}
 						else
 						{
-							const code = event.code || '';
+							const code = event?.code || '';
 
 							if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
 								reading.goNext();
@@ -381,7 +381,7 @@ function loadShortcuts()
 						}
 						else
 						{
-							const code = event.code || '';
+							const code = event?.code || '';
 
 							if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
 								reading.goPrev();
