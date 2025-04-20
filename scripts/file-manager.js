@@ -3266,14 +3266,15 @@ function filtered(files, specialFiles = false)
 	{
 		for(let i = 0, len = files.length; i < len; i++)
 		{
-			let file = files[i];
+			const file = files[i];
+			const specialFile = (specialFiles && !file.folder && !file.compressed && compatibleSpecialExtensions.includes(app.extname(file.path))) ? true : false;
 
-			if(ignore && ignore.test(file.name))
+			if(ignore && ignore.test(file.name) && !specialFile)
 				continue;
 
 			if(file.folder || file.compressed)
 				filtered.push(file);
-			else if(inArray(mime.getType(file.path), compatibleMime) || (specialFiles && inArray(app.extname(file.path), compatibleSpecialExtensions)))
+			else if(compatibleMime.includes(mime.getType(file.path)) || specialFile)
 				filtered.push(file);
 		}
 	}

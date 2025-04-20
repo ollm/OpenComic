@@ -248,15 +248,18 @@ function returnThumbnailsImages(images, callback, file = false)
 
 	if(toGenerateThumbnails.length > 0 && file)
 	{
-		// Consider adding this to a queue if it causes problems
-		file.makeAvailable(toGenerateThumbnails, function(image) {
+		threads.job('cacheMakeAvailable', {useThreads: 0.01, delay: 50}, function() {
 
-			const data = toGenerateThumbnailsData[image.path];
-			const size = data.type ? sizes[data.type][data.forceSize] : sizes.image[data.forceSize];
+			file.makeAvailable(toGenerateThumbnails, function(image) {
 
-			addImageToQueue(image.path, size, data.sha, callback, data.vars || false, data.type, data.forceSize);
+				const data = toGenerateThumbnailsData[image.path];
+				const size = data.type ? sizes[data.type][data.forceSize] : sizes.image[data.forceSize];
 
-		}, false, true);
+				addImageToQueue(image.path, size, data.sha, callback, data.vars || false, data.type, data.forceSize);
+
+			}, false, true);
+
+		});
 	}
 
 	return single ? thumbnail : thumbnails;

@@ -75,6 +75,8 @@ function clearPdfAndEpubCache()
 		}
 	}
 
+	cache.flushJsonMemory();
+
 	console.timeEnd('Migration: clearPdfAndEpubCache');
 }
 
@@ -223,7 +225,7 @@ function start(data)
 	if(changes < 103) // Add the new mouse wheel events
 		data = migrateMouseWheelEvents(data);
 
-	if(changes < 105) // Change page-1 to page-0001 and 1_sortonly to 0001_sortonly
+	if(changes < 107) // Change page-1 to page-0001 and 1_sortonly to 0001_sortonly
 		data = migrateEpubAndPdfToLeadingZeros(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
