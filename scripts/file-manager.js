@@ -1170,13 +1170,17 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		return {};
 	}
 
-	this.readCompressedMetadata = async function() {
+	this.readCompressedMetadata = async function(files = false, compressedPath = '') {
 
-		let files = await this.read();
+		files = files || await this.read();
+		let len = files.length;
+
+		if(/*config.ignoreSingleFoldersLibrary && */len === 1 && files[0].folder && files[0].files && files[0].files.length)
+			return this.readCompressedMetadata(files[0].files, p.join(compressedPath, files[0].name));
 
 		let comicInfoFile = false;
 
-		for(let i = 0, len = files.length; i < len; i++)
+		for(let i = 0; i < len; i++)
 		{
 			if(files[i].name == 'ComicInfo.xml')
 			{
@@ -1194,9 +1198,18 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				fastXmlParser = new fastXmlParser({ignoreAttributes: false});
 			}
 
-			let only = this.config.only;
-			await this.extract({only: [comicInfoFile.name]});
-			this.updateConfig({only: only});
+			if(compressedPath !== false && lastCompressedFile(this.path) === lastCompressedFile(comicInfoFile.path))
+			{
+				const only = this.config.only;
+				await this.extract({only: [p.join(compressedPath, comicInfoFile.name)]});
+				this.updateConfig({only: only});
+			}
+			else
+			{
+				const file = fileManager.file(this.path);
+				await file.makeAvailable([{path: comicInfoFile.path}]);
+				file.destroy();
+			}
 
 			let xml = await fsp.readFile(realPath(comicInfoFile.path, -1));
 			let metadata = fastXmlParser.parse(xml);

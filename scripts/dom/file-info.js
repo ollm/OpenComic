@@ -122,7 +122,20 @@ async function show(path, opds = false)
 		let cacheFile = 'compressed-files-'+sha+'.json';
 
 		if(cache.existsJson(cacheFile))
-			metadata = cache.readJson(cacheFile).metadata || {};
+			metadata = cache.readJson(cacheFile).metadata || false;
+		else
+			metadata = false;
+
+		if(metadata === false)
+		{
+			const file = fileManager.file(path);
+			const files = await file.read({filtered: false});
+			file.destroy();
+
+			const compressed = fileManager.fileCompressed(path);
+			metadata = await compressed.readCompressedMetadata(files, false);
+			compressed.destroy();
+		}
 
 		metadata.size = '<span class="file-info-size">...</span>';
 
