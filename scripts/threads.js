@@ -4,8 +4,11 @@ var queue = {default: []};
 var queueIsStop = {default: false};
 var onEnd = {};
 
-function job(key = 'default', options = {}, callback = false)
+async function job(key = 'default', options = {}, callback = false)
 {
+	if(options.delay)
+		await app.sleep(options.delay);
+
 	const _arguments = [];
 
 	for(let i = 3, len = arguments.length; i < len; i++)
