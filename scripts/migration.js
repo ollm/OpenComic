@@ -204,6 +204,14 @@ function migrateMouseWheelEvents(data)
 	return data;
 }
 
+function migrateIgnoreFilesRegex(data)
+{
+	if(data.config.ignoreFilesRegex)
+		data.config.ignoreFilesRegex = [data.config.ignoreFilesRegex];
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -227,6 +235,9 @@ function start(data)
 
 	if(changes < 107) // Change page-1 to page-0001 and 1_sortonly to 0001_sortonly
 		data = migrateEpubAndPdfToLeadingZeros(data);
+
+	if(changes < 108)
+		data = migrateIgnoreFilesRegex(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 
