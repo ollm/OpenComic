@@ -269,10 +269,21 @@
 			"folders": "导航（文件夹）",
 			"files": "导航（文件）",
 			"ignoreSingleFoldersLibrary": "忽略单个文件夹（自动打开）",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "打开文件夹时的行为",
 			"openingBehaviorFolderDescription": "设置导航时打开文件夹时所需的行为",
 			"openingBehaviorFile": "打开文件时的行为",

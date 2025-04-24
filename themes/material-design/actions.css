@@ -1092,6 +1092,7 @@
 	/*will-change: transform opacity;*/
 	z-index: 120;
 	transform: translate(-50%, -50%);
+	transform: translateY(round(-50%, 1px)) translateX(round(-50%, 1px)) !important;
 	clip-path: inset(-50px -50px -50px -50px round 14px);
 	transition: 0.3s clip-path;
 }

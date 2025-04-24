@@ -269,10 +269,21 @@
 			"folders": "Navegación (Carpetas)",
 			"files": "Navegación (Archivos)",
 			"ignoreSingleFoldersLibrary": "Ignorar carpetas individuales (Se abren automáticamente)",
-			"ignoreFilesRegex": "Ignorar archivos y carpetas que coincidan con la siguiente Regex o Patrón de archivo",
-			"ignoreFilesRegexDescription": "Esto es útil si se quieren ocultar algunos archivos y carpetas.<br>Regex: {{{exampleRegex}}}, etc<br>Patrón de archivo: {{{examplePattern}}}, etc",
-			"regexPattern": "Regex o Patrón de archivo",
-			"invalidRegex": "Regex o Patrón de archivo invalido",
+			"ignoreFilesRegex": {
+				"title": "Ignorar archivos y carpetas que coincidan con una regex o patrón de archivo",
+				"description": "Esto es útil si se quieren ocultar algunos archivos y carpetas",
+				"dialogTitle": "Ignorar archivos y carpetas",
+				"dialogDescription": "Esto es útil si desea ocultar algunos archivos y carpetas, puede usar un patrón regex o un patrón de archivo. Ejemplos:",
+				"examples": {
+					"poster": "Pósters y cubiertas",
+					"miscellaneousFiles": "Archivos varios",
+					"unixHidden": "Rutas ocultas de Unix"
+				},
+				"regexPattern": "Regex o patrón de archivo",
+				"addRegex": "Añadir regex o patrón de archivo",
+				"noRegex": "Sin regex o patrones de archivo",
+				"invalidRegex": "Regex o patrón de archivo invalido"
+			},
 			"openingBehaviorFolder": "Comportamiento al abrir carpetas",
 			"openingBehaviorFolderDescription": "Establece el comportamiento deseado al abrir carpetas durante la navegación",
 			"openingBehaviorFile": "Comportamiento al abrir archivos",

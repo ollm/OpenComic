@@ -8,7 +8,6 @@ function start()
 	handlebarsContext.openingBehaviorFolder = getOpeningBehaviorName(config.openingBehaviorFolder);
 	handlebarsContext.openingBehaviorFile = getOpeningBehaviorName(config.openingBehaviorFile);
 	handlebarsContext.turnPagesWithMouseWheelShortcut = getTurnPagesWithMouseWheelShortcut();
-	handlebarsContext.ignoreFilesRegexDescription = getIgnoreFilesRegexDescription();
 }
 
 function startSecond()
@@ -17,6 +16,7 @@ function startSecond()
 
 	updateMasterFolders();
 	updateServers();
+	updateIgnoreFilesRegex();
 
 	getStorageSize();
 
@@ -490,6 +490,155 @@ function removeServer(key, confirm = false)
 	}
 }
 
+function validRegex(pattern)
+{
+	console.log(pattern);
+
+	try
+	{
+		const ignore = fileManager.ignoreFilesRegex([pattern], true);
+		ignore.test('Test if Regex is valid');
+	}
+	catch(error)
+	{
+		events.snackbar({
+			key: 'invalidRegex',
+			text: language.settings.navigation.ignoreFilesRegex.invalidRegex,
+			duration: 6,
+			update: true,
+			buttons: [
+				{
+					text: language.buttons.dismiss,
+					function: 'events.closeSnackbar();',
+				},
+			],
+		});
+
+		return false;
+	}
+
+	return true;
+}
+
+function addIgnoreFilesRegex(save = false)
+{
+	if(save)
+	{		
+		const pattern = document.querySelector('.input-pattern').value;
+
+		if(validRegex(pattern))
+		{
+			events.closeDialog();
+
+			config.ignoreFilesRegex.push(pattern);
+			settings.set('ignoreFilesRegex', config.ignoreFilesRegex);
+
+			updateIgnoreFilesRegex();
+			fileManager.ignoreFilesRegex(false, true);
+		}
+	}
+	else
+	{
+		handlebarsContext.ignoreFilesRegex = '';
+
+		events.dialog({
+			header: language.settings.navigation.ignoreFilesRegex.dialogTitle,
+			width: 600,
+			height: false,
+			content: template.load('dialog.ignore.files.regex.add.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.save,
+					function: 'settings.addIgnoreFilesRegex(true);',
+				}
+			],
+		});
+
+		events.eventSwitch();
+		events.eventInput();
+	}
+}
+
+function editIgnoreFilesRegex(key, save = false)
+{
+	if(save)
+	{		
+		const pattern = document.querySelector('.input-pattern').value;
+
+		if(validRegex(pattern))
+		{
+			events.closeDialog();
+
+			config.ignoreFilesRegex[key] = pattern;
+			settings.set('ignoreFilesRegex', config.ignoreFilesRegex);
+
+			updateIgnoreFilesRegex();
+			fileManager.ignoreFilesRegex(false, true);
+		}
+	}
+	else
+	{
+		handlebarsContext.ignoreFilesRegex = config.ignoreFilesRegex[key];
+
+		events.dialog({
+			header: language.settings.navigation.ignoreFilesRegex.dialogTitle,
+			width: 600,
+			height: false,
+			content: template.load('dialog.ignore.files.regex.add.html'),
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog();',
+				},
+				{
+					text: language.buttons.save,
+					function: 'settings.editIgnoreFilesRegex('+key+', true);',
+				}
+			],
+		});
+
+		events.eventSwitch();
+		events.eventInput();
+	}
+}
+
+function removeIgnoreFilesRegex(key)
+{
+	if(config.ignoreFilesRegex[key])
+	{
+		config.ignoreFilesRegex.splice(key, 1);
+		settings.set('ignoreFilesRegex', config.ignoreFilesRegex);
+
+		updateIgnoreFilesRegex();
+		fileManager.ignoreFilesRegex(false, true);
+	}
+}
+
+function updateIgnoreFilesRegex()
+{
+	const contentRight = template._contentRight();
+
+	const empty = contentRight.querySelector('.settings-ignore-files-empty');
+	const list = contentRight.querySelector('.settings-ignore-files-list');
+
+	if(config.ignoreFilesRegex?.length)
+	{
+		empty.style.display = 'none';
+		list.style.display = '';
+	}
+	else
+	{
+		empty.style.display = '';
+		list.style.display = 'none';
+	}
+
+	list.innerHTML = template.load('settings.content.right.ignore.files.list.html');
+}
+
 function showOnLibrary(value = 0)
 {
 	document.querySelector('.input-show-on-library').dataset.value = value;
@@ -529,14 +678,6 @@ function updateServers()
 	}
 
 	list.innerHTML = template.load('settings.content.right.servers.list.html');
-}
-
-function getIgnoreFilesRegexDescription()
-{
-	const exampleRegex = '<code class="can-be-select">/copy|backup|bak|old/iu</code>, <code class="can-be-select">/^(cover|folder|poster|thumbnail)\\./iu</code>, <code class="can-be-select">/^\\./u</code>';
-	const examplePattern = '<code class="can-be-select">*+(copy|backup|bak|old)*</code>, <code class="can-be-select">+(cover|folder|poster|thumbnail).*</code> , <code class="can-be-select">.*</code>';
-
-	return hb.compile(language.settings.navigation.ignoreFilesRegexDescription)({exampleRegex: exampleRegex, examplePattern: examplePattern});
 }
 
 function getTurnPagesWithMouseWheelShortcut()
@@ -1310,40 +1451,6 @@ function set(key, value, save = true)
 			dom.query('.settings-body .settings-download-opds-folder').class(!value, 'disable-pointer');
 
 			break;
-
-		case 'ignoreFilesRegex':
-
-			const current = config.ignoreFilesRegex;
-			config.ignoreFilesRegex = value;
-
-			if(value)
-			{
-				try
-				{
-					const ignore = fileManager.ignoreFilesRegex();
-					ignore.test('Test if Regex is valid');
-				}
-				catch(error)
-				{
-					value = current;
-
-					events.dialog({
-						header: language.settings.navigation.invalidRegex,
-						width: 400,
-						height: false,
-						content: error.message,
-						buttons: [
-							{
-								text: language.buttons.cancel,
-								function: 'events.closeDialog();',
-							}
-						],
-					});
-
-				}
-			}
-
-			break;
 	}
 
 	if(save)
@@ -1401,6 +1508,9 @@ module.exports = {
 	addServer: addServer,
 	editServer: editServer,
 	removeServer: removeServer,
+	addIgnoreFilesRegex: addIgnoreFilesRegex,
+	editIgnoreFilesRegex: editIgnoreFilesRegex,
+	removeIgnoreFilesRegex: removeIgnoreFilesRegex,
 	showOnLibrary: showOnLibrary,
 	filesInSubfolders: filesInSubfolders,
 	getImageInterpolationMethods: getImageInterpolationMethods,

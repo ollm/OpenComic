@@ -269,10 +269,21 @@
 			"folders": "ナビゲーション（フォルダー）",
 			"files": "ナビゲーション（ファイル）",
 			"ignoreSingleFoldersLibrary": "単一フォルダーを無視（自動で開く）",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "フォルダーを開くときの挙動",
 			"openingBehaviorFolderDescription": "ナビゲーション中、フォルダーを開いた際の動作を設定します",
 			"openingBehaviorFile": "ファイルを開くときの挙動",

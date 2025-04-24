@@ -269,10 +269,21 @@
 			"folders": "Điều hướng (thư mục)",
 			"files": "Điều hướng (tệp tin)",
 			"ignoreSingleFoldersLibrary": "Bỏ qua thư mục đơn (Tự động mở)",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "",
 			"openingBehaviorFolderDescription": "",
 			"openingBehaviorFile": "",

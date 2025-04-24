@@ -269,10 +269,21 @@
 			"folders": "Navigation (Folders)",
 			"files": "Navigation (Files)",
 			"ignoreSingleFoldersLibrary": "Ignore single folders (Open automatically)",
-			"ignoreFilesRegex": "Ignore files and folders that match the following Regex or File pattern",
-			"ignoreFilesRegexDescription": "This is useful if you want to hide some files and folders.<br>Regex: {{{exampleRegex}}}, etc<br>File pattern: {{{examplePattern}}}, etc",
-			"regexPattern": "Regex or File pattern",
-			"invalidRegex": "Invalid Regex or File pattern",
+			"ignoreFilesRegex": {
+				"title": "Ignore files and folders that match a regex or file pattern",
+				"description": "This is useful if you want to hide some files and folders",
+				"dialogTitle": "Ignore files and folders",
+				"dialogDescription": "This is useful if you want to hide some files and folders, you can use a regex pattern or a file pattern. Examples:",
+				"examples": {
+					"poster": "Posters and Covers",
+					"miscellaneousFiles": "Miscellaneous files",
+					"unixHidden": "Unix hidden paths"
+				},
+				"regexPattern": "Regex or file pattern",
+				"addRegex": "Add regex or file pattern",
+				"noRegex": "No regex or file patterns",
+				"invalidRegex": "Invalid regex or file pattern"
+			},
 			"openingBehaviorFolder": "Behavior when opening folders",
 			"openingBehaviorFolderDescription": "Sets the desired behavior when opening folders while navigation",
 			"openingBehaviorFile": "Behavior when opening files",

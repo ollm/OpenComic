@@ -1,0 +1,3 @@
+{{#each config.ignoreFilesRegex}}
+<div class="chip chip-icon-right label-large" onclick="settings.editIgnoreFilesRegex({{@key}});"><div></div>{{@this}}<i class="icon-18 material-icon right gamepad-item" onclick="event.stopPropagation(); settings.removeIgnoreFilesRegex({{@key}});" style="margin-left: 0px;">close</i><i class="icon-18 material-icon right gamepad-item" onclick="event.stopPropagation(); settings.editIgnoreFilesRegex({{@key}});" style="margin-right: 0px;">edit</i></div>
+{{/each}}

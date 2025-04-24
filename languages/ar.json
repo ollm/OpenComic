@@ -269,10 +269,21 @@
 			"folders": "استعراض المجلدات",
 			"files": "استعراض الملفات",
 			"ignoreSingleFoldersLibrary": "تجاهل المجلدات الفردية (الفتح تلقائياً)",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "الإجراء عند فتح المجلد",
 			"openingBehaviorFolderDescription": "اختر الإجراء المفضل عند فتح مجلد خلال الاستعراض",
 			"openingBehaviorFile": "الإجراء عند فتح الملف",

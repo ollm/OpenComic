@@ -269,10 +269,21 @@
 			"folders": "Dossiers",
 			"files": "Fichiers",
 			"ignoreSingleFoldersLibrary": "Ignorer les dossiers uniques dans la bibliothèque",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "",
 			"openingBehaviorFolderDescription": "",
 			"openingBehaviorFile": "",

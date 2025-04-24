@@ -46,7 +46,8 @@
 }
 
 .settings-master-folders,
-.settings-servers
+.settings-servers,
+.settings-ignore-files
 {
 	padding: 0px 24px;
 }
@@ -59,14 +60,16 @@
 }
 
 .settings-master-folders-empty,
-.settings-servers-empty
+.settings-servers-empty,
+.settings-ignore-files-empty
 {
 	padding: 0px;
 	margin-bottom: 10px;
 }
 
 .settings-master-folders-list,
-.settings-servers-list
+.settings-servers-list,
+.settings-ignore-files-list
 {
 	margin: 19px 0px 13px;
 	display: flex;

@@ -269,10 +269,21 @@
 			"folders": "การนำทาง (โฟลเดอร์)",
 			"files": "การนำทาง (ไฟล์)",
 			"ignoreSingleFoldersLibrary": "ละเว้นโฟลเดอร์เดี่ยว (เปิดอัตโนมัติ)",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "พฤติกรรมเมื่อเปิดโฟลเดอร์",
 			"openingBehaviorFolderDescription": "กำหนดพฤติกรรมที่ต้องการเมื่อเปิดโฟลเดอร์ระหว่างการนำทาง",
 			"openingBehaviorFile": "พฤติกรรมเมื่อเปิดไฟล์",

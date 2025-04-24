@@ -236,24 +236,25 @@
 
 			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">
 				<span>
-					<div>{{language.settings.navigation.ignoreFilesRegex}}</div>
-					<span class="body-medium">{{{ignoreFilesRegexDescription}}}</span>
+					<div>{{language.settings.navigation.ignoreFilesRegex.title}}</div>
+					<span class="body-medium">{{{language.settings.navigation.ignoreFilesRegex.description}}}</span>
 				</span>
-				<div class="input" style="width: 376px; height: 56px; margin-top: 8px;">
-					<div>
-						<div class="inputBorder">
-							<div class="left"></div>
-							<div class="right"></div>
-							<div class="top">
-								<div></div>
-								<span></span> 
-							</div>
-							<div class="bottom"></div>
-						</div>
-						<div class="placeholder">{{language.settings.navigation.regexPattern}}</div>
-						<input type="text" value="{{config.ignoreFilesRegex}}" class="input-file-name" onchange="settings.set('ignoreFilesRegex', this.value)">
-					</div>
+				<div class="simple-button filled-tonal gamepad-item" onclick="settings.addIgnoreFilesRegex();">
+					<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.settings.navigation.ignoreFilesRegex.addRegex}}</div>
 				</div>
+			</div>
+
+			<div class="settings-ignore-files">
+				
+				<div class="menu-simple-text menu-grey settings-ignore-files-empty"{{#if config.ignoreFilesRegex}} style="display: none;"{{/if}}>
+					<span>{{language.settings.navigation.ignoreFilesRegex.noRegex}}</span>
+				</div>
+
+				<div class="settings-ignore-files-list"{{#unless config.ignoreFilesRegex}} style="display: none;"{{/unless}}>
+				</div>
+
+				<cb></cb>
+
 			</div>
 
 			<h2 class="headline-small">{{language.settings.navigation.folders}}</h2>

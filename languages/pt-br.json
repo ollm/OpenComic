@@ -269,10 +269,21 @@
 			"folders": "Navegação (Pastas)",
 			"files": "Navegação (Arquivos)",
 			"ignoreSingleFoldersLibrary": "Ignorar pastas únicas (Abrir automaticamente)",
-			"ignoreFilesRegex": "",
-			"ignoreFilesRegexDescription": "",
-			"regexPattern": "",
-			"invalidRegex": "",
+			"ignoreFilesRegex": {
+				"title": "",
+				"description": "",
+				"dialogTitle": "",
+				"dialogDescription": "",
+				"examples": {
+					"poster": "",
+					"miscellaneousFiles": "",
+					"unixHidden": ""
+				},
+				"regexPattern": "",
+				"addRegex": "",
+				"noRegex": "",
+				"invalidRegex": ""
+			},
 			"openingBehaviorFolder": "Comportamento ao abrir pastas",
 			"openingBehaviorFolderDescription": "Define o comportamento quando abrir pastas durante a navegação",
 			"openingBehaviorFile": "Comportamento ao abrir arquivos",

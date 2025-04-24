@@ -1,0 +1,35 @@
+{{language.settings.navigation.ignoreFilesRegex.dialogDescription}}
+<br><br>
+{{language.settings.navigation.ignoreFilesRegex.examples.poster}}
+<br>
+<code class="can-be-select">/^(poster|cover|folder|thumbnail|default|series)\./iu</code>
+<br>
+<code class="can-be-select">+(poster|cover|folder|thumbnail|default|series).*</code>
+<br><br>
+{{language.settings.navigation.ignoreFilesRegex.examples.miscellaneousFiles}}
+<br>
+<code class="can-be-select">/copy|backup|bak|old/iu</code>
+<br>
+<code class="can-be-select">*+(copy|backup|bak|old)*</code>
+<br><br>
+{{language.settings.navigation.ignoreFilesRegex.examples.unixHidden}}
+<br>
+<code class="can-be-select">/^\./u</code>
+<br>
+<code class="can-be-select">.*</code>
+<br><br>
+<div class="input">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.navigation.ignoreFilesRegex.regexPattern}}</div>
+		<input type="text" value="{{ignoreFilesRegex}}" class="input-pattern">
+	</div>
+</div>

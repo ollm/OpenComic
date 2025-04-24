@@ -3227,47 +3227,93 @@ function genearteFilePath(saveTo, fileName)
 	return path;
 }
 
-var _ignoreFilesRegex = false;
+var _ignoreFilesRegex = false, ignoreFilesRegexCache = {};
 
-function ignoreFilesRegex()
+function ignoreFilesRegex(ignoreFilesRegex = false, force = false)
 {
-	if(!config.ignoreFilesRegex)
+	ignoreFilesRegex = ignoreFilesRegex || config.ignoreFilesRegex || [];
+
+	if(!force)
+	{
+		if(_ignoreFilesRegex)
+			return _ignoreFilesRegex;
+	}
+
+	const len = ignoreFilesRegex.length;
+
+	if(!len)
+	{
+		_ignoreFilesRegex = false;
+
 		return false;
-
-	if(_ignoreFilesRegex && _ignoreFilesRegex.pattern === config.ignoreFilesRegex)
-		return _ignoreFilesRegex.regex;
-
-	let pattern = config.ignoreFilesRegex;
-	let flags = 'iu';
-
-	let regex = false;
-
-	if(/\/.*\/[a-z]*/.test(pattern)) // Is Regex
-	{
-		flags = app.extract(/\/.*\/([a-z]*)/, pattern, 1);
-		pattern = app.extract(/\/(.*)\/[a-z]*/, pattern, 1);
-	
-		regex = new RegExp(pattern, flags);
 	}
-	else // Is File Pattern
+
+	ignoreFilesRegexCache = {};
+	const list = [];
+
+	for(let i = 0; i < len; i++)
 	{
-		if(Minimatch === false)
-			Minimatch = require('minimatch').Minimatch;
+		let pattern = ignoreFilesRegex[i];
+		let flags = 'iu';
 
-		const mm = new Minimatch(pattern, {
-			// noCase: true,
-			nocomment: true,
-		});
+		let regex = false;
 
-		regex = mm.makeRe();
+		if(/\/.*\/[a-z]*/.test(pattern)) // Is Regex
+		{
+			flags = app.extract(/\/.*\/([a-z]*)/, pattern, 1);
+			pattern = app.extract(/\/(.*)\/[a-z]*/, pattern, 1);
+		
+			regex = new RegExp(pattern, flags);
+		}
+		else // Is File Pattern
+		{
+			if(Minimatch === false)
+				Minimatch = require('minimatch').Minimatch;
+
+			const mm = new Minimatch(pattern, {
+				// noCase: true,
+				nocomment: true,
+				noglobstar: true,
+				optimizationLevel: 2,
+			});
+
+			regex = mm.makeRe();
+		}
+
+		list.push(regex);
 	}
+
+	let i = 0;
 
 	_ignoreFilesRegex = {
-		pattern: config.ignoreFilesRegex,
-		regex: regex,
+		test: function(string) {
+
+			if(ignoreFilesRegexCache[string] !== undefined)
+				return ignoreFilesRegexCache[string];
+
+			let match = false;
+
+			for(i = 0; i < len; i++)
+			{
+				const regex = list[i];
+
+				if(regex.test(string))
+				{
+					match = true;
+					break;
+				}
+			}
+
+			if(string.length < 1000) // Avoid cache too long strings
+				ignoreFilesRegexCache[string] = match;
+
+			return match;
+
+		},
+		list: list,
 	};
 
-	return regex;
+	return _ignoreFilesRegex;
 }
 
 function filtered(files, specialFiles = false)
