@@ -79,7 +79,7 @@ const electron = require('electron'),
 	hb = require('handlebars'),
 	os = require('os'),
 	ejs = require('electron-json-storage'),
-	_sha1 = require('sha1'),
+	crypto = require('crypto'),
 	p = require('path'),
 	isEqual = require('lodash.isequal'),
 	shortWindowsPath = require('short-windows-path'),
@@ -930,11 +930,11 @@ const shaCache = {};
 function sha1(string)
 {
 	if(string.length > 1000)
-		return _sha1(string);
+		return crypto.hash('sha1', string, 'hex');
 	else if(shaCache[string])
 		return shaCache[string];
 
-	return shaCache[string] = _sha1(string);
+	return shaCache[string] = crypto.hash('sha1', string, 'hex');
 }
 
 function loadLanguage(lan = false)

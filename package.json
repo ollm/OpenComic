@@ -102,7 +102,6 @@
 		"node-unrar-js": "^2.0.2",
 		"pdfjs-dist": "^5.1.91",
 		"sanitize-html": "^2.15.0",
-		"sha1": "^1.1.1",
 		"sharp": "^0.34.1",
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
