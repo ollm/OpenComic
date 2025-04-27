@@ -492,8 +492,6 @@ function removeServer(key, confirm = false)
 
 function validRegex(pattern)
 {
-	console.log(pattern);
-
 	try
 	{
 		const ignore = fileManager.ignoreFilesRegex([pattern], true);

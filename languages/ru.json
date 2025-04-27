@@ -438,6 +438,9 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": ""
+		},
 		"tracking": {
 			"getTokenHeader": "Войдите на {{siteName}} с помощью токена",
 			"getTokenInput": "Токен {{siteName}}",
@@ -575,7 +578,8 @@
 		"preview": "",
 		"change": "",
 		"apply": "",
-		"close": "Закрыть"
+		"close": "Закрыть",
+		"login": ""
 	},
 	"error": {
 		"uncompress": {

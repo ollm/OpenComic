@@ -1,4 +1,4 @@
-var changes = 108; // Update this if readingPagesConfig is updated
+var changes = 109; // Update this if readingPagesConfig is updated
 
 var readingPagesConfig = {
 	readingConfigName: '',
@@ -323,6 +323,9 @@ var storageDefault = {
 		subtitle: '',
 		url: '',
 		showOnLeft: false,
+		pass: '',
+		user: '',
+		auth: '',
 	}],
 	shortcuts: {
 		browse: {

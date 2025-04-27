@@ -438,6 +438,9 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": ""
+		},
 		"tracking": {
 			"getTokenHeader": "Logga in på {{siteName}} med token",
 			"getTokenInput": "{{siteName}}-token",
@@ -575,7 +578,8 @@
 		"preview": "",
 		"change": "",
 		"apply": "",
-		"close": "Stäng"
+		"close": "Stäng",
+		"login": ""
 	},
 	"error": {
 		"uncompress": {

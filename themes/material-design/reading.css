@@ -519,6 +519,7 @@
 .tracking-search
 {
 	min-height: calc(100% - 52px);
+	height: 300px;
 	position: relative;
 	width: calc(100% + 34px);
 	margin-left: -24px;

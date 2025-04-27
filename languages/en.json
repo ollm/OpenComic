@@ -438,8 +438,11 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": "Login to {{siteName}}"
+		},
 		"tracking": {
-			"getTokenHeader": "Sign in to {{siteName}} via token",
+			"getTokenHeader": "Login to {{siteName}} via token",
 			"getTokenInput": "The {{siteName}} token",
 			"invalidTokenHeader": "Invalid {{siteName}} token",
 			"resendToken": "Do you want to add the {{siteName}} token again?",
@@ -575,7 +578,8 @@
 		"preview": "Preview",
 		"change": "Change",
 		"apply": "Apply",
-		"close": "Close"
+		"close": "Close",
+		"login": "Login"
 	},
 	"error": {
 		"uncompress": {

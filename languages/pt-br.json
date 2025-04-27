@@ -438,6 +438,9 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": ""
+		},
 		"tracking": {
 			"getTokenHeader": "Entrar em {{siteName}} por token",
 			"getTokenInput": "O token de {{siteName}}",
@@ -575,7 +578,8 @@
 		"preview": "Pré-visualizar",
 		"change": "Mudar",
 		"apply": "Aplicar",
-		"close": "Fechar"
+		"close": "Fechar",
+		"login": ""
 	},
 	"error": {
 		"uncompress": {
