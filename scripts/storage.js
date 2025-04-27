@@ -1,6 +1,8 @@
-var changes = 109; // Update this if readingPagesConfig is updated
+const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-var readingPagesConfig = {
+const changes = 110; // Update this if readingPagesConfig is updated
+
+const readingPagesConfig = {
 	readingConfigName: '',
 	readingView: 'slide',
 	readingViewConfig: {
@@ -89,7 +91,7 @@ var readingPagesConfig = {
 	},
 };
 
-var storageDefault = {
+const storageDefault = {
 	config: {
 		appVersion: _package.version,
 		changes: changes,
@@ -414,8 +416,9 @@ var storageDefault = {
 			lastAccess: 0,
 		}
 	},
-},
-storageJson = {};
+};
+
+const storageJson = {};
 
 function getDownloadsPath()
 {
@@ -802,4 +805,5 @@ module.exports = {
 	readingPagesConfig: readingPagesConfig,
 	changes: changes,
 	getDownloadsPath: getDownloadsPath,
+	safe: safe,
 };

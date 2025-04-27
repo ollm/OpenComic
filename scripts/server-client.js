@@ -669,7 +669,7 @@ var client = function(path) {
 			port: getPort(server.path),
 			domain: server.domain,
 			user: server.user,
-			pass: server.pass,
+			pass: storage.safe.decrypt(server.pass),
 			share: getShare(server.path),
 			path: server.path,
 		};

@@ -720,7 +720,7 @@ function edit(key, save = false)
 		opdsCatalog.title = values.title;
 		opdsCatalog.url = values.url;
 		opdsCatalog.user = values.user;
-		opdsCatalog.pass = values.pass;
+		opdsCatalog.pass = storage.safe.encrypt(values.pass);
 		opdsCatalog.showOnLeft = values.showOnLeft;
 
 		storage.set('opdsCatalogs', opdsCatalogs);
@@ -731,7 +731,7 @@ function edit(key, save = false)
 	else
 	{
 		handlebarsContext.opdsCatalog = opdsCatalogs[key];
-		handlebarsContext.opdsCatalog.pass = opdsCatalogs[key].pass;
+		handlebarsContext.opdsCatalog.pass = storage.safe.decrypt(opdsCatalogs[key].pass);
 
 		events.dialog({
 			header: language.global.catalogs,

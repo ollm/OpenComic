@@ -7,7 +7,7 @@ function headers(url)
 	{
 		const data = parseAuth(currentCatalog.auth);
 		data.user = currentCatalog.user || '';
-		data.pass = currentCatalog.pass || '';
+		data.pass = storage.safe.decrypt(currentCatalog.pass || '');
 		data.uri = new URL(url).pathname;
 
 		let auth = false;
@@ -64,7 +64,7 @@ function parseAuth(auth)
 		algorithm: '',
 		qop: '',
 		nonceCount: '',
-		cnonce: md5(crypto.randomUUID()),
+		cnonce: crypto.hash('md5', crypto.randomUUID(), 'hex'),
 	};
 
 	const matches = [...auth.matchAll(/([^\s=]+)=(["'](?:[^"']+)|(?:[^\s"',]+))/g)];
@@ -95,7 +95,7 @@ async function requestCredentials(response, forceCredentials = false)
 	const auth = response.headers.get('www-authenticate');
 	const data = parseAuth(auth || '');
 
-	if(!currentCatalog.username || !currentCatalog.password || forceCredentials)
+	if(!currentCatalog.user || !currentCatalog.pass || forceCredentials)
 	{
 		const promise = new Promise(function(resolve, reject) {
 			
@@ -132,7 +132,7 @@ function requestCredentialsDialog(siteName = false, save = null)
 
 			opds.updateCatalog(currentCatalog.index, {
 				user: user,
-				pass: pass,
+				pass: storage.safe.encrypt(pass),
 			});
 
 			credentialsResolve();
