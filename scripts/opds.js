@@ -323,6 +323,28 @@ async function publication(path = false)
 	const mainPath = publication.mainPath;
 	const metadata = publication.metadata;
 
+	// Find and show download file from this publication
+	let downloadFile = false;
+
+	toBreak:
+	for(const key in publication.acquisitionLinks)
+	{
+		for(const link of publication.acquisitionLinks[key].links)
+		{
+			if(link.type !== 'text/html' && currentCatalog.downloadFiles[link.href])
+			{
+				const _downloadFile = currentCatalog.downloadFiles[link.href];
+
+				if(fs.existsSync(_downloadFile))
+				{
+					downloadFile = _downloadFile;
+					break toBreak;
+				}
+			}
+		}
+	}
+
+	handlebarsContext.opdsDownloadFile = downloadFile;
 	handlebarsContext.opdsAcquisitionLinks = publication.acquisitionLinks;
 	
 	// Get image in cache
@@ -500,7 +522,7 @@ async function download(link = false)
 
 		if(!fs.existsSync(downloadPath))
 		{
-			const response = await fetch(link.url, {headers: auth.headers(link.url)});
+			const response = await auth.fetch(link.url);
 
 			if(response.ok)
 			{
@@ -563,6 +585,17 @@ async function download(link = false)
 		// Add to library
 		addComicsToLibrary([downloadPath], false);
 
+		currentCatalog.downloadFiles[link.href] = downloadPath;
+		updateCatalog(currentCatalog.index, {downloadFiles: currentCatalog.downloadFiles});
+
+		const odpsButtonOpen = document.querySelector('.file-info-odps-button-open');
+
+		if(odpsButtonOpen)
+		{
+			odpsButtonOpen.style.display = 'block';
+			odpsButtonOpen.setAttribute('onclick', 'events.closeDialog(); dom.loadIndexPage(true); dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');');
+		}
+
 		events.snackbar({
 			key: 'downloadSuccess',
 			text: language.dialog.opds.downloadSuccess,
@@ -574,7 +607,6 @@ async function download(link = false)
 				},
 			],
 		});
-
 	}
 }
 

@@ -1710,9 +1710,13 @@ var client = function(path) {
 						let url = p.join(dirname, opds.opds.atob(basename));
 						url = posixPath(url).replace(/^opdsf/, 'http');
 
-						const response = await fetch(url, {headers: opds.auth.headers(url)});
-						const fileContents = await response.arrayBuffer();
-						await fsp.writeFile(filePath, Buffer.from(fileContents));
+						const response = await opds.auth.fetch(url);
+
+						if(response.ok)
+						{
+							const fileContents = await response.arrayBuffer();
+							await fsp.writeFile(filePath, Buffer.from(fileContents));
+						}
 
 						downloading.resolve();
 					}

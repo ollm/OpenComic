@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 110; // Update this if readingPagesConfig is updated
+const changes = 111; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -328,6 +328,9 @@ const storageDefault = {
 		pass: '',
 		user: '',
 		auth: '',
+		downloadFiles: {
+			wildcard: '',
+		},
 	}],
 	shortcuts: {
 		browse: {

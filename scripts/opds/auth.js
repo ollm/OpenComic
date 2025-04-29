@@ -1,4 +1,19 @@
 
+async function _fetch(url, options)
+{
+	const response = await fetch(url, {...options, headers: headers(url)});
+
+	if(!response.ok)
+	{
+		const valid = valid(response);
+
+		if(valid)
+			return fetch(url, {...options, headers: headers(url)});
+	}
+
+	return response; 
+}
+
 function headers(url)
 {
 	const currentCatalog = opds.currentCatalog();
@@ -221,6 +236,7 @@ function digest(data)
 }
 
 module.exports = {
+	fetch: _fetch,
 	headers: headers,
 	valid: valid,
 	requestCredentials: requestCredentials,
