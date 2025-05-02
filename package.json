@@ -111,7 +111,7 @@
 	},
 	"devDependencies": {
 		"electron": "^34.5.4",
-		"electron-builder": "^26.0.12",
+		"electron-builder": "^26.0.14",
 		"env-cmd": "^10.1.0",
 		"node-abi": "^4.5.0",
 		"node-yaml": "^4.0.1",
