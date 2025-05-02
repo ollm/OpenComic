@@ -1,5 +1,5 @@
 
-function event(selector, eventsNames, listener, options = false)
+function event(selector, eventsNames, listener, options = {passive: false})
 {
 	if(typeof selector == 'string')
 		selector = document.querySelectorAll(selector);
@@ -22,7 +22,7 @@ function event(selector, eventsNames, listener, options = false)
 	}
 }
 
-function eventOff(selector, eventsNames, listener, options = false)
+function eventOff(selector, eventsNames, listener, options = {passive: false})
 {
 	if(typeof selector == 'string')
 		selector = document.querySelectorAll(selector);

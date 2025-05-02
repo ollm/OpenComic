@@ -132,7 +132,7 @@ function updateSearchButton()
 	}
 }
 
-function home()
+async function home()
 {
 	opds.abort();
 
@@ -162,6 +162,8 @@ function home()
 	currentFeed = false;
 	currentSearch = false;
 
+	await boxes();
+
 	template.loadHeader('opds.header.html', true);
 	template.loadContentRight('opds.content.right.home.html', true);
 
@@ -180,13 +182,15 @@ async function browse(path, mainPath, keepScroll)
 	publicationsCache = {};
 	handlebarsContext.opds = {...currentFeed, loading: true, showFacets: isFromFacets};
 
-	template.loadHeader('opds.header.html', true);
-	template.loadContentRight('opds.content.right.browse.html', true);
-
 	try
 	{
 		const url = opds.base64ToUrl(path);
 		setCurrentCatalog(url);
+
+		await boxes(path, mainPath);
+
+		template.loadHeader('opds.header.html', true);
+		template.loadContentRight('opds.content.right.browse.html', true);
 
 		// Load feed
 		const feed = await opds.read(url, path, mainPath);
@@ -202,8 +206,7 @@ async function browse(path, mainPath, keepScroll)
 
 		if(feed.search)
 			currentSearch = feed.search;
-	
-		// template.loadHeader('opds.header.html', true);
+
 		template.loadContentRight('opds.content.right.browse.html', true);
 
 		updateSearchButton();
@@ -593,7 +596,7 @@ async function download(link = false)
 		if(odpsButtonOpen)
 		{
 			odpsButtonOpen.style.display = 'block';
-			odpsButtonOpen.setAttribute('onclick', 'events.closeDialog(); dom.loadIndexPage(true); dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');');
+			odpsButtonOpen.setAttribute('onclick', 'events.closeDialog(); /*dom.loadIndexPage(true);*/ dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');');
 		}
 
 		events.snackbar({
@@ -603,7 +606,7 @@ async function download(link = false)
 			buttons: [
 				{
 					text: language.global.open,
-					function: 'events.closeDialog(); dom.loadIndexPage(true); dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');',
+					function: 'events.closeDialog(); /*dom.loadIndexPage(true);*/ dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');',
 				},
 			],
 		});
@@ -817,6 +820,90 @@ function _delete(key, confirm = false)
 				}
 			],
 		});
+	}
+}
+
+async function boxes(path = false, mainPath = false)
+{
+	if(path === false || path === mainPath)
+	{
+		const files = [];
+
+		if(!path)
+		{
+			const opdsCatalogs = storage.get('opdsCatalogs');
+
+			for(const key in opdsCatalogs)
+			{
+				files.push(...Object.values(opdsCatalogs[key].downloadFiles));
+			}
+		}
+		else
+		{
+			files.push(...Object.values(currentCatalog.downloadFiles));
+		}
+
+		const comics = [];
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			const path = files[i];
+
+			if(fs.existsSync(path))
+			{
+				const stat = fs.statSync(path);
+				const compressed = fileManager.isCompressed(path);
+
+				const name = dom.metadataPathName({
+					name: p.basename(path),
+					path: path,
+					compressed: compressed,
+				});
+
+				comics.push({
+					name: name,
+					path: path,
+					added: Math.round(stat.ctimeMs / 1000),
+					folder: true,
+					compressed: compressed,
+				});
+			}
+		}
+
+		const len = comics.length;
+
+		if(len)
+		{
+			// Comic reading progress
+			let readingProgress = storage.get('readingProgress');
+
+			for(let i = 0; i < len; i++)
+			{
+				comics[i].readingProgress = readingProgress[comics[i].path] || {lastReading: 0};
+			}
+
+			for(let i = 0; i < len; i++)
+			{
+				const comic = comics[i];
+
+				comic.sha = sha1(comic.path);
+				comic.addToQueue = 2;
+				comic.mainPath = comic.path;
+			}
+		}
+
+		const sortAndView = handlebarsContext.page.opds;
+
+		dom.boxes.reset();
+		if(sortAndView.continueReading) await dom.boxes.continueReading(comics, true);
+		if(sortAndView.recentlyAdded) await dom.boxes.recentlyAdded(comics, true);
+
+		handlebarsContext.opdsBoxes = true;
+	}
+	else
+	{
+		dom.boxes.reset();
+		handlebarsContext.opdsBoxes = false;
 	}
 }
 

@@ -76,6 +76,30 @@
 	<div class="menu-close" onclick="events.desactiveMenu('#index-view', '.bar-right-buttons .button-view');"></div>
 </div>
 
+<div class="menu" id="opds-view">
+	<div class="menu-simple elevation-2" style="width: 300px;">
+		<div class="menu-simple-content">
+			<div>
+				<div class="menu-simple-text gamepad-item">
+					{{language.comics.continueReading}}
+					<div class="switch{{#if page.opds.continueReading}} a{{/if}}" on="dom.changeBoxes('continueReading', true, 'opds')" off="dom.changeBoxes('continueReading', false, 'opds')">
+						<div></div>
+						<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+					</div>
+				</div>
+				<div class="menu-simple-text gamepad-item">
+					{{language.comics.recentlyAdded}}
+					<div class="switch{{#if page.opds.recentlyAdded}} a{{/if}}" on="dom.changeBoxes('recentlyAdded', true, 'opds')" off="dom.changeBoxes('recentlyAdded', false, 'opds')">
+						<div></div>
+						<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#opds-view', '.bar-right-buttons .button-view');"></div>
+</div>
+
 <div class="menu" id="index-context-menu">
 	<div class="menu-simple elevation-2" onclick="events.desactiveMenu('#index-context-menu');">
 		<div class="menu-simple-content">

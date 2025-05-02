@@ -1,5 +1,5 @@
 
-async function box(_comics, title, order, orderKey = false, orderKey2 = false)
+async function box(_comics, single, title, order, orderKey = false, orderKey2 = false)
 {
 	const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
 
@@ -43,18 +43,18 @@ async function box(_comics, title, order, orderKey = false, orderKey2 = false)
 		comics: comics,
 	};
 
-	if(len > 1)
+	if(len > 1 || (single && len > 0))
 		handlebarsContext.boxes.push(box);
 }
 
-function continueReading(comics)
+function continueReading(comics, single = false)
 {
-	return box(comics, language.comics.continueReading, 'real-numeric', 'readingProgress', 'lastReading');
+	return box(comics, single, language.comics.continueReading, 'real-numeric', 'readingProgress', 'lastReading');
 }
 
-function recentlyAdded(comics)
+function recentlyAdded(comics, single = false)
 {
-	return box(comics, language.comics.recentlyAdded, 'real-numeric', 'added');
+	return box(comics, single, language.comics.recentlyAdded, 'real-numeric', 'added');
 }
 
 function reset()

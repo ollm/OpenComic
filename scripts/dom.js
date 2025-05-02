@@ -407,6 +407,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	if(_indexLabel.opds || isOpds)
 	{
+		if(!template._contentLeft().querySelector('.menu-list'))
+			dom.loadIndexContentLeft(animation);
+		
 		if(!path)
 		{
 			dom.fromLibrary(true);
@@ -416,6 +419,9 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			dom.setCurrentPageVars('index', _indexLabel);
 			dom.floatingActionButton(false);
+
+			handlebarsContext.headerTitle = false;
+			handlebarsContext.headerTitlePath = false;
 
 			// OPDS
 			await opds.home();
@@ -433,9 +439,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 			// OPDS
 			await opds.browse(path, mainPath, keepScroll);
-
-			handlebarsContext.headerTitle = false;
-			handlebarsContext.headerTitlePath = false;
 		}
 	}
 	else if(!path)
@@ -739,9 +742,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		handlebarsContext.headerTitlePath = false;
 		dom.loadIndexHeader(_indexLabel ? _indexLabel.name : false, animation);
 
+		if(!template._contentLeft().querySelector('.menu-list'))
+			dom.loadIndexContentLeft(animation);
+
 		if(!content)
 		{
-			if(template.contentLeft('.menu-list').length === 0) dom.loadIndexContentLeft(animation);
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
 			floatingActionButton(true, 'dom.addComicButtons();');
 		}
@@ -784,13 +789,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			contentRightIndex = template.contentRightIndex();
 		}
 
+		if(!template._contentLeft().querySelector('.menu-list'))
+			dom.loadIndexContentLeft(animation);
+
 		if(!content)
 		{
-			if(readingActive)
-			{
-				dom.loadIndexContentLeft(animation);
-			}
-
 			template.loadGlobalElement('index.elements.menus.html', 'menus');
 			floatingActionButton(false);
 		}
@@ -1882,6 +1885,8 @@ function setCurrentPageVars(page, _indexLabel = false)
 	else if(page == 'index')
 		extraKey = 'Index';
 
+	const sortAndViewOpds = config.sortAndView.opds || defaultSortAndView;
+
 	handlebarsContext.page = {
 		key: key,
 		name: labelKey ? labelKey : page,
@@ -1893,6 +1898,10 @@ function setCurrentPageVars(page, _indexLabel = false)
 		continueReading: sortAndView ? sortAndView.continueReading : config['continueReading'+extraKey],
 		recentlyAdded: sortAndView ? sortAndView.recentlyAdded : config['recentlyAdded'+extraKey],
 		viewModuleSize: sortAndView ? sortAndView.viewModuleSize : config['viewModuleSize'+extraKey],
+		opds: {
+			continueReading: sortAndViewOpds.continueReading,
+			recentlyAdded: sortAndViewOpds.recentlyAdded,
+		},
 	};
 }
 

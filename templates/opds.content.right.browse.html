@@ -7,6 +7,10 @@
 			{{#if opds.metadata.title}}<h1 class="display-medium">{{opds.metadata.title}}</h1>{{/if}}
 			{{#if opds.metadata.subtitle}}<h2 class="body-large">{{opds.metadata.subtitle}}</h2>{{/if}}
 
+			<div class="opds-boxes">
+				{{> index.content.right.boxes.html}}
+			</div>
+
 			{{#if opds.navigation}}
 			<div class="opds-browse-navigation">
 				{{#each opds.navigation}}

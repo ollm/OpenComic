@@ -1,5 +1,9 @@
 <h1 class="display-medium opds-page-title">{{language.global.catalogs}}</h1>
 
+<div class="opds-boxes">
+	{{> index.content.right.boxes.html}}
+</div>
+
 <div class="opds-page">
 	{{#each opdsCatalogs}}
 		<div class="opds-page-item gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}{{#if subtitle}} opds-has-subtitle{{/if}}" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}');">
