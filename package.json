@@ -28,8 +28,11 @@
 		"prebuild": "npm run test && npm run prebuild-start",
 		"prebuild-start": "node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
 		"prebuild-store": "node scripts/build-store.js",
+		"prebuild-folder-portable": "node scripts/build-folder-portable.js",
 		"postbuild": "node scripts/test-postbuild.js",
 		"postbuild-mas": "node scripts/test-postbuild-mas.js",
+		"rename-portable": "node scripts/rename-portable.js",
+		"rename-folder-portable": "node scripts/rename-folder-portable.js",
 		"watch": "nodemon --ignore 'dist/' --ignore scripts/builded --watch * --exec npm run start",
 		"build": "npm run prebuild && electron-builder build && npm run postbuild",
 		"build-dist": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z flatpak && electron-builder --arm64 --linux deb rpm AppImage 7z flatpak && npm run postbuild",
@@ -44,12 +47,14 @@
 		"build-tar-store": "npm run prebuild && npm run prebuild-store && electron-builder --x64 --linux tar.gz && electron-builder --arm64 --linux tar.gz && npm run postbuild",
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip && npm run postbuild",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z && npm run postbuild",
-		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run postbuild",
+		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run rename-portable && npm run prebuild-folder-portable && electron-builder --win portable && npm run rename-folder-portable && npm run postbuild",
 		"build-win-arm": "npm run prebuild && electron-builder --arm64 --win nsis && npm run postbuild",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis && npm run postbuild",
 		"build-appx": "npm run prebuild && electron-builder --win appx && npm run postbuild",
 		"build-appx-store": "npm run prebuild && npm run prebuild-store && electron-builder --win appx && npm run postbuild",
+		"build-dir": "npm run prebuild && electron-builder --win --dir && npm run postbuild",
 		"build-portable": "npm run prebuild && electron-builder --win portable && npm run postbuild",
+		"build-folder-portable": "npm run prebuild && npm run prebuild-folder-portable && electron-builder --win portable && npm run rename-folder-portable && npm run postbuild",
 		"build-mac": "npm run prebuild && env-cmd -f ./build/notarize.env -- electron-builder --mac 7z dmg pkg && env-cmd -f ./build/notarize.env -- electron-builder --arm64 --mac 7z dmg pkg && npm run postbuild",
 		"build-mac-store": "npm run prebuild && npm run prebuild-store && electron-builder --universal --mac mas && npm run postbuild",
 		"build-mac-tar": "npm run prebuild && env-cmd -f ./build/notarize.env -- electron-builder --mac tar.gz && npm run postbuild",
@@ -215,7 +220,8 @@
 			]
 		},
 		"portable": {
-			"useZip": true
+			"useZip": true,
+			"unpackDirName": "opencomic-portable"
 		},
 		"mac": {
 			"target": [

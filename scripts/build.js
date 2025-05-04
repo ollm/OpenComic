@@ -52,6 +52,10 @@ fs.writeFileSync(p.join(__dirname, '../scripts/installed-from-store.js'), `modul
 	check: function(){return false},
 };`);
 
+fs.writeFileSync(p.join(__dirname, '../scripts/folder-portable.js'), `module.exports = {
+	check: function(){return false},
+};`);
+
 // Get package lock versions
 const packageLock = JSON.parse(fs.readFileSync(p.join(__dirname, '../package-lock.json'), 'utf8'));
 const packageVersions = {};

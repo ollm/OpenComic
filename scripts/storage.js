@@ -634,7 +634,6 @@ function updateStorageMD(data, defaultObj)
 	return newData;
 }
 
-
 function updateVar(key, keyVar, value)
 {
 	if(typeof storageJson[key] === 'undefined')
@@ -710,7 +709,8 @@ for(let key in storageDefault)
 
 function start(callback)
 {
-	ejs.setDataPath(p.join(electronRemote.app.getPath('userData'), 'storage'));
+	const storagePath = (process.env.PORTABLE_EXECUTABLE_DIR && folderPortable.check()) ? p.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage') : p.join(electronRemote.app.getPath('userData'), 'storage');
+	ejs.setDataPath(storagePath);
 
 	ejs.getMany(storageKeys, function(error, data) {
 
