@@ -83,8 +83,8 @@
 		"viewAll": "查看全部",
 		"title": "标题",
 		"nightMode": "夜间模式",
-		"beta": "",
-		"alpha": ""
+		"beta": "Beta",
+		"alpha": "Alpha"
 	},
 	"comics": {
 		"continueReading": "继续阅读",
@@ -244,7 +244,7 @@
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
 			"goNextPrevChapterWithScroll": "使用鼠标滚动转到下一章/上一章（垂直阅读）",
 			"turnPagesWithMouseWheel": "使用鼠标滚轮翻页（按住 Ctrl 键才可缩放）",
-			"mouseWheelSensitivityInZoom": "",
+			"mouseWheelSensitivityInZoom": "缩放时鼠标滚轮灵敏度",
 			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
@@ -270,19 +270,19 @@
 			"files": "导航（文件）",
 			"ignoreSingleFoldersLibrary": "忽略单个文件夹（自动打开）",
 			"ignoreFilesRegex": {
-				"title": "",
-				"description": "",
-				"dialogTitle": "",
-				"dialogDescription": "",
+				"title": "忽略与正则表达式或文件模式匹配的文件和文件夹",
+				"description": "如果您想隐藏一些文件和文件夹，这很有用",
+				"dialogTitle": "忽略文件和文件夹",
+				"dialogDescription": "如果您想隐藏某些文件和文件夹，这很有用，您可以使用正则表达式或文件模式。示例：",
 				"examples": {
-					"poster": "",
-					"miscellaneousFiles": "",
-					"unixHidden": ""
+					"poster": "海报和封面",
+					"miscellaneousFiles": "杂项文件",
+					"unixHidden": "Unix 隐藏路径"
 				},
-				"regexPattern": "",
-				"addRegex": "",
-				"noRegex": "",
-				"invalidRegex": ""
+				"regexPattern": "正则表达式或文件模式",
+				"addRegex": "添加正则表达式或文件模式",
+				"noRegex": "没有正则表达式或文件模式",
+				"invalidRegex": "无效的正则表达式或文件模式"
 			},
 			"openingBehaviorFolder": "打开文件夹时的行为",
 			"openingBehaviorFolderDescription": "设置导航时打开文件夹时所需的行为",
@@ -319,10 +319,10 @@
 			"nightModeBlackBackground": "夜间模式中使用黑色作为背景",
 			"nightModeWhiteBlankPage": "夜间模式下空白页显示为白色",
 			"colors": {
-				"blue": "",
-				"green": "",
-				"red": "",
-				"yellow": ""
+				"blue": "蓝色",
+				"green": "绿色",
+				"red": "红色的",
+				"yellow": "黄色"
 			}
 		},
 		"releases": {
@@ -439,7 +439,7 @@
 	},
 	"dialog": {
 		"auth": {
-			"loginTo": ""
+			"loginTo": "登录 {{siteName}}"
 		},
 		"tracking": {
 			"getTokenHeader": "通过令牌登录 {{siteName}}",
@@ -579,7 +579,7 @@
 		"change": "更改",
 		"apply": "申请",
 		"close": "关闭",
-		"login": ""
+		"login": "登录"
 	},
 	"error": {
 		"uncompress": {
