@@ -168,7 +168,7 @@ if(folderPortable.check())
 	if(process.env.PORTABLE_EXECUTABLE_DIR)
 		configInitFile = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage', 'configInit.json');
 	else
-		configInitFile = path.join(__dirname, '../../../', 'storage', 'configInit.json');
+		configInitFile = path.join(__dirname, '../../../../', 'opencomic', 'storage', 'configInit.json');
 }
 
 const configInit = fs.existsSync(configInitFile) ? JSON.parse(fs.readFileSync(configInitFile, 'utf8')) : {};

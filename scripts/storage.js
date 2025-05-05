@@ -716,7 +716,7 @@ function start(callback)
 		if(process.env.PORTABLE_EXECUTABLE_DIR)
 			storagePath = p.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage');
 		else
-			storagePath = p.join(__dirname, '../../../', 'storage');
+			storagePath = p.join(__dirname, '../../../../', 'opencomic', 'storage');
 	}
 
 	ejs.setDataPath(storagePath);
