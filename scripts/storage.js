@@ -709,7 +709,7 @@ for(let key in storageDefault)
 
 function start(callback)
 {
-	let storagePath = p.join(app.getPath('userData'), 'storage');
+	let storagePath = p.join(electronRemote.app.getPath('userData'), 'storage');
 
 	if(folderPortable.check())
 	{
