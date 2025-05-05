@@ -709,14 +709,14 @@ for(let key in storageDefault)
 
 function start(callback)
 {
-	let storagePath = path.join(app.getPath('userData'), 'storage');
+	let storagePath = p.join(app.getPath('userData'), 'storage');
 
 	if(folderPortable.check())
 	{
 		if(process.env.PORTABLE_EXECUTABLE_DIR)
-			storagePath = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage');
+			storagePath = p.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage');
 		else
-			storagePath = path.join(__dirname, '../../../', 'storage');
+			storagePath = p.join(__dirname, '../../../', 'storage');
 	}
 
 	ejs.setDataPath(storagePath);
