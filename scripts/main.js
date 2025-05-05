@@ -161,7 +161,16 @@ function createWindow() {
 	mainWindowState.manage(win);
 }
 
-const configInitFile = (process.env.PORTABLE_EXECUTABLE_DIR && folderPortable.check()) ? path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage', 'configInit.json') : path.join(app.getPath('userData'), 'storage', 'configInit.json');
+let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
+
+if(folderPortable.check())
+{
+	if(process.env.PORTABLE_EXECUTABLE_DIR)
+		configInitFile = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage', 'configInit.json');
+	else
+		configInitFile = path.join(__dirname, '../../../', 'storage', 'configInit.json');
+}
+
 const configInit = fs.existsSync(configInitFile) ? JSON.parse(fs.readFileSync(configInitFile, 'utf8')) : {};
 
 if(configInit.forceColorProfile)

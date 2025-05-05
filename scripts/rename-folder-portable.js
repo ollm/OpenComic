@@ -38,4 +38,8 @@ for(const file of files)
 	{
 		renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^OpenComic ([0-9.]+)\.exe$/, 'OpenComic Folder Portable $1.exe')));
 	}
+	else if(/^OpenComic\-([0-9.]+)\-win\.7z$/.test(file))
+	{
+		renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^OpenComic\-([0-9.]+)\-win\.7z$/, 'OpenComic-Folder-Portable-$1.7z')));
+	}
 }
