@@ -28,10 +28,10 @@ function favorites()
 	dom.loadIndexPage(true);
 }
 
-function _opds(url = false, index = false, title = false)
+async function _opds(url = false, index = false, title = false)
 {
 	dom.setIndexLabel({opds: true, index: index, name: language.global.catalogs});
-	dom.loadIndexPage(true);
+	await dom.loadIndexPage(true);
 
 	if(url)
 	{
@@ -41,7 +41,7 @@ function _opds(url = false, index = false, title = false)
 		opds.addPathName(base64, title);
 
 		const path = 'opds:/'+base64;
-		dom.loadIndexPage(true, path, false, false, path);
+		await dom.loadIndexPage(true, path, false, false, path);
 	}
 }
 

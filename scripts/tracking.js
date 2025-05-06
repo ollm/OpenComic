@@ -4,10 +4,14 @@ function loadSiteScript(site)
 {
 	if(!sitesScripts[site])
 	{
-		var siteData = trackingSites.site(site);
+		const siteData = app.copy(trackingSites.site(site));
 
 		if(siteData)
 		{
+			siteData.config.access.pass = storage.safe.decrypt(siteData.config.access.pass);
+			siteData.config.access.token = storage.safe.decrypt(siteData.config.access.token);
+			siteData.config.session.token = storage.safe.decrypt(siteData.config.session.token);
+
 			sitesScripts[site] = require(siteData.script);
 			sitesScripts[site].setSiteData(siteData);
 		}
@@ -16,10 +20,14 @@ function loadSiteScript(site)
 
 function setSiteData(site)
 {
-	var siteData = trackingSites.site(site);
+	const siteData = app.copy(trackingSites.site(site));
 
 	if(siteData)
 	{
+		siteData.config.access.pass = storage.safe.decrypt(siteData.config.access.pass);
+		siteData.config.access.token = storage.safe.decrypt(siteData.config.access.token);
+		siteData.config.session.token = storage.safe.decrypt(siteData.config.session.token);
+
 		loadSiteScript(site);
 		sitesScripts[site].setSiteData(siteData);
 	}
@@ -270,7 +278,7 @@ function login(site, fromConfig = false)
 // Save session token
 function setSessionToken(site = '', token = '')
 {
-	saveSiteConfig(site, 'session', {valid: true, token: token});
+	saveSiteConfig(site, 'session', {valid: true, token: storage.safe.encrypt(token)});
 }
 
 // Remove session token

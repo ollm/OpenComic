@@ -291,7 +291,7 @@ function getServerInputValues()
 		name: name,
 		path: path,
 		user: user,
-		pass: pass,
+		pass: storage.safe.encrypt(pass),
 		domain: domain,
 		showOnLibrary: showOnLibrary,
 		filesInSubfolders: filesInSubfolders,
@@ -432,6 +432,7 @@ function editServer(key, save = false)
 	{
 		let servers = storage.get('servers');
 		handlebarsContext.server = servers[key];
+		handlebarsContext.server.pass = storage.safe.decrypt(servers[key].pass);
 
 		events.dialog({
 			header: language.settings.servers.main,
@@ -492,8 +493,6 @@ function removeServer(key, confirm = false)
 
 function validRegex(pattern)
 {
-	console.log(pattern);
-
 	try
 	{
 		const ignore = fileManager.ignoreFilesRegex([pattern], true);

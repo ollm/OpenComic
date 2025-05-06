@@ -1,6 +1,8 @@
-var changes = 108; // Update this if readingPagesConfig is updated
+const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-var readingPagesConfig = {
+const changes = 111; // Update this if readingPagesConfig is updated
+
+const readingPagesConfig = {
 	readingConfigName: '',
 	readingView: 'slide',
 	readingViewConfig: {
@@ -89,7 +91,7 @@ var readingPagesConfig = {
 	},
 };
 
-var storageDefault = {
+const storageDefault = {
 	config: {
 		appVersion: _package.version,
 		changes: changes,
@@ -323,6 +325,12 @@ var storageDefault = {
 		subtitle: '',
 		url: '',
 		showOnLeft: false,
+		pass: '',
+		user: '',
+		auth: '',
+		downloadFiles: {
+			wildcard: '',
+		},
 	}],
 	shortcuts: {
 		browse: {
@@ -411,8 +419,9 @@ var storageDefault = {
 			lastAccess: 0,
 		}
 	},
-},
-storageJson = {};
+};
+
+const storageJson = {};
 
 function getDownloadsPath()
 {
@@ -625,7 +634,6 @@ function updateStorageMD(data, defaultObj)
 	return newData;
 }
 
-
 function updateVar(key, keyVar, value)
 {
 	if(typeof storageJson[key] === 'undefined')
@@ -701,7 +709,17 @@ for(let key in storageDefault)
 
 function start(callback)
 {
-	ejs.setDataPath(p.join(electronRemote.app.getPath('userData'), 'storage'));
+	let storagePath = p.join(electronRemote.app.getPath('userData'), 'storage');
+
+	if(folderPortable.check())
+	{
+		if(process.env.PORTABLE_EXECUTABLE_DIR)
+			storagePath = p.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage');
+		else
+			storagePath = p.join(__dirname, '../../../../', 'opencomic', 'storage');
+	}
+
+	ejs.setDataPath(storagePath);
 
 	ejs.getMany(storageKeys, function(error, data) {
 
@@ -799,4 +817,5 @@ module.exports = {
 	readingPagesConfig: readingPagesConfig,
 	changes: changes,
 	getDownloadsPath: getDownloadsPath,
+	safe: safe,
 };

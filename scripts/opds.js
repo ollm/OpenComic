@@ -1,5 +1,6 @@
-const opds = require(p.join(appDir, 'scripts/opds/opds.js'));
-	search = require(p.join(appDir, 'scripts/opds/search.js'));
+const opds = require(p.join(appDir, 'scripts/opds/opds.js')),
+	search = require(p.join(appDir, 'scripts/opds/search.js')),
+	auth = require(p.join(appDir, 'scripts/opds/auth.js'));
 
 const opdsPathNames = {};
 const defaultCatalogs = [
@@ -71,6 +72,37 @@ function addNewDefaultCatalogs(data, changes)
 	return data;
 }
 
+var currentCatalog = false;
+
+function setCurrentCatalog(url)
+{
+	const opdsCatalogs = storage.get('opdsCatalogs');
+
+	for(let i = 0, len = opdsCatalogs.length; i < len; i++)
+	{
+		const catalog = opdsCatalogs[i];
+		catalog.index = i;
+
+		if(catalog.url === url)
+			currentCatalog = catalog;
+	}
+}
+
+function updateCatalog(index, data = {})
+{
+	const opdsCatalogs = storage.get('opdsCatalogs');
+
+	if(opdsCatalogs[index])
+	{
+		for(let key in data)
+		{
+			opdsCatalogs[index][key] = data[key];
+		}
+	}
+
+	storage.set('opdsCatalogs', opdsCatalogs);
+}
+
 function updateCatalogSubtitle(url, subtitle)
 {
 	const opdsCatalogs = storage.get('opdsCatalogs');
@@ -100,7 +132,7 @@ function updateSearchButton()
 	}
 }
 
-function home()
+async function home()
 {
 	opds.abort();
 
@@ -130,6 +162,8 @@ function home()
 	currentFeed = false;
 	currentSearch = false;
 
+	await boxes();
+
 	template.loadHeader('opds.header.html', true);
 	template.loadContentRight('opds.content.right.home.html', true);
 
@@ -148,18 +182,23 @@ async function browse(path, mainPath, keepScroll)
 	publicationsCache = {};
 	handlebarsContext.opds = {...currentFeed, loading: true, showFacets: isFromFacets};
 
-	template.loadHeader('opds.header.html', true);
-	template.loadContentRight('opds.content.right.browse.html', true);
-
 	try
 	{
+		const url = opds.base64ToUrl(path);
+		setCurrentCatalog(url);
+
+		await boxes(path, mainPath);
+
+		template.loadHeader('opds.header.html', true);
+		template.loadContentRight('opds.content.right.browse.html', true);
+
 		// Load feed
-		const feed = await opds.read(opds.base64ToUrl(path), path, mainPath);
+		const feed = await opds.read(url, path, mainPath);
 
 		await getPublicationPosters(feed);
 
 		if(currentFeed === false)
-			updateCatalogSubtitle(opds.base64ToUrl(path), feed.metadata.subtitle);
+			updateCatalogSubtitle(url, feed.metadata.subtitle);
 
 		feed.showFacets = feed.facets?.length > 0 ? true : false;
 		handlebarsContext.opds = feed;
@@ -167,8 +206,7 @@ async function browse(path, mainPath, keepScroll)
 
 		if(feed.search)
 			currentSearch = feed.search;
-	
-		// template.loadHeader('opds.header.html', true);
+
 		template.loadContentRight('opds.content.right.browse.html', true);
 
 		updateSearchButton();
@@ -288,6 +326,28 @@ async function publication(path = false)
 	const mainPath = publication.mainPath;
 	const metadata = publication.metadata;
 
+	// Find and show download file from this publication
+	let downloadFile = false;
+
+	toBreak:
+	for(const key in publication.acquisitionLinks)
+	{
+		for(const link of publication.acquisitionLinks[key].links)
+		{
+			if(link.type !== 'text/html' && currentCatalog.downloadFiles[link.href])
+			{
+				const _downloadFile = currentCatalog.downloadFiles[link.href];
+
+				if(fs.existsSync(_downloadFile))
+				{
+					downloadFile = _downloadFile;
+					break toBreak;
+				}
+			}
+		}
+	}
+
+	handlebarsContext.opdsDownloadFile = downloadFile;
 	handlebarsContext.opdsAcquisitionLinks = publication.acquisitionLinks;
 	
 	// Get image in cache
@@ -372,9 +432,6 @@ function downloadOrSelect(type, index = false)
 
 	if(links.length > 1 && index === false)
 	{
-		// In Downlaod show: icon (download) format or title if has one
-		// In text/html show, icon (link|external) external link (fromat in mime key)
-
 		const items = [];
 
 		for(let i = 0, len = links.length; i < len; i++)
@@ -468,7 +525,7 @@ async function download(link = false)
 
 		if(!fs.existsSync(downloadPath))
 		{
-			const response = await fetch(link.url);
+			const response = await auth.fetch(link.url);
 
 			if(response.ok)
 			{
@@ -531,6 +588,17 @@ async function download(link = false)
 		// Add to library
 		addComicsToLibrary([downloadPath], false);
 
+		currentCatalog.downloadFiles[link.href] = downloadPath;
+		updateCatalog(currentCatalog.index, {downloadFiles: currentCatalog.downloadFiles});
+
+		const odpsButtonOpen = document.querySelector('.file-info-odps-button-open');
+
+		if(odpsButtonOpen)
+		{
+			odpsButtonOpen.style.display = 'block';
+			odpsButtonOpen.setAttribute('onclick', 'events.closeDialog(); /*dom.loadIndexPage(true);*/ dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');');
+		}
+
 		events.snackbar({
 			key: 'downloadSuccess',
 			text: language.dialog.opds.downloadSuccess,
@@ -538,11 +606,10 @@ async function download(link = false)
 			buttons: [
 				{
 					text: language.global.open,
-					function: 'events.closeDialog(); dom.loadIndexPage(true); dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');',
+					function: 'events.closeDialog(); /*dom.loadIndexPage(true);*/ dom.loadIndexPage(true, \''+_downloadPath+'\', false, false, \''+_downloadPath+'\');',
 				},
 			],
 		});
-
 	}
 }
 
@@ -617,11 +684,15 @@ function getInputValues()
 {
 	let title = document.querySelector('.input-title').value;
 	let url = document.querySelector('.input-url').value;
+	let user = document.querySelector('.input-user') ? document.querySelector('.input-user').value : '';
+	let pass = document.querySelector('.input-pass') ? document.querySelector('.input-pass').value : '';
 	let showOnLeft = !!+document.querySelector('.input-show-on-left').dataset.value;
 
 	return {
 		title: title,
 		url: url,
+		user: user,
+		pass: pass,
 		showOnLeft: showOnLeft,
 	};
 }
@@ -683,6 +754,8 @@ function edit(key, save = false)
 
 		opdsCatalog.title = values.title;
 		opdsCatalog.url = values.url;
+		opdsCatalog.user = values.user;
+		opdsCatalog.pass = storage.safe.encrypt(values.pass);
 		opdsCatalog.showOnLeft = values.showOnLeft;
 
 		storage.set('opdsCatalogs', opdsCatalogs);
@@ -693,6 +766,7 @@ function edit(key, save = false)
 	else
 	{
 		handlebarsContext.opdsCatalog = opdsCatalogs[key];
+		handlebarsContext.opdsCatalog.pass = storage.safe.decrypt(opdsCatalogs[key].pass);
 
 		events.dialog({
 			header: language.global.catalogs,
@@ -749,6 +823,90 @@ function _delete(key, confirm = false)
 	}
 }
 
+async function boxes(path = false, mainPath = false)
+{
+	if(path === false || path === mainPath)
+	{
+		const files = [];
+
+		if(!path)
+		{
+			const opdsCatalogs = storage.get('opdsCatalogs');
+
+			for(const key in opdsCatalogs)
+			{
+				files.push(...Object.values(opdsCatalogs[key].downloadFiles));
+			}
+		}
+		else
+		{
+			files.push(...Object.values(currentCatalog.downloadFiles));
+		}
+
+		const comics = [];
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			const path = files[i];
+
+			if(fs.existsSync(path))
+			{
+				const stat = fs.statSync(path);
+				const compressed = fileManager.isCompressed(path);
+
+				const name = dom.metadataPathName({
+					name: p.basename(path),
+					path: path,
+					compressed: compressed,
+				});
+
+				comics.push({
+					name: name,
+					path: path,
+					added: Math.round(stat.ctimeMs / 1000),
+					folder: true,
+					compressed: compressed,
+				});
+			}
+		}
+
+		const len = comics.length;
+
+		if(len)
+		{
+			// Comic reading progress
+			let readingProgress = storage.get('readingProgress');
+
+			for(let i = 0; i < len; i++)
+			{
+				comics[i].readingProgress = readingProgress[comics[i].path] || {lastReading: 0};
+			}
+
+			for(let i = 0; i < len; i++)
+			{
+				const comic = comics[i];
+
+				comic.sha = sha1(comic.path);
+				comic.addToQueue = 2;
+				comic.mainPath = comic.path;
+			}
+		}
+
+		const sortAndView = handlebarsContext.page.opds;
+
+		dom.boxes.reset();
+		if(sortAndView.continueReading) await dom.boxes.continueReading(comics, true);
+		if(sortAndView.recentlyAdded) await dom.boxes.recentlyAdded(comics, true);
+
+		handlebarsContext.opdsBoxes = true;
+	}
+	else
+	{
+		dom.boxes.reset();
+		handlebarsContext.opdsBoxes = false;
+	}
+}
+
 module.exports = {
 	addNewDefaultCatalogs: addNewDefaultCatalogs,
 	home: home,
@@ -762,6 +920,8 @@ module.exports = {
 	downloadOrSelect: downloadOrSelect,
 	download: download,
 	downloadDialog: downloadDialog,
+	currentCatalog: function(){return currentCatalog},
+	updateCatalog: updateCatalog,
 	getFeed: function() {return currentFeed},
 	getSearch: function() {return currentSearch},
 	add: add,
@@ -769,4 +929,5 @@ module.exports = {
 	delete: _delete,
 	opds: opds,
 	search: search,
+	auth: auth,
 }

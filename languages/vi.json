@@ -438,6 +438,9 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": ""
+		},
 		"tracking": {
 			"getTokenHeader": "Đăng nhập vào {{siteName}} thông qua token",
 			"getTokenInput": "Token của {{siteName}}",
@@ -575,7 +578,8 @@
 		"preview": "",
 		"change": "",
 		"apply": "",
-		"close": "Đóng"
+		"close": "Đóng",
+		"login": ""
 	},
 	"error": {
 		"uncompress": {

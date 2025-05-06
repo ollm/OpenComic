@@ -438,6 +438,9 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": ""
+		},
 		"tracking": {
 			"getTokenHeader": "تسجيل الدخول إلى {{siteName}} باستخدام الرمز",
 			"getTokenInput": "رمز {{siteName}}",
@@ -575,7 +578,8 @@
 		"preview": "عرض",
 		"change": "تغيير",
 		"apply": "تطبيق",
-		"close": "خروج"
+		"close": "خروج",
+		"login": ""
 	},
 	"error": {
 		"uncompress": {

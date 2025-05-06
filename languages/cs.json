@@ -438,6 +438,9 @@
 		}
 	},
 	"dialog": {
+		"auth": {
+			"loginTo": ""
+		},
 		"tracking": {
 			"getTokenHeader": "Přihlašte se na {{siteName}} pomocí tokenu",
 			"getTokenInput": "Token stránky {{siteName}}",
@@ -575,7 +578,8 @@
 		"preview": "",
 		"change": "",
 		"apply": "",
-		"close": ""
+		"close": "",
+		"login": ""
 	},
 	"error": {
 		"uncompress": {

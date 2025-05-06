@@ -2345,7 +2345,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(metadata.metadata)
 		{
-			let _map = metadata.metadata.getAll();
+			let _map = Object.fromEntries(metadata.metadata);
 			map._map = _map;
 
 			for(let key in _map)

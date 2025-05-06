@@ -1722,7 +1722,7 @@ function abortClick(event)
 	const maxDiff = Math.max(Math.abs(pageX - zoomMoveData.x), Math.abs(pageY - zoomMoveData.y));
 	const isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if((!reading.haveZoom() || config.readingMoveZoomWithMouse || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
+	if((!reading.haveZoom() || (config.readingMoveZoomWithMouse && !readingViewIs('scroll')) || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 		return false;
 
 	return true;
@@ -1739,7 +1739,7 @@ function leftClick(event)
 
 	let isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if((!reading.haveZoom() || config.readingMoveZoomWithMouse || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
+	if((!reading.haveZoom() || (config.readingMoveZoomWithMouse && !readingViewIs('scroll')) || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
 		if(isTouch)
 			reading.goNext();
@@ -1763,7 +1763,7 @@ function rightClick(e)
 
 	let isTouch = (event.sourceCapabilities && event.sourceCapabilities.firesTouchEvents) ? true : false;
 
-	if((!reading.haveZoom() || config.readingMoveZoomWithMouse || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
+	if((!reading.haveZoom() || (config.readingMoveZoomWithMouse && !readingViewIs('scroll')) || maxDiff < 10) && (!readingDragScroll || !readingDragScroll.start) && (!isTouch || !config.readingMagnifyingGlass))
 	{
 		if(isTouch)
 			reading.goPrevious();

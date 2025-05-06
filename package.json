@@ -28,8 +28,11 @@
 		"prebuild": "npm run test && npm run prebuild-start",
 		"prebuild-start": "node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
 		"prebuild-store": "node scripts/build-store.js",
+		"prebuild-folder-portable": "node scripts/build-folder-portable.js",
 		"postbuild": "node scripts/test-postbuild.js",
 		"postbuild-mas": "node scripts/test-postbuild-mas.js",
+		"rename-portable": "node scripts/rename-portable.js",
+		"rename-folder-portable": "node scripts/rename-folder-portable.js",
 		"watch": "nodemon --ignore 'dist/' --ignore scripts/builded --watch * --exec npm run start",
 		"build": "npm run prebuild && electron-builder build && npm run postbuild",
 		"build-dist": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z flatpak && electron-builder --arm64 --linux deb rpm AppImage 7z flatpak && npm run postbuild",
@@ -44,12 +47,15 @@
 		"build-tar-store": "npm run prebuild && npm run prebuild-store && electron-builder --x64 --linux tar.gz && electron-builder --arm64 --linux tar.gz && npm run postbuild",
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip && npm run postbuild",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z && npm run postbuild",
-		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run postbuild",
+		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run rename-portable && npm run prebuild-folder-portable && electron-builder --win portable 7z && npm run rename-folder-portable && npm run postbuild",
 		"build-win-arm": "npm run prebuild && electron-builder --arm64 --win nsis && npm run postbuild",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis && npm run postbuild",
 		"build-appx": "npm run prebuild && electron-builder --win appx && npm run postbuild",
 		"build-appx-store": "npm run prebuild && npm run prebuild-store && electron-builder --win appx && npm run postbuild",
+		"build-dir": "npm run prebuild && electron-builder --win --dir && npm run postbuild",
 		"build-portable": "npm run prebuild && electron-builder --win portable && npm run postbuild",
+		"build-folder-portable": "npm run prebuild && npm run prebuild-folder-portable && electron-builder --win portable && npm run rename-folder-portable && npm run postbuild",
+		"build-folder-portable-7z": "npm run prebuild && npm run prebuild-folder-portable && electron-builder --win 7z && npm run rename-folder-portable && npm run postbuild",
 		"build-mac": "npm run prebuild && env-cmd -f ./build/notarize.env -- electron-builder --mac 7z dmg pkg && env-cmd -f ./build/notarize.env -- electron-builder --arm64 --mac 7z dmg pkg && npm run postbuild",
 		"build-mac-store": "npm run prebuild && npm run prebuild-store && electron-builder --universal --mac mas && npm run postbuild",
 		"build-mac-tar": "npm run prebuild && env-cmd -f ./build/notarize.env -- electron-builder --mac tar.gz && npm run postbuild",
@@ -70,18 +76,18 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.782.0",
+		"@aws-sdk/client-s3": "^3.800.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
 		"7zip-bin": "github:develar/7zip-bin",
 		"basic-ftp": "^5.0.5",
 		"bezier-js": "^6.1.4",
-		"detect-libc": "^2.0.3",
+		"detect-libc": "^2.0.4",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
-		"fast-xml-parser": "^5.2.0",
+		"fast-xml-parser": "^5.2.1",
 		"file-type": "^16.5.4",
 		"foliate-js": "github:johnfactotum/foliate-js",
 		"font-list": "^1.5.1",
@@ -92,16 +98,16 @@
 		"jpegxr": "^0.3.0",
 		"jquery": "^3.7.1",
 		"jquery-bez": "^1.0.11",
-		"jxl-oxide-wasm": "^0.11.3",
+		"jxl-oxide-wasm": "^0.12.0",
 		"lodash.isequal": "^4.5.0",
 		"mime": "^4.0.7",
 		"minimatch": "^10.0.1",
 		"mv": "^2.1.1",
 		"node-7z": "^3.0.0",
-		"node-scp": "^0.0.23",
+		"node-scp": "^0.0.25",
 		"node-unrar-js": "^2.0.2",
-		"pdfjs-dist": "^5.1.91",
-		"sanitize-html": "^2.15.0",
+		"pdfjs-dist": "^5.2.133",
+		"sanitize-html": "^2.16.0",
 		"sharp": "^0.34.1",
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
@@ -110,12 +116,12 @@
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
-		"electron": "^34.5.1",
-		"electron-builder": "^26.0.12",
+		"electron": "^34.5.4",
+		"electron-builder": "^26.0.14",
 		"env-cmd": "^10.1.0",
-		"node-abi": "^4.2.0",
+		"node-abi": "^4.5.0",
 		"node-yaml": "^4.0.1",
-		"nodemon": "^3.1.9"
+		"nodemon": "^3.1.10"
 	},
 	"overrides": {
 		"@napi-rs/canvas": "0.0.0"
@@ -215,7 +221,8 @@
 			]
 		},
 		"portable": {
-			"useZip": true
+			"useZip": true,
+			"unpackDirName": "opencomic-portable"
 		},
 		"mac": {
 			"target": [

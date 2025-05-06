@@ -39,11 +39,16 @@
 				{{#if fileInfo.opds}}
 
 				<div class="file-info-odps-buttons">
-				{{#each opdsAcquisitionLinks}}
+
+					<div class="simple-button file-info-odps-button-open filled gamepad-item"{{#unless opdsDownloadFile}} style="display: none;"{{/unless}} onclick="events.closeDialog(); /*dom.loadIndexPage(true);*/ dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opdsDownloadFile}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' opdsDownloadFile}}'); {{opdsOpen}};">
+						<div class="touch-effect"><i class="icon-24 material-icon">book</i>{{language.global.open}}</div>
+					</div>
+
+					{{#each opdsAcquisitionLinks}}
 					<div class="simple-button file-info-odps-button-{{type}} {{#if fill}}filled{{else}}filled-tonal{{/if}} gamepad-item" onclick="opds.downloadOrSelect('{{type}}');">
 						<div class="touch-effect"><i class="icon-24 material-icon">{{icon}}</i>{{name}}{{#if price}}<span class="simple-button-variation">{{price.format}}</span>{{/if}}</div>
 					</div>
-				{{/each}}
+					{{/each}}
 				</div>
 
 				{{else}}

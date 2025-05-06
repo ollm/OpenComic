@@ -1,18 +1,26 @@
 var controller = false;
 
-async function read(url, path, mainPath, unparsed = false)
+async function read(url, path, mainPath, unparsed = false, forceCredentials = false)
 {
 	if(controller) controller.abort('abortController');
 	controller = new AbortController();
-	url = url.replace();
 
-	const response = await fetch(url, {signal: controller.signal});
+	const response = await fetch(url, {signal: controller.signal, headers: opds.auth.headers(url)});
 	const body = await response.text();
 
 	if(!response.ok)
+	{
+		const valid = opds.auth.valid(response);
+
+		if(valid)
+		{
+			await opds.auth.requestCredentials(response, forceCredentials);
+			return read(url, path, mainPath, unparsed, true);
+		}
+	}
+
+	if(!response.ok)
 		throw new Error('Invalid response: '+response.status+' '+response.statusText);
-
-
 
 	return await parse(body, url, path, mainPath);
 }

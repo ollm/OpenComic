@@ -669,7 +669,7 @@ var client = function(path) {
 			port: getPort(server.path),
 			domain: server.domain,
 			user: server.user,
-			pass: server.pass,
+			pass: storage.safe.decrypt(server.pass),
 			share: getShare(server.path),
 			path: server.path,
 		};
@@ -1710,9 +1710,13 @@ var client = function(path) {
 						let url = p.join(dirname, opds.opds.atob(basename));
 						url = posixPath(url).replace(/^opdsf/, 'http');
 
-						const response = await fetch(url);
-						const fileContents = await response.arrayBuffer();
-						await fsp.writeFile(filePath, Buffer.from(fileContents));
+						const response = await opds.auth.fetch(url);
+
+						if(response.ok)
+						{
+							const fileContents = await response.arrayBuffer();
+							await fsp.writeFile(filePath, Buffer.from(fileContents));
+						}
 
 						downloading.resolve();
 					}

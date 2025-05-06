@@ -20,6 +20,22 @@
 	box-sizing: border-box;
 }
 
+.opds-browse-content .opds-boxes
+{
+	width: calc(100% - 12px);
+	margin-bottom: -8px;
+}
+
+.opds-boxes > .boxes
+{
+	padding-top: 0px;
+}
+
+.opds-boxes > .boxes .box
+{
+	border-radius: 26px;
+}
+
 .opds-page-item
 {
 	width: 400px;

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');
+const folderPortable = require(path.join(__dirname, 'folder-portable.js'));
 
 require('@electron/remote/main').initialize();
 //remoteMain.enable(window.webContents);
@@ -160,7 +161,16 @@ function createWindow() {
 	mainWindowState.manage(win);
 }
 
-const configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
+let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
+
+if(folderPortable.check())
+{
+	if(process.env.PORTABLE_EXECUTABLE_DIR)
+		configInitFile = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage', 'configInit.json');
+	else
+		configInitFile = path.join(__dirname, '../../../../', 'opencomic', 'storage', 'configInit.json');
+}
+
 const configInit = fs.existsSync(configInitFile) ? JSON.parse(fs.readFileSync(configInitFile, 'utf8')) : {};
 
 if(configInit.forceColorProfile)
