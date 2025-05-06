@@ -673,6 +673,7 @@
         "nativeName":"faka Tonga"
     },
     "tr":{
+        "active":true,
         "name":"Turkish",
         "nativeName":"Türkçe"
     },
