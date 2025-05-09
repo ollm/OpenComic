@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Authentication support for OPDS (Basic and Digest) [`11c3aa8`](https://github.com/ollm/OpenComic/commit/11c3aa88efbff8adcc3fabbf4b066dcb7120b10a)
 - Use safeStorage for passwords and tokens [`6178ded`](https://github.com/ollm/OpenComic/commit/6178dedf1afe13c56b68bd3bd68010d80d30fdc6
 - Change extraction of rar and tar to 7z to improve performance [`c0c2d6d`](https://github.com/ollm/OpenComic/commit/c0c2d6d61016241e70d4ee475e8d19567b8e71db
+- Add suport for compressed `LZH`, `ACE`, `TAR.GZ`, `TAR.XZ`, `TAR.BZIP2` and `TAR.ZSTD`
 
 ##### 🐛 Bug Fixes
 

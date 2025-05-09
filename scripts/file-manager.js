@@ -34,7 +34,7 @@ var file = function(path, _config = false) {
 
 		if(fs.existsSync(path))
 		{
-			if(inArray(fileExtension(path), compressedExtensions.all))
+			if(compatible.compressed(path))
 				this.isCompressed = true;
 			else if(fs.statSync(path).isDirectory())
 				this.isFolder = true;
@@ -63,14 +63,14 @@ var file = function(path, _config = false) {
 		}
 		else if(containsCompressed(path))
 		{
-			if(inArray(fileExtension(path), compressedExtensions.all))
+			if(compatible.compressed(path))
 				files = await this.readCompressed(path, _realPath);
 			else
 				files = await this.readInsideCompressed(path, _realPath);
 		}
 		else
 		{
-			if(inArray(fileExtension(path), compressedExtensions.all))
+			if(compatible.compressed(path))
 				files = await this.readCompressed(path, _realPath);
 			else if(fs.statSync(_realPath).isDirectory())
 				files = await this.readDir(path, _realPath);
@@ -118,7 +118,7 @@ var file = function(path, _config = false) {
 
 					if(!_this.config.fastRead && _files[i].isDirectory())
 						files.push({name: name, path: retrunPath, folder: true, compressed: false});
-					else if(inArray(fileExtension(filePath), compressedExtensions.all))
+					else if(compatible.compressed(filePath))
 						files.push({name: name, path: retrunPath, folder: false, compressed: true});
 					else
 						files.push({name: name, path: retrunPath, folder: false, compressed: false});
@@ -309,7 +309,7 @@ var file = function(path, _config = false) {
 		path = serverClient.fixPath(path || this.path);
 		_realPath = _realPath || realPath(path, -1);
 
-		if(inArray(fileExtension(path), compressedExtensions.all))
+		if(compatible.compressed(path))
 			return this._readServerCompressed(path, _realPath);
 		else
 			return this.readServerInsideCompressed(path, _realPath);
@@ -483,7 +483,7 @@ var file = function(path, _config = false) {
 						image = image.images[0] || false;
 					}
 				}
-				else if(inArray(mime.getType(file.name), compatibleMime))
+				else if(compatible.image(file.name))
 				{
 					image = file.path;
 				}
@@ -577,12 +577,12 @@ var file = function(path, _config = false) {
 
 			if(!file.folder && !file.compressed && (regex.test(file.name) || file.poster))
 			{
-				if(!poster && inArray(mime.getType(file.path), compatibleMime))
+				if(!poster && compatible.image(file.path))
 				{
 					file.sha = sha1(file.path);
 					poster = file;
 				}
-				else if(inArray(app.extname(file.path), compatibleSpecialExtensions)) // prioritize tbn poster
+				else if(compatible.image.special(file.path)) // prioritize tbn poster
 				{
 					file.sha = sha1(file.path);
 					poster = file;
@@ -604,7 +604,7 @@ var file = function(path, _config = false) {
 
 					if(!file.folder && !file.compressed)
 					{
-						if(inArray(mime.getType(file.path), compatibleMime))
+						if(compatible.image(file.path))
 						{
 							file.sha = sha1(file.path);
 							file.fromFirstImageAsPoster = true;
@@ -910,13 +910,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	if(prefixes)
 	{
-		let extension = fileExtension(path);
+		const extension = app.extname(path);
 
 		if(extension)
 		{
 			for(let ext in prefixes)
 			{
-				if(inArray(extension, compressedExtensions[ext]))
+				if(compatible.compressed[ext].has(extension))
 				{
 					this.sha = prefixes[ext]+'-'+this.sha;
 
@@ -1021,13 +1021,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(!force)
 		{
-			ext = fileExtension(this.path);
+			ext = app.extname(this.path);
 
-			if(inArray(ext, compressedExtensions['7z']))
+			if(compatible.compressed._7z(this.path))
 				force = '7z';
-			else if(inArray(ext, compressedExtensions.pdf))
+			else if(compatible.compressed.pdf.has(ext))
 				force = 'pdf';
-			else if(inArray(ext, compressedExtensions.epub))
+			else if(compatible.compressed.epub.has(ext))
 				force = 'epub';
 		}
 
@@ -1189,7 +1189,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					{
 						let file = files[i];
 
-						if(!file.folder && !file.compressed && inArray(mime.getType(file.path), compatibleMime))
+						if(!file.folder && !file.compressed && compatible.image(file.path))
 						{
 							if(index === _poster)
 							{
@@ -1476,12 +1476,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.isCompressed = function(name) {
 
-		let ext = fileExtension(name);
+		return compatible.compressed(name);
 
-		if(inArray(ext, compressedExtensions.all))
-			return true;
-
-		return false;
 	}
 
 	this.isFolder = function(path) {
@@ -2409,11 +2405,11 @@ function realPath(path, index = 0, prefixes = false)
 
 		if(i < numSegments)
 		{
-			let extension = fileExtension(newPath);
+			const extension = app.extnameC(newPath);
 
 			if(extension)
 			{
-				if(inArray(extension, compressedExtensions.all) /* && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory()*/)
+				if(compatible.compressed.has(extension) /* && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory()*/)
 				{
 					let sha = sha1(p.normalize(virtualPath));
 
@@ -2421,7 +2417,7 @@ function realPath(path, index = 0, prefixes = false)
 					{
 						for(let ext in prefixes)
 						{
-							if(inArray(extension, compressedExtensions[ext]))
+							if(compatible.compressed[ext].has(extension))
 							{
 								sha = prefixes[ext]+'-'+sha;
 
@@ -2432,7 +2428,7 @@ function realPath(path, index = 0, prefixes = false)
 
 					newPath = p.join(tempFolder, sha);
 				}
-				else if(inArray(extension, imageExtensions.convert) && i + 1 === len)
+				else if(compatible.image.convert.has(extension) && i + 1 === len)
 				{
 					const sha = sha1(p.dirname(p.normalize(virtualPath)));
 
@@ -2457,7 +2453,7 @@ async function convertUnsupportedImages(files)
 		const file = files[i];
 		const path = file.path;
 
-		if(!file.folder && !file.compressed && inArray(fileExtension(path), imageExtensions.convert)) // Convert unsupported images
+		if(!file.folder && !file.compressed && compatible.image.convert(path)) // Convert unsupported images
 			promises.push(workers.convertImage(path));
 	}
 
@@ -2475,7 +2471,7 @@ async function blobUnsupportedImages(files, options = {useThreads: 1})
 		const file = files[i];
 		const path = file.path;
 
-		if(!file.folder && !file.compressed && inArray(fileExtension(path), imageExtensions.blob)) // Convert unsupported images to Blob
+		if(!file.folder && !file.compressed && compatible.image.blob(path)) // Convert unsupported images to Blob
 			promises.push(workers.convertImageToBlob(path, options));
 	}
 
@@ -2542,12 +2538,7 @@ function isOpds(path)
 
 function isCompressed(name)
 {
-	let ext = fileExtension(name);
-
-	if(inArray(ext, compressedExtensions.all))
-		return true;
-
-	return false;
+	return compatible.compressed(name);
 }
 
 function firstCompressedFile(path, index = 0, checkDirectory = true)
@@ -2566,9 +2557,7 @@ function firstCompressedFile(path, index = 0, checkDirectory = true)
 
 		if(i < numSegments)
 		{
-			let extension = fileExtension(newPath);
-
-			if(extension && inArray(extension, compressedExtensions.all) && (!checkDirectory || _isServer || !fs.existsSync(newPath) || !fs.statSync(newPath).isDirectory()))
+			if(compatible.compressed(newPath) && (!checkDirectory || _isServer || !fs.existsSync(newPath) || !fs.statSync(newPath).isDirectory()))
 				return newPath;
 		}
 	}
@@ -2598,9 +2587,7 @@ function lastCompressedFile(path, index = 0)
 
 		if(i < numSegments)
 		{
-			let extension = fileExtension(newPath);
-
-			if(extension && inArray(extension, compressedExtensions.all))
+			if(compatible.compressed(newPath))
 				lastCompressed = newPath;
 		}
 	}
@@ -2626,9 +2613,7 @@ function allCompressedFiles(path, index = 0)
 
 		if(i < numSegments)
 		{
-			let extension = fileExtension(newPath);
-
-			if(extension && inArray(extension, compressedExtensions.all))
+			if(compatible.compressed(newPath))
 				files.push(newPath);
 		}
 	}
@@ -2652,9 +2637,7 @@ function containsCompressed(path, index = 0)
 
 		if(i < numSegments)
 		{
-			var extension = fileExtension(virtualPath);
-
-			if(extension && inArray(extension, compressedExtensions.all) && (_isServer || !fs.statSync(virtualPath).isDirectory()))
+			if(compatible.compressed(virtualPath) && (_isServer || !fs.statSync(virtualPath).isDirectory()))
 			{
 				return true;
 			}
@@ -2692,9 +2675,9 @@ function removePathPart(path, partToRemove)
 
 function pathType(path)
 {
-	if(inArray(mime.getType(path), compatibleMime))
+	if(compatible.image(path))
 		return {folder: false, compressed: false};
-	else if(inArray(fileExtension(path), compressedExtensions.all))
+	else if(compatible.compressed(path))
 		return {folder: false, compressed: true};
 	else if(fs.statSync(path).isDirectory())
 		return {folder: true, compressed: false};
@@ -2846,14 +2829,14 @@ function filtered(files, specialFiles = false)
 		for(let i = 0, len = files.length; i < len; i++)
 		{
 			const file = files[i];
-			const specialFile = (specialFiles && !file.folder && !file.compressed && compatibleSpecialExtensions.includes(app.extname(file.path))) ? true : false;
+			const specialFile = (specialFiles && !file.folder && !file.compressed && compatible.image.special(file.path)) ? true : false;
 
 			if(ignore && ignore.test(file.name) && !specialFile)
 				continue;
 
 			if(file.folder || file.compressed)
 				filtered.push(file);
-			else if(compatibleMime.includes(mime.getType(file.path)) || specialFile)
+			else if(compatible.image(file.path) || specialFile)
 				filtered.push(file);
 		}
 	}

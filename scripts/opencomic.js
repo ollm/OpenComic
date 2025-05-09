@@ -134,311 +134,13 @@ var _package = JSON.parse(readFileApp('package.json'));
 
 handlebarsContext.packageJson = _package;
 
-var compatibleMime = [
-	'image/jpeg',
-	'image/pjpeg',
-	'image/jp2',
-	'image/jpx',
-	'image/jpm',
-	'image/jxr',
-	'image/vnd.ms-photo',
-	'image/jxl',
-	'image/png',
-	'image/apng',
-	'image/svg',
-	'image/svg+xml',
-	'image/gif',
-	'image/x-ms-bmp',
-	'image/bmp',
-	'image/x-icon',
-	'image/vnd.microsoft.icon',
-	'image/webp',
-	'image/avif',
-	'image/avif-sequence',
-	'image/heic',
-	'image/heif',
-	'image/heic-sequence',
-	'image/heif-sequence',
-];
-
-// This image formats requires conversion to Blob to be displayed
-var blobMime = [
-	// jp2
-	'image/jp2',
-	'image/jpx',
-	'image/jpm', 
-	// jxl
-	'image/jxl',
-	// heic
-	'image/heic',
-	'image/heif',
-	'image/heic-sequence',
-	'image/heif-sequence',
-];
-
-// This image formats requires conversion to PNG to be displayed
-var convertMime = [
-	// jxr
-	'image/jxr',
-	'image/vnd.ms-photo',
-];
-
-var compressedMime = {
-	all: [
-		'application/zip',
-		'application/x-cbz',
-		'applicatpdomion/x-zip',
-		'application/x-zip-compressed',
-		'application/rar',
-		'application/x-cbr',
-		'application/x-rar',
-		'application/x-rar-compressed',
-		'application/vnd.rar',
-		'application/7z',
-		'application/x-cb7',
-		'application/x-7z',
-		'application/x-7z-compressed',
-		'application/tar',
-		'application/x-cbt',
-		'application/x-tar',
-		'application/x-tar-compressed',
-		'application/pdf',
-		'application/x-bzpdf',
-		'application/x-gzpdf',
-		'application/epub+zip',
-	],
-	'7z': [
-		// ZIP
-		'application/zip',
-		'application/x-cbz',
-		'application/x-zip',
-		'application/x-zip-compressed',
-
-		// RAR
-		'application/rar',
-		'application/x-cbr',
-		'application/x-rar',
-		'application/x-rar-compressed',
-		'application/vnd.rar',
-
-		// 7Z
-		'application/7z',
-		'application/x-cb7',
-		'application/x-7z',
-		'application/x-7z-compressed',
-
-		// TAR
-		'application/tar',
-		'application/x-cbt',
-		'application/x-tar',
-		'application/x-tar-compressed',
-	],
-	pdf: [
-		'application/pdf',
-		'application/x-bzpdf',
-		'application/x-gzpdf',
-	],
-	epub: [
-		'application/epub+zip',
-	],
-};
-
-
-var compressedExtensions = {
-	all: [
-		'zip',
-		'cbz',
-		'rar',
-		'cbr',
-		'7z',
-		'cb7',
-		'tar',
-		'cbt',
-		'pdf',
-		'epub',
-		'epub3',
-	],
-	'7z': [
-		// ZIP
-		'zip',
-		'cbz',
-
-		// RAR
-		'rar',
-		'cbr',
-
-		// 7Z
-		'7z',
-		'cb7',
-
-		// TAR
-		'tar',
-		'cbt',
-	],
-	pdf: [
-		'pdf',
-	],
-	epub: [
-		'epub',
-		'epub3',
-	],
-};
-
-var imageExtensions = {
-	all: [
-		'jpg',
-		'jpeg',
-		'jif',
-		'jfi',
-		'jfif',
-		'jfif-tbnl',
-		'jpe',
-		'jp2',
-		'j2k',
-		'jpf',
-		'jpm',
-		'jpg2',
-		'j2c',
-		'jpc',
-		'jpx',
-		'jxr',
-		'hdp',
-		'wdp',
-		'jxl',
-		'png',
-		'x-png',
-		'apng',
-		'svg',
-		'svgz',
-		'gif',
-		'bmp',
-		'dib',
-		'ico',
-		'webp',
-		'avif',
-		'avifs',
-		'heic',
-		'heif',
-	],
-	blob: [ // This image formats requires conversion to Blob to be displayed
-		// jp2
-		'jp2',
-		'j2k',
-		'jpf',
-		'jpm',
-		'jpg2',
-		'j2c',
-		'jpc',
-		'jpx',
-		// jxl
-		'jxl',
-		// heic
-		'heic',
-		'heif',
-	],
-	convert: [ // This image formats requires conversion to PNG to be displayed
-		// jxr
-		'jxr',
-		'hdp',
-		'wdp',
-	],
-	jpg: [
-		'jpg',
-		'jpeg',
-		'jif',
-		'jfi',
-		'jfif',
-		'jfif-tbnl',
-		'jpe',
-	],
-	jp2: [
-		'jp2',
-		'j2k',
-		'jpf',
-		'jpm',
-		'jpg2',
-		'j2c',
-		'jpc',
-		'jpx',
-	],
-	jxr: [
-		'jxr',
-		'hdp',
-		'wdp',
-	],
-	jxl: [
-		'jxl',
-	],
-	png: [
-		'png',
-		'x-png',
-		'apng',
-	],
-	svg: [
-		'svg',
-		'svgz',
-	],
-	gif: [
-		'gif',
-	],
-	bmp: [
-		'bmp',
-		'dib',
-	],
-	ico: [
-		'ico',
-	],
-	webp: [
-		'webp',
-	],
-	avif: [
-		'avif',
-		'avifs',
-	],
-	heic: [
-		'heic',
-		'heif',
-	],
-};
-
-var compatibleImageExtensions = [
-	...imageExtensions.all,
-];
-
-var compatibleImageExtensionsWithoutConvert = removeElements(imageExtensions.all, [...imageExtensions.blob, ...imageExtensions.convert]);
-
-var compatibleCompressedExtensions = [
-	...compressedExtensions.all,
-];
-
-var compatibleExtensions = [
-	...imageExtensions.all,
-	...compressedExtensions.all,
-];
-
-var compatibleSpecialExtensions = [
-	'tbn',
-];
-
-var audioExtensions = {
-	all: [
-		'mp3',
-		'm4a',
-		'webm',
-		'weba',
-		'ogg',
-		'opus',
-		'wav',
-		'flac',
-	],
-};
-
 //console.time('Require time 2');
 
 const app = require(p.join(appDir, 'scripts/app.js')),
 	installedFromStore = require(p.join(appDir, 'scripts/installed-from-store.js')),
 	folderPortable = require(p.join(appDir, 'scripts/folder-portable.js')),
 	storage = require(p.join(appDir, 'scripts/storage.js')),
+	compatible = require(p.join(appDir, 'scripts/compatible.js')),
 	image = require(p.join(appDir, 'scripts/image.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
@@ -804,6 +506,7 @@ async function loadMime()
 		mime.define({'image/vnd.ms-photo': ['hdp']});
 		mime.define({'image/avif-sequence': ['avifs']});
 		mime.define({'application/epub+zip': ['epub']});
+		mime.define({'application/x-tar-compressed': ['tgz', 'tar.gz', 'tar.gzip', 'txz', 'tar.xz', 'tbz', 'tbz2', 'tar.bz2', 'tar.bzip2', 'tzst', 'tar.zst', 'tar.zstd']});
 
 		resolve();
 
@@ -836,11 +539,6 @@ function removeElements(array1, array2)
 {
     const set2 = new Set(array2);
     return array1.filter(element => !set2.has(element));
-}
-
-function fileExtension(path)
-{
-	return p.extname(path).substr(1).toLowerCase();
 }
 
 function fastJoin(path1, path2)
@@ -1493,7 +1191,7 @@ hb.registerHelper('configIsTrue', function(key, value) {
 
 function pathIsSupported(path)
 {
-	if(inArray(mime.getType(path), compatibleMime) || inArray(fileExtension(path), compressedExtensions.all) || fs.statSync(path).isDirectory())
+	if(compatible.open(path) || fs.statSync(path).isDirectory())
 		return true;
 
 	return false;
@@ -1508,7 +1206,7 @@ function openComicDialog(folders = false)
 
 	var dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}], securityScopedBookmarks: macosMAS}).then(function (files) {
+	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatible.open.list()}], securityScopedBookmarks: macosMAS}).then(function (files) {
 
 		fileManager.macosSecurityScopedBookmarks(files);
 
@@ -1533,7 +1231,7 @@ function openComic(filePath, animation = true)
 		}
 		else
 		{
-			if(inArray(mime.getType(filePath), compatibleMime))
+			if(compatible.image(filePath))
 			{
 				selectImage = true;
 				path = filePath;
@@ -1592,7 +1290,7 @@ function addComic(folders = false)
 
 	var dialog = electronRemote.dialog;
 
-	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatibleExtensions}], securityScopedBookmarks: macosMAS}).then(function(files) {
+	dialog.showOpenDialog({properties: properties, filters: [folders ? {name: language.global.comics} : {name: language.global.comics, extensions: compatible.open.list()}], securityScopedBookmarks: macosMAS}).then(function(files) {
 
 		fileManager.macosSecurityScopedBookmarks(files);
 
@@ -1622,7 +1320,7 @@ function addComicsToLibrary(files, reload = true)
 			}
 			else
 			{
-				if(inArray(mime.getType(filePath), compatibleMime))
+				if(compatible.image(filePath))
 				{
 					filePath = p.dirname(filePath);
 

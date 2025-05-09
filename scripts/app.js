@@ -84,6 +84,11 @@ function extname(path)
 	return p.extname(path).substr(1).toLowerCase();
 }
 
+function extnameC(path)
+{
+	return extract(/\.((?:tar\.)?[a-z0-9\-]+)$/i, path).toLowerCase();
+}
+
 function round(number, precision = 0) {
 
 	multipler = Math.pow(10, precision);
@@ -388,6 +393,7 @@ module.exports = {
 	eventOff: eventOff,
 	empty: empty,
 	extname: extname,
+	extnameC: extnameC,
 	round: round,
 	roundDPR: roundDPR,
 	floorDPR: floorDPR,

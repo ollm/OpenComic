@@ -565,9 +565,9 @@ function addChapterNumberDialog(done = false, onlySite = false)
 // Scraping functions
 function getTitle()
 {
-	var title = '';
+	let title = '';
 
-	if(reading.readingCurrentPath() && inArray(fileExtension(reading.readingCurrentPath()), compressedExtensions.all))
+	if(reading.readingCurrentPath() && compatible.compressed(reading.readingCurrentPath()))
 		title = reading.readingCurrentPath() ? p.basename(reading.readingCurrentPath()).replace(/\.[^/.]+$/, '') : '';
 	else
 		title = dom.indexMainPathA() ? p.basename(dom.indexMainPathA()) : '';

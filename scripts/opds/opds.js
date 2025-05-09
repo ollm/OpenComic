@@ -345,7 +345,7 @@ function findAcquisitionLinks(links, currentUrl, publicationTitle)
 
 		const type = acquisitionLinksTypes[rel];
 
-		if(type && (mime == 'text/html' || compressedMime.all.includes(mime)))
+		if(type && (mime == 'text/html' || compatible.mime.compressed(mime)))
 		{
 			const name = language.buttons[type] || type;
 			const icon = acquisitionLinksIcons[type];

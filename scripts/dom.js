@@ -179,7 +179,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 			{
 				const file = files[i];
 
-				if(inArray(mime.getType(file.path), compatibleMime))
+				if(compatible.image(file.path))
 				{
 					file.forceSize = viewModuleSize;
 					file.sha = cache.imageSizeSha(file);
@@ -223,7 +223,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 
 				let realPath = fileManager.realPath(filePath, -1);
 
-				if(inArray(mime.getType(realPath), compatibleMime))
+				if(compatible.image(realPath))
 				{
 					let sha = file.sha;
 
@@ -2484,7 +2484,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	let imagePath = path;
 	let indexStart = 1;
 
-	if(compatibleMime.indexOf(mime.getType(path)) != -1)
+	if(compatible.image(path))
 	{
 		startImage = path;
 		path = p.dirname(path);

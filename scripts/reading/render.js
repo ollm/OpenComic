@@ -452,7 +452,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 			fileManager.macosStartAccessingSecurityScopedResource(src);
 
-			if(inArray(fileExtension(src), imageExtensions.blob)) // Convert unsupported images to blob
+			if(compatible.image.blob(src)) // Convert unsupported images to blob
 			{
 				src = await workers.convertImageToBlob(src, {priorize: true});
 				_config.blob = true;

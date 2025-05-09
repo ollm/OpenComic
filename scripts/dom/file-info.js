@@ -232,7 +232,7 @@ async function show(path, opds = false)
 				height: Math.round(600 * window.devicePixelRatio),
 			};
 
-			if(imageExtensions.blob.includes(app.extname(src))) // Convert unsupported images to blob
+			if(compatible.image.blob(src)) // Convert unsupported images to blob
 			{
 				src = await workers.convertImageToBlob(src, {priorize: true});
 				options.blob = true;

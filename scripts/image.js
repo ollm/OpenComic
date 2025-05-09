@@ -27,9 +27,9 @@ async function resize(fromImage, toImage, config = {})
 
 		if(!config.blob)
 		{
-			const extension = fileExtension(fromImage);
+			const extension = app.extname(fromImage);
 
-			if(/*inArray(extension, imageExtensions.ico)/* || */inArray(extension, imageExtensions.ico)) // Unsupported images format for resize
+			if(/*compatible.image.ico.has(extension)/* || */compatible.image.ico.has(extension)) // Unsupported images format for resize
 				return reject({});
 		}
 
@@ -244,34 +244,34 @@ async function isAnimated(path)
 {
 	if(isAnimatedCache[path] !== undefined) return isAnimatedCache[path];
 
-	let extension = fileExtension(path);
+	let extension = app.extname(path);
 	let _isAnimated = false;
 
-	if(inArray(extension, imageExtensions.bmp) || inArray(extension, imageExtensions.ico)) // Unsupported image format by sharp
+	if(compatible.image.bmp.has(extension) || compatible.image.ico.has(extension)) // Unsupported image format by sharp
 	{
 		_isAnimated = true;
 	}
-	else if(inArray(extension, imageExtensions.jpg)) // Extensions that do not support animations
+	else if(compatible.image.jpg.has(extension)) // Extensions that do not support animations
 	{
 		_isAnimated = false;
 	}
-	else if(inArray(extension, imageExtensions.svg)) // Is a vector format
+	else if(compatible.image.svg.has(extension)) // Is a vector format
 	{
 		_isAnimated = true;
 	}
-	else if(inArray(extension, imageExtensions.png) || inArray(extension, imageExtensions.webp) || inArray(extension, imageExtensions.avif) || inArray(extension, imageExtensions.gif))  // They can have animations
+	else if(compatible.image.png.has(extension) || compatible.image.webp.has(extension) || compatible.image.avif.has(extension) || compatible.image.gif.has(extension))  // They can have animations
 	{
 		_isAnimated = false;
 
 		let type = 'image/png';
 
-		if(inArray(extension, imageExtensions.png))
+		if(compatible.image.png.has(extension))
 			type = 'image/png';
-		else if(inArray(extension, imageExtensions.webp))
+		else if(compatible.image.webp.has(extension))
 			type = 'image/webp';
-		else if(inArray(extension, imageExtensions.avif))
+		else if(compatible.image.avif.has(extension))
 			type = 'image/avif';
-		else if(inArray(extension, imageExtensions.gif))
+		else if(compatible.image.gif.has(extension))
 			type = 'image/gif';
 
 		let decoder = new ImageDecoder({data: await fsp.readFile(path), type: type});
@@ -294,9 +294,9 @@ async function isAnimated(path)
 
 function sharpSupportedFormat(path, extension = false)
 {
-	extension = extension || fileExtension(path);
+	extension = extension || app.extname(path);
 
-	if(inArray(extension, imageExtensions.bmp) || inArray(extension, imageExtensions.ico)) // Unsupported image format by sharp
+	if(compatible.image.bmp.has(extension) || compatible.image.ico.has(extension)) // Unsupported image format by sharp
 		return false;
 
 	return true;
@@ -359,9 +359,9 @@ async function getSizes(images)
 
 							try
 							{
-								const extension = fileExtension(image.image);
+								const extension = app.extname(image.image);
 
-								if(inArray(extension, imageExtensions.heic))
+								if(compatible.image.heic.has(extension))
 								{
 									if(heic === false)
 										heic = require('heic-decode');
@@ -375,7 +375,7 @@ async function getSizes(images)
 										height: properties.height,
 									};
 								}
-								else if(inArray(extension, imageExtensions.jp2))
+								else if(compatible.image.jp2.has(extension))
 								{
 									if(pdfjsDecoders === false)
 										await loadPdfjsDecoders();
@@ -388,7 +388,7 @@ async function getSizes(images)
 										height: properties.height,
 									};
 								}
-								else if(inArray(extension, imageExtensions.jxl))
+								else if(compatible.image.jxl.has(extension))
 								{
 									if(JxlImage === false)
 										await loadJxlImage();
@@ -406,7 +406,7 @@ async function getSizes(images)
 										height: jxlImage.height,
 									};
 								}
-								else if(inArray(extension, imageExtensions.blob))
+								else if(compatible.image.blob.has(extension))
 								{
 									if(imageSize === false)
 										imageSize = require('image-size/fromFile').imageSizeFromFile;

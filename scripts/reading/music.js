@@ -8,7 +8,7 @@ async function has(files, findParent = false)
 	{
 		let _file = files[i];
 
-		if(inArray(fileExtension(_file.name), audioExtensions.all))
+		if(compatible.audio(_file.name))
 			return _file;
 	}
 

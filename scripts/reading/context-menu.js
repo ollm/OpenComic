@@ -318,7 +318,7 @@ async function copyImageToClipboard()
 			compressionLevel: 0,
 		};
 
-		if(imageExtensions.blob.includes(app.extname(src))) // Convert unsupported images to blob
+		if(compatible.image.blob(src)) // Convert unsupported images to blob
 		{
 			src = await workers.convertImageToBlob(src, {priorize: true});
 			options.blob = true;
