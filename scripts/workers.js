@@ -393,6 +393,5 @@ module.exports = {
 	convertImage: convertImage,
 	convertImageToBlob: convertImageToBlob,
 	ping: ping,
-	exec: exec,
 	clean: clean,
 }
