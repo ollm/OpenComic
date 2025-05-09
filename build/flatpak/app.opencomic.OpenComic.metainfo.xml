@@ -13,22 +13,26 @@
         <p>Comic and manga reader.</p>
         <p><em>Features</em></p>
         <ul>
-            <li>🖼 Support this image formats: <code>JPG</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
-            <li>🗄 Support this compressed formats: <code>RAR</code>, <code>ZIP</code>, <code>7Z</code>, <code>TAR</code>, <code>CBR</code>, <code>CBZ</code>, <code>CB7</code>, <code>CBT</code></li>
+            <li>🌄 Support this image formats: <code>JPG</code>, <code>JP2</code>, <code>JXR</code>, <code>JXL</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>,  <code>HEIC</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
+            <li>📦 Support this compressed formats: <code>RAR</code>, <code>ZIP</code>, <code>7Z</code>, <code>TAR</code>, <code>LZH</code>, <code>ACE</code>, <code>CBR</code>, <code>CBZ</code>, <code>CBA</code>, <code>CB7</code>, <code>CBT</code></li>
             <li>📄 Support this documents/ebook formats: <code>PDF</code>, <code>EPUB</code> (Alpha)</li>
             <li>🎵 Support background music from folder: <code>MP3</code>, <code>M4A</code>, <code>WEBM</code>, <code>WEBA</code>, <code>OGG</code>, <code>OPUS</code>, <code>WAV</code>, <code>FLAC</code></li>
-            <li>📁 Master folders support</li>
             <li>☁️ Server connection support: <code>smb://</code>, <code>ftp://</code>, <code>ftps://</code>, <code>scp://</code>, <code>sftp://</code>, <code>ssh://</code>, <code>s3://</code>, <code>webdav://</code>, <code>webdavs://</code></li>
+            <li>📁 Master folders support</li>
+            <li>📚 OPDS support</li>
+            <li>❤️ Favorite label</li>
+            <li>🏷️ Custom labels</li>
             <li>🇯🇵 Manga read mode</li>
             <li>🇰🇷 Webtoon read mode</li>
             <li>📖 Double page view</li>
             <li>🔖 Bookmarks and continue reading</li>
             <li>🔍 Floating magnifying glass</li>
-            <li>🖱 Reading in scroll or slide</li>
+            <li>🖱️ Reading in scroll or slide</li>
             <li>⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors</li>
             <li>🎨 Colorize black and white images</li>
             <li>🔄 Tracking with sites (AniList)</li>
             <li>🎮 Gamepad navigation</li>
+            <li>⌨️ Custom shortcuts and tap zones</li>
             <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>nearest</code> and others</li>
         </ul>
     </description>

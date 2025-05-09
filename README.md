@@ -24,22 +24,25 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 
 ## Features
 
-- 🖼 Support this image formats: `JPG`, `PNG`, `APNG`, `AVIF`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
-- 🗄 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
+- 🌄 Support this image formats: `JPG`, `PNG`, `APNG`, `AVIF`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
+- 📦 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
 - 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
 - 🎵 Support background music from folder: `MP3`, `M4A`, `WEBM`, `WEBA`, `OGG`, `OPUS`, `WAV`, `FLAC`
-- 📁 Master folders support
 - ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`, `s3://`, `webdav://`, `webdavs://`
+- 📁 Master folders support
+- ❤️ Favorite label
+- 🏷️ Custom labels
 - 🇯🇵 Manga read mode
 - 🇰🇷 Webtoon read mode
 - 📖 Double page view
 - 🔖 Bookmarks and continue reading
 - 🔍 Floating magnifying glass
-- 🖱 Reading in scroll or slide
+- 🖱️ Reading in scroll or slide
 - ⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors
 - 🎨 Colorize black and white images
 - 🔄 Tracking with sites (AniList)
 - 🎮 Gamepad navigation
+- ⌨️ Custom shortcuts and tap zones
 - 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `nearest` and others
 
 You can see the changes between versions in the [Changelog 📝](/CHANGELOG.md)
