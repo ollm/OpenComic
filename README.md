@@ -30,7 +30,7 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 - 🎵 Support background music from folder: `MP3`, `M4A`, `WEBM`, `WEBA`, `OGG`, `OPUS`, `WAV`, `FLAC`
 - ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`, `s3://`, `webdav://`, `webdavs://`
 - 📁 Master folders support
-- ❤️ Favorite label
+- ❤️ Favorite labels
 - 🏷️ Custom labels
 - 🇯🇵 Manga read mode
 - 🇰🇷 Webtoon read mode

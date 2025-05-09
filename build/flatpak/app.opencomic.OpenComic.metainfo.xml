@@ -20,7 +20,7 @@
             <li>☁️ Server connection support: <code>smb://</code>, <code>ftp://</code>, <code>ftps://</code>, <code>scp://</code>, <code>sftp://</code>, <code>ssh://</code>, <code>s3://</code>, <code>webdav://</code>, <code>webdavs://</code></li>
             <li>📁 Master folders support</li>
             <li>📚 OPDS support</li>
-            <li>❤️ Favorite label</li>
+            <li>❤️ Favorite labels</li>
             <li>🏷️ Custom labels</li>
             <li>🇯🇵 Manga read mode</li>
             <li>🇰🇷 Webtoon read mode</li>
