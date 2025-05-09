@@ -30,7 +30,7 @@ var epub = function(path, config = {}) {
 
 		await this.openEpubZip();
 
-		return this.zipFiles = await this.zip.read({filtered: false, forceType: 'zip', prefixes: {epub: 'epub-zip'}});
+		return this.zipFiles = await this.zip.read({filtered: false, forceType: '7z', prefixes: {epub: 'epub-zip'}});
 
 	}
 

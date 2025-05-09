@@ -207,26 +207,27 @@ var compressedMime = {
 		'application/x-gzpdf',
 		'application/epub+zip',
 	],
-	zip: [
+	'7z': [
+		// ZIP
 		'application/zip',
 		'application/x-cbz',
 		'application/x-zip',
 		'application/x-zip-compressed',
-	],
-	rar: [
+
+		// RAR
 		'application/rar',
 		'application/x-cbr',
 		'application/x-rar',
 		'application/x-rar-compressed',
 		'application/vnd.rar',
-	],
-	'7z': [
+
+		// 7Z
 		'application/7z',
 		'application/x-cb7',
 		'application/x-7z',
 		'application/x-7z-compressed',
-	],
-	tar: [
+
+		// TAR
 		'application/tar',
 		'application/x-cbt',
 		'application/x-tar',
@@ -257,19 +258,20 @@ var compressedExtensions = {
 		'epub',
 		'epub3',
 	],
-	zip: [
+	'7z': [
+		// ZIP
 		'zip',
 		'cbz',
-	],
-	rar: [
+
+		// RAR
 		'rar',
 		'cbr',
-	],
-	'7z': [
+
+		// 7Z
 		'7z',
 		'cb7',
-	],
-	tar: [
+
+		// TAR
 		'tar',
 		'cbt',
 	],
@@ -1145,6 +1147,7 @@ function showAboutWindow()
 		'electron',
 		'sharp',
 		'pdfjs-dist',
+		'7zip-bin',
 	];
 
 	const allDependencies = {

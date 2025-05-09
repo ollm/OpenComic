@@ -949,7 +949,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	};
 
 	this._features = {
-		zip: {
+		'7z': { // 7z incldues multiple formats, like zip, rar, tar, etc.
 			read: true,
 			single: true,
 			vector: false,
@@ -957,33 +957,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			html: false,
 			ebook: false,
 			progress: true,
-		},
-		'7z': {
-			read: true,
-			single: true,
-			vector: false,
-			canvas: false,
-			html: false,
-			ebook: false,
-			progress: true,
-		},
-		rar: {
-			read: true,
-			single: true,
-			vector: false,
-			canvas: false,
-			html: false,
-			ebook: false,
-			progress: true,
-		},
-		tar: {
-			read: true,
-			single: true,
-			vector: false,
-			canvas: false,
-			html: false,
-			ebook: false,
-			progress: false,
 		},
 		pdf: {
 			read: true,
@@ -1044,19 +1017,14 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(this.features && !force) return this.features;
 
 		force = force || this.forceType;
+		let ext = false;
 
 		if(!force)
 		{
-			let ext = fileExtension(this.path);
+			ext = fileExtension(this.path);
 
-			if(inArray(ext, compressedExtensions.zip))
-				force = 'zip';
-			else if(inArray(ext, compressedExtensions['7z']))
+			if(inArray(ext, compressedExtensions['7z']))
 				force = '7z';
-			else if(inArray(ext, compressedExtensions.rar))
-				force = 'rar';
-			else if(inArray(ext, compressedExtensions.tar))
-				force = 'tar';
 			else if(inArray(ext, compressedExtensions.pdf))
 				force = 'pdf';
 			else if(inArray(ext, compressedExtensions.epub))
@@ -1065,6 +1033,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.features = this._features[force];
 		this.features.ext = force;
+		this.features.fileExt = ext;
 		this.features[force] = true;
 
 		return this.features;
@@ -1090,30 +1059,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.detectFileTypeFromBinary = async function() {
-
-		if(fileType === false) fileType = require('file-type').fromBuffer;
-
-		let type;
-
-		try
-		{
-			const buffer = await readChunk(this.realPath, {length: 4100});
-			type = await fileType(buffer);
-		}
-		catch(error)
-		{
-			fileManager.requestFileAccess.check(false, error);
-			throw new Error(error);
-		}
-
-		if(inArray(type.ext, compressedExtensions.all) && type.ext != 'epub')
-			return type.ext;
-
-		return this.features.ext;
-
-	}
-
 	this.read = async function(config = {}) {
 
 		this.updateConfig(config);
@@ -1125,26 +1070,25 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		return this.readCurrent();
 	}
 
-	this.readCurrent = function() {
+	this.readCurrent = async function() {
 
 		this.setTmpUsage();
 
-		console.log('readCompressed... '+this.path);
+		const message = 'readCompressed | '+this.features.ext+(this.features.fileExt && this.features.ext !== this.features.fileExt ? ' ('+this.features.fileExt+')' : '')+' | '+this.path;
+		console.time(message);
 
-		if(this.features.zip)
-			return this.read7z(); // return this.readZip();
-		else if(this.features['7z'])
-			return this.read7z();
-		else if(this.features.rar)
-			return this.readRar();
-		else if(this.features.tar)
-			return this.readTar();
+		let files = false;
+
+		if(this.features['7z'])
+			files = await this.read7z();
 		else if(this.features.pdf)
-			return this.readPdf();
+			files = await this.readPdf();
 		else if(this.features.epub)
-			return this.readEpub();
+			files = await this.readEpub();
 
-		return false;
+		console.timeEnd(message);
+
+		return files;
 	}
 
 	this.readMetadata = async function(config = {}) {
@@ -1160,7 +1104,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.readCurrentMetadata = function() {
 
-		if(this.features.zip || this.features['7z'] || this.features.rar || this.features.tar)
+		if(this.features['7z'])
 			return this.readCompressedMetadata();
 		else if(this.features.pdf)
 			return this.readPdfMetadata();
@@ -1334,28 +1278,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.readIfTypeFromBinaryIsDifferent = async function(error = false) {
-
-		let _this = this;
-
-		return new Promise(async function(resolve, reject) {
-
-			let type = await _this.detectFileTypeFromBinary();
-
-			if(type && type !== _this.features.ext)
-			{
-				_this.getFeatures(type);
-				resolve(_this.readCurrent());
-			}
-			else
-			{
-				reject(error);
-			}
-
-		});
-
-	}
-
 	this.callbackWhenFileExtracted = false;
 
 	this.extract = async function(config = {}, callbackWhenFileExtracted = false) {
@@ -1397,48 +1319,27 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		return this.extractCurrent();
 	}
 
-	this.extractCurrent = function() {
+	this.extractCurrent = async function() {
 
 		this.setTmpUsage();
 
-		console.log('extractCompressed...'+(this.config._only ? ' ('+this.config._only.length+' files)' : '')+' '+this.path);
+		const message = 'extractCompressed | '+this.features.ext+(this.features.fileExt && this.features.ext !== this.features.fileExt ? ' ('+this.features.fileExt+')' : '')+' |'+(this.config._only ? ' ('+this.config._only.length+' files)' : '')+' '+this.path;
+		console.time(message);
 
-		if(this.features.zip)
-			return this.extract7z(); // return this.extractZip();
-		else if(this.features['7z'])
-			return this.extract7z();
-		else if(this.features.rar)
-			return this.extractRar();
-		else if(this.features.tar)
-			return this.extractTar();
+		let files = false;
+
+		if(this.features['7z'])
+			files = await this.extract7z();
 		else if(this.features.pdf)
-			return this.extractPdf();
+			files = await this.extractPdf();
 		else if(this.features.epub)
-			return this.extractEpub();
+			files = await this.extractEpub();
 
-		return false;
-	}
+		console.timeEnd(message);
 
-	this.extractIfTypeFromBinaryIsDifferent = async function(error = false) {
+		console.log(this.config._only);
 
-		let _this = this;
-
-		return new Promise(async function(resolve, reject) {
-
-			let type = await _this.detectFileTypeFromBinary();
-
-			if(type && type !== _this.features.ext)
-			{
-				_this.getFeatures(type);
-				resolve(_this.extractCurrent());
-			}
-			else
-			{
-				reject(error);
-			}
-
-		});
-
+		return files;
 	}
 
 	this.checkIfAlreadyExtracted = async function() {
@@ -1620,6 +1521,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					name: key,
 					path: file.path,
 					folder: file.folder ? true : false,
+					size: file.size || 0,
 					compressed: this.isCompressed(file.name),
 				};
 
@@ -1636,6 +1538,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					name: key,
 					path: p.join(this.path, _name),
 					folder: true,
+					size: 0,
 					files: this._filesToMultidimension(files, value, _name),
 				});
 			}
@@ -1772,155 +1675,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	// ZIP
-	this.zip = false;
-
-	this.openZip = async function() {
-
-		// Not support this cache
-		// if(this.zip) return this.zip;
-
-		if(unzip === false) unzip = require('unzipper');
-
-		this.macosStartAccessingSecurityScopedResource(this.realPath);
-		this.zip = await unzip.Open.file(this.realPath);
-
-		return this.zip;
-
-	}
-
-	this.checkZipError = async function(extract = false) {
-
-		let _this = this;
-
-		return new Promise(function(resolve, reject) {
-
-			fs.createReadStream(_this.realPath).pipe(
-				unzip.Extract({path: _this.tmp}).on('close', reject).on('error', async function(error){
-
-					if(/0xafbc7a37/.test(error.message)) // 7zip file
-					{
-						_this.getFeatures('7z');
-
-						resolve(extract ? _this.extract7z() : _this.read7z());
-					}
-					else if(/0x21726152/.test(error.message)) // rar file
-					{
-						_this.getFeatures('rar');
-
-						resolve(extract ? _this.extractRar() : _this.readRar());
-					}
-					else
-					{
-						resolve(extract ? _this.extractIfTypeFromBinaryIsDifferent(error) : _this.readIfTypeFromBinaryIsDifferent(error));
-					}
-					
-				})
-			);
-
-		});
-
-	}
-
-	this.readZip = async function(callback = false) {
-
-		let files = [];
-
-		console.time('readZip: '+this.path);
-
-		try
-		{
-			let zip = await this.openZip();
-
-			for(let i = 0, len = zip.files.length; i < len; i++)
-			{
-				let entry = zip.files[i];
-				let name = p.normalize(this.fixCorruptedName(entry.path, i));
-
-				files.push({name: name, path: p.join(this.path, name), folder: (entry.type === 'Directory' ? true : false)});
-				this.setFileStatus(name, {extracted: false});
-			}
-
-			files = this.filesToMultidimension(files);
-		}
-		catch(error)
-		{
-			files = await this.checkZipError();
-		}
-
-		console.timeEnd('readZip: '+this.path);
-
-		return this.files = files;
-		
-	}
-
-	this.extractZip = async function(callback = false) {
-
-		console.time('extractZip: '+this.path);
-
-		try
-		{
-			let zip = await this.openZip();
-
-			this.progressIndex = 1;
-
-			let _this = this;
-			let only = this.config.only;
-
-			for(let i = 0, len = zip.files.length; i < len; i++)
-			{
-				let entry = zip.files[i];
-				let name = p.normalize(this.fixCorruptedName(entry.path, i));
-
-				let extract = !only || only[name] ? true : false;
-
-				if(extract)
-				{
-					let path = p.join(this.tmp, name);
-					let virtualPath = p.join(this.path, name);
-
-					if(entry.type === 'Directory')
-					{
-						if(!fs.existsSync(path))
-							fs.mkdirSync(path);
-					}
-					else
-					{
-						let folderPath = this.folderPath(path);
-
-						if(!fs.existsSync(folderPath))
-							fs.mkdirSync(folderPath, {recursive: true});
-
-						this.setFileStatus(name, {extracted: true});
-
-						await new Promise(function(resolve, reject) {
-							entry.stream().pipe(fs.createWriteStream(path)).on('error', reject).on('finish', function() {
-
-								_this.setProgress(_this.progressIndex++ / len);
-								_this.whenExtractFile(virtualPath);
-
-								resolve();
-							});
-						});
-					}
-				}
-			}
-		}
-		catch(error)
-		{
-			await this.checkZipError(true);
-		}
-
-		this.setProgress(1);
-
-		console.timeEnd('extractZip: '+this.path);
-
-		return;
-	}
-
-
-
-
 	// 7z
 	this._7z = false;
 
@@ -1930,7 +1684,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		// if(this._7z) return this._7z;
 
 		if(un7z === false) un7z = require('node-7z');
-		if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7za);
+		if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7z);
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
@@ -1947,7 +1701,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let files = [];
 
-		console.time('read7z: '+this.path);
 		let _this = this;
 
 		let _7z = await this.open7z();
@@ -1961,15 +1714,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				{
 					let name = _this.removeTmp(p.normalize(data.file));
 
-					files.push({name: name, path: p.join(_this.path, name)});
+					files.push({name: name, path: p.join(_this.path, name), size: data.size});
 					_this.setFileStatus(name, {extracted: false});
 
 					readSome = true;
 				}
 
 			}).on('end', function(data) {
-
-				console.timeEnd('read7z: '+_this.path);
 
 				_this.files = _this.filesToMultidimension(files);
 				resolve(_this.files);
@@ -1986,7 +1737,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				}
 				else
 				{
-					resolve(_this.readIfTypeFromBinaryIsDifferent(error));
+					reject(error);
 				}
 
 			});
@@ -1996,8 +1747,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	}
 
 	this.extract7z = async function(callback = false) {
-
-		console.time('extract7z: '+this.path);
 
 		let _this = this;
 
@@ -2055,8 +1804,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					}
 					else
 					{
-						error = true;
-						resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
+						// error = true;
+						reject(error);
 					}
 
 				});
@@ -2068,219 +1817,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.setProgress(1);
 
-		console.timeEnd('extract7z: '+_this.path);
-
 		return result;
 	}
-
-
-	// RAR
-	this.rar = false;
-
-	this.openRar = async function(extract = false, only = '') {
-
-		// Also has extract issues with this cache
-		// if(this.rar) return this.rar;
-
-		if(unrar === false) unrar = require('node-unrar-js');
-
-		this.macosStartAccessingSecurityScopedResource(this.realPath);
-		let wasmBinary = fs.readFileSync(require.resolve('node-unrar-js/esm/js/unrar.wasm'));
-		this.rar = await unrar.createExtractorFromFile({wasmBinary: wasmBinary, filepath: this.realPath, targetPath: this.tmp});
-
-		return this.rar;
-
-	}
-
-	this.readRar = async function(callback = false) {
-
-		let files = [];
-
-		console.time('readRar: '+this.path);
-		let _this = this;
-
-		try
-		{
-			let rar = await this.openRar();
-			let list = rar.getFileList();
-			list = [...list.fileHeaders];
-
-			for(let i = 0, len = list.length; i < len; i++)
-			{
-				let file = list[i];
-				let name = _this.removeTmp(p.normalize(file.name));
-
-				files.push({name: name, path: p.join(_this.path, name), folder: !!file.flags.directory});
-				_this.setFileStatus(name, {extracted: false});
-			}
-
-			console.timeEnd('readRar: '+_this.path);
-
-			_this.files = _this.filesToMultidimension(files);
-			return _this.files;
-		}
-		catch(error)
-		{
-			return _this.readIfTypeFromBinaryIsDifferent(error);
-		}
-		
-	}
-
-	this.extractRar = async function(callback = false) {
-
-		console.time('extractRar: '+this.path);
-
-		this.progressIndex = 1;
-
-		try
-		{
-			let rar = await this.openRar();
-			let regexp = new RegExp(pregQuote(p.sep, '/'), 'g');
-
-			if(!this.config._only || !this.config._only.length)
-			{
-				let files = await this.read();
-				files = this.filesToOnedimension(files);
-
-				this.config._only = [];
-
-				for(let i = 0, len = files.length; i < len; i++)
-				{
-					this.config._only.push(files[i].pathInCompressed);
-				}
-			}
-
-			for(let i = 0, len = this.config._only.length; i < len; i++)
-			{
-				let _name = this.config._only[i];
-
-				let extracted = rar.extract({files: [_name.replace(regexp, '/')]});
-				extracted = [...extracted.files];
-
-				await app.setImmediate();
-
-				let virtualPath = p.join(this.path, _name);
-
-				this.setProgress(this.progressIndex++ / len);
-				this.setFileStatus(_name, {extracted: true});
-				this.whenExtractFile(virtualPath);
-			}
-
-			this.setProgress(1);
-
-			console.timeEnd('extractRar: '+this.path);
-
-			return;
-		}
-		catch(error)
-		{
-			return this.extractIfTypeFromBinaryIsDifferent(error);
-		}
-	}
-
-
-	// TAR
-	this.tar = false;
-
-	this.openTar = async function() {
-
-		// Not support this cache
-		// if(this.tar) return this.tar;
-		if(this.tar) this.tar.destroy();
-
-		if(untar === false) untar = require('tar-fs');
-
-		this.macosStartAccessingSecurityScopedResource(this.realPath);
-		this.tar = fs.createReadStream(this.realPath);
-
-		return this.tar;
-
-	}
-
-	this.readTar = async function(callback = false) {
-
-		let files = [];
-
-		let tar = await this.openTar();
-		let _this = this;
-
-		console.time('readTar: '+this.path);
-
-		return new Promise(function(resolve, reject) {
-
-			tar.pipe(untar.extract(_this.tmp, {
-				ignore (name) {
-
-					name = _this.removeTmp(p.normalize(name));
-
-					files.push({name: name, path: p.join(_this.path, name)});
-					_this.setFileStatus(name, {extracted: false});
-
-					return true;
-				}
-			})).on('finish', function() {
-
-				console.timeEnd('readTar: '+_this.path);
-
-				_this.files = _this.filesToMultidimension(files);
-				resolve(_this.files);
-
-			}).on('error', function(error) {
-
-				resolve(_this.readIfTypeFromBinaryIsDifferent(error));
-
-			});
-
-		});
-		
-	}
-
-	this.extractTar = async function(callback = false) {
-
-		let tar = await this.openTar();
-
-		let only = this.config.only; 
-		let _this = this;
-
-		console.time('extractTar: '+this.path);
-
-		let files = [];
-		
-		return new Promise(function(resolve, reject) {
-
-			tar.pipe(untar.extract(_this.tmp, {
-				ignore (name) {
-					name = _this.removeTmp(p.normalize(name));
-
-					let extract = !only || only[name] ? true : false;
-					_this.setFileStatus(name, {extracted: extract});
-
-					if(extract)
-						files.push(p.join(_this.path, name));
-
-					return !extract;
-				}
-			})).on('finish', function() {
-
-				console.timeEnd('extractTar: '+_this.path);
-
-				for(let i = 0, len = files.length; i < len; i++)
-				{
-					_this.whenExtractFile(files[i]);
-				}
-
-				resolve();
-
-			}).on('error', function(error) {
-
-				resolve(_this.extractIfTypeFromBinaryIsDifferent(error));
-
-			});
-
-		});
-
-	}
-
 
 
 	// PDF
@@ -2311,8 +1849,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let files = [];
 
-		console.time('readPdf: '+this.path);
-
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
 		let leadingZeros = Math.max(String(pages).length, 4);
@@ -2329,8 +1865,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			files.push({name: file, path: p.join(this.path, file), folder: false, compressed: false, size: size, page: i});
 			this.setFileStatus(file, {page: i, extracted: false, size: size});
 		}
-
-		console.timeEnd('readPdf: '+this.path);
 
 		return this.files = files;
 
@@ -2385,8 +1919,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.extractPdf = async function() {
 
-		console.time('extractPdf: '+this.path);
-
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
 		let leadingZeros = Math.max(String(pages).length, 4);
@@ -2433,8 +1965,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		}
 
 		this.setProgress(1);
-
-		console.timeEnd('extractPdf: '+this.path);
 
 		return;
 
@@ -2496,8 +2026,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let files = [];
 
-		console.time('readEpub: '+this.path);
-
 		let epub = await this.openEpub();
 		let _files = await epub.readEpubFiles();
 
@@ -2508,8 +2036,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			files.push({name: file, path: p.join(this.path, file), folder: false, compressed: false});
 			this.setFileStatus(file, {extracted: false});
 		}
-
-		console.timeEnd('readEpub: '+this.path);
 
 		return this.files = files;
 
@@ -2562,8 +2088,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.extractEpub = async function() {
 
-		console.time('extractEpub: '+this.path);
-
 		let epub = await this.openEpub();
 		let only = this.config.only;
 		let _this = this;
@@ -2615,8 +2139,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(!onReading)
 			this.setProgress(1);
-
-		console.timeEnd('extractEpub: '+this.path);
 
 		return;
 
