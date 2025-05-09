@@ -126,8 +126,6 @@ function getWorker(thread = 0)
 	if(workers[thread])
 		return workers[thread];
 
-	console.error('thread', thread);
-
 	const worker = new Worker(p.join(appDir, 'scripts/worker.js'));
 
 	worker.addEventListener('message', function(result) {
