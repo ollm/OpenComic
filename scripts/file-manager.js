@@ -1337,8 +1337,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		console.timeEnd(message);
 
-		console.log(this.config._only);
-
 		return files;
 	}
 

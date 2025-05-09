@@ -96,6 +96,15 @@ function processJob(thread = 0)
 
 		if(useThreads > job.options.useThreads)
 		{
+			if(!worker.setTimeout)
+			{
+				worker.setTimeout = setTimeout(function(){
+
+					closeWorker(thread);
+
+				}, 10000);
+			}
+
 			queue.unshift(job);
 			return null;
 		}
@@ -116,6 +125,8 @@ function getWorker(thread = 0)
 {
 	if(workers[thread])
 		return workers[thread];
+
+	console.error('thread', thread);
 
 	const worker = new Worker(p.join(appDir, 'scripts/worker.js'));
 
@@ -367,9 +378,23 @@ async function convertImageToBlob(path, options = {})
 	return false;
 }
 
+async function ping(options = {})
+{
+	const result = await work({
+		job: 'ping',
+		key: 'ping',
+		priorize: options.priorize || false,
+		useThreads: options.useThreads || 1,
+	});
+
+	return result;
+}
+
 module.exports = {
 	closeAllWorkers: closeAllWorkers,
 	convertImage: convertImage,
 	convertImageToBlob: convertImageToBlob,
+	ping: ping,
+	exec: exec,
 	clean: clean,
 }
