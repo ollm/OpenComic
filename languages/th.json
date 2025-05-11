@@ -10,7 +10,7 @@
 		"favorites": "เรื่องที่ชอบ",
 		"labels": "ป้ายกำกับ",
 		"editLabels": "แก้ไขป้ายกำกับ",
-		"catalogs": "",
+		"catalogs": "หมวดหมู่",
 		"images": "รูปภาพ",
 		"sort": {
 			"main": "เรียงตาม",
@@ -57,8 +57,8 @@
 			"saveBookmarksImages": "จัดเก็บรูปจากคลังปัจจุบัน",
 			"saveAllBookmarksImages": "จัดเก็บรูปจากคลังทั้งหมด",
 			"saveImagesMessage": "จัดเก็บรูปทั้งหมดเสร็จสิ้น",
-			"copyImage": "",
-			"copyImageMessage": "",
+			"copyImage": "คัดลอกรูปไปยังคลิปบอร์ด",
+			"copyImageMessage": "คัดลอกรูปไปยังคลิปบอร์ดแล้ว",
 			"clearFileCache": "ล้างไฟล์แคช",
 			"clearFileCacheSuccessfully": "ล้างไฟล์แคชออกเรียบร้อยแล้ว",
 			"closeApp": "ปิด OpenComic"
@@ -80,11 +80,11 @@
 		"days": "วัน",
 		"pageAndNumber": "หน้า $1",
 		"valueCannotBeEmpty": "ค่าต้องไม่ว่าง",
-		"viewAll": "",
-		"title": "",
+		"viewAll": "ดูทั้งหมด",
+		"title": "ชื่อเรื่อง",
 		"nightMode": "โหมดมืด",
-		"beta": "",
-		"alpha": ""
+		"beta": "เบต้า",
+		"alpha": "อัลฟ่า"
 	},
 	"comics": {
 		"continueReading": "อ่านต่อ",
@@ -130,7 +130,7 @@
 			"differentMarginInHorizontals": "ต่างจากแนวนอน",
 			"doublePage": "หน้าคู่",
 			"doNotApplyToHorizontals": "ไม่ใช้กับแนวนอน",
-			"alignWithNextHorizontal": "",
+			"alignWithNextHorizontal": "จัดตามแนวนอนถัดไป",
 			"blankPage": "หน้าว่างเมื่อเริ่มต้น",
 			"readingDelaySkip": "หน่วงเวลาการเปลี่ยนเรื่อง",
 			"animationSpeed": "ความเร็วอะนิเมชั่น",
@@ -244,7 +244,7 @@
 			"scrollWithMouse": "เลื่อนโดยย้ายเคอร์เซอร์ไปตามขอบจอ (ปิดการเลื่อนแบบลากและวาง)",
 			"goNextPrevChapterWithScroll": "ไปตอนถัดไป / ก่อนหน้าด้านการเลื่อนเม้าส์ (การอ่านแนวตั้ง)",
 			"turnPagesWithMouseWheel": "พลิกหน้าด้วยล้อเลื่อนเม้าส์ (ซูมเมื่อกด Ctrl ค้างไว้เท่านั้น)",
-			"mouseWheelSensitivityInZoom": "",
+			"mouseWheelSensitivityInZoom": "ความไวของล้อเม้าส์ขณะซูม",
 			"rotateHorizontalsAnticlockwise": "เมื่อหมุนรูปแนวนอนให้ทำแบบทวนเข็มนาฬิกา",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
@@ -270,19 +270,19 @@
 			"files": "การนำทาง (ไฟล์)",
 			"ignoreSingleFoldersLibrary": "ละเว้นโฟลเดอร์เดี่ยว (เปิดอัตโนมัติ)",
 			"ignoreFilesRegex": {
-				"title": "",
-				"description": "",
-				"dialogTitle": "",
-				"dialogDescription": "",
+				"title": "ละเว้นไฟล์และโฟลเดอร์ที่ตรงกับรูปแบบนิพจน์หรือไฟล์",
+				"description": "สิ่งนี้จะช่วยให้คุณซ่อนไฟล์หรือโฟลเดอร์ได้",
+				"dialogTitle": "ละเว้นไฟล์และโฟลเดอร์",
+				"dialogDescription": "สิ่งนี้จะช่วยให้คุณซ่อนไฟล์หรือโฟลเดอร์ได้ คุณสามารถใช้รูปแบบนิพจน์หรือรูปแบบไฟล์ ตัวอย่าง:",
 				"examples": {
-					"poster": "",
-					"miscellaneousFiles": "",
-					"unixHidden": ""
+					"poster": "โปสเตอร์หรือภาพปก",
+					"miscellaneousFiles": "ไฟล์อื่น ๆ",
+					"unixHidden": "ที่ตั้งที่ซ่อนไว้ของ UNIX"
 				},
-				"regexPattern": "",
-				"addRegex": "",
-				"noRegex": "",
-				"invalidRegex": ""
+				"regexPattern": "รูปแบบนิพจน์หรือไฟล์",
+				"addRegex": "เพิ่มรูปแบบนิพจน์หรือไฟล์",
+				"noRegex": "ไม่มีรูปแบบนิพจน์หรือไฟล์",
+				"invalidRegex": "รูปแบบนิพจน์หรือไฟล์ไม่ถูกต้อง"
 			},
 			"openingBehaviorFolder": "พฤติกรรมเมื่อเปิดโฟลเดอร์",
 			"openingBehaviorFolderDescription": "กำหนดพฤติกรรมที่ต้องการเมื่อเปิดโฟลเดอร์ระหว่างการนำทาง",
@@ -319,10 +319,10 @@
 			"nightModeBlackBackground": "ใช้สีดำเป็นพื้นหลังเมื่อใช้โหมดกลางคืน",
 			"nightModeWhiteBlankPage": "แสดงหน้าว่างสีขาวในโหมดกลางคืน",
 			"colors": {
-				"blue": "",
-				"green": "",
-				"red": "",
-				"yellow": ""
+				"blue": "น้ำเงิน",
+				"green": "เขียว",
+				"red": "แดง",
+				"yellow": "เหลือง"
 			}
 		},
 		"releases": {
@@ -339,7 +339,7 @@
 			"gamepadMenu": "เมนูเกมแพด",
 			"useGamepad": "ใช้เกมแพดเพื่อเปลี่ยนการกระทำ",
 			"restoreDefaults": "คืนค่าเป็นค่าเริ่มต้น",
-			"gamepadSensitivity": "",
+			"gamepadSensitivity": "ความไวการตอบสนองของเกมแพด",
 			"gamepadDeadZone": "ระยะเฉยของเกมแพด",
 			"screen": "หน้าจอ",
 			"zoom": "ขยาย",
@@ -461,9 +461,9 @@
 			"readingConfigName": "ชื่อการกำหนดค่า",
 			"readingConfigRemoveHeader": "นำการกำหนดค่าออก",
 			"readingConfigRemove": "คุณต้องการนำการกำหนดค่านี้ออกหรือไม่?",
-			"readingConfigApplyToLabels": "",
-			"readingConfigApplyToAllLabel": "",
-			"readingConfigApplyToAllLabelDescription": "",
+			"readingConfigApplyToLabels": "ใช้งานการกำหนดค่านี้กับโฟลเดอร์/ไฟล์ทั้งหมดที่มีป้ายกำกับโดยอตัโนมัติ",
+			"readingConfigApplyToAllLabel": "ใช้งานการกำหนดค่านี้กับโฟลเดอร์/ไฟล์ทั้งหมดที่มีป้ายกำกับ",
+			"readingConfigApplyToAllLabelDescription": "การกระทำนี้จะถูกใช้งานการกำหนดค่านี้กับโฟลเดอร์/ไฟล์ทั้งหมดที่มีป้ายกำกับ แม้การกำหนดค่าจะถูกปรับเปลี่ยนด้วยตัวเองไปก็ตาม",
 			"readingNumColorsGenerate": "จำนวนสีที่จะสร้าง",
 			"readingPresetName": "ชื่อการตั้งค่า",
 			"readingGotoPage": "ไปยังหน้า"
@@ -477,14 +477,14 @@
 			"confirmDelete": "คุณต้องการลบป้ายกำกับนี้หรือไม่?"
 		},
 		"opds": {
-			"add": "",
-			"delete": "",
-			"confirmDelete": "",
-			"showOnLeft": "",
-			"downloadTitle": "",
-			"downloadDescription": "",
-			"autoSave": "",
-			"downloadSuccess": ""
+			"add": "เพิ่มหมวดหมู่",
+			"delete": "ลบหมวดหมู่",
+			"confirmDelete": "คุณต้องการลบหมวดหมู่นี้หรือไม่?",
+			"showOnLeft": "แสดงในแถบนำทาง",
+			"downloadTitle": "โฟลเดอร์ OPDS",
+			"downloadDescription": "โฟลเดอร์ที่ใช้จัดเก็บไฟล์ที่ถูกดาวน์โหลดโดย OPDS",
+			"autoSave": "ดาวน์โหลดไฟล์ไปยังโฟลเดอร์นี้โดยอัตโนมัติ",
+			"downloadSuccess": "ดาวน์โหลดไฟล์เสร็จสิ้น"
 		},
 		"fileInfo": {
 			"description": "คำอธิบาย",
@@ -571,15 +571,15 @@
 		"dismiss": "ปิด",
 		"remove": "นำออก",
 		"download": "ดาวน์โหลด",
-		"buy": "",
-		"sample": "",
-		"borrow": "",
-		"subscribe": "",
-		"preview": "",
-		"change": "",
-		"apply": "",
+		"buy": "ซื้อ",
+		"sample": "ตัวอย่าง",
+		"borrow": "ยืม",
+		"subscribe": "สมัคร",
+		"preview": "พรีวิว",
+		"change": "เปลี่ยน",
+		"apply": "ใช้งาน",
 		"close": "ปิด",
-		"login": ""
+		"login": "เข้าสู่ระบบ"
 	},
 	"error": {
 		"uncompress": {
@@ -594,7 +594,7 @@
 		"translators": [
 			{
 				"name": "Yutthaphon Inchaiya",
-				"email": "admin@nay-noi.com",
+				"email": "naynum.th@gmail.com",
 				"url": "https://github.com/SubMaRk"
 			}
 		]
