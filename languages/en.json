@@ -439,7 +439,9 @@
 	},
 	"dialog": {
 		"auth": {
-			"loginTo": "Login to {{siteName}}"
+			"loginTo": "Login to {{siteName}}",
+			"filePass": "The file requires a password",
+			"rememberPass": "Remember password"
 		},
 		"tracking": {
 			"getTokenHeader": "Login to {{siteName}} via token",

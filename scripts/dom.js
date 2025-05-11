@@ -159,7 +159,7 @@ async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath)
 {
 	return file.read().then(async function(files){
 
-		queue.clean('folderThumbnails');
+		threads.clean('folderThumbnails');
 
 		let pathFiles = [];
 		let thumbnails = [];
@@ -653,7 +653,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		cache.cleanQueue();
 		cache.stopQueue();
-		queue.stop('folderThumbnails');
+		threads.stop('folderThumbnails');
 
 		let len = comics.length;
 
@@ -736,7 +736,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		template.loadContentRight('index.content.right.'+(sortAndView ? sortAndView.view : config.viewIndex)+'.html', animation, keepScroll);
 
 		cache.resumeQueue();
-		queue.resume('folderThumbnails');
+		threads.resume('folderThumbnails');
 
 		handlebarsContext.headerTitle = false;
 		handlebarsContext.headerTitlePath = false;
@@ -800,7 +800,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		cache.cleanQueue();
 		cache.stopQueue();
-		queue.stop('folderThumbnails');
+		threads.stop('folderThumbnails');
 
 		// Get comic reading progress image
 		let _readingProgress = storage.get('readingProgress');
@@ -927,7 +927,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			contentRightScroll.scrollTop(keepScroll);
 
 		cache.resumeQueue();
-		queue.resume('folderThumbnails');
+		threads.resume('folderThumbnails');
 	}
 
 	if(readingActive)
@@ -1091,7 +1091,6 @@ function continueReadingError()
 
 function compressedError(error, showInPage = true, snackbarKey = '')
 {
-	console.error(error);
 
 	if(showInPage)
 	{
@@ -1374,7 +1373,7 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 
 	if(addToQueue)
 	{
-		queue.add('folderThumbnails', async function(path, folderSha) {
+		threads.job('folderThumbnails', {useThreads: 0.2}, async function(path, folderSha) {
 
 			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
 			let _images = await file.images(4, false, true);
@@ -1385,7 +1384,11 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 
 			return;
 
-		}, path, folderSha);
+		}, path, folderSha).catch(function(error) {
+
+			dom.compressedError(error, false);
+			
+		});
 	}
 
 	return {poster: poster, images: images, addToQueue: addToQueue};

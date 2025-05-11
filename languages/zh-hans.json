@@ -439,7 +439,9 @@
 	},
 	"dialog": {
 		"auth": {
-			"loginTo": "登录 {{siteName}}"
+			"loginTo": "登录 {{siteName}}",
+			"filePass": "",
+			"rememberPass": ""
 		},
 		"tracking": {
 			"getTokenHeader": "通过令牌登录 {{siteName}}",

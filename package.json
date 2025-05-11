@@ -102,7 +102,7 @@
 		"mime": "^4.0.7",
 		"minimatch": "^10.0.1",
 		"mv": "^2.1.1",
-		"node-7z": "^3.0.0",
+		"node-7z": "github:ollm/node-7z",
 		"node-scp": "^0.0.25",
 		"pdfjs-dist": "^5.2.133",
 		"sanitize-html": "^2.16.0",

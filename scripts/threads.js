@@ -88,7 +88,7 @@ function processJob(key = 'default', _thread = 0)
 	if(thread.busy)
 		return false;
 
-	const _queue = queue[key];
+	const _queue = queue[key] || [];
 
 	if(!_queue.length)
 	{
@@ -116,13 +116,24 @@ function processJob(key = 'default', _thread = 0)
 
 async function startJob(thread)
 {
-	const result = await thread.currentJob.callback(...thread.currentJob.arguments);
+	try
+	{
+		const result = await thread.currentJob.callback(...thread.currentJob.arguments);
 
-	thread.currentJob.promise.resolve(result);
-	thread.currentJob = false;
-	thread.busy = false;
+		thread.currentJob.promise.resolve(result);
+		thread.currentJob = false;
+		thread.busy = false;
 
-	processJob(thread.key, thread.thread);
+		processJob(thread.key, thread.thread);
+	}
+	catch(error)
+	{
+		thread.currentJob.promise.reject(error);
+		thread.currentJob = false;
+		thread.busy = false;
+
+		processJob(thread.key, thread.thread);
+	}
 }
 
 function getThread(key = 'default', thread = 0)

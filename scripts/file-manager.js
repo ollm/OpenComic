@@ -1,6 +1,7 @@
-const requestFileAccess = require(p.join(appDir, 'scripts/file-manager/request-file-access.js'));
+const requestFileAccess = require(p.join(appDir, 'scripts/file-manager/request-file-access.js'))
+	filePassword = require(p.join(appDir, 'scripts/file-manager/file-password.js'));
 
-var unzip = false, unrar = false, un7z = false, bin7z = false, untar = false/*, unpdf = false*/, fastXmlParser = false, fileType = false, Minimatch = false;
+var un7z = false, bin7z = false, fastXmlParser = false, Minimatch = false;
 
 var file = function(path, _config = false) {
 
@@ -1614,8 +1615,21 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			globalWhenExtractFile(path);
 			this.callbackWhenFileExtracted(file);
 		}
+		else
+		{
+			globalWhenExtractFile(path);
+		}
 
-	};
+	}
+
+	this.rejectAllWhenExtractFile = function() {
+
+		for(let i = 0, len = this.config._only.length; i < len; i++)
+		{
+			globalWhenExtractFileReject(p.join(this.path, this.config._only[i]));
+		}
+
+	}
 
 	this.progressIndex = 0;
 	this.progressPrev = false;
@@ -1683,9 +1697,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
 		if(extract)
-			this._7z = un7z.extractFull(this.realPath, this.tmp, {$bin: bin7z, $progress: true, $cherryPick: only, charset: 'UTF-8', listFileCharset: 'UTF-8'});
+			this._7z = un7z.extractFull(this.realPath, this.tmp, {$bin: bin7z, $progress: true, $cherryPick: only, charset: 'UTF-8', listFileCharset: 'UTF-8', password: filePassword.get(this.realPath)});
 		else
-			this._7z = un7z.list(this.realPath, {$bin: bin7z, charset: 'UTF-8', listFileCharset: 'UTF-8'});
+			this._7z = un7z.list(this.realPath, {$bin: bin7z, charset: 'UTF-8', listFileCharset: 'UTF-8', password: filePassword.get(this.realPath)});
 
 		return this._7z;
 
@@ -1740,7 +1754,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		
 	}
 
-	this.extract7z = async function(callback = false) {
+	this.extract7z = async function() {
 
 		let _this = this;
 
@@ -1748,16 +1762,16 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const tasks = this.stackOnlyInTasks(this.config._only || false, 100);
 
 		let result = false;
-		let error = false;
 
 		this.progressIndex = 1;
 
 		for(let i = 0, len = tasks.length; i < len; i++)
 		{
 			const onlyStack = tasks[i];
-
 			const _7z = await this.open7z(true, onlyStack);
+
 			let extractedSome = false;
+			let hasError = false;
 
 			result = await new Promise(function(resolve, reject) {
 
@@ -1782,31 +1796,58 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					if(!onlyLen)
 						_this.setProgress(progress.percent / 100);
 
-				}).on('end', function(data) {
+				}).on('end', function() {
 
-					resolve();
+					if(!hasError)
+						resolve();
 
-				}).on('error', function(error) {
+				}).on('error', async function(error) {
 
-					if(extractedSome)
+					hasError = true;
+
+					if(filePassword.check(error))
 					{
-						/*_this.setProgress(1);
-						resolve();*/
+						if(fs.existsSync(_this.tmp))
+							fs.rmSync(_this.tmp, {recursive: true});
 
+						if(!_this.config.fromThumbnailsGeneration)
+						{
+							const password = await filePassword.request(_this.path);
+
+							if(password)
+							{
+								if(!fs.existsSync(_this.tmp))
+									fs.mkdirSync(_this.tmp);
+
+								resolve(_this.extract7z());
+							}
+							else
+							{
+								_this.rejectAllWhenExtractFile();
+								reject(error);
+							}
+						}
+						else
+						{
+							_this.rejectAllWhenExtractFile();
+							reject(error);
+						}
+					}
+					else if(extractedSome)
+					{
 						_this.saveErrorToCache(error);
 						dom.compressedError(error, false, sha1(_this.path));
+
+						resolve();
 					}
 					else
 					{
-						// error = true;
 						reject(error);
 					}
 
 				});
 
 			});
-
-			if(error) return result;
 		}
 
 		this.setProgress(1);
@@ -2255,17 +2296,21 @@ function setGlobalExtracting(path)
 	}, 60000);
 
 	let _resolve = false;
+	let _reject = false;
 
 	extractingPromises[path] = {
 		promise: new Promise(async function(resolve, reject) {
 
 			_resolve = resolve;
+			_reject = reject;
 
 		}),
 		resolve: false,
+		reject: false,
 	};
 
 	extractingPromises[path].resolve = _resolve;
+	extractingPromises[path].reject = _reject;
 }
 
 function getGlobalExtracting(path)
@@ -2282,6 +2327,18 @@ function globalWhenExtractFile(path)
 		const globalExtracting = extractingPromises[path];
 		delete extractingPromises[path];
 		globalExtracting.resolve();
+	}
+}
+
+function globalWhenExtractFileReject(path)
+{
+	if(extractingPromisesST[path]) clearTimeout(extractingPromisesST[path]);
+	
+	if(extractingPromises[path])
+	{
+		const globalExtracting = extractingPromises[path];
+		delete extractingPromises[path];
+		globalExtracting.reject();
 	}
 }
 
@@ -3173,4 +3230,5 @@ module.exports = {
 	revokeObjectURL: revokeObjectURL,
 	revokeAllObjectURL: revokeAllObjectURL,
 	requestFileAccess: requestFileAccess,
+	filePassword: filePassword,
 }

@@ -439,7 +439,9 @@
 	},
 	"dialog": {
 		"auth": {
-			"loginTo": "Iniciar sesión en {{siteName}}"
+			"loginTo": "Iniciar sesión en {{siteName}}",
+			"filePass": "El archivo requiere una contraseña",
+			"rememberPass": "Recordar contraseña"
 		},
 		"tracking": {
 			"getTokenHeader": "Iniciar sesión en {{siteName}} mediante token",
