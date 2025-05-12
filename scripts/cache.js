@@ -56,7 +56,7 @@ async function processTheImageQueue(img = false)
 
 			img.callback({cache: true, path: escapeBackSlash(addCacheVars(toImage, img.size, img.sha)), sha: sha}, img.vars);
 
-			checkImagesWithoutSaving();
+			storage.setThrottle('cache', data);
 			resolve();
 
 		}).catch(function(){
@@ -65,7 +65,7 @@ async function processTheImageQueue(img = false)
 
 			img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
 
-			checkImagesWithoutSaving();
+			storage.setThrottle('cache', data);
 			resolve();
 
 		});
@@ -82,7 +82,6 @@ async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 
 	threads.end('cache', function(){
 
-		imagesWithoutSaving = 0;
 		storage.setThrottle('cache', data);
 
 	});
@@ -102,19 +101,6 @@ function cleanQueue()
 {
 	threads.clean('cache');
 	if(data !== false) storage.setThrottle('cache', data);
-}
-
-var imagesWithoutSaving = 0;
-
-function checkImagesWithoutSaving()
-{
-	imagesWithoutSaving++;
-
-	if(imagesWithoutSaving > 50)
-	{
-		imagesWithoutSaving = 0;
-		storage.setThrottle('cache', data);
-	}
 }
 
 const sizesCache = {};
