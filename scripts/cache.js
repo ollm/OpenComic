@@ -50,8 +50,7 @@ async function processTheImageQueue(img = false)
 
 			//if(blob) fileManager.revokeObjectURL(path);
 
-			if(typeof data[sha] == 'undefined') data[sha] = {lastAccess: app.time()};
-
+			if(typeof data[sha] === 'undefined') data[sha] = {lastAccess: app.time()};
 			data[sha].size = img.size;
 
 			img.callback({cache: true, path: escapeBackSlash(addCacheVars(toImage, img.size, img.sha)), sha: sha}, img.vars);
@@ -65,7 +64,6 @@ async function processTheImageQueue(img = false)
 
 			img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
 
-			storage.setThrottle('cache', data);
 			resolve();
 
 		});
@@ -79,12 +77,6 @@ async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 		await workers.convertImage(file);
 
 	threads.job('cache', {useThreads: 1}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
-
-	threads.end('cache', function(){
-
-		storage.setThrottle('cache', data);
-
-	});
 }
 
 function stopQueue()
