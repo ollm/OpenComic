@@ -33,8 +33,8 @@ if(process.platform == 'darwin')
 	exists('./node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 	// 7zip
-	exists('./node_modules/7zip-bin/mac/arm64/7za', fs.constants.X_OK | fs.constants.R_OK);
-	exists('./node_modules/7zip-bin/mac/x64/7za', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 }
 else if(process.platform == 'linux')
 {	
@@ -51,10 +51,10 @@ else if(process.platform == 'linux')
 	exists('./node_modules/@img/sharp-linux-arm64/lib/sharp-linux-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=linux --libc=glibc sharp');
 
 	// 7zip
-	exists('./node_modules/7zip-bin/linux/arm/7za', fs.constants.X_OK | fs.constants.R_OK);
-	exists('./node_modules/7zip-bin/linux/arm64/7za', fs.constants.X_OK | fs.constants.R_OK);
-	exists('./node_modules/7zip-bin/linux/ia32/7za', fs.constants.X_OK | fs.constants.R_OK);
-	exists('./node_modules/7zip-bin/linux/x64/7za', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/linux/arm/7zz', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/linux/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/linux/ia32/7zz', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/linux/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 }
 else if(process.platform == 'win32')
 {
@@ -67,8 +67,10 @@ else if(process.platform == 'win32')
 	exists('./node_modules/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 	// 7zip
-	exists('./node_modules/7zip-bin/win/x64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
-	exists('./node_modules/7zip-bin/win/arm64/7za.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 }
 
 console.log('Runed tests: Ok');
