@@ -356,7 +356,9 @@ async function reloadIndex(fromSetOfflineMode = false)
 
 function reload(fromSetOfflineMode = false)
 {
-	if(handlebarsContext.page.key == 'recently-opened')
+	if(onReading)
+		reading.reload(true);
+	else if(handlebarsContext.page.key == 'recently-opened')
 		recentlyOpened.reload();
 	else
 		reloadIndex(fromSetOfflineMode);

@@ -1,5 +1,5 @@
 <div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.goBack}}" onclick="reading.saveReadingProgress();dom.indexPathControlGoBack()">arrow_back</div>
-<div class="bar-title title-small" style="max-width: calc(100% - (957px + 68px{{#if hasMusic}} + 74px{{/if}}));">
+<div class="bar-title title-small" style="max-width: calc(100% - (1031px + 68px{{#if hasMusic}} + 74px{{/if}}));">
 	{{#if headerTitlePath}}
 		{{#each headerTitlePath}}
 			<span class="bar-title-a" onclick="reading.saveReadingProgress(); {{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}">{{name}}</span>
@@ -15,6 +15,8 @@
 <div class="bar-right-buttons reading-header reading-header-loading">
 	<div>
 		<div class="material-icon button button-min button1 button-more-options hover-text" hover-text="{{language.reading.moreOptions.main}}" onclick="reading.loadReadingMoreOptions(); events.activeMenu('#reading-more-options', '.bar-right-buttons .button-more-options', 'right');">more_vert</div>
+		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button1 button-sort hover-text" hover-text="{{language.global.sort.main}}" onclick="events.activeMenu('#reading-sort', '.bar-right-buttons .button-sort', 'right');">sort</div>
 		<div class="bar-buttons-separator"></div>
 		<div class="material-icon button button1 button-filters hover-text" hover-text="{{language.reading.pages.colorFilters}}" onclick="reading.loadReadingPages(false, false, 'filters'); events.activeMenu('#reading-pages', '.bar-right-buttons .button-filters', 'right'); events.eventsTab();">invert_colors</div>
 		<div class="material-icon button button1 button-page-layout hover-text" hover-text="{{language.reading.pages.pageLayout}}" onclick="reading.loadReadingPages(false, false, 'page-layout'); events.activeMenu('#reading-pages', '.bar-right-buttons .button-page-layout', 'right'); events.eventsTab();">auto_stories</div>

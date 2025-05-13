@@ -3088,22 +3088,6 @@ function changePagesView(mode, value, save)
 	if(currentScale != 1)
 		reading.resetZoom(true, false, false);
 
-	var imageIndex = false;
-
-	var newIndex = (currentIndex - 1);
-
-	if(_config.readingManga && !readingViewIs('scroll'))
-		newIndex = (indexNum - newIndex) - 1;
-
-	eachImagesDistribution(newIndex, ['image'], function(image){
-
-		if(!imageIndex)
-			imageIndex = image.index;
-
-	});
-
-	if(!imageIndex) imageIndex = currentIndex;
-
 	if(mode == 0)
 	{
 		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
@@ -3112,7 +3096,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 1) // Set the scroll mode
 	{
@@ -3129,7 +3113,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 2) // Sets the margin of the pages
 	{
@@ -3147,7 +3131,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
@@ -3169,7 +3153,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
@@ -3178,9 +3162,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		console.log(imageIndex);
-
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
@@ -3189,7 +3171,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
 	{
@@ -3213,7 +3195,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
@@ -3244,7 +3226,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 13) // Set width adjustment
 	{
@@ -3258,7 +3240,7 @@ function changePagesView(mode, value, save)
 		else
 			template.globalElement('.reading-horizontals-margin').addClass('disable-pointer');
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
@@ -3314,7 +3296,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 19) // Rotate horizontal images
 	{
@@ -3323,7 +3305,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
+		reading.reload();
 	}
 	else if(mode == 20) // Force show single page in scroll mode
 	{
@@ -3343,6 +3325,34 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
+		reading.reload();
+	}
+}
+
+function reload(full = false)
+{
+	let imageIndex = false;
+	let newIndex = (currentIndex - 1);
+
+	if(_config.readingManga && !readingViewIs('scroll'))
+		newIndex = (indexNum - newIndex) - 1;
+
+	eachImagesDistribution(newIndex, ['image'], function(image) {
+
+		if(!imageIndex)
+			imageIndex = image.index;
+
+	});
+
+	if(!imageIndex)
+		imageIndex = currentIndex;
+
+	if(full)
+	{
+		dom.openComic(true, images[imageIndex].path, dom.indexMainPathA(), false, false, false, true);
+	}
+	else
+	{
 		read(readingCurrentPath, imageIndex, false, readingIsCanvas, readingIsEbook);
 	}
 }
@@ -5610,6 +5620,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 module.exports = {
 	read: read,
+	reload: reload,
 	images: function(){return images},
 	imagesNum: imagesNum,
 	indexNum: function(){return indexNum},
