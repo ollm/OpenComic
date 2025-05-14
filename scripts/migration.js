@@ -212,7 +212,7 @@ function migrateIgnoreFilesRegex(data)
 	return data;
 }
 
-function migratePasswordsAndTokensToSafeStorag(data)
+function migratePasswordsAndTokensToSafeStorage(data)
 {
 	console.time('Migration: passwordsAndTokensToSafeStorag');
 
@@ -228,7 +228,7 @@ function migratePasswordsAndTokensToSafeStorag(data)
 		}
 	}
 
-	if(data.servers)
+	if(data.servers && data.servers.length)
 	{
 		for(const server of data.servers)
 		{
@@ -236,7 +236,7 @@ function migratePasswordsAndTokensToSafeStorag(data)
 		}
 	}
 
-	if(data.opdsCatalogs)
+	if(data.opdsCatalogs && data.opdsCatalogs.length)
 	{
 		for(const catalog of data.opdsCatalogs)
 		{
@@ -277,7 +277,7 @@ function start(data)
 		data = migrateIgnoreFilesRegex(data);
 
 	if(changes < 110) // Use safeStorage for passwords and tokens
-		data = migratePasswordsAndTokensToSafeStorag(data);
+		data = migratePasswordsAndTokensToSafeStorage(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 
