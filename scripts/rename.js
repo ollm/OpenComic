@@ -70,7 +70,7 @@ switch(type)
 		{
 			if(/^OpenComic Setup ([0-9.]+)\.exe$/.test(file))
 			{
-				renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^OpenComic Setup ([0-9.]+)\.exe$/, 'OpenComic Setup $1 arm64.exe')));
+				renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^OpenComic Setup ([0-9.]+)\.exe$/, 'OpenComic Setup $1.arm64.exe')));
 			}
 		}
 
