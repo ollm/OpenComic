@@ -221,6 +221,8 @@ var file = function(path, _config = false) {
 					if(json.error && !this.config.fromThumbnailsGeneration && !this.config.subtask)
 						dom.compressedError({message: json.error}, false, sha1(this.path));
 
+					setFileSizes(path, json.files);
+
 					return json.files;
 				}
 
@@ -243,6 +245,8 @@ var file = function(path, _config = false) {
 
 		if(!json || json.mtime != mtime)
 			cache.writeJson(compressed.cacheFile, {mtime: mtime, files: files, metadata: metadata});
+
+		setFileSizes(path, files);
 
 		return files;
 
@@ -1516,7 +1520,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					name: key,
 					path: file.path,
 					folder: file.folder ? true : false,
-					size: file.size || 0,
+					fileSize: file.fileSize || 0,
 					compressed: this.isCompressed(file.name),
 				};
 
@@ -1533,7 +1537,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					name: key,
 					path: p.join(this.path, _name),
 					folder: true,
-					size: 0,
+					fileSize: 0,
 					files: this._filesToMultidimension(files, value, _name),
 				});
 			}
@@ -1671,15 +1675,20 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.fixCorruptedName = function(name, pos = 0) {
+	this.isFullyWrittenToDisk = async function(path, realPath, intent = 0) {
 
-		if(/�/.test(name))
+		const fileSize = fileSizes.get(path) ?? 0;
+		const stat = await fsp.stat(realPath);
+		const diskSize = stat.size;
+
+		if(intent < 6 && (diskSize !== fileSize || (intent === 0 && diskSize === 0))) // Not fully written to disk, try again in 5 milliseconds
 		{
-			let ext = p.extname(name);
-			return pos+' - '+sha1(name)+(ext ? '.'+ext : '');
+			await app.sleep(5);
+
+			return this.isFullyWrittenToDisk(path, realPath, intent + 1);
 		}
 
-		return name;
+		return true;
 
 	}
 
@@ -1722,7 +1731,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				{
 					let name = _this.removeTmp(p.normalize(data.file));
 
-					files.push({name: name, path: p.join(_this.path, name), size: data.size});
+					files.push({name: name, path: p.join(_this.path, name), fileSize: data.size});
 					_this.setFileStatus(name, {extracted: false});
 
 					readSome = true;
@@ -1775,20 +1784,24 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			result = await new Promise(function(resolve, reject) {
 
-				_7z.on('data', function(data) {
+				_7z.on('data', async function(data) {
 
-					let extract = data.status == 'extracted' ? true : false;
+					const extract = data.status == 'extracted' ? true : false;
 
 					if(extract)
 					{
-						let name = _this.removeTmp(p.normalize(data.file));
+						_this.setProgress(_this.progressIndex++ / onlyLen);
+
+						const name = _this.removeTmp(p.normalize(data.file));
+						const path = p.join(_this.path, name);
+						const realPath = p.join(_this.tmp, name);
+
+						await _this.isFullyWrittenToDisk(path, realPath);
 
 						_this.setFileStatus(name, {extracted: extract});
-						_this.whenExtractFile(p.join(_this.path, name));
+						_this.whenExtractFile(path);
 
 						extractedSome = true;
-
-						_this.setProgress(_this.progressIndex++ / onlyLen);
 					}
 
 				}).on('progress', function(progress) {
@@ -2282,6 +2295,31 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+}
+
+var fileSizes = new Map();
+var fileSizesInMap = new Set();
+
+function _setFileSizes(files)
+{
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+
+		if(file.files)
+			_setFileSizes(file.files);
+		else if(file.fileSize)
+			fileSizes.set(file.path, file.fileSize);
+	}
+}
+
+function setFileSizes(path, files)
+{
+	if(fileSizesInMap.has(path))
+		return;
+
+	fileSizesInMap.add(path);
+	_setFileSizes(files);
 }
 
 var extractingPromises = {};
@@ -3229,6 +3267,7 @@ module.exports = {
 	getBlob: getBlob,
 	revokeObjectURL: revokeObjectURL,
 	revokeAllObjectURL: revokeAllObjectURL,
+	fileSizes: function(){return fileSizes},
 	requestFileAccess: requestFileAccess,
 	filePassword: filePassword,
 }

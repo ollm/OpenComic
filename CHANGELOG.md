@@ -26,9 +26,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to ignore files and folders that match Regex or File pattern [`670bced`](https://github.com/ollm/OpenComic/commit/670bced3ed7413145119b401f974e15ea482ddf5)
 - Authentication support for OPDS (Basic and Digest) [`11c3aa8`](https://github.com/ollm/OpenComic/commit/11c3aa88efbff8adcc3fabbf4b066dcb7120b10a)
 - Use safeStorage for passwords and tokens [`6178ded`](https://github.com/ollm/OpenComic/commit/6178dedf1afe13c56b68bd3bd68010d80d30fdc6)
-- Change extraction of rar and tar to 7z to improve performance [`c0c2d6d`](https://github.com/ollm/OpenComic/commit/c0c2d6d61016241e70d4ee475e8d19567b8e71db)
+- Change extraction of `RAR` and `TAR` to 7zip to improve performance [`c0c2d6d`](https://github.com/ollm/OpenComic/commit/c0c2d6d61016241e70d4ee475e8d19567b8e71db)
 - Add suport for compressed `LZH`, `ACE`, `TAR.GZ`, `TAR.XZ`, `TAR.BZIP2` and `TAR.ZSTD` [`e7e7815`](https://github.com/ollm/OpenComic/commit/e7e7815d7a841c02354f9b5219fcdf348c10543b)
-- Support compressed files with password
+- Support compressed files with password [`9a6ef8e`](https://github.com/ollm/OpenComic/commit/9a6ef8e0a363e72e98634e827c50189bb2841047)
 
 ##### 🐛 Bug Fixes
 
@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Stuttering when decode big images (From sync decode to async when possible) [`d320aad`](https://github.com/ollm/OpenComic/commit/d320aad1d95e886d531dcab5721dc44c125cf028)
 - Move zoom using cursor after turning a pages not working property [`3012715`](https://github.com/ollm/OpenComic/commit/30127150751b1de611f95069e748eab68fcd2f51)
 - Turn page forward in manga mode (Only on non-arrow keys) [`bdbc0dc`](https://github.com/ollm/OpenComic/commit/bdbc0dc31ab37bdfcef570bf8f2130e39c08861e)
+- Check if the file is written to disk when extracting using 7zip
 
 ## [v1.4.1](https://github.com/ollm/OpenComic/releases/tag/v1.4.1) (08-02-2025)
 
