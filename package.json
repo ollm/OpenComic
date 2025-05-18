@@ -48,7 +48,7 @@
 		"build-tar-store": "npm run prebuild && npm run prebuild-store && electron-builder --x64 --linux tar.gz && electron-builder --arm64 --linux tar.gz && npm run postbuild",
 		"build-zip": "npm run prebuild && electron-builder --x64 --linux zip && npm run postbuild",
 		"build-7z": "npm run prebuild && electron-builder --x64 --linux 7z && npm run postbuild",
-		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run rename-portable && npm run prebuild-folder-portable && electron-builder --win portable 7z && npm run rename-folder-portable && npm run postbuild",
+		"build-win": "npm run prebuild && electron-builder --win nsis portable && npm run rename-portable && npm run prebuild-folder-portable && electron-builder --win portable 7z && npm run rename-folder-portable && electron-builder --arm64 --win nsis && npm run rename-win-arm && npm run postbuild",
 		"build-win-arm": "npm run prebuild && electron-builder --arm64 --win nsis && npm run rename-win-arm && npm run postbuild",
 		"build-nsis": "npm run prebuild && electron-builder --win nsis && npm run postbuild",
 		"build-appx": "npm run prebuild && electron-builder --win appx && npm run postbuild",
