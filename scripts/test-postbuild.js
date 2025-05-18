@@ -142,10 +142,10 @@ else if(process.platform == 'win32')
 		// Node ZSTD All
 		exists(windows+'/@toondepauw/node-zstd-win32-x64-msvc/node-zstd.win32-x64-msvc.node', fs.constants.R_OK);
 
-		// Sharp x64
-		exists(windows+'/@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
-		exists(windows+'/@img/sharp-win32-x64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
-		exists(windows+'/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
+		// Sharp arm64
+		exists(windows+'/@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-arm64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-arm64/lib/sharp-win32-arm64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
 		exists(windows+'/7zip-bin/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);

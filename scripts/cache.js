@@ -10,8 +10,11 @@ try
 }
 catch (error)
 {
-	console.error('Warning: ZSTD cache compression not working');
-	console.error(error);
+	if(!(process.platform === 'win32' && process.arch === 'arm64')) // node-zstd not work on Windows arm64
+	{
+		console.error('Warning: ZSTD cache compression not working');
+		console.error(error);
+	}
 
 	zstd = zstdEncoder = zstdDecoder = false;
 }

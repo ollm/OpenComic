@@ -66,6 +66,11 @@ else if(process.platform == 'win32')
 	exists('./node_modules/@img/sharp-win32-x64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
 	exists('./node_modules/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
+	// Sharp arm64
+	exists('./node_modules/@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK, 'npm install --cpu=arm64 --os=win32 sharp');
+	exists('./node_modules/@img/sharp-win32-arm64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK, 'npm install --cpu=arm64 --os=win32 sharp');
+	exists('./node_modules/@img/sharp-win32-arm64/lib/sharp-win32-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=win32 sharp');
+
 	// 7zip
 	exists('./node_modules/7zip-bin/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/7zip-bin/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
