@@ -1328,17 +1328,25 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.setTmpUsage();
 
+		const self = this;
 		const message = 'extractCompressed | '+this.features.ext+(this.features.fileExt && this.features.ext !== this.features.fileExt ? ' ('+this.features.fileExt+')' : '')+' |'+(this.config._only ? ' ('+this.config._only.length+' files)' : '')+' '+this.path;
-		console.time(message);
 
 		let files = false;
 
-		if(this.features['7z'])
-			files = await this.extract7z();
-		else if(this.features.pdf)
-			files = await this.extractPdf();
-		else if(this.features.epub)
-			files = await this.extractEpub();
+		await threads.job('extractCurrent--'+this.sha, {useThreads: 0.01}, async function() {
+
+			console.time(message);
+
+			if(self.features['7z'])
+				files = await self.extract7z();
+			else if(self.features.pdf)
+				files = await self.extractPdf();
+			else if(self.features.epub)
+				files = await self.extractEpub();
+
+			return;
+
+		});
 
 		console.timeEnd(message);
 
