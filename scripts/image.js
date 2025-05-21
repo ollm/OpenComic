@@ -312,173 +312,168 @@ function loadImage(url, encode = false)
 	});
 }
 
-var threads = false, sizesCache = {};
+var sizesCache = {};
 
 async function getSizes(images)
 {
 	await loadSharp();
-	if(threads === false) threads = os.cpus().length || 1;
 
 	const sizes = [];
+	const promises = [];
 	const len = images.length;
 
 	for(let i = 0; i < len; i++)
 	{
 		sizes.push(false);
-	}
 
-	let promises = [];
-	let index = 0;
+		const image = images[i];
 
-	for(let i = 0; i < threads; i++)
-	{
-		promises.push(new Promise(async function(resolve) {
+		if(!image.image || image.folder)
+			continue;
 
-			toBreak:
-			while(true)
+		const sha = image.sha || sha1(image.path);
+
+		if(sizesCache[sha])
+		{
+			sizes[i] = sizesCache[sha];
+			continue;
+		}
+
+		promises.push(threads.job('getImageSizes', {useThreads: 1}, async function() {
+
+			let size = {
+				width: 1,
+				height: 1,
+			};
+
+			try
 			{
-				const p = index++;
-				const image = images[p];
+				const extension = app.extname(image.image);
 
-				if(image)
+				if(compatible.image.heic.has(extension))
 				{
-					if(image.image && !image.folder)
+					if(heic === false)
+						heic = require('heic-decode');
+
+					const buffer = await fsp.readFile(image.image);
+					const images = await heic.all({buffer});
+					const properties = images[0] || {width: 1, height: 1};
+
+					size = {
+						width: properties.width,
+						height: properties.height,
+					};
+				}
+				else if(compatible.image.jp2.has(extension))
+				{
+					if(pdfjsDecoders === false)
+						await loadPdfjsDecoders();
+
+					const buffer = await fsp.readFile(image.image);
+					const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
+
+					size = {
+						width: properties.width,
+						height: properties.height,
+					};
+				}
+				else if(compatible.image.jxl.has(extension))
+				{
+					if(JxlImage === false)
+						await loadJxlImage();
+
+					const buffer = await fsp.readFile(image.image);
+
+					const jxlImage = new JxlImage();
+					jxlImage.feedBytes(buffer);
+			
+					if(!jxlImage.tryInit())
+						throw new Error('Partial image, no frame data');
+
+					size = {
+						width: jxlImage.width,
+						height: jxlImage.height,
+					};
+				}
+				else if(compatible.image.blob.has(extension))
+				{
+					if(imageSize === false)
+						imageSize = require('image-size/fromFile').imageSizeFromFile;
+
+					try
 					{
-						const sha = image.sha || sha1(image.path);
+						const dimensions = await imageSize(image.image);
 
-						if(sizesCache[sha])
-						{
-							sizes[p] = sizesCache[sha];
-						}
-						else
-						{
-							let size = {
-								width: 1,
-								height: 1,
-							};
+						size = {
+							width: dimensions.width,
+							height: dimensions.height,
+						};
+					}
+					catch(error)
+					{
+						const blob = await workers.convertImageToBlob(image.image);
+						const buffer = await (await fetch(blob)).arrayBuffer();
 
-							try
-							{
-								const extension = app.extname(image.image);
+						const _sharp = sharp(buffer);
+						const metadata = await _sharp.metadata();
 
-								if(compatible.image.heic.has(extension))
-								{
-									if(heic === false)
-										heic = require('heic-decode');
+						size = {
+							width: metadata.width,
+							height: metadata.height,
+						};
+					}
+				}
+				else if(sharpSupportedFormat(image.image, extension))
+				{
+					try
+					{
+						fileManager.macosStartAccessingSecurityScopedResource(image.image);
+						const _sharp = sharp(app.shortWindowsPath(image.image));
+						const metadata = await _sharp.metadata();
 
-									const buffer = await fsp.readFile(image.image);
-									const images = await heic.all({buffer});
-									const properties = images[0] || {width: 1, height: 1};
+						size = {
+							width: metadata.width,
+							height: metadata.height,
+						};
+					}
+					catch(error)
+					{
+						const img = new Image();
+						img.src = image.image;
+						await img.decode();
 
-									size = {
-										width: properties.width,
-										height: properties.height,
-									};
-								}
-								else if(compatible.image.jp2.has(extension))
-								{
-									if(pdfjsDecoders === false)
-										await loadPdfjsDecoders();
-
-									const buffer = await fsp.readFile(image.image);
-									const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
-
-									size = {
-										width: properties.width,
-										height: properties.height,
-									};
-								}
-								else if(compatible.image.jxl.has(extension))
-								{
-									if(JxlImage === false)
-										await loadJxlImage();
-
-									const buffer = await fsp.readFile(image.image);
-
-									const jxlImage = new JxlImage();
-									jxlImage.feedBytes(buffer);
-							
-									if(!jxlImage.tryInit())
-										throw new Error('Partial image, no frame data');
-
-									size = {
-										width: jxlImage.width,
-										height: jxlImage.height,
-									};
-								}
-								else if(compatible.image.blob.has(extension))
-								{
-									if(imageSize === false)
-										imageSize = require('image-size/fromFile').imageSizeFromFile;
-
-									try
-									{
-										const dimensions = await imageSize(image.image);
-
-										size = {
-											width: dimensions.width,
-											height: dimensions.height,
-										};
-									}
-									catch(error)
-									{
-										const blob = await workers.convertImageToBlob(image.image);
-										const buffer = await (await fetch(blob)).arrayBuffer();
-
-										const _sharp = sharp(buffer);
-										const metadata = await _sharp.metadata();
-
-										size = {
-											width: metadata.width,
-											height: metadata.height,
-										};
-									}
-								}
-								else if(sharpSupportedFormat(image.image, extension))
-								{
-									fileManager.macosStartAccessingSecurityScopedResource(image.image);
-									const _sharp = sharp(app.shortWindowsPath(image.image));
-									const metadata = await _sharp.metadata();
-
-									size = {
-										width: metadata.width,
-										height: metadata.height,
-									};
-								}
-								else
-								{
-									const img = new Image();
-									img.src = image.image;
-									await img.decode();
-
-									size = {
-										width: img.naturalWidth,
-										height: img.naturalHeight,
-									};
-								}
-							}
-							catch(error)
-							{
-								console.error(error);
-							}
-
-							sizesCache[sha] = size;
-							sizes[p] = size;
-						}
+						size = {
+							width: img.naturalWidth,
+							height: img.naturalHeight,
+						};
 					}
 				}
 				else
 				{
-					break toBreak;
+					const img = new Image();
+					img.src = image.image;
+					await img.decode();
+
+					size = {
+						width: img.naturalWidth,
+						height: img.naturalHeight,
+					};
 				}
 			}
+			catch(error)
+			{
+				console.error(error);
+			}
 
-			resolve();
+			sizesCache[sha] = size;
+			sizes[i] = size;
+
+			return;
 
 		}));
 	}
 
-	await Promise.all(promises)
+	await Promise.all(promises);
 
 	return sizes;
 }
