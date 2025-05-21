@@ -236,7 +236,7 @@ function migratePasswordsAndTokensToSafeStorage(data)
 		}
 	}
 
-	if(data.opdsCatalogs && opdsCatalogs.length)
+	if(data.opdsCatalogs && data.opdsCatalogs.length)
 	{
 		for(const catalog of data.opdsCatalogs)
 		{
