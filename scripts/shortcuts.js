@@ -1211,6 +1211,9 @@ function stopRecord()
 
 function change(section, action, current, shortcut)
 {
+	if(!shortcuts[section])
+		loadShortcuts();
+
 	let saved = storage.getKey('shortcuts', section) || {};
 
 	saved.gamepad = shortcuts[section].gamepad;

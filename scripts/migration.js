@@ -197,7 +197,7 @@ function migrateMouseWheelEvents(data)
 	}
 	else if(data.config.readingTurnPagesWithMouseWheel) // Has turn pages with mouse wheel active but not custom shortcuts
 	{
-		settings = shortcuts.setTurnPagesWithMouseWheelShortcut(true);
+		settings.setTurnPagesWithMouseWheelShortcut(true, false);
 		data.shortcuts.reading.shortcuts = shortcuts.shortcuts().reading.shortcuts;
 	}
 
@@ -236,7 +236,7 @@ function migratePasswordsAndTokensToSafeStorage(data)
 		}
 	}
 
-	if(data.opdsCatalogs && data.opdsCatalogs.length)
+	if(data.opdsCatalogs && opdsCatalogs.length)
 	{
 		for(const catalog of data.opdsCatalogs)
 		{
