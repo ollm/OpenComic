@@ -197,8 +197,14 @@ function migrateMouseWheelEvents(data)
 	}
 	else if(data.config.readingTurnPagesWithMouseWheel) // Has turn pages with mouse wheel active but not custom shortcuts
 	{
-		settings.setTurnPagesWithMouseWheelShortcut(true, false);
-		data.shortcuts.reading.shortcuts = shortcuts.shortcuts().reading.shortcuts;
+		(async function(){  // Delay until OpenComic has loaded
+
+			await appBaseLoaded;
+
+			settings.setTurnPagesWithMouseWheelShortcut(true, false);
+			shortcuts.shortcuts();
+
+		})();
 	}
 
 	return data;

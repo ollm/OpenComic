@@ -188,6 +188,13 @@ macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true :
 
 var fromGamepad = false;
 
+var appBaseLoadedResolve;
+var appBaseLoaded = new Promise(function(resolve) {
+
+	appBaseLoadedResolve = resolve;
+
+});
+
 window.onload = function() {
 
 	storage.start(function() {
@@ -210,6 +217,7 @@ window.onload = function() {
 		titleBar.start();
 		titleBar.setColors();
 
+		appBaseLoadedResolve();
 		startApp();
 
 	});
