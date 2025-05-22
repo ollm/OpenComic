@@ -237,7 +237,7 @@ Translate by [Nguyen Do](https://github.com/catouberos)
 
 Translate by [無情天](https://github.com/kofzhanganguo)
 
-`99.6% | Remain 2 | Translated 489`
+`100% | Remain 0 | Translated 491`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hans.svg" /></a>
 

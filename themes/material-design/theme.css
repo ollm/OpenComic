@@ -2194,6 +2194,28 @@ a:hover
 	margin: 0px 2px;
 }
 
+/* Realese Notes  */
+
+.release-notes h5
+{
+	margin: 14px 0px;
+}
+
+.release-notes li
+{
+	line-height: 26px;
+}
+
+.release-notes > *:first-child
+{
+	margin-top: 0px;
+}
+
+.release-notes > *:last-child
+{
+	margin-bottom: 0px;
+}
+
 /* Loading */
 
 .loading

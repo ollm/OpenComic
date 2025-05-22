@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Change extraction of `RAR` and `TAR` to 7zip to improve performance [`c0c2d6d`](https://github.com/ollm/OpenComic/commit/c0c2d6d61016241e70d4ee475e8d19567b8e71db)
 - Add suport for compressed `LZH`, `ACE`, `TAR.GZ`, `TAR.XZ`, `TAR.BZIP2` and `TAR.ZSTD` [`e7e7815`](https://github.com/ollm/OpenComic/commit/e7e7815d7a841c02354f9b5219fcdf348c10543b)
 - Support compressed files with password [`9a6ef8e`](https://github.com/ollm/OpenComic/commit/9a6ef8e0a363e72e98634e827c50189bb2841047)
+- Show release notes in new version dialog
 
 ##### 🐛 Bug Fixes
 

@@ -35,7 +35,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="304" transform="rotate(-90)">VI</text>
 		<rect style="fill: #f1cc09;" height="84.7" width="6" rx="2" y="55.3" x="298" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="322" transform="rotate(-90)">ZH-HANS</text>
-		<rect style="fill: #2eccaa;" height="139.4" width="6" rx="2" y="0.6" x="316" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="316" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="340" transform="rotate(-90)">ZH-HANT</text>
 		<rect style="fill: #f6664c;" height="20.5" width="6" rx="2" y="119.5" x="334" />
 	</g>

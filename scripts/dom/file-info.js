@@ -579,7 +579,7 @@ function sanitizeHtml(string)
 			i: ['material-icon'],
 		},
 		allowedAttributes: {
-			'a': ['href', 'target', 'data-function'],
+			a: ['href', 'target', 'data-function'],
 		},
 	});
 }

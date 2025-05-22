@@ -1,14 +1,27 @@
+const sanitizeHtml = require('sanitize-html'),
+	marked = require('marked');
 
 function showReleaseDialog(release)
 {
 	release.releases_url = 'https://github.com/ollm/OpenComic?tab=readme-ov-file#download';
 	release.html_url = 'https://github.com/ollm/OpenComic/releases';
 
+	const parsed = marked.parse(release.body).replace(/(\<a\s)\s*/ig, '$1 target="_blank"').replace(/\<h5\>/ig, '<h5 class="title-small">');
+
+	const releaseNotes = sanitizeHtml(parsed, {
+		allowedClasses: {
+			h5: ['title-small'],
+		},
+		allowedAttributes: {
+			a: ['href', 'target', 'data-function'],
+		},
+	});
+
 	events.dialog({
 		header: hb.compile(language.dialog.release.title)({releaseName: release.name}),
-		width: 360,
+		width: 'max-content',
 		height: false,
-		content: hb.compile(language.dialog.release.body)({linkStart: '<a href="javascript:void(0);" class="link" onclick="electron.shell.openExternal(\''+release.html_url+'\')">', linkEnd: '</a>'}),
+		content: '<div class="release-notes">'+releaseNotes+'</div>',
 		buttons: [
 			{
 				text: language.buttons.dismiss,

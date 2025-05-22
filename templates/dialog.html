@@ -1,4 +1,4 @@
-<div class="dialog" style="width: {{dialog.width}}px;{{#if dialog.height}}height: {{dialog.height}}px;{{/if}}{{#if dialog.maxHeight}}max-height: {{dialog.maxHeight}}px;{{/if}}">
+<div class="dialog" style="width: {{#compare dialog.width '==' 'max-content'}}max-content{{else}}{{dialog.width}}px{{/compare}};{{#if dialog.height}}height: {{dialog.height}}px;{{/if}}{{#if dialog.maxHeight}}max-height: {{dialog.maxHeight}}px;{{/if}}">
 	<div class="dialog-content" style="{{#if dialog.overflowHidden}}overflow: hidden; scrollbar-gutter: auto;{{/if}}{{#if dialog.maxHeight}}height: {{dialog.maxHeight}}px;{{/if}}">
 		{{#if dialog.header}}
 		<div class="dialog-header headline-small">{{{dialog.header}}}</div>
