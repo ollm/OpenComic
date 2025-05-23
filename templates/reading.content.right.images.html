@@ -21,11 +21,11 @@
 			{{else}}
 			<oc-img>
 				{{#if canvas}}
-				<canvas data-width="{{size.width}}" data-height="{{size.height}}" data-path="{{htmlQuote path}}" data-index="{{index}}" data-name="{{htmlQuote name}}"></canvas>
+				<canvas data-width="{{size.width}}" data-height="{{size.height}}" data-path="{{path}}" data-index="{{index}}" data-name="{{name}}"></canvas>
 				{{else if ebook}}
 				<!-- <iframe> -->
 				{{else}}
-				<img data-src="{{htmlQuote image}}" data-path="{{htmlQuote path}}" data-index="{{index}}" decoding="async">
+				<img data-src="{{image}}" data-path="{{path}}" data-index="{{index}}" decoding="async">
 				{{/if}}
 			</oc-img>
 			{{/if}}

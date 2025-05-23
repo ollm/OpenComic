@@ -540,7 +540,7 @@ var file = function(path, _config = false) {
 		if(config.ignoreSingleFoldersLibrary && _files.length == 1 && (_files[0].folder || _files[0].compressed))
 		{
 			const file = _files[0];
-			_files = filtered(file.files, true) || await this.read({cacheServer: true}, file.path);
+			_files = file.files ? filtered(file.files, true) : await this.read({cacheServer: true}, file.path);
 
 			return this.images(only, from, poster, _files, file.path, _isCompressed);
 		}
