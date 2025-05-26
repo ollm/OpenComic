@@ -221,7 +221,7 @@ var file = function(path, _config = false) {
 					if(json.error && !this.config.fromThumbnailsGeneration && !this.config.subtask)
 						dom.compressedError({message: json.error}, false, sha1(this.path));
 
-					setFileSizes(path, json.files);
+					setFileData(path, json.files);
 
 					return json.files;
 				}
@@ -246,7 +246,7 @@ var file = function(path, _config = false) {
 		if(!json || json.mtime != mtime)
 			cache.writeJson(compressed.cacheFile, {mtime: mtime, files: files, metadata: metadata});
 
-		setFileSizes(path, files);
+		setFileData(path, files);
 
 		return files;
 
@@ -1514,18 +1514,20 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this._filesToMultidimension = function(files, dimensions, from = false) {
 
-		let _files = [];
+		const _files = [];
 
 		for(let key in dimensions)
 		{
-			let value = dimensions[key];
+			const value = dimensions[key];
 
 			if(typeof value === 'number')
 			{
-				let file = files[value];
+				const file = files[value];
 
-				let data = {
+				const data = {
 					name: key,
+					fixedName: file.fixedName || key,
+					originalName: file.originalName || file.fixedName || key,
 					path: file.path,
 					folder: file.folder ? true : false,
 					fileSize: file.fileSize || 0,
@@ -1539,7 +1541,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 			else
 			{
-				let _name = from ? p.join(from, key) : key;
+				const _name = from ? p.join(from, key) : key;
 
 				_files.push({
 					name: key,
@@ -1700,6 +1702,25 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.fixUnsupportedCharsInWindows = function(path) {
+
+		if(process.platform !== 'win32')
+			return path;
+
+		// Replace dots and spaces at the end of the filename
+		path = path.replace(/([\. ]+)([\\\/]|$)/g, function(match, unsupported, separator) {
+
+			return '_'.repeat(unsupported.length)+separator;
+
+		});
+
+		// Replace unsupported characters
+		path = path.replace(/[<>:|?*"]/g, '_');
+
+		return path;
+
+	}
+
 	// 7z
 	this._7z = false;
 
@@ -1737,9 +1758,14 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				if(data.file)
 				{
-					let name = _this.removeTmp(p.normalize(data.file));
+					if(/^D/.test(data.attributes) && !data.size) // Ignore directories
+						return;
 
-					files.push({name: name, path: p.join(_this.path, name), fileSize: data.size});
+					const originalName = _this.removeTmp(p.normalize(data.file));
+					const name = _this.fixUnsupportedCharsInWindows(originalName);
+					const same = originalName === name ? true : false;
+
+					files.push({name: name, fixedName: (!same ? name : ''), originalName: (!same ? originalName : ''), path: p.join(_this.path, name), fileSize: data.size});
 					_this.setFileStatus(name, {extracted: false});
 
 					readSome = true;
@@ -1775,8 +1801,26 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let _this = this;
 
-		const onlyLen = this.config._only ? this.config._only.length : false;
-		const tasks = this.stackOnlyInTasks(this.config._only || false, 100);
+		const only = [];
+		const extractName = {};
+
+		let onlyLen = this.config._only ? this.config._only.length : false;
+
+		// Use the original file name and not the extracted one, which may be different on Windows due to incompatibility with certain characters (fixUnsupportedCharsInWindows)
+		for(let i = 0; i < onlyLen; i++)
+		{
+			const file = this.config._only[i];
+			const originalName = fileOriginalName.get(file) || file;
+
+			if(!extractName[originalName])
+			{
+				extractName[originalName] = file;
+				only.push(originalName);
+			}
+		}
+
+		onlyLen = only.lenght;
+		const tasks = this.stackOnlyInTasks(only || false, 100);
 
 		let result = false;
 
@@ -1800,7 +1844,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					{
 						_this.setProgress(_this.progressIndex++ / onlyLen);
 
-						const name = _this.removeTmp(p.normalize(data.file));
+						let name = _this.removeTmp(p.normalize(data.file));
+						name = extractName[name] || name;
+
 						const path = p.join(_this.path, name);
 						const realPath = p.join(_this.tmp, name);
 
@@ -2305,29 +2351,38 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 }
 
+var fileDataInMap = new Set();
 var fileSizes = new Map();
-var fileSizesInMap = new Set();
+var fileOriginalName = new Map();
 
-function _setFileSizes(files)
+function _setFileData(files)
 {
 	for(let i = 0, len = files.length; i < len; i++)
 	{
 		const file = files[i];
 
 		if(file.files)
-			_setFileSizes(file.files);
-		else if(file.fileSize)
-			fileSizes.set(file.path, file.fileSize);
+		{
+			_setFileData(file.files);
+		}
+		else
+		{
+			if(file.fileSize)
+				fileSizes.set(file.path, file.fileSize);
+
+			if(file.fixedName && file.originalName)
+				fileOriginalName.set(file.fixedName, file.originalName);
+		}
 	}
 }
 
-function setFileSizes(path, files)
+function setFileData(path, files)
 {
-	if(fileSizesInMap.has(path))
+	if(fileDataInMap.has(path))
 		return;
 
-	fileSizesInMap.add(path);
-	_setFileSizes(files);
+	fileDataInMap.add(path);
+	_setFileData(files);
 }
 
 var extractingPromises = {};

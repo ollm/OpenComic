@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 112; // Update this if readingPagesConfig is updated
+const changes = 113; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',

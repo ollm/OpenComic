@@ -2,6 +2,7 @@ var threads = false;
 var threadsList = {};
 var queue = {default: []};
 var queueIsStop = {default: false};
+var stats = {};
 var onEnd = {};
 
 async function job(key = 'default', options = {}, callback = false)
@@ -40,6 +41,7 @@ async function job(key = 'default', options = {}, callback = false)
 function addToQueue(key, options, callback, _arguments, promise)
 {
 	if(!queue[key]) queue[key] = [];
+	if(!stats[key]) stats[key] = {done: 0};
 
 	if(options.priorize)
 	{
@@ -124,6 +126,8 @@ async function startJob(thread)
 		thread.currentJob = false;
 		thread.busy = false;
 
+		stats[thread.key].done++;
+
 		processJob(thread.key, thread.thread);
 	}
 	catch(error)
@@ -183,10 +187,56 @@ function end(key, callback)
 	onEnd[key] = callback;
 }
 
+function getStats(key = false)
+{
+	const _stats = {};
+
+	for(let key in queue)
+	{
+		const list = Object.values(threadsList[key] ?? {});
+
+		_stats[key] = {
+			key: key,
+			done: stats[key]?.done || 0,
+			busy: list.filter(thread => thread.busy).length,
+			queue: queue[key]?.length,
+			threads: (!list.length || list.length === threads) ? list.length : list.length - 1,
+		};
+	}
+
+	return key ? _stats[key] : _stats;
+}
+
+function sumStats()
+{
+	const sum = {
+		done: 0,
+		busy: 0,
+		queue: 0,
+		threads: 0,
+	};
+
+	const stats = getStats();
+
+	for(let key in stats)
+	{
+		const stat = stats[key];
+
+		sum.done += stat.done;
+		sum.busy += stat.busy;
+		sum.queue += stat.queue;
+		sum.threads += stat.threads;
+	}
+
+	return sum;
+}
+
 module.exports = {
 	job: job,
 	stop: stop,
 	resume: resume,
 	clean: clean,
 	end: end,
+	stats: getStats,
+	sumStats: sumStats,
 }

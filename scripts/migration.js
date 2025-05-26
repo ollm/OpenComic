@@ -62,7 +62,7 @@ function clearPdfAndEpubCache()
 	{
 		const file = files[i];
 
-		if(/\.json$/.test(file) || /\.json\.zstd$/.test(file))
+		if(/^compressed-files-/.test(file))
 		{
 			const json = cache.readJson(file.replace(/\.zstd$/, ''));
 			const first = json.files[0] ?? false;
@@ -255,6 +255,57 @@ function migratePasswordsAndTokensToSafeStorage(data)
 	return data;
 }
 
+function hasUnsupportedCharsInWindows(files)
+{
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+		const path = file.path.replace(/^[a-z0-9]+\:/i, '');
+
+		// Dots and spaces at the end of the filename
+		if(/([\. ]+)([\\\/]|$)/.test(path))
+			return true;
+
+		// Unsupported characters
+		if(/[<>:|?*"]/.test(path))
+			return true;
+
+		if(file.files && hasUnsupportedCharsInWindows(file.files))
+			return true;
+	}
+
+	return false;
+}
+
+function migrateCompressedFilesWithUnsupportedCharsInWindows(data)
+{
+	if(process.platform !== 'win32')
+		return data;
+
+	console.time('Migration: compressedFilesWithUnsupportedCharsInWindows');
+
+	const files = fs.readdirSync(cache.folder);
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const file = files[i];
+
+		if(/^compressed-files-/.test(file))
+		{
+			const json = cache.readJson(file.replace(/\.zstd$/, ''));
+
+			if(hasUnsupportedCharsInWindows(json.files))
+				fs.unlinkSync(p.join(cache.folder, file));
+		}
+	}
+
+	cache.flushJsonMemory();
+
+	console.timeEnd('Migration: compressedFilesWithUnsupportedCharsInWindows');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -284,6 +335,9 @@ function start(data)
 
 	if(changes < 110) // Use safeStorage for passwords and tokens
 		data = migratePasswordsAndTokensToSafeStorage(data);
+
+	if(changes < 113) // Fix compressed files with unsupported characters in Windows
+		data = migrateCompressedFilesWithUnsupportedCharsInWindows(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 
