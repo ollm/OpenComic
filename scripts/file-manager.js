@@ -1804,7 +1804,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const only = [];
 		const extractName = {};
 
-		let onlyLen = this.config._only ? this.config._only.length : false;
+		const onlyLen = this.config._only ? this.config._only.length : false;
 
 		// Use the original file name and not the extracted one, which may be different on Windows due to incompatibility with certain characters (fixUnsupportedCharsInWindows)
 		for(let i = 0; i < onlyLen; i++)
@@ -1819,7 +1819,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 		}
 
-		onlyLen = only.lenght;
 		const tasks = this.stackOnlyInTasks(only || false, 100);
 
 		let result = false;
