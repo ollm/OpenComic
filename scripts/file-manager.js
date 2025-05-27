@@ -1685,17 +1685,17 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.isFullyWrittenToDisk = async function(path, realPath, intent = 0) {
+	this.isFullyWrittenToDisk = async function(path, realPath, prevDiskSize = 0, intent = 0) {
 
 		const fileSize = fileSizes.get(path) ?? 0;
 		const stat = await fsp.stat(realPath);
 		const diskSize = stat.size;
 
-		if(intent < 6 && (diskSize !== fileSize || (intent === 0 && diskSize === 0))) // Not fully written to disk, try again in 5 milliseconds
+		if((intent < 6 || prevDiskSize !== diskSize) && (diskSize !== fileSize || (intent === 0 && diskSize === 0))) // Not fully written to disk, try again in 5 milliseconds
 		{
 			await app.sleep(5);
 
-			return this.isFullyWrittenToDisk(path, realPath, intent + 1);
+			return this.isFullyWrittenToDisk(path, realPath, diskSize, intent + 1);
 		}
 
 		return true;
@@ -1745,12 +1745,12 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.read7z = async function(callback = false) {
 
-		let files = [];
+		const files = [];
 
-		let _this = this;
+		const _this = this;
 
-		let _7z = await this.open7z();
-		let readSome = false;
+		const _7z = await this.open7z();
+		const readSome = false;
 
 		return new Promise(function(resolve, reject) {
 
@@ -1799,7 +1799,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.extract7z = async function() {
 
-		let _this = this;
+		const _this = this;
 
 		const only = [];
 		const extractName = {};
@@ -1835,26 +1835,33 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			result = await new Promise(function(resolve, reject) {
 
-				_7z.on('data', async function(data) {
+				const waitDisk = [];
+
+				_7z.on('data', function(data) {
 
 					const extract = data.status == 'extracted' ? true : false;
 
 					if(extract)
 					{
-						_this.setProgress(_this.progressIndex++ / onlyLen);
+						waitDisk.push(new Promise(async function(_resolve) {
 
-						let name = _this.removeTmp(p.normalize(data.file));
-						name = extractName[name] || name;
+							_this.setProgress(_this.progressIndex++ / onlyLen);
 
-						const path = p.join(_this.path, name);
-						const realPath = p.join(_this.tmp, name);
+							let name = _this.removeTmp(p.normalize(data.file));
+							name = extractName[name] || name;
 
-						await _this.isFullyWrittenToDisk(path, realPath);
+							const path = p.join(_this.path, name);
+							const realPath = p.join(_this.tmp, name);
 
-						_this.setFileStatus(name, {extracted: extract});
-						_this.whenExtractFile(path);
+							await _this.isFullyWrittenToDisk(path, realPath);
 
-						extractedSome = true;
+							_this.setFileStatus(name, {extracted: extract});
+							_this.whenExtractFile(path);
+
+							extractedSome = true;
+							_resolve();
+
+						}));
 					}
 
 				}).on('progress', function(progress) {
@@ -1862,10 +1869,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					if(!onlyLen)
 						_this.setProgress(progress.percent / 100);
 
-				}).on('end', function() {
+				}).on('end', async function() {
 
 					if(!hasError)
+					{
+						await Promise.all(waitDisk);
 						resolve();
+					}
 
 				}).on('error', async function(error) {
 
@@ -1904,6 +1914,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 						_this.saveErrorToCache(error);
 						dom.compressedError(error, false, sha1(_this.path));
 
+						await Promise.all(waitDisk);
 						resolve();
 					}
 					else
