@@ -4949,23 +4949,26 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	});
 	onLoadPromise = {promise: promise, resolve: resolve};
 
-	template.contentRight().on('mousewheel', function(event) {
+	const contentRight = template._contentRight();
+	const readingLens = contentRight.querySelector('.reading-lens');
+
+	app.event(contentRight, 'mousewheel', function(event) {
 
 		if(onReading && isLoaded)
 		{
-			const oEvent = event.originalEvent;
-
-			if(readingViewIs('scroll') && !oEvent.altKey && !oEvent.metaKey && !oEvent.ctrlKey && !oEvent.shiftKey && reading.scrollNextOrPrevComic(oEvent.wheelDelta / 120 > 0, true))
+			if(readingViewIs('scroll') && !event.altKey && !event.metaKey && !event.ctrlKey && !event.shiftKey && reading.scrollNextOrPrevComic(event.wheelDelta / 120 > 0, true))
+			{
 				event.preventDefault();
+			}
 		}
 
 	});
 
-	template.contentRight('.reading-lens').on('mousewheel', function(e) {
+	app.event(readingLens, 'mousewheel', function(event) {
 
-		if(onReading && isLoaded && (!haveZoom || !e.originalEvent.ctrlKey) && readingViewIs('scroll'))
+		if(onReading && isLoaded && (!haveZoom || !event.ctrlKey) && readingViewIs('scroll'))
 		{
-			e.preventDefault();
+			event.preventDefault();
 
 			var content = template.contentRight().children();
 
@@ -4974,7 +4977,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			else
 				var scrollTop = content.scrollTop();
 
-			if(e.originalEvent.wheelDelta / 120 > 0)
+			if(event.wheelDelta / 120 > 0)
 				scrollTop -= 120;
 			else
 				scrollTop += 120;
@@ -5282,7 +5285,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	});
 
-	template.contentRight('.reading-lens').on('mouseenter', function(e) {
+	app.event(readingLens, 'mouseenter', function() {
 
 		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
@@ -5291,10 +5294,10 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	})
 
-	template.contentRight('.reading-lens').on('touchmove', function(e) {
+	app.event(readingLens, 'touchmove', function(event) {
 
-		let pageX = e.originalEvent.touches[0].pageX;
-		let pageY = e.originalEvent.touches[0].pageY;
+		let pageX = event.touches[0].pageX;
+		let pageY = event.touches[0].pageY;
 
 		let x = touchStart.originalEvent.touches[0].pageX;
 		let y = touchStart.originalEvent.touches[0].pageY;
