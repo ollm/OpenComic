@@ -65,7 +65,7 @@ function clearPdfAndEpubCache()
 		if(/^compressed-files-/.test(file))
 		{
 			const json = cache.readJson(file.replace(/\.zstd$/, ''));
-			const first = json.files[0] ?? false;
+			const first = json.files?.[0] ?? false;
 
 			if(first)
 			{
@@ -294,7 +294,7 @@ function migrateCompressedFilesWithUnsupportedCharsInWindows(data)
 		{
 			const json = cache.readJson(file.replace(/\.zstd$/, ''));
 
-			if(hasUnsupportedCharsInWindows(json.files))
+			if(hasUnsupportedCharsInWindows(json.files ?? []))
 				fs.unlinkSync(p.join(cache.folder, file));
 		}
 	}
