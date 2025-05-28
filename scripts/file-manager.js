@@ -1685,6 +1685,106 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.getOptimalTask = function(fileSize, status, optimalFileSize, maxItems, numThreads) {
+
+		if(!status.tasks[status.current])
+			status.tasks[status.current] = {size: 0, items: 0};
+
+		let current = status.current;
+		let task = status.tasks[current];
+
+		if(!status.fullSize)
+		{
+			task.size += fileSize;
+			task.items++;
+
+			if(task.size > optimalFileSize)
+				status.current++;
+
+			if(status.current >= numThreads)
+			{
+				status.fullSize = true;
+				status.current = 0;
+			}
+		}
+		else if(!status.full)
+		{
+			let full = true;
+
+			for(let t = status.current; t < numThreads; t++)
+			{
+				task = status.tasks[t];
+
+				if(task.items >= maxItems)
+					continue;
+
+				status.current = t;
+				full = false;
+
+				break;
+			}
+
+			current = status.current;
+			status.current++;
+
+			task.size += fileSize;
+			task.items++;
+
+			if(full)
+			{
+				status.full = true;
+				status.current = numThreads;
+			}
+			else if(status.current >= numThreads)
+			{
+				status.current = 0;
+			}
+		}
+		else
+		{
+			task.size += fileSize;
+			task.items++;
+
+			if(task.items >= maxItems)
+				status.current++;
+		}
+
+		return current;
+
+	}
+
+	this.stackBySize = function(only, optimalFileSize = 30, maxItems = 100) {
+
+		if(!only)
+			return [only];
+
+		optimalFileSize *= 1024 * 1024; // In bytes
+
+		const numThreads = threads.num();
+		const tasks = [];
+
+		const status = {
+			tasks: {},
+			current: 0,
+			fullSize: false,
+			full: false,
+		};
+
+		for(let i = 0, len = only.length; i < len; i++)
+		{
+			const name = only[i];
+			const fileSize = fileSizes.get(p.join(this.path, name)) ?? (1024 * 100); // If the size is not known, it is considered to be 100KB.
+
+			const task = this.getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads);
+
+			if(!tasks[task]) tasks[task] = [];
+			tasks[task].push(name); 
+		}
+
+		return tasks;
+
+	}
+
 	this.isFullyWrittenToDisk = async function(path, realPath, prevDiskSize = 0, intent = 0) {
 
 		const fileSize = fileSizes.get(path) ?? 0;
@@ -1747,10 +1847,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		const files = [];
 
-		const _this = this;
+		const self = this;
 
 		const _7z = await this.open7z();
-		const readSome = false;
+		let readSome = false;
 
 		return new Promise(function(resolve, reject) {
 
@@ -1761,30 +1861,30 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					if(/^D/.test(data.attributes) && !data.size) // Ignore directories
 						return;
 
-					const originalName = _this.removeTmp(p.normalize(data.file));
-					const name = _this.fixUnsupportedCharsInWindows(originalName);
+					const originalName = self.removeTmp(p.normalize(data.file));
+					const name = self.fixUnsupportedCharsInWindows(originalName);
 					const same = originalName === name ? true : false;
 
-					files.push({name: name, fixedName: (!same ? name : ''), originalName: (!same ? originalName : ''), path: p.join(_this.path, name), fileSize: data.size});
-					_this.setFileStatus(name, {extracted: false});
+					files.push({name: name, fixedName: (!same ? name : ''), originalName: (!same ? originalName : ''), path: p.join(self.path, name), fileSize: data.size});
+					self.setFileStatus(name, {extracted: false});
 
 					readSome = true;
 				}
 
 			}).on('end', function(data) {
 
-				_this.files = _this.filesToMultidimension(files);
-				resolve(_this.files);
+				self.files = self.filesToMultidimension(files);
+				resolve(self.files);
 
 			}).on('error', function(error){
 
 				if(readSome)
 				{
-					/*_this.files = _this.filesToMultidimension(files);
-					resolve(_this.files);*/
+					/*self.files = self.filesToMultidimension(files);
+					resolve(self.files);*/
 
-					//_this.saveErrorToCache(error);
-					dom.compressedError(error, false, sha1(_this.path));
+					//self.saveErrorToCache(error);
+					dom.compressedError(error, false, sha1(self.path));
 				}
 				else
 				{
@@ -1799,7 +1899,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.extract7z = async function() {
 
-		const _this = this;
+		const self = this;
 
 		const only = [];
 		const extractName = {};
@@ -1819,117 +1919,123 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 		}
 
-		const tasks = this.stackOnlyInTasks(only || false, 100);
-
-		let result = false;
-
 		this.progressIndex = 1;
+
+		const tasks = this.stackBySize(only || false, 30, 100);
+		const promises = [];
 
 		for(let i = 0, len = tasks.length; i < len; i++)
 		{
 			const onlyStack = tasks[i];
-			const _7z = await this.open7z(true, onlyStack);
 
 			let extractedSome = false;
 			let hasError = false;
 
-			result = await new Promise(function(resolve, reject) {
+			promises.push(threads.job('extractUsingThreads', {useThreads: 1}, async function() {
 
-				const waitDisk = [];
+				return new Promise(async function(resolve, reject) {
 
-				_7z.on('data', function(data) {
+					const waitDisk = [];
+					const _7z = await self.open7z(true, onlyStack);
 
-					const extract = data.status == 'extracted' ? true : false;
+					_7z.on('data', function(data) {
 
-					if(extract)
-					{
-						waitDisk.push(new Promise(async function(_resolve) {
+						const extract = data.status == 'extracted' ? true : false;
 
-							_this.setProgress(_this.progressIndex++ / onlyLen);
-
-							let name = _this.removeTmp(p.normalize(data.file));
-							name = extractName[name] || name;
-
-							const path = p.join(_this.path, name);
-							const realPath = p.join(_this.tmp, name);
-
-							await _this.isFullyWrittenToDisk(path, realPath);
-
-							_this.setFileStatus(name, {extracted: extract});
-							_this.whenExtractFile(path);
-
-							extractedSome = true;
-							_resolve();
-
-						}));
-					}
-
-				}).on('progress', function(progress) {
-
-					if(!onlyLen)
-						_this.setProgress(progress.percent / 100);
-
-				}).on('end', async function() {
-
-					if(!hasError)
-					{
-						await Promise.all(waitDisk);
-						resolve();
-					}
-
-				}).on('error', async function(error) {
-
-					hasError = true;
-
-					if(filePassword.check(error))
-					{
-						if(fs.existsSync(_this.tmp))
-							fs.rmSync(_this.tmp, {recursive: true});
-
-						if(!_this.config.fromThumbnailsGeneration)
+						if(extract)
 						{
-							const password = await filePassword.request(_this.path);
+							waitDisk.push(new Promise(async function(_resolve) {
 
-							if(password)
+								self.setProgress(self.progressIndex++ / onlyLen);
+
+								let name = self.removeTmp(p.normalize(data.file));
+								name = extractName[name] || name;
+
+								const path = p.join(self.path, name);
+								const realPath = p.join(self.tmp, name);
+
+								await self.isFullyWrittenToDisk(path, realPath);
+
+								self.setFileStatus(name, {extracted: extract});
+								self.whenExtractFile(path);
+
+								extractedSome = true;
+								_resolve();
+
+							}));
+						}
+
+					}).on('progress', function(progress) {
+
+						if(!onlyLen)
+							self.setProgress(progress.percent / 100);
+
+					}).on('end', async function() {
+
+						if(!hasError)
+						{
+							await Promise.all(waitDisk);
+							resolve();
+						}
+
+					}).on('error', async function(error) {
+
+						hasError = true;
+
+						if(filePassword.check(error))
+						{
+							if(fs.existsSync(self.tmp))
+								fs.rmSync(self.tmp, {recursive: true});
+
+							if(!self.config.fromThumbnailsGeneration)
 							{
-								if(!fs.existsSync(_this.tmp))
-									fs.mkdirSync(_this.tmp);
+								const password = await filePassword.request(self.path);
 
-								resolve(_this.extract7z());
+								if(password)
+								{
+									if(!fs.existsSync(self.tmp))
+										fs.mkdirSync(self.tmp);
+
+									resolve(self.extract7z());
+								}
+								else
+								{
+									self.rejectAllWhenExtractFile();
+									reject(error);
+								}
 							}
 							else
 							{
-								_this.rejectAllWhenExtractFile();
+								self.rejectAllWhenExtractFile();
 								reject(error);
 							}
 						}
+						else if(extractedSome)
+						{
+							self.saveErrorToCache(error);
+							dom.compressedError(error, false, sha1(self.path));
+
+							await Promise.all(waitDisk);
+							resolve();
+						}
 						else
 						{
-							_this.rejectAllWhenExtractFile();
 							reject(error);
 						}
-					}
-					else if(extractedSome)
-					{
-						_this.saveErrorToCache(error);
-						dom.compressedError(error, false, sha1(_this.path));
 
-						await Promise.all(waitDisk);
-						resolve();
-					}
-					else
-					{
-						reject(error);
-					}
+					});
 
 				});
 
-			});
+			}));
+
 		}
+
+		await Promise.all(promises);
 
 		this.setProgress(1);
 
-		return result;
+		return;
 	}
 
 

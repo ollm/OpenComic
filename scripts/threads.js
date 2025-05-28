@@ -5,6 +5,14 @@ var queueIsStop = {default: false};
 var stats = {};
 var onEnd = {};
 
+function num()
+{
+	if(!threads)
+		threads = os.cpus().length || 1;
+
+	return threads;
+}
+
 async function job(key = 'default', options = {}, callback = false)
 {
 	if(options.delay)
@@ -67,8 +75,7 @@ function addToQueue(key, options, callback, _arguments, promise)
 
 function processQueue(key = 'default')
 {
-	if(!threads)
-		threads = os.cpus().length || 1;
+	num();
 
 	if(queueIsStop[key])
 		return;
@@ -232,6 +239,7 @@ function sumStats()
 }
 
 module.exports = {
+	num: num,
 	job: job,
 	stop: stop,
 	resume: resume,
