@@ -77,7 +77,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.816.0",
+		"@aws-sdk/client-s3": "^3.817.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -115,7 +115,7 @@
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
-		"electron": "^36.3.1",
+		"electron": "^36.3.2",
 		"electron-builder": "^26.0.15",
 		"env-cmd": "^10.1.0",
 		"install": "^0.13.0",
