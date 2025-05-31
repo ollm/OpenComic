@@ -21,14 +21,16 @@ function setSiteData(siteData)
 }
 
 // Search comic/manga in site
-async function searchComic(title, callback = false)
+async function searchComic(title)
 {
-
 	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
+	//
 	// if(controller) controller.abort();
 	// controller = new AbortController();
-	// options = {signal: controller.signal};
-	// fetch('url', options).then(async function(response){await response.json()});
+	//
+	// const options = {signal: controller.signal};
+	// const response = await fetch('url', options);
+	// const json = await response.json();
 
 	results = [];
 
@@ -38,7 +40,7 @@ async function searchComic(title, callback = false)
 		image: 'https://image.small', // Comic small image
 	});
 
-	callback(results);
+	return results;
 }
 
 // Return data of comic/manga
@@ -47,9 +49,10 @@ async function getComicData(siteId, callback = false)
 	// siteId = Comic id in site
 
 	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
-	// fetch('url', options).then(async function(response){await response.json()});
+	// const response = await fetch('url', options);
+	// const json = await response.json();
 
-	callback({
+	return {
 		title: 'title', // Comic title
 		image: 'https://image.large', // Comic large image
 		chapters: 0, // Total comic chapters
@@ -58,28 +61,26 @@ async function getComicData(siteId, callback = false)
 			chapters: 0, // User viewed chapters
 			volumes: 0, // User viewed volumes
 		},
-	});
+	};
 }
 
 // Loging to site
-async function login(callback = false)
+async function login()
 {
 	// Open link to browser, for example to get a token
 	// electron.shell.openExternal('https://open-this-link-in-a-browser.com');
 
 	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
-	// fetch('url', options).then(async function(response){await response.json()});
+	// const response = await fetch('url', options);
+	// const json = await response.json();
 
 	// Show token dialog
-	// tracking.getTokenDialog(site.key, function(token) { });
-
-	// Show user/pass dialog
-	// tracking.getUserPassDialog(site.key, function(user, pass) { });
+	// const token = await tracking.getTokenDialog(site.key);
 
 	if(success)
-		callback({valid: true, token: body.access_token});
+		return {valid: true, token: body.access_token};
 	else
-		callback({valid: false});
+		return {valid: false};
 }
 
 // Track comic/manga
