@@ -548,10 +548,11 @@
 {
 	height: 144px;
 	width: 96px;
-	border-radius: 4px;
+	border-radius: 7px;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
+	background-color: var(--md-sys-color-force-surface);
 	margin: 0px 12px 0px 0px;
 	float: left;
 }
