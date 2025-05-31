@@ -1,4 +1,4 @@
-sites = [
+const sites = [
 	{
 		key: 'anilist',
 		name: 'AniList',
@@ -9,18 +9,12 @@ sites = [
 	},
 ];
 
-
-if(fs.existsSync(p.join(tracking.scriptsPath(), '_tracking-sites-keys.js')))
-	var trackingSitesKeys = require(p.join(tracking.scriptsPath(), '_tracking-sites-keys.js'));
-else
-	var trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));
-
-trackingSitesKeys = trackingSitesKeys.authKeys;
+const trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));
 
 // Get user site config
 function getSiteConfig(site = '')
 {
-	var configSites = storage.getKey('config', 'trackingSites');
+	const configSites = storage.getKey('config', 'trackingSites') || {};
 
 	if(!configSites[site])
 	{
@@ -43,68 +37,35 @@ function getSiteConfig(site = '')
 
 function list(returnTrackingActive = false)
 {
-	var _tracking = false;
+	const _tracking = returnTrackingActive ? storage.getKey('tracking', dom.indexMainPathA()) : false;
+	const _sites = sites.map(function(site) {
 
-	if(returnTrackingActive)
-		_tracking = storage.getKey('tracking', dom.indexMainPathA());
+		const key = site.key;
 
-	var _sites = [];
+		return {
+			...site,
+			logo: '../scripts/tracking/'+key+'/logo.png',
+			script: p.join(tracking.scriptsPath(key), key+'.js'),
+			config: getSiteConfig(key),
+			auth: trackingSitesKeys[key] || {},
+			tracking: returnTrackingActive ? (_tracking?.[key] || {id: '', active: false}) : undefined,
+		};
 
-	for(let i in sites)
-	{
-		site = sites[i];
-
-		site.logo = '../scripts/tracking/'+site.key+'/logo.png';
-		site.script = p.join(tracking.scriptsPath(site.key), site.key+'.js');
-		site.config = getSiteConfig(site.key);
-		site.auth = trackingSitesKeys[site.key] ? trackingSitesKeys[site.key] : {};
-
-		if(returnTrackingActive)
-		{
-			if(_tracking && _tracking[site.key])
-				site.tracking = _tracking[site.key];
-			else
-				site.tracking = {id: '', active: false};
-		}
-
-		_sites.push(site);
-	}
-
-	_sites.sort(function(a, b) {
-
-		return dom.orderBy(a, b, 'simple', 'name');
-	
 	});
 
-	return _sites;
+	return _sites.sort((a, b) => dom.orderBy(a, b, 'simple', 'name'))
 }
 
 function listFavorite(returnTrackingActive = false)
 {
-	var _sites = [];
-
-	_list = list(returnTrackingActive);
-
-	for(let key in _list)
-	{
-		if(_list[key].config.favorite)
-			_sites.push(_list[key]);
-	}
-
-	return _sites;
+	const sites = list(returnTrackingActive);
+	return sites.filter(site => site.config.favorite);
 }
 
 function site(site = '', returnTrackingActive = false)
 {
-	var _sites = list(returnTrackingActive);
-
-	for(let key in _sites)
-	{
-		if(site == _sites[key].key)
-			return _sites[key];
-	}
-
-	return false;
+	const sites = list(returnTrackingActive);
+	return sites.find(_site => _site.key === site) || false;
 }
 
 module.exports = {

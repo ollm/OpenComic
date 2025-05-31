@@ -49,7 +49,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 		volume = getVolume();
 	}
 
-	let _trackingSites = trackingSites.list(true);
+	const _trackingSites = trackingSites.list(true);
 
 	let haveToTracking = false;
 
@@ -70,15 +70,14 @@ async function track(chapter = false, volume = false, onlySite = false)
 			if(!fromDialog)
 				$('.bar-right-buttons .button-tracking-sites').html('sync').removeClass('tracking-problem');
 
-			let indexMainPathA = dom.indexMainPathA();
-			let readingCurrentPath = reading.readingCurrentPath();
+			const indexMainPathA = dom.indexMainPathA();
+			const readingCurrentPath = reading.readingCurrentPath();
 
 			let allTracked = true;
 
 			for(let key in _trackingSites)
 			{
-				let site = _trackingSites[key];
-
+				const site = _trackingSites[key];
 				let prevTracked = false;
 
 				if(tracked[indexMainPathA] && tracked[indexMainPathA][site.key])
@@ -101,7 +100,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 			let chapters = '??';
 			let volumes = '??';
 
-			let tracking = storage.getKey('tracking', indexMainPathA);
+			const tracking = storage.getKey('tracking', indexMainPathA);
 
 			for(let site in tracking)
 			{
@@ -119,13 +118,8 @@ async function track(chapter = false, volume = false, onlySite = false)
 					{
 						console.log('Get chapters and volumes number');
 
-						let path = indexMainPathA;
-
-						sitesScripts[site].getComicData(data.id, function(data){
-
-							setTrackingChapters(site, path, data.chapters, data.volumes);
-
-						});
+						const data = await sitesScripts[site].getComicData();
+						setTrackingChapters(site, indexMainPathA, data.chapters, data.volumes);
 					}
 				}
 			}
@@ -138,8 +132,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 
 					for(let key in _trackingSites)
 					{
-						let site = _trackingSites[key];
-
+						const site = _trackingSites[key];
 						let prevTracked = false;
 
 						if(tracked[indexMainPathA] && tracked[indexMainPathA][site.key])
@@ -204,8 +197,8 @@ async function track(chapter = false, volume = false, onlySite = false)
 
 function saveSiteConfig(site, key, value)
 {
-	var siteData = trackingSites.site(site);
-	var configSites = storage.getKey('config', 'trackingSites');
+	const siteData = trackingSites.site(site);
+	const configSites = storage.getKey('config', 'trackingSites');
 
 	siteData.config[key] = value;
 
@@ -217,59 +210,53 @@ function saveSiteConfig(site, key, value)
 
 function configTracking(site = '', force = false)
 {
-	var siteData = trackingSites.site(site, true);
+	const siteData = trackingSites.site(site, true);
+	if(!siteData) return;
 
-	if(siteData)
+	if($('#tracking-sites, .bar-right-buttons .button-tracking-sites').length >= 2)
 	{
-		if($('#tracking-sites, .bar-right-buttons .button-tracking-sites').length >= 2)
-		{
-			reading.magnifyingGlassControl(2);
-			events.desactiveMenu('#tracking-sites', '.bar-right-buttons .button-tracking-sites');
-		}
+		reading.magnifyingGlassControl(2);
+		events.desactiveMenu('#tracking-sites', '.bar-right-buttons .button-tracking-sites');
+	}
 
-		loadSiteScript(site);
+	loadSiteScript(site);
 
-		if(siteData.config.session.valid && siteData.tracking.id)
-		{
-			currentTrackingDialog(site);
-		}
-		else if(siteData.config.session.valid)
-		{
-			searchDialog(site);
-		}
-		else
-		{
-			login(site, true);
-		}
+	if(siteData.config.session.valid && siteData.tracking.id)
+	{
+		currentTrackingDialog(site);
+	}
+	else if(siteData.config.session.valid)
+	{
+		searchDialog(site);
+	}
+	else
+	{
+		login(site, true);
 	}
 }
 
 // Execute site login function
-function login(site, fromConfig = false)
+async function login(site, fromConfig = false)
 {
-	var siteData = trackingSites.site(site);
+	const siteData = trackingSites.site(site);
+	if(!siteData) return;
 
-	if(siteData)
+	loadSiteScript(site);
+
+	const session = await sitesScripts[site].login();
+
+	if(session.valid)
 	{
-		loadSiteScript(site);
-
-		sitesScripts[site].login(function(session) {
-
-			if(session.valid)
-			{
-				setSessionToken(site, session.token);
-				
-				if(fromConfig)
-					configTracking(site, true);
-				else
-					tracking.track();
-			}
-			else
-			{
-				invalidateSession(site, true, true);
-			}
-
-		});
+		setSessionToken(site, session.token);
+		
+		if(fromConfig)
+			configTracking(site, true);
+		else
+			tracking.track();
+	}
+	else
+	{
+		invalidateSession(site, true, true);
 	}
 }
 
@@ -293,8 +280,7 @@ function invalidateSession(site = '', loginDialog = false, fromConfig = false)
 // Active and deactivate tracking site
 function activeAndDeactivateTrackingSite(site = '', active = false)
 {
-	var _tracking = storage.getKey('tracking', dom.indexMainPathA());
-	if(!_tracking) _tracking = {};
+	const _tracking = storage.getKey('tracking', dom.indexMainPathA()) || {};
 
 	if(_tracking[site])
 		_tracking[site].active = active;
@@ -303,102 +289,105 @@ function activeAndDeactivateTrackingSite(site = '', active = false)
 }
 
 // Current dialog
-function currentTrackingDialog(site)
+async function currentTrackingDialog(site)
 {
-	var siteData = trackingSites.site(site, true);
+	const siteData = trackingSites.site(site, true);
+	if(!siteData) return;
 
-	if(siteData)
-	{
-		loadSiteScript(site);
+	loadSiteScript(site);
 
-		events.dialog({
-			header: false,
-			width: 500,
-			height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 446 : 526,
-			content: template.load('loading.html'),
-			buttons: false,
-		});
+	events.dialog({
+		header: false,
+		width: 500,
+		height: (!siteData.trackingChapter || !siteData.trackingVolume) ? 446 : 526,
+		content: template.load('loading.html'),
+		buttons: false,
+	});
 
-		let path = dom.indexMainPathA();
+	const path = dom.indexMainPathA();
+	const data = await sitesScripts[site].getComicData(siteData.tracking.id);
 
-		sitesScripts[site].getComicData(siteData.tracking.id, function(data){
+	console.log(data);
 
-			handlebarsContext.trackingResult = data;
-			handlebarsContext.siteData = siteData;
+	handlebarsContext.trackingResult = data;
+	handlebarsContext.siteData = siteData;
 
-			if(!handlebarsContext.trackingResult.chapters)
-				handlebarsContext.trackingResult.chapters = '??';
+	if(!handlebarsContext.trackingResult.chapters)
+		handlebarsContext.trackingResult.chapters = '??';
 
-			if(!handlebarsContext.trackingResult.volumes)
-				handlebarsContext.trackingResult.volumes = '??';
+	if(!handlebarsContext.trackingResult.volumes)
+		handlebarsContext.trackingResult.volumes = '??';
 
-			setTrackingChapters(site, path, data.chapters, data.volumes);
+	setTrackingChapters(site, path, data.chapters, data.volumes);
 
-			$('.dialog-text').html(template.load('dialog.tracking.current.tracking.html'));
+	$('.dialog-text').html(template.load('dialog.tracking.current.tracking.html'));
 
-			events.events();
-
-		});
-	}
+	events.events();
 }
 
 // Login dialogs
-getTokenDialogCallback = false;
+getTokenDialogResolve = false;
 
-function getTokenDialog(site = '', callback = false, done = false)
+async function getTokenDialog(site = '', done = false, resolve = false)
 {
-	if(done)
+	if(resolve)
 	{
-		var token = $('.input-token').val();
+		if(getTokenDialogResolve)
+			getTokenDialogResolve(false);
+	}
+	else if(done)
+	{
+		const token = $('.input-token').val();
 
 		if(!isEmpty(token))
 		{
-			if(getTokenDialogCallback)
-				getTokenDialogCallback(token);
+			if(getTokenDialogResolve)
+				getTokenDialogResolve(token);
 		}
 		else
 		{
-			if(getTokenDialogCallback)
-				getTokenDialogCallback(false);
+			if(getTokenDialogResolve)
+				getTokenDialogResolve(false);
 		}
 	}
 	else
 	{
-		var siteData = trackingSites.site(site);
+		const siteData = trackingSites.site(site);
+		if(!siteData) return;
 
-		if(siteData)
-		{
-			getTokenDialogCallback = callback;
+		if(!handlebarsContext.tracking) handlebarsContext.tracking = {};
+		handlebarsContext.tracking.getTokenInput = hb.compile(language.dialog.tracking.getTokenInput)({siteName: siteData.name});
 
-			if(!handlebarsContext.tracking) handlebarsContext.tracking = {};
-			handlebarsContext.tracking.getTokenInput = hb.compile(language.dialog.tracking.getTokenInput)({siteName: siteData.name});
+		events.dialog({
+			header: hb.compile(language.dialog.tracking.getTokenHeader)({siteName: siteData.name}),
+			width: 400,
+			height: false,
+			content: template.load('dialog.tracking.sites.token.html'),
+			onClose: 'tracking.getTokenDialog(\''+site+'\', false, true);',
+			buttons: [
+				{
+					text: language.buttons.cancel,
+					function: 'events.closeDialog(); tracking.getTokenDialog(\''+site+'\', false, true);',
+				},
+				{
+					text: language.buttons.ok,
+					function: 'events.closeDialog(); tracking.getTokenDialog(\''+site+'\', true);',
+				}
+			],
+		});
 
-			events.dialog({
-				header: hb.compile(language.dialog.tracking.getTokenHeader)({siteName: siteData.name}),
-				width: 400,
-				height: false,
-				content: template.load('dialog.tracking.sites.token.html'),
-				buttons: [
-					{
-						text: language.buttons.cancel,
-						function: 'events.closeDialog();',
-					},
-					{
-						text: language.buttons.ok,
-						function: 'events.closeDialog(); tracking.getTokenDialog(\''+site+'\', false, true);',
-					}
-				],
-			});
+		events.focus('.input-token');
+		events.eventInput();
 
-			events.focus('.input-token');
-			events.eventInput();
-		}
+		return new Promise(function(resolve){
+			getTokenDialogResolve = resolve;
+		});
 	}
 }
 
 function invalidTokenDialog(site, fromConfig = false)
 {
-	var siteData = trackingSites.site(site);
+	const siteData = trackingSites.site(site);
 
 	events.dialog({
 		header: hb.compile(language.dialog.tracking.invalidTokenHeader)({siteName: siteData.name}),
@@ -421,7 +410,7 @@ function invalidTokenDialog(site, fromConfig = false)
 // Search functions
 function searchDialog(site)
 {
-	var siteData = trackingSites.site(site);
+	const siteData = trackingSites.site(site);
 
 	if(!handlebarsContext.tracking) handlebarsContext.tracking = {};
 	handlebarsContext.tracking.serachIn = hb.compile(language.dialog.tracking.serachIn)({siteName: siteData.name});
@@ -439,12 +428,11 @@ function searchDialog(site)
 	events.focus('.input-search');
 	events.eventInput();
 
-	let title = getTitle();
-
+	const title = getTitle();
 	searchComic(site, title);
 }
 
-function searchComic(site, title = false)
+async function searchComic(site, title = false)
 {
 	if(!title)
 		title = getTitle();
@@ -453,13 +441,10 @@ function searchComic(site, title = false)
 
 	handlebarsContext.trackingSiteKey = site;
 
-	sitesScripts[site].searchComic(title, function(results) {
+	const results = await sitesScripts[site].searchComic(title);
+	handlebarsContext.trackingResults = results;
 
-		handlebarsContext.trackingResults = results;
-
-		$('.tracking-search').html(template.load('dialog.tracking.search.results.html'));
-
-	});
+	$('.tracking-search').html(template.load('dialog.tracking.search.results.html'));
 }
 
 searchInputST = false;
@@ -472,8 +457,7 @@ function searchInput(site)
 
 	searchInputST = setTimeout(function(site){
 
-		var title = $('.input-search').val();
-
+		const title = $('.input-search').val();
 		searchComic(site, title);
 
 	}, 300, site);
@@ -483,8 +467,7 @@ function setTrackingId(site, siteId)
 {
 	events.closeDialog();
 
-	let _tracking = storage.getKey('tracking', dom.indexMainPathA());
-	if(!_tracking) _tracking = {};
+	const _tracking = storage.getKey('tracking', dom.indexMainPathA()) || {};
 
 	_tracking[site] = {
 		id: siteId,
@@ -503,8 +486,7 @@ function setTrackingId(site, siteId)
 
 function setTrackingChapters(site, path, chapters = false, volumes = false)
 {
-	let _tracking = storage.getKey('tracking', path);
-	if(!_tracking) _tracking = {};
+	const _tracking = storage.getKey('tracking', path) || {};
 
 	_tracking[site].chapters = chapters || false;
 	_tracking[site].volumes = volumes || false;
@@ -518,8 +500,8 @@ function addChapterNumberDialog(done = false, onlySite = false)
 {
 	if(done)
 	{
-		var chapter = +$('.input-chapter').val();
-		var volume = +$('.input-volume').val();
+		let chapter = +$('.input-chapter').val();
+		let volume = +$('.input-volume').val();
 
 		if(chapter < 1)
 			chapter = false;

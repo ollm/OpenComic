@@ -6,12 +6,12 @@ function setSiteData(siteData)
 }
 
 // Search comic/manga in site
-async function searchComic(title, callback = false)
+async function searchComic(title)
 {
 	if(controller) controller.abort();
 	controller = new AbortController();
 
-	let query = `
+	const query = `
 	query ($id: Int, $page: Int, $perPage: Int, $search: String) {
 		Page (page: $page, perPage: $perPage) {
 			pageInfo {
@@ -34,13 +34,13 @@ async function searchComic(title, callback = false)
 	}
 	`;
 
-	let variables = {
+	const variables = {
 		search: title,
 		page: 1,
 		perPage: 10
 	};
 
-	let options = {
+	const options = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -53,46 +53,35 @@ async function searchComic(title, callback = false)
 		signal: controller.signal,
 	};
 
-	fetch('https://graphql.anilist.co', options).then(async function(response) {
+	try
+	{
+		const response = await fetch('https://graphql.anilist.co', options);
 
 		if(response.status == 200)
 		{
-			let json = await response.json();
-		
-			results = [];
+			const json = await response.json();
+			const results = (json.data?.Page?.media || []).map(function(media) {
 
-			if(json.data && json.data.Page && json.data.Page.media)
-			{
-				for(let key in json.data.Page.media)
-				{
-					var media = json.data.Page.media[key];
+				return {
+					id: media.id,
+					title: media.title.romaji,
+					image: media.coverImage.medium,
+				};
 
-					results.push({
-						id: media.id,
-						title: media.title.romaji,
-						image: media.coverImage.medium,
-					});
-				}
-			}
+			});
 
-			callback(results);
+			return results;
 		}
-		else
-		{
-			callback([]);
-		}
+	}
+	catch(error) {}
 
-	}).catch(function(){
-
-		callback([]);
-
-	});
+	return [];
 }
 
 // Return data of comic/manga
-async function getComicData(siteId, callback = false)
+async function getComicData(siteId)
 {
-	let query = `
+	const query = `
 	query ($id: Int, $type: MediaType) {
 		Media (id: $id, type: $type) {
 			id
@@ -113,12 +102,12 @@ async function getComicData(siteId, callback = false)
 	}
 	`;
 
-	let variables = {
+	const variables = {
 		id: siteId,
 		type: 'MANGA'
 	};
 
-	let options = {
+	const options = {
 		method: 'POST',
 		headers: {
 			'Authorization': 'Bearer '+site.config.session.token,
@@ -131,96 +120,78 @@ async function getComicData(siteId, callback = false)
 		})
 	};
 
-	fetch('https://graphql.anilist.co', options).then(async function(response) {
+	try
+	{
+		const response = await fetch('https://graphql.anilist.co', options);
 
 		if(response.status == 200)
 		{
-			let json = await response.json();
+			const json = await response.json();
 		
-			if(json.data && json.data.Media)
+			if(json.data?.Media)
 			{
-				callback({
-					title: json.data.Media.title.romaji,
-					image: json.data.Media.coverImage.large,
-					chapters: +json.data.Media.chapters,
-					volumes: +json.data.Media.volumes,
+				const {title, coverImage, chapters, volumes, mediaListEntry} = json.data.Media;
+
+				return {
+					title: title.romaji,
+					image: coverImage.large,
+					chapters: +chapters || 0,
+					volumes: +volumes || 0,
 					progress: {
-						chapters: json.data.Media.mediaListEntry ? +json.data.Media.mediaListEntry.progress : 0,
-						volumes: json.data.Media.mediaListEntry ? +json.data.Media.mediaListEntry.progressVolumes : 0,
+						chapters: +(mediaListEntry?.progress || 0),
+						volumes: +(mediaListEntry?.progressVolumes || 0),
 					},
-				});
-			}
-			else
-			{
-				callback({});
+				};
 			}
 		}
-		else
-		{
-			callback({});
-		}
+	}
+	catch(error) {}
 
-	}).catch(function(){
-
-		callback({});
-
-	});
+	return {};
 }
 
 // Loging to site
-async function login(callback = false)
+async function login()
 {
 	electron.shell.openExternal('https://anilist.co/api/v2/oauth/authorize?client_id='+site.auth.clientId+'&response_type=code');
 
-	tracking.getTokenDialog(site.key, function(token) {
+	const token = await tracking.getTokenDialog(site.key);
+	if(!token) return {valid: false};
 
-		if(token)
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+		},
+		body: JSON.stringify({
+			grant_type: 'authorization_code',
+			client_id: site.auth.clientId,
+			client_secret: site.auth.clientSecret,
+			redirect_uri: 'https://anilist.co/api/v2/oauth/pin', 
+			code: token,
+		})
+	};
+
+	try
+	{
+		const response = await fetch('https://anilist.co/api/v2/oauth/token', options);
+
+		if(response.status == 200)
 		{
-			let options = {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					grant_type: 'authorization_code',
-					client_id: site.auth.clientId,
-					client_secret: site.auth.clientSecret,
-					redirect_uri: 'https://anilist.co/api/v2/oauth/pin', 
-					code: token,
-				})
-			};
-
-			fetch('https://anilist.co/api/v2/oauth/token', options).then(async function(response) {
-
-				if(response.status == 200)
-				{
-					let json = await response.json();
-					callback({valid: true, token: json.access_token});
-				}
-				else
-				{
-					callback({valid: false});
-				}
-
-			}).catch(function(){
-
-				callback({valid: false});
-
-			});
+			const json = await response.json();
+			return {valid: true, token: json.access_token};
 		}
-		else
-		{
-			callback({valid: false});
-		}
+	}
+	catch(error) {}
 
-	});
+	return {valid: false};
 }
 
 // Track comic/manga
 async function track(toTrack)
 {
-	let query = `
+	const query = `
 	query ($id: Int, $type: MediaType) {
 		Media (id: $id, type: $type) {
 			id
@@ -235,12 +206,12 @@ async function track(toTrack)
 	}
 	`;
 
-	let variables = {
+	const variables = {
 		id: toTrack.id,
 		type: 'MANGA'
 	};
 
-	let options = {
+	const options = {
 		method: 'POST',
 		headers: {
 			'Authorization': 'Bearer '+site.config.session.token,
@@ -250,10 +221,12 @@ async function track(toTrack)
 		body: JSON.stringify({
 			query: query,
 			variables: variables
-		})
+		}),
 	};
 
-	fetch('https://graphql.anilist.co', options).then(async function(response) {
+	try
+	{
+		const response = await fetch('https://graphql.anilist.co', options);
 
 		if(response.status == 400)
 		{
@@ -261,54 +234,36 @@ async function track(toTrack)
 		}
 		else if(response.status == 200)
 		{
-			let json = (await response.json()).data.Media;
+			const json = (await response.json()).data?.Media || {};
 
-			let aniChapters, aniVolumes, aniUserStatus, aniUserProgress, aniUserProgressVolumes;
+			const totalChapters = +json.chapters || 0;
+			const {status: userStatus, progress: userChapters, progressVolumes: userVolumes} = json?.mediaListEntry;
 
-			aniChapters = json.chapters;
-			aniVolumes = json.volumes;
+			let status, chapters, volumes;
 
-			if(json.mediaListEntry)
-			{
-				aniUserStatus = json.mediaListEntry.status;
-				aniUserProgress = json.mediaListEntry.progress;
-				aniUserProgressVolumes = json.mediaListEntry.progressVolumes;
-			}
+			// Status
+			if(totalChapters && toTrack.chapters && toTrack.chapters == totalChapters)
+				status = 'COMPLETED';
+			else if(!userStatus || userStatus !== 'CURRENT')
+				status = 'CURRENT';
 
+			// Chapters
+			if(toTrack.chapters && (!userChapters || toTrack.chapters > userChapters))
+				chapters = toTrack.chapters;
 
-			let upUserStatus, upUserProgress, upUserProgressVolumes;
+			// Volumes
+			if(toTrack.volumes && (!userVolumes || toTrack.volumes > userVolumes))
+				volumes = toTrack.volumes;
 
-			if(aniChapters && toTrack.chapters && toTrack.chapters == aniChapters)
-				upUserStatus = 'COMPLETED';
-			else if((aniUserStatus && aniUserStatus !== 'CURRENT') || !aniUserStatus)
-				upUserStatus = 'CURRENT';
+			const variables = {mediaId: toTrack.id};
+			if(status) variables.status = status;
+			if(chapters) variables.progress = chapters;
+			if(volumes) variables.volumes = volumes;
 
-			if(toTrack.chapters && aniUserProgress && toTrack.chapters > aniUserProgress)
-				upUserProgress = toTrack.chapters;
-			else if(toTrack.chapters && !aniUserProgress)
-				upUserProgress = toTrack.chapters;
+			if(!status && !chapters && !volumes)
+				return; // Nothing to update
 
-			if(toTrack.volumes && aniUserProgressVolumes && toTrack.volumes > aniUserProgressVolumes)
-				upUserProgressVolumes = toTrack.volumes;
-			else if(toTrack.volumes && !aniUserProgressVolumes)
-				upUserProgressVolumes = toTrack.volumes;
-
-
-			let variables = {
-				mediaId: toTrack.id,
-			};
-
-			if(upUserProgressVolumes) 
-				variables['volumes'] = upUserProgressVolumes;
-
-			if(upUserProgress)
-				variables['progress'] = upUserProgress;
-
-			if(upUserStatus)
-				variables['status'] = upUserStatus;
-
-
-			query = `
+			const query = `
 			mutation ($mediaId: Int, $status: MediaListStatus, $progress: Int, $volumes: Int) {
 				SaveMediaListEntry (mediaId: $mediaId, status: $status, progress: $progress, progressVolumes: $volumes) {
 					id
@@ -319,7 +274,7 @@ async function track(toTrack)
 			}
 			`;
 
-			options = {
+			const options = {
 				method: 'POST',
 				headers: {
 					'Authorization': 'Bearer '+site.config.session.token,
@@ -332,17 +287,17 @@ async function track(toTrack)
 				})
 			};
 
-			fetch('https://graphql.anilist.co', options).then(async function(response) {});
+			fetch('https://graphql.anilist.co', options);
 		}
 		else
 		{
 			console.error(error);
 		}
-	}).catch(function(){
-
+	}
+	catch(error)
+	{
 		console.error(error);
-
-	});
+	}
 }
 
 module.exports = {
