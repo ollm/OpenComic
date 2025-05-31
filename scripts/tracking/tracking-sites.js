@@ -7,6 +7,14 @@ const sites = [
 		trackingVolume: true,  // Supports volume tracking
 		url: 'https://anilist.co/',
 	},
+	{
+		key: 'myanimelist',
+		name: 'MyAnimeList',
+		description: 'Anime and manga Database and Community',
+		trackingChapter: true, // Supports chapter tracking 
+		trackingVolume: true,  // Supports volume tracking
+		url: 'https://myanimelist.net/',
+	},
 ];
 
 const trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));

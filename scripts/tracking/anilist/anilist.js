@@ -57,7 +57,12 @@ async function searchComic(title)
 	{
 		const response = await fetch('https://graphql.anilist.co', options);
 
-		if(response.status == 200)
+		if(response.status == 400 || response.status == 401)
+		{
+			tracking.invalidateSession(site.key, true);
+			return null;
+		}
+		else if(response.status == 200)
 		{
 			const json = await response.json();
 			const results = (json.data?.Page?.media || []).map(function(media) {
@@ -124,7 +129,12 @@ async function getComicData(siteId)
 	{
 		const response = await fetch('https://graphql.anilist.co', options);
 
-		if(response.status == 200)
+		if(response.status == 400 || response.status == 401)
+		{
+			tracking.invalidateSession(site.key, true);
+			return null;
+		}
+		else if(response.status == 200)
 		{
 			const json = await response.json();
 		
@@ -138,8 +148,8 @@ async function getComicData(siteId)
 					chapters: +chapters || 0,
 					volumes: +volumes || 0,
 					progress: {
-						chapters: +(mediaListEntry?.progress || 0),
-						volumes: +(mediaListEntry?.progressVolumes || 0),
+						chapters: +mediaListEntry?.progress || 0,
+						volumes: +mediaListEntry?.progressVolumes || 0,
 					},
 				};
 			}
@@ -229,7 +239,7 @@ async function track(toTrack)
 	{
 		const response = await fetch('https://graphql.anilist.co', options);
 
-		if(response.status == 400)
+		if(response.status == 400 || response.status == 401)
 		{
 			tracking.invalidateSession(site.key, true);
 		}
@@ -289,10 +299,6 @@ async function track(toTrack)
 			};
 
 			fetch('https://graphql.anilist.co', options);
-		}
-		else
-		{
-			console.error(error);
 		}
 	}
 	catch(error)

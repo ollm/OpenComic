@@ -118,7 +118,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 					{
 						console.log('Get chapters and volumes number');
 
-						const data = await sitesScripts[site].getComicData();
+						const data = (await sitesScripts[site].getComicData()) || {};
 						setTrackingChapters(site, indexMainPathA, data.chapters, data.volumes);
 					}
 				}
@@ -305,7 +305,9 @@ async function currentTrackingDialog(site)
 	});
 
 	const path = dom.indexMainPathA();
+
 	const data = await sitesScripts[site].getComicData(siteData.tracking.id);
+	if(data === null) return; // Invalid session
 
 	handlebarsContext.trackingResult = data;
 	handlebarsContext.siteData = siteData;
@@ -453,6 +455,8 @@ async function searchComic(site, title = false)
 	handlebarsContext.trackingSiteKey = site;
 
 	const results = await sitesScripts[site].searchComic(title);
+	if(results === null) return; // Invalid session
+
 	handlebarsContext.trackingResults = results;
 
 	$('.tracking-search').html(template.load('dialog.tracking.search.results.html'));
