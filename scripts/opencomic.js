@@ -125,7 +125,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 		return;
 	}
 
-	for(let i = 2, len = argv.length; i < len; i++)
+	for(let i = 1, len = argv.length; i < len; i++)
 	{
 		const arg = argv[i];
 
@@ -291,7 +291,7 @@ async function startApp()
 
 	if(!toOpenFile)
 	{
-		for(let i = 2, len = electronRemote.process.argv.length; i < len; i++)
+		for(let i = 1, len = electronRemote.process.argv.length; i < len; i++)
 		{
 			const arg = electronRemote.process.argv[i];
 
