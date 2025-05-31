@@ -1,7 +1,7 @@
 const authKeys = {
 	anilist: {
-		clientId: 3050,
-		clientSecret: '1ZUNqGak9QAHaGvaYjOgLuGXGCTpdTr18unz5koc',
+		clientId: 27257,
+		clientSecret: 'hIVMwj6ojwd1JXUij2iXG7r50BfFo1kKLTvVHE4a',
 	}
 };
 

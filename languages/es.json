@@ -441,7 +441,8 @@
 		"auth": {
 			"loginTo": "Iniciar sesión en {{siteName}}",
 			"filePass": "El archivo requiere una contraseña",
-			"rememberPass": "Recordar contraseña"
+			"rememberPass": "Recordar contraseña",
+			"manualLogin": "Inicio de sesión manual"
 		},
 		"tracking": {
 			"getTokenHeader": "Iniciar sesión en {{siteName}} mediante token",

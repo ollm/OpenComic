@@ -441,7 +441,8 @@
 		"auth": {
 			"loginTo": "Login to {{siteName}}",
 			"filePass": "The file requires a password",
-			"rememberPass": "Remember password"
+			"rememberPass": "Remember password",
+			"manualLogin": "Manual login"
 		},
 		"tracking": {
 			"getTokenHeader": "Login to {{siteName}} via token",

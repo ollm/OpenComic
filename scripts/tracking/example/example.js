@@ -67,15 +67,13 @@ async function getComicData(siteId, callback = false)
 // Loging to site
 async function login()
 {
-	// Open link to browser, for example to get a token
-	// electron.shell.openExternal('https://open-this-link-in-a-browser.com');
+	// Open link to browser and return the redirect url/uri 
+	// const url = await tracking.getRedirectResult(site.key, 'https://example.com/api/oauth/authorize?client_id='+site.auth.clientId+'&redirect_uri=opencomic://tracking/example&response_type=code');
+	// const token = url.searchParams.get('token');
 
 	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
 	// const response = await fetch('url', options);
 	// const json = await response.json();
-
-	// Show token dialog
-	// const token = await tracking.getTokenDialog(site.key);
 
 	if(success)
 		return {valid: true, token: body.access_token};

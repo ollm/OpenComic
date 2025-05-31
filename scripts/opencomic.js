@@ -24,12 +24,12 @@ function fullScreen(force = null, win = false)
 	// win.setMenuBarVisibility(!force);
 }
 
-document.addEventListener("keydown", event => {
+document.addEventListener('keydown', function(event) {
 
 	if(event.key == 'Escape')
 	{
-		let win = electronRemote.getCurrentWindow();
-		let isFullScreen = win.isFullScreen();
+		const win = electronRemote.getCurrentWindow();
+		const isFullScreen = win.isFullScreen();
 
 		if(isFullScreen)
 		{
@@ -89,6 +89,8 @@ require('jquery-bez');
 
 //console.timeEnd('Require time 1');
 
+
+// Open file and open url logic
 var toOpenFile = toOpenFile || false, windowHasLoaded = false;
 
 electronRemote.app.on('open-file', function(event, path) {
@@ -100,27 +102,73 @@ electronRemote.app.on('open-file', function(event, path) {
 
 });
 
+electronRemote.app.on('open-url', function(event, url) {
+
+	handleOpenUrl(url);
+
+});
+
 electronRemote.app.on('second-instance', function(event, argv) {
 
-	if(electronRemote.app.hasSingleInstanceLock())
+	if(!electronRemote.app.hasSingleInstanceLock())
+		return;
+
+	const win = electronRemote.getCurrentWindow();
+	if(win.isMinimized()) win.restore();
+	win.focus();
+
+	const last = argv[argv.length - 1];
+
+	if(/^opencomic:\/\//.test(last))
 	{
-		let win = electronRemote.getCurrentWindow();
-		if (win.isMinimized()) win.restore();
-		win.focus();
+		handleOpenUrl(last);
+		return;
+	}
 
-		for(let i = 1, len = argv.length; i < len; i++)
+	for(let i = 2, len = argv.length; i < len; i++)
+	{
+		const arg = argv[i];
+
+		if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 		{
-			let arg = argv[i];
-
-			if(arg && !inArray(arg, ['--no-sandbox', 'scripts/main.js', '.']) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
-			{
-				openComic(arg, true);
-				break;
-			}
+			openComic(arg, true);
+			break;
 		}
 	}
 
 });
+
+function registreOpenUrl()
+{
+	const process = electronRemote.process;
+
+	if(process.defaultApp)
+	{
+		if(process.argv.length >= 2)
+			electronRemote.app.setAsDefaultProtocolClient('opencomic', process.execPath, [p.resolve(process.argv[1])]);
+	}
+	else
+	{
+		electronRemote.app.setAsDefaultProtocolClient('opencomic');
+	}
+}
+
+function handleOpenUrl(href)
+{
+	const url = new URL(href);
+	if(url.protocol !== 'opencomic:') return;
+
+	switch(url.host)
+	{
+		case 'tracking':
+
+			tracking.handleOpenUrl(url);
+
+			break;
+	}
+}
+
+registreOpenUrl();
 
 var handlebarsContext = {};
 var language = {};
@@ -243,11 +291,11 @@ async function startApp()
 
 	if(!toOpenFile)
 	{
-		for(let i = 1, len = electronRemote.process.argv.length; i < len; i++)
+		for(let i = 2, len = electronRemote.process.argv.length; i < len; i++)
 		{
-			let arg = electronRemote.process.argv[i];
+			const arg = electronRemote.process.argv[i];
 
-			if(arg && !inArray(arg, ['scripts/main.js', '.']) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
+			if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 			{
 				toOpenFile = arg;
 				break;

@@ -153,10 +153,11 @@ async function getComicData(siteId)
 // Loging to site
 async function login()
 {
-	electron.shell.openExternal('https://anilist.co/api/v2/oauth/authorize?client_id='+site.auth.clientId+'&response_type=code');
-
-	const token = await tracking.getTokenDialog(site.key);
-	if(!token) return {valid: false};
+	const url = await tracking.getRedirectResult(site.key, 'https://anilist.co/api/v2/oauth/authorize?client_id='+site.auth.clientId+'&redirect_uri=opencomic://tracking/anilist&response_type=code');
+	const code = url.searchParams.get('code') || url.searchParams.get('token');
+	
+	if(!code)
+		return {valid: false};
 
 	const options = {
 		method: 'POST',
@@ -168,8 +169,8 @@ async function login()
 			grant_type: 'authorization_code',
 			client_id: site.auth.clientId,
 			client_secret: site.auth.clientSecret,
-			redirect_uri: 'https://anilist.co/api/v2/oauth/pin', 
-			code: token,
+			redirect_uri: 'opencomic://tracking/anilist', 
+			code: code,
 		})
 	};
 

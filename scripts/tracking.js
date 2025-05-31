@@ -307,8 +307,6 @@ async function currentTrackingDialog(site)
 	const path = dom.indexMainPathA();
 	const data = await sitesScripts[site].getComicData(siteData.tracking.id);
 
-	console.log(data);
-
 	handlebarsContext.trackingResult = data;
 	handlebarsContext.siteData = siteData;
 
@@ -326,29 +324,46 @@ async function currentTrackingDialog(site)
 }
 
 // Login dialogs
-getTokenDialogResolve = false;
+var getRedirectResultResolve = false;
 
-async function getTokenDialog(site = '', done = false, resolve = false)
+async function getRedirectResult(site, url)
 {
-	if(resolve)
-	{
-		if(getTokenDialogResolve)
-			getTokenDialogResolve(false);
-	}
-	else if(done)
+	const siteData = trackingSites.site(site);
+	if(!siteData) return;
+
+	events.dialog({
+		header: hb.compile(language.dialog.auth.loginTo)({siteName: siteData.name}),
+		width: 400,
+		height: false,
+		content: '<div style="height: 72px;">'+template.load('loading.html')+'</div>',
+		onClose: 'tracking.handleOpenUrl();',
+		buttons: [
+			{
+				text: language.buttons.cancel,
+				function: 'events.closeDialog(); tracking.handleOpenUrl();',
+			},
+			{
+				text: language.dialog.auth.manualLogin,
+				function: 'events.closeDialog(); tracking.getTokenDialog(\''+site+'\');',
+			}
+		],
+	});
+
+	electron.shell.openExternal(url);
+
+	return new Promise(function(resolve){
+		getRedirectResultResolve = resolve;
+	});
+}
+
+async function getTokenDialog(site = '', done = false)
+{
+	if(done)
 	{
 		const token = $('.input-token').val();
+		const url = !/^(?:https?|opencomic):\/\//.test(token) ? 'opencomic://tracking/'+(!/=/.test(token) ? 'token=' : '')+token : token;
 
-		if(!isEmpty(token))
-		{
-			if(getTokenDialogResolve)
-				getTokenDialogResolve(token);
-		}
-		else
-		{
-			if(getTokenDialogResolve)
-				getTokenDialogResolve(false);
-		}
+		tracking.handleOpenUrl(url);
 	}
 	else
 	{
@@ -363,11 +378,11 @@ async function getTokenDialog(site = '', done = false, resolve = false)
 			width: 400,
 			height: false,
 			content: template.load('dialog.tracking.sites.token.html'),
-			onClose: 'tracking.getTokenDialog(\''+site+'\', false, true);',
+			onClose: 'tracking.handleOpenUrl();',
 			buttons: [
 				{
 					text: language.buttons.cancel,
-					function: 'events.closeDialog(); tracking.getTokenDialog(\''+site+'\', false, true);',
+					function: 'events.closeDialog(); tracking.handleOpenUrl();',
 				},
 				{
 					text: language.buttons.ok,
@@ -378,10 +393,6 @@ async function getTokenDialog(site = '', done = false, resolve = false)
 
 		events.focus('.input-token');
 		events.eventInput();
-
-		return new Promise(function(resolve){
-			getTokenDialogResolve = resolve;
-		});
 	}
 }
 
@@ -633,6 +644,14 @@ function getVolume()
 	return volume > 0 ? +volume : false;
 }
 
+function handleOpenUrl(url = false)
+{
+	if(!getRedirectResultResolve) return;
+	if(!url) url = new URL('opencomic://tracking');
+
+	getRedirectResultResolve(url);
+	getRedirectResultResolve = false;
+}
 
 function scriptsPath(site = '')
 {
@@ -645,6 +664,7 @@ module.exports = {
 	setSessionToken: setSessionToken,
 	invalidateSession: invalidateSession,
 	addChapterNumberDialog: addChapterNumberDialog,
+	getRedirectResult: getRedirectResult,
 	getTokenDialog: getTokenDialog,
 	invalidTokenDialog: invalidTokenDialog,
 	searchDialog: searchDialog,
@@ -658,4 +678,5 @@ module.exports = {
 	getVolume: getVolume,
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,
 	tracked: function(){return tracked},
+	handleOpenUrl: handleOpenUrl,
 };

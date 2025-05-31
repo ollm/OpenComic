@@ -316,6 +316,12 @@
 			"base": "org.electronjs.Electron2.BaseApp",
 			"baseVersion": "24.08"
 		},
+		"protocols": [
+			{
+				"name": "OpenComic",
+				"schemes": ["opencomic"]
+			}
+		],
 		"fileAssociations": [
 			{
 				"ext": "cbz",
