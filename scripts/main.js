@@ -22,11 +22,17 @@ function createWindow() {
 	{
 		let _toOpenFile = false;
 
-		for(let i = 1, len = process.argv.length; i < len; i++)
+		const len = process.argv.length;
+		const last = process.argv[len - 1];
+
+		if(/^opencomic:\/\//.test(last))
+			app.quit();
+
+		for(let i = 1; i < len; i++)
 		{
 			let arg = process.argv[i];
 
-			if(arg && ['scripts/main.js', '.'].indexOf(arg) == -1 && !/^--/.test(arg) && fs.existsSync(arg))
+			if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 			{
 				_toOpenFile = arg;
 				break;

@@ -117,7 +117,8 @@ electronRemote.app.on('second-instance', function(event, argv) {
 	if(win.isMinimized()) win.restore();
 	win.focus();
 
-	const last = argv[argv.length - 1];
+	const len = argv.length;
+	const last = argv[len - 1];
 
 	if(/^opencomic:\/\//.test(last))
 	{
@@ -125,7 +126,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 		return;
 	}
 
-	for(let i = 1, len = argv.length; i < len; i++)
+	for(let i = 1; i < len; i++)
 	{
 		const arg = argv[i];
 

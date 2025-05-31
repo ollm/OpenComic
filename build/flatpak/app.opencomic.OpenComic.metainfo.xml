@@ -30,7 +30,7 @@
             <li>🖱️ Reading in scroll or slide</li>
             <li>⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors</li>
             <li>🎨 Colorize black and white images</li>
-            <li>🔄 Tracking with sites (AniList)</li>
+            <li>🔄 Tracking with sites (AniList and MyAnimeList)</li>
             <li>🎮 Gamepad navigation</li>
             <li>⌨️ Custom shortcuts and tap zones</li>
             <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>nearest</code> and others</li>

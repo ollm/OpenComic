@@ -248,7 +248,7 @@ async function track(toTrack)
 			const json = (await response.json()).data?.Media || {};
 
 			const totalChapters = +json.chapters || 0;
-			const {status: userStatus, progress: userChapters, progressVolumes: userVolumes} = json?.mediaListEntry;
+			const {status: userStatus, progress: userChapters, progressVolumes: userVolumes} = json?.mediaListEntry || {};
 
 			let status, chapters, volumes;
 
