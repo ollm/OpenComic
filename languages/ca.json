@@ -442,7 +442,9 @@
 			"loginTo": "Inicia sessió a {{siteName}}",
 			"filePass": "L'arxiu requereix una contrasenya",
 			"rememberPass": "Recorda la contrasenya",
-			"manualLogin": "Inici de sessió manual"
+			"manualLogin": "Inici de sessió manual",
+			"sessionExpired": "La sessió a {{siteName}} ha caducat.",
+			"loginAgain": "Vols tornar a iniciar sessió a {{siteName}}?"
 		},
 		"tracking": {
 			"getTokenHeader": "Inicia sessió a {{siteName}} mitjançant token",

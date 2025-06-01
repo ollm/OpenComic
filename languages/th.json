@@ -441,7 +441,10 @@
 		"auth": {
 			"loginTo": "",
 			"filePass": "",
-			"rememberPass": ""
+			"rememberPass": "",
+			"manualLogin": "",
+			"sessionExpired": "",
+			"loginAgain": ""
 		},
 		"tracking": {
 			"getTokenHeader": "เข้าสู่ระบบเว็บ {{siteName}} ผ่านโทเค็น",

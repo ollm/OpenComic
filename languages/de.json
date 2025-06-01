@@ -441,7 +441,10 @@
 		"auth": {
 			"loginTo": "",
 			"filePass": "",
-			"rememberPass": ""
+			"rememberPass": "",
+			"manualLogin": "",
+			"sessionExpired": "",
+			"loginAgain": ""
 		},
 		"tracking": {
 			"getTokenHeader": "Logge dich mit dem Token bei {{siteName}} ein",

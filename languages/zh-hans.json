@@ -441,7 +441,10 @@
 		"auth": {
 			"loginTo": "登录 {{siteName}}",
 			"filePass": "该文件需要密码",
-			"rememberPass": "记住密码"
+			"rememberPass": "记住密码",
+			"manualLogin": "",
+			"sessionExpired": "",
+			"loginAgain": ""
 		},
 		"tracking": {
 			"getTokenHeader": "通过令牌登录 {{siteName}}",

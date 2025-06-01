@@ -382,6 +382,7 @@ async function startApp()
 
 	dragAndDrop.start();
 	dom.search.start();
+	tracking.start();
 
 	document.fonts.ready.then(function(){
 

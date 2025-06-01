@@ -11,6 +11,7 @@ function loadSiteScript(site)
 			siteData.config.access.pass = storage.safe.decrypt(siteData.config.access.pass);
 			siteData.config.access.token = storage.safe.decrypt(siteData.config.access.token);
 			siteData.config.session.token = storage.safe.decrypt(siteData.config.session.token);
+			siteData.config.session.refreshToken = storage.safe.decrypt(siteData.config.session.refreshToken);
 
 			sitesScripts[site] = require(siteData.script);
 			sitesScripts[site].setSiteData(siteData);
@@ -27,6 +28,7 @@ function setSiteData(site)
 		siteData.config.access.pass = storage.safe.decrypt(siteData.config.access.pass);
 		siteData.config.access.token = storage.safe.decrypt(siteData.config.access.token);
 		siteData.config.session.token = storage.safe.decrypt(siteData.config.session.token);
+		siteData.config.session.refreshToken = storage.safe.decrypt(siteData.config.session.refreshToken);
 
 		loadSiteScript(site);
 		sitesScripts[site].setSiteData(siteData);
@@ -247,7 +249,7 @@ async function login(site, fromConfig = false)
 
 	if(session.valid)
 	{
-		setSessionToken(site, session.token);
+		setSessionToken(site, session);
 		
 		if(fromConfig)
 			configTracking(site, true);
@@ -260,18 +262,54 @@ async function login(site, fromConfig = false)
 	}
 }
 
-// Get session
+// Refresh tokens
+async function refreshTokens(force = false)
+{
+	const _trackingSites = trackingSites.list(true);
+	const time = app.time();
+
+	for(let key in _trackingSites)
+	{
+		const siteData = _trackingSites[key];
+		const site = siteData.key;
+		const currentSession = siteData.config.session;
+
+		// Check if session is valid and refresh token if needed
+		if(currentSession.valid && currentSession.refreshToken && (force || !currentSession.expires || (currentSession.expires - currentSession.expiresIn / 2) < time))
+		{
+			loadSiteScript(site);
+
+			sitesScripts[site].refreshToken().then(function(session) {
+
+				if(session.valid)
+					setSessionToken(site, session);
+				else
+					invalidateSession(site, true);
+
+			});	
+		}
+	}
+}
 
 // Save session token
-function setSessionToken(site = '', token = '')
+function setSessionToken(site = '', session = {})
 {
-	saveSiteConfig(site, 'session', {valid: true, token: storage.safe.encrypt(token)});
+	session.expiresIn = (session.expiresIn || !session.refreshToken) ? session.expiresIn : 3600;
+	const expires = (session.expiresIn ? app.time() + session.expiresIn : 0);
+
+	saveSiteConfig(site, 'session', {
+		valid: true,
+		token: storage.safe.encrypt(session.token),
+		refreshToken: storage.safe.encrypt(session.refreshToken),
+		expires: expires,
+		expiresIn: session.expiresIn,
+	});
 }
 
 // Remove session token
 function invalidateSession(site = '', loginDialog = false, fromConfig = false)
 {
-	saveSiteConfig(site, 'session', {valid: false, token: ''});
+	saveSiteConfig(site, 'session', {valid: false, token: '', refreshToken: '', expires: 0, expiresIn: 0});
 
 	if(loginDialog)
 		invalidTokenDialog(site, fromConfig);
@@ -351,6 +389,7 @@ async function getRedirectResult(site, url)
 		],
 	});
 
+	console.log('getRedirectResult', url);
 	electron.shell.openExternal(url);
 
 	return new Promise(function(resolve){
@@ -365,7 +404,7 @@ async function getTokenDialog(site = '', done = false)
 		const token = $('.input-token').val();
 		const url = !/^(?:https?|opencomic):\/\//.test(token) ? 'opencomic://tracking/'+(!/=/.test(token) ? 'token=' : '')+token : token;
 
-		tracking.handleOpenUrl(url);
+		tracking.handleOpenUrl(new URL(url));
 	}
 	else
 	{
@@ -403,10 +442,10 @@ function invalidTokenDialog(site, fromConfig = false)
 	const siteData = trackingSites.site(site);
 
 	events.dialog({
-		header: hb.compile(language.dialog.tracking.invalidTokenHeader)({siteName: siteData.name}),
+		header: hb.compile(language.dialog.auth.sessionExpired)({siteName: siteData.name}),
 		width: 400,
 		height: false,
-		content: hb.compile(language.dialog.tracking.resendToken)({siteName: siteData.name}),
+		content: hb.compile(language.dialog.auth.loginAgain)({siteName: siteData.name}),
 		buttons: [
 			{
 				text: language.buttons.cancel,
@@ -662,6 +701,12 @@ function scriptsPath(site = '')
 	return p.join(appDir, 'scripts/tracking/'+site);
 }
 
+function start()
+{
+	refreshTokens();
+	setInterval(refreshTokens, 60 * 60 * 12 * 1000); // Every 12 hours
+}
+
 module.exports = {
 	scriptsPath: scriptsPath,
 	configTracking: configTracking,
@@ -674,6 +719,7 @@ module.exports = {
 	searchDialog: searchDialog,
 	getTitle: getTitle,
 	login: login,
+	refreshTokens: refreshTokens,
 	searchInput: searchInput,
 	setTrackingId: setTrackingId,
 	track: track,
@@ -683,4 +729,5 @@ module.exports = {
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,
 	tracked: function(){return tracked},
 	handleOpenUrl: handleOpenUrl,
+	start: start,
 };

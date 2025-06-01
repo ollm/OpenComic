@@ -57,12 +57,7 @@ async function searchComic(title)
 	{
 		const response = await fetch('https://graphql.anilist.co', options);
 
-		if(response.status == 400 || response.status == 401)
-		{
-			tracking.invalidateSession(site.key, true);
-			return null;
-		}
-		else if(response.status == 200)
+		if(response.status == 200)
 		{
 			const json = await response.json();
 			const results = (json.data?.Page?.media || []).map(function(media) {
@@ -191,7 +186,39 @@ async function login()
 		if(response.status == 200)
 		{
 			const json = await response.json();
-			return {valid: true, token: json.access_token};
+			return {valid: true, token: json.access_token, refreshToken: json.refresh_token, expiresIn: json.expires_in};
+		}
+	}
+	catch(error) {}
+
+	return {valid: false};
+}
+
+// Refresh session token
+async function refreshToken()
+{
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+		},
+		body: JSON.stringify({
+			grant_type: 'refresh_token',
+			client_id: site.auth.clientId,
+			client_secret: site.auth.clientSecret,
+			refresh_token: site.config.session.refreshToken,
+		})
+	};
+
+	try
+	{
+		const response = await fetch('https://anilist.co/api/v2/oauth/token', options);
+
+		if(response.status == 200)
+		{
+			const json = await response.json();
+			return {valid: true, token: json.access_token, refreshToken: json.refresh_token, expiresIn: json.expires_in};
 		}
 	}
 	catch(error) {}
@@ -312,5 +339,6 @@ module.exports = {
 	searchComic: searchComic,
 	getComicData: getComicData,
 	login: login,
+	refreshToken: refreshToken,
 	track: track,
 };

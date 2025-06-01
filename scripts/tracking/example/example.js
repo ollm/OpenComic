@@ -9,7 +9,8 @@ site
 	},
 	config: {
 		session: {
-			token: 'ABCDE', // Token set in login function
+			token: 'ABCDE', // Token set in login/refreshToken function
+			refreshToken: 'ABCDE', // Refresh token set in login/refreshToken function
 		},
 	},
 };
@@ -76,7 +77,22 @@ async function login()
 	// const json = await response.json();
 
 	if(success)
-		return {valid: true, token: body.access_token};
+		return {valid: true, token: body.access_token, refreshToken: body.refresh_token, expiresIn: body.expires_in};
+	else
+		return {valid: false};
+}
+
+// Refresh session token
+async function refreshToken()
+{
+	// const refreshToken = site.config.session.refreshToken;
+
+	// https://nodejs.org/dist/latest-v18.x/docs/api/globals.html#fetch and https://developer.mozilla.org/en-US/docs/Web/API/fetch
+	// const response = await fetch('url', options);
+	// const json = await response.json();
+
+	if(success)
+		return {valid: true, token: body.access_token, refreshToken: body.refresh_token, expiresIn: body.expires_in};
 	else
 		return {valid: false};
 }
@@ -106,5 +122,6 @@ module.exports = {
 	searchComic: searchComic,
 	getComicData: getComicData,
 	login: login,
+	refreshToken: refreshToken,
 	track: track,
 };

@@ -21,7 +21,7 @@ async function searchComic(title)
 	const options = {
 		method: 'GET',
 		headers: {
-			'Authorization': 'Bearer '+site.config.session.token,
+			'X-MAL-CLIENT-ID': site.auth.clientId,
 			'Accept': 'application/json',
 		},
 		signal: controller.signal,
@@ -31,12 +31,7 @@ async function searchComic(title)
 	{
 		const response = await fetch('https://api.myanimelist.net/v2/manga?'+variables.toString(), options);
 
-		if(response.status == 400 || response.status == 401)
-		{
-			tracking.invalidateSession(site.key, true);
-			return null;
-		}
-		else if(response.status == 200)
+		if(response.status == 200)
 		{
 			const json = await response.json();
 			const results = (json.data || []).map(function(item) {
@@ -112,7 +107,7 @@ async function login()
 	const challenge = crypto.hash('sha512', crypto.randomUUID(), 'hex');
 	const url = await tracking.getRedirectResult(site.key, 'https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id='+site.auth.clientId+'&code_challenge='+challenge+'&redirect_uri=opencomic://tracking/myanimelist&response_type=code');
 	const code = url.searchParams.get('code') || url.searchParams.get('token');
-	
+
 	if(!code)
 		return {valid: false};
 
@@ -140,7 +135,40 @@ async function login()
 		if(response.status == 200)
 		{
 			const json = await response.json();
-			return {valid: true, token: json.access_token};
+			return {valid: true, token: json.access_token, refreshToken: json.refresh_token, expiresIn: json.expires_in};
+		}
+	}
+	catch(error) {}
+
+	return {valid: false};
+}
+
+// Refresh session token
+async function refreshToken()
+{
+	const variables = new URLSearchParams({
+		grant_type: 'refresh_token',
+		client_id: site.auth.clientId,
+		refresh_token: site.config.session.refreshToken,
+	});
+
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Accept': 'application/json',
+		},
+		body: variables.toString(),
+	};
+
+	try
+	{
+		const response = await fetch('https://myanimelist.net/v1/oauth2/token', options);
+
+		if(response.status == 200)
+		{
+			const json = await response.json();
+			return {valid: true, token: json.access_token, refreshToken: json.refresh_token, expiresIn: json.expires_in};
 		}
 	}
 	catch(error) {}
@@ -220,5 +248,6 @@ module.exports = {
 	searchComic: searchComic,
 	getComicData: getComicData,
 	login: login,
+	refreshToken: refreshToken,
 	track: track,
 };

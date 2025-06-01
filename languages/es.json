@@ -442,7 +442,9 @@
 			"loginTo": "Iniciar sesión en {{siteName}}",
 			"filePass": "El archivo requiere una contraseña",
 			"rememberPass": "Recordar contraseña",
-			"manualLogin": "Inicio de sesión manual"
+			"manualLogin": "Inicio de sesión manual",
+			"sessionExpired": "La sesión en {{siteName}} ha expirado",
+			"loginAgain": "¿Quieres volver a iniciar sesión en {{siteName}}?"
 		},
 		"tracking": {
 			"getTokenHeader": "Iniciar sesión en {{siteName}} mediante token",
