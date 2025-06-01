@@ -77,7 +77,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.817.0",
+		"@aws-sdk/client-s3": "^3.821.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -319,7 +319,9 @@
 		"protocols": [
 			{
 				"name": "OpenComic",
-				"schemes": ["opencomic"]
+				"schemes": [
+					"opencomic"
+				]
 			}
 		],
 		"fileAssociations": [
