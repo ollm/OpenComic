@@ -1,19 +1,22 @@
 <div class="tracking-current">
 	<div class="tracking-current-image" style="background-image: url({{trackingResult.image}})"></div>
-	<span class="dialog-header">{{trackingResult.title}}</span>
-	<i class="material-icon" onclick="events.closeDialog(); setTimeout(function(){tracking.searchDialog('{{siteData.key}}')}, 150)">edit</i>
-	<div class="tracking-current-progress">
-		{{#if siteData.trackingChapter}}
-		<div class="tracking-current-progress-chapters">
-			<b>{{language.reading.tracking.chapters}}:</b> <span>{{trackingResult.progress.chapters}}</span>/{{trackingResult.chapters}}
+	<div class="tracking-current-center">
+		<span class="dialog-header title-large">{{trackingResult.title}}</span>
+		<div class="tracking-current-progress">
+			{{#if siteData.trackingChapter}}
+			<div class="tracking-current-progress-chapters">
+				{{language.reading.tracking.chapters}}: <div><span>{{trackingResult.progress.chapters}}</span>/{{trackingResult.chapters}}</div>
+			</div>
+			{{/if}}
+			{{#if siteData.trackingVolume}}
+			<div class="tracking-current-progress-volumes">
+				{{language.reading.tracking.volumes}}: <div><span>{{trackingResult.progress.volumes}}</span>/{{trackingResult.volumes}}</div>
+			</div>
+			{{/if}}
 		</div>
-		{{/if}}
-		{{#if siteData.trackingVolume}}
-		<div class="tracking-current-progress-volumes">
-			<b>{{language.reading.tracking.volumes}}:</b> <span>{{trackingResult.progress.volumes}}</span>/{{trackingResult.volumes}}
-		</div>
-		{{/if}}
 	</div>
+	<a target="_blank" href="{{trackingResult.url}}"><div class="tracking-current-logo" style="background-image: url({{siteData.logo}})"></div></a>
+	<i class="material-icon" onclick="events.closeDialog(); setTimeout(function(){tracking.searchDialog('{{siteData.key}}')}, 150)">edit</i>
 </div>
 
 <div class="menu-simple-text">

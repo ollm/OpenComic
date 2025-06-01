@@ -189,7 +189,7 @@ async function track(toTrack)
 
 	try
 	{
-		const response = await fetch('https://api.myanimelist.net/v2/manga/'+toTrack.id+'?fields=title,main_picture,num_chapters,num_volumes,synopsis,my_list_status,status', options);
+		const response = await fetch('https://api.myanimelist.net/v2/manga/'+toTrack.id+'?fields=title,main_picture,num_chapters,num_volumes,my_list_status,status', options);
 
 		if(response.status == 400 || response.status == 401)
 		{

@@ -557,31 +557,51 @@
 	float: left;
 }
 
-.tracking-current > span
+.tracking-current-center
 {
-	padding: 0px;
 	float: left;
-	width: calc(100% - 140px);
-	overflow: hidden;
-	height: 84px;
-	word-break: break-all;
+	width: calc(100% - 160px);
 }
 
-.tracking-current-progress
+.tracking-current-center > span
 {
-	float: left;
-	width: calc(100% - 140px);
+	display: block;
+	padding: 0px;
+	width: 100%;
+	overflow: hidden;
+	max-height: 84px;
+	word-break: break-word;
 }
 
 .tracking-current-progress > div
 {
 	margin-bottom: -10px;
+	line-height: 34px;
+}
+
+.tracking-current-progress > div > div
+{
+	color: var(--md-sys-color-on-surface-variant);
+	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
+	display: inline-block;
 }
 
 .tracking-current > i
 {
 	float: right;
 	cursor: pointer;
+	margin: 12px 4px;
+}
+
+.tracking-current-logo
+{
+	height: 32px;
+	width: 32px;
+	border-radius: 8px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	float: right;
 }
 
 .tracking-set-message

@@ -6,6 +6,7 @@ const sites = [
 		trackingChapter: true, // Supports chapter tracking 
 		trackingVolume: true,  // Supports volume tracking
 		url: 'https://anilist.co/',
+		pageUrl: 'https://anilist.co/manga/{{siteId}}',
 	},
 	{
 		key: 'myanimelist',
@@ -14,6 +15,7 @@ const sites = [
 		trackingChapter: true, // Supports chapter tracking 
 		trackingVolume: true,  // Supports volume tracking
 		url: 'https://myanimelist.net/',
+		pageUrl: 'https://myanimelist.net/manga/{{siteId}}',
 	},
 ];
 

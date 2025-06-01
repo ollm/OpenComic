@@ -347,6 +347,7 @@ async function currentTrackingDialog(site)
 	const data = await sitesScripts[site].getComicData(siteData.tracking.id);
 	if(data === null) return; // Invalid session
 
+	data.url = siteData.pageUrl.replace('{{siteId}}', siteData.tracking.id);
 	handlebarsContext.trackingResult = data;
 	handlebarsContext.siteData = siteData;
 
