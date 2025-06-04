@@ -29,6 +29,10 @@
 			"list": "Lista",
 			"moduleSize": ""
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "",
 			"redo": "",

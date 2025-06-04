@@ -29,6 +29,10 @@
 			"list": "Lista",
 			"moduleSize": "Tamaño de la cuadrícula"
 		},
+		"filter": {
+			"onlyRoot": "Sólo de las carpetas raíz",
+			"requireAllLabels": "Requerir todas las etiquetas seleccionadas"
+		},
 		"contextMenu": {
 			"undo": "Deshacer",
 			"redo": "Rehacer",

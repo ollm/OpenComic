@@ -29,6 +29,10 @@
 			"list": "عرض القائمة",
 			"moduleSize": "حجم الشبكة"
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "تراجع",
 			"redo": "إعادة",

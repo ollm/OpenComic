@@ -442,6 +442,26 @@
 	animation-timing-function: linear;
 }
 
+.reading-bookmark-title
+{
+	color: var(--md-sys-color-on-surface);
+	padding: 8px 24px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+
+.menu-gamepad
+{
+	padding: 4px 24px;
+}
+
+.reading-bookmark-title > span > span
+{
+	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
+}
+
 .reading-bookmark, .menu-tracking-sites, .menu-tracking-sites-empty
 {
 	padding: 0px 24px;
@@ -462,7 +482,7 @@
 	padding: 6px 24px;
 }
 
-.reading-bookmark > span, .menu-tracking-sites > span, .menu-tracking-sites-empty > span
+.reading-bookmark > span > span, .menu-tracking-sites > span, .menu-tracking-sites-empty > span
 {
 	padding-right: 6px;
 	color: var(--md-sys-color-on-surface);
@@ -475,7 +495,6 @@
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
-	max-width: 110px;
 }
 
 .menu-simple-text.menu-tracking-sites > span

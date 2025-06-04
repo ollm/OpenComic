@@ -29,6 +29,10 @@
 			"list": "รายการ",
 			"moduleSize": "ขนาดตาราง"
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "ย้อนกลับ",
 			"redo": "ทำซ้ำ",

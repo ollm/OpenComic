@@ -559,6 +559,17 @@
 	white-space: nowrap;
 	word-wrap: normal;
 	position: relative;
+	display: flex;
+}
+
+.menu-simple-element > span
+{
+	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	flex: 1;
 }
 
 .menu-simple-element i
@@ -664,6 +675,12 @@
 .menu-simple-element-medium
 {
 	padding: 8px 24px;
+}
+
+.menu-gamepad .menu-simple-element-medium,
+.menu-gamepad .menu-simple-element-little
+{
+	padding: 0px 24px;
 }
 
 .menu-simple-element-padding-left
@@ -779,13 +796,19 @@
 	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
 }
 
-.menu-simple-text, .menu-simple-button
+.menu-simple-text
 {
 	height: 52px;
 	padding: 0px 24px;
 	line-height: 52px;
 	transition: background-color 0.2s, opacity 0.2s;
 	position: relative;
+}
+
+.menu-simple-text-flex
+{
+	display: flex;
+	justify-content: space-between;
 }
 
 .menu-simple-text > i
@@ -849,11 +872,6 @@
 	padding: 0px;
 	font-size: 15px;
 	font-weight: normal;
-}
-
-.menu-simple-button
-{
-	height: 36px;
 }
 
 .menu-simple-text:after

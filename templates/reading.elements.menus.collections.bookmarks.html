@@ -3,15 +3,17 @@
 {{/unless}}
 	<div>
 		{{#each bookmarks}}
-			<div class="reading-bookmark menu-simple-text-small">
-				<span>{{#if continueReading}}{{../language.comics.continueReading}}: {{else if current}}{{../language.reading.currentReading}}: {{/if}}{{name}}</span>
+			<div class="reading-bookmark-title menu-simple-text-small">
+				<span>{{#if continueReading}}<span>{{../language.comics.continueReading}}:</span> {{else if current}}<span>{{../language.reading.currentReading}}:</span> {{/if}}{{name}}</span>
 			</div>
 			{{#each bookmarks}}
 				<div class="reading-bookmark{{#unless ../continueReading}} reading-bookmark--{{key}}{{/unless}} menu-simple-element menu-simple-element-medium gamepad-item" onclick="{{#if ../current}}{{#if ebook}}reading.goToChapterProgress({{chapterIndex}}, {{chapterProgress}}, true);{{else}}reading.goToImage({{index}}, true);{{/if}}{{else}}{{#if ebook}}reading.setNextOpenChapterProgress({{chapterIndex}}, {{chapterProgress}});{{/if}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}} events.desactiveMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark');">
 					<div class="menu-simple-element-image sha-image-bg-{{sha}}" style="background-image: url({{thumbnail}})"></div>
-					<span>{{#if ebook}}{{round progress}}%{{else}}{{index}}{{/if}}</span>
-					{{name}}
-					{{#if ebook}}({{round chapterProgress}}%){{/if}}
+					<span>
+						<span>{{#if ebook}}{{round progress}}%{{else}}{{index}}{{/if}}</span>
+						{{name}}
+						{{#if ebook}}({{round chapterProgress}}%){{/if}}
+					</span>
 					{{#unless ../continueReading}}
 					<i class="material-icon menu-simple-icon-last" onclick="reading.deleteBookmark({{key}}); event.stopPropagation();">close<!-- bookmark_remove --></i>
 					{{/unless}}

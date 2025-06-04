@@ -29,6 +29,10 @@
 			"list": "Jako seznam",
 			"moduleSize": ""
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "",
 			"redo": "",

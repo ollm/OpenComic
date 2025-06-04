@@ -2,12 +2,12 @@
 	<div class="menu-simple elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', '{{page.name}}')">{{language.global.sort.name}}</div>
-				<div class="menu-simple-element sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', '{{page.name}}')">{{language.global.sort.number}}</div>
-				<div class="menu-simple-element sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', '{{page.name}}')">{{language.global.sort.nameNumber}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', '{{page.name}}')">{{language.global.sort.name}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', '{{page.name}}')">{{language.global.sort.number}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', '{{page.name}}')">{{language.global.sort.nameNumber}}</div>
 				{{#compare page.name '==' 'recently-opened'}}
-				<div class="menu-simple-element sort-last-opened gamepad-item{{#compare page.sort '==' 'last-opened'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-opened', '{{page.name}}')">{{language.global.sort.lastOpened}}</div>
-				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-last-opened gamepad-item{{#compare page.sort '==' 'last-opened'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-opened', '{{page.name}}')">{{language.global.sort.lastOpened}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
 				{{else compare page.name '==' 'browsing'}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.foldersFirst}}
@@ -17,8 +17,8 @@
 					</div>
 				</div>
 				{{else}}
-				<div class="menu-simple-element sort-last-add gamepad-item{{#compare page.sort '==' 'last-add'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-add', '{{page.name}}')">{{language.global.sort.lastAdd}}</div>
-				<div class="menu-simple-element sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-last-add gamepad-item{{#compare page.sort '==' 'last-add'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-add', '{{page.name}}')">{{language.global.sort.lastAdd}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
 				{{/compare}}
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.invert}}
@@ -37,8 +37,8 @@
 	<div class="menu-simple elevation-2" style="width: 300px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element view-module gamepad-item{{#compare page.view '==' 'module'}} s{{/compare}}" onclick="dom.changeView('module', '{{page.name}}');"><i class="material-icon menu-simple-icon-first">view_module</i>{{language.global.view.module}}</div>
-				<div class="menu-simple-element view-list gamepad-item{{#compare page.view '==' 'list'}} s{{/compare}}" onclick="dom.changeView('list', '{{page.name}}');"><i class="material-icon menu-simple-icon-first">view_list</i>{{language.global.view.list}}</div>
+				<div class="menu-simple-element menu-simple-element-little view-module gamepad-item{{#compare page.view '==' 'module'}} s{{/compare}}" onclick="dom.changeView('module', '{{page.name}}');"><i class="material-icon menu-simple-icon-first">view_module</i>{{language.global.view.module}}</div>
+				<div class="menu-simple-element menu-simple-element-little view-list gamepad-item{{#compare page.view '==' 'list'}} s{{/compare}}" onclick="dom.changeView('list', '{{page.name}}');"><i class="material-icon menu-simple-icon-first">view_list</i>{{language.global.view.list}}</div>
 
 				<div class="simple-slider gamepad-item view-module-size {{#compare page.view '==' 'list'}} disable-pointer{{/compare}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
 					<div class="simple-slider-text">{{language.global.view.moduleSize}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="150">undo</i><span>{{page.viewModuleSize}}</span></div></div>
@@ -181,6 +181,22 @@
 	<div class="menu-simple menu-simple-header elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
+
+				<div class="menu-simple-element gamepad-item gamepad-only-root" onclick="dom.labels.filterOnlyRoot();">
+					<i class="material-icon menu-simple-icon-first">drive_folder_upload</i>
+					{{language.global.filter.onlyRoot}}
+				</div>
+
+				<div class="menu-simple-element gamepad-item" onclick="dom.labels.filterFavorite();">
+					<i class="material-icon menu-simple-icon-first">favorite</i>
+					{{language.global.contextMenu.favorite}}
+				</div>
+
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#index-menu-gamepad'); dom.labels.loadLabels(); events.activeMenu('#index-labels', false, 'gamepad', 'gamepad');})()">
+					<i class="material-icon menu-simple-icon-first">label</i>
+					{{language.global.labels}}
+				</div>
+
 				<div class="menu-simple-element gamepad-item" onclick="events.desactiveMenu('#index-menu-gamepad'); dom.search.showHide();">
 					<i class="material-icon menu-simple-icon-first">search</i>
 					{{language.global.search}}
@@ -225,6 +241,15 @@
 		</div>
 	</div>
 	<div class="menu-close" onclick="events.hideSelect(false);" style="z-index: 124;"></div>
+</div>
+
+<div class="menu" id="index-labels">
+	<div class="menu-simple elevation-2" style="width: 320px;">
+		<div class="menu-simple-content">
+
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.desactiveMenu('#index-labels', '.bar-right-buttons .button-labels');"></div>
 </div>
 
 <script type="text/javascript">

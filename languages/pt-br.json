@@ -29,6 +29,10 @@
 			"list": "Lista",
 			"moduleSize": "Tamanho da grade"
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "Desfazer",
 			"redo": "Refazer",

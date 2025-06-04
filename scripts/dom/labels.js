@@ -57,6 +57,150 @@ function server(path, index, name)
 	dom.loadIndexPage(true);
 }
 
+function filter(filter = {})
+{
+	const label = dom.prevIndexLabel() || {};
+	dom.setPrevIndexLabel({...label, filter: filter});
+	dom.reload();
+}
+
+function filterFavorite()
+{
+	const currentFilter = dom.prevIndexLabel()?.filter || {};
+	const favorites = !currentFilter.favorites;
+
+	dom.query('.button-favorite').class(favorites, 'fill');
+	filter({
+		...currentFilter,
+		favorites,
+	});
+}
+
+function loadLabels()
+{
+	const label = dom.prevIndexLabel() || {};
+	const filter = label.filter || {};
+
+	const labels = getLabels();
+
+	for(const label of labels)
+	{
+		label.active = filter.labels && filter.labels.includes(label.name);
+		label.without = filter.withoutLabels && filter.withoutLabels.includes(label.name);
+	}
+
+	handlebarsContext.filterLabels = labels;
+	document.querySelector('#index-labels .menu-simple-content').innerHTML = template.load('index.elements.menus.labels.html');
+
+	events.events();
+}
+
+function filterLabels(key = 0)
+{
+	const currentFilter = dom.prevIndexLabel()?.filter || {};
+
+	currentFilter.labels = currentFilter.labels || [];
+	currentFilter.withoutLabels = currentFilter.withoutLabels || [];
+
+	const labels = getLabels();
+	const label = labels[key];
+
+	let isLabel = false;
+	let isWithoutLabel = false;
+
+	if(currentFilter.labels.includes(label.name))
+	{
+		currentFilter.labels = currentFilter.labels.filter(name => name !== label.name);
+		currentFilter.withoutLabels.push(label.name);
+		isWithoutLabel = true;
+	}
+	else if(currentFilter.withoutLabels.includes(label.name))
+	{
+		currentFilter.withoutLabels = currentFilter.withoutLabels.filter(name => name !== label.name);
+	}
+	else
+	{
+		currentFilter.labels.push(label.name);
+		isLabel = true;
+	}
+
+	currentFilter.labels = currentFilter.labels.length ? currentFilter.labels : false;
+	currentFilter.withoutLabels = currentFilter.withoutLabels.length ? currentFilter.withoutLabels : false;
+
+	const menu = dom.query('.menu-label-'+key).class((isLabel || isWithoutLabel), 's');
+	menu.find('i').class((isLabel || isWithoutLabel), 'fill').html(isWithoutLabel ? 'label_off' : 'label');
+
+	currentFilter.hasLabels = currentFilter.labels || currentFilter.withoutLabels;
+	dom.query('.button-labels').class(currentFilter.hasLabels, 'fill');
+
+	filter(currentFilter);
+}
+
+function filterRequireAllLabels(active = false)
+{
+	const currentFilter = dom.prevIndexLabel()?.filter || {};
+	filter({
+		...(currentFilter || {}),
+		requireAllLabels: active,
+	});
+}
+
+function filterOnlyRoot()
+{
+	const currentFilter = dom.prevIndexLabel()?.filter || {};
+	const onlyRoot = !currentFilter.onlyRoot;
+
+	dom.query('.button-only-root').class(onlyRoot, 'fill');
+	filter({
+		...currentFilter,
+		onlyRoot,
+	});
+}
+
+function filterList(comics, filter = {favorites: false, labels: false, withoutLabels: false, requireAllLabels: false})
+{
+	if(!filter.favorites && !filter.labels && !filter.withoutLabels)
+		return comics;
+
+	const favorites = storage.get('favorites');
+	const comicLabels = storage.get('comicLabels');
+
+	return comics.filter(function(comic){
+
+		if(filter.favorites && !favorites[comic.path])
+			return false;
+
+		if(filter.labels || filter.withoutLabels)
+		{
+			const labels = comicLabels[comic.path] || false;
+			if(!labels && filter.labels) return false;
+
+			if(filter.labels)
+			{
+				if(filter.requireAllLabels)
+				{
+					const every = filter.labels.every(value => labels.includes(value));
+					if(!every) return false;
+				}
+				else
+				{
+					const some = labels.some(value => filter.labels.includes(value));
+					if(!some) return false;
+				}
+			}
+		
+			if(filter.withoutLabels && labels)
+			{
+				const some = labels.some(value => filter.withoutLabels.includes(value));
+				if(some) return false;
+			}
+		}
+
+		return true;
+
+	});
+}
+
 function deleteFromSortAndView(name, index)
 {
 	let sortAndView = {};
@@ -87,6 +231,32 @@ function deleteFromSortAndView(name, index)
 }
 
 var labelsDialogPath = false;
+
+function getLabels(comicLabels = [])
+{
+	comicLabels = comicLabels || [];
+
+	const labels = (storage.get('labels') || []).map(function(label, i){
+
+		return {
+			key: i,
+			name: label,
+			active: comicLabels.includes(label),
+		};
+
+	});
+
+	labels.sort(function(a, b){
+
+		if(a.name === b.name)
+			return 0;
+
+		return a.name > b.name ? 1 : -1;
+
+	});
+
+	return labels;
+}
 
 function setLabels(path, save = false)
 {
@@ -127,33 +297,10 @@ function setLabels(path, save = false)
 	{
 		labelsDialogPath = path;
 
-		let labels = storage.get('labels');
-		let comicLabels = storage.get('comicLabels');
-		comicLabels = comicLabels[path] || [];
+		const comicLabels = storage.get('comicLabels');
+		const labels = getLabels(comicLabels[path] || []);
 
-		let _labels = [];
-
-		for(let i = 0, len = labels.length; i < len; i++)
-		{
-			let label = labels[i];
-
-			_labels.push({
-				key: i,
-				name: label,
-				active: inArray(label, comicLabels), 
-			});
-		}
-
-		_labels.sort(function(a, b){
-
-			if(a.name === b.name)
-				return 0;
-
-			return a.name > b.name ? 1 : -1;
-
-		});
-
-		handlebarsContext.labels = _labels;
+		handlebarsContext.labels = labels;
 
 		events.dialog({
 			header: language.global.labels,
@@ -257,29 +404,8 @@ function newLabel(save = false, fromEditLabels = false)
 
 function editLabels()
 {
-	let labels = storage.get('labels');
-	let _labels = [];
-
-	for(let i = 0, len = labels.length; i < len; i++)
-	{
-		let label = labels[i];
-
-		_labels.push({
-			key: i,
-			name: label,
-		});
-	}
-
-	_labels.sort(function(a, b){
-
-		if(a.name === b.name)
-			return 0;
-
-		return a.name > b.name ? 1 : -1;
-
-	});
-
-	handlebarsContext.labels = _labels;
+	const labels = getLabels();
+	handlebarsContext.labels = labels;
 
 	events.dialog({
 		header: language.global.labels,
@@ -516,7 +642,7 @@ function menuItemSelector(labels)
 
 function getName(indexLabel, recentlyOpened)
 {
-	if(indexLabel)
+	if(indexLabel?.has)
 		return indexLabel.name;
 	else if(recentlyOpened)
 		return language.global.recentlyOpened;
@@ -683,23 +809,29 @@ function applyShortcutPageConfigToAll(label = '', apply = false)
 }
 
 module.exports = {
-	masterFolder: masterFolder,
-	setFavorite: setFavorite,
-	favorites: favorites,
+	masterFolder,
+	setFavorite,
+	favorites,
 	opds: _opds,
-	label: label,
-	server: server,
-	setLabels: setLabels,
-	newLabel: newLabel,
-	editLabels: editLabels,
-	editLabel: editLabel,
-	deleteLabel: deleteLabel,
-	deleteFromSortAndView: deleteFromSortAndView,
-	has: has,
-	menuItemSelector: menuItemSelector,
-	getName: getName,
-
-	setShortcutPageConfigLabels: setShortcutPageConfigLabels,
-	removeLabelFromShortcutPageConfig: removeLabelFromShortcutPageConfig,
-	applyShortcutPageConfigToAll: applyShortcutPageConfigToAll,
+	label,
+	server,
+	filter,
+	filterFavorite,
+	loadLabels,
+	filterLabels,
+	filterRequireAllLabels,
+	filterOnlyRoot,
+	filterList,
+	setLabels,
+	newLabel,
+	editLabels,
+	editLabel,
+	deleteLabel,
+	deleteFromSortAndView,
+	has,
+	menuItemSelector,
+	getName,
+	setShortcutPageConfigLabels,
+	removeLabelFromShortcutPageConfig,
+	applyShortcutPageConfigToAll,
 };

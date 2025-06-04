@@ -29,6 +29,10 @@
 			"list": "リスト",
 			"moduleSize": "グリッドのサイズ"
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "元に戻す",
 			"redo": "やり直し",

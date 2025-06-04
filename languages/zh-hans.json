@@ -29,6 +29,10 @@
 			"list": "列表",
 			"moduleSize": "网格大小"
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "撤消",
 			"redo": "重做",

@@ -725,6 +725,7 @@ function showMenu()
 	let query = !onReading ? '#index-menu-gamepad' : '#reading-menu-gamepad';
 
 	dom.query('.gamepad-reading-music').css({display: !handlebarsContext.hasMusic ? 'none' : ''});
+	dom.query('.gamepad-only-root').css({display: !handlebarsContext.page.labelOrFavorites ? 'none' : ''});
 
 	if(document.querySelector(query+' .menu-simple.a'))
 		events.desactiveMenu(query);
@@ -736,14 +737,7 @@ function showMenu()
 		let viewIcon = document.querySelector('.menu-gamepad-view-icon');
 		if(!viewIcon) return;
 
-		let icon = '';
-
-		if(handlebarsContext.comicsIndex)
-			icon = (config.viewIndex == 'module') ? 'view_module' : 'view_list';
-		else
-			icon = (config.view == 'module') ? 'view_module' : 'view_list';
-
-		viewIcon.innerHTML = icon;
+		viewIcon.innerHTML = (handlebarsContext.page.view == 'module') ? 'view_module' : 'view_list';
 	}
 }
 

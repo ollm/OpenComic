@@ -161,6 +161,11 @@
 					{{language.reading.pages.colorFilters}}
 				</div>
 
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); events.activeMenu('#reading-sort', false, 'gamepad', 'gamepad');})()">
+					<i class="material-icon menu-simple-icon-first">sort</i>
+					{{language.global.sort.main}}
+				</div>
+
 				<div class="menu-simple-element gamepad-item" onclick="electronRemote.app.quit();">
 					<i class="material-icon menu-simple-icon-first">exit_to_app</i>
 					{{language.global.contextMenu.closeApp}}
@@ -245,9 +250,9 @@
 	<div class="menu-simple elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', '{{page.name}}')">{{language.global.sort.name}}</div>
-				<div class="menu-simple-element sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', '{{page.name}}')">{{language.global.sort.number}}</div>
-				<div class="menu-simple-element sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', '{{page.name}}')">{{language.global.sort.nameNumber}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', '{{page.name}}')">{{language.global.sort.name}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', '{{page.name}}')">{{language.global.sort.number}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', '{{page.name}}')">{{language.global.sort.nameNumber}}</div>
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.foldersFirst}}
 					<div class="switch{{#if page.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">

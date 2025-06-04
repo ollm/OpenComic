@@ -29,6 +29,10 @@
 			"list": "Danh sách",
 			"moduleSize": ""
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "",
 			"redo": "",

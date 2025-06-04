@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Show release notes in new version dialog [`e572128`](https://github.com/ollm/OpenComic/commit/e572128aecad5811fb2f1a7b1690bbfe1ebabe82)
 - Improved extract performance of big files [`5c50739`](https://github.com/ollm/OpenComic/commit/5c507391939c9e56cb1d304df9b3824116de67f4)
 - Support MyAnimeList tracking [`5f40b4a`](https://github.com/ollm/OpenComic/commit/5f40b4af1b70e8cfaad0beb79fec676c9c1c83fe)
+- Multi-layer folder labeling/favoriting and header bar filter options
 
 ##### 🐛 Bug Fixes
 

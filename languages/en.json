@@ -29,6 +29,10 @@
 			"list": "List",
 			"moduleSize": "Grid size"
 		},
+		"filter": {
+			"onlyRoot": "Only from root folders",
+			"requireAllLabels": "Require all select labels"
+		},
 		"contextMenu": {
 			"undo": "Undo",
 			"redo": "Redo",

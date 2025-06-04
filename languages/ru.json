@@ -29,6 +29,10 @@
 			"list": "Список",
 			"moduleSize": ""
 		},
+		"filter": {
+			"onlyRoot": "",
+			"requireAllLabels": ""
+		},
 		"contextMenu": {
 			"undo": "Отменить",
 			"redo": "Повторить",

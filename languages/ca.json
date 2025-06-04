@@ -29,6 +29,10 @@
 			"list": "Llista",
 			"moduleSize": "Mida de la quadrícula"
 		},
+		"filter": {
+			"onlyRoot": "Només des de les carpetes arrel",
+			"requireAllLabels": "Requerir totes les etiquetes seleccionades"
+		},
 		"contextMenu": {
 			"undo": "Desfer",
 			"redo": "Refer",
