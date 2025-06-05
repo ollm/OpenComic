@@ -1,30 +1,30 @@
 
 <div class="menu-list">
-	<div class="menu-item menu-item-library body-medium gamepad-item{{#unless isFromRecentlyOpened}}{{#unless isFrom}} active{{/unless}}{{/unless}}{{#compare isFrom '==' 'library'}} active{{/compare}}" onclick="dom.loadIndexPage(true);">
+	<div class="menu-item menu-item-library body-medium gamepad-item{{#unless isFromRecentlyOpened}}{{#unless isFrom}} active{{/unless}}{{/unless}}{{#compare isFrom '==' 'library'}} active{{/compare}}" onclick="dom.loadIndexPage(true);" hover-text="{{language.global.library}}">
 		<div class="icon-24 material-icon">book</div>
 		{{language.global.library}}
 	</div>
 
-	<div class="menu-item menu-item-recently-opened body-medium gamepad-item{{#if isFromRecentlyOpened}} active{{/if}}{{#compare isFrom '==' 'recently-opened'}} active{{/compare}}" onclick="dom.loadRecentlyOpened();">
+	<div class="menu-item menu-item-recently-opened body-medium gamepad-item{{#if isFromRecentlyOpened}} active{{/if}}{{#compare isFrom '==' 'recently-opened'}} active{{/compare}}" onclick="dom.loadRecentlyOpened();" hover-text="{{language.global.recents}}">
 		<div class="icon-24 material-icon">history</div>
 		{{language.global.recents}}
 	</div>
 
 	<div class="separator-2" style="width: calc(100% + 12px);"></div>
 
-	<div class="menu-item menu-item-favorites body-medium gamepad-item{{#compare isFrom '==' 'favorites'}} active{{/compare}}" onclick="dom.labels.favorites();">
+	<div class="menu-item menu-item-favorites body-medium gamepad-item{{#compare isFrom '==' 'favorites'}} active{{/compare}}" onclick="dom.labels.favorites();" hover-text="{{language.global.favorites}}">
 		<div class="icon-24 material-icon">favorite</div>
 		{{language.global.favorites}}
 	</div>
 
-	<div class="menu-item menu-item-opds body-medium gamepad-item{{#compare isFrom '==' 'opds'}} active{{/compare}}" onclick="dom.labels.opds();">
+	<div class="menu-item menu-item-opds body-medium gamepad-item{{#compare isFrom '==' 'opds'}} active{{/compare}}" onclick="dom.labels.opds();" hover-text="{{language.global.catalogs}}">
 		<div class="icon-24 material-icon">local_library<!-- storefront --></div>
 		{{language.global.catalogs}}
 	</div>
 
 	{{#each opdsCatalogsLeft}}
 		{{#if showOnLeft}}
-		<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.opds('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}', {{key}}, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' title}}');">
+		<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.opds('{{chain 'escapeBackSlash' 'escapeQuotesSimples' url}}', {{key}}, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' title}}');" hover-text="{{title}}">
 			<div class="icon-24 material-icon">rss_feed</div>
 			{{title}}
 		</div>
@@ -32,44 +32,44 @@
 	{{/each}}
 
 	{{#each masterFolders}}
-	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.masterFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{key}});">
+	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.masterFolder('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{key}});" hover-text="{{name}}">
 		<div class="icon-24 material-icon">folder</div>
 		{{name}}
 	</div>
 	{{/each}}
 
 	{{#each servers}}
-	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.server('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{key}}, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}');">
+	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.server('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', {{key}}, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}');" hover-text="{{name}}">
 		<div class="icon-24 material-icon">smb_share</div>
 		{{name}}
 	</div>
 	{{/each}}
 
 	{{#each labels}}
-	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.label('{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}', {{key}});">
+	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.label('{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}', {{key}});" hover-text="{{name}}">
 		<div class="icon-24 material-icon">label</div>
 		{{name}}
 	</div>
 	{{/each}}
 
-	<div class="menu-item menu-item-favorites body-medium gamepad-item" onclick="dom.labels.editLabels();">
+	<div class="menu-item menu-item-favorites body-medium gamepad-item" onclick="dom.labels.editLabels();" hover-text="{{language.global.editLabels}}">
 		<div class="icon-24 material-icon">edit</div>
 		{{language.global.editLabels}}
 	</div>
 
 	<div class="separator-2" style="width: calc(100% + 12px);"></div>
 
-	<div class="menu-item menu-item-language body-medium gamepad-item" onclick="dom.loadLanguagesPage();">
+	<div class="menu-item menu-item-language body-medium gamepad-item" onclick="dom.loadLanguagesPage();" hover-text="{{language.global.language}}">
 		<div class="icon-24 material-icon">language</div>
 		{{language.global.language}}
 	</div>
 
-	<div class="menu-item menu-item-theme body-medium gamepad-item" onclick="dom.loadThemePage();">
+	<div class="menu-item menu-item-theme body-medium gamepad-item" onclick="dom.loadThemePage();" hover-text="{{language.global.theme}}">
 		<div class="icon-24 material-icon">palette</div>
 		{{language.global.theme}}
 	</div>
 
-	<div class="menu-item menu-item-settings body-medium gamepad-item{{#compare isFrom '==' 'settings'}} active{{/compare}}" onclick="dom.loadSettingsPage();">
+	<div class="menu-item menu-item-settings body-medium gamepad-item{{#compare isFrom '==' 'settings'}} active{{/compare}}" onclick="dom.loadSettingsPage();" hover-text="{{language.global.settings}}">
 		<div class="icon-24 material-icon">settings</div>
 		{{language.global.settings}}
 	</div>

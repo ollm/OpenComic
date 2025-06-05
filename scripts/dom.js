@@ -1129,6 +1129,23 @@ function loadIndexContentLeft(animation)
 
 	template.loadContentLeft('index.content.left.html', animation);
 
+	setTimeout(function() {
+
+		// Show hover text in menus that are long
+		const menus = template._contentLeft().querySelectorAll('.menu-item');
+
+		for(const menu of menus)
+		{
+			if(menu.scrollWidth > menu.clientWidth)
+				menu.classList.add('hover-text');
+			else
+				menu.removeAttribute('hover-text');
+		}
+
+		events.eventHover();
+
+	}, 100);
+
 	handlebarsContext.isFrom = false;
 }
 
