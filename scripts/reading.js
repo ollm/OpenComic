@@ -989,6 +989,9 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		if(input) events.goRange(input, index, false);
 	}
 
+	const readingLeft = contentLeft.querySelector('.reading-left-images');
+	if(readingLeft) readingLeft.style.opacity = 1;
+
 	// Change header buttons
 	if(!fromPageRange && (!readingViewIs('scroll') || !fromScroll))
 		changeHeaderButtons();
@@ -4928,9 +4931,6 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		readingCurrentBookmarks = undefined;
 
 	filters.setImagesPath(false);
-
-	if(!isEbook)
-		goToImageCL(index, false);
 
 	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click');
 	template.contentRight().off('mousewheel');

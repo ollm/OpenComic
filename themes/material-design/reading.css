@@ -5,6 +5,11 @@
 	pointer-events: none;
 }
 
+.reading-left-images
+{
+	transition: opacity 0.2s;
+}
+
 .reading-left
 {
 	width: 100%;

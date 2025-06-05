@@ -1,15 +1,17 @@
-{{#each comics}}
-<div class="reading-left r-l-i{{index}}" onclick="{{#unless folder}}reading.goToImage({{index}}){{else}}reading.goToFolder({{index}}){{/unless}}">
-	<div class="reading-number">{{index}}</div>
-	{{#if folder}}
-	<i class="material-icon">folder</i>
-	{{else}}
-	<div class="reading-images">
-		<img class="sha-image-{{sha}}{{#if thumbnail}} show{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}"{{#unless thumbnail}} onload="this.classList.add('show')"{{/unless}}>
+<div class="reading-left-images" style="opacity: 0;">
+	{{#each comics}}
+	<div class="reading-left r-l-i{{index}}" onclick="{{#unless folder}}reading.goToImage({{index}}){{else}}reading.goToFolder({{index}}){{/unless}}">
+		<div class="reading-number">{{index}}</div>
+		{{#if folder}}
+		<i class="material-icon">folder</i>
+		{{else}}
+		<div class="reading-images">
+			<img class="sha-image-{{sha}}{{#if thumbnail}} show{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}"{{#unless thumbnail}} onload="this.classList.add('show')"{{/unless}}>
+		</div>
+		{{/if}}
 	</div>
-	{{/if}}
+	{{/each}}
 </div>
-{{/each}}
 <div class="reading-page-range">
 	<div class="simple-slider">
 		<div class="simple-slider-text"><div class="range-percent"><i class="material-icon slider-reset" onclick="reading.goBackPageRangeHistory(this)">undo</i><span onclick="reading.goPageDialog()">0%</span></div><div onclick="reading.goPageDialog()"><span>1</span> / {{comics.length}}</div></div>
