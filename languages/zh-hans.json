@@ -30,8 +30,8 @@
 			"moduleSize": "网格大小"
 		},
 		"filter": {
-			"onlyRoot": "",
-			"requireAllLabels": ""
+			"onlyRoot": "仅来自根文件夹",
+			"requireAllLabels": "要求所有选择标签"
 		},
 		"contextMenu": {
 			"undo": "撤消",
