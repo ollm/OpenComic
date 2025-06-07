@@ -130,6 +130,7 @@
 		"appId": "org.opencomic.app",
 		"productName": "OpenComic",
 		"asar": true,
+		"publish": null,
 		"files": [
 			"**/*",
 			"!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
