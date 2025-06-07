@@ -73,7 +73,7 @@ var file = function(path, _config = false) {
 		{
 			if(compatible.compressed(path))
 				files = await this.readCompressed(path, _realPath);
-			else if(fs.statSync(_realPath).isDirectory())
+			else if(fs.existsSync(_realPath) && fs.statSync(_realPath).isDirectory())
 				files = await this.readDir(path, _realPath);
 		}
 
