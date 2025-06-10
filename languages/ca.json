@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "Zones de toc",
+			"disable": "Desactiva les zones de toc",
 			"leftClick": "Clic esquerre",
 			"rightClick": "Clic dret",
 			"middleClick": "Clic central"

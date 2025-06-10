@@ -906,6 +906,8 @@ function restoreShortcuts()
 	shortcuts.restoreDefaults();
 
 	generateShortcutsTable(gamepad.currentHighlightItem());
+
+	events.events();
 }
 
 function generateTapZonesTable(list)
@@ -991,14 +993,18 @@ function setTapZone(button, action)
 function getTapZoneActions(button)
 {
 	const list = shortcuts.shortcuts();
-	const actions = [];
+	const actions = [
+		{
+			key: 'disabled',
+			name: language.settings.imageInterpolation.disabled,
+			select: (currentTapZone.tapZone[button].action == 'disabled' ? true : false),
+		},
+	];
 
 	for(let key in list.reading.actionsOrder)
 	{
 		const action = list.reading.actionsOrder[key];
 		const data = list.reading.actions[action];
-
-		console.log(currentTapZone.tapZone[button], button, action);
 
 		actions.push({
 			key: action,
@@ -1018,6 +1024,8 @@ function restoreTapZones()
 	shortcuts.restoreDefaultsTapZones();
 
 	generateTapZonesTable(shortcuts.shortcuts());
+
+	events.events();
 }
 
 function getImageInterpolationMethods(upscaling = false)
@@ -1448,6 +1456,12 @@ function set(key, value, save = true)
 		case 'downloadOpdsToFolder': 
 
 			dom.query('.settings-body .settings-download-opds-folder').class(!value, 'disable-pointer');
+
+			break;
+
+		case 'disableTapZones': 
+
+			dom.query('.settings-body .settings-tap-zones').class(value, 'disable-pointer');
 
 			break;
 	}

@@ -359,6 +359,8 @@
 		},
 		"tapZones": {
 			"main": "Tap zones",
+			"disable": "Disable tap zones",
+			"": "",
 			"leftClick": "Left click",
 			"rightClick": "Right click",
 			"middleClick": "Middle click"

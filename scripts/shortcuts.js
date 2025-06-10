@@ -36,6 +36,9 @@ function inputIsFocused()
 
 function clickTapZone(event, button)
 {
+	if(config.disableTapZones)
+		return false;
+
 	if(reading.abortClick(event) && button != 'rightClick' && button != 'middleClick')
 		return false;
 
@@ -346,6 +349,14 @@ function loadShortcuts()
 				},
 			],
 			actions: {
+				disabled: { // Disabled action
+					name: language.settings.imageInterpolation.disabled,
+					function: function(event){
+
+						return false;
+
+					},
+				},
 				prev: {
 					name: language.reading.previous,
 					function: function(event){
