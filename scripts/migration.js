@@ -64,13 +64,20 @@ function clearPdfAndEpubCache()
 
 		if(/^compressed-files-/.test(file))
 		{
-			const json = cache.readJson(file.replace(/\.zstd$/, ''));
-			const first = json.files?.[0] ?? false;
-
-			if(first)
+			try
 			{
-				if(epubRegex.test(first.path) || pdfRegex.test(first.path))
-					fs.unlinkSync(p.join(cache.folder, file));
+				const json = cache.readJson(file.replace(/\.zstd$/, ''));
+				const first = json.files?.[0] ?? false;
+
+				if(first)
+				{
+					if(epubRegex.test(first.path) || pdfRegex.test(first.path))
+						fs.unlinkSync(p.join(cache.folder, file));
+				}
+			}
+			catch
+			{
+				fs.unlinkSync(p.join(cache.folder, file));
 			}
 		}
 	}
@@ -292,10 +299,17 @@ function migrateCompressedFilesWithUnsupportedCharsInWindows(data)
 
 		if(/^compressed-files-/.test(file))
 		{
-			const json = cache.readJson(file.replace(/\.zstd$/, ''));
+			try
+			{
+				const json = cache.readJson(file.replace(/\.zstd$/, ''));
 
-			if(hasUnsupportedCharsInWindows(json.files ?? []))
+				if(hasUnsupportedCharsInWindows(json.files ?? []))
+					fs.unlinkSync(p.join(cache.folder, file));
+			}
+			catch
+			{
 				fs.unlinkSync(p.join(cache.folder, file));
+			}
 		}
 	}
 
