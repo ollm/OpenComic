@@ -274,19 +274,26 @@ async function isAnimated(path)
 		else if(compatible.image.gif.has(extension))
 			type = 'image/gif';
 
-		let decoder = new ImageDecoder({data: await fsp.readFile(path), type: type});
-		await decoder.tracks.ready;
-
-		for(let i = 0, len = decoder.tracks.length; i < len; i++)
+		try
 		{
-			if(decoder.tracks[i].animated || decoder.tracks[i].frameCount > 1)
+			let decoder = new ImageDecoder({data: await fsp.readFile(path), type: type});
+			await decoder.tracks.ready;
+
+			for(let i = 0, len = decoder.tracks.length; i < len; i++)
 			{
-				_isAnimated = true;
-				break;
+				if(decoder.tracks[i].animated || decoder.tracks[i].frameCount > 1)
+				{
+					_isAnimated = true;
+					break;
+				}
 			}
 		}
+		catch(error)
+		{
+			if(!/Failed to retrieve track metadata/iu.test(error))
+				console.error(error);
+		}
 	}
-		
 
 	isAnimatedCache[path] = _isAnimated;
 	return _isAnimated;
