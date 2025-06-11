@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "Зоны нажатия",
+			"disable": "",
 			"leftClick": "Левый клик",
 			"rightClick": "Правый клик",
 			"middleClick": "Средний клик"

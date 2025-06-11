@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "Zones de Touche",
+			"disable": "",
 			"leftClick": "Clic Gauche",
 			"rightClick": "Clic Droit",
 			"middleClick": "Clic du Milieu"

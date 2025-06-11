@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "",
+			"disable": "",
 			"leftClick": "",
 			"rightClick": "",
 			"middleClick": ""

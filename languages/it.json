@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "Tap zone",
+			"disable": "",
 			"leftClick": "Click sinistro",
 			"rightClick": "Click destro",
 			"middleClick": "Click centrale"

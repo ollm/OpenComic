@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "نطاق النقر",
+			"disable": "",
 			"leftClick": "زر الماوس الأيسر",
 			"rightClick": "زر الماوس الأيمن",
 			"middleClick": "زر الماوس الأوسط"

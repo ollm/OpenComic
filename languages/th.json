@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "โซนแตะ",
+			"disable": "",
 			"leftClick": "คลิกซ้าย",
 			"rightClick": "คลิกขวา",
 			"middleClick": "คลิกกลาง"

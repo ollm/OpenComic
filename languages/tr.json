@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "Dokunma bölgeleri",
+			"disable": "",
 			"leftClick": "Sol tıklama",
 			"rightClick": "Sağ tıklama",
 			"middleClick": "Orta tıklama"

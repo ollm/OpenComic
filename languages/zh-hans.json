@@ -359,6 +359,7 @@
 		},
 		"tapZones": {
 			"main": "点击区域",
+			"disable": "",
 			"leftClick": "左键单击",
 			"rightClick": "右键单击",
 			"middleClick": "单击鼠标中键"
