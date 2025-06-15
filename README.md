@@ -89,6 +89,11 @@ You can see the changes between versions in the [Changelog 📝](/CHANGELOG.md)
 - [arm64.flatpak](https://github.com/ollm/OpenComic/releases/download/v1.4.1/OpenComic-1.4.1-aarch64.flatpak)
 - [arm64.AppImage](https://github.com/ollm/OpenComic/releases/download/v1.4.1/OpenComic-1.4.1-arm64.AppImage)
 
+## Website
+
+- [Website](https://opencomic.app)
+- [Website Repository](https://github.com/ollm/OpenComic-Website)
+
 ## Installation and Starting for development
 __Requirements__: Git, Node and NPM
 

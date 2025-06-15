@@ -856,8 +856,9 @@ function generateAppMenu(force = false)
 				label: language.menu.help.main,
 				submenu: [
 					{label: language.menu.help.bug, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/issues');}},
+					{label: language.menu.help.guides, click: function(){electron.shell.openExternal('https://opencomic.app/docs/category/guides');}},
 					{type: 'separator'},
-					{label: language.menu.help.funding, click: function(){electron.shell.openExternal('https://github.com/ollm/OpenComic/blob/master/FUNDING.md');}, visible: !macosMAS},
+					{label: language.menu.help.funding, click: function(){electron.shell.openExternal('https://opencomic.app/docs/donate');}, visible: !macosMAS},
 					{label: language.menu.help.about, click: function(){showAboutWindow();}},
 				]
 			}
