@@ -438,6 +438,7 @@
 		"help": {
 			"main": "도움말",
 			"about": "OpenComic 에 대해",
+			"guides": "",
 			"funding": "후원!",
 			"bug": "버그 제보"
 		}

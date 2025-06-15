@@ -438,6 +438,7 @@
 		"help": {
 			"main": "ヘルプ",
 			"about": "OpenComic について",
+			"guides": "",
 			"funding": "支援・寄付",
 			"bug": "バグを報告"
 		}

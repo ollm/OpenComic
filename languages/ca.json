@@ -438,6 +438,7 @@
 		"help": {
 			"main": "Ajuda",
 			"about": "Sobre OpenComic",
+			"guides": "Guies",
 			"funding": "Finançar!",
 			"bug": "Informar d'un error"
 		}

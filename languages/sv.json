@@ -438,6 +438,7 @@
 		"help": {
 			"main": "Hjälp",
 			"about": "Om OpenComic",
+			"guides": "",
 			"funding": "Finansiering!",
 			"bug": "Rapportera en bugg"
 		}

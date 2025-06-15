@@ -438,6 +438,7 @@
 		"help": {
 			"main": "Trợ giúp",
 			"about": "Về OpenComic",
+			"guides": "",
 			"funding": "Hỗ trợ kinh phí!",
 			"bug": "Báo cáo lỗi"
 		}

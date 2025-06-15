@@ -438,6 +438,7 @@
 		"help": {
 			"main": "帮助",
 			"about": "关于 OpenComic",
+			"guides": "",
 			"funding": "赞助！",
 			"bug": "报告错误"
 		}
