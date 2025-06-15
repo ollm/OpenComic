@@ -558,6 +558,27 @@
 	}
 }
 
+@keyframes dash96bg
+{
+	0%
+	{
+		stroke-dasharray: 180, 200;
+		stroke-dashoffset: -11px;
+		transform: rotate(0deg);
+	}
+	50%
+	{
+		stroke-dasharray: 40, 200;
+		stroke-dashoffset: -11px;
+		transform: rotate(360deg);
+	}
+	100%
+	{
+		stroke-dasharray: 180, 200;
+		stroke-dashoffset: -11px;
+		transform: rotate(360deg);
+	}
+}
 
 @keyframes dash48
 {
@@ -2289,9 +2310,21 @@ a:hover
 	transition: 0.3s stroke-dasharray;
 }
 
+.loading > svg > circle:nth-child(2)
+{
+	stroke: var(--md-sys-color-surface-container);
+	display: none;
+}
+
 .loading96 > svg > circle
 {
 	animation: dash96 1.5s ease-in-out infinite;
+}
+
+.loading96 > svg > circle:nth-child(2)
+{
+	animation: dash96bg 1.5s ease-in-out infinite;
+	display: initial;
 }
 
 .loading48 > svg > circle
@@ -2317,6 +2350,7 @@ a:hover
 	fill: none;
 	stroke-width: 6;
 	stroke-linecap: round;
+	transform-origin: 96px 96px;
 }
 
 .loading48 > svg > circle
@@ -2327,6 +2361,7 @@ a:hover
 	fill: none;
 	stroke-width: 4;
 	stroke-linecap: round;
+	transform-origin: 48px 48px;
 }
 
 .loading36 > svg > circle
@@ -2337,6 +2372,7 @@ a:hover
 	fill: none;
 	stroke-width: 3;
 	stroke-linecap: round;
+	transform-origin: 36px 36px;
 }
 
 .loading24 > svg > circle
@@ -2354,6 +2390,7 @@ a:hover
 	fill: none;
 	stroke-width: 2.5;
 	stroke-linecap: round;
+	transform-origin: 24px 24px;
 }
 
 /* Scroll */

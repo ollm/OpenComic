@@ -1365,13 +1365,31 @@ function loadingProgress(loading, progress = 0)
 		if(prevProgress > progress && prevProgress !== 1)
 			progress = prevProgress;
 
+		if(progress > 1)
+			progress = 1;
+
 		loading.dataset.prevNow = now;
 		loading.dataset.prevProgress = progress;
 
+		const dashArray = stroke.array - 301;
+
+		speed = 0;
+
 		circle.style.animation = 'none';
-		circle.style.transition = 'stroke-dashoffset '+speed+'ms linear';
+		circle.style.transition = 'stroke-dasharray '+speed+'ms linear';
 		circle.style.strokeDashoffset = 300;
-		circle.style.strokeDasharray = 301 + ((stroke.array - 301) * progress);
+		circle.style.strokeDasharray = 301 + ((dashArray) * progress);
+	
+		const circle2 = loading.querySelector('.loading circle:nth-child(2)');
+
+		if(circle2)
+		{
+			circle2.style.animation = 'none';
+			circle2.style.transition = speed+'ms linear';
+			circle2.style.transform = 'rotate('+(-340 + progress * 356)+'deg)';
+			circle2.style.strokeDashoffset = 300;
+			circle2.style.strokeDasharray = 301 + (dashArray - 20) - ((dashArray) * progress);
+		}
 	}
 }
 
