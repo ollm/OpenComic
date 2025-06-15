@@ -1067,6 +1067,12 @@ function getImageInterpolationMethods(upscaling = false)
 			select: current == 'nearest' ? true : false,
 		},
 		{
+			key: 'linear',
+			name: 'Linear',
+			upscaling: upscaling,
+			select: current == 'linear' ? true : false,
+		},
+		{
 			key: 'mitchell',
 			name: 'Mitchell',
 			upscaling: upscaling,

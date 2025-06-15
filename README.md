@@ -43,7 +43,7 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 - 🔄 Tracking with sites (AniList)
 - 🎮 Gamepad navigation
 - ⌨️ Custom shortcuts and tap zones
-- 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `nearest` and others
+- 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `linear`, `nearest` and others
 
 You can see the changes between versions in the [Changelog 📝](/CHANGELOG.md)
 

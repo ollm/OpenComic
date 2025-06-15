@@ -33,7 +33,7 @@
             <li>🔄 Tracking with sites (AniList and MyAnimeList)</li>
             <li>🎮 Gamepad navigation</li>
             <li>⌨️ Custom shortcuts and tap zones</li>
-            <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>nearest</code> and others</li>
+            <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>linear</code>, <code>nearest</code> and others</li>
         </ul>
     </description>
     <url type="homepage">https://github.com/ollm/OpenComic</url>
