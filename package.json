@@ -77,7 +77,7 @@
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.824.0",
+		"@aws-sdk/client-s3": "^3.828.0",
 		"@electron/remote": "^2.1.2",
 		"@stifani/smb2": "^0.3.0",
 		"@toondepauw/node-zstd": "^1.2.0",
@@ -88,7 +88,7 @@
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
-		"fast-xml-parser": "^5.2.3",
+		"fast-xml-parser": "^5.2.5",
 		"foliate-js": "github:johnfactotum/foliate-js",
 		"font-list": "^1.5.1",
 		"fs-extra": "^11.3.0",
@@ -102,7 +102,7 @@
 		"lodash.isequal": "^4.5.0",
 		"marked": "^15.0.12",
 		"mime": "^4.0.7",
-		"minimatch": "^10.0.1",
+		"minimatch": "^10.0.3",
 		"mv": "^2.1.1",
 		"node-7z": "github:ollm/node-7z",
 		"node-scp": "^0.0.25",
@@ -116,7 +116,7 @@
 	},
 	"devDependencies": {
 		"electron": "^36.4.0",
-		"electron-builder": "^26.0.16",
+		"electron-builder": "^26.0.17",
 		"env-cmd": "^10.1.0",
 		"install": "^0.13.0",
 		"node-abi": "^4.9.0",
