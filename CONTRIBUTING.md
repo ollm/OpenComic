@@ -20,8 +20,6 @@ Before submitting a feature request, please search the [existing issues](https:/
 
 When creating a feature request, please include as much relevant information as possible, such as a detailed description of the feature and any examples or use cases.
 
-----
-
 ## Code
 
 We welcome contributions to the OpenComic code! Whether you're fixing bugs, adding new features, or improving documentation, your help is appreciated.
@@ -44,15 +42,11 @@ If you want to add support for a new tracking site, you can refer to the existin
 
 Additionally, you'll need to update both [`tracking-sites.js`](https://github.com/ollm/OpenComic/blob/master/scripts/tracking/tracking-sites.js) and [`tracking-sites-keys.js`](https://github.com/ollm/OpenComic/blob/master/scripts/tracking/tracking-sites-keys.js) to include the new site's information.
 
-----
-
 ## Documentation
 
 Contribute by enhancing existing documentation or adding any missing information for OpenComic directly on this website, helping to make the project more complete and accessible for all users.
 
 Documentation repository: [ollm/OpenComic-Website](https://github.com/ollm/OpenComic-Website)
-
-----
 
 ## Translation
 
@@ -61,8 +55,6 @@ If you want to see OpenComic in your language, please help us to [Translate](htt
 <a href="https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md">
 	<img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated.svg"></img>
 </a>
-
-----
 
 ## Donate
 
