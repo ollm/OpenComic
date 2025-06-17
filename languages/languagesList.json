@@ -516,6 +516,7 @@
         "nativeName":"فارسی"
     },
     "pl":{
+        "active": true,
         "name":"Polish",
         "nativeName":"polski"
     },
