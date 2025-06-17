@@ -11,8 +11,8 @@ function show()
 		dom.search.showHide(true);
 
 		urls = {
-			path: dom.indexPathA(),
-			mainPath: dom.indexMainPathA(),
+			path: dom.history.path,
+			mainPath: dom.history.mainPath,
 		};
 
 		searchMap = findSearch(search);

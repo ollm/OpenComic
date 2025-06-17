@@ -18,7 +18,7 @@ function show(gamepad = false)
 
 function getVars()
 {
-	const indexPathA = dom.indexPathA();
+	const indexPathA = dom.history.path;
 	const currentPath = onReading ? reading.readingCurrentPath() : indexPathA;
 	const pathIsFolder = (currentPath && fs.existsSync(currentPath) && fs.statSync(currentPath).isDirectory()) ? true : false;
 
@@ -74,7 +74,7 @@ function setAsPosterFolders()
 	const image = getCurrentImage();
 	if(!image) return;
 
-	dom.poster.setAsPosterFolders(image, dom.indexMainPathA());
+	dom.poster.setAsPosterFolders(image, dom.history.mainPath);
 }
 
 function generateFileName(path, page, leadingZeros, fileName)

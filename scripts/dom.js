@@ -5,7 +5,8 @@ const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	clearFileCache = require(p.join(appDir, 'scripts/dom/clear-file-cache.js')),
 	search = require(p.join(appDir, 'scripts/dom/search.js')),
 	header = require(p.join(appDir, 'scripts/dom/header.js')),
-	boxes = require(p.join(appDir, 'scripts/dom/boxes.js'));
+	boxes = require(p.join(appDir, 'scripts/dom/boxes.js')),
+	history = require(p.join(appDir, 'scripts/dom/history.js'));
 
 /*Page - Index*/
 
@@ -155,208 +156,333 @@ function metadataPathName(file, force = false)
 	return file.name;
 }
 
-async function loadFilesIndexPage(file, animation, path, keepScroll, mainPath, _indexLabel)
+async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsing, fromGoForwards)
 {
-	return file.read().then(async function(files){
+	const file = fileManager.file(path);
+	let files;
 
-		threads.clean('folderThumbnails');
-
-		let pathFiles = [];
-		let thumbnails = [];
-
-		// Get comic reading progress image
-		let _readingProgress = storage.get('readingProgress');
-
-		let readingProgress = _readingProgress[mainPath] || false;
-		let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
-
-		if(files)
-		{
-			const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
-			let images = [];
-
-			for(let i = 0, len = files.length; i < len; i++)
-			{
-				const file = files[i];
-
-				if(compatible.image(file.path))
-				{
-					file.forceSize = viewModuleSize;
-					file.sha = cache.imageSizeSha(file);
-					images.push(file);
-				}
-			}
-
-			if(readingProgress)
-			{
-				let path = readingProgress.path;
-				let sha = sha1(path);
-
-				images.push({path: path, sha: sha});
-
-				readingProgress.sha = sha;
-			}
-
-			if(readingProgressCurrentPath)
-			{
-				let path = readingProgressCurrentPath.path;
-				let sha = sha1(path);
-
-				images.push({path: path, sha: sha});
-
-				readingProgressCurrentPath.sha = sha;
-			}
-
-			thumbnails = cache.returnThumbnailsImages(images, function(data){
-
-				addImageToDom(data.sha, data.path);
-
-			}, file);
-
-			let visibleItems = calculateVisibleItems(config.view, keepScroll);
-
-			for(let i = 0, len = files.length; i < len; i++)
-			{
-				let file = files[i];
-				let fileName = file.name;
-				let filePath = file.path;
-
-				let realPath = fileManager.realPath(filePath, -1);
-
-				if(compatible.image(realPath))
-				{
-					let sha = file.sha;
-
-					let thumbnail = thumbnails[file.sha];
-
-					pathFiles.push({
-						sha: sha,
-						name: translatePageName(fileName.replace(/\.[^\.]*$/, '')),
-						path: filePath,
-						mainPath: mainPath,
-						thumbnail: (thumbnail.cache) ? thumbnail.path : '',
-						folder: false,
-					});
-				}
-				else if(file.folder || file.compressed)
-				{
-					let images = await getFolderThumbnails(filePath, false, i, visibleItems.start, visibleItems.end);
-
-					pathFiles.push({
-						sha: file.sha,
-						name: metadataPathName(file),
-						path: filePath,
-						mainPath: mainPath,
-						poster: images.poster,
-						images: images.images,
-						addToQueue: images.addToQueue,
-						folder: true,
-						compressed: file.compressed,
-					});
-				}
-			}
-		}
-		else
-		{
-			let images = [];
-
-			if(readingProgress)
-			{
-				let path = readingProgress.path;
-				let sha = sha1(path);
-
-				images.push({path: path, sha: sha});
-
-				readingProgress.sha = sha;
-			}
-
-			if(readingProgressCurrentPath)
-			{
-				let path = readingProgressCurrentPath.path;
-				let sha = sha1(path);
-
-				images.push({path: path, sha: sha});
-
-				readingProgressCurrentPath.sha = sha;
-			}
-
-			thumbnails = cache.returnThumbnailsImages(images, function(data){
-
-				addImageToDom(data.sha, data.path);
-
-			}, file);
-		}
-
-		if(_indexLabel?.filter)
-		{
-			pathFiles = dom.labels.filterList(pathFiles, _indexLabel.filter);
-		}
-
-		handlebarsContext.comics = pathFiles;
-
-		// Comic reading progress
-		if(readingProgress)
-		{
-			let sha = readingProgress.sha;
-			let thumbnail = thumbnails[sha];
-
-			readingProgress.sha = sha;
-			readingProgress.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-			readingProgress.mainPath = mainPath;
-			readingProgress.pathText = returnTextPath(readingProgress.path, mainPath, true, !readingProgress.ebook);
-			readingProgress.exists = fileManager.simpleExists(readingProgress.path);
-			handlebarsContext.comicsReadingProgress = readingProgress;
-		}
-		else
-		{
-			handlebarsContext.comicsReadingProgress = false;
-		}
-
-		// Current folder reading progress
-		if(readingProgressCurrentPath && (!readingProgress || readingProgress.path !== readingProgressCurrentPath.path))
-		{
-			let sha = readingProgressCurrentPath.sha;
-			let thumbnail = thumbnails[sha];
-
-			readingProgressCurrentPath.sha = sha;
-			readingProgressCurrentPath.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-			readingProgressCurrentPath.mainPath = mainPath;
-			readingProgressCurrentPath.pathText = returnTextPath(readingProgressCurrentPath.path, path, true, !readingProgressCurrentPath.ebook);
-			readingProgressCurrentPath.exists = fileManager.simpleExists(readingProgressCurrentPath.path);
-			handlebarsContext.comicsReadingProgressCurrentPath = readingProgressCurrentPath;
-		}
-		else
-		{
-			handlebarsContext.comicsReadingProgressCurrentPath = false;
-		}
-
-		if(!pathFiles.length && fileManager.isServer(path) && serverClient.serverLastError())
-		{
-			handlebarsContext.serverLastError = serverClient.serverLastError();
-			handlebarsContext.serverHasCache = file.serverHasCache(path);
-		}
-
-		events.events();
-
-		return {files: pathFiles, readingProgress: readingProgress || {}, readingProgressCurrentPath: readingProgressCurrentPath || {}, html: template.load('index.content.right.'+config.view+'.html')};
-
-	}).catch(function(error){
-
+	try 
+	{
+		files = await file.read();
+	}
+	catch(error)
+	{
 		console.error(error);
 
 		dom.compressedError(error);
 		fileManager.requestFileAccess.check(path, error);
 
-		return {files: [], readingProgress: {}, readingProgressCurrentPath: {}, html: ''};
+		return {
+			path: path,
+			mainPath: mainPath,
+			files: []
+		};
+	}
 
-	});
+	const basic = {
+		path: path,
+		mainPath: mainPath,
+		files: files,
+	};
+
+	// Get comic reading progress image
+	let _readingProgress = storage.get('readingProgress');
+	let readingProgress = _readingProgress[mainPath] || false;
+	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
+
+	// const isCompressed = fileManager.isCompressed(fileManager.firstCompressedFile(path));
+	const isCompressed = fileManager.isCompressed(path);
+	const openingBehavior = isCompressed ? config.openingBehaviorFile : config.openingBehaviorFolder;
+
+	const lastFolder = ['first-page-last', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
+	let openFirstPage = ['first-page', 'continue-reading-first-page', 'first-page-last', 'continue-reading-first-page-last'].includes(openingBehavior);
+	let openContinueReading = ['continue-reading', 'continue-reading-first-page', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
+
+	if(openContinueReading && !fromGoBack && !notAutomaticBrowsing && readingProgress)
+	{
+		const isParentPath = fileManager.isParentPath(path, readingProgress.path);
+
+		if(isParentPath || readingProgressCurrentPath)
+		{
+			if(!isParentPath && readingProgressCurrentPath)
+				readingProgress = readingProgressCurrentPath;
+		}
+		else
+		{
+			openContinueReading = false;
+		}
+
+		if(openContinueReading && !fileManager.simpleExists(readingProgress.path))
+			openContinueReading = false;
+	}
+	else
+	{
+		openContinueReading = false;
+	}
+
+	// Only in last deep folded
+	if(lastFolder)
+	{
+		let hasFolder = false;
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			if(files[i].folder || files[i].compressed)
+			{
+				hasFolder = true;
+				break;
+			}
+		}
+
+		if(hasFolder)
+		{
+			openFirstPage = false;
+			openContinueReading = false;
+		}
+	}
+
+	if(openContinueReading && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing)
+	{
+		if(readingProgress.ebook)
+			reading.setNextOpenChapterProgress(readingProgress.chapterIndex, readingProgress.chapterProgress);
+
+		file.destroy();
+
+		return {
+			open: true,
+			path: readingProgress.path,
+			mainPath: mainPath,
+			files: files,
+		};
+	}
+	else if(openFirstPage && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing)
+	{
+		let first;
+
+		try
+		{
+			first = await file.images(1);
+		}
+		catch(error)
+		{
+			console.error(error);
+			dom.compressedError(error);
+
+			return basic;
+		}
+
+		if(first)
+		{
+			file.destroy();
+
+			return {
+				open: true,
+				path: first.path,
+				mainPath: mainPath,
+				files: files,
+			};
+		}
+	}
+
+	file.destroy();
+
+	if(config.ignoreSingleFoldersLibrary && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing && files.length == 1 && (files[0].folder || files[0].compressed))
+	{
+		return readFilesIndexPage(files[0].path, mainPath, fromGoBack, notAutomaticBrowsing, fromGoForwards);
+	}
+
+	return basic;
+}
+
+async function loadFilesIndexPage(files, file, animation, path, keepScroll, mainPath, _indexLabel)
+{
+	threads.clean('folderThumbnails');
+
+	let pathFiles = [];
+	let thumbnails = [];
+
+	// Get comic reading progress image
+	let _readingProgress = storage.get('readingProgress');
+
+	let readingProgress = _readingProgress[mainPath] || false;
+	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
+
+	if(files)
+	{
+		const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
+		let images = [];
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			const file = files[i];
+
+			if(compatible.image(file.path))
+			{
+				file.forceSize = viewModuleSize;
+				file.sha = cache.imageSizeSha(file);
+				images.push(file);
+			}
+		}
+
+		if(readingProgress)
+		{
+			let path = readingProgress.path;
+			let sha = sha1(path);
+
+			images.push({path: path, sha: sha});
+
+			readingProgress.sha = sha;
+		}
+
+		if(readingProgressCurrentPath)
+		{
+			let path = readingProgressCurrentPath.path;
+			let sha = sha1(path);
+
+			images.push({path: path, sha: sha});
+
+			readingProgressCurrentPath.sha = sha;
+		}
+
+		thumbnails = cache.returnThumbnailsImages(images, function(data){
+
+			addImageToDom(data.sha, data.path);
+
+		}, file);
+
+		let visibleItems = calculateVisibleItems(config.view, keepScroll);
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			let file = files[i];
+			let fileName = file.name;
+			let filePath = file.path;
+
+			let realPath = fileManager.realPath(filePath, -1);
+
+			if(compatible.image(realPath))
+			{
+				let sha = file.sha;
+
+				let thumbnail = thumbnails[file.sha];
+
+				pathFiles.push({
+					sha: sha,
+					name: translatePageName(fileName.replace(/\.[^\.]*$/, '')),
+					path: filePath,
+					mainPath: mainPath,
+					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
+					folder: false,
+				});
+			}
+			else if(file.folder || file.compressed)
+			{
+				let images = await getFolderThumbnails(filePath, false, i, visibleItems.start, visibleItems.end);
+
+				pathFiles.push({
+					sha: file.sha,
+					name: metadataPathName(file),
+					path: filePath,
+					mainPath: mainPath,
+					poster: images.poster,
+					images: images.images,
+					addToQueue: images.addToQueue,
+					folder: true,
+					compressed: file.compressed,
+				});
+			}
+		}
+	}
+	else
+	{
+		let images = [];
+
+		if(readingProgress)
+		{
+			let path = readingProgress.path;
+			let sha = sha1(path);
+
+			images.push({path: path, sha: sha});
+
+			readingProgress.sha = sha;
+		}
+
+		if(readingProgressCurrentPath)
+		{
+			let path = readingProgressCurrentPath.path;
+			let sha = sha1(path);
+
+			images.push({path: path, sha: sha});
+
+			readingProgressCurrentPath.sha = sha;
+		}
+
+		thumbnails = cache.returnThumbnailsImages(images, function(data){
+
+			addImageToDom(data.sha, data.path);
+
+		}, file);
+	}
+
+	if(_indexLabel?.filter)
+	{
+		pathFiles = dom.labels.filterList(pathFiles, _indexLabel.filter);
+	}
+
+	handlebarsContext.comics = pathFiles;
+
+	// Comic reading progress
+	if(readingProgress)
+	{
+		let sha = readingProgress.sha;
+		let thumbnail = thumbnails[sha];
+
+		readingProgress.sha = sha;
+		readingProgress.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+		readingProgress.mainPath = mainPath;
+		readingProgress.pathText = returnTextPath(readingProgress.path, mainPath, true, !readingProgress.ebook);
+		readingProgress.exists = fileManager.simpleExists(readingProgress.path);
+		handlebarsContext.comicsReadingProgress = readingProgress;
+	}
+	else
+	{
+		handlebarsContext.comicsReadingProgress = false;
+	}
+
+	// Current folder reading progress
+	if(readingProgressCurrentPath && (!readingProgress || readingProgress.path !== readingProgressCurrentPath.path))
+	{
+		let sha = readingProgressCurrentPath.sha;
+		let thumbnail = thumbnails[sha];
+
+		readingProgressCurrentPath.sha = sha;
+		readingProgressCurrentPath.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+		readingProgressCurrentPath.mainPath = mainPath;
+		readingProgressCurrentPath.pathText = returnTextPath(readingProgressCurrentPath.path, path, true, !readingProgressCurrentPath.ebook);
+		readingProgressCurrentPath.exists = fileManager.simpleExists(readingProgressCurrentPath.path);
+		handlebarsContext.comicsReadingProgressCurrentPath = readingProgressCurrentPath;
+	}
+	else
+	{
+		handlebarsContext.comicsReadingProgressCurrentPath = false;
+	}
+
+	if(!pathFiles.length && fileManager.isServer(path) && serverClient.serverLastError())
+	{
+		handlebarsContext.serverLastError = serverClient.serverLastError();
+		handlebarsContext.serverHasCache = file.serverHasCache(path);
+	}
+
+	events.events();
+
+	return {files: pathFiles, readingProgress: readingProgress || {}, readingProgressCurrentPath: readingProgressCurrentPath || {}, html: template.load('index.content.right.'+config.view+'.html')};
 
 }
 
 async function reloadIndex(fromSetOfflineMode = false)
 {
 	indexLabel = prevIndexLabel;
-	loadIndexPage(true, indexPathA, true, true, indexMainPathA, false, true, false, fromSetOfflineMode);
+	loadIndexPage(true, history.path, true, true, history.mainPath, false, true, fromSetOfflineMode);
 }
 
 function reload(fromSetOfflineMode = false)
@@ -383,9 +509,9 @@ function setPrevIndexLabel(options)
 	prevIndexLabel = options;
 }
 
-var currentPath = false, currentPathScrollTop = [], fromDeepLoadNow = 0;
+var currentPath = false, currentPathScrollTop = [];
 
-async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromDeepLoad = false, fromSetOfflineMode = false, fromGoForwards = false)
+async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromSetOfflineMode = false, fromGoForwards = false)
 {
 	onReading = _onReading = false;
 
@@ -577,7 +703,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			if(_indexLabel.server)
 			{
-				selectMenuItem(dom.labels.menuItemSelector(isFromIndexLabel.has ? isFromIndexLabel : _indexLabel));
+				const root = history.root();
+				selectMenuItem(dom.labels.menuItemSelector(root.indexLabel.has ? root.indexLabel : _indexLabel));
 
 				handlebarsContext.animationDelay = 0.2;
 				template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
@@ -829,10 +956,21 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	}
 	else
 	{
+		const files = await readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsing, fromGoForwards);
+
+		path = files.path;
+		mainPath = files.mainPath;
+
+		if(files.open)
+		{
+			template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+			dom.openComic(animation, path, mainPath, false, false, false, true);
+
+			return;
+		}
+
 		if(!fromGoBack)
 			indexPathControl(path, mainPath);
-
-		generateAppMenu();
 
 		dom.boxes.reset();
 		handlebarsContext.comics = [];
@@ -846,18 +984,10 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		headerPath(path, mainPath);
 
-		if(fromDeepLoad && Date.now() - fromDeepLoadNow < 200)
-		{
-			template._barHeader().firstElementChild.innerHTML = dom.indexHeader(false);
-			// template._contentRight().firstElementChild.innerHTML = template.load('index.content.right.loading.html');
-		}
-		else
-		{
-			dom.loadIndexHeader(false, animation);
-			template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+		dom.loadIndexHeader(false, animation);
+		template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
 
-			contentRightIndex = template.contentRightIndex();
-		}
+		contentRightIndex = template.contentRightIndex();
 
 		if(!template._contentLeft().querySelector('.menu-list'))
 			dom.loadIndexContentLeft(animation);
@@ -872,124 +1002,13 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		cache.stopQueue();
 		threads.stop('folderThumbnails');
 
-		// Get comic reading progress image
-		let _readingProgress = storage.get('readingProgress');
-		let readingProgress = _readingProgress[mainPath] || false;
-		let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
-
-		// const isCompressed = fileManager.isCompressed(fileManager.firstCompressedFile(path));
-		const isCompressed = fileManager.isCompressed(path);
-		const openingBehavior = isCompressed ? config.openingBehaviorFile : config.openingBehaviorFolder;
-
-		const lastFolder = ['first-page-last', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
-		let openFirstPage = ['first-page', 'continue-reading-first-page', 'first-page-last', 'continue-reading-first-page-last'].includes(openingBehavior);
-		let openContinueReading = ['continue-reading', 'continue-reading-first-page', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
-
-		if(openContinueReading && !fromGoBack && !notAutomaticBrowsing && readingProgress)
-		{
-			const isParentPath = fileManager.isParentPath(path, readingProgress.path);
-
-			if(isParentPath || readingProgressCurrentPath)
-			{
-				if(!isParentPath && readingProgressCurrentPath)
-					readingProgress = readingProgressCurrentPath;
-			}
-			else
-			{
-				openContinueReading = false;
-			}
-
-			if(openContinueReading && !fileManager.simpleExists(readingProgress.path))
-				openContinueReading = false;
-		}
-		else
-		{
-			openContinueReading = false;
-		}
+		// Avoid continue if another loadIndexPage has been run
+		if(contentRightIndex != template.contentRightIndex())
+			return;
 
 		const file = fileManager.file(path);
-		let indexData = false;
-
-		if(lastFolder)
-		{
-			indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath, _indexLabel);
-
-			let hasFolder = false;
-
-			for(let i = 0, len = indexData.files.length; i < len; i++)
-			{
-				if(indexData.files[i].folder || indexData.files[i].compressed)
-				{
-					hasFolder = true;
-					break;
-				}
-			}
-
-			if(hasFolder)
-			{
-				openFirstPage = false;
-				openContinueReading = false;
-			}
-		}
-
-		if(openContinueReading && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing)
-		{
-			fromDeepLoadNow = Date.now();
-			indexPathControlA.pop();
-
-			if(readingProgress.ebook)
-				reading.setNextOpenChapterProgress(readingProgress.chapterIndex, readingProgress.chapterProgress);
-
-			dom.openComic(animation, readingProgress.path, mainPath, false, false, false, true);
-
-			file.destroy();
-
-			return;
-		}
-		else if(openFirstPage && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing)
-		{
-			let first;
-
-			try
-			{
-				first = await file.images(1);
-			}
-			catch(error)
-			{
-				console.error(error);
-				dom.compressedError(error);
-
-				return;
-			}
-
-			if(first)
-			{
-				fromDeepLoadNow = Date.now();
-				indexPathControlA.pop();
-
-				dom.openComic(animation, first.path, mainPath, false, false, false, true);
-
-				file.destroy();
-
-				return;
-			}
-		}
-
-		if(indexData === false) indexData = await loadFilesIndexPage(file, animation, path, keepScroll, mainPath, _indexLabel);
+		const indexData = await loadFilesIndexPage(files.files, file, animation, path, keepScroll, mainPath, _indexLabel);
 		file.destroy();
-
-		// Avoid continue if another loadIndexPage has been run
-		if(contentRightIndex != template.contentRightIndex()) return;
-
-		if(config.ignoreSingleFoldersLibrary && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing && indexData.files.length == 1 && (indexData.files[0].folder || indexData.files[0].compressed))
-		{
-			fromDeepLoadNow = Date.now();
-			indexPathControlA.pop();
-
-			dom.loadIndexPage(animation, indexData.files[0].path, false, false, indexData.files[0].mainPath, false, false, true);
-
-			return;
-		}
 
 		let contentRightScroll = template.contentRight().children().html(indexData.html);
 
@@ -998,21 +1017,25 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		cache.resumeQueue();
 		threads.resume('folderThumbnails');
+
+		generateAppMenu();
 	}
 
 	if(readingActive)
 		readingActive = false;
 
-	if(!_indexLabel.has && !isFromIndexLabel.has)
+	const root = history.root();
+
+	if(!_indexLabel.has && !root.indexLabel.has)
 	{
-		if(!isFromRecentlyOpened)
+		if(!root.recentlyOpened)
 			selectMenuItem('library');
 		else
 			selectMenuItem('recently-opened');
 	}
 	else
 	{
-		selectMenuItem(dom.labels.menuItemSelector(isFromIndexLabel.has ? isFromIndexLabel : _indexLabel));
+		selectMenuItem(dom.labels.menuItemSelector(root.indexLabel.has ? root.indexLabel : _indexLabel));
 	}
 
 	shortcuts.register(isOpds || _indexLabel.opds ? 'opds' : 'browse');
@@ -1264,8 +1287,10 @@ function headerPath(path, mainPath, windowTitle = false)
 		path.push({name: metadataPathName({path: _path, name: files[i]}, true), path: _path, mainPath: mainPath});
 	}
 
-	if(config.showLibraryPath && (isFromLibrary || isFromIndexLabel.has || isFromRecentlyOpened))
-		path.unshift({name: labels.getName(isFromIndexLabel, isFromRecentlyOpened), path: '', mainPath: ''});
+	const root = history.root();
+
+	if(config.showLibraryPath && (isFromLibrary || root.indexLabel.has || root.recentlyOpened))
+		path.unshift({name: labels.getName(root.indexLabel, root.recentlyOpened), path: '', mainPath: ''});
 
 	let len = path.length;
 
@@ -1301,21 +1326,21 @@ async function previousComic(path, mainPath)
 
 async function goNextComic(path, mainPath)
 {
-	let _nextComic = await nextComic(indexPathA, indexMainPathA);
+	let _nextComic = await nextComic(history.path, history.mainPath);
 
 	if(_nextComic)
 	{
-		dom.loadIndexPage(true, p.dirname(_nextComic), false, false, indexMainPathA, false, true);
+		dom.loadIndexPage(true, p.dirname(_nextComic), false, false, history.mainPath, false, true);
 	}
 }
 
 async function goPrevComic(path, mainPath)
 {
-	let prevComic = await previousComic(indexPathA, indexMainPathA);
+	let prevComic = await previousComic(history.path, history.mainPath);
 
 	if(prevComic)
 	{
-		dom.loadIndexPage(true, p.dirname(prevComic), false, false, indexMainPathA, false, true);
+		dom.loadIndexPage(true, p.dirname(prevComic), false, false, history.mainPath, false, true);
 	}
 }
 
@@ -1539,108 +1564,30 @@ function calculateVisibleItems(view, scrollTop = false)
 	return {start: start, end: end};
 }
 
-var indexPathControlA = [], indexPathA = false, indexMainPathA = false, indexPathControlForwards = [], fromGoForwards = false;
-
-function indexPathControlGoBack()
-{
-	if(indexPathControlA.length == 1)
-	{
-		if(isFromIndexLabel.has && !isFromRecentlyOpened)
-			indexLabel = isFromIndexLabel;
-
-		indexPathControlForwards.push(indexPathControlA.pop());
-
-		if(isFromRecentlyOpened)
-			recentlyOpened.load(true);
-		else
-			loadIndexPage(true, false);
-	}
-	else if(indexPathControlA.length > 0)
-	{
-		let goBack = indexPathControlA[indexPathControlA.length - 2];
-		indexLabel = goBack.indexLabel;
-
-		if(fileManager.simpleExists(goBack.path))
-		{
-			if(goBack.isComic)
-				openComic(true, goBack.path, goBack.mainPath, false, true);
-			else
-				loadIndexPage(true, goBack.path, false, false, goBack.mainPath, true);
-
-			indexPathControlForwards.push(indexPathControlA.pop());
-
-			indexPathA = goBack.path;
-			indexMainPathA = goBack.mainPath;
-		}
-		else
-		{
-			indexPathControlA.pop();
-			return indexPathControlGoBack();
-		}
-	}
-}
-
 function goStartPath()
 {
-	if(isFromIndexLabel.has && !isFromRecentlyOpened)
-		indexLabel = isFromIndexLabel;
+	const root = history.root();
 
-	if(isFromRecentlyOpened)
+	if(root.indexLabel.has && !root.recentlyOpened)
+		indexLabel = root.indexLabel;
+
+	if(root.recentlyOpened)
 		recentlyOpened.load(true);
 	else
 		loadIndexPage(true, false);
 }
 
-function indexPathControlGoForwards()
-{
-	if(indexPathControlForwards.length > 0)
-	{
-		const goForwards = indexPathControlForwards.pop();
-		if(!fileManager.simpleExists(goForwards.path)) return indexPathControlGoForwards();
-
-		if(onReading)
-			reading.saveReadingProgress();
-
-		fromGoForwards = true;
-
-		if(goForwards.indexLabel)
-			indexLabel = goForwards.indexLabel;
-
-		if(goForwards.isComic)
-			openComic(true, goForwards.path, goForwards.mainPath, false, false);
-		else
-			loadIndexPage(true, goForwards.path, false, false, goForwards.mainPath, false, false, false, false, true);
-
-		fromGoForwards = false;
-	}
-}
-
-function indexPathControlUpdateLastComic(path = false)
-{
-	let index = indexPathControlA.length - 1;
-	let last = indexPathControlA[index];
-
-	if(last && last.isComic && p.normalize(p.dirname(last.path)) === p.normalize(p.dirname(path)))
-	{
-		indexPathControlA[index].file = p.basename(path);
-		indexPathControlA[index].path = path;
-	}
-}
-
-var barBackStatus = false, isFromRecentlyOpened = false, isFromIndexLabel = false;
+var barBackStatus = false;
 
 // This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
 function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false, fromRecentlyOpened = false)
 {
-	indexPathA = path;
-	indexMainPathA = mainPath;
-
 	if(path === false || mainPath === false)
 	{
-		indexPathControlA = [];
+		handlebarsContext.fromRecentlyOpened = fromRecentlyOpened;
 
-		isFromRecentlyOpened = handlebarsContext.isFromRecentlyOpened = fromRecentlyOpened;
-		isFromIndexLabel = prevIndexLabel;
+		history.clean();
+		history.add({root: true, file: false, path: false, mainPath: false, isComic: false, indexLabel: prevIndexLabel, recentlyOpened: fromRecentlyOpened});
 	}
 	else
 	{
@@ -1649,37 +1596,45 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 		const files = path.replace(new RegExp('^\s*'+pregQuote(mainPathR)), '').split(p.sep);
 		const index = files.length - 1;
 
-		const len = indexPathControlA.length;
-		const prev = len > 0 ? indexPathControlA[len - 1] : false;
+		const current = history.current();
 
 		if(index >= 0)
 		{
-			if(len > 0 && isComic && fromNextAndPrev && indexPathControlA[len-1].isComic)
+			const page = {file: files[index], path: path, mainPath: mainPath, isComic: isComic, indexLabel: prevIndexLabel};
+
+			if(current && isComic && fromNextAndPrev && current.isComic)
 			{
-				indexPathControlA[len-1] = {file: files[index], path: path, mainPath: mainPath, isComic: isComic, indexLabel: prevIndexLabel};
+				history.update(page);
 			}
-			else if(!prev || prev.path !== path || prev.mainPath !== mainPath || prev.isComic !== isComic)
+			else if(!current || current.path !== path || current.mainPath !== mainPath || current.isComic !== isComic)
 			{
-				indexPathControlA.push({file: files[index], path: path, mainPath: mainPath, isComic: isComic, indexLabel: prevIndexLabel});
-				if(!fromGoForwards) indexPathControlForwards = [];
+				if(!history.fromGoForwards())
+					history.cleanForwards();
+
+				history.add(page);
 			}
-			else if(len > 0)
+			else if(current && !current.root)
 			{
-				indexPathControlA[len-1] = {file: files[index], path: path, mainPath: mainPath, isComic: isComic, indexLabel: prevIndexLabel};
+				history.update(page);
 			}
 		}
 	}
 
-	if(indexPathControlA.length > 0)
+	const current = history.current();
+
+	if(!current.root)
 	{
 		if(!barBackStatus)
 		{
-			handlebarsContext['bar-back'] = 'show';
-			$('.bar-back').removeClass('disable active').addClass('show');
+			template.setHeaderDelay();
+			handlebarsContext.barBack = 'show';
+
+			dom.queryAll('.bar-left, .bar-back').css({animationDelay: ''});
+			dom.queryAll('.bar-left').removeClass('disable', 'active').addClass('show');
 		}
 		else
 		{
-			handlebarsContext['bar-back'] = 'active';
+			handlebarsContext.barBack = 'active';
 		}
 
 		barBackStatus = true;
@@ -1688,12 +1643,15 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 	{
 		if(barBackStatus)
 		{
-			handlebarsContext['bar-back'] = 'disable';
-			$('.bar-back').removeClass('active show').addClass('disable');
+			template.setHeaderDelay();
+			handlebarsContext.barBack = 'disable';
+
+			dom.queryAll('.bar-left, .bar-back').css({animationDelay: ''});
+			dom.queryAll('.bar-left').removeClass('active', 'show').addClass('disable');
 		}
 		else
 		{
-			handlebarsContext['bar-back'] = '';
+			handlebarsContext.barBack = '';
 		}
 
 		barBackStatus = false;
@@ -2559,7 +2517,7 @@ async function deletePermanently(path, fromIndexNotMasterFolders = false, confir
 
 var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
-async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false, fromDeepLoad = false)
+async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
 	fileManager.revokeAllObjectURL();
 	workers.clean('convertImageToBlob');
@@ -2618,21 +2576,13 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	handlebarsContext.comics = [];
 
-	if(fromDeepLoad && Date.now() - fromDeepLoadNow < 200)
+	if(!template._contentRight().querySelector('.loading'))
 	{
-		template._barHeader().firstElementChild.innerHTML = template.load('reading.header.html');
-	}
-	else
-	{
-		if(!template._contentRight().querySelector('.loading'))
-		{
-			handlebarsContext.loading = true;
-			template.loadContentRight('reading.content.right.html', animation);
-		}
-
-		template.loadHeader('reading.header.html', animation);
+		handlebarsContext.loading = true;
+		template.loadContentRight('reading.content.right.html', animation);
 	}
 
+	template.loadHeader('reading.header.html', animation);
 	template.loadContentLeft('reading.content.left.html', animation);
 
 	let isCanvas = false;
@@ -2845,10 +2795,6 @@ module.exports = {
 	changeSort: changeSort,
 	changeBoxes: changeBoxes,
 	indexPathControl: indexPathControl,
-	indexPathControlA: function(){return indexPathControlA},
-	indexPathControlGoBack: indexPathControlGoBack,
-	indexPathControlForwards: function(){return indexPathControlForwards},
-	indexPathControlGoForwards: indexPathControlGoForwards,
 	goStartPath: goStartPath,
 	selectElement: selectElement,
 	openComic: openComic,
@@ -2867,9 +2813,6 @@ module.exports = {
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
 	addSepToEnd: addSepToEnd,
-	indexPathControlUpdateLastComic: indexPathControlUpdateLastComic,
-	indexPathA: function(){return indexPathA},
-	indexMainPathA: function(){return indexMainPathA},
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,
 	translatePageName: translatePageName,
@@ -2884,6 +2827,7 @@ module.exports = {
 	clearFileCache: clearFileCache,
 	boxes: boxes,
 	header: header,
+	history: history,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

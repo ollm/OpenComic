@@ -860,7 +860,7 @@ function goForwards(fromKeyboard = false)
 	}
 
 	// Go forwards
-	dom.indexPathControlGoForwards();
+	dom.history.goForwards();
 }
 
 setButtonEvent('browsableItems', [0, 3, 9, 12, 13, 14, 15, 16], function(key) {

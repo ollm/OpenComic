@@ -1837,9 +1837,9 @@ function showNextComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -1932,9 +1932,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.indexMainPathA()), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -3043,7 +3043,7 @@ function updateReadingPagesConfig(key, value)
 
 	if(currentReadingConfigKey === false)
 	{
-		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.indexMainPathA());
+		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.history.mainPath);
 		if(!readingPagesConfig || readingPagesConfig.configKey > 0)
 		{
 			if(readingPagesConfig && readingPagesConfig.configKey > 0)
@@ -3066,7 +3066,7 @@ function updateReadingPagesConfig(key, value)
 		readingPagesConfig.configKey = false;
 		readingPagesConfig[key] = value;
 
-		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), readingPagesConfig);
+		storage.updateVar('readingPagesConfig', dom.history.mainPath, readingPagesConfig);
 	}
 	else if(currentReadingConfigKey > 0)
 	{
@@ -3352,7 +3352,7 @@ function reload(full = false)
 
 	if(full)
 	{
-		dom.openComic(true, images[imageIndex].path, dom.indexMainPathA(), false, false, false, true);
+		dom.openComic(true, images[imageIndex].path, dom.history.mainPath, false, false, false, true);
 	}
 	else
 	{
@@ -3517,14 +3517,14 @@ function createAndDeleteBookmark(index = false)
 			activeBookmark(true);
 		}
 
-		storage.updateVar('bookmarks', dom.indexMainPathA(), readingCurrentBookmarks);
+		storage.updateVar('bookmarks', dom.history.mainPath, readingCurrentBookmarks);
 	}
 }
 
 function deleteBookmark(key)
 {
 	readingCurrentBookmarks.splice(key, 1);
-	storage.updateVar('bookmarks', dom.indexMainPathA(), readingCurrentBookmarks);
+	storage.updateVar('bookmarks', dom.history.mainPath, readingCurrentBookmarks);
 
 	loadBookmarks(true);
 }
@@ -3569,7 +3569,7 @@ function saveReadingProgress(path = false, mainPath = false)
 
 	if(mainPath === false)
 	{
-		mainPath = dom.indexMainPathA();
+		mainPath = dom.history.mainPath;
 
 		// Save also the current folder progress
 		if(mainPath !== p.dirname(path))
@@ -3600,7 +3600,7 @@ function saveReadingProgress(path = false, mainPath = false)
 		chapterProgress: chapterProgress,
 	});
 
-	dom.indexPathControlUpdateLastComic(path);
+	dom.history.updateLastComic(path);
 
 	return true;
 }
@@ -3617,7 +3617,7 @@ function startSaveReadingProgressSI()
 //Load the bookmarks in the current directory
 function loadBookmarks(bookmarksChild = false)
 {
-	var bookmarksPath = {}, mainPath = dom.indexMainPathA();
+	var bookmarksPath = {}, mainPath = dom.history.mainPath;
 
 	let images = [];
 
@@ -3674,7 +3674,7 @@ function loadBookmarks(bookmarksChild = false)
 		});
 	}
 
-	let readingProgress = storage.getKey('readingProgress', dom.indexMainPathA());
+	let readingProgress = storage.getKey('readingProgress', dom.history.mainPath);
 
 	if(readingProgress)
 	{
@@ -3743,7 +3743,7 @@ function loadReadingConfig(key = false)
 
 	if(key === false)
 	{
-		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.indexMainPathA());
+		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.history.mainPath);
 
 		if(readingPagesConfig)
 		{
@@ -3807,7 +3807,7 @@ function updateConfigLabels()
 
 function getLabelConfigKey(path = false)
 {
-	path = path || dom.indexMainPathA();
+	path = path || dom.history.mainPath;
 	const labels = dom.labels.has(path);
 
 	if(labels.length)
@@ -3891,18 +3891,18 @@ function setReadingShortcutPagesConfig(key = 0, desactiveMenu = true)
 		const labelConfigKey = getLabelConfigKey();
 
 		if(labelConfigKey)
-			storage.updateVar('readingPagesConfig', dom.indexMainPathA(), {configKey: 0});
+			storage.updateVar('readingPagesConfig', dom.history.mainPath, {configKey: 0});
 		else
-			storage.deleteVar('readingPagesConfig', dom.indexMainPathA());
+			storage.deleteVar('readingPagesConfig', dom.history.mainPath);
 	}
 	else
 	{
-		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.indexMainPathA());
+		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.history.mainPath);
 
 		if(!readingPagesConfig) readingPagesConfig = {};
 		readingPagesConfig.configKey = key;
 
-		storage.updateVar('readingPagesConfig', dom.indexMainPathA(), readingPagesConfig);
+		storage.updateVar('readingPagesConfig', dom.history.mainPath, readingPagesConfig);
 	}
 
 	changePagesView(0);
@@ -4925,8 +4925,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	readingCurrentPath = path;
 
-	if(typeof storage.get('bookmarks') !== 'undefined' && typeof storage.get('bookmarks')[dom.indexMainPathA()] !== 'undefined')
-		readingCurrentBookmarks = storage.get('bookmarks')[dom.indexMainPathA()];
+	if(typeof storage.get('bookmarks') !== 'undefined' && typeof storage.get('bookmarks')[dom.history.mainPath] !== 'undefined')
+		readingCurrentBookmarks = storage.get('bookmarks')[dom.history.mainPath];
 	else
 		readingCurrentBookmarks = undefined;
 

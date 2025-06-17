@@ -798,7 +798,7 @@ var generateAppMenuData = {resetZoom: null, onReading: null};
 
 function generateAppMenu(force = false)
 {
-	let indexPathA = dom.indexPathA();
+	let indexPathA = dom.history.path;
 
 	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading || generateAppMenuData.indexPathA !== indexPathA)
 	{

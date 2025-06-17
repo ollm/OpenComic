@@ -72,7 +72,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 			if(!fromDialog)
 				$('.bar-right-buttons .button-tracking-sites').html('sync').removeClass('tracking-problem');
 
-			const indexMainPathA = dom.indexMainPathA();
+			const indexMainPathA = dom.history.mainPath;
 			const readingCurrentPath = reading.readingCurrentPath();
 
 			let allTracked = true;
@@ -318,12 +318,12 @@ function invalidateSession(site = '', loginDialog = false, fromConfig = false)
 // Active and deactivate tracking site
 function activeAndDeactivateTrackingSite(site = '', active = false)
 {
-	const _tracking = storage.getKey('tracking', dom.indexMainPathA()) || {};
+	const _tracking = storage.getKey('tracking', dom.history.mainPath) || {};
 
 	if(_tracking[site])
 		_tracking[site].active = active;
 
-	storage.updateVar('tracking', dom.indexMainPathA(), _tracking);
+	storage.updateVar('tracking', dom.history.mainPath, _tracking);
 }
 
 // Current dialog
@@ -342,7 +342,7 @@ async function currentTrackingDialog(site)
 		buttons: false,
 	});
 
-	const path = dom.indexMainPathA();
+	const path = dom.history.mainPath;
 
 	const data = await sitesScripts[site].getComicData(siteData.tracking.id);
 	if(data === null) return; // Invalid session
@@ -522,17 +522,17 @@ function setTrackingId(site, siteId)
 {
 	events.closeDialog();
 
-	const _tracking = storage.getKey('tracking', dom.indexMainPathA()) || {};
+	const _tracking = storage.getKey('tracking', dom.history.mainPath) || {};
 
 	_tracking[site] = {
 		id: siteId,
 		active: true,
 	};
 
-	storage.updateVar('tracking', dom.indexMainPathA(), _tracking);
+	storage.updateVar('tracking', dom.history.mainPath, _tracking);
 
-	if(tracked[dom.indexMainPathA()] && tracked[dom.indexMainPathA()][site])
-		tracked[dom.indexMainPathA()][site] = [];
+	if(tracked[dom.history.mainPath] && tracked[dom.history.mainPath][site])
+		tracked[dom.history.mainPath][site] = [];
 
 	tracking.track();
 
@@ -547,7 +547,7 @@ function setTrackingChapters(site, path, chapters = false, volumes = false)
 	_tracking[site].volumes = volumes || false;
 	_tracking[site].lastUpdatedChapters = Date.now();
 
-	storage.updateVar('tracking', dom.indexMainPathA(), _tracking);
+	storage.updateVar('tracking', dom.history.mainPath, _tracking);
 }
 
 // Others dialogs
@@ -607,7 +607,7 @@ function getTitle()
 	if(reading.readingCurrentPath() && compatible.compressed(reading.readingCurrentPath()))
 		title = reading.readingCurrentPath() ? p.basename(reading.readingCurrentPath()).replace(/\.[^/.]+$/, '') : '';
 	else
-		title = dom.indexMainPathA() ? p.basename(dom.indexMainPathA()) : '';
+		title = dom.history.mainPath ? p.basename(dom.history.mainPath) : '';
 
 	// Try detect end of name
 	title = title.replace(/[\.\-_:;].*/, '', title).trim();

@@ -1,6 +1,8 @@
-<div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.goBack}}" onclick="dom.indexPathControlGoBack()">arrow_back</div>
-<div class="bar-title title-small" style="max-width: calc(100% - ({{#if comicsDeep2}}488px{{else}}364px{{/if}} + 68px));">
-	{{language.global.recentlyOpened}}
+<div class="bar-left {{barBack}}" style="{{headerAnimationDelay}}">
+	<div class="bar-back material-icon button button2 hover-text" hover-text="{{language.global.goBack}}" onclick="dom.history.goBack()" style="{{headerAnimationDelay}}">arrow_back</div>
+	<div class="bar-title title-small" style="max-width: calc(100% - ({{#if comicsDeep2}}488px{{else}}364px{{/if}} + 68px));">
+		{{language.global.recentlyOpened}}
+	</div>
 </div>
 <div class="bar-right-buttons">
 	<div>

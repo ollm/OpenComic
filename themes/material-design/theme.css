@@ -461,14 +461,12 @@
 {
 	0%
 	{
-		opacity: 0;
-		margin-left: -50px;
+		transform: translate(-50px, 0px);
 
 	}
 	100%
 	{
-		opacity: 1;
-		margin-left: 0px;
+		transform: translate(0px, 0px);
 	}
 }
 
@@ -476,14 +474,11 @@
 {
 	0%
 	{
-		opacity: 1;
-		margin-left: 0px;
-
+		transform: translate(0px, 0px);
 	}
 	100%
 	{
-		opacity: 0;
-		margin-left: -50px;
+		transform: translate(-50px, 0px);
 	}
 }
 
@@ -777,18 +772,12 @@ a:hover
 	height: 100%;
 }
 
-
-.bar-back
+.bar-left
 {
-	opacity: 0;
-	margin-left: -50px;
-	float: left;
-	cursor: default !important;
-	position: relative;
-	-webkit-app-region: no-drag;
+	transform: translate(-50px, 0px);
 }
 
-.bar-back.show
+.bar-left.show
 {
 	animation-name: bar-back-a;
 	animation-duration: 0.2s;
@@ -796,16 +785,48 @@ a:hover
 	cursor: pointer !important;
 }
 
-.bar-back.active
+.bar-left.active
 {
 	opacity: 1 !important;
-	margin-left: 0px;
+	transform: translate(0px, 0px);
 	cursor: pointer !important;
 }
 
-.bar-back.disable
+.bar-left.disable
 {
 	animation-name: bar-back-d;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	cursor: default !important;
+}
+
+.bar-back
+{
+	opacity: 0;
+	float: left;
+	cursor: default !important;
+	position: relative;
+	-webkit-app-region: no-drag;
+	transform: translate(8px, 0px);
+}
+
+.bar-left.show .bar-back
+{
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+	cursor: pointer !important;
+}
+
+.bar-left.active .bar-back
+{
+	opacity: 1 !important;
+	cursor: pointer !important;
+}
+
+.bar-left.disable .bar-back
+{
+	animation-name: show-out;
 	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
 	cursor: default !important;

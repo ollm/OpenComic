@@ -1,13 +1,15 @@
-<div class="bar-back material-icon button button2 hover-text {{bar-back}}" hover-text="{{language.global.goBack}}" onclick="dom.indexPathControlGoBack()">arrow_back</div>
-<div class="bar-title title-small" style="max-width: calc(100% - (218px + 68px));">
-	{{#if headerTitlePath}}
-		{{#each headerTitlePath}}
-			<span class="bar-title-a" onclick="{{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}">{{name}}</span>
-			{{#unless last}} <i class="material-icon navegation">chevron_right</i> {{/unless}}
-		{{/each}}
-	{{else}}
-		{{language.global.catalogs}}
-	{{/if}}
+<div class="bar-left {{barBack}}" style="{{headerAnimationDelay}}">
+	<div class="bar-back material-icon button button2 hover-text" hover-text="{{language.global.goBack}}" onclick="dom.history.goBack()" style="{{headerAnimationDelay}}">arrow_back</div>
+	<div class="bar-title title-small" style="max-width: calc(100% - (218px + 68px));">
+		{{#if headerTitlePath}}
+			{{#each headerTitlePath}}
+				<span class="bar-title-a" onclick="{{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}">{{name}}</span>
+				{{#unless last}} <i class="material-icon navegation">chevron_right</i> {{/unless}}
+			{{/each}}
+		{{else}}
+			{{language.global.catalogs}}
+		{{/if}}
+	</div>
 </div>
 <div class="bar-right-buttons">
 	<div>

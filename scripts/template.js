@@ -122,7 +122,23 @@ function changeHeader(html, animation = true)
 
 function loadHeader(template, animation)
 {
+	calculateHeaderDelay();
 	changeHeader(loadTemplate(template), animation);
+}
+
+var headerDelay = 0;
+
+function setHeaderDelay()
+{
+	headerDelay = performance.now();
+}
+
+function calculateHeaderDelay()
+{
+	const now = performance.now();
+
+	handlebarsContext.headerDelay = headerDelay ? now - headerDelay : 0;
+	handlebarsContext.headerAnimationDelay = 'animation-delay: -'+handlebarsContext.headerDelay+'ms;';
 }
 
 function changeGlobalElement(html, element)
@@ -184,6 +200,8 @@ module.exports = {
 	loadContentRight: loadContentRight,
 	changeHeader: changeHeader,
 	loadHeader: loadHeader,
+	setHeaderDelay: setHeaderDelay,
+	headerDelay: calculateHeaderDelay,
 	changeGlobalElement: changeGlobalElement,
 	contentLeft: selectContentLeft,
 	contentRight: selectContentRight,

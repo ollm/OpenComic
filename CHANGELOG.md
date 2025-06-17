@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support MyAnimeList tracking [`5f40b4a`](https://github.com/ollm/OpenComic/commit/5f40b4af1b70e8cfaad0beb79fec676c9c1c83fe)
 - Multi-layer folder labeling/favoriting and header bar filter options [`652a6a5`](https://github.com/ollm/OpenComic/commit/652a6a522b32fb9bf77a8dbfebafc0496050c634)
 - Option to disable tap zones [`aa7bb3c`](https://github.com/ollm/OpenComic/commit/aa7bb3cc4350616bc527c622be5ed7ddf2d5d611)
+- Refactored navigation history logic (`goBack`, `goForward`, etc.)
 
 ##### 🐛 Bug Fixes
 
@@ -48,7 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Check if the file is written to disk when extracting using 7zip [`66d4897`](https://github.com/ollm/OpenComic/commit/66d48977b4ef33b320676d39656d48ea41aff653)
 - Wrong size detection for animated AVIF images [`b741e52`](https://github.com/ollm/OpenComic/commit/b741e52c1fffac842a782fc45536eada123edeba)
 - Compressed files with unsupported chars in Windows are not correct displayed [`120c86b`](https://github.com/ollm/OpenComic/commit/120c86b847259e4a6d8c1302f6691edd75fcae21)
-- Error `Failed to retrieve track metadata` in some images
+- Error `Failed to retrieve track metadata` in some images [`1439b9b`](https://github.com/ollm/OpenComic/commit/1439b9b584aa4a3e1703b641c1e7f36f890dff07)
 
 ## [v1.4.1](https://github.com/ollm/OpenComic/releases/tag/v1.4.1) (08-02-2025)
 

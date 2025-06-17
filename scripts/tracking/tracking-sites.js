@@ -47,7 +47,7 @@ function getSiteConfig(site = '')
 
 function list(returnTrackingActive = false)
 {
-	const _tracking = returnTrackingActive ? storage.getKey('tracking', dom.indexMainPathA()) : false;
+	const _tracking = returnTrackingActive ? storage.getKey('tracking', dom.history.mainPath) : false;
 	const _sites = sites.map(function(site) {
 
 		const key = site.key;

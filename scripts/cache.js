@@ -258,70 +258,70 @@ var jsonMemory = {};
 
 function setJsonInMemory(name, json)
 {
-	if(jsonMemory[name])
-		clearTimeout(jsonMemory[name].timeout);
-
 	jsonMemory[name] = {
-		timeout: setTimeout(function(){
-			delete jsonMemory[name];
-		}, 1000 * 60 * 60),
 		json: json,
 		lastUsage: app.time(),
 	};
-
-	if(app.rand(0, 20))
-	{
-		let num = 0;
-		let data = [];
-
-		for(let key in jsonMemory)
-		{
-			num++;
-
-			data.push({
-				name: key,
-				lastUsage: jsonMemory[key].lastUsage,
-			});
-		}
-
-		let max = 500;
-
-		if(num > max)
-		{
-			data.sort(function(a, b) {
-
-				if(a.lastUsage === b.lastUsage)
-					return 0;
-
-				return a.lastUsage > b.lastUsage ? 1 : -1;
-
-			});
-
-			for(let i = 0, len = data.length - max; i < len; i++)
-			{
-				delete jsonMemory[data[i].name];
-			}
-		}
-	}
 }
 
 function readJsonInMemory(name)
 {
 	if(jsonMemory[name])
 	{
-		clearTimeout(jsonMemory[name].timeout);
-
-		jsonMemory[name].timeout = setTimeout(function(){
-			delete jsonMemory[name];
-		}, 1000 * 60 * 60);
-
 		jsonMemory[name].lastUsage = app.time();
-
 		return app.copy(jsonMemory[name].json);
 	}
 
 	return false;
 }
+
+function clearJsonInMemory()
+{
+	const time = app.time();
+	const data = [];
+
+	let num = 0;
+
+	for(let key in jsonMemory)
+	{
+		const json = jsonMemory[key];
+
+		if(time - json.lastUsage > 60 * 60) // 1 hour
+		{
+			delete jsonMemory[key];
+
+			continue;
+		}
+
+		num++;
+
+		data.push({
+			name: key,
+			lastUsage: json.lastUsage,
+		});
+	}
+
+	const max = 50;
+
+	if(num > max)
+	{
+		data.sort(function(a, b) {
+
+			if(a.lastUsage === b.lastUsage)
+				return 0;
+
+			return a.lastUsage > b.lastUsage ? 1 : -1;
+
+		});
+
+		for(let i = 0, len = data.length - max; i < len; i++)
+		{
+			delete jsonMemory[data[i].name];
+		}
+	}
+}
+
+setInterval(clearJsonInMemory, 1000 * 60 * 5); // Clear every 5 minutes
 
 function flushJsonMemory()
 {
