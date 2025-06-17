@@ -6,6 +6,8 @@
 .opds-page-buttons
 {
 	padding-left: 16px;
+	padding-bottom: 16px;
+	min-height: 40px;
 }
 
 .opds-page

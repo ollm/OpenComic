@@ -356,65 +356,67 @@
 .reading-skip > div
 {
 	background-color: var(--md-sys-color-surface-variant);
+	background-color: var(--md-sys-color-surface-container);
 	position: absolute;
 	z-index: 1;
-	box-shadow: var(--md-sys-elevation-inset-level1);
 	transition: background-color 0.2s, box-shadow 0.2s;
+	border-radius: 10px;
+	opacity: 0;
 }
 
 .reading-skip .reading-skip-top
 {
-	height: 120px;
-	width: calc(100% + 40px);
-	top: -120px;
-	left: -20px;
+	height: 100px;
+	width: calc(100% - 32px);
+	top: -100px;
+	left: 16px;
 }
 
 .reading-skip .reading-skip-bottom
 {
-	height: 120px;
-	width: calc(100% + 40px);
-	bottom: -120px;
-	left: -20px;
+	height: 100px;
+	width: calc(100% - 32px);
+	bottom: -100px;
+	left: 16px;
 }
 
 .reading-skip .reading-skip-left
 {
-	height: calc(100% + 40px);
-	width: 120px;
-	top: -20px;
-	left: -120px;
+	height: calc(100% - 32px);
+	width: 100px;
+	top: 16px;
+	left: -100px;
 }
 
 .reading-skip .reading-skip-right
 {
-	height: calc(100% + 40px);
-	width: 120px;
-	top: -20px;
-	right: -120px;
+	height: calc(100% - 32px);
+	width: 100px;
+	top: 16px;
+	right: -100px;
 }
 
 .reading-skip .reading-skip-top svg
 {
 	margin-left: -30px;
-	margin-top: -20px;
+	margin-top: -30px;
 }
 
 .reading-skip .reading-skip-bottom svg
 {
 	margin-left: -30px;
-	margin-top: -40px;
+	margin-top: -30px;
 }
 
 .reading-skip .reading-skip-left svg
 {
-	margin-left: -20px;
+	margin-left: -30px;
 	margin-top: -30px;
 }
 
 .reading-skip .reading-skip-right svg
 {
-	margin-left: -40px;
+	margin-left: -30px;
 	margin-top: -30px;
 }
 
@@ -435,6 +437,7 @@
 	stroke: var(--md-sys-color-primary);
 	stroke-dashoffset: 187;
 	stroke-dasharray: 187;
+	stroke-linecap: round;
 	transform: rotate(-90deg);
 	transform-origin: center;
 }
