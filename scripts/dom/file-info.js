@@ -109,6 +109,7 @@ const epubConvertKeys = {
 async function show(path, opds = false)
 {
 	let metadata = {};
+	let runCountImages = false;
 
 	if(opds)
 	{
@@ -143,7 +144,13 @@ async function show(path, opds = false)
 		readingProgress = readingProgress[path] || false;
 
 		if(readingProgress)
-			metadata.readingDate = readingProgress.lastReading;	
+			metadata.readingDate = readingProgress.lastReading;
+
+		if(!metadata.pages)
+		{
+			metadata.pages = '<span class="file-info-pages">...</span>';
+			runCountImages = true;
+		}
 	}
 
 	metadata.contributor = parseContributor(metadata);
@@ -283,7 +290,12 @@ async function show(path, opds = false)
 		dom.fileInfo.resize(true);
 
 	if(!opds)
+	{
 		getFileSize();
+
+		if(runCountImages)
+			countImages();
+	}
 }
 
 async function getFileSize()
@@ -298,6 +310,38 @@ async function getFileSize()
 		size = app.round(size, 1)+'MB';
 
 	dom.queryAll('.file-info-size').html(size);
+}
+
+async function _countImages(path, file)
+{
+	const files = await file.read({}, path);
+
+	let count = 0;
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const _file = files[i];
+
+		if(_file.folder || _file.compressed)
+		{
+			count += await _countImages(_file.path, file);
+		}
+		else if(compatible.image(_file.path))
+		{
+			count++;
+		}
+	}
+
+	return count;
+}
+
+async function countImages()
+{
+	const file = fileManager.file(currentPath);
+	const images = await _countImages(currentPath, file);
+	file.destroy();
+
+	dom.queryAll('.file-info-pages').html(images);
 }
 
 function parseValue(value, key)
@@ -574,7 +618,7 @@ function sanitizeHtml(string)
 {
 	return _sanitizeHtml(string, {
 		allowedClasses: {
-			span: ['file-info-size'],
+			span: ['file-info-size', 'file-info-pages'],
 			div: ['file-info-subject'],
 			i: ['material-icon'],
 		},

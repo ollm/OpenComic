@@ -3,7 +3,7 @@ const sanitizeHtml = require('sanitize-html'),
 
 function showReleaseDialog(release)
 {
-	release.releases_url = 'https://github.com/ollm/OpenComic?tab=readme-ov-file#download';
+	release.releases_url = 'https://opencomic.app/docs/installation/download';
 	release.html_url = 'https://github.com/ollm/OpenComic/releases';
 
 	const parsed = marked.parse(release.body).replace(/(\<a\s)\s*/ig, '$1 target="_blank"').replace(/\<h5\>/ig, '<h5 class="title-small">');

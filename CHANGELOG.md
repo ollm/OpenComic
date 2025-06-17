@@ -34,7 +34,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support MyAnimeList tracking [`5f40b4a`](https://github.com/ollm/OpenComic/commit/5f40b4af1b70e8cfaad0beb79fec676c9c1c83fe)
 - Multi-layer folder labeling/favoriting and header bar filter options [`652a6a5`](https://github.com/ollm/OpenComic/commit/652a6a522b32fb9bf77a8dbfebafc0496050c634)
 - Option to disable tap zones [`aa7bb3c`](https://github.com/ollm/OpenComic/commit/aa7bb3cc4350616bc527c622be5ed7ddf2d5d611)
-- Refactored navigation history logic (`goBack`, `goForward`, etc.)
+- Refactored navigation history logic (`goBack`, `goForward`, etc.) [`a4b6c3d`](https://github.com/ollm/OpenComic/commit/a4b6c3db4fbd447f6c129da1329d05d16b891074)
+- Count images/pages in file info if they are not in the metadata
 
 ##### 🐛 Bug Fixes
 
