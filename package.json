@@ -1,7 +1,7 @@
 {
 	"name": "opencomic",
 	"productName": "OpenComic",
-	"version": "1.4.1",
+	"version": "1.5.0",
 	"main": "scripts/main.js",
 	"type": "commonjs",
 	"keywords": [
@@ -115,7 +115,7 @@
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
-		"electron": "^36.4.0",
+		"electron": "^36.5.0",
 		"electron-builder": "^26.0.17",
 		"env-cmd": "^10.1.0",
 		"install": "^0.13.0",
