@@ -1231,6 +1231,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				bookNumber: comicInfo.Number || 0,
 				bookTotal: comicInfo.Count || 0,
 				volume: comicInfo.Volume || 0,
+				pages: comicInfo.PageCount || 0,
 
 				storyArc: comicInfo.StoryArc || '',
 				storyArcNumber: comicInfo.StoryArcNumber || 0,

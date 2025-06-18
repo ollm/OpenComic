@@ -618,6 +618,40 @@ function getTitle()
 	return title;
 }
 
+function getTitlesAndMetadata()
+{
+	const path = reading.readingCurrentPath();
+	if(!path) return;
+
+	const name = p.basename(path);
+	const firstCompressedFile = fileManager.firstCompressedFile(path);
+
+	const titles = [
+		name,
+	];
+
+	let metadata = false;
+
+	if(firstCompressedFile)
+	{
+		let sha = sha1(p.normalize(firstCompressedFile));
+		let cacheFile = 'compressed-files-'+sha+'.json';
+
+		if(cache.existsJson(cacheFile))
+			metadata = cache.readJson(cacheFile).metadata || false;
+
+		if(metadata.title)
+			titles.push(metadata.title);
+	}
+
+	return {
+		titles: titles,
+		chapter: 0, // metadata.bookNumber ?? 0,
+		volume: metadata.volume ?? 0,
+		metadata,
+	};
+}
+
 function getChapter()
 {
 	const regexs = [
@@ -634,32 +668,65 @@ function getChapter()
 		/ch?|ep?/, // English
 	];
 
-	const name = reading.readingCurrentPath();
-	if(!name) return false;
+	const data = getTitlesAndMetadata();
+	if(!data) return false;
 
-	let chapter = app.extract(new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
+	let number = data.chapter;
 
-	if(!chapter)
-		chapter = app.extract(new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'), name, 1);
+	const patterns = [
+		// Match common patterns like Chapter 5, Capítulo-5, etc.
+		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
 
-	if(!chapter)
-		chapter = app.extract(new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
+		// Match ending patterns like 5話
+		new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
 
-	if(!chapter) // Start with chapter number
-		chapter = app.extract(/^\s*([0-9]+)/iu, name, 1);
+		// Match Ch. 5, Ep 3, etc.
+		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
 
-	if(!chapter)
+		// Range chapters
+		/[0-9]{1,4}-([0-9]{1,4})/iu,
+	];
+
+	for(const title of data.titles)
 	{
-		const volume = getVolume();
+		if(number) break;
 
-		if(!volume) // Has a 1 or 4 digit number (Only if no volume are detected)
-			chapter = app.extract(/\s([0-9]{1,4})(?:\s|\.|$)/iu, name, 1);
+		for(const regex of patterns)
+		{
+			number = app.extract(regex, title, 1);
+			if(number) break;
+		}
 	}
 
-	if(!chapter && /^\d+$/.test(name)) // the folder name is numeric
-		chapter = name;
+	// Run this patters after the main patterns
+	const patternsLast = [
+		// Match only a number at the start of the title
+		/^\s*([0-9]+)/iu
+	];
 
-	return chapter > 0 ? +chapter : false;
+	for(const title of data.titles)
+	{
+		if(number) break;
+
+		for(const regex of patternsLast)
+		{
+			number = app.extract(regex, title, 1);
+			if(number) break;
+		}
+
+		if(!number)
+		{
+			const volume = getVolume();
+
+			if(!volume) // Has a 1 or 4 digit number (Only if no volume are detected)
+				number = app.extract(/\s([0-9]{1,4})(?:\s|\.|$)/iu, title, 1);
+		}
+
+		if(!number && /^\d+$/.test(title)) // the folder name is numeric
+			number = title;
+	}
+
+	return number > 0 ? +number : false;
 }
 
 function getVolume()
@@ -678,18 +745,34 @@ function getVolume()
 		/vo?|vol/, // English
 	];
 
-	const name = reading.readingCurrentPath();
-	if(!name) return false;
+	const data = getTitlesAndMetadata();
+	if(!data) return false;
 
-	let volume = app.extract(new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
+	let number = data.volume;
 
-	if(!volume)
-		volume = app.extract(new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'), name, 1);
+	const patterns = [
+		// Match common patterns like volume 5, Tom-5, etc.
+		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
 
-	if(!volume)
-		volume = app.extract(new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
+		// Match ending patterns like 5巻
+		new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
 
-	return volume > 0 ? +volume : false;
+		// Match Vo. 5, Vol 3, etc.
+		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
+	];
+
+	for(const title of data.titles)
+	{
+		if(number) break;
+
+		for(const regex of patterns)
+		{
+			number = app.extract(regex, title, 1);
+			if(number) break;
+		}
+	}
+
+	return number > 0 ? +number : false;
 }
 
 function handleOpenUrl(url = false)
@@ -731,6 +814,7 @@ module.exports = {
 	trackST: function(){return trackST},
 	getChapter: getChapter,
 	getVolume: getVolume,
+	getTitlesAndMetadata,
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,
 	tracked: function(){return tracked},
 	handleOpenUrl: handleOpenUrl,
