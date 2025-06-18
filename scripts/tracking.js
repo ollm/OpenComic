@@ -626,33 +626,34 @@ function getChapter()
 		/cap[íi]tols?|episodis?/, // Catalan
 	];
 
+	const regexsEnd = [
+		/話/, // Japanese
+	];
+
 	const regexsMin = [
 		/ch?|ep?/, // English
 	];
 
-	let name;
+	const name = reading.readingCurrentPath();
+	if(!name) return false;
 
-	if(reading.readingCurrentPath())
-		name = p.basename(reading.readingCurrentPath());
-	else
-		return false;
+	let chapter = app.extract(new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
 
-	let chapter = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
+	if(!chapter)
+		chapter = app.extract(new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'), name, 1);
+
+	if(!chapter)
+		chapter = app.extract(new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
+
+	if(!chapter) // Start with chapter number
+		chapter = app.extract(/^\s*([0-9]+)/iu, name, 1);
 
 	if(!chapter)
 	{
-		chapter = extract(new RegExp(/(^|[\.\-_:;\s])/.source+'('+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 3);
+		const volume = getVolume();
 
-		if(!chapter) // Start with chapter number
-			chapter = extract(/^\s*([0-9]+)/iu, name, 1);
-
-		if(!chapter)
-		{
-			const volume = getVolume();
-
- 			if(!volume) // Has a 1 or 4 digit number (Only if no volume are detected)
-				chapter = extract(/\s([0-9]{1,4})(?:\s|\.|$)/iu, name, 1);
-		}
+		if(!volume) // Has a 1 or 4 digit number (Only if no volume are detected)
+			chapter = app.extract(/\s([0-9]{1,4})(?:\s|\.|$)/iu, name, 1);
 	}
 
 	if(!chapter && /^\d+$/.test(name)) // the folder name is numeric
@@ -669,21 +670,24 @@ function getVolume()
 		/toms?/, // Catalan
 	];
 
+	const regexsEnd = [
+		/巻/, // Japanese
+	];
+
 	const regexsMin = [
 		/vo?|vol/, // English
 	];
 
-	let name;
+	const name = reading.readingCurrentPath();
+	if(!name) return false;
 
-	if(reading.readingCurrentPath())
-		name = p.basename(reading.readingCurrentPath());
-	else
-		return false;
-
-	let volume = extract(new RegExp('('+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 2);
+	let volume = app.extract(new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
 
 	if(!volume)
-		volume = extract(new RegExp(/(^|[\.\-_:;\s])/.source+'('+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 3);
+		volume = app.extract(new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'), name, 1);
+
+	if(!volume)
+		volume = app.extract(new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'), name, 1);
 
 	return volume > 0 ? +volume : false;
 }
