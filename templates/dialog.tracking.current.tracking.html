@@ -46,7 +46,7 @@
 			<div class="bottom"></div>
 		</div>
 		<div class="placeholder">{{language.dialog.tracking.setChapterNumber}}</div>
-		<input type="number" min="0" max="99999" value="" class="input-chapter">
+		<input type="number" min="0" max="99999" value="{{#if trackingResult.progress.chapters}}{{trackingResult.progress.chapters}}{{/if}}" class="input-chapter">
 	</div>
 </div>
 {{/if}}
@@ -63,7 +63,7 @@
 			<div class="bottom"></div>
 		</div>
 		<div class="placeholder">{{language.dialog.tracking.setVolumeNumber}}</div>
-		<input type="number" min="0" max="99999" value="" class="input-volume">
+		<input type="number" min="0" max="99999" value="{{#if trackingResult.progress.volumes}}{{trackingResult.progress.volumes}}{{/if}}" class="input-volume">
 	</div>
 </div>
 {{/if}}
