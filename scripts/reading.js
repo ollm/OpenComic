@@ -4795,7 +4795,7 @@ function pointermove(event)
 				hideContentRunningST = true;
 			}
 		}
-		else if(pageX < 96)
+		else if(pageX < 192)
 		{
 			if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && !hideContentRunningST)
 			{
@@ -4836,6 +4836,32 @@ function pointermove(event)
 		{
 			clearTimeout(hideContentST);
 
+			dom.query('.content-left').removeClass('show');
+			reading.setShownContentLeft(false);
+
+			hideContentRunningST = false;
+		}
+	}
+}
+
+function pointerleave()
+{
+	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
+	{
+		clearTimeout(hideContentST);
+
+		if(shownBarHeader && !document.querySelector('.menu-simple.a'))
+		{
+			dom.query('.bar-header').removeClass('show');
+			reading.setShownBarHeader(false);
+
+			hideContentRunningST = false;
+		}
+
+		clearTimeout(hideContentST);
+
+		if(shownContentLeft)
+		{
 			dom.query('.content-left').removeClass('show');
 			reading.setShownContentLeft(false);
 
@@ -5330,6 +5356,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	app.event('.reading-body, .reading-lens', 'mousedown touchstart', mousedown);
 	app.event(window, 'pointermove touchmove', pointermove);
+	app.event(document, 'pointerleave', pointerleave);
 
 	$(window).on('mouseup touchend', function(e) {
 
