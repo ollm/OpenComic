@@ -2580,6 +2580,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	{
 		handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', animation);
+		file.updateContentRightIndex();
 	}
 
 	template.loadHeader('reading.header.html', animation);

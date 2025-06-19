@@ -200,6 +200,17 @@ var file = function(path, _config = false) {
 
 	}
 
+	this.updateContentRightIndex = function(index = false) {
+
+		index = index || template.contentRightIndex();
+
+		for(let path in this.compressedOpened)
+		{
+			this.compressedOpened[path].compressed.contentRightIndex = index;
+		}
+
+	}
+
 	this.readCompressed = async function(path = false, _realPath = false) {
 
 		path = path || this.path;
