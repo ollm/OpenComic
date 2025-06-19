@@ -46,7 +46,7 @@ async function search(text)
 		return;
 	}
 
-	if(fileManager.isOpds(dom.indexPathA()))
+	if(fileManager.isOpds(dom.history.path))
 	{
 		setResults([]);
 
@@ -253,7 +253,7 @@ function keyup(event)
 	}
 	else if(text && filterCurrentPage && (event.keyCode == 13 || event.keyCode == 40) && !fromFillInput)
 	{
-		if(fileManager.isOpds(dom.indexPathA()))
+		if(fileManager.isOpds(dom.history.path))
 			opds.search.request(text);
 
 		hide(true);
@@ -476,7 +476,7 @@ async function indexFiles()
 
 async function indexFilesDom()
 {
-	if(fileManager.isOpds(dom.indexPathA()))
+	if(fileManager.isOpds(dom.history.path))
 		return;
 
 	let currentFiles = handlebarsContext.comics;
@@ -590,7 +590,7 @@ function fillInput(text)
 
 	search(text);
 
-	if(fileManager.isOpds(dom.indexPathA()))
+	if(fileManager.isOpds(dom.history.path))
 	{
 		opds.search.request(text);
 

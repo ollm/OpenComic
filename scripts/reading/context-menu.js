@@ -18,8 +18,7 @@ function show(gamepad = false)
 
 function getVars()
 {
-	const indexPathA = dom.history.path;
-	const currentPath = onReading ? reading.readingCurrentPath() : indexPathA;
+	const currentPath = onReading ? reading.readingCurrentPath() : dom.history.path;
 	const pathIsFolder = (currentPath && fs.existsSync(currentPath) && fs.statSync(currentPath).isDirectory()) ? true : false;
 
 	return {

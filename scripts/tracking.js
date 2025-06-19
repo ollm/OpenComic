@@ -72,7 +72,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 			if(!fromDialog)
 				$('.bar-right-buttons .button-tracking-sites').html('sync').removeClass('tracking-problem');
 
-			const indexMainPathA = dom.history.mainPath;
+			const mainPath = dom.history.mainPath;
 			const readingCurrentPath = reading.readingCurrentPath();
 
 			let allTracked = true;
@@ -82,11 +82,11 @@ async function track(chapter = false, volume = false, onlySite = false)
 				const site = _trackingSites[key];
 				let prevTracked = false;
 
-				if(tracked[indexMainPathA] && tracked[indexMainPathA][site.key])
+				if(tracked[mainPath] && tracked[mainPath][site.key])
 				{
-					for(let key2 in tracked[indexMainPathA][site.key])
+					for(let key2 in tracked[mainPath][site.key])
 					{
-						if(readingCurrentPath == tracked[indexMainPathA][site.key][key2])
+						if(readingCurrentPath == tracked[mainPath][site.key][key2])
 						{
 							prevTracked = true;
 
@@ -102,7 +102,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 			let chapters = '??';
 			let volumes = '??';
 
-			const tracking = storage.getKey('tracking', indexMainPathA);
+			const tracking = storage.getKey('tracking', mainPath);
 
 			for(let site in tracking)
 			{
@@ -121,7 +121,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 						console.log('Get chapters and volumes number');
 
 						const data = (await sitesScripts[site].getComicData()) || {};
-						setTrackingChapters(site, indexMainPathA, data.chapters, data.volumes);
+						setTrackingChapters(site, mainPath, data.chapters, data.volumes);
 					}
 				}
 			}
@@ -137,11 +137,11 @@ async function track(chapter = false, volume = false, onlySite = false)
 						const site = _trackingSites[key];
 						let prevTracked = false;
 
-						if(tracked[indexMainPathA] && tracked[indexMainPathA][site.key])
+						if(tracked[mainPath] && tracked[mainPath][site.key])
 						{
-							for(let key2 in tracked[indexMainPathA][site.key])
+							for(let key2 in tracked[mainPath][site.key])
 							{
-								if(readingCurrentPath == tracked[indexMainPathA][site.key][key2])
+								if(readingCurrentPath == tracked[mainPath][site.key][key2])
 								{
 									prevTracked = true;
 
@@ -152,9 +152,9 @@ async function track(chapter = false, volume = false, onlySite = false)
 
 						if(site.config.session.valid && ((vars.onlySite && vars.onlySite == site.key) || (site.tracking.active && !prevTracked && !vars.onlySite)))
 						{
-							if(!tracked[indexMainPathA]) tracked[indexMainPathA] = {};
-							if(!tracked[indexMainPathA][site.key]) tracked[indexMainPathA][site.key] = [];
-							tracked[indexMainPathA][site.key].push(readingCurrentPath);
+							if(!tracked[mainPath]) tracked[mainPath] = {};
+							if(!tracked[mainPath][site.key]) tracked[mainPath][site.key] = [];
+							tracked[mainPath][site.key].push(readingCurrentPath);
 
 							loadSiteScript(site.key);
 

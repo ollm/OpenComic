@@ -798,14 +798,14 @@ var generateAppMenuData = {resetZoom: null, onReading: null};
 
 function generateAppMenu(force = false)
 {
-	let indexPathA = dom.history.path;
+	const indexPath = dom.history.path;
 
-	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading || generateAppMenuData.indexPathA !== indexPathA)
+	if(force || generateAppMenuData.resetZoom !== electron.webFrame.getZoomFactor() || generateAppMenuData.onReading !== onReading || generateAppMenuData.indexPath !== indexPath)
 	{
 		let currentWindow = electronRemote.getCurrentWindow();
-		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading, indexPathA: indexPathA};
+		generateAppMenuData = {resetZoom: electron.webFrame.getZoomFactor(), onReading: onReading, indexPath: indexPath};
 
-		let currentPath = onReading ? reading.readingCurrentPath() : indexPathA;
+		let currentPath = onReading ? reading.readingCurrentPath() : indexPath;
 		let pathIsFolder = (currentPath && fs.existsSync(currentPath) && fs.statSync(currentPath).isDirectory()) ? true : false;
 
 		var menuTemplate = [
