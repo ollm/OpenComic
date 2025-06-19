@@ -361,21 +361,14 @@ function loadShortcuts()
 					name: language.reading.previous,
 					function: function(event){
 
-						if(event instanceof PointerEvent)
-						{
-							return reading.leftClick(event);
-						}
+						const code = event?.code || '';
+
+						if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
+							reading.goNext();
 						else
-						{
-							const code = event?.code || '';
+							reading.goPrev();
 
-							if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
-								reading.goNext();
-							else
-								reading.goPrev();
-
-							return true;
-						}
+						return true;
 
 					},
 				},
@@ -383,24 +376,14 @@ function loadShortcuts()
 					name: language.reading.next,
 					function: function(event){
 
-						if(event instanceof PointerEvent)
-						{
-							if(event.button != 2 || event.type != 'contextmenu')
-								return reading.rightClick(event);
-							else
-								return false;
-						}
+						const code = event?.code || '';
+
+						if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
+							reading.goPrev();
 						else
-						{
-							const code = event?.code || '';
+							reading.goNext();
 
-							if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
-								reading.goPrev();
-							else
-								reading.goNext();
-
-							return true;
-						}
+						return true;
 
 					},
 				},

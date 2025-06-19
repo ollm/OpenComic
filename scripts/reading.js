@@ -4812,7 +4812,6 @@ function pointermove(event)
 		else
 		{
 			clearTimeout(hideContentST);
-
 			hideContentRunningST = false;
 		}
 
@@ -4848,8 +4847,8 @@ function pointerleave()
 {
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 	{
-		hideContentRunningST = false;
 		clearTimeout(hideContentST);
+		hideContentRunningST = false;
 
 		if(shownBarHeader && !document.querySelector('.menu-simple.a'))
 		{
