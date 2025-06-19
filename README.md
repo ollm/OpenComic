@@ -12,7 +12,7 @@
 
 <div align="center">
 
-[Screenshots](/SCREENSHOTS.MD) | [Features](#features) | [Changelog](/CHANGELOG.md) | [Download](#download)
+[Guides](https://opencomic.app/docs/category/guides) | [Screenshots](/SCREENSHOTS.MD) | [Features](#features) | [Changelog](/CHANGELOG.md) | [Download](#download)
 
 </div>
 
@@ -24,12 +24,13 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 
 ## Features
 
-- 🌄 Support this image formats: `JPG`, `PNG`, `APNG`, `AVIF`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
-- 📦 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `CBR`, `CBZ`, `CB7`, `CBT`
+- 🌄 Support this image formats: `JPG`, `JP2`, `JXR`, `JXL`, `PNG`, `APNG`, `AVIF`, `HEIC`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
+- 📦 Support this compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `LZH`, `ACE`, `CBR`, `CBZ`, `CBA`, `CB7`, `CBT`
 - 📄 Support this documents/ebook formats: `PDF`, `EPUB` (Alpha)
 - 🎵 Support background music from folder: `MP3`, `M4A`, `WEBM`, `WEBA`, `OGG`, `OPUS`, `WAV`, `FLAC`
 - ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`, `s3://`, `webdav://`, `webdavs://`
 - 📁 Master folders support
+- 📚 OPDS support
 - ❤️ Favorite labels
 - 🏷️ Custom labels
 - 🇯🇵 Manga read mode
@@ -40,7 +41,7 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 - 🖱️ Reading in scroll or slide
 - ⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors
 - 🎨 Colorize black and white images
-- 🔄 Tracking with sites (AniList)
+- 🔄 Tracking with sites (AniList and MyAnimeList)
 - 🎮 Gamepad navigation
 - ⌨️ Custom shortcuts and tap zones
 - 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `linear`, `nearest` and others
