@@ -468,12 +468,15 @@ function searchDialog(site)
 	if(!handlebarsContext.tracking) handlebarsContext.tracking = {};
 	handlebarsContext.tracking.serachIn = hb.compile(language.dialog.tracking.serachIn)({siteName: siteData.name});
 
+	const title = getTitle();
+
+	handlebarsContext.trackingTitle = title;
 	handlebarsContext.trackingSiteKey = site;
 
 	events.dialog({
 		header: false,
 		width: 500,
-		height: 400,
+		height: 600,
 		content: template.load('dialog.tracking.search.html'),
 		buttons: false,
 	});
@@ -481,7 +484,6 @@ function searchDialog(site)
 	events.focus('.input-search');
 	events.eventInput();
 
-	const title = getTitle();
 	searchComic(site, title);
 }
 
@@ -494,8 +496,17 @@ async function searchComic(site, title = false)
 
 	handlebarsContext.trackingSiteKey = site;
 
-	const results = await sitesScripts[site].searchComic(title);
+	let results = await sitesScripts[site].searchComic(title);
 	if(results === null) return; // Invalid session
+
+	results = results.map(function(result){
+
+		const last = result.authors.pop();
+		result.authors = result.authors.length ? result.authors.join(', ')+' '+language.global.and+' '+last : last;
+
+		return result;
+
+	});
 
 	handlebarsContext.trackingResults = results;
 
@@ -602,15 +613,27 @@ function addChapterNumberDialog(done = false, onlySite = false)
 // Scraping functions
 function getTitle()
 {
+	const path = reading.readingCurrentPath();
+	if(!path) return '';
+
 	let title = '';
 
-	if(reading.readingCurrentPath() && compatible.compressed(reading.readingCurrentPath()))
-		title = reading.readingCurrentPath() ? p.basename(reading.readingCurrentPath()).replace(/\.[^/.]+$/, '') : '';
-	else
-		title = dom.history.mainPath ? p.basename(dom.history.mainPath) : '';
+	const firstCompressedFile = fileManager.firstCompressedFile(path);
+	const metadata = fileManager.compressedMetadata(firstCompressedFile);
+
+	if(metadata)
+		title = metadata.series || metadata.localizedSeries || metadata.title || '';
+
+	if(!title)
+	{
+		if(compatible.compressed(path))
+			title = p.basename(path).replace(/\.[^/.]+$/, '');
+		else
+			title = dom.history.mainPath ? p.basename(dom.history.mainPath) : '';
+	}
 
 	// Try detect end of name
-	title = title.replace(/[\.\-_:;].*/, '', title).trim();
+	title = title.replace(/(?:[\.\-_:;]|\sv[0-9]+).*/, '', title).trim();
 
 	// return only first 4 words to avoid incorrect words from the end of the filename
 	title = title.split(/\s+/).splice(0, 4).join(' ');
@@ -624,25 +647,16 @@ function getTitlesAndMetadata()
 	if(!path) return;
 
 	const name = p.basename(path);
+
 	const firstCompressedFile = fileManager.firstCompressedFile(path);
+	const metadata = fileManager.compressedMetadata(firstCompressedFile);
 
 	const titles = [
 		name,
 	];
 
-	let metadata = false;
-
-	if(firstCompressedFile)
-	{
-		let sha = sha1(p.normalize(firstCompressedFile));
-		let cacheFile = 'compressed-files-'+sha+'.json';
-
-		if(cache.existsJson(cacheFile))
-			metadata = cache.readJson(cacheFile).metadata || false;
-
-		if(metadata.title)
-			titles.push(metadata.title);
-	}
+	if(metadata.title)
+		titles.push(metadata.title);
 
 	return {
 		titles: titles,

@@ -1,7 +1,10 @@
 {{#each trackingResults}}
 	<div class="menu-simple-element menu-simple-element-poster" onclick="tracking.setTrackingId('{{@root.trackingSiteKey}}', '{{id}}')">
 		<div class="menu-simple-element-image" style="background-image: url({{image}})"></div>
-		<span>{{title}}</span>
+		<span>
+			<div class="body-medium">{{title}}</div>
+			<span class="body-medium">{{authors}}</span>
+		</span>
 	</div>
 {{else}}
 	<div class="menu-simple-text menu-tracking-sites-empty tracking-search-empty">{{language.dialog.tracking.emptySearch}}</div>

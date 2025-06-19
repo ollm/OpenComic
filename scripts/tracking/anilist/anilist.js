@@ -29,6 +29,16 @@ async function searchComic(title)
 				title {
 					romaji
 				}
+				staff {
+					edges {
+						role
+						node {
+							name {
+								full
+							}
+						}
+					}
+			    }
 			}
 		}
 	}
@@ -62,10 +72,20 @@ async function searchComic(title)
 			const json = await response.json();
 			const results = (json.data?.Page?.media || []).map(function(media) {
 
+				const authors = (media?.staff?.edges || []).map(function(author){
+
+					if(['Story', 'Art', 'Story & Art', 'Original Story'].includes(author.role))
+						return author.node.name.full;
+
+					return false;
+
+				}).filter(Boolean);
+
 				return {
 					id: media.id,
 					title: media.title.romaji,
 					image: media.coverImage.medium,
+					authors: authors,
 				};
 
 			});

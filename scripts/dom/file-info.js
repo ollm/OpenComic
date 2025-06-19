@@ -119,13 +119,7 @@ async function show(path, opds = false)
 	{
 		currentPath = path;
 
-		let sha = sha1(p.normalize(path));
-		let cacheFile = 'compressed-files-'+sha+'.json';
-
-		if(cache.existsJson(cacheFile))
-			metadata = cache.readJson(cacheFile).metadata || false;
-		else
-			metadata = false;
+		metadata = fileManager.compressedMetadata(path);
 
 		if(metadata === false)
 		{

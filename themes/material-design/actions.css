@@ -572,6 +572,26 @@
 	flex: 1;
 }
 
+.menu-simple-element > span > div,
+.menu-simple-element > span > span
+{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+
+.menu-simple-element > span > div
+{
+	margin-top: 15px;
+	margin-bottom: -26px;
+}
+
+.menu-simple-element > span > span
+{
+	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
+}
+
 .menu-simple-element i
 {
 	float: right;

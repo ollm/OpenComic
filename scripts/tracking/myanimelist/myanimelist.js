@@ -15,7 +15,7 @@ async function searchComic(title)
 		q: title,
 		page: 1,
 		perPage: 10,
-		fields: 'title,main_picture', // 'title,main_picture,synopsis',
+		fields: 'title,main_picture,authors{first_name,last_name}', // 'title,main_picture,authors{first_name,last_name},synopsis',
 	});
 
 	const options = {
@@ -38,10 +38,20 @@ async function searchComic(title)
 
 				const node = item.node || {};
 
+				const authors = (node.authors || []).map(function(author){
+
+					if(['Story', 'Art', 'Story & Art', 'Original Story'].includes(author.role))
+						return author.node.first_name+' '+author.node.last_name;
+
+					return false;
+
+				}).filter(Boolean);
+
 				return {
 					id: node.id,
 					title: node.title,
 					image: node.main_picture.medium,
+					authors: authors,
 					// synopsis: media.synopsis || null,
 				};
 

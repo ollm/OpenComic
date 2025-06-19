@@ -2922,6 +2922,19 @@ function containsCompressed(path, index = 0)
 	return false;
 }
 
+function compressedMetadata(path = false)
+{
+	if(!path) return false;
+
+	const sha = sha1(p.normalize(path));
+	const cacheFile = 'compressed-files-'+sha+'.json';
+
+	if(cache.existsJson(cacheFile))
+		return cache.readJson(cacheFile).metadata || false;
+
+	return false;
+}
+
 function splitPath(path)
 {
 	const first = app.extract(/^([\\\/]*[^\\\/]+)[\\\/]*/, path);
@@ -3427,6 +3440,7 @@ module.exports = {
 	firstCompressedFile: firstCompressedFile,
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
+	compressedMetadata: compressedMetadata,
 	splitPath: splitPath,
 	isParentPath: isParentPath,
 	simpleExists: simpleExists,
