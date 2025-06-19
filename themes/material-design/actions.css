@@ -620,16 +620,6 @@
 	z-index: 2;
 }
 
-.menu-simple-element-icon2
-{
-	display: inline-block;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	word-wrap: normal;
-	max-width: 172px;
-}
-
 .menu-simple-element-icon-select
 {
 	transition: 0.2s;

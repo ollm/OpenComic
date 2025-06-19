@@ -3,9 +3,9 @@
 
 		<div class="menu-simple-element menu-simple-element-little gamepad-item">
 			<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(false, false, document.querySelector('#reading-pages .tabs > div > div.active').dataset.name); reading.changePagesView(0);">arrow_back</i>
-			<span class="menu-simple-element-icon2">{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
-			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
+			<span>{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
 			{{#compare _config.key '!==' 0}}<i class="material-icon menu-simple-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
+			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
 		</div>
 
 		{{#compare _config.key '!==' 0}}
@@ -29,22 +29,22 @@
 	{{else}}
 		<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-0 gamepad-item" onclick="reading.setReadingShortcutPagesConfig(0);">
 			<i class="material-icon menu-simple-icon-first">language</i>
-			<span class="menu-simple-element-icon2">{{readingGlobalConfigName}}</span>
-			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, 0);">edit</i>
+			<span>{{readingGlobalConfigName}}</span>
 			<i class="material-icon menu-simple-element-icon-select{{#compare _config.key '===' 0}} active{{/compare}}">check</i>
+			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, 0);">edit</i>
 		</div>
 
 		{{#each readingShortcutPagesConfig}}
 		<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-{{key}} gamepad-item" onclick="reading.setReadingShortcutPagesConfig({{key}});">
 			<i class="material-icon menu-simple-icon-first">palette</i>
-			<span class="menu-simple-element-icon2">{{readingConfigName}}</span>
-			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, {{key}});">edit</i>
+			<span>{{readingConfigName}}</span>
 			<i class="material-icon menu-simple-element-icon-select{{#compare @root._config.key '===' key}} active{{/compare}}">check</i>
+			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, {{key}});">edit</i>
 		</div>
 		{{/each}}
 		<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="reading.newReadingShortcutPagesConfig();">
 			<i class="material-icon menu-simple-icon-first">add</i>
-			<span class="menu-simple-element-icon2">{{language.reading.pages.readingConfigNew}}</span>
+			<span>{{language.reading.pages.readingConfigNew}}</span>
 		</div>
 	{{/if}}
 	<div class="menu-simple-separator"></div>
