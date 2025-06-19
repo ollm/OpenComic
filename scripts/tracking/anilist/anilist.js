@@ -295,12 +295,13 @@ async function track(toTrack)
 			const json = (await response.json()).data?.Media || {};
 
 			const totalChapters = +json.chapters || 0;
+			const totalVolumes = +json.volumes || 0;
 			const {status: userStatus, progress: userChapters, progressVolumes: userVolumes} = json?.mediaListEntry || {};
 
 			let status, chapters, volumes;
 
 			// Status
-			if(totalChapters && toTrack.chapters && toTrack.chapters == totalChapters)
+			if((totalChapters && toTrack.chapters && toTrack.chapters == totalChapters) || (totalVolumes && toTrack.volumes && toTrack.volumes == totalVolumes))
 				status = 'COMPLETED';
 			else if(!userStatus || userStatus !== 'CURRENT')
 				status = 'CURRENT';
@@ -320,6 +321,15 @@ async function track(toTrack)
 
 			if(!status && !chapters && !volumes)
 				return; // Nothing to update
+
+			tracking.setTrackingChapters(site.key, {
+				chapters: totalChapters,
+				volumes: totalVolumes,
+				progress: {
+					chapters: (chapters || userChapters),
+					volumes: (volumes || userVolumes),
+				},
+			}, toTrack.mainPath);
 
 			const query = `
 			mutation ($mediaId: Int, $status: MediaListStatus, $progress: Int, $volumes: Int) {

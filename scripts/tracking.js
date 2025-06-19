@@ -81,6 +81,34 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 			const mainPath = dom.history.mainPath;
 			const readingCurrentPath = reading.readingCurrentPath();
 
+			let chapters = '??';
+			let volumes = '??';
+
+			const tracking = storage.getKey('tracking', mainPath);
+
+			for(let site in tracking)
+			{
+				if(!onlySite || onlySite == site)
+				{
+					const data = tracking[site];
+
+					if(data.chapters)
+						chapters = data.chapters;
+
+					if(data.volumes)
+						volumes = data.volumes;
+
+					const lastUpdatedChapters = data.lastUpdatedChapters || 0;
+
+					if(Date.now() - lastUpdatedChapters > 604800000) // One week
+					{
+						loadSiteScript(site);
+						const comicData = (await sitesScripts[site].getComicData(data.id)) || {};
+						setTrackingChapters(site, comicData, mainPath);
+					}
+				}
+			}
+
 			let allTracked = true;
 
 			for(let key in _trackingSites)
@@ -101,35 +129,11 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 					}
 				}
 
-				if(site.config.session.valid && ((onlySite && onlySite == site.key) || (site.tracking.active && !prevTracked && !onlySite)))
+				const progress = tracking[site.key]?.progress || {};
+				const prevTrackedInSite = ((!chapter || chapter <= progress.chapters) && (!volume || volume <= progress.volumes)) ? true : false;
+
+				if(site.config.session.valid && ((onlySite && onlySite == site.key) || (site.tracking.active && !prevTracked && !prevTrackedInSite && !onlySite)))
 					allTracked = false;
-			}
-
-			let chapters = '??';
-			let volumes = '??';
-
-			const tracking = storage.getKey('tracking', mainPath);
-
-			for(let site in tracking)
-			{
-				if(!onlySite || onlySite == site)
-				{
-					let data = tracking[site];
-
-					if(data.chapters)
-						chapters = data.chapters;
-
-					if(data.volumes)
-						volumes = data.volumes;
-
-					if(Date.now() - data.lastUpdatedChapters > 604800000) // One week
-					{
-						console.log('Get chapters and volumes number');
-
-						const data = (await sitesScripts[site].getComicData()) || {};
-						setTrackingChapters(site, mainPath, data.chapters, data.volumes);
-					}
-				}
 			}
 
 			if(!allTracked)
@@ -168,6 +172,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 								id: site.tracking.id,
 								chapters: vars.chapter,
 								volumes: vars.volume,
+								mainPath: mainPath,
 							});
 						}
 					}
@@ -363,7 +368,7 @@ async function currentTrackingDialog(site)
 	if(!handlebarsContext.trackingResult.volumes)
 		handlebarsContext.trackingResult.volumes = '??';
 
-	setTrackingChapters(site, path, data.chapters, data.volumes);
+	setTrackingChapters(site, data, path);
 
 	$('.dialog-text').html(template.load('dialog.tracking.current.tracking.html'));
 
@@ -556,15 +561,24 @@ function setTrackingId(site, siteId)
 	// Snackbar here
 }
 
-function setTrackingChapters(site, path, chapters = false, volumes = false)
+function setTrackingChapters(site, options = {}, path = dom.history.mainPath)
 {
 	const _tracking = storage.getKey('tracking', path) || {};
+	let data = _tracking[site] || {}
 
-	_tracking[site].chapters = chapters || false;
-	_tracking[site].volumes = volumes || false;
-	_tracking[site].lastUpdatedChapters = Date.now();
+	data = {
+		...data,
+		chapters: options.chapters || data.chapters || false,
+		volumes: options.volumes || data.volumes || false,
+		progress: {
+			chapters: options.progress?.chapters ?? data.progress?.readChapters ?? false,
+			volumes: options.progress?.volumes ?? data.progress?.readVolumes ?? false,
+		},
+		lastUpdatedChapters: Date.now(),
+	};
 
-	storage.updateVar('tracking', dom.history.mainPath, _tracking);
+	_tracking[site] = data;
+	storage.updateVar('tracking', path, _tracking);
 }
 
 // Others dialogs
@@ -830,6 +844,7 @@ module.exports = {
 	refreshTokens: refreshTokens,
 	searchInput: searchInput,
 	setTrackingId: setTrackingId,
+	setTrackingChapters: setTrackingChapters,
 	track: track,
 	trackST: function(){return trackST},
 	getChapter: getChapter,

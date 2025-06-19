@@ -210,12 +210,13 @@ async function track(toTrack)
 			const json = await response.json();
 
 			const totalChapters = +json.num_chapters || 0;
+			const totalVolumes = +json.num_chapters || 0;
 			const {status: userStatus, num_chapters_read: userChapters, num_volumes_read: userVolumes} = json?.my_list_status || {};
 
 			let status, chapters, volumes;
 
 			// Status
-			if(totalChapters && toTrack.chapters && toTrack.chapters == totalChapters)
+			if((totalChapters && toTrack.chapters && toTrack.chapters == totalChapters) || (totalVolumes && toTrack.volumes && toTrack.volumes == totalVolumes))
 				status = 'completed';
 
 			// Chapters
@@ -233,6 +234,15 @@ async function track(toTrack)
 
 			if(!status && !chapters && !volumes)
 				return; // Nothing to update
+
+			tracking.setTrackingChapters(site.key, {
+				chapters: totalChapters,
+				volumes: totalVolumes,
+				progress: {
+					chapters: (chapters || userChapters),
+					volumes: (volumes || userVolumes),
+				},
+			}, toTrack.mainPath);
 
 			const options = {
 				method: 'PUT',

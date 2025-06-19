@@ -106,6 +106,7 @@ async function track(toTrack)
 		id: 0, // Comic id in site
 		chapters: 1, // Chapters to mark
 		volumes: 1, // Volumes to mark
+		mainPath: '', // Used in tracking.setTrackingChapters
 	}
 	*/
 
@@ -114,6 +115,15 @@ async function track(toTrack)
 	tracking.invalidateSession(site.key, Boolean loginDialog = false);
 
 	loginDialog: Show dialog to login again
+	*/
+
+
+	/*
+	Update OpenComic tracking info	
+	tracking.setTrackingChapters(site.key, {chapters, volumes, progress: {chapters, volumes}}, toTrack.mainPath);
+
+	Send tracking data to the site
+	fetch('url', options);
 	*/
 }
 
