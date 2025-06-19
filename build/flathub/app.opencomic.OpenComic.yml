@@ -34,7 +34,7 @@ modules:
           - x86_64
       - type: archive
         url: https://github.com/ollm/OpenComic/releases/download/v1.5.0/opencomic-1.5.0-arm64.tar.gz
-        sha256: c62133166f3b11e92d048cb8a817551983263c8b6829eb00936b4276e5255dd7
+        sha256: 82d032e80e3f29f428a1ae0f908eb8a84c830ab0d523e85e01614c05dda0ceb2
         only-arches:
           - aarch64
       - type: file
