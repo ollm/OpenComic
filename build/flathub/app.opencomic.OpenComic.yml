@@ -28,12 +28,12 @@ modules:
       - install -Dm0755 run.sh --target-directory=${FLATPAK_DEST}/bin/
     sources:
       - type: archive
-        url: https://github.com/ollm/OpenComic/releases/download/v1.4.1/opencomic-1.4.1.tar.gz
-        sha256: d03777f1fb7961e1b9a7d62a024c48f3815bbdb69b4188c8c6ef009a35f7c685
+        url: https://github.com/ollm/OpenComic/releases/download/v1.5.0/opencomic-1.5.0.tar.gz
+        sha256: 6871aebbfe05a7c8db5751d64e94ab370b365e8aa63cdeba3118be4d7e327a81
         only-arches:
           - x86_64
       - type: archive
-        url: https://github.com/ollm/OpenComic/releases/download/v1.4.1/opencomic-1.4.1-arm64.tar.gz
+        url: https://github.com/ollm/OpenComic/releases/download/v1.5.0/opencomic-1.5.0-arm64.tar.gz
         sha256: c62133166f3b11e92d048cb8a817551983263c8b6829eb00936b4276e5255dd7
         only-arches:
           - aarch64
