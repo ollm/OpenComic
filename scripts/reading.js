@@ -4848,24 +4848,19 @@ function pointerleave()
 {
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 	{
+		hideContentRunningST = false;
 		clearTimeout(hideContentST);
 
 		if(shownBarHeader && !document.querySelector('.menu-simple.a'))
 		{
 			dom.query('.bar-header').removeClass('show');
 			reading.setShownBarHeader(false);
-
-			hideContentRunningST = false;
 		}
-
-		clearTimeout(hideContentST);
 
 		if(shownContentLeft)
 		{
 			dom.query('.content-left').removeClass('show');
 			reading.setShownContentLeft(false);
-
-			hideContentRunningST = false;
 		}
 	}
 }
