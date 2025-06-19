@@ -37,7 +37,7 @@ function setSiteData(site)
 
 var tracked = {}, trackST = [], trackIndex = 0;
 
-async function track(chapter = false, volume = false, onlySite = false)
+async function track(chapter = false, volume = false, onlySite = false, reduceIfTrackingAtTheEndIsEnabled = false)
 {
 	let fromDialog = false;
 
@@ -49,6 +49,12 @@ async function track(chapter = false, volume = false, onlySite = false)
 	{
 		chapter = getChapter();
 		volume = getVolume();
+
+		if(reduceIfTrackingAtTheEndIsEnabled && config.readingTrackingAtTheEnd)
+		{
+			chapter = chapter > 1 ? chapter - 1 : false;
+			volume = volume > 1 ? volume - 1 : false;
+		}
 	}
 
 	const _trackingSites = trackingSites.list(true);
@@ -254,7 +260,7 @@ async function login(site, fromConfig = false)
 		if(fromConfig)
 			configTracking(site, true);
 		else
-			tracking.track();
+			tracking.track(false, false, false, true);
 	}
 	else
 	{
@@ -545,7 +551,7 @@ function setTrackingId(site, siteId)
 	if(tracked[dom.history.mainPath] && tracked[dom.history.mainPath][site])
 		tracked[dom.history.mainPath][site] = [];
 
-	tracking.track();
+	tracking.track(false, false, false, true);
 
 	// Snackbar here
 }
