@@ -166,7 +166,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 						}
 					}
 
-				}, 6500, { // 6.5 seconds to track
+				}, 10500, { // 10.5 seconds to track
 					chapter: chapter,
 					volume: volume,
 					onlySite: onlySite,
@@ -177,7 +177,7 @@ async function track(chapter = false, volume = false, onlySite = false)
 				events.snackbar({
 					key: 'trackingConfirm',
 					text: language.reading.tracking.marked+': '+(chapter !== false ? language.reading.tracking.chapter+' '+chapter+'/'+chapters : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+': '+volume+'/'+volumes : ''),
-					duration: 6,
+					duration: 10,
 					update: true,
 					buttons: [
 						{
