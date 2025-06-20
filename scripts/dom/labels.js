@@ -40,7 +40,7 @@ async function _opds(url = false, index = false, title = false)
 		const base64 = opds.opds.base64(url);
 		opds.addPathName(base64, title);
 
-		const path = 'opds:/'+base64;
+		const path = 'opds:'+p.sep+base64;
 		await dom.loadIndexPage(true, path, false, false, path);
 	}
 }

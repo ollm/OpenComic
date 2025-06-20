@@ -835,12 +835,12 @@ async function boxes(path = false, mainPath = false)
 
 			for(const key in opdsCatalogs)
 			{
-				files.push(...Object.values(opdsCatalogs[key].downloadFiles));
+				files.push(...Object.values(opdsCatalogs[key].downloadFiles ?? {}));
 			}
 		}
 		else
 		{
-			files.push(...Object.values(currentCatalog.downloadFiles));
+			files.push(...Object.values(currentCatalog.downloadFiles ?? {}));
 		}
 
 		const comics = [];

@@ -78,6 +78,12 @@ function fixPath(path)
 	return path.replace(/^(?:\.[\/\\]+)?([a-z0-9]+)\:[\/\\]{1,2}/, '$1:'+p.sep+p.sep);
 }
 
+// Windows only
+function fixStart(path)
+{
+	return path.replace(/^(?:\.[\/\\]+)/, '');
+}
+
 function isDomain(host)
 {
 	return /\./.test(host) ? true : false;
@@ -1770,6 +1776,7 @@ module.exports = {
 	getAdress: getAdress,
 	getTypeAdress: getTypeAdress,
 	fixPath: fixPath,
+	fixStart: fixStart,
 	posixPath: posixPath,
 	servers: function(){return servers},
 	serverLastError: _serverLastError,

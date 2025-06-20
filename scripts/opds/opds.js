@@ -243,7 +243,7 @@ function convertPublicationsToFile(feed, path, mainPath, currentUrl)
 				const _base64 = base64(resolveUrl(currentUrl, self.href));
 
 				group.mainPath = mainPath;
-				group.path = p.join(path, _base64);
+				group.path = serverClient.fixStart(p.join(path, _base64));
 
 				opds.addPathName(_base64, group.metadata.title);
 			}
@@ -409,7 +409,7 @@ function parseUrls(feed, path, mainPath, currentUrl)
 			const navigation = feed.navigation[i];
 			const _base64 = base64(resolveUrl(currentUrl, navigation.href));
 
-			navigation.path = p.join(path, _base64);
+			navigation.path = serverClient.fixStart(p.join(path, _base64));
 			navigation.mainPath = mainPath;
 			navigation.differentHost = differentHost(currentUrl, navigation.href) ? navigation.href : false;
 
@@ -427,7 +427,7 @@ function parseUrls(feed, path, mainPath, currentUrl)
 			{
 				const _base64 = base64(resolveUrl(currentUrl, pagination.href));
 
-				pagination.path = p.join(p.dirname(path), _base64);
+				pagination.path = serverClient.fixStart(p.join(p.dirname(path), _base64));
 				pagination.mainPath = mainPath;
 
 				opds.addPathName(_base64, opds.pathName(p.basename(path)));
@@ -449,7 +449,7 @@ function parseUrls(feed, path, mainPath, currentUrl)
 					const rel = getRel(link.rel);
 					const _base64 = base64(resolveUrl(currentUrl, link.href));
 
-					link.path = p.join(p.dirname(path), _base64);
+					link.path = serverClient.fixStart(p.join(p.dirname(path), _base64));
 					link.mainPath = mainPath;
 					link.active = rel == 'self' ? true : false;
 
@@ -521,7 +521,7 @@ function getPath(item, currentUrl, mainPath)
 		if(isOpdsCatalog(link.type))
 		{
 			const _base64 = base64(resolveUrl(currentUrl, link.href));
-			link.path = p.join(mainPath, _base64);
+			link.path = serverClient.fixStart(p.join(mainPath, _base64));
 
 			opds.addPathName(_base64, (link.title || link.name || item.title || item.name || opds.pathName(p.basename(mainPath))));
 
