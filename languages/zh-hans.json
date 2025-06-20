@@ -359,7 +359,7 @@
 		},
 		"tapZones": {
 			"main": "点击区域",
-			"disable": "",
+			"disable": "禁用点击区域",
 			"leftClick": "左键单击",
 			"rightClick": "右键单击",
 			"middleClick": "单击鼠标中键"
@@ -438,7 +438,7 @@
 		"help": {
 			"main": "帮助",
 			"about": "关于 OpenComic",
-			"guides": "",
+			"guides": "指南",
 			"funding": "赞助！",
 			"bug": "报告错误"
 		}
@@ -448,9 +448,9 @@
 			"loginTo": "登录 {{siteName}}",
 			"filePass": "该文件需要密码",
 			"rememberPass": "记住密码",
-			"manualLogin": "",
-			"sessionExpired": "",
-			"loginAgain": ""
+			"manualLogin": "手动登录",
+			"sessionExpired": "与 {{siteName}} 的会话已过期",
+			"loginAgain": "您想再次登录 {{siteName}} 吗？"
 		},
 		"tracking": {
 			"getTokenHeader": "通过令牌登录 {{siteName}}",
