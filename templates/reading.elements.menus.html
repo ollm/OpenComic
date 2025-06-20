@@ -250,9 +250,9 @@
 	<div class="menu-simple elevation-2" style="width: 256px;">
 		<div class="menu-simple-content">
 			<div>
-				<div class="menu-simple-element menu-simple-element-little sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', '{{page.name}}')">{{language.global.sort.name}}</div>
-				<div class="menu-simple-element menu-simple-element-little sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', '{{page.name}}')">{{language.global.sort.number}}</div>
-				<div class="menu-simple-element menu-simple-element-little sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', '{{page.name}}')">{{language.global.sort.nameNumber}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-name gamepad-item{{#compare page.sort '==' 'name'}} s{{/compare}}" onclick="dom.changeSort(1, 'name', 'browsing')">{{language.global.sort.name}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-numeric gamepad-item{{#compare page.sort '==' 'numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'numeric', 'browsing')">{{language.global.sort.number}}</div>
+				<div class="menu-simple-element menu-simple-element-little sort-name-numeric gamepad-item{{#compare page.sort '==' 'name-numeric'}} s{{/compare}}" onclick="dom.changeSort(1, 'name-numeric', 'browsing')">{{language.global.sort.nameNumber}}</div>
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.foldersFirst}}
 					<div class="switch{{#if page.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">
@@ -262,7 +262,7 @@
 				</div>
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.invert}}
-					<div class="switch{{#if page.sortInvert}} a{{/if}}" on="dom.changeSort(2, true, '{{page.name}}')" off="dom.changeSort(2, false, '{{page.name}}')">
+					<div class="switch{{#if page.sortInvert}} a{{/if}}" on="dom.changeSort(2, true, 'browsing')" off="dom.changeSort(2, false, 'browsing')">
 						<div></div>
 						<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 					</div>

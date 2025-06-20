@@ -3175,12 +3175,14 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
+		const imageIndex = reloadIndex();
+
 		updateReadingPagesConfig('readingManga', value);
 
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
 	{
@@ -3338,7 +3340,7 @@ function changePagesView(mode, value, save)
 	}
 }
 
-function reload(full = false)
+function reloadIndex()
 {
 	let imageIndex = false;
 	let newIndex = (currentIndex - 1);
@@ -3355,6 +3357,13 @@ function reload(full = false)
 
 	if(!imageIndex)
 		imageIndex = currentIndex;
+
+	return imageIndex;
+}
+
+function reload(full = false, imageIndex = false)
+{
+	imageIndex = imageIndex !== false ? imageIndex : reloadIndex();
 
 	if(full)
 	{
