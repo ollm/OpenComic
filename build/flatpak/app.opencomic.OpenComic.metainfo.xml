@@ -82,6 +82,56 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.5.0" date="2025-06-19">
+            <description>
+                <p><em>🚀 New Features</em></p>
+                <ul>
+                    <li>Improve chapter detection in tracking</li>
+                    <li>Support for <code>JP2</code> image format</li>
+                    <li>Support for <code>JXR</code> image format</li>
+                    <li>Support for <code>JXL</code> image format</li>
+                    <li>Thumbnail generation speed has been improved</li>
+                    <li>Support for <code>HEIC</code> image format</li>
+                    <li>Option to apply configuration profile based on folder/file label</li>
+                    <li>Option to disable <code>Align with next horizontal</code> when reading on double page</li>
+                    <li>Option in setting to adjust gamepad sensitivity</li>
+                    <li>Copy image to clipboard</li>
+                    <li>OPDS support</li>
+                    <li>Button to enable/disable full screen from the more options menu</li>
+                    <li>Show package versions in About OpenComic</li>
+                    <li>Custom mouse wheel shortcuts</li>
+                    <li>Option to configure mouse wheel sensitivity when zooming</li>
+                    <li>Option to ignore files and folders that match Regex or File pattern</li>
+                    <li>Authentication support for OPDS (Basic and Digest)</li>
+                    <li>Use safeStorage for passwords and tokens</li>
+                    <li>Change extraction of <code>RAR</code> and <code>TAR</code> to 7zip to improve performance</li>
+                    <li>Add suport for compressed <code>LZH</code>, <code>ACE</code>, <code>TAR.GZ</code>, <code>TAR.XZ</code>, <code>TAR.BZIP2</code> and <code>TAR.ZSTD</code></li>
+                    <li>Support compressed files with password</li>
+                    <li>Show release notes in new version dialog</li>
+                    <li>Improved extract performance of big files</li>
+                    <li>Support MyAnimeList tracking</li>
+                    <li>Multi-layer folder labeling/favoriting and header bar filter options</li>
+                    <li>Option to disable tap zones</li>
+                    <li>Refactored navigation history logic (<code>goBack</code>, <code>goForward</code>, etc.)</li>
+                    <li>Count images/pages in file info if they are not in the metadata</li>
+                </ul>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Hide toolbar in full screen</li>
+                    <li>Gamepad menus do not work correctly</li>
+                    <li>Sharp crashes on Arch Linux and other distributions</li>
+                    <li>Add cMap support for PDF.js</li>
+                    <li>Page jumps during zoom animation in vertical reading</li>
+                    <li>Stuttering when decode big images (From sync decode to async when possible)</li>
+                    <li>Move zoom using cursor after turning a pages not working property</li>
+                    <li>Turn page forward in manga mode (Only on non-arrow keys)</li>
+                    <li>Check if the file is written to disk when extracting using 7zip</li>
+                    <li>Wrong size detection for animated AVIF images</li>
+                    <li>Compressed files with unsupported chars in Windows are not correct displayed</li>
+                    <li>Error <code>Failed to retrieve track metadata</code> in some images</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.4.1" date="2025-02-08">
             <description>
                 <p><em>🐛 Bug Fixes</em></p>
