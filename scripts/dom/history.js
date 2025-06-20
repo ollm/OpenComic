@@ -1,7 +1,7 @@
 var history = [],
 	forwardHistory = [],
 	current = false
-	root = false;
+	root = {};
 
 function add(page = {}, _clean = false)
 {

@@ -704,7 +704,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			if(_indexLabel.server)
 			{
 				const root = history.root();
-				selectMenuItem(dom.labels.menuItemSelector(root.indexLabel.has ? root.indexLabel : _indexLabel));
+				selectMenuItem(dom.labels.menuItemSelector(root.indexLabel?.has ? root.indexLabel : _indexLabel));
 
 				handlebarsContext.animationDelay = 0.2;
 				template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
@@ -1026,7 +1026,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	const root = history.root();
 
-	if(!_indexLabel.has && !root.indexLabel.has)
+	if(!_indexLabel.has && !root.indexLabel?.has)
 	{
 		if(!root.recentlyOpened)
 			selectMenuItem('library');
@@ -1289,7 +1289,7 @@ function headerPath(path, mainPath, windowTitle = false)
 
 	const root = history.root();
 
-	if(config.showLibraryPath && (isFromLibrary || root.indexLabel.has || root.recentlyOpened))
+	if(config.showLibraryPath && (isFromLibrary || root.indexLabel?.has || root.recentlyOpened))
 		path.unshift({name: labels.getName(root.indexLabel, root.recentlyOpened), path: '', mainPath: ''});
 
 	let len = path.length;
@@ -1568,7 +1568,7 @@ function goStartPath()
 {
 	const root = history.root();
 
-	if(root.indexLabel.has && !root.recentlyOpened)
+	if(root.indexLabel?.has && !root.recentlyOpened)
 		indexLabel = root.indexLabel;
 
 	if(root.recentlyOpened)
