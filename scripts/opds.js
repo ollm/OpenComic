@@ -710,6 +710,7 @@ function add(save = false)
 			subtitle: '',
 			url: values.url,
 			showOnLeft: values.showOnLeft,
+			downloadFiles: {},
 		});
 
 		storage.set('opdsCatalogs', opdsCatalogs);
