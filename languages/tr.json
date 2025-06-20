@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "Dokunma bölgeleri",
 			"disable": "",
+			"invertInManga": "",
 			"leftClick": "Sol tıklama",
 			"rightClick": "Sağ tıklama",
 			"middleClick": "Orta tıklama"

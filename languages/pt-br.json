@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "Zonas de toque",
 			"disable": "",
+			"invertInManga": "",
 			"leftClick": "Clique esquerdo",
 			"rightClick": "Clique direito",
 			"middleClick": "Clique do meio"

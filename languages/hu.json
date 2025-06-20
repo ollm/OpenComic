@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "",
 			"disable": "",
+			"invertInManga": "",
 			"leftClick": "",
 			"rightClick": "",
 			"middleClick": ""

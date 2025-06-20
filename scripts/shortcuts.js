@@ -51,6 +51,9 @@ function clickTapZone(event, button)
 	pageY = pageY / rect.height;
 	pageX = pageX / rect.width;
 
+	if(config.invertTapZonesInManga && _config.readingManga && !reading.readingViewIs('scroll'))
+		pageX = 1 - pageX;
+
 	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
 	const horizontal = (pageX > 0.66666 ? 'right' : (pageX > 0.33333 ? 'center' : 'left'));
 

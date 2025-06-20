@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 116; // Update this if readingPagesConfig is updated
+const changes = 117; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -164,6 +164,7 @@ const storageDefault = {
 		disableGamepadInput: false,
 		mouseWheelSensitivityInZoom: 10,
 		disableTapZones: false,
+		invertTapZonesInManga: true,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
 		saveImageFolder: getDownloadsPath(),
 		saveImageToFolder: false,

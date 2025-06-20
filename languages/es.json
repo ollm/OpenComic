@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "Zonas de toque",
 			"disable": "Desactivar zonas de toque",
+			"invertInManga": "Invertir las zonas de toque en la lectura de manga",
 			"leftClick": "Clic izquierdo",
 			"rightClick": "Clic derecho",
 			"middleClick": "Clic central"

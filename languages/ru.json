@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "Зоны нажатия",
 			"disable": "",
+			"invertInManga": "",
 			"leftClick": "Левый клик",
 			"rightClick": "Правый клик",
 			"middleClick": "Средний клик"

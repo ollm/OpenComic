@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "Strefy dotyku",
 			"disable": "Wyłącz strefy dotyku",
+			"invertInManga": "",
 			"leftClick": "Lewy przycisk myszy",
 			"rightClick": "Prawy przycisk myszy",
 			"middleClick": "Środkowy przycisk myszy"

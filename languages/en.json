@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "Tap zones",
 			"disable": "Disable tap zones",
+			"invertInManga": "Invert tap zones in manga reading",
 			"leftClick": "Left click",
 			"rightClick": "Right click",
 			"middleClick": "Middle click"

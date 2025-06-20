@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "โซนแตะ",
 			"disable": "",
+			"invertInManga": "",
 			"leftClick": "คลิกซ้าย",
 			"rightClick": "คลิกขวา",
 			"middleClick": "คลิกกลาง"

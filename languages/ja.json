@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "タップ領域",
 			"disable": "",
+			"invertInManga": "",
 			"leftClick": "左クリック",
 			"rightClick": "右クリック",
 			"middleClick": "ホイールクリック"

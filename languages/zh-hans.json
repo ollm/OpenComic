@@ -360,6 +360,7 @@
 		"tapZones": {
 			"main": "点击区域",
 			"disable": "禁用点击区域",
+			"invertInManga": "",
 			"leftClick": "左键单击",
 			"rightClick": "右键单击",
 			"middleClick": "单击鼠标中键"
