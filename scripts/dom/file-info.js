@@ -501,8 +501,11 @@ function _parseContributor(metadata, key)
 		{
 			for(let i = 0, len = metadata[key].length; i < len; i++)
 			{
-				metadata[key].role = key;
-				metadata.contributor.push(metadata[key]);
+				if(typeof metadata[key][i] === 'string')
+					metadata[key][i] = {name: metadata[key][i]};
+
+				metadata[key][i].role = key;
+				metadata.contributor.push(metadata[key][i]);
 			}
 		}
 	}

@@ -48,6 +48,36 @@
 						</div>
 					</div>
 					{{/if}}
+
+
+					{{#if navigation}}
+					<div class="opds-browse-groups">
+						<span class="opds-browse-groups-title">
+							<div>
+								<h2 class="headline-small">{{metadata.title}}</h2>
+								{{#if metadata.description}}<h3 class="body-medium">{{metadata.description}}</h3>{{/if}}
+							</div>
+							{{#if path}}
+							<span>
+								<div class="simple-button filled-tonal gamepad-item" onclick="dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');">
+									<div class="touch-effect">{{../language.global.viewAll}}{{#if metadata.numberOfItems}} ({{metadata.numberOfItems}}){{/if}}</div>
+								</div>
+							</span>
+							{{/if}}
+						</span>
+						<div class="opds-browse-groups-items">
+							<div class="opds-browse-navigation">
+								{{#each navigation}}
+								<div class="opds-browse-navigation-item gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if differentHost}}electron.shell.openExternal('{{chain 'escapeBackSlash' 'escapeQuotesSimples' differentHost}}');{{else}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}">
+									<span class="headline-small">{{title}}</span>
+									{{#if summary}}<span class="body-medium">{{summary}}</span>{{/if}}
+								</div>
+								{{/each}}
+							</div>
+						</div>
+					</div>
+					{{/if}}
+
 				{{/each}}
 			{{/if}}
 

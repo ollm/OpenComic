@@ -263,9 +263,9 @@ function getPosterPath(image)
 	const basename = p.basename(image);
 	const ext = app.extname(basename).replace(/\?.*/, '');
 
-	image = p.join(dirname, opds.btoa(basename)+'.'+ext);
+	image = p.join(dirname, opds.btoa(basename)+(ext ? '.'+ext : ''));
 
-	return image;
+	return serverClient.fixStart(image);
 }
 
 async function getPublicationPosters(feed)
@@ -619,7 +619,7 @@ function getFileName(link)
 	const fileName = link.publicationTitle || p.parse(basename).name;
 	const ext = mime.getExtension(link.mime) || app.extname(basename);
 
-	return fileName.replace(/[\\\/:*?\"<>|]/g, '')+'.'+ext;
+	return fileName.replace(/[\\\/:*?\"<>|]/g, '')+(ext ? '.'+ext : '');
 }
 
 function addUrlFunctions(items, currentUrl, mainPath)

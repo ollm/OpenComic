@@ -191,6 +191,17 @@ function getSelfLink(links)
 	return false;
 }
 
+function getLinks(data)
+{
+	if(data.links)
+		return data.links;
+
+	if(data.href)
+		return [data];
+
+	return [];
+}
+
 function renameSummaryKeyInNavigation(feed)
 {
 	if(feed.navigation)
@@ -236,7 +247,7 @@ function convertPublicationsToFile(feed, path, mainPath, currentUrl)
 		for(let i = 0, len = feed.groups.length; i < len; i++)
 		{
 			const group = feed.groups[i];
-			const self = getSelfLink(group.links ?? []);
+			const self = getSelfLink(getLinks(group));
 
 			if(self)
 			{
@@ -250,6 +261,9 @@ function convertPublicationsToFile(feed, path, mainPath, currentUrl)
 
 			if(group.publications)
 				feed.groups[i] = convertPublicationsToFile(group, path, mainPath, currentUrl);
+
+			if(group.navigation)
+				feed.groups[i] = parseUrls(group, path, mainPath, currentUrl);
 		}
 	}
 
@@ -443,9 +457,11 @@ function parseUrls(feed, path, mainPath, currentUrl)
 
 			if(facet)
 			{
-				for(let j = 0, len2 = facet.links.length; j < len2; j++)
+				const links = getLinks(facet);
+
+				for(let j = 0, len2 = links.length; j < len2; j++)
 				{
-					const link = facet.links[j];
+					const link = links[j];
 					const rel = getRel(link.rel);
 					const _base64 = base64(resolveUrl(currentUrl, link.href));
 
@@ -514,9 +530,11 @@ function base64ToUrl(path)
 
 function getPath(item, currentUrl, mainPath)
 {
-	for(let j = 0, len2 = item.links?.length; j < len2; j++)
+	const links = getLinks(item);
+
+	for(let j = 0, len2 = links?.length; j < len2; j++)
 	{
-		const link = item.links[j];
+		const link = links[j];
 
 		if(isOpdsCatalog(link.type))
 		{
