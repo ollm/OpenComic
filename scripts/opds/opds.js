@@ -236,7 +236,7 @@ function convertPublicationsToFile(feed, path, mainPath, currentUrl)
 		for(let i = 0, len = feed.groups.length; i < len; i++)
 		{
 			const group = feed.groups[i];
-			const self = getSelfLink(group.links);
+			const self = getSelfLink(group.links ?? []);
 
 			if(self)
 			{
