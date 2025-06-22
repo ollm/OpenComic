@@ -1,251 +1,300 @@
 const compatible = {
 	image: {
-		all: [],
-		blob: [ /* This image formats requires conversion to Blob to be displayed */ ],
-		convert: [ /* This image formats requires conversion to PNG to be displayed */ ],
-		jpg: [
-			'jpg',
-			'jpeg',
-			'jif',
-			'jfi',
-			'jfif',
-			'jfif-tbnl',
-			'jpe',
-		],
-		jp2: [
-			'jp2',
-			'j2k',
-			'jpf',
-			'jpm',
-			'jpg2',
-			'j2c',
-			'jpc',
-			'jpx',
-		],
-		jxr: [
-			'jxr',
-			'hdp',
-			'wdp',
-		],
-		jxl: [
-			'jxl',
-		],
-		png: [
-			'png',
-			'x-png',
-			'apng',
-		],
-		svg: [
-			'svg',
-			'svgz',
-		],
-		gif: [
-			'gif',
-		],
-		bmp: [
-			'bmp',
-			'dib',
-		],
-		ico: [
-			'ico',
-		],
-		webp: [
-			'webp',
-		],
-		avif: [
-			'avif',
-			'avifs',
-		],
-		heic: [
-			'heic',
-			'heif',
-		],
-		special: [
-			'tbn',
-		],
+		all: {},
+		blob: { /* This image formats requires conversion to Blob to be displayed */ },
+		convert: { /* This image formats requires conversion to PNG to be displayed */ },
+		jpg: {
+			'jpg': 'image/jpeg',
+			'jpeg': 'image/jpeg',
+			'jif': 'image/jpeg',
+			'jfi': 'image/jpeg',
+			'jfif': 'image/pjpeg',
+			'jfif-tbnl': 'image/jpeg',
+			'jpe': 'image/jpeg',
+		},
+		jp2: {
+			'jp2': 'image/jp2',
+			'j2k': 'image/jp2',
+			'jpf': 'image/jpx',
+			'jpm': 'image/jpm',
+			'jpg2': 'image/jp2',
+			'j2c': 'image/jp2',
+			'jpc': 'image/jp2',
+			'jpx': 'image/jpx',
+		},
+		jxr: {
+			'jxr': 'image/jxr',
+			'hdp': 'image/vnd.ms-photo',
+			'wdp': 'image/vnd.ms-photo',
+		},
+		jxl: {
+			'jxl': 'image/jxl',
+		},
+		png: {
+			'png': 'image/png',
+			'x-png': 'image/png',
+			'apng': 'image/apng',
+		},
+		svg: {
+			'svg': 'image/svg+xml',
+			'svgz': 'image/svg+xml',
+		},
+		gif: {
+			'gif': 'image/gif',
+		},
+		bmp: {
+			'bmp': 'image/bmp',
+			'dib': 'image/bmp',
+		},
+		ico: {
+			'ico': 'image/vnd.microsoft.icon',
+		},
+		webp: {
+			'webp': 'image/webp',
+		},
+		avif: {
+			'avif': 'image/avif',
+			'avifs': 'image/avif-sequence',
+		},
+		heic: {
+			'heic': 'image/heic',
+			'heif': 'image/heif',
+			'heics': 'image/heic-sequence',
+			'heifs': 'image/heif-sequence',
+		},
+		special: {
+			'tbn': 'image/jpeg',
+		},
 	},
 	compressed: {
-		all: [],
-		'7z': [
+		all: {},
+		'7z': {
 			// ZIP
-			'zip',
-			'cbz',
+			'zip': 'application/zip',
+			'cbz': 'application/x-cbz',
 
 			// RAR
-			'rar',
-			'cbr',
+			'rar': 'application/vnd.rar',
+			'cbr': 'application/x-cbr',
 
 			// 7Z
-			'7z',
-			'cb7',
+			'7z': 'application/x-7z-compressed',
+			'cb7': 'application/x-cb7',
 
 			// ACE
-			'ace',
-			'cba',
+			'ace': 'application/x-ace-compressed',
+			'cba': 'application/x-cba',
 
 			// TAR
-			'tar',
-			'cbt',
+			'tar': 'application/x-tar',
+			'cbt': 'application/x-cbt',
 			// GZ (TAR)
-			'tgz',
-			'tar.gz',
-			'tar.gzip',
+			'tgz': 'application/x-tar-compressed',
+			'tar.gz': 'application/gzip',
+			'tar.gzip': 'application/gzip',
 			// XZ (TAR)
-			'txz',
-			'tar.xz',
+			'txz': 'application/x-tar-compressed',
+			'tar.xz': 'application/x-xz',
 			// BZIP2 (TAR)
-			'tbz',
-			'tbz2',
-			'tar.bz2',
-			'tar.bzip2',
+			'tbz': 'application/x-tar-compressed',
+			'tbz2': 'application/x-tar-compressed',
+			'tar.bz2': 'application/x-bzip2',
+			'tar.bzip2': 'application/x-bzip2',
 			// ZSTD (TAR)
-			'tzst',
-			'tar.zst',
-			'tar.zstd',
+			'tzst': 'application/x-tar-compressed',
+			'tar.zst': 'application/x-tar-compressed',
+			'tar.zstd': 'application/x-tar-compressed',
 
 			// LZH
-			'lzh',
-			'lha',
-		],
-		pdf: [
-			'pdf',
-		],
-		epub: [
-			'epub',
-			'epub3',
-		],
+			'lzh': 'application/x-lzh-compressed',
+			'lha': 'application/x-lzh-compressed',
+		},
+		pdf: {
+			'pdf': 'application/pdf',
+		},
+		epub: {
+			'epub': 'application/epub+zip',
+			'epub3': 'application/epub+zip',
+		},
 	},
 	audio: {
-		all: [
-			'mp3',
-			'm4a',
-			'webm',
-			'weba',
-			'ogg',
-			'opus',
-			'wav',
-			'flac',
-		],
+		all: {
+			'mp3': 'audio/mpeg',
+			'mpga': 'audio/mpeg',
+			'm4a': 'audio/mp4',
+			'webm': 'video/webm',
+			'weba': 'audio/webm',
+			'oga': 'audio/ogg',
+			'ogg': 'audio/ogg',
+			'opus': 'audio/ogg',
+			'wav': 'audio/wav',
+			'flac': 'audio/x-flac',
+		},
 	},
 };
 
 const compatibleMime = {
 	image: {
-		all: [],
-		blob: [ /* This image formats requires conversion to Blob to be displayed */ ],
-		convert: [ /* This image formats requires conversion to PNG to be displayed */ ],
-		jpg: [
-			'image/jpeg',
-			'image/pjpeg',
-		],
-		jp2: [
-			'image/jp2',
-			'image/jpx',
-			'image/jpm', 
-		],
-		jxr: [
-			'image/jxr',
-			'image/vnd.ms-photo',
-		],
-		jxl: [
-			'image/jxl',
-		],
-		png: [
-			'image/png',
-			'image/apng',
-		],
-		svg: [
-			'image/svg',
-			'image/svg+xml',
-		],
-		gif: [
-			'image/gif',
-		],
-		bmp: [
-			'image/x-ms-bmp',
-			'image/bmp',
-		],
-		ico: [
-			'image/x-icon',
-			'image/vnd.microsoft.icon',
-		],
-		webp: [
-			'image/webp',
-		],
-		avif: [
-			'image/avif',
-			'image/avif-sequence',
-		],
-		heic: [
-			'image/heic',
-			'image/heif',
-			'image/heic-sequence',
-			'image/heif-sequence',
-		],
+		all: {},
+		blob: { /* This image formats requires conversion to Blob to be displayed */ },
+		convert: { /* This image formats requires conversion to PNG to be displayed */ },
+		jpg: {
+			'image/jpeg': 'jpg',
+			'image/pjpeg': 'jfif',
+		},
+		jp2: {
+			'image/jp2': 'jp2',
+			'image/jpx': 'jpf',
+			'image/jpm': 'jpm', 
+		},
+		jxr: {
+			'image/jxr': 'jxr',
+			'image/vnd.ms-photo': 'hdp',
+		},
+		jxl: {
+			'image/jxl': 'image/jxl',
+		},
+		png: {
+			'image/png': 'png',
+			'image/apng': 'apng',
+		},
+		svg: {
+			'image/svg': 'svg',
+			'image/svg+xml': 'svg',
+		},
+		gif: {
+			'image/gif': 'gif',
+		},
+		bmp: {
+			'image/x-ms-bmp': 'bmp',
+			'image/bmp': 'bmp',
+		},
+		ico: {
+			'image/x-icon': 'ico',
+			'image/vnd.microsoft.icon': 'ico',
+		},
+		webp: {
+			'image/webp': 'webp',
+		},
+		avif: {
+			'image/avif': 'avif',
+			'image/avif-sequence': 'avifs',
+		},
+		heic: {
+			'image/heic': 'heic',
+			'image/heif': 'heif',
+			'image/heic-sequence': 'heics',
+			'image/heif-sequence': 'heifs',
+		},
 	},
 	compressed: {
-		all: [],
-		'7z': [
+		all: {},
+		'7z': {
 			// ZIP
-			'application/zip',
-			'application/x-cbz',
-			'application/x-zip',
-			'application/x-zip-compressed',
-			'application/vnd.comicbook+zip',
+			'application/zip': 'zip',
+			'application/x-cbz': 'cbz',
+			'application/x-zip': 'zip',
+			'application/x-zip-compressed': 'zip',
+			'application/vnd.comicbook+zip': 'cbz',
 
 			// RAR
-			'application/rar',
-			'application/x-cbr',
-			'application/x-rar',
-			'application/x-rar-compressed',
-			'application/vnd.rar',
-			'application/vnd.comicbook-rar',
+			'application/rar': 'rar',
+			'application/x-cbr': 'cbr',
+			'application/x-rar': 'rar',
+			'application/x-rar-compressed': 'rar',
+			'application/vnd.rar': 'rar',
+			'application/vnd.comicbook-rar': 'cbr',
 
 			// 7Z
-			'application/7z',
-			'application/x-cb7',
-			'application/x-7z',
-			'application/x-7z-compressed',
-			'application/vnd.comicbook+7z',
+			'application/7z': '7z',
+			'application/x-cb7': 'cb7',
+			'application/x-7z': '7z',
+			'application/x-7z-compressed': '7z',
+			'application/vnd.comicbook+7z': 'cb7',
 
 			// ACE
-			'application/ace',
-			'application/x-ace',
-			'application/x-cba',
-			'application/x-ace-compressed',
-			'application/vnd.comicbook+ace',
+			'application/ace': 'ace',
+			'application/x-ace': 'ace',
+			'application/x-cba': 'cba',
+			'application/x-ace-compressed': 'ace',
+			'application/vnd.comicbook+ace': 'cba',
 
 			// TAR
-			'application/tar',
-			'application/x-cbt',
-			'application/x-tar',
-			'application/x-tar-compressed',
-			'application/vnd.comicbook+tar',
+			'application/tar': 'tar',
+			'application/x-cbt': 'cbt',
+			'application/x-tar': 'tar',
+			'application/x-tar-compressed': 'tgz',
+			'application/vnd.comicbook+tar': 'cbt',
 
 			// LZH
-			'application/x-lzh-compressed',
-		],
-		pdf: [
-			'application/pdf',
-			'application/x-bzpdf',
-			'application/x-gzpdf',
-		],
-		epub: [
-			'application/epub+zip',
-		],
+			'application/x-lzh-compressed': 'lzh',
+		},
+		pdf: {
+			'application/pdf': 'pdf',
+			'application/x-bzpdf': 'pdf',
+			'application/x-gzpdf': 'pdf',
+		},
+		epub: {
+			'application/epub+zip': 'epub',
+		},
 	},
 	audio: {
-		all: [
-			'audio/mpeg',
-			'audio/mp4',
-			'audio/webm',
-			'audio/ogg',
-			'audio/opus',
-			'audio/wav',
-			'audio/flac',
-		],
+		all: {
+			'audio/mpeg': 'mpga',
+			'audio/mp4': 'm4a',
+			'audio/webm': 'weba',
+			'audio/ogg': 'oga',
+			'audio/opus': 'oga',
+			'audio/wav': 'wav',
+			'audio/flac': 'flac',
+			'audio/x-flac': 'flac',
+		},
 	},
 };
+
+
+// Generate mime and extension map
+function getMime(map, string) // Get mime from extension
+{
+	const ext = app.extname(string);
+	return map.get(ext) ?? map.get(string);
+}
+
+function getExtension(map, string) // Get extension from mime
+{
+	return map.get(string);
+}
+
+function generateMap(object, extension = false)
+{
+	const map = new Map();
+
+	for(const group in object)
+	{
+		for(const format in object[group])
+		{
+			for(const key in object[group][format])
+			{
+				map.set(key, object[group][format][key]);
+			}
+
+			object[group][format] = Object.keys(object[group][format]);
+		}
+	}
+
+	const _get = extension ? getMime : getExtension;
+	const _function = function(string) {
+		return _get(map, string);
+	};
+
+	_function.map = map;
+	_function.get = _function;
+
+	return _function;
+}
+
+const extension = generateMap(compatibleMime);
+const mime = generateMap(compatible, true);
 
 compatible.compressed._7z = compatible.compressed['7z'];
 compatibleMime.compressed._7z = compatibleMime.compressed['7z'];
@@ -344,11 +393,10 @@ function checkCompressed(set, string)
 }
 
 const _export = {
-	check: check,
-	// list: list,
-	mime: {
-
-	},
+	check,
+	// list,
+	extension,
+	mime,
 }
 
 // Generate the object

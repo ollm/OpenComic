@@ -101,7 +101,6 @@
 		"jxl-oxide-wasm": "^0.12.2",
 		"lodash.isequal": "^4.5.0",
 		"marked": "^15.0.12",
-		"mime": "^4.0.7",
 		"minimatch": "^10.0.3",
 		"mv": "^2.1.1",
 		"node-7z": "github:ollm/node-7z",

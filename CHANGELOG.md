@@ -10,8 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Error opening files from the system file explorer [`cecc15d`](https://github.com/ollm/OpenComic/commit/cecc15d44c15545fddb932ee87d99213015f295e)
 - Invert tap zones in manga reading [`08a4d10`](https://github.com/ollm/OpenComic/commit/08a4d10115b4687631bd23695d2accff7933ba81)
-- Error opening an OPDS Catalog
-- Correct support Komga OPDS server
+- Error opening an OPDS Catalog [`d80c2da`](https://github.com/ollm/OpenComic/commit/d80c2dae6f18f3244aa17805f04bbb852181e112)
+- Correct support Komga OPDS server [`0ae69bf`](https://github.com/ollm/OpenComic/commit/0ae69bf29612ef667cf944bf07ab8e7e488fd60c)
+- Some mime types are not correct detected
 
 ## [v1.5.0](https://github.com/ollm/OpenComic/releases/tag/v1.5.0) (19-06-2025)
 

@@ -271,7 +271,7 @@ async function convertImage(path, options = {})
 		job: 'convertImage',
 		key: 'convertImage-'+realPath,
 		path: realPath,
-		mime: mime.getType(realPath),
+		mime: compatible.mime.get(realPath),
 		priorize: options.priorize || false,
 		useThreads: options.useThreads || 1,
 		prework: function(options){
@@ -336,7 +336,7 @@ async function convertImageToBlob(path, options = {})
 		job: 'convertImageToBlob',
 		key: 'convertImageToBlob-'+realPath,
 		path: realPath,
-		mime: mime.getType(realPath),
+		mime: compatible.mime.get(realPath),
 		priorize: options.priorize || false,
 		useThreads: options.useThreads || 1,
 		prework: function(options){

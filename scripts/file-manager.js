@@ -3373,7 +3373,7 @@ function fileToBlob(path)
 
 	const data = fs.readFileSync(path);
 
-	const blob = new Blob([data], {type: mime.getType(path)});
+	const blob = new Blob([data], {type: compatible.mime.get(path)});
 	const blobURL = URL.createObjectURL(blob);
 
 	blobObjectsURL[path] = blobURL;

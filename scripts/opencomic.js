@@ -275,8 +275,6 @@ window.onload = function() {
 
 async function startApp()
 {
-	await loadMime();
-
 	if(config.checkReleases)
 		checkReleases.check();
 
@@ -541,38 +539,6 @@ async function loadFoliateJs()
 	});
 
 	return importPromises.foliateJs;
-}
-
-var mime = false;
-
-async function loadMime()
-{
-	if(importPromises.mime) return importPromises.mime;
-	if(mime) return;
-
-	importPromises.mime = new Promise(async function(resolve){
-
-		const Mime = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/src/index_lite.js')))).Mime;
-		const standardTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/standard.js')))).default;
-		const otherTypes = (await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/mime/dist/types/other.js')))).default;
-
-		mime = new Mime(standardTypes, otherTypes);
-
-		// Define mime types not included in the mime package
-		mime.define({'image/jpeg': ['jif', 'jfi', 'jfif-tbnl']});
-		mime.define({'image/jp2': ['j2k', 'j2c', 'jpc']});
-		mime.define({'image/vnd.ms-photo': ['hdp']});
-		mime.define({'image/avif-sequence': ['avifs']});
-		mime.define({'application/epub+zip': ['epub']});
-		mime.define({'application/x-tar-compressed': ['tgz', 'tar.gz', 'tar.gzip', 'txz', 'tar.xz', 'tbz', 'tbz2', 'tar.bz2', 'tar.bzip2', 'tzst', 'tar.zst', 'tar.zstd']});
-
-		resolve();
-
-		importPromises.mime = false;
-
-	});
-
-	return importPromises.mime;
 }
 
 async function loadWebdav()
