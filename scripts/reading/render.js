@@ -310,6 +310,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 		let rImg = contentRight.querySelector(magnifyingGlass ? '.reading-lens > div > div > div.r-flex .r-img-i'+index : '.reading-body > div > div.r-flex .r-img-i'+index);
 		if(!rImg) return;
 
+		const rotated90 = (imageData?.rotated == 1 || imageData?.rotated == 2) ? true : false;
+
 		if(renderCanvas)
 		{
 			_scale = (_scale || scale);
@@ -332,8 +334,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 			let canvas = originalCanvas.cloneNode(true);
 
-			let originalWidth = +ocImg.dataset.width;
-			let originalHeight = +ocImg.dataset.height;
+			let originalWidth = rotated90 ? +ocImg.dataset.height : +ocImg.dataset.width;
+			let originalHeight = rotated90 ? +ocImg.dataset.width : +ocImg.dataset.height;
 
 			let _config = {
 				width: Math.round(originalWidth * _scale),
@@ -348,7 +350,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			let name = imageData.name;
 			name = (name && !/\.jpg$/.test(name)) ? name+'.jpg' : name;
 
-			canvas.style.transform = 'scale('+(1 / _scale)+')';
+			canvas.style.transform = 'scale('+(1 / _scale)+') '+reading.rotateImage(imageData?.rotated);
 			canvas.style.transformOrigin = 'top left';
 
 			let isRendered = false;
@@ -439,8 +441,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 			_scale = _scale * window.devicePixelRatio;
 
 			let _config = {
-				width: imageData?.rotated ? Math.round(originalHeight * _scale) : Math.round(originalWidth * _scale),
-				height: imageData?.rotated ? Math.round(originalWidth * _scale) : Math.round(originalHeight * _scale),
+				width: rotated90 ? Math.round(originalHeight * _scale) : Math.round(originalWidth * _scale),
+				height: rotated90 ? Math.round(originalWidth * _scale) : Math.round(originalHeight * _scale),
 				compressionLevel: 0,
 				// kernel: 'lanczos3',
 			};
@@ -476,8 +478,8 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				{
 					if(affineInterpolationMethods[_config.kernel])
 					{
-						_config.imageWidth = imageData?.rotated ? imageData.height : imageData.width;
-						_config.imageHeight = imageData?.rotated ? imageData.width : imageData.height;
+						_config.imageWidth = rotated90 ? imageData.height : imageData.width;
+						_config.imageHeight = rotated90 ? imageData.width : imageData.height;
 						_config.interpolator = affineInterpolationMethods[_config.kernel];
 
 						_config.kernel = false;

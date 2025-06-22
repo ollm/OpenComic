@@ -241,6 +241,7 @@ function loadShortcuts()
 				'blankPage',
 				'adjustToWidth',
 				'notEnlargeMoreThanOriginalSize',
+				'rotate',
 				'rotateHorizontals',
 				'ebookLayout',
 				'increaseFontSize',
@@ -295,6 +296,7 @@ function loadShortcuts()
 						'blankPage',
 						'adjustToWidth',
 						'notEnlargeMoreThanOriginalSize',
+						'rotate',
 						'rotateHorizontals',
 					],
 				},
@@ -754,11 +756,31 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				rotate: {
+					name: language.reading.pages.rotate,
+					function: function(){
+
+						let rotate = _config.readingRotate + 1;
+
+						if(rotate > 3)
+							rotate = 0;
+
+						reading.changePagesView(22, rotate, false);
+						shortcutSnackbar(language.reading.pages.rotate, rotate);
+
+						return true;
+					},
+				},
 				rotateHorizontals: {
 					name: language.reading.pages.rotateHorizontals,
 					function: function(){
 
-						reading.changePagesView(19, !_config.readingRotateHorizontals, false);
+						let rotate = _config.readingRotateHorizontals + 1;
+
+						if(rotate > 3)
+							rotate = 0;
+
+						reading.changePagesView(19, rotate, false);
 						shortcutSnackbar(language.reading.pages.rotateHorizontals, _config.readingRotateHorizontals);
 
 						return true;
@@ -885,7 +907,8 @@ function loadShortcuts()
 				'Ctrl+B': 'blankPage',
 				'Ctrl+A': 'adjustToWidth',
 				'Ctrl+L': 'notEnlargeMoreThanOriginalSize',
-				'Ctrl+R': 'rotateHorizontals',
+				'Ctrl+R': 'rotate',
+				'Shift+R': 'rotateHorizontals',
 				'Shift+E': 'ebookLayout',
 				'Shift+2': 'increaseFontSize',
 				'Shift+.': 'increaseFontSize',

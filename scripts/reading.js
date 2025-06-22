@@ -443,18 +443,18 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight0 * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth0 * clipLeft)+'px';
 
-						if(size?.rotated)
+						if(size?.rotated == 1 || size?.rotated == 2)
 						{
 							img.style.height = app.roundDPR(imgWidth0)+'px';
 							img.style.width = app.roundDPR(imgHeight0)+'px';
-							img.style.transform = rotateImage(true);
 						}
 						else
 						{
 							img.style.height = app.roundDPR(imgHeight0)+'px';
 							img.style.width = app.roundDPR(imgWidth0)+'px';
-							img.style.transform = '';
 						}
+
+						img.style.transform = size?.rotated ? rotateImage(size.rotated) : '';
 
 						if(originalSize)
 							img.classList.add('originalSize');
@@ -515,18 +515,18 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight1 * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth1 * clipLeft)+'px';
 
-						if(size?.rotated)
+						if(size?.rotated == 1 || size?.rotated == 2)
 						{
 							img.style.height = app.roundDPR(imgWidth1)+'px';
 							img.style.width = app.roundDPR(imgHeight1)+'px';
-							img.style.transform = rotateImage(true);
 						}
 						else
 						{
 							img.style.height = app.roundDPR(imgHeight1)+'px';
 							img.style.width = app.roundDPR(imgWidth1)+'px';
-							img.style.transform = '';
 						}
+
+						img.style.transform = size?.rotated ? rotateImage(size.rotated) : '';
 
 						if(originalSize)
 							img.classList.add('originalSize');
@@ -629,18 +629,18 @@ function disposeImages(data = false)
 						img.style.marginTop = -app.roundDPR(imgHeight * clipTop)+'px';
 						img.style.marginLeft = -app.roundDPR(imgWidth * clipLeft)+'px';
 
-						if(size?.rotated)
+						if(size?.rotated == 1 || size?.rotated == 2)
 						{
 							img.style.height = app.roundDPR(imgWidth)+'px';
 							img.style.width = app.roundDPR(imgHeight)+'px';
-							img.style.transform = rotateImage(true);
 						}
 						else
 						{
 							img.style.height = app.roundDPR(imgHeight)+'px';
 							img.style.width = app.roundDPR(imgWidth)+'px';
-							img.style.transform = '';
 						}
+
+						img.style.transform = size?.rotated ? rotateImage(size.rotated) : '';
 
 						if(originalSize)
 							img.classList.add('originalSize');
@@ -2461,8 +2461,8 @@ function fixBlurOnZoom(scale = 1, index = false)
 
 		if(img.tagName != 'CANVAS')
 		{
-			let width = image?.rotated ? +ocImg.dataset.height : +ocImg.dataset.width;
-			let height = image?.rotated ? +ocImg.dataset.width : +ocImg.dataset.height;
+			let width = (image?.rotated == 1 || image?.rotated == 2) ? +ocImg.dataset.height : +ocImg.dataset.width;
+			let height = (image?.rotated == 1 || image?.rotated == 2) ? +ocImg.dataset.width : +ocImg.dataset.height;
 
 			let _width = Math.round(width * scale * window.devicePixelRatio);
 			let _height = Math.round(height * scale * window.devicePixelRatio);
@@ -2470,6 +2470,8 @@ function fixBlurOnZoom(scale = 1, index = false)
 			img.style.width = (_width / window.devicePixelRatio)+'px';
 			img.style.height = (_height / window.devicePixelRatio)+'px';
 		}
+
+		console.log('scale('+_scale+') '+rotateImage(image?.rotated, 0.001, 0.001));
 
 		if(img.tagName == 'CANVAS')
 			img.style.transform = 'scale('+(_scale / window.devicePixelRatio)+') '+rotateImage(image?.rotated, 0.001, 0.001);
@@ -2712,10 +2714,12 @@ function scrollWithMouse()
 	window.requestAnimationFrame(scrollWithMouse);
 }
 
-function rotateImage(rotate = false, x = 0, y = 0)
+function rotateImage(rotated = false, x = 0, y = 0)
 {
-	if(rotate)
-		return 'rotate('+(_config.readingRotateHorizontalsAnticlockwise ? '-' : '')+'90deg) '+(_config.readingRotateHorizontalsAnticlockwise ? 'translate(calc(-100% + '+x+'px), '+y+')' : 'translate('+x+'px, calc(-100% + '+y+'px))');
+	if(rotated == 3)
+		return 'rotate(180deg) translate(calc(-100% + '+x+'px), calc(-100% + '+y+'px))';
+	else if(rotated)
+		return 'rotate('+(rotated == 1 ? '-' : '')+'90deg) '+(rotated == 1 ? 'translate(calc(-100% + '+x+'px), '+y+'px)' : 'translate('+x+'px, calc(-100% + '+y+'px))');
 	else if(x || y)
 		return 'translate('+x+'px, '+y+'px)';
 
@@ -3315,15 +3319,6 @@ function changePagesView(mode, value, save)
 
 		reading.reload(false, imageIndex);
 	}
-	else if(mode == 19) // Rotate horizontal images
-	{
-		updateReadingPagesConfig('readingRotateHorizontals', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
-	}
 	else if(mode == 20) // Force show single page in scroll mode
 	{
 		updateReadingPagesConfig('readingForceSinglePage', value);
@@ -3338,6 +3333,40 @@ function changePagesView(mode, value, save)
 	else if(mode == 21) // Align double pages with the next horizontal image
 	{
 		updateReadingPagesConfig('readingAlignWithNextHorizontal', value);
+
+		if(readingIsEbook) handlebarsContext.loading = true;
+		template.loadContentRight('reading.content.right.html', true);
+
+		reading.reload(false, imageIndex);
+	}
+	else if(mode == 19 || mode == 22) // Rotate images
+	{
+		const globalElement = template._globalElement();
+
+		const key = (mode == 22 ? 'readingRotate' : 'readingRotateHorizontals');
+		const element = (mode == 22 ? globalElement.querySelector('.reading-rotate') : globalElement.querySelector('.reading-rotate-horizontals'));
+
+		const css = {
+			1: 'reading-rotate-left',
+			2: 'reading-rotate-right',
+			3: 'reading-rotate-upside-down',
+		};
+
+		const current = _config[key];
+
+		if(current == value)
+		{
+			dom.this(element).find('.chip.active', true).removeClass('active');
+
+			value = 0;
+		}
+		else
+		{
+			dom.this(element).find('.chip.active', true).removeClass('active');
+			dom.this(element).find('.chip.'+css[value], true).addClass('active');
+		}
+
+		updateReadingPagesConfig(key, value);
 
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
@@ -5570,7 +5599,12 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			images[index] = {index: index, path: path};
 			imagesPath[path] = index;
 
-			imagesData[index] = {width: width, height: height, aspectRatio: (width / height), name: image.name};
+			const rotated = (width > height) ? _config.readingRotateHorizontals : _config.readingRotate;
+
+			if(rotated == 1 || rotated == 2)
+				imagesData[index] = {width: height, height: width, aspectRatio: (height / width), rotated: rotated, name: image.name};
+			else
+				imagesData[index] = {width: width, height: height, aspectRatio: (width / height), rotated: rotated, name: image.name};
 		}
 
 		render.setImagesData(imagesData);
@@ -5614,10 +5648,12 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 			if(size)
 			{
-				if(_config.readingRotateHorizontals && size.width > size.height)
-					imagesData[image.index] = {width: size.height, height: size.width, aspectRatio: (size.height / size.width), rotated: true};
+				const rotated = (size.width > size.height) ? _config.readingRotateHorizontals : _config.readingRotate;
+
+				if(rotated == 1 || rotated == 2)
+					imagesData[image.index] = {width: size.height, height: size.width, aspectRatio: (size.height / size.width), rotated: rotated};
 				else
-					imagesData[image.index] = {width: size.width, height: size.height, aspectRatio: (size.width / size.height), rotated: false};
+					imagesData[image.index] = {width: size.width, height: size.height, aspectRatio: (size.width / size.height), rotated: rotated};
 
 				images[image.index] = {index: image.index, path: image.path};
 				imagesPath[image.path] = image.index;
@@ -5767,6 +5803,7 @@ module.exports = {
 	generateEbookPagesDelayed: generateEbookPagesDelayed,
 	isEbook: function(){return readingIsEbook},
 	isCanvas: function(){return readingIsCanvas},
+	rotateImage: rotateImage,
 	setIsLoaded: function(value){isLoaded=value},
 	isLoaded: function(value){return isLoaded},
 	isLoad: isLoad,
