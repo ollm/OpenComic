@@ -437,7 +437,7 @@ function downloadOrSelect(type, index = false)
 		for(let i = 0, len = links.length; i < len; i++)
 		{
 			const link = links[i];
-			const name = (link.title || language.buttons[type] || type)+' ('+mime.getExtension(link.mime)+')';
+			const name = (link.title || language.buttons[type] || type)+' ('+compatible.extension.get(link.mime)+')';
 
 			items.push({
 				name: name,
@@ -617,7 +617,7 @@ function getFileName(link)
 {
 	const basename = p.basename(link.href);
 	const fileName = link.publicationTitle || p.parse(basename).name;
-	const ext = mime.getExtension(link.mime) || app.extname(basename);
+	const ext = compatible.extension.get(link.mime) || app.extname(basename);
 
 	return fileName.replace(/[\\\/:*?\"<>|]/g, '')+(ext ? '.'+ext : '');
 }
