@@ -21,7 +21,7 @@
 			{{else}}
 			<oc-img>
 				{{#if canvas}}
-				<canvas data-width="{{size.width}}" data-height="{{size.height}}" data-path="{{path}}" data-index="{{index}}" data-name="{{name}}"></canvas>
+				<img data-width="{{size.width}}" data-height="{{size.height}}" data-src="{{image}}" data-path="{{path}}" data-index="{{index}}" data-name="{{name}}" decoding="async">
 				{{else if ebook}}
 				<!-- <iframe> -->
 				{{else}}

@@ -249,11 +249,11 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 			}
 			else
 			{
-				queue.add('readingRender', async function() {
+				queue.add('readingRender', async function(queueIndex) {
 
-					return render(nextI, scale, magnifyingGlass);
+					return render(nextI, scale, magnifyingGlass, queueIndex);
 
-				});
+				}, queue.index('readingRender'));
 			}
 		}
 
@@ -270,11 +270,11 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 				}
 				else
 				{
-					queue.add('readingRender', async function() {
+					queue.add('readingRender', async function(queueIndex) {
 
-						return render(prevI, scale, magnifyingGlass);
+						return render(prevI, scale, magnifyingGlass, queueIndex);
 
-					});
+					}, queue.index('readingRender'));
 				}
 			}
 		}
@@ -299,7 +299,7 @@ async function setOnRender(num = 1, callback = false)
 	};
 }
 
-async function render(index, _scale = false, magnifyingGlass = false)
+async function render(index, _scale = false, magnifyingGlass = false, queueIndex = 0)
 {
 	let imageData = imagesData[index] || false;
 
@@ -312,64 +312,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 
 		const rotated90 = (imageData?.rotated == 1 || imageData?.rotated == 2) ? true : false;
 
-		if(renderCanvas)
-		{
-			_scale = (_scale || scale);
-
-			if(magnifyingGlass)
-				_scale = scale * scaleMagnifyingGlass;
-
-			if(magnifyingGlass)
-				renderedMagnifyingGlass[index] = _scale;
-			else
-				rendered[index] = _scale;
-
-			_scale = _scale * window.devicePixelRatio// * (_scale != 1 ? 1.5 : 1); // 1.5 more scale is applied to avoid blurry text due to transform if scale is not 1
-
-			let ocImg = rImg.querySelector('oc-img');
-			if(!ocImg) return;
-
-			let originalCanvas = ocImg.querySelector('canvas');
-			if(!originalCanvas) return;
-
-			let canvas = originalCanvas.cloneNode(true);
-
-			let originalWidth = rotated90 ? +ocImg.dataset.height : +ocImg.dataset.width;
-			let originalHeight = rotated90 ? +ocImg.dataset.width : +ocImg.dataset.height;
-
-			let _config = {
-				width: Math.round(originalWidth * _scale),
-			};
-
-			if(_config.width > config.renderMaxWidth)
-			{
-				_config.width = config.renderMaxWidth;
-				_scale = (_config.width / originalWidth);
-			}
-
-			let name = imageData.name;
-			name = (name && !/\.jpg$/.test(name)) ? name+'.jpg' : name;
-
-			canvas.style.transform = 'scale('+(1 / _scale)+') '+reading.rotateImage(imageData?.rotated);
-			canvas.style.transformOrigin = 'top left';
-
-			let isRendered = false;
-
-			if(canvas && name)
-				isRendered = await file.renderCanvas(name, canvas, _config);
-
-			if(isRendered)
-			{
-				canvas.style.width = Math.round(isRendered.width)+'px';
-				canvas.style.height = Math.round(isRendered.height)+'px';
-
-				canvas.dataset.width = Math.round(isRendered.width);
-				canvas.dataset.height = Math.round(isRendered.height);
-
-				ocImg.replaceChildren(canvas);
-			}
-		}
-		else if(renderEbook)
+		if(renderEbook)
 		{
 			rendered[index] = 1;
 			renderedMagnifyingGlass[index] = 1;
@@ -402,7 +345,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				ebook.applyConfigToHtml(iframeMG.contentDocument);
 			}
 		}
-		else if(renderImages)
+		else if(renderImages || renderCanvas)
 		{
 			let cssMethods = {
 				'pixelated': 'pixelated',
@@ -460,7 +403,60 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				_config.blob = true;
 			}
 
-			if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
+			if(renderCanvas)
+			{
+				if(_config.width > config.renderMaxWidth)
+					_config.width = config.renderMaxWidth;
+
+				if(renderedObjectsURLCache[key])
+				{
+					const data = renderedObjectsURLCache[key];
+
+					img.src = data.blob;
+					img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
+					img.style.imageRendering = '';
+
+					img.dataset.width = Math.round(data.width);
+					img.dataset.height = Math.round(data.height);
+				}
+				else
+				{
+					try
+					{
+						let name = imageData.name;
+						name = (name && !/\.jpg$/.test(name)) ? name+'.jpg' : name;
+
+						let data = false;
+
+						if(name)
+						{
+							data = await file.renderBlob(name, _config);
+							if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+
+							img.src = data.blob;
+							img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
+							img.style.imageRendering = '';
+
+							img.dataset.width = Math.round(data.width);
+							img.dataset.height = Math.round(data.height);
+
+							renderedObjectsURL.push({data: data, img: img});
+							renderedObjectsURLCache[key] = data;
+						}
+						else
+						{
+							await srcToImage(src, img);
+						}
+					}
+					catch(error)
+					{
+						console.error(error);
+
+						await srcToImage(src, img);
+					}
+				}
+			}
+			else if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
 			{
 				if(cssMethods[_config.kernel])
 				{
@@ -470,7 +466,7 @@ async function render(index, _scale = false, magnifyingGlass = false)
 				}
 				else if(renderedObjectsURLCache[key])
 				{
-					img.src = renderedObjectsURLCache[key];
+					img.src = renderedObjectsURLCache[key].blob;
 					img.classList.add('blobRendered', 'blobRender');
 					img.style.imageRendering = '';
 				}
@@ -488,28 +484,30 @@ async function render(index, _scale = false, magnifyingGlass = false)
 					try
 					{
 						let data = await image.resizeToBlob(src, _config);
+						if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+
 						img.src = data.blob;
 						img.classList.add('blobRendered', 'blobRender');
 						img.style.imageRendering = '';
 
 						renderedObjectsURL.push({data: data, img: img});
-						renderedObjectsURLCache[key] = data.blob;
+						renderedObjectsURLCache[key] = {blob: data.blob};
 					}
 					catch(error)
 					{
 						console.error(error);
 
-						await srcToImage(src, img)
+						await srcToImage(src, img);
 					}
 				}
 				else
 				{
-					await srcToImage(src, img)
+					await srcToImage(src, img);
 				}
 			}
 			else
 			{
-				await srcToImage(src, img)
+				await srcToImage(src, img);
 			}
 
 			if((onRender && onRender.num > 0) || _scale)

@@ -401,14 +401,6 @@ function createPageTurnElement(original, toInsert, zIndex)
 
 	toInsert.insertAdjacentElement('beforeend', div);
 
-	const oCanvases = original.querySelectorAll('canvas');
-	const cCanvases = cloned.querySelectorAll('canvas');
-
-	for(let i = 0, len = cCanvases.length; i < len; i++)
-	{
-		cCanvases[i].getContext('2d').drawImage(oCanvases[i], 0, 0);
-	}
-
 	return div;
 }
 

@@ -9,7 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Allow disabling `Do not enlarge more than its original size` in Webtoon mode [`7519ac5`](https://github.com/ollm/OpenComic/commit/7519ac5cd0ac4407a4d0edec7e7a3e2a76832f84)
-- Improved rotation and support for rotating in PDF
+- Improved rotation and support for rotating in PDF [`cb90771`](https://github.com/ollm/OpenComic/commit/cb907714ca7d713bcbf3471564e48a3e67c8ca40)
+- PDFs are rendered to a blob image instead of a canvas
 
 ##### 🐛 Bug Fixes
 

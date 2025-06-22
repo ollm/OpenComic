@@ -227,8 +227,7 @@
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.pixelated,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.originalSize:not(.zoomed),/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.zoomOriginalSize,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
-.reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.blobRendered,/* .reading-lens:not(.zooming) .r-img > oc-img > *.blobRendered*/
-.reading-body:not(.zooming):not(.resizing) .r-img > oc-img > canvas/* .reading-lens:not(.zooming) .r-img > oc-img > *.blobRendered*/
+.reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.blobRendered/* .reading-lens:not(.zooming) .r-img > oc-img > *.blobRendered*/
 {
 	image-rendering: pixelated;
 }
@@ -952,8 +951,7 @@
 .reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.pixelated,
 .reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.originalSize:not(.zoomed),
 .reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.zoomOriginalSize,
-.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.blobRendered,
-.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > canvas
+.reading-body:not(.zooming):not(.resizing) .reading-transitions .r-img > oc-img > *.blobRendered
 {
 	image-rendering: initial;
 }

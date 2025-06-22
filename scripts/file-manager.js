@@ -1441,13 +1441,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.renderCanvas = async function(file, canvas, config = {}) {
+	this.renderBlob = async function(file, config = {}) {
 
 		this.updateConfig(config);
 		this.getFeatures();
 
 		if(this.features.pdf)
-			return this.renderCanvasPdf(file, canvas);
+			return this.renderBlobPdf(file);
 
 	}
 
@@ -2200,16 +2200,16 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.renderCanvasPdf = async function(file, canvas) {
+	this.renderBlobPdf = async function(file) {
 
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
 
 		let status = this.getFileStatus(file);
 
-		if((status && (status.widthRendered !== this.config.width || status.canvasRendered !== canvas)) || this.config.force)
+		if((status && (status.widthRendered !== this.config.width)) || this.config.force)
 		{
-			console.log('renderCanvasPdf');
+			console.log('renderBlobPdf');
 
 			// Render page
 			let page = await pdf.getPage(status.page);
@@ -2217,21 +2217,24 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			let scale = this.config.width / status.size.width;
 			let viewport = page.getViewport({scale: scale});
 
-			canvas.width = viewport.width = Math.round(viewport.width);
-			canvas.height = viewport.height = Math.round(viewport.height);
+			let canvas = document.createElement('canvas');
+			canvas.width = viewport.width = this.config.width;
+			canvas.height = viewport.height = this.config.height;
 			let context = canvas.getContext('2d');
 
 			await page.render({canvasContext: context, viewport: viewport}).promise;
 
-			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width, canvasRendered: canvas});
+			const blob = await new Promise(function(resolve){
+				canvas.toBlob(resolve, 'image/png');
+			});
 
-			return {width: viewport.width, height: viewport.height};
+			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width});
+
+			return {blob: URL.createObjectURL(blob), width: viewport.width, height: viewport.height};
 		}
 
 		return false;
 	}
-
-
 
 	// ePub
 	this.epub = false;

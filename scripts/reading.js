@@ -2447,35 +2447,33 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 // Fix blur on zoom cause by tranform scale, still happening in vertical reader in some conditions
 function fixBlurOnZoom(scale = 1, index = false)
 {
-	let _scale = 1 / scale;
+	const _scale = 1 / scale;
 
-	let contentRight = template._contentRight();
-	let images = index !== false ? contentRight.querySelectorAll('.image-position'+index+' oc-img img, .image-position'+index+' oc-img canvas') : contentRight.querySelectorAll('.r-img oc-img img, .r-img oc-img canvas');
+	const contentRight = template._contentRight();
+	const images = index !== false ? contentRight.querySelectorAll('.image-position'+index+' oc-img img') : contentRight.querySelectorAll('.r-img oc-img img');
 
 	for(let i = 0, len = images.length; i < len; i++)
 	{
-		let img = images[i];
-		let image = imagesData[+img.dataset.index] || [];
+		const img = images[i];
+		const image = imagesData[+img.dataset.index] || [];
 
-		let ocImg = img.parentElement;
+		const ocImg = img.parentElement;
 
-		if(img.tagName != 'CANVAS')
-		{
-			let width = (image?.rotated == 1 || image?.rotated == 2) ? +ocImg.dataset.height : +ocImg.dataset.width;
-			let height = (image?.rotated == 1 || image?.rotated == 2) ? +ocImg.dataset.width : +ocImg.dataset.height;
+		let width, height;
 
-			let _width = Math.round(width * scale * window.devicePixelRatio);
-			let _height = Math.round(height * scale * window.devicePixelRatio);
+		width = +ocImg.dataset.width;
+		height = +ocImg.dataset.height;
 
-			img.style.width = (_width / window.devicePixelRatio)+'px';
-			img.style.height = (_height / window.devicePixelRatio)+'px';
-		}
+		width = Math.round(width * scale * window.devicePixelRatio);
+		height = Math.round(height * scale * window.devicePixelRatio);
 
-		console.log('scale('+_scale+') '+rotateImage(image?.rotated, 0.001, 0.001));
+		width = (image?.rotated == 1 || image?.rotated == 2) ? height : width;
+		height = (image?.rotated == 1 || image?.rotated == 2) ? width : height;
 
-		if(img.tagName == 'CANVAS')
-			img.style.transform = 'scale('+(_scale / window.devicePixelRatio)+') '+rotateImage(image?.rotated, 0.001, 0.001);
-		else if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
+		img.style.width = (width / window.devicePixelRatio)+'px';
+		img.style.height = (height / window.devicePixelRatio)+'px';
+
+		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.001, 0.001);
 		else
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
@@ -2490,21 +2488,18 @@ function fixBlurOnZoom(scale = 1, index = false)
 
 			for(let i = 0, len = images.length; i < len; i++)
 			{
-				let img = images[i];
-				let image = imagesData[+img.dataset.index] || [];
+				const img = images[i];
+				const image = imagesData[+img.dataset.index] || [];
 
-				if(img.tagName != 'CANVAS' && !img.classList.contains('blobRender') && !img.classList.contains('zoomOriginalSize') && !img.classList.contains('originalSize'))
-				{
-					let rect = img.getBoundingClientRect();
+				const rect = img.getBoundingClientRect();
 
-					let left = -(rect.left - app.floorDPR(rect.left));
-					let top = -(rect.top - app.floorDPR(rect.top));
+				let left = -(rect.left - app.floorDPR(rect.left));
+				let top = -(rect.top - app.floorDPR(rect.top));
 
-					if(left < -0.5) left++;
-					if(top < -0.5) top++;
+				if(left < -0.5) left++;
+				if(top < -0.5) top++;
 
-					img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
-				}
+				img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
 			}
 
 		});

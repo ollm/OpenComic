@@ -1,4 +1,4 @@
-var processingTheQueue = {}, queued = {}, onEnd = {}, queueIsStop = {};
+var processingTheQueue = {}, queued = {}, queueIndex = {}, onEnd = {}, queueIsStop = {};
 
 async function processTheQueue(key)
 {
@@ -91,6 +91,7 @@ async function addToQueue(key, callback)
 function cleanQueue(key = false)
 {
 	queued[key] = [];
+	queueIndex[key] = 1 + (queueIndex[key] ?? 0);
 }
 
 function checkEnd(key)
@@ -127,6 +128,7 @@ module.exports = {
 	end: end,
 	stop: stop,
 	resume: resume,
+	index: function(key){return queueIndex[key] ?? 0},
 	get: function(key){return queued[key]},
 	set: function(key, value){queued[key] = value},
 };
