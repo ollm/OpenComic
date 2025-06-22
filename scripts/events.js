@@ -1447,4 +1447,5 @@ module.exports = {
 	goRange: goRange,
 	loadingProgress: loadingProgress,
 	buttonLoading: buttonLoading,
+	swiftClick: swiftClick,
 };

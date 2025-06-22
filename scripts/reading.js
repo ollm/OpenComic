@@ -345,7 +345,7 @@ function disposeImages(data = false)
 		imageElements[key1][key2].push(image.firstElementChild);
 	}
 
-	let readingNotEnlargeMoreThanOriginalSize = (_config.readingNotEnlargeMoreThanOriginalSize || _config.readingWebtoon) ? true : false;
+	let readingNotEnlargeMoreThanOriginalSize = _config.readingNotEnlargeMoreThanOriginalSize ? true : false;
 	
 	for(let key1 in _imagesDistribution)
 	{
@@ -3097,6 +3097,8 @@ function changePagesView(mode, value, save)
 	if(currentScale != 1)
 		reading.resetZoom(true, false, false);
 
+	const imageIndex = reloadIndex();
+
 	if(mode == 0)
 	{
 		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
@@ -3105,7 +3107,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 1) // Set the scroll mode
 	{
@@ -3122,7 +3124,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 2) // Sets the margin of the pages
 	{
@@ -3140,7 +3142,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
@@ -3162,7 +3164,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
@@ -3171,12 +3173,10 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
-		const imageIndex = reloadIndex();
-
 		updateReadingPagesConfig('readingManga', value);
 
 		if(readingIsEbook) handlebarsContext.loading = true;
@@ -3190,7 +3190,13 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-ajust-to-width, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-ajust-to-width, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
+		
+			if(!_config.readingNotEnlargeMoreThanOriginalSize)
+			{
+				events.swiftClick.call(template._globalElement().querySelector('.reading-not-enlarge-more-than-original-size .switch'));
+				updateReadingPagesConfig('readingNotEnlargeMoreThanOriginalSize', true);
+			}
 		}
 		else
 		{
@@ -3200,13 +3206,13 @@ function changePagesView(mode, value, save)
 			if(_config.readingDoublePage)
 				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
 
-			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-not-enlarge-more-than-original-size, .reading-margin-vertical').removeClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-margin-vertical').removeClass('disable-pointer');
 		}
 
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
@@ -3237,7 +3243,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 13) // Set width adjustment
 	{
@@ -3251,7 +3257,7 @@ function changePagesView(mode, value, save)
 		else
 			template.globalElement('.reading-horizontals-margin').addClass('disable-pointer');
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
@@ -3307,7 +3313,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 19) // Rotate horizontal images
 	{
@@ -3316,7 +3322,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 	else if(mode == 20) // Force show single page in scroll mode
 	{
@@ -3336,7 +3342,7 @@ function changePagesView(mode, value, save)
 		if(readingIsEbook) handlebarsContext.loading = true;
 		template.loadContentRight('reading.content.right.html', true);
 
-		reading.reload();
+		reading.reload(false, imageIndex);
 	}
 }
 

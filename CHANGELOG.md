@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## v1.5.1 (dd-mm-yyyy)
 
+##### 🚀 New Features
+
+- Allow disabling `Do not enlarge more than its original size` in Webtoon mode
+
 ##### 🐛 Bug Fixes
 
 - Error opening files from the system file explorer [`cecc15d`](https://github.com/ollm/OpenComic/commit/cecc15d44c15545fddb932ee87d99213015f295e)

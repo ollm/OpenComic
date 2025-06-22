@@ -320,6 +320,30 @@ function migrateCompressedFilesWithUnsupportedCharsInWindows(data)
 	return data;
 }
 
+function migrateWebtoonNotEnlargeMoreThanOriginalSize(data)
+{
+	console.time('Migration: webtoonNotEnlargeMoreThanOriginalSize');
+
+	if(data.config.readingWebtoon)
+		data.config.readingNotEnlargeMoreThanOriginalSize = true;
+
+	for(let key in data.readingShortcutPagesConfig)
+	{
+		if(data.readingShortcutPagesConfig[key].readingWebtoon)
+			data.readingShortcutPagesConfig[key].readingNotEnlargeMoreThanOriginalSize = true;
+	}
+
+	for(let key in data.readingPagesConfig)
+	{
+		if(data.readingPagesConfig[key].readingWebtoon)
+			data.readingPagesConfig[key].readingNotEnlargeMoreThanOriginalSize = true;
+	}
+
+	console.timeEnd('Migration: webtoonNotEnlargeMoreThanOriginalSize');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -352,6 +376,9 @@ function start(data)
 
 	if(changes < 113) // Fix compressed files with unsupported characters in Windows
 		data = migrateCompressedFilesWithUnsupportedCharsInWindows(data);
+
+	if(changes < 119) // Fix compressed files with unsupported characters in Windows
+		data = migrateWebtoonNotEnlargeMoreThanOriginalSize(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 
