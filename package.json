@@ -114,7 +114,7 @@
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
-		"electron": "^36.5.0",
+		"electron": "^37.0.0-beta.8",
 		"electron-builder": "^26.0.17",
 		"env-cmd": "^10.1.0",
 		"install": "^0.13.0",
