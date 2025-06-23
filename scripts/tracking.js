@@ -668,15 +668,23 @@ function getTitlesAndMetadata()
 
 	const name = p.basename(path);
 
-	const firstCompressedFile = fileManager.firstCompressedFile(path);
-	const metadata = fileManager.compressedMetadata(firstCompressedFile);
-
 	const titles = [
 		name,
 	];
 
-	if(metadata.title)
-		titles.push(metadata.title);
+	const firstCompressedFile = fileManager.firstCompressedFile(path);
+	const metadata = fileManager.compressedMetadata(firstCompressedFile);
+
+	if(firstCompressedFile)
+	{
+		const compressedName = p.basename(firstCompressedFile);
+
+		if(metadata.title)
+			titles.push(metadata.title);
+
+		if(compressedName !== name)
+			titles.push(compressedName);
+	}
 
 	return {
 		titles: titles,
@@ -709,13 +717,13 @@ function getChapter()
 
 	const patterns = [
 		// Match common patterns like Chapter 5, Capítulo-5, etc.
-		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
+		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 
 		// Match ending patterns like 5話
-		new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
+		new RegExp(/((?:\d+\.)?\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
 
 		// Match Ch. 5, Ep 3, etc.
-		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
+		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 
 		// Range chapters
 		/[0-9]{1,4}-([0-9]{1,4})/iu,
@@ -786,13 +794,13 @@ function getVolume()
 
 	const patterns = [
 		// Match common patterns like volume 5, Tom-5, etc.
-		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
+		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 
 		// Match ending patterns like 5巻
-		new RegExp(/(\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
+		new RegExp(/((?:\d+\.)?\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
 
 		// Match Vo. 5, Vol 3, etc.
-		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*(\d+)/.source, 'iu'),
+		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 	];
 
 	for(const title of data.titles)
