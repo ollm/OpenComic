@@ -228,7 +228,7 @@ async function track(toTrack)
 				volumes = toTrack.volumes;
 
 			const variables = new URLSearchParams();
-			if(status) variables.append('status', status);
+			if(status && (chapters || volumes)) variables.append('status', status);
 			if(chapters) variables.append('num_chapters_read', chapters);
 			if(volumes) variables.append('num_volumes_read', volumes);
 

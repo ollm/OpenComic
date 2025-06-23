@@ -315,7 +315,7 @@ async function track(toTrack)
 				volumes = toTrack.volumes;
 
 			const variables = {mediaId: toTrack.id};
-			if(status) variables.status = status;
+			if(status && (chapters || volumes)) variables.status = status;
 			if(chapters) variables.progress = chapters;
 			if(volumes) variables.volumes = volumes;
 
