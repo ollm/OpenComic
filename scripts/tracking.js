@@ -630,6 +630,13 @@ function addChapterNumberDialog(done = false, onlySite = false)
 	}
 }
 
+function getStatus()
+{
+	const tracking = storage.getKey('tracking', dom.history.mainPath);
+
+	return tracking;
+}
+
 // Scraping functions
 function getTitle()
 {
@@ -675,12 +682,12 @@ function getTitlesAndMetadata()
 	const firstCompressedFile = fileManager.firstCompressedFile(path);
 	const metadata = fileManager.compressedMetadata(firstCompressedFile);
 
+	if(metadata.title)
+		titles.push(metadata.title);
+
 	if(firstCompressedFile)
 	{
 		const compressedName = p.basename(firstCompressedFile);
-
-		if(metadata.title)
-			titles.push(metadata.title);
 
 		if(compressedName !== name)
 			titles.push(compressedName);
@@ -858,6 +865,7 @@ module.exports = {
 	getChapter: getChapter,
 	getVolume: getVolume,
 	getTitlesAndMetadata,
+	getStatus,
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,
 	tracked: function(){return tracked},
 	handleOpenUrl: handleOpenUrl,
