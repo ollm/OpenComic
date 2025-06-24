@@ -3,7 +3,8 @@ const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	music = require(p.join(appDir, 'scripts/reading/music.js')),
 	contextMenu = require(p.join(appDir, 'scripts/reading/context-menu.js')),
 	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
-	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js'));
+	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js')),
+	sidebar = require(p.join(appDir, 'scripts/reading/sidebar.js'));
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
 
@@ -981,6 +982,8 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 			else
 				leftScroll.scrollTop = 0;
 		}
+
+		sidebar.disableEvent(animationDurationMS + 50);
 	}
 
 	if(!fromPageRange)
@@ -991,6 +994,8 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 
 	const readingLeft = contentLeft.querySelector('.reading-left-images');
 	if(readingLeft) readingLeft.style.opacity = 1;
+
+	sidebar.goToImage(index);
 
 	// Change header buttons
 	if(!fromPageRange && (!readingViewIs('scroll') || !fromScroll))
@@ -5602,6 +5607,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 				imagesData[index] = {width: width, height: height, aspectRatio: (width / height), rotated: rotated, name: image.name};
 		}
 
+		sidebar.sizes(imagesData, currentComics);
+
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
 
@@ -5654,6 +5661,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 				imagesPath[image.path] = image.index;
 			}
 		}
+
+		sidebar.sizes(imagesData, currentComics);
 
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
@@ -5809,4 +5818,5 @@ module.exports = {
 	contextMenu: contextMenu,
 	pageTransitions: pageTransitions,
 	render: render,
+	sidebar: sidebar,
 };

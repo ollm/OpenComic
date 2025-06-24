@@ -227,9 +227,9 @@ function returnThumbnailsImages(images, callback, file = false)
 
 	if(toGenerateThumbnails.length > 0 && file)
 	{
-		threads.job('cacheMakeAvailable', {useThreads: 0.01, delay: 50}, function() {
+		threads.job('cacheMakeAvailable', {useThreads: 0.01, delay: 50}, async function() {
 
-			file.makeAvailable(toGenerateThumbnails, function(image) {
+			await file.makeAvailable(toGenerateThumbnails, function(image) {
 
 				const data = toGenerateThumbnailsData[image.path];
 				const size = data.type ? sizes[data.type][data.forceSize] : sizes.image[data.forceSize];
@@ -237,6 +237,8 @@ function returnThumbnailsImages(images, callback, file = false)
 				addImageToQueue(image.path, size, data.sha, callback, data.vars || false, data.type, data.forceSize);
 
 			}, false, true);
+
+			file.afterDestroy();
 
 		});
 	}

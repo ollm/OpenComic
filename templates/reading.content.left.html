@@ -6,7 +6,7 @@
 		<i class="material-icon">folder</i>
 		{{else}}
 		<div class="reading-images">
-			<img class="sha-image-{{sha}}{{#if thumbnail}} show{{/if}}" src="{{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}}"{{#unless thumbnail}} onload="this.classList.add('show')"{{/unless}}>
+			<img class="sha-image-{{sha}} index-image-{{index}}" data-index="{{index}}">
 		</div>
 		{{/if}}
 	</div>

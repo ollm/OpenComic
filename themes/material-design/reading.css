@@ -103,7 +103,14 @@
 {
 	width: 80px;
 	margin-left: calc(100% - 80px);
+	border-radius: 7px;
+	background-color: var(--md-sys-color-background);
 	text-align: center;
+}
+
+.reading-images.show
+{
+	background-color: transparent;
 }
 
 .reading-images > *
@@ -118,7 +125,7 @@
 	opacity: 0;
 }
 
-.reading-images > *.show
+.reading-images.show > *
 {
 	opacity: 1;
 }

@@ -2654,12 +2654,6 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 				images.push(file);
 		}
 
-		let thumbnails = cache.returnThumbnailsImages(images, function(data) {
-
-			addImageToDom(data.sha, data.path);
-
-		}, file);
-
 		for(let i = 0; i < len; i++)
 		{
 			let file = files[i];
@@ -2684,15 +2678,12 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 			}
 			else
 			{
-				let thumbnail = thumbnails[file.sha] || {};
-
 				comics.push({
 					sha: file.sha,
 					name: file.name.replace(/\.[^\.]*$/, ''),
 					image: fileManager.realPath(file.path),
 					path: file.path,
 					mainPath: mainPath,
-					thumbnail: (thumbnail.cache) ? thumbnail.path : '',
 					size: file.size || false,
 					canvas: isCanvas,
 					ebook: isEbook,

@@ -18,6 +18,7 @@ var file = function(path, _config = false) {
 		filtered: true,
 		sha: true,
 		only: false,
+		log: true,
 	};
 
 	if(_config) this.config = {...this.config, ..._config};
@@ -180,7 +181,7 @@ var file = function(path, _config = false) {
 			this.compressedOpened[path] = {
 				lastUsage: now,
 				mtimeMainCompressed: mtime,
-				compressed: fileManager.fileCompressed(path, _realPath, this.config.forceType, this.config.prefixes),
+				compressed: fileManager.fileCompressed(path, _realPath, this.config.forceType, this.config.prefixes, {log: this.config.log}),
 			};
 		}
 		else
@@ -895,7 +896,11 @@ var file = function(path, _config = false) {
 		}
 	}
 
+	this.destroyed = false;
+
 	this.destroy = function() {
+
+		this.destroyed = true;
 
 		for(let path in this.compressedOpened)
 		{
@@ -912,10 +917,17 @@ var file = function(path, _config = false) {
 		this.macosScopedResources = [];
 
 	};
+
+	this.afterDestroy = function() {
+
+		if(this.destroyed)
+			this.destroy();
+
+	}
 }
 
 // Compressed files
-var fileCompressed = function(path, _realPath = false, forceType = false, prefixes = false) {
+var fileCompressed = function(path, _realPath = false, forceType = false, prefixes = false, _config = false) {
 
 	this.path = path;
 	this.realPath = _realPath || realPath(path, -1);
@@ -962,7 +974,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		width: window.devicePixelRatio * 300, // Vector width
 		height: false, // Vector height
 		force: false, // Forces the extraction even if the file exists
+		log: true,
 	};
+
+	if(_config) this.config = this._config = {...this.config, ..._config};
 
 	this._features = {
 		'7z': { // 7z incldues multiple formats, like zip, rar, tar, etc.
@@ -995,6 +1010,27 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	};
 
 	this.features = false;
+
+	this.log = function(message) {
+
+		if(this.config.log)
+			console.log(message);
+
+	}
+
+	this.time = function(key, message) {
+
+		if(this.config.log)
+			console.time(key, message);
+
+	}
+
+	this.timeEnd = function(key, message) {
+
+		if(this.config.log)
+			console.timeEnd(key, message);
+
+	}
 
 	this.updateConfigOnly = function(_only) {
 
@@ -1091,7 +1127,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.setTmpUsage();
 
 		const message = 'readCompressed | '+this.features.ext+(this.features.fileExt && this.features.ext !== this.features.fileExt ? ' ('+this.features.fileExt+')' : '')+' | '+this.path;
-		console.time(message);
+		this.time(message);
 
 		let files = false;
 
@@ -1102,7 +1138,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		else if(this.features.epub)
 			files = await this.readEpub();
 
-		console.timeEnd(message);
+		this.timeEnd(message);
 
 		return files;
 	}
@@ -1347,7 +1383,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		await threads.job('extractCurrent--'+this.sha, {useThreads: 0.01}, async function() {
 
-			console.time(message);
+			self.time(message);
 
 			if(self.features['7z'])
 				files = await self.extract7z();
@@ -1360,7 +1396,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		});
 
-		console.timeEnd(message);
+		this.timeEnd(message);
 
 		return files;
 	}
@@ -2209,7 +2245,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if((status && (status.widthRendered !== this.config.width)) || this.config.force)
 		{
-			console.log('renderBlobPdf');
+			this.log('renderBlobPdf');
 
 			// Render page
 			let page = await pdf.getPage(status.page);
@@ -2384,7 +2420,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.ebookPagesEpub = async function(config = {}) {
 
-		console.time('ebookPagesEpub: '+this.path);
+		this.time('ebookPagesEpub: '+this.path);
 
 		let epub = await this.openEpub();
 		let _this = this;
@@ -2409,7 +2445,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.setProgress(1);
 
-		console.timeEnd('ebookPagesEpub: '+this.path);
+		this.timeEnd('ebookPagesEpub: '+this.path);
 
 		return pages;
 
@@ -3435,8 +3471,8 @@ module.exports = {
 	file: function(path, _config = false) {
 		return new file(path, _config);
 	},
-	fileCompressed: function(path, realPath = false, forceType = false, prefixes = false){ // This consider moving it to a separate file
-		return new fileCompressed(path, realPath, forceType, prefixes);
+	fileCompressed: function(path, realPath = false, forceType = false, prefixes = false, _config = false){ // This consider moving it to a separate file
+		return new fileCompressed(path, realPath, forceType, prefixes, _config);
 	},
 	removeTmpVector: removeTmpVector,
 	removePathPart: removePathPart,

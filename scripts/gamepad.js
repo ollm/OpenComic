@@ -944,6 +944,9 @@ var gamepadResizeST = false;
 
 window.addEventListener('resize', function(){
 
+	if(!windowHasLoaded)
+		return;
+
 	gamepadResizeST = setTimeout(function(){
 
 		updateBrowsableItems(currentKey);
