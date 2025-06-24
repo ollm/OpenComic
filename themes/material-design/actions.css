@@ -3404,6 +3404,12 @@ code
 	transition: background-color 0.2s;
 }
 
+a > code
+{
+	text-decoration: underline;
+	color: var(--md-sys-color-primary);
+}
+
 .can-be-select
 {
 	user-select: text;

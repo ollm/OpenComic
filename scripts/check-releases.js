@@ -56,11 +56,11 @@ function versionIsHigher(lowest, highest)
 	return false;
 }
 
-function check()
+function check(force = false)
 {
 	let now = Date.now();
 
-	if(now - config.lastCheckedReleaseTime < 3600000) // Check at most once an hour
+	if(now - config.lastCheckedReleaseTime < 3600000 && !force) // Check at most once an hour
 		return;
 
 	storage.updateVar('config', 'lastCheckedReleaseTime', now);
@@ -92,7 +92,7 @@ function check()
 
 		if(lastRelease)
 		{
-			if(lastRelease.name != config.lastCheckedRelease && lastRelease.name != _package.version && versionIsHigher(_package.version, lastRelease.name))
+			if((lastRelease.name != config.lastCheckedRelease && lastRelease.name != _package.version && versionIsHigher(_package.version, lastRelease.name)) || force)
 			{
 				showReleaseDialog(lastRelease);
 
