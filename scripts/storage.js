@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 120; // Update this if readingPagesConfig is updated
+const changes = 121; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -153,6 +153,7 @@ const storageDefault = {
 		readingGoNextPrevChapterWithScroll: true,
 		readingStartReadingInFullScreen: false,
 		readingTrackingAtTheEnd: true,
+		readingDiscordRcp: false,
 		readingImageInterpolationMethodDownscaling: 'lanczos3',
 		readingImageInterpolationMethodUpscaling: 'chromium',
 		readingMusic: {

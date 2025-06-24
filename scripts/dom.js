@@ -1040,6 +1040,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	shortcuts.register(isOpds || _indexLabel.opds ? 'opds' : 'browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
+	reading.discord.update();
 }
 
 function loadIndexContentLeft(animation)
@@ -2742,6 +2743,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	reading.onLoad(function(){
 
 		cache.resumeQueue();
+		reading.discord.update();
 
 	});
 

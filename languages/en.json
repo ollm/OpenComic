@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
 			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
 			"startReadingInFullScreen": "Start reading in full screen",
-			"trackingAtTheEnd": "Tracking at the end of the chapter/volume"
+			"trackingAtTheEnd": "Tracking at the end of the chapter/volume",
+			"discordRcp": "Discord Rich Presence"
 		},
 		"imageInterpolation": {
 			"main": "Image interpolation",

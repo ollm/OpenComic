@@ -187,7 +187,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 
 				events.snackbar({
 					key: 'trackingConfirm',
-					text: language.reading.tracking.marked+': '+(chapter !== false ? language.reading.tracking.chapter+' '+chapter+'/'+chapters : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+': '+volume+'/'+volumes : ''),
+					text: language.reading.tracking.marked+': '+(chapter !== false ? language.reading.tracking.chapter+' '+chapter+'/'+chapters : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+' '+volume+'/'+volumes : ''),
 					duration: 10,
 					update: true,
 					buttons: [
@@ -638,7 +638,7 @@ function getStatus()
 }
 
 // Scraping functions
-function getTitle()
+function getTitle(full = false)
 {
 	const path = reading.readingCurrentPath();
 	if(!path) return '';
@@ -663,7 +663,8 @@ function getTitle()
 	title = title.replace(/(?:[\.\-_:;]|\sv[0-9]+).*/, '', title).trim();
 
 	// return only first 4 words to avoid incorrect words from the end of the filename
-	title = title.split(/\s+/).splice(0, 4).join(' ');
+	if(!full)
+		title = title.split(/\s+/).splice(0, 4).join(' ');
 
 	return title;
 }

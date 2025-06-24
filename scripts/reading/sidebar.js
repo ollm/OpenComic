@@ -117,6 +117,7 @@ async function goToImage(index)
 		const thumbnail = thumbnails[image.sha];
 
 		const img = contentLeft.querySelector('.sha-image-'+image.sha);
+		if(!img) continue;
 
 		if(thumbnail.cache)
 		{

@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improved rotation and support for rotating in PDF [`cb90771`](https://github.com/ollm/OpenComic/commit/cb907714ca7d713bcbf3471564e48a3e67c8ca40)
 - PDFs are rendered to a blob image instead of a canvas [`554c1ef`](https://github.com/ollm/OpenComic/commit/554c1ef88adf358acae14f9bf28f0e1f4f626d8f)
 - Optimized sidebar thumbnails [`02b67c6`](https://github.com/ollm/OpenComic/commit/02b67c620b6b13810c778beca1052a9b28829548)
+- Support Discord Rich Presence
 
 ##### 🐛 Bug Fixes
 

@@ -1470,6 +1470,12 @@ function set(key, value, save = true)
 			dom.queryAll('.settings-body .settings-tap-zones, .settings-body .settings-invert-tap-zones-in-manga').class(value, 'disable-pointer');
 
 			break;
+
+		case 'readingDiscordRcp': 
+
+			reading.discord.set(value);
+
+			break;
 	}
 
 	if(save)

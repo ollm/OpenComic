@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "Sensibilitat de la roda del ratolí en fer zoom",
 			"rotateHorizontalsAnticlockwise": "Al rotar imatges horitzontals fer-ho en sentit antihorari",
 			"startReadingInFullScreen": "Començar la lectura a pantalla completa",
-			"trackingAtTheEnd": "Seguiment al final del capítol/tom"
+			"trackingAtTheEnd": "Seguiment al final del capítol/tom",
+			"discordRcp": "Discord Rich Presence"
 		},
 		"imageInterpolation": {
 			"main": "Interpolació d'imatge",

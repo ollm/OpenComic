@@ -4,9 +4,10 @@ const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	contextMenu = require(p.join(appDir, 'scripts/reading/context-menu.js')),
 	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js')),
-	sidebar = require(p.join(appDir, 'scripts/reading/sidebar.js'));
+	sidebar = require(p.join(appDir, 'scripts/reading/sidebar.js')),
+	discord = require(p.join(appDir, 'scripts/reading/discord.js'));
 
-var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0};
+var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
 //Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 function blankPage(index)
@@ -1009,6 +1010,9 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 	{
 		let input = contentLeft.querySelector('.simple-slider input');
 		if(input) events.goRange(input, index, false);
+
+		currentPage = index;
+		reading.discord.updateThrottle();
 	}
 
 	const readingLeft = contentLeft.querySelector('.reading-left-images');
@@ -4600,6 +4604,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		handlebarsContext.ebookLandmarks = ebookPages.landmarks;
 		handlebarsContext.ebookToc = ebookPages.toc;
 		handlebarsContext.ebookPages = imagesNum;
+
 		template.loadContentLeft('reading.content.left.ebook.html', true);
 		template._contentLeft().firstElementChild.style.height = 'calc(100% - 66px)';
 		events.eventRange();
@@ -5737,7 +5742,7 @@ module.exports = {
 	read: read,
 	reload: reload,
 	images: function(){return images},
-	imagesNum: imagesNum,
+	imagesNum: function(){return imagesNum},
 	indexNum: function(){return indexNum},
 	contentNum: function(){return contentNum},
 	imagesNumLoad: imagesNumLoad,
@@ -5800,6 +5805,8 @@ module.exports = {
 	currentImagePage: currentImagePage,
 	currentImageIndex: currentImageIndex,
 	currentPageVisibility: function(){return currentPageVisibility},
+	totalPages: function(){return imagesNum},
+	currentPage: function(){return currentPage},
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,
 	loadReadingPages: loadReadingPages,
@@ -5851,4 +5858,5 @@ module.exports = {
 	pageTransitions: pageTransitions,
 	render: render,
 	sidebar: sidebar,
+	discord: discord,
 };
