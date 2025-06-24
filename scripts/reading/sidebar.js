@@ -71,7 +71,7 @@ function getImages(index, up = true)
 
 	while(true)
 	{
-		if(height > windowHeight)
+		if(height > windowHeight * 2)
 			break;
 
 		const image = images[index];
