@@ -51,7 +51,7 @@ function clickTapZone(event, button)
 	pageY = pageY / rect.height;
 	pageX = pageX / rect.width;
 
-	if(config.invertTapZonesInManga && _config.readingManga && !reading.readingViewIs('scroll'))
+	if(config.invertTapZonesInManga && reading.manga())
 		pageX = 1 - pageX;
 
 	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
@@ -83,6 +83,13 @@ function shortcutSnackbar(string, status = null)
 		],
 	});
 }
+
+const mangaInvert =  new Set([
+	'ArrowRight',
+	'ArrowLeft',
+	'KeyD',
+	'KeyA',
+]);
 
 function loadShortcuts()
 {
@@ -368,7 +375,7 @@ function loadShortcuts()
 
 						const code = event?.code || '';
 
-						if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
+						if(reading.manga() && !mangaInvert.has(code))
 							reading.goNext();
 						else
 							reading.goPrev();
@@ -383,7 +390,7 @@ function loadShortcuts()
 
 						const code = event?.code || '';
 
-						if(_config.readingManga && !reading.readingViewIs('scroll') && !/Arrow|KeyD$|KeyA$/iu.test(code))
+						if(reading.manga() && !mangaInvert.has(code))
 							reading.goPrev();
 						else
 							reading.goNext();
@@ -398,7 +405,13 @@ function loadShortcuts()
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
-							reading.goStart();
+							const code = event?.code || '';
+
+							if(reading.manga() && !mangaInvert.has(code))
+								reading.goEnd();
+							else
+								reading.goStart();
+
 							return true;
 						}
 						else if(!reading.zoomingIn())
@@ -416,7 +429,13 @@ function loadShortcuts()
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
-							reading.goEnd();
+							const code = event?.code || '';
+
+							if(reading.manga() && !mangaInvert.has(code))
+								reading.goStart();
+							else
+								reading.goEnd();
+
 							return true;
 						}
 						else if(!reading.zoomingIn())
@@ -434,7 +453,13 @@ function loadShortcuts()
 
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
-							reading.goPrevComic();
+							const code = event?.code || '';
+
+							if(reading.manga() && !mangaInvert.has(code))
+								reading.goNextComic();
+							else
+								reading.goPrevComic();
+
 							return true;
 						}
 						else if(!reading.zoomingIn())
@@ -450,10 +475,15 @@ function loadShortcuts()
 					name: language.reading.nextChapter,
 					function: function(event){
 
-
 						if(!reading.readingViewIs('scroll') || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') || event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 						{
-							reading.goNextComic();
+							const code = event?.code || '';
+
+							if(reading.manga() && !mangaInvert.has(code))
+								reading.goPrevComic();
+							else
+								reading.goNextComic();
+
 							return true;
 						}
 						else if(!reading.zoomingIn())

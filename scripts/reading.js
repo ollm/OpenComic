@@ -855,14 +855,30 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 
 	if((scrollInStart === null || scrollInStart) && currentIndex == 1 && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
 	{
-		prevIsPrevComic = true;
-		canGoPrev = dom.previousComic();
+		if(readingManga())
+		{
+			prevIsPrevComic = true;
+			canGoPrev = dom.nextComic();
+		}
+		else
+		{
+			prevIsPrevComic = true;
+			canGoPrev = dom.previousComic();
+		}
 	}
 
 	if((scrollInEnd === null || scrollInEnd) && currentIndex == indexNum && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
-		nextIsNextComic = true;
-		canGoNext = dom.nextComic();
+		if(readingManga())
+		{
+			nextIsNextComic = true;
+			canGoNext = dom.previousComic();
+		}
+		else
+		{
+			nextIsNextComic = true;
+			canGoNext = dom.nextComic();
+		}
 	}
 
 	let currentChangeHeaderButtons = {
@@ -870,6 +886,7 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 		nextIsNextComic: nextIsNextComic,
 		canGoPrev: canGoPrev,
 		canGoNext: canGoNext,
+		readingManga: readingManga(),
 	};
 
 	if(!isEqual(prevChangeHeaderButtons, currentChangeHeaderButtons))
@@ -880,12 +897,14 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 		dom.this([next, lastPage]).class(!canGoNext, 'disable-pointer');
 
 		firstPage.innerHTML = prevIsPrevComic ? 'skip_previous' : 'first_page';
-		firstPage.setAttribute('hover-text', prevIsPrevComic ? language.reading.prevChapter : language.reading.firstPage);
-
 		lastPage.innerHTML = nextIsNextComic ? 'skip_next' : 'last_page';
-		lastPage.setAttribute('hover-text', nextIsNextComic ? language.reading.nextChapter : language.reading.lastPage);
 
-		if(config.readingTrackingAtTheEnd && !trackingCurrent && ((_config.readingManga && prevIsPrevComic) || (!_config.readingManga && nextIsNextComic)))
+		prev.setAttribute('hover-text', readingManga() ? language.reading.next : language.reading.previous);
+		next.setAttribute('hover-text', readingManga() ? language.reading.previous : language.reading.next);
+		firstPage.setAttribute('hover-text', readingManga() ? (prevIsPrevComic ? language.reading.nextChapter : language.reading.lastPage) : (prevIsPrevComic ? language.reading.prevChapter : language.reading.firstPage));
+		lastPage.setAttribute('hover-text', readingManga() ? (nextIsNextComic ? language.reading.prevChapter : language.reading.firstPage) : (nextIsNextComic ? language.reading.nextChapter : language.reading.lastPage));
+
+		if(config.readingTrackingAtTheEnd && !trackingCurrent && ((readingManga() && prevIsPrevComic) || (!readingManga() && nextIsNextComic)))
 		{
 			trackingCurrent = true;
 			tracking.track();
@@ -1014,7 +1033,7 @@ function goToImage(imageIndex, disableSave = false)
 
 		let newIndex = imagesData[imageIndex].position + 1;
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
 
 		calculateRealReadingDirection(newIndex);
@@ -1033,7 +1052,7 @@ function goToFolder(folderIndex)
 
 		let newIndex = foldersPosition[folderIndex] + 1;
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
 
 		calculateRealReadingDirection(newIndex);
@@ -1340,7 +1359,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	let newIndex = (eIndex - 1);
 
-	if(_config.readingManga && !readingViewIs('scroll'))
+	if(readingManga())
 		newIndex = (indexNum - newIndex) - 1;
 
 	if(updateCurrentIndex)
@@ -1416,7 +1435,7 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 		if(readingDoublePage())
 			index = Math.ceil(index / 2);
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			index = (indexNum - closest.page.index);
 
 		reading.goToIndex(index, animation);
@@ -1445,11 +1464,11 @@ function goNext()
 
 		music.soundEffect.page();
 	}
-	else if(currentIndex == indexNum && dom.nextComic() && (!_config.readingManga || readingViewIs('scroll')))
+	else if(currentIndex == indexNum && dom.nextComic() && !readingManga())
 	{
 		showNextComic(1, true);
 	}
-	else if(currentIndex == indexNum && dom.previousComic() && _config.readingManga && !readingViewIs('scroll'))
+	else if(currentIndex == indexNum && dom.previousComic() && readingManga())
 	{
 		showNextComic(1, true, true);
 	}
@@ -1477,11 +1496,11 @@ function goPrevious()
 
 		music.soundEffect.page();
 	}
-	else if(previousIndex == 0 && dom.previousComic() && (!_config.readingManga || readingViewIs('scroll')))
+	else if(previousIndex == 0 && dom.previousComic() && !readingManga())
 	{
 		showPreviousComic(1, true);
 	}
-	else if(previousIndex == 0 && dom.nextComic() && _config.readingManga && !readingViewIs('scroll'))
+	else if(previousIndex == 0 && dom.nextComic() && readingManga())
 	{
 		showPreviousComic(1, true, true);
 	}
@@ -1490,11 +1509,12 @@ function goPrevious()
 //Go to the start of the comic
 function goStart(force = false)
 {
-	if(force || !_config.readingManga || readingViewIs('scroll'))
+	if(force || !readingManga() || 1)
 	{
+		const hasComic = readingManga() ? dom.nextComic() : dom.previousComic();
 		saveReadingProgressA = true;
 
-		if((currentIndex > indexNum || (currentIndex - 1 == 0 && dom.previousComic())) && (!maxPageVisibility || currentPageVisibility == 0))
+		if((currentIndex > indexNum || (currentIndex - 1 == 0 && hasComic)) && (!maxPageVisibility || currentPageVisibility == 0))
 		{
 			goPrevious();
 
@@ -1518,7 +1538,9 @@ function goStart(force = false)
 
 function goPrevComic()
 {
-	if(dom.previousComic())
+	const hasComic = readingManga() ? dom.nextComic() : dom.previousComic();
+	
+	if(hasComic)
 	{
 		let speed = _config.readingViewSpeed;
 		_config.readingViewSpeed = 0;
@@ -1533,11 +1555,12 @@ function goPrevComic()
 //Go to the end of the comic
 function goEnd(force = false)
 {
-	if(force || !_config.readingManga || readingViewIs('scroll'))
+	if(force || !readingManga() || 1)
 	{
+		const hasComic = readingManga() ? dom.previousComic() : dom.nextComic();
 		saveReadingProgressA = true;
 
-		if((currentIndex < 1 || (currentIndex == indexNum && dom.nextComic())) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
+		if((currentIndex < 1 || (currentIndex == indexNum && hasComic)) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
 		{
 			goNext();
 
@@ -1561,7 +1584,9 @@ function goEnd(force = false)
 
 function goNextComic()
 {
-	if(dom.nextComic())
+	const hasComic = readingManga() ? dom.previousComic() : dom.nextComic();
+
+	if(hasComic)
 	{
 		let speed = _config.readingViewSpeed;
 		_config.readingViewSpeed = 0;
@@ -3034,6 +3059,11 @@ function readingDoublePage()
 	return (_config.readingDoublePage && !_config.readingWebtoon);
 }
 
+function readingManga()
+{
+	return (_config.readingManga && !readingViewIs('scroll'));
+}
+
 var activeOnScroll = true;
 
 function disableOnScroll(disable = true)
@@ -3380,7 +3410,7 @@ function reloadIndex()
 	let imageIndex = false;
 	let newIndex = (currentIndex - 1);
 
-	if(_config.readingManga && !readingViewIs('scroll'))
+	if(readingManga())
 		newIndex = (indexNum - newIndex) - 1;
 
 	eachImagesDistribution(newIndex, ['image'], function(image) {
@@ -3496,7 +3526,7 @@ function createAndDeleteBookmark(index = false)
 
 		let newIndex = (currentIndex - 1);
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) - 1;
 
 		eachImagesDistribution(newIndex, ['image'], function(image){
@@ -3601,7 +3631,7 @@ function saveReadingProgress(path = false, mainPath = false)
 
 		let newIndex = (currentIndex - 1);
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) - 1;
 
 		eachImagesDistribution(newIndex, ['image'], function(image){
@@ -4588,7 +4618,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		let newIndex = currentIndex;
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
 
 		if(nextOpenChapterProgress)
@@ -4611,7 +4641,7 @@ function currentImagePosition()
 {
 	let index = currentIndex - 1;
 
-	if(_config.readingManga && !reading.readingViewIs('scroll'))
+	if(readingManga())
 		index = (indexNum - index) - 1;
 
 	return index;
@@ -5620,7 +5650,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		var newIndex = currentIndex;
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
 
 		goToIndex(newIndex, false, end, end);
@@ -5675,7 +5705,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		var newIndex = currentIndex;
 
-		if(_config.readingManga && !readingViewIs('scroll'))
+		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
 
 		goToIndex(newIndex, false, end, end);
@@ -5810,6 +5840,8 @@ module.exports = {
 	rotateImage: rotateImage,
 	setIsLoaded: function(value){isLoaded=value},
 	isLoaded: function(value){return isLoaded},
+	doublePage: readingDoublePage,
+	manga: readingManga,
 	isLoad: isLoad,
 	onLoad: onLoad,
 	ebook: readingEbook,
