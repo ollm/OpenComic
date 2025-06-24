@@ -803,7 +803,7 @@ function goBack(fromKeyboard = false)
 		hasKeyboardNavigation = true;
 
 	// Close dialog
-	let dialogActive = document.querySelector('.dialogs .dialog');
+	const dialogActive = document.querySelector('.dialogs .dialog');
 
 	if(dialogActive)
 	{
@@ -813,7 +813,7 @@ function goBack(fromKeyboard = false)
 	}
 
 	// Close menu
-	let menuActive = document.querySelector('.menu-close.a');
+	const menuActive = document.querySelector('.menu-close.a');
 
 	if(menuActive)
 	{
@@ -824,7 +824,7 @@ function goBack(fromKeyboard = false)
 	}
 
 	// Go back
-	let barBack = document.querySelector('.bar-back.active, .bar-back.show');
+	const barBack = document.querySelector('.bar-left.active .bar-back, .bar-left.show .bar-back, .bar-back.active, .bar-back.show');
 
 	if(barBack)
 	{
