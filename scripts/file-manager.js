@@ -2136,6 +2136,67 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.parsePdfMetadataXml = function(xml) {
+
+		const find = function(key, value) {
+
+			const isObject = (typeof value === 'object' && !Array.isArray(value) && value !== null);
+			const keys = isObject ? Object.keys(value) : 0;
+			const len = keys.length;
+			let object = {};
+
+			if(len === 1)
+			{
+				const _key = keys[0];
+
+				if(_key === 'rdf:value')
+					object[key] = value[_key];
+				else
+					object = {...object, ...find(key, value[_key])};
+			}
+			else if(len > 1)
+			{
+				for(let _key in value)
+				{
+					if(_key === 'rdf:value')
+						object[key] = value[_key];
+					else
+						object = {...object, ...find(_key, value[_key])};
+				}
+			}
+			else
+			{
+				object[key] = Array.isArray(value) ? value.join(', ') : value;
+			}
+
+			return object;
+
+		}
+
+		let metadata = {};
+
+		for(let i = 0, len = xml.length; i < len; i++)
+		{
+			for(let key in xml[i])
+			{
+				const object = find(key, xml[i][key]);
+				metadata = {...metadata, ...object};
+			}
+		}
+
+		for(let key in metadata)
+		{
+			const _key = app.extract(/([^:]+)$/, key, 1).toLowerCase();
+			if(!metadata[_key]) metadata[_key] = metadata[key];
+
+			const _key2 = key.replace(/:/g, '_').toLowerCase();
+			if(!metadata[_key2]) metadata[_key2] = metadata[key];
+		}
+
+		return metadata;
+
+	}
+
 	this.readPdfMetadata = async function() {
 
 		let pdf = await this.openPdf();
@@ -2157,15 +2218,29 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 		}
 
+		if(fastXmlParser === false)
+		{
+			fastXmlParser = require('fast-xml-parser').XMLParser;
+			fastXmlParser = new fastXmlParser({ignoreAttributes: false});
+		}
+
+		let metadataXml = fastXmlParser.parse(metadata.metadata.getRaw('data'));
+		metadataXml = this.parsePdfMetadataXml(metadataXml?.['x:xmpmeta']?.['rdf:RDF']?.['rdf:Description'] || {});
+
 		return {
 			title: metadata.info.Title || map.title || '',
+			series: metadataXml.calibre_series || metadataXml.series || map.series || '',
+
+			bookNumber: metadataXml.calibresi_series_index || metadataXml.series_index || map.series_index || app.extract(/([0-9.]+)$/, map.series ?? '') || 0,
 
 			author: map.creator || metadata.info.Author || '',
 			publisher: map.publisher || '',
 
+			subject: metadata.info.Subject || [],
+
 			description: app.stripTagsWithDOM(map.description || metadata.info.Description || metadata.info.Subject || ''),
 
-			language: map.language || metadata.info.Language || '',
+			language: metadataXml.language || map.language || metadata.info.Language || '',
 
 			web: map.identifier ? app.extract(/^(?:url|uri):(.*)/iu, map.identifier) : '',
 			identifier: map.identifier,
@@ -2174,6 +2249,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			modifiedDate: map.modifydate || '',
 
 			creatorTool: map.creatortool || '',
+			ISBN: metadataXml.isbn || map.isbn || '',
 
 			metadata: {
 				info: metadata.info,
@@ -2317,6 +2393,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		return {
 			title: metadata.title || '',
+			series: metadata.series || '',
+
+			bookNumber: metadata.seriesIndex || '',
 
 			author: metadata.creator || '',
 			publisher: metadata.publisher || '',
@@ -2349,6 +2428,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			releaseDate: metadata.pubdate || '',
 			modifiedDate: metadata.modified_date || '',
+
+			ISBN: app.extract(/isbn:([0-9\-\.]+)/iu, metadata.identifier) || '',
 
 			metadata: metadata,
 		};

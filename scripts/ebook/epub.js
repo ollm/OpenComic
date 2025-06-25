@@ -161,29 +161,49 @@ var epub = function(path, config = {}) {
 
 	}
 
-	this.getStringMetadata = function(opf, query) {
+	this.getElements = function(opf, tagName, query = false) {
 
-		let element = opf.querySelector(query.replace(/\:/g, '\\:'));
+		const elements = [];
+		tagName = Array.isArray(tagName) ? tagName : [tagName];
+
+		for(let i = 0, len = tagName.length; i < len; i++)
+		{
+			const tag = tagName[i];
+			elements.push(...opf.getElementsByTagName(tag));
+		}
+
+		if(query)
+			elements.push(...opf.querySelectorAll(query));
+
+		return elements;
+	}
+
+	this.getStringMetadata = function(opf, tagName, query = false) {
+
+		const elements = this.getElements(opf, tagName, query);
+		const element = elements.length > 0 ? elements[0] : false;
 		return element ? element.textContent : '';
 
 	}
 
-	this.getArrayMetadata = function(opf, query) {
+	this.getArrayMetadata = function(opf, tagName, query = false) {
 
-		let list = [];
-		let elements = opf.querySelectorAll(query.replace(/\:/g, '\\:'));
+		const list = [];
+		const elements = this.getElements(opf, tagName, query);
+
 		for(let i = 0, len = elements.length; i < len; i++)
 		{
 			list.push(elements[i].textContent);
 		}
+
 		return list.join(', ');
 
 	}
 
-	this.getObjectMetadata = function(opf, query, keys) {
+	this.getObjectMetadata = function(opf, tagName, keys) {
 
 		let list = [];
-		let elements = opf.getElementsByTagName(query);
+		let elements = opf.getElementsByTagName(tagName);
 
 		for(let i = 0, len = elements.length; i < len; i++)
 		{
@@ -231,7 +251,7 @@ var epub = function(path, config = {}) {
 		metadata.subject = this.getObjectMetadata(opf, 'dc:subject', ['authority', 'term']);
 
 		// Genre
-		metadata.genre = this.getArrayMetadata(opf, 'se:subject, *[property="se:subject"]');
+		metadata.genre = this.getArrayMetadata(opf, 'se:subject', '*[property="se:subject"]');
 
 		// Identifier
 		metadata.identifier = this.getArrayMetadata(opf, 'dc:identifier');
@@ -242,7 +262,13 @@ var epub = function(path, config = {}) {
 		// Contributor
 		metadata.contributor = this.getObjectMetadata(opf, 'dc:contributor', ['role']);
 
-		metadata.longDescription = this.getStringMetadata(opf, 'se:long-description, *[property="se:long-description"]');
+		metadata.longDescription = this.getStringMetadata(opf, 'se:long-description', '*[property="se:long-description"]');
+
+		// Series
+		metadata.series = this.getStringMetadata(opf, 'calibre:series', '*[property="belongs-to-collection"]');
+
+		// Series index
+		metadata.seriesIndex = this.getStringMetadata(opf, 'calibre:series_index', '*[property="group-position"]');
 
 		this.epubMetadata = metadata;
 

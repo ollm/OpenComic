@@ -62,6 +62,7 @@ const keyOrder = [
 	'notes',
 	'rights', // epub
 	'GTIN',
+	'ISBN', // pdf and epub
 
 
 ];
@@ -294,7 +295,7 @@ async function show(path, opds = false)
 
 async function getFileSize()
 {
-	let size = await fileManager.dirSize(fileManager.realPath(fileManager.firstCompressedFile(currentPath)));
+	let size = await fileManager.dirSize(fileManager.realPath(fileManager.firstCompressedFile(currentPath), -1));
 
 	size = size / 1000 / 1000;
 
@@ -420,14 +421,26 @@ function parseTextUrls(text)
 {
 	text = text.replace(/\(([^\)]+)\)\s*\[(http[^\]]+)\]/iug, '<a href="$2" target="_blank">$1</a>');
 	text = text.replace(/\[([^\]]+)\]\s*\((http[^\)]+)\)/iug, '<a href="$2" target="_blank">$1</a>');
+	text = text.replace(/(^|[^"])(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s,"]{2,})/iug, '$1<a href="$2" target="_blank">$2</a>');
 
 	return text;
 }
 
 function parseLanguage(lang)
 {
+	const langs = splitCommaSeparated(lang);
 	const languageNames = new Intl.DisplayNames([config.language], {type: 'language'}); // navigator.language?
-	return app.capitalize(languageNames.of(lang));
+
+	for(let i = 0, len = langs.length; i < len; i++)
+	{
+		try
+		{
+			langs[i] = app.capitalize(languageNames.of(langs[i]));
+		}
+		catch{}
+	}
+
+	return joinItems(langs);
 }
 
 function parseUrl(url)

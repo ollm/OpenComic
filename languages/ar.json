@@ -566,7 +566,8 @@
 				"scanInformation": "معلومات السكانر",
 				"creatorTool": "أدوات المنشئ",
 				"notes": "ملاحظات",
-				"GTIN": "الباركود"
+				"GTIN": "الباركود",
+				"ISBN": ""
 			}
 		},
 		"requestFileAccess": {

@@ -566,7 +566,8 @@
 				"scanInformation": "Информация о сканировании",
 				"creatorTool": "Инструмент создания",
 				"notes": "Заметки",
-				"GTIN": "GTIN (штрих-код)"
+				"GTIN": "GTIN (штрих-код)",
+				"ISBN": ""
 			}
 		},
 		"requestFileAccess": {

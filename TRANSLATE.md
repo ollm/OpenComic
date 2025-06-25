@@ -81,7 +81,7 @@ Translate by [Hernesto Sanchez](https://github.com/herrsunchess)
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 504`
+`100% | Remain 0 | Translated 505`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/en.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/en.svg" /></a>
 

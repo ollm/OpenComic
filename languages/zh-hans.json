@@ -566,7 +566,8 @@
 				"scanInformation": "扫描信息",
 				"creatorTool": "创作者工具",
 				"notes": "笔记",
-				"GTIN": "GTIN"
+				"GTIN": "GTIN",
+				"ISBN": ""
 			}
 		},
 		"requestFileAccess": {

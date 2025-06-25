@@ -566,7 +566,8 @@
 				"scanInformation": "Informació d'escaneig",
 				"creatorTool": "Eina creadora",
 				"notes": "Notes",
-				"GTIN": "GTIN"
+				"GTIN": "GTIN",
+				"ISBN": "ISBN"
 			}
 		},
 		"requestFileAccess": {

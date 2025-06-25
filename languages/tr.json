@@ -566,7 +566,8 @@
 				"scanInformation": "Tarama bilgisi",
 				"creatorTool": "Oluşturucu araç",
 				"notes": "Notlar",
-				"GTIN": "GTIN"
+				"GTIN": "GTIN",
+				"ISBN": ""
 			}
 		},
 		"requestFileAccess": {

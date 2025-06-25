@@ -566,7 +566,8 @@
 				"scanInformation": "Informacje o skanie",
 				"creatorTool": "Narzędzie twórcy",
 				"notes": "Notatki",
-				"GTIN": "GTIN"
+				"GTIN": "GTIN",
+				"ISBN": ""
 			}
 		},
 		"requestFileAccess": {
