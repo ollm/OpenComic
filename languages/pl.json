@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "Czułość kółka myszy podczas powiększania",
 			"rotateHorizontalsAnticlockwise": "Obracając obrazy poziome, rób to w kierunku przeciwnym do ruchu wskazówek zegara",
 			"startReadingInFullScreen": "Rozpoczynaj czytanie w trybie pełnoekranowym",
-			"trackingAtTheEnd": "Śledzenie na końcu rozdziału/tomu"
+			"trackingAtTheEnd": "Śledzenie na końcu rozdziału/tomu",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "Interpolacja obrazu",

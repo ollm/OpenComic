@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Khởi động trình đọc trong chế độ toàn màn hình",
-			"trackingAtTheEnd": "Theo dõi tại đầu của chương/tập truyện"
+			"trackingAtTheEnd": "Theo dõi tại đầu của chương/tập truyện",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "Xử lý hình ảnh (interpolation)",

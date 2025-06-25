@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "حساسية عجلة الماوس عند التكبير",
 			"rotateHorizontalsAnticlockwise": "تدوير الصور الأفقية بعكس اتجاه عقارب الساعة",
 			"startReadingInFullScreen": "بدء القراءة في وضع كامل الشاشة",
-			"trackingAtTheEnd": "التتبع في نهاية الفصل/الجزء"
+			"trackingAtTheEnd": "التتبع في نهاية الفصل/الجزء",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "معالجة الصور في البرنامج",

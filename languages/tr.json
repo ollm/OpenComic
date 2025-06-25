@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "Yakınlaştırma sırasında fare tekerleği hassasiyeti",
 			"rotateHorizontalsAnticlockwise": "Yatay resimleri döndürürken saat yönünün tersine çevir",
 			"startReadingInFullScreen": "Okumaya her zaman tam ekranda başla",
-			"trackingAtTheEnd": "Sadece bölüm/cilt sonlarını takip et"
+			"trackingAtTheEnd": "Sadece bölüm/cilt sonlarını takip et",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "Resim enterpolasyonu",

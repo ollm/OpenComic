@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
-			"trackingAtTheEnd": ""
+			"trackingAtTheEnd": "",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "",

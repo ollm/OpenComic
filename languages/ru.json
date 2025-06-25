@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "Поворачивать горизонтальные против часовой стрелки",
 			"startReadingInFullScreen": "Начинать чтение в полноэкранном режиме",
-			"trackingAtTheEnd": "Отслеживание в конце"
+			"trackingAtTheEnd": "Отслеживание в конце",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "Интерполяция изображений",

@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "缩放时鼠标滚轮灵敏度",
 			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
-			"trackingAtTheEnd": "在章节/卷末尾进行跟踪"
+			"trackingAtTheEnd": "在章节/卷末尾进行跟踪",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "图像插值",

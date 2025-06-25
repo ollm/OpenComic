@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
-			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen"
+			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "Bildinterpolering",

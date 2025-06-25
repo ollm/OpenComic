@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "ความไวของล้อเม้าส์ขณะซูม",
 			"rotateHorizontalsAnticlockwise": "เมื่อหมุนรูปแนวนอนให้ทำแบบทวนเข็มนาฬิกา",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
-			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม"
+			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "การปรับปรุงรูปภาพ",

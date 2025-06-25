@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "ズーム時のマウスホイール感度",
 			"rotateHorizontalsAnticlockwise": "横向き画像を回転するとき反時計回りにする",
 			"startReadingInFullScreen": "読書を全画面で開始",
-			"trackingAtTheEnd": "章/巻の最後でサイト連携を更新"
+			"trackingAtTheEnd": "章/巻の最後でサイト連携を更新",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "画像の補間",

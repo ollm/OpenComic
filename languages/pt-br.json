@@ -255,7 +255,8 @@
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "Quando rotacionar imagens horizontalmente, faça isso em sentido anti-horário",
 			"startReadingInFullScreen": "Começar a ler em tela cheia",
-			"trackingAtTheEnd": "Monitorar ao final do capítulo/volume"
+			"trackingAtTheEnd": "Monitorar ao final do capítulo/volume",
+			"discordRcp": ""
 		},
 		"imageInterpolation": {
 			"main": "Interpolação de imagens",
