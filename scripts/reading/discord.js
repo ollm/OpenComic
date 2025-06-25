@@ -70,7 +70,7 @@ function getState(data)
 
 	let state = (chapter !== false ? language.reading.tracking.chapter+' '+chapter : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+' '+volume : '');
 
-	const percent = Math.round(reading.currentPage() / reading.totalPages() * 100);
+	const percent = Math.round((reading.currentPage() - 1) / (reading.totalPages() - 1) * 100);
 	const pages = language.global.pageAndNumber.replace(/\$1/, reading.currentPage()+' / '+reading.totalPages());
 
 	if(!state)
