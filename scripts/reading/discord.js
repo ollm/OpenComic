@@ -42,8 +42,9 @@ async function login()
 
 			reset();
 
-			console.log(error);
-			reject(error);
+			console.log('Discord RPC failed:', error.message);
+			resolve();
+			// reject(error);
 
 		});
 
