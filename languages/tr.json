@@ -136,6 +136,8 @@
 			"marginHorizontal": "Yatay kenar boşluğu",
 			"marginVertical": "Dikey kenar boşluğu",
 			"differentMarginInHorizontals": "Yataylarda farklı değer",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Çift sayfa",
 			"doNotApplyToHorizontals": "Yataylara uygulama",
 			"alignWithNextHorizontal": "Sonraki yatayla hizala",

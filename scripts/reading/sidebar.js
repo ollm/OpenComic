@@ -21,12 +21,22 @@ function sizes(_images, _comics)
 		if(!image)
 			continue;
 
+		const size = imageSize(image);
+
 		img.style.width = '80px';
-		img.style.height = app.roundDPR(80 * image.height / image.width) + 'px';
+		img.style.height = app.roundDPR(80 * size.height / size.width) + 'px';
 	}
 
 	calculateScrollPositions(contentLeft, imgs);
 	event(contentLeft);
+}
+
+function imageSize(image)
+{
+	if(image.rotated === 1 || image.rotated === 2)
+		return {width: image.height, height: image.width};
+	else
+		return {width: image.width, height: image.height};
 }
 
 function calculateScrollPositions(contentLeft, imgs)
@@ -84,7 +94,9 @@ function getImages(index, up = true)
 			continue;
 		}
 
-		height += app.roundDPR(80 * image.height / image.width) + 34;
+		const size = imageSize(image);
+
+		height += app.roundDPR(80 * size.height / size.width) + 34;
 		_images.push({...image, ...comic});
 	}
 

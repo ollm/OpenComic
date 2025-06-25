@@ -136,6 +136,8 @@
 			"marginHorizontal": "Horizontal margin",
 			"marginVertical": "Vertical margin",
 			"differentMarginInHorizontals": "Different in horizontals",
+			"increaseHorizontalMargin": "Increase horizontal margin",
+			"decreaseHorizontalMargin": "Decrease horizontal margin",
 			"doublePage": "Double page",
 			"doNotApplyToHorizontals": "Do not apply to horizontals",
 			"alignWithNextHorizontal": "Align with next horizontal",

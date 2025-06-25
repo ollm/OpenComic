@@ -136,6 +136,8 @@
 			"marginHorizontal": "Lề ngang",
 			"marginVertical": "Lề dọc",
 			"differentMarginInHorizontals": "Khác cho trang dài",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Hiển thị hai trang",
 			"doNotApplyToHorizontals": "Không áp dụng cho trang dài",
 			"alignWithNextHorizontal": "",

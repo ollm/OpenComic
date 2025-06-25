@@ -136,6 +136,8 @@
 			"marginHorizontal": "Horisontell marginal",
 			"marginVertical": "Vertikal marginal",
 			"differentMarginInHorizontals": "Annan marginal på horisontella sidor",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Dubbelsidig",
 			"doNotApplyToHorizontals": "Tillämpa inte på horisontella sidor",
 			"alignWithNextHorizontal": "",

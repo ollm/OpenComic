@@ -136,6 +136,8 @@
 			"marginHorizontal": "Horizontale Spanne",
 			"marginVertical": "Vertikale Spanne",
 			"differentMarginInHorizontals": "",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Doppelseite",
 			"doNotApplyToHorizontals": "Nicht die Horizontalen anpassen",
 			"alignWithNextHorizontal": "",

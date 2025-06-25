@@ -136,6 +136,8 @@
 			"marginHorizontal": "ขอบแนวนอน",
 			"marginVertical": "ขอบแนวตั้ง",
 			"differentMarginInHorizontals": "ต่างจากแนวนอน",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "หน้าคู่",
 			"doNotApplyToHorizontals": "ไม่ใช้กับแนวนอน",
 			"alignWithNextHorizontal": "จัดตามแนวนอนถัดไป",

@@ -136,6 +136,8 @@
 			"marginHorizontal": "الحافة الأفقية",
 			"marginVertical": "الحافة العمودية",
 			"differentMarginInHorizontals": "حواف أفقية مختلفة",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "صحفات مزدوجة",
 			"doNotApplyToHorizontals": "مراعاة عرض الصفحة (وضع القراءة الأفقي)",
 			"alignWithNextHorizontal": "ملائمة مع الحافة الأفقية التالية",

@@ -136,6 +136,8 @@
 			"marginHorizontal": "Margines poziomy",
 			"marginVertical": "Margines pionowy",
 			"differentMarginInHorizontals": "Inny dla obrazów poziomych",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Podwójna strona",
 			"doNotApplyToHorizontals": "Nie stosuj do obrazów poziomych",
 			"alignWithNextHorizontal": "Wyrównaj z następnym obrazem poziomym",

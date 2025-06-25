@@ -136,6 +136,8 @@
 			"marginHorizontal": "Горизонтальный край",
 			"marginVertical": "Вертикальный край",
 			"differentMarginInHorizontals": "Разные по горизонтали",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Две страницы",
 			"doNotApplyToHorizontals": "Не применять к горизонтали",
 			"alignWithNextHorizontal": "",

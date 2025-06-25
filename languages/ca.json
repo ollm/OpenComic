@@ -136,6 +136,8 @@
 			"marginHorizontal": "Marge horitzontal",
 			"marginVertical": "Marge vertical",
 			"differentMarginInHorizontals": "Diferent en les horitzontals",
+			"increaseHorizontalMargin": "Augmentar el marge horitzontal",
+			"decreaseHorizontalMargin": "Disminuir el marge horitzontal",
 			"doublePage": "Doble pàgina",
 			"doNotApplyToHorizontals": "No aplicar a les horitzontals",
 			"alignWithNextHorizontal": "Alinear amb la següent horitzontal",

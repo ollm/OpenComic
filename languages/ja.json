@@ -136,6 +136,8 @@
 			"marginHorizontal": "左右の余白",
 			"marginVertical": "上下の余白",
 			"differentMarginInHorizontals": "横向き画像には別の余白を適用",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "見開き表示",
 			"doNotApplyToHorizontals": "横向き画像には適用しない",
 			"alignWithNextHorizontal": "次の横向き画像とそろえる",

@@ -136,6 +136,8 @@
 			"marginHorizontal": "Vízszintes margó",
 			"marginVertical": "Függőlges margó",
 			"differentMarginInHorizontals": "",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "Kétoldalas elrendezés",
 			"doNotApplyToHorizontals": "Fekvő tájolású oldalnál ne",
 			"alignWithNextHorizontal": "",

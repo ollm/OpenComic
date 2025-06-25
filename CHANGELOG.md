@@ -13,7 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - PDFs are rendered to a blob image instead of a canvas [`554c1ef`](https://github.com/ollm/OpenComic/commit/554c1ef88adf358acae14f9bf28f0e1f4f626d8f)
 - Optimized sidebar thumbnails [`02b67c6`](https://github.com/ollm/OpenComic/commit/02b67c620b6b13810c778beca1052a9b28829548)
 - Support Discord Rich Presence [`a19f9eb`](https://github.com/ollm/OpenComic/commit/a19f9eb6dd99350037b7c77f14e706223256af4c)
-- Get Calibre `series` and `series_index` metadata in PDF and ePub
+- Get Calibre `series` and `series_index` metadata in PDF and ePub [`da739de`](https://github.com/ollm/OpenComic/commit/da739ded8ff1cdbc2b5da39662e85e725cd71545)
+- Increase and decrease horizontal margin shortcuts
 
 ##### 🐛 Bug Fixes
 
@@ -24,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Some mime types are not correct detected [`baa8397`](https://github.com/ollm/OpenComic/commit/baa8397da5f33b5129607bbcc368c4eb782bc4e9)
 - Update electron to fix white lines in Webtoon mode [`2b98eb3`](https://github.com/ollm/OpenComic/commit/2b98eb3af7c1651149063e6176a5ae7e6b3d1c81)
 - Navigation back not working with shortcuts and gamepad [`ba8641f`](https://github.com/ollm/OpenComic/commit/ba8641f96ed3c8bdef8e35ce98af55b7e6d10bc8)
-- Correct invert some shortcuts in manga reading
+- Correct invert some shortcuts in manga reading [`208fee6`](https://github.com/ollm/OpenComic/commit/208fee6d48c1dab69b131e45f997326323ac8625)
 
 ## [v1.5.0](https://github.com/ollm/OpenComic/releases/tag/v1.5.0) (19-06-2025)
 

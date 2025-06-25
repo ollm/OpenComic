@@ -250,6 +250,8 @@ function loadShortcuts()
 				'notEnlargeMoreThanOriginalSize',
 				'rotate',
 				'rotateHorizontals',
+				'increaseHorizontalMargin',
+				'decreaseHorizontalMargin',
 				'ebookLayout',
 				'increaseFontSize',
 				'decreaseFontSize',
@@ -305,6 +307,8 @@ function loadShortcuts()
 						'notEnlargeMoreThanOriginalSize',
 						'rotate',
 						'rotateHorizontals',
+						'increaseHorizontalMargin',
+						'decreaseHorizontalMargin',
 					],
 				},
 				{
@@ -790,10 +794,8 @@ function loadShortcuts()
 					name: language.reading.pages.rotate,
 					function: function(){
 
-						let rotate = _config.readingRotate + 1;
-
-						if(rotate > 3)
-							rotate = 0;
+						const _rotate = [2, 0, 3, 1];
+						const rotate = _rotate[_config.readingRotate];
 
 						reading.changePagesView(22, rotate, false);
 						shortcutSnackbar(language.reading.pages.rotate, rotate);
@@ -805,13 +807,43 @@ function loadShortcuts()
 					name: language.reading.pages.rotateHorizontals,
 					function: function(){
 
-						let rotate = _config.readingRotateHorizontals + 1;
-
-						if(rotate > 3)
-							rotate = 0;
+						const _rotate = [2, 0, 3, 1];
+						const rotate = _rotate[_config.readingRotateHorizontals];
 
 						reading.changePagesView(19, rotate, false);
 						shortcutSnackbar(language.reading.pages.rotateHorizontals, _config.readingRotateHorizontals);
+
+						return true;
+					},
+				},
+				increaseHorizontalMargin: {
+					name: language.reading.pages.increaseHorizontalMargin,
+					function: function(){
+
+						let margin = _config.readingMargin.left + 10;
+
+						if(margin > config.readingMaxMargin)
+							margin = config.readingMaxMargin;
+
+						console.log('increaseHorizontalMargin', margin);
+
+						reading.changePagesView(10, margin, true);
+
+						return true;
+					},
+				},
+				decreaseHorizontalMargin: {
+					name: language.reading.pages.decreaseHorizontalMargin,
+					function: function(){
+
+						let margin = _config.readingMargin.left - 10;
+
+						if(margin < 0)
+							margin = 0;
+
+						console.log('decreaseHorizontalMargin', margin);
+
+						reading.changePagesView(10, margin, true);
 
 						return true;
 					},
@@ -939,6 +971,8 @@ function loadShortcuts()
 				'Ctrl+L': 'notEnlargeMoreThanOriginalSize',
 				'Ctrl+R': 'rotate',
 				'Shift+R': 'rotateHorizontals',
+				'Ctrl+.': 'increaseHorizontalMargin',
+				'Ctrl+,': 'decreaseHorizontalMargin',
 				'Shift+E': 'ebookLayout',
 				'Shift+2': 'increaseFontSize',
 				'Shift+.': 'increaseFontSize',

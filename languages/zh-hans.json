@@ -136,6 +136,8 @@
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",
 			"differentMarginInHorizontals": "横幅画面差异",
+			"increaseHorizontalMargin": "",
+			"decreaseHorizontalMargin": "",
 			"doublePage": "双页展示",
 			"doNotApplyToHorizontals": "不用于横幅画面",
 			"alignWithNextHorizontal": "与下一个水平对齐",
