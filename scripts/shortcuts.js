@@ -781,11 +781,8 @@ function loadShortcuts()
 					name: language.reading.pages.notEnlargeMoreThanOriginalSize,
 					function: function(){
 
-						if(!_config.readingWebtoon)
-						{
-							reading.changePagesView(18, !_config.readingNotEnlargeMoreThanOriginalSize, false);
-							shortcutSnackbar(language.reading.pages.notEnlargeMoreThanOriginalSize, _config.readingNotEnlargeMoreThanOriginalSize);
-						}
+						reading.changePagesView(18, !_config.readingNotEnlargeMoreThanOriginalSize, false);
+						shortcutSnackbar(language.reading.pages.notEnlargeMoreThanOriginalSize, _config.readingNotEnlargeMoreThanOriginalSize);
 
 						return true;
 					},
