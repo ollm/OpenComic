@@ -14,17 +14,29 @@ async function findDisks(force = false)
 	if(process.platform == 'win32')
 	{
 		const diskLayout = await systemInfo.diskLayout();
-		const fsSize = await systemInfo.fsSize();
-		const blockDevices = await si.blockDevices();
+		const blockDevices = await systemInfo.blockDevices();
 
-		/*
+		for(const layout of diskLayout)
+		{
+			const regex = layout.device ? new RegExp('^'+pregQuote(layout.device), '') : false;;
+			const mount = blockDevices.find(function(block) {
 
+				return regex && block.device && block.device === layout.device ? true : false;
 
+			});
 
-
-
-
-		*/
+			if(mount)
+			{
+				disks.push({
+					name: layout.name,
+					mount: mount.mount,
+					type: layout.type,
+					hdd: /HD/iu.test(layout.type),
+					ssd: /SSD/iu.test(layout.type),
+					nvme: /NVMe/iu.test(layout.type),
+				});
+			}
+		}
 	}
 	else
 	{
@@ -33,7 +45,7 @@ async function findDisks(force = false)
 
 		for(const layout of diskLayout)
 		{
-			const regex = layout.device ? new RegExp('^'+pregQuote(layout.device), '') : false;;
+			const regex = layout.device ? new RegExp('^'+pregQuote(layout.device), '') : false;
 			const mount = fsSize.find(function(size) {
 
 				return regex && size.fs && regex.test(size.fs) ? true : false;
