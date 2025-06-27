@@ -2224,8 +2224,13 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			fastXmlParser = new fastXmlParser({ignoreAttributes: false});
 		}
 
-		let metadataXml = fastXmlParser.parse(metadata.metadata.getRaw('data'));
-		metadataXml = this.parsePdfMetadataXml(metadataXml?.['x:xmpmeta']?.['rdf:RDF']?.['rdf:Description'] || {});
+		let metadataXml = {};
+
+		if(metadata.metadata)
+		{
+			metadataXml = fastXmlParser.parse(metadata.metadata.getRaw('data'));
+			metadataXml = this.parsePdfMetadataXml(metadataXml?.['x:xmpmeta']?.['rdf:RDF']?.['rdf:Description'] || {});
+		}
 
 		return {
 			title: metadata.info.Title || map.title || '',
