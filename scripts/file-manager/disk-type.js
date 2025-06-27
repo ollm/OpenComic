@@ -2,16 +2,11 @@ const systemInfo = require('systeminformation');
 
 var runned = false;
 
-async function findDisks(force = false)
+async function _findDisks(method = 0)
 {
-	if(runned && !force)
-		return;
-
-	runned = true;
-
 	const disks = [];
 
-	if(process.platform == 'win32')
+	if(method === 1)
 	{
 		const diskLayout = await systemInfo.diskLayout();
 		const blockDevices = await systemInfo.blockDevices();
@@ -25,11 +20,32 @@ async function findDisks(force = false)
 
 			});
 
-			if(mount)
+			if(mount && mount.mount)
 			{
 				disks.push({
 					name: layout.name,
 					mount: mount.mount,
+					type: layout.type,
+					hdd: /HD/iu.test(layout.type),
+					ssd: /SSD/iu.test(layout.type),
+					nvme: /NVMe/iu.test(layout.type),
+				});
+			}
+		}
+	}
+	else if(method === 2)
+	{
+		const blockDevices = await systemInfo.blockDevices();
+
+		for(const block of blockDevices)
+		{
+			if(block && block.mount && block.physical)
+			{
+				const type = /NVMe/iu.test(block.protocol) ? 'NVMe' : block.physical;
+
+				disks.push({
+					name: block.label,
+					mount: block.mount,
 					type: layout.type,
 					hdd: /HD/iu.test(layout.type),
 					ssd: /SSD/iu.test(layout.type),
@@ -52,7 +68,7 @@ async function findDisks(force = false)
 
 			});
 
-			if(mount)
+			if(mount && mount.mount)
 			{
 				disks.push({
 					name: layout.name,
@@ -64,6 +80,37 @@ async function findDisks(force = false)
 				});
 			}
 		}
+	}
+
+	return disks;
+}
+
+async function findDisks(force = false)
+{
+	if(runned && !force)
+		return;
+
+	runned = true;
+
+	let disks = [];
+
+	if(process.platform == 'win32')
+	{
+		disks = await _findDisks(1);
+		if(!disks.length) disks = await _findDisks(2);
+		if(!disks.length) disks = await _findDisks(0);
+	}
+	else if(process.platform == 'darwin')
+	{
+		disks = await _findDisks(2);
+		if(!disks.length) disks = await _findDisks(0);
+		if(!disks.length) disks = await _findDisks(1);
+	}
+	else
+	{
+		disks = await _findDisks(0);
+		if(!disks.length) disks = await _findDisks(1);
+		if(!disks.length) disks = await _findDisks(2);
 	}
 
 	disks.sort(function(a, b) {
@@ -124,4 +171,5 @@ module.exports = {
 	check,
 	getDisks,
 	findDisks,
+	_findDisks,
 };
