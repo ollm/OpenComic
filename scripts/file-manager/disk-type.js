@@ -46,10 +46,10 @@ async function _findDisks(method = 0)
 				disks.push({
 					name: block.label,
 					mount: block.mount,
-					type: layout.type,
-					hdd: /HD/iu.test(layout.type),
-					ssd: /SSD/iu.test(layout.type),
-					nvme: /NVMe/iu.test(layout.type),
+					type: type,
+					hdd: /HD/iu.test(type),
+					ssd: /SSD/iu.test(type),
+					nvme: /NVMe/iu.test(type),
 				});
 			}
 		}
