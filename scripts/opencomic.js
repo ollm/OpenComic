@@ -381,6 +381,7 @@ async function startApp()
 	dragAndDrop.start();
 	dom.search.start();
 	tracking.start();
+	fileManager.diskType.findDisks();
 
 	document.fonts.ready.then(function(){
 

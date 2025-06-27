@@ -112,6 +112,7 @@
 		"short-windows-path": "^1.0.3",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "v12.0.1",
+		"systeminformation": "^5.27.6",
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {

@@ -1,5 +1,6 @@
 const requestFileAccess = require(p.join(appDir, 'scripts/file-manager/request-file-access.js'))
-	filePassword = require(p.join(appDir, 'scripts/file-manager/file-password.js'));
+	filePassword = require(p.join(appDir, 'scripts/file-manager/file-password.js')),
+	diskType = require(p.join(appDir, 'scripts/file-manager/disk-type.js'));
 
 var un7z = false, bin7z = false, fastXmlParser = false, Minimatch = false;
 
@@ -1869,6 +1870,17 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.getOptimalThreads = function() {
+
+		const disk = diskType.check(this.realPath);
+
+		if(disk.hdd)
+			return {readKey: 'readUsingThreadsHDD', extractKey: 'extractUsingThreadsHDD', read: 0.01, extract: 0.01};
+		else
+			return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: 1, extract: 1};
+
+	}
+
 	// 7z
 	this._7z = false;
 
@@ -1893,51 +1905,67 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.read7z = async function(callback = false) {
 
-		const files = [];
-
 		const self = this;
+		const optimalThreads = this.getOptimalThreads();
 
-		const _7z = await this.open7z();
-		let readSome = false;
+		return threads.job(optimalThreads.readKey, {useThreads: optimalThreads.read}, async function() {
 
-		return new Promise(function(resolve, reject) {
+			return new Promise(async function(resolve, reject) {
 
-			_7z.on('data', function(data) {
+				let readSome = false;
+				let endEvent = false;
 
-				if(data.file)
-				{
-					if(/^D/.test(data.attributes) && !data.size) // Ignore directories
-						return;
+				const files = [];
+				const _7z = await self.open7z();
 
-					const originalName = self.removeTmp(p.normalize(data.file));
-					const name = self.fixUnsupportedCharsInWindows(originalName);
-					const same = originalName === name ? true : false;
+				_7z.on('data', function(data) {
 
-					files.push({name: name, fixedName: (!same ? name : ''), originalName: (!same ? originalName : ''), path: p.join(self.path, name), fileSize: data.size});
-					self.setFileStatus(name, {extracted: false});
+					if(data.file)
+					{
+						if(/^D/.test(data.attributes) && !data.size) // Ignore directories
+							return;
 
-					readSome = true;
-				}
+						const originalName = self.removeTmp(p.normalize(data.file));
+						const name = self.fixUnsupportedCharsInWindows(originalName);
+						const same = originalName === name ? true : false;
 
-			}).on('end', function(data) {
+						files.push({name: name, fixedName: (!same ? name : ''), originalName: (!same ? originalName : ''), path: p.join(self.path, name), fileSize: data.size});
+						self.setFileStatus(name, {extracted: false});
 
-				self.files = self.filesToMultidimension(files);
-				resolve(self.files);
+						readSome = true;
+					}
 
-			}).on('error', function(error){
+				}).on('end', function(data) {
 
-				if(readSome)
-				{
-					/*self.files = self.filesToMultidimension(files);
-					resolve(self.files);*/
+					endEvent = true;
 
-					//self.saveErrorToCache(error);
-					dom.compressedError(error, false, sha1(self.path));
-				}
-				else
-				{
-					reject(error);
-				}
+					self.files = self.filesToMultidimension(files);
+					resolve(self.files);
+
+				}).on('error', function(error){
+
+					if(readSome)
+					{
+						//self.saveErrorToCache(error);
+						dom.compressedError(error, false, sha1(self.path));
+
+						// Just in case the 'end' event is not called
+						setTimeout(function() {
+
+							if(endEvent)
+								return;
+
+							self.files = self.filesToMultidimension(files);
+							resolve(self.files);
+
+						}, 5000);
+					}
+					else
+					{
+						reject(error);
+					}
+
+				});
 
 			});
 
@@ -1948,6 +1976,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	this.extract7z = async function() {
 
 		const self = this;
+		const optimalThreads = this.getOptimalThreads();
 
 		const only = [];
 		const extractName = {};
@@ -1979,7 +2008,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			let extractedSome = false;
 			let hasError = false;
 
-			promises.push(threads.job('extractUsingThreads', {useThreads: 1}, async function() {
+			promises.push(threads.job(optimalThreads.extractKey, {useThreads: optimalThreads.extract}, async function() {
 
 				return new Promise(async function(resolve, reject) {
 
@@ -3600,4 +3629,5 @@ module.exports = {
 	fileSizes: function(){return fileSizes},
 	requestFileAccess: requestFileAccess,
 	filePassword: filePassword,
+	diskType: diskType,
 }
