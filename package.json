@@ -40,8 +40,8 @@
 		"build-linux": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z tar.gz && npm run postbuild",
 		"build-deb": "npm run prebuild && electron-builder --x64 --linux deb && npm run postbuild",
 		"build-rpm": "npm run prebuild && electron-builder --x64 --linux rpm && npm run postbuild",
-		"build-snap": "npm run prebuild && node ./scripts/snapcraft.js && electron-builder --x64 --linux snap && npm run postbuild",
-		"build-snap-store": "npm run prebuild && npm run prebuild-store && node ./scripts/snapcraft.js && electron-builder --x64 --linux snap && npm run postbuild",
+		"build-snap": "npm run prebuild && electron-builder --x64 --linux snap && npm run postbuild",
+		"build-snap-store": "npm run prebuild && npm run prebuild-store && electron-builder --x64 --linux snap && npm run postbuild",
 		"build-flatpak": "npm run prebuild && electron-builder --x64 --linux flatpak && npm run postbuild",
 		"build-appimage": "npm run prebuild && electron-builder --x64 --linux AppImage && npm run postbuild",
 		"build-tar": "npm run prebuild && electron-builder --x64 --linux tar.gz && npm run postbuild",
@@ -72,8 +72,8 @@
 		"build-tar-arm": "npm run prebuild && electron-builder --arm64 --linux tar.gz && npm run postbuild",
 		"build-zip-arm": "npm run prebuild && electron-builder --arm64 --linux zip && npm run postbuild",
 		"build-7z-arm": "npm run prebuild && electron-builder --arm64 --linux 7z && npm run postbuild",
-		"snapcraft": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-amd64/ && snapcraft && npm run postbuild",
-		"snapcraft-arm": "npm run prebuild && node ./scripts/snapcraft.js && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64 && npm run postbuild",
+		"snapcraft": "npm run prebuild && cd dist/__snap-amd64/ && snapcraft && npm run postbuild",
+		"snapcraft-arm": "npm run prebuild && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64 && npm run postbuild",
 		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
 	},
 	"dependencies": {
