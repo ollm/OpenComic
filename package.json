@@ -130,6 +130,7 @@
 	"build": {
 		"appId": "org.opencomic.app",
 		"productName": "OpenComic",
+		"executableName": "opencomic",
 		"asar": true,
 		"publish": null,
 		"files": [
