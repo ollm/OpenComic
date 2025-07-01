@@ -9,6 +9,8 @@ window.onerror = function(msg, url, linenumber) {
 
 }*/
 
+var isFullScreen = false;
+
 function fullScreen(force = null, win = false)
 {
 	if(win === false)
@@ -17,6 +19,7 @@ function fullScreen(force = null, win = false)
 	if(force === null)
 		force = !win.isFullScreen();
 
+	isFullScreen = force;
 	titleBar.setFullScreen(force);
 
 	reading.hideContent(force);

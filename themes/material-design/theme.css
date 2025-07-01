@@ -684,6 +684,11 @@ body .app > *
 	color: var(--md-sys-color-on-surface);
 }
 
+body .app.hide-mouse *
+{
+	cursor: none !important;
+}
+
 body .preload
 {
 	opacity: 0;

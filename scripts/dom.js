@@ -2526,9 +2526,6 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	// Start reading comic
 	if(config.readingStartReadingInFullScreen && !fromNextAndPrev && !fromGoBack)
 	{
-		const win = electronRemote.getCurrentWindow();
-		const isFullScreen = win.isFullScreen();
-
 		if(!isFullScreen)
 			fullScreen(true);
 	}
@@ -2748,7 +2745,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	});
 
 	reading.read(path, indexStart, end, isCanvas, isEbook, imagePath);
-	reading.hideContent(electronRemote.getCurrentWindow().isFullScreen(), true);
+	reading.hideContent(isFullScreen, true);
 	reading.music.read(hasMusic);
 
 	generateAppMenu();

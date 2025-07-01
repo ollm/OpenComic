@@ -1873,9 +1873,9 @@ function showNextComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -1970,9 +1970,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -2998,8 +2998,6 @@ function hideContent(fullScreen = false, first = false)
 
 function hideBarHeader(value = null)
 {
-	let isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
-
 	if(value === null) value = !(isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader);
 
 	if(isFullScreen)
@@ -3012,8 +3010,6 @@ function hideBarHeader(value = null)
 
 function hideContentLeft(value = null)
 {
-	let isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
-
 	if(value === null) value = !(isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft);
 
 	if(isFullScreen)
@@ -3026,8 +3022,6 @@ function hideContentLeft(value = null)
 
 function loadReadingMoreOptions()
 {
-	var isFullScreen = electronRemote.getCurrentWindow().isFullScreen();
-
 	handlebarsContext.hideContent = {
 		barHeader: isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader,
 		contentLeft: isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft,
@@ -3674,10 +3668,16 @@ function saveReadingProgress(path = false, mainPath = false)
 		chapterProgress = page.chapterProgress;
 	}
 
+	const currentPage = reading.currentPage();
+	const totalPages = reading.totalPages();
+
 	storage.updateVar('readingProgress', mainPath, {
-		index: imagesPath[path],
+		index: currentPage,
+		pages: totalPages,
+		percent: ((currentPage / totalPages) * 100),
+		complete: (currentPage >= totalPages),
 		path: path.replace(/\?page=[0-9]+$/, ''),
-		lastReading: +new Date(),
+		lastReading: Date.now(),
 		ebook: readingIsEbook,
 		progress: progress,
 		chapterIndex: chapterIndex,
@@ -4919,6 +4919,51 @@ function pointermove(event)
 
 			hideContentRunningST = false;
 		}
+	}
+
+	hideMouseInFullscreen();
+}
+
+var hideMouseInFullscreenStatus = {
+	st: false,
+	hidden: false,
+};
+
+function hideMouseInFullscreen(hide = false)
+{
+	const status = hideMouseInFullscreenStatus;
+
+	if(hide)
+	{
+		if(!status.hidden)
+		{
+			const app = document.querySelector('.app');
+			app.classList.add('hide-mouse');
+		}
+
+		status.st = false;
+		status.hidden = true;
+	}
+	else
+	{
+		if(status.hidden)
+		{
+			const app = document.querySelector('.app');
+			app.classList.remove('hide-mouse');
+		}
+
+		clearTimeout(status.st);
+
+		if(!isFullScreen || !onReading)
+			return;
+
+		status.st = setTimeout(function() {
+
+			hideMouseInFullscreen(true);
+
+		}, 3000);
+
+		status.hidden = false;
 	}
 }
 
