@@ -2931,6 +2931,7 @@ async function resized()
 		render.resized(readingDoublePage());
 		fastUpdateEbookPages(false, true);
 		generateEbookPagesDelayed();
+		hideMouseInFullscreen();
 	}
 
 	// getPreviusContentSize();
@@ -4921,28 +4922,37 @@ function pointermove(event)
 		}
 	}
 
-	hideMouseInFullscreen();
+	hideMouseInFullscreen(event);
 }
 
 var hideMouseInFullscreenStatus = {
 	st: false,
 	hidden: false,
+	event: false,
 };
 
-function hideMouseInFullscreen(hide = false)
+function hideMouseInFullscreen(event = false, hide = false)
 {
 	const status = hideMouseInFullscreenStatus;
+	event = event || status.event;
+	status.event = event;
 
 	if(hide)
 	{
-		if(!status.hidden)
+		const contentRight = template._contentRight();
+
+		if(contentRight.contains(event.target))
 		{
-			const app = document.querySelector('.app');
-			app.classList.add('hide-mouse');
+			if(!status.hidden)
+			{
+				const app = document.querySelector('.app');
+				app.classList.add('hide-mouse');
+			}
+
+			status.hidden = true;
 		}
 
 		status.st = false;
-		status.hidden = true;
 	}
 	else
 	{
@@ -4959,7 +4969,7 @@ function hideMouseInFullscreen(hide = false)
 
 		status.st = setTimeout(function() {
 
-			hideMouseInFullscreen(true);
+			hideMouseInFullscreen(event, true);
 
 		}, 3000);
 
