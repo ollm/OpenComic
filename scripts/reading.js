@@ -3621,6 +3621,8 @@ function saveReadingProgress(path = false, mainPath = false)
 	if(!onReading || !isLoaded)
 		return;
 
+	hideMouseInFullscreen();
+
 	if(!saveReadingProgressA)
 		return;
 
@@ -4940,8 +4942,9 @@ function hideMouseInFullscreen(event = false, hide = false)
 	if(hide)
 	{
 		const contentRight = template._contentRight();
+		const element = event ? document.elementFromPoint(event.clientX, event.clientY) : false;
 
-		if(contentRight.contains(event.target))
+		if(!event || contentRight.contains(element || event.target))
 		{
 			if(!status.hidden)
 			{
@@ -4971,7 +4974,7 @@ function hideMouseInFullscreen(event = false, hide = false)
 
 			hideMouseInFullscreen(event, true);
 
-		}, 3000);
+		}, 2000);
 
 		status.hidden = false;
 	}
@@ -5787,6 +5790,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	}
 
 	startScrollWithMouse();
+	hideMouseInFullscreen();
 
 	filters.apply();
 
