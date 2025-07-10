@@ -55,6 +55,9 @@ async function clear(path)
 		}
 	}
 
+	// Force recount of pages
+	await reading.progress.countPages(path, false);
+
 	dom.reload();
 
 	events.snackbar({

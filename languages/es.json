@@ -27,7 +27,11 @@
 			"main": "Vista",
 			"module": "Cuadricula",
 			"list": "Lista",
-			"moduleSize": "Tamaño de la cuadrícula"
+			"moduleSize": "Tamaño de la cuadrícula",
+			"fadeCompleted": "Atenuar completados",
+			"progressBar": "Mostrar barra de progreso",
+			"progressPages": "Mostrar páginas",
+			"progressPercent": "Mostrar porcentaje"
 		},
 		"filter": {
 			"onlyRoot": "Sólo de las carpetas raíz",
@@ -136,8 +140,8 @@
 			"marginHorizontal": "Margen horizontal",
 			"marginVertical": "Margen vertical",
 			"differentMarginInHorizontals": "Diferente en las horizontales",
-			"increaseHorizontalMargin": "",
-			"decreaseHorizontalMargin": "",
+			"increaseHorizontalMargin": "Aumentar el margen horizontal",
+			"decreaseHorizontalMargin": "Disminuir el margen horizontal",
 			"doublePage": "Doble página",
 			"doNotApplyToHorizontals": "No aplicar a las horizontales",
 			"alignWithNextHorizontal": "Alinear con la siguiente horizontal",

@@ -2,9 +2,27 @@
 {{> index.content.right.continue.reading.html}}
 <div class="content-view-list">
 	{{#each comics}}
-	<div class="medium-list body-medium{{#unless folder}} sha-{{sha}}{{/unless}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}{{onclick}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', {{#if @root.comicsIndex}}{{#unless fromRecentlyOpened}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)">
+	<div class="medium-list body-medium sha-{{sha}} gamepad-item{{#if @first}} gamepad-to-highlight{{/if}}" onclick="{{#if folder}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{else}}dom.openComic(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}');{{/if}}{{onclick}}" oncontextmenu="dom.comicContextMenu('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', {{#if @root.comicsIndex}}{{#unless fromRecentlyOpened}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if @root.comicsIndex}}{{#unless fromMasterFolder}}true{{else}}false{{/unless}}{{else}}false{{/if}}, {{#if folder}}true{{else}}false{{/if}}, fromGamepad)"{{#if @root.page.fadeCompleted}}{{#if progress.completed}} style="opacity: 0.3;"{{/if}}{{/if}}>
 		<div class="{{#if folder}}icon-24 material-icon{{else}}medium-list-image{{/if}} item-image"{{#unless folder}} style="background-image: url({{chain 'escapeBackSlash' 'escapeQuotesSimples' thumbnail}});"{{/unless}}>{{#if folder}}{{#if compressed}}folder_zip{{else}}folder{{/if}}{{/if}}</div>
 		<div class="medium-list-text">{{name}}</div>
+
+		{{#if @root.page.progressBar}}
+		<div class="progress-bar medium-list-column{{#if progress}}{{#compare progress.percent '!=' 0}} show{{/compare}}{{/if}}">
+			<span style="transform: translateX(calc(-100% + {{progress.percent}}%))"></span>
+			<span style="transform: translateX(calc({{progress.percent}}% + 4px))"></span>
+		</div>
+		{{/if}}
+
+		{{#if @root.page.progressPages}}
+		<div class="medium-list-column progress-pages{{#if progress}} show{{/if}}">
+			<span>{{progress.read}} / {{progress.total}}</span>
+		</div>
+		{{/if}}
+		{{#if @root.page.progressPercent}}
+		<div class="medium-list-column progress-percent{{#if progress}} show{{/if}}">
+			<span>{{progress.percentRound}}%</span>
+		</div>
+		{{/if}}
 	</div>
 	{{else}}
 		{{> index.content.right.else.html}}

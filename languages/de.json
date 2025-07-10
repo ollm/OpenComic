@@ -27,7 +27,11 @@
 			"main": "Ansicht",
 			"module": "Raster",
 			"list": "Liste",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

@@ -27,7 +27,11 @@
 			"main": "View",
 			"module": "Grid",
 			"list": "List",
-			"moduleSize": "Grid size"
+			"moduleSize": "Grid size",
+			"fadeCompleted": "Fade completed",
+			"progressBar": "Show progress bar",
+			"progressPages": "Show pages",
+			"progressPercent": "Show percentage"
 		},
 		"filter": {
 			"onlyRoot": "Only from root folders",

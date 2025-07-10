@@ -27,7 +27,11 @@
 			"main": "Vy",
 			"module": "Rutnät",
 			"list": "Lista",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

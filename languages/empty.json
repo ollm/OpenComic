@@ -27,7 +27,11 @@
 			"main": "",
 			"module": "",
 			"list": "",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

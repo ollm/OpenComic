@@ -1279,7 +1279,7 @@ function openComic(filePath, animation = true)
 			mainPath = path;
 
 		if(onReading)
-			reading.saveReadingProgress();
+			reading.progress.save();
 
 		recentlyOpened.set(mainPath);
 
@@ -1402,7 +1402,7 @@ function addComicsToLibrary(files, reload = true)
 	if(added && reload)
 	{
 		if(onReading)
-			reading.saveReadingProgress();
+			reading.progress.save();
 
 		dom.loadIndexPage(true);
 	}

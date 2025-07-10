@@ -105,6 +105,7 @@ async function load(animation = true, content = false)
 			comics[key].images = images.images;
 			comics[key].mainPath = config.showFullPathOpened ? p.parse(comics[key].path).root : comics[key].mainPath;
 			comics[key].readingProgress = readingProgress[comics[key].path] || {lastReading: 0};
+			comics[key].progress = images.progress;
 		}
 
 		comics.sort(function(a, b) {

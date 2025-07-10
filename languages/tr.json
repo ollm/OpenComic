@@ -27,7 +27,11 @@
 			"main": "Görünüm",
 			"module": "Izgara",
 			"list": "Liste",
-			"moduleSize": "Izgara boyutu"
+			"moduleSize": "Izgara boyutu",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

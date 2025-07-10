@@ -106,7 +106,7 @@ function goForwards()
 		if(!fileManager.simpleExists(goForwards.path)) return goForwards();
 
 		if(onReading)
-			reading.saveReadingProgress();
+			reading.progress.save();
 
 		fromGoForwards = true;
 

@@ -27,7 +27,11 @@
 			"main": "Hiển thị",
 			"module": "Lưới",
 			"list": "Danh sách",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

@@ -28,6 +28,7 @@ async function box(_comics, single, title, order, orderKey = false, orderKey2 = 
 
 			comics[i].poster = images.poster;
 			comics[i].images = images.images;
+			comics[i].progress = images.progress;
 		}
 	}
 
@@ -40,6 +41,7 @@ async function box(_comics, single, title, order, orderKey = false, orderKey2 = 
 	const box = {
 		title: title,
 		boxes: true,
+		size: 100,
 		comics: comics,
 	};
 

@@ -27,7 +27,11 @@
 			"main": "Zobrazit",
 			"module": "Jako mřížku",
 			"list": "Jako seznam",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

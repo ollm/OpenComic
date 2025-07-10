@@ -27,7 +27,11 @@
 			"main": "มุมมอง",
 			"module": "ตาราง",
 			"list": "รายการ",
-			"moduleSize": "ขนาดตาราง"
+			"moduleSize": "ขนาดตาราง",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

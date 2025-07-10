@@ -128,6 +128,57 @@ function addImageToDom(sha, path, animation = true)
 	}
 }
 
+function addProgressToDom(sha, progress, animation = true)
+{
+	const src = document.querySelectorAll('.sha-'+sha);
+	const _src = dom.this(src);
+
+	if(!animation)
+		_src.addClass('disable-transitions');
+
+	// Fade completed
+	if(handlebarsContext.page.fadeCompleted && progress.completed)
+	{
+		for(const item of src)
+		{
+			if(item.classList.contains('medium-list'))
+				item.style.opacity = 0.3;
+			else
+				item.firstElementChild.style.opacity = 0.3;
+		}
+	} 
+
+	// Progress bar
+	if(handlebarsContext.page.progressBar)
+	{
+		const _progress = dom.this(src).find('.progress-bar', true);
+		_progress.addClass('show');
+
+		for(const item of _progress._this)
+		{
+			item.firstElementChild.style.transform = 'translateX(calc(-100% + '+progress.percent+'%))';
+			if(item.children[1]) item.children[1].style.transform = 'translateX(calc('+progress.percent+'% + 4px))';
+		}
+	}
+
+	if(handlebarsContext.page.progressPages || handlebarsContext.page.progressPercent)
+		dom.this(src).find('.progress-pages').addClass('show');
+
+	// Pages
+	if(handlebarsContext.page.progressPages)
+		dom.this(src).find('.progress-pages > svg text:first-child textPath, .progress-pages > span', true).html(progress.read+' / '+progress.total);
+
+	// percent
+	if(handlebarsContext.page.progressPercent)
+	{
+		dom.this(src).find('.progress-pages > svg text:nth-child(2) textPath, .progress-percent > span', true).html(progress.percentRound+'%');
+		dom.this(src).find('.progress-percent', true).addClass('show');
+	}
+
+	if(!animation)
+		_src.removeClass('disable-transitions');
+}
+
 function setWindowTitle(title = 'OpenComic')
 {
 	let _title = document.querySelector('head title');
@@ -389,6 +440,7 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 					addToQueue: images.addToQueue,
 					folder: true,
 					compressed: file.compressed,
+					progress: images.progress,
 				});
 			}
 		}
@@ -914,6 +966,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				comics[i].images = images.images;
 				comics[i].addToQueue = images.addToQueue;
 				comics[i].mainPath = comics[i].path;
+				comics[i].progress = images.progress;
 			}
 		}
 
@@ -1377,7 +1430,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 	if(Array.isArray(_images)) // 4 Images
 	{
-		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-poster').remove();
+		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-poster, .sha-'+folderSha+' .progress-pages').remove();
 
 		for(let i = 0, len = _images.length; i < len; i++)
 		{
@@ -1436,7 +1489,8 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0, end = 99999)
 {
-	let folderSha = sha1(path+(forceSize ? '?size='+forceSize : ''));
+	const getProgress = handlebarsContext.page.fadeCompleted || handlebarsContext.page.progressBar || handlebarsContext.page.progressPages || handlebarsContext.page.progressPercent;
+	const folderSha = sha1(path+(forceSize ? '?size='+forceSize : ''));
 
 	let poster = {cache: false, path: '', sha: folderSha+'-0'};
 
@@ -1447,7 +1501,10 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 		{cache: false, path: '', sha: folderSha+'-3'},
 	];
 
+	let progress = false;
+
 	let addToQueue = false;
+	let addToQueueProgress = false;
 	
 	if(index >= start && index <= end)
 	{
@@ -1478,33 +1535,69 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 				fileManager.requestFileAccess.check(path, error);
 			}
 		}
+
+		try
+		{
+			if(getProgress)
+				progress = await reading.progress.get(path, true, true);
+		}
+		catch(error)
+		{
+			if(error.message && /notCacheOnly/.test(error.message))
+				addToQueueProgress = 1;
+		}
 	}
 	else
 	{
 		addToQueue = 2;
+		addToQueueProgress = 2;
 	}
 
 	if(addToQueue)
 	{
-		threads.job('folderThumbnails', {useThreads: 0.2}, async function(path, folderSha) {
+		(async function(){
 
-			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-			let _images = await file.images(4, false, true);
+			await app.sleep(200);
 
-			await _getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
+			threads.job('folderThumbnails', {useThreads: 0.2}, async function(path, folderSha) {
 
-			file.destroy();
+				let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
+				let _images = await file.images(4, false, true);
 
-			return;
+				await _getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
 
-		}, path, folderSha).catch(function(error) {
+				file.destroy();
 
-			dom.compressedError(error, false);
-			
-		});
+				return;
+
+			}, path, folderSha).catch(function(error) {
+
+				dom.compressedError(error, false);
+				
+			});
+
+		})();
 	}
 
-	return {poster: poster, images: images, addToQueue: addToQueue};
+	if(addToQueueProgress && getProgress)
+	{
+		(async function(){
+
+			await app.sleep(200);
+
+			threads.job('folderThumbnails', {useThreads: 0.2}, async function(path, folderSha, addToQueueProgress) {
+
+				const progress = await reading.progress.get(path);
+				addProgressToDom(folderSha, progress, (addToQueueProgress === 1));
+
+				return;
+
+			}, path, folderSha, addToQueueProgress).catch(function(error) {});
+
+		})();
+	}
+
+	return {poster: poster, images: images, addToQueue: addToQueue, progress: progress};
 }
 
 function calculateVisibleItems(view, scrollTop = false)
@@ -1952,12 +2045,16 @@ function setCurrentPageVars(page, _indexLabel = false)
 			sort: sortAndView ? sortAndView.sort : config['sort'+extraKey],
 			sortInvert: sortAndView ? sortAndView.sortInvert : config['sortInvert'+extraKey],
 			foldersFirst: sortAndView ? false : (config['foldersFirst'+extraKey] || false),
-			boxes: (page == 'recently-opened') ? false : true,
+			boxes: (page == 'recently-opened' || page == 'browsing') ? false : true,
 			continueReading: sortAndView ? sortAndView.continueReading : config['continueReading'+extraKey],
 			recentlyAdded: sortAndView ? sortAndView.recentlyAdded : config['recentlyAdded'+extraKey],
 			viewModuleSize: sortAndView ? sortAndView.viewModuleSize : config['viewModuleSize'+extraKey],
 			filter: _indexLabel.filter || {},
 			labelOrFavorites: !!(_indexLabel.label || _indexLabel.favorites),
+			fadeCompleted: sortAndView ? sortAndView.fadeCompleted : config['fadeCompleted'+extraKey],
+			progressBar: sortAndView ? sortAndView.progressBar : config['progressBar'+extraKey],
+			progressPages: sortAndView ? sortAndView.progressPages : config['progressPages'+extraKey],
+			progressPercent: sortAndView ? sortAndView.progressPercent : config['progressPercent'+extraKey],
 			opds: {
 				continueReading: sortAndViewOpds.continueReading,
 				recentlyAdded: sortAndViewOpds.recentlyAdded,
@@ -2146,7 +2243,7 @@ function changeSort(type, mode, page)
 		dom.reload();
 }
 
-function changeBoxes(box, value, page)
+function changeConfig(key, value, page)
 {
 	let labelKey = false;
 	let sortAndView = false;
@@ -2162,7 +2259,7 @@ function changeBoxes(box, value, page)
 
 	if(sortAndView)
 	{
-		sortAndView[box] = value;
+		sortAndView[key] = value;
 
 		config.sortAndView[labelKey] = sortAndView;
 		storage.updateVar('config', 'sortAndView', config.sortAndView);
@@ -2176,7 +2273,7 @@ function changeBoxes(box, value, page)
 		else if(page == 'index')
 			extraKey = 'Index';
 
-		storage.updateVar('config', box+extraKey, value);
+		storage.updateVar('config', key+extraKey, value);
 	}
 
 	dom.reload();
@@ -2784,7 +2881,8 @@ module.exports = {
 	changeView: changeView,
 	changeViewModuleSize: changeViewModuleSize,
 	changeSort: changeSort,
-	changeBoxes: changeBoxes,
+	changeBoxes: changeConfig,
+	changeConfig: changeConfig,
 	indexPathControl: indexPathControl,
 	goStartPath: goStartPath,
 	selectElement: selectElement,
@@ -2803,6 +2901,7 @@ module.exports = {
 	deletePermanently: deletePermanently,
 	compressedError: compressedError,
 	addImageToDom: addImageToDom,
+	addProgressToDom: addProgressToDom,
 	addSepToEnd: addSepToEnd,
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,

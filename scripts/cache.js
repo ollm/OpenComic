@@ -679,6 +679,9 @@ function purge()
 
 	storage.set('cache', data);
 
+	// Purge reading progress cache
+	reading.progress.purge();
+
 	return;
 }
 

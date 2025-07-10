@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.5.1 (dd-mm-yyyy)
+## v1.6.0 (dd-mm-yyyy)
 
 ##### 🚀 New Features
 
@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Increase and decrease horizontal margin shortcuts [`0bae05f`](https://github.com/ollm/OpenComic/commit/0bae05f210018120b56210797cd5850e13254aa9)
 - Use single thread in HDD extractions [`a4874a6`](https://github.com/ollm/OpenComic/commit/a4874a6d5b92d29df845625ddfc45e2f7a95f82b)
 - Auto-hide mouse cursor in fullscreen mode [`fbfa9f8`](https://github.com/ollm/OpenComic/commit/fbfa9f88c225ee2125535efaa6332d1e1b45d55e)
+- Show progress bar, pages and percentage in library/browsing
 
 ##### 🐛 Bug Fixes
 
@@ -28,7 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Update electron to fix white lines in Webtoon mode [`2b98eb3`](https://github.com/ollm/OpenComic/commit/2b98eb3af7c1651149063e6176a5ae7e6b3d1c81)
 - Navigation back not working with shortcuts and gamepad [`ba8641f`](https://github.com/ollm/OpenComic/commit/ba8641f96ed3c8bdef8e35ce98af55b7e6d10bc8)
 - Correct invert some shortcuts in manga reading [`208fee6`](https://github.com/ollm/OpenComic/commit/208fee6d48c1dab69b131e45f997326323ac8625)
-- Optimized poster handling in file image retrieval
+- Optimized poster handling in file image retrieval [`53b5c42`](https://github.com/ollm/OpenComic/commit/53b5c42ee98ade28ad72c492bd9f6e67b119cd50)
 
 ## [v1.5.0](https://github.com/ollm/OpenComic/releases/tag/v1.5.0) (19-06-2025)
 

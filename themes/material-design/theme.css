@@ -724,6 +724,12 @@ a:hover
 	transition: 0.2s;
 }
 
+.disable-transitions,
+.disable-transitions *
+{
+	transition: none !important;
+}
+
 .bar-header
 {
 	height: 48px;
@@ -1339,7 +1345,8 @@ a:hover
 	position: relative;
 	padding: 0px 4px 0px 16px;
 	margin-top: 16px;
-	transition: transform 0.2s;
+	transition: transform 0.2s, opacity 0.2s;
+	display: flex;
 }
 
 .medium-list.gamepad-highlight
@@ -1423,11 +1430,66 @@ a:hover
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: normal;
+	flex: 1;
 }
 
 .medium-list .medium-list-text-without-image
 {
 	margin-left: 12px;
+}
+
+.medium-list .medium-list-column
+{
+	width: 120px;
+	text-align: center;
+	opacity: 0;
+	transition: opacity 0.2s;
+	pointer-events: none;
+}
+
+.medium-list .medium-list-column.show
+{
+	opacity: 1;
+}
+
+.medium-list .progress-bar
+{
+	height: 4px;
+	width: 200px;
+	transition: background-color 0.2s, opacity 0.2s;
+	overflow: hidden;
+	opacity: 0;
+	z-index: 0;
+	border-radius: 4px;
+	position: relative;
+	margin: 26px 26px 0px 26px;
+	pointer-events: none;
+}
+
+.medium-list .progress-bar.show
+{
+	opacity: 1;
+}
+
+.medium-list .progress-bar > span
+{
+	height: 4px;
+	background-color: var(--md-sys-color-primary);
+	transition: background-color 0.2s, transform 0.2s;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 0px;
+	width: 100%;
+	display: block;
+	z-index: 1;
+	border-radius: 4px;
+	transform: translateX(-100%);
+}
+
+.medium-list .progress-bar > span:last-child
+{
+	background-color: var(--md-sys-color-surface-container);
 }
 
 /*Content View*/
@@ -1469,6 +1531,11 @@ a:hover
 	flex-shrink: 0;
 }
 
+.content-view-module > div > div:first-child
+{
+	transition: opacity 0.2s;
+}
+
 .content-view-module .v-folder
 {
 	width: 150px;
@@ -1485,6 +1552,7 @@ a:hover
 	display: flex;
 	flex-wrap: wrap;
 	align-content: flex-start;
+	z-index: 1;
 }
 
 .content-view-module .v-folder:before
@@ -1730,6 +1798,121 @@ a:hover
 	animation-fill-mode: forwards;
 }
 
+.content-view-module .progress
+{
+	opacity: 0;
+	transition: 0.2s opacity;
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0px 4px 0px 4px;
+}
+
+.content-view-module .progress.show
+{
+	opacity: 1;
+}
+
+.content-view-module .progress-bar
+{
+	height: 40px;
+	width: calc(100% - 20px);
+	/*background-color: var(--md-sys-color-surface-container-highest);*/
+	position: absolute;
+	bottom: 54px;
+	left: 10px;
+	transition: background-color 0.2s, opacity 0.2s;
+	overflow: hidden;
+	opacity: 0;
+	z-index: 0;
+	border-radius: 12px;
+}
+
+.content-view-module .progress-bar.show
+{
+	opacity: 1;
+}
+
+.content-view-module .progress-bar > span
+{
+	height: 40px;
+	background-color: var(--md-sys-color-primary);
+	transition: background-color 0.2s, transform 0.2s;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 0px;
+	width: 100%;
+	display: block;
+	z-index: 1;
+	transform: translateX(-100%);
+}
+
+.content-view-module .progress-pages
+{
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	bottom: 58px;
+	z-index: 2;
+	width: calc(100% - 20px);
+	left: 10px;
+	box-sizing: border-box;
+	padding: 2px 0px;
+	color: #fff;
+	font-weight: 500;
+	font-size: 13px;
+	opacity: 0;
+	transition: 0.2s;
+	pointer-events: none;
+}
+
+.content-view-module .progress-pages.show
+{
+	opacity: 1;
+}
+
+.content-view-module .progress-pages svg path
+{
+	stroke: transparent;
+}
+
+.content-view-module .progress-pages svg
+{
+	width: 100%;
+	height: 26px;
+}
+
+.content-view-module .progress-pages svg text
+{
+	dominant-baseline: middle;
+}
+
+.content-view-module .progress-pages svg text textPath
+{
+	font-size: 13px;
+	fill: #fff;
+}
+
+.content-view-module .progress-pages svg text:first-child textPath
+{
+	text-anchor: start;
+}
+
+.content-view-module .progress-pages svg text:last-child textPath
+{
+	text-anchor: end;
+}
+
+.content-view-module .progress-pages svg text textPath:first-child
+{
+	fill: #000;
+	stroke: #000;
+	stroke-width: 2;
+	opacity: 0.3;
+}
+
 /* Size 100 */
 .content-view-module-100
 {
@@ -1819,6 +2002,26 @@ a:hover
 .content-view-module-100 .folder-poster > img
 {
 	border-radius: 10px;
+}
+
+.content-view-module-100 .progress-bar
+{
+	border-radius: 12px;
+}
+
+.content-view-module-100 .progress-pages
+{
+	border-radius: 0px 0px 10px 10px;
+}
+
+.content-view-module-100 .progress-pages svg
+{
+	height: 22px;
+}
+
+.content-view-module-100 .progress-pages svg text textPath
+{
+	font-size: 11px;
 }
 
 
@@ -1916,6 +2119,25 @@ a:hover
 	transform: scale(1.033);
 }
 
+.content-view-module-200 .progress-bar
+{
+	border-radius: 15px;
+}
+
+.content-view-module-200 .progress-pages
+{
+	border-radius: 0px 0px 13px 13px;
+}
+
+.content-view-module-200 .progress-pages svg
+{
+	height: 30px;
+}
+
+.content-view-module-200 .progress-pages svg text textPath
+{
+	font-size: 15px;
+}
 
 /* Size 250 */
 .content-view-module-250
@@ -2011,6 +2233,26 @@ a:hover
 	transform: scale(1.027);
 }
 
+.content-view-module-250 .progress-bar
+{
+	border-radius: 18px;
+}
+
+.content-view-module-250 .progress-pages
+{
+	border-radius: 0px 0px 16px 16px;
+}
+
+.content-view-module-250 .progress-pages svg
+{
+	height: 34px;
+}
+
+.content-view-module-250 .progress-pages svg text textPath
+{
+	font-size: 17px;
+}
+
 /* Size 300 */
 .content-view-module-300
 {
@@ -2103,6 +2345,26 @@ a:hover
 .content-view-module-300 .gamepad-highlight .v-folder
 {
 	transform: scale(1.02);
+}
+
+.content-view-module-300 .progress-bar
+{
+	border-radius: 22px;
+}
+
+.content-view-module-300 .progress-pages
+{
+	border-radius: 0px 0px 20px 20px;
+}
+
+.content-view-module-300 .progress-pages svg
+{
+	height: 38px;
+}
+
+.content-view-module-300 .progress-pages svg text textPath
+{
+	font-size: 19px;
 }
 
 /* Continue reading */

@@ -376,7 +376,7 @@ function rangePosition(input, range, percent = false)
 	let step = input.getAttribute('step') || 1;
 
 	if(percent === false)
-		percent = (value - min) / (max - min) * 100;
+		percent = (min === max) ? 0 : (value - min) / (max - min) * 100;
 
 	if(isNaN(percent))
 		percent = 0;

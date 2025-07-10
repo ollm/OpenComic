@@ -27,7 +27,11 @@
 			"main": "表示",
 			"module": "グリッド",
 			"list": "リスト",
-			"moduleSize": "グリッドのサイズ"
+			"moduleSize": "グリッドのサイズ",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

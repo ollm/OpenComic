@@ -27,7 +27,11 @@
 			"main": "视图",
 			"module": "网格",
 			"list": "列表",
-			"moduleSize": "网格大小"
+			"moduleSize": "网格大小",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "仅来自根文件夹",

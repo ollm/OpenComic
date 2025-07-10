@@ -27,7 +27,11 @@
 			"main": "Ver",
 			"module": "Grade",
 			"list": "Lista",
-			"moduleSize": "Tamanho da grade"
+			"moduleSize": "Tamanho da grade",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

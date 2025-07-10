@@ -216,34 +216,31 @@ function validateUrl(value, protocols = 'https?|ftp')
 function copy(toCopy)
 {
 	if(typeof toCopy !== 'object' || toCopy === null)
-	{
 		return toCopy;
-	}
-	else if(Array.isArray(toCopy))
+	
+	if(Array.isArray(toCopy))
 	{
-		let len = toCopy.length;
-		let result = new Array(len);
+		const len = toCopy.length;
+		const result = new Array(len);
 
 		for(let i = 0; i < len; i++)
 		{
-			let _toCopy = toCopy[i];
+			const _toCopy = toCopy[i];
 			result[i] = typeof _toCopy !== 'object' || _toCopy === null ? _toCopy : copy(_toCopy);
 		}
 
 		return result;
 	}
-	else
+
+	const result = {};
+
+	for(let i in toCopy)
 	{
-		let result = {};
-
-		for(let i in toCopy)
-		{
-			let _toCopy = toCopy[i];
-			result[i] = typeof _toCopy !== 'object' || _toCopy === null ? _toCopy : copy(_toCopy);
-		}
-
-		return result;
+		const _toCopy = toCopy[i];
+		result[i] = typeof _toCopy !== 'object' || _toCopy === null ? _toCopy : copy(_toCopy);
 	}
+
+	return result;
 }
 
 function _shortWindowsPath(path, fileToBlob = false)
@@ -343,24 +340,62 @@ function scrollAnimation()
 var throttles = {};
 var debounces = {};
 
-async function setThrottle(key, callback, debounce = 300, throttle = 3000)
+function setDebounce(key, callback, debounce = 300, _debounce = false)
 {
-	clearTimeout(debounces[key]);
+	const timeout = setTimeout(function(){
 
-	debounces[key] = setTimeout(function(){
+		const debounced = debounces[key];
+		if(debounced === false) return;
+
+		const now = Date.now();
+		const elapsed = now - debounced.now;
+
+		if(elapsed < debounce)
+		{
+			setDebounce(key, debounced.callback, debounce, (debounce - elapsed));
+			return;
+		}
 
 		clearTimeout(throttles[key]);
+		debounces[key] = false;
 		throttles[key] = false;
 
-		callback(true);
+		debounced.callback(true);
 
-	}, debounce);
+	}, _debounce || debounce);
+
+	if(_debounce === false)
+	{
+		debounces[key] = {
+			now: Date.now() - 5,
+			callback: callback,
+			timeout: timeout,
+		};
+	}
+	else
+	{
+		debounces[key].timeout = timeout;
+	}
+}
+
+async function setThrottle(key, callback, debounce = 300, throttle = 3000)
+{
+	if(debounces[key] === undefined || debounces[key] === false)
+	{
+		setDebounce(key, callback, debounce);
+	}
+	else
+	{
+		debounces[key].now = Date.now() - 5;
+		debounces[key].callback = callback;
+	}
 
 	if(throttles[key] === undefined || throttles[key] === false)
 	{
 		throttles[key] = setTimeout(function(){
 
-			clearTimeout(debounces[key]);
+			if(debounces[key]) clearTimeout(debounces[key].timeout);
+			debounces[key] = false;
 			throttles[key] = false;
 
 			callback();

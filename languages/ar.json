@@ -27,7 +27,11 @@
 			"main": "العرض",
 			"module": "عرض الشبكة",
 			"list": "عرض القائمة",
-			"moduleSize": "حجم الشبكة"
+			"moduleSize": "حجم الشبكة",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

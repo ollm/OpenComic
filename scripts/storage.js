@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 122; // Update this if readingPagesConfig is updated
+const changes = 124; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -121,6 +121,18 @@ const storageDefault = {
 		viewModuleSize: 150,
 		viewModuleSizeIndex: 150,
 		viewModuleSizeRecentlyOpened: 150,
+		fadeCompleted: true,
+		fadeCompletedIndex: true,
+		fadeCompletedRecentlyOpened: true,
+		progressBar: true,
+		progressBarIndex: true,
+		progressBarRecentlyOpened: true,
+		progressPages: true,
+		progressPagesIndex: true,
+		progressPagesRecentlyOpened: true,
+		progressPercent: false,
+		progressPercentIndex: false,
+		progressPercentRecentlyOpened: false,
 		sortAndView: {
 			wildcard: {
 				view: 'module',
@@ -128,7 +140,11 @@ const storageDefault = {
 				sortInvert: false,
 				continueReading: true,
 				recentlyAdded: true,
-				viewModuleSize: 150,
+				viewModuleSize: 150,	
+				fadeCompleted: true,
+				progressBar: true,
+				progressPages: true,
+				progressPercent: false,
 			}
 		},
 		recentlyOpenedItems: 100,
@@ -310,7 +326,18 @@ const storageDefault = {
 			progress: 0,
 			chapterIndex: 0,
 			chapterProgress: 0,
+			// Visible progress
+			page: 0,
+			pages: 0,
+			percent: 0,
+			completed: false,
 		}
+	},
+	readingPages: {
+		wildcard: {
+			pages: 0,
+			lastAccess: 0,
+		},
 	},
 	recentlyOpened: {
 		wildcard: {
@@ -697,30 +724,13 @@ var debounces = {};
 // Improve save perfomance in places that do not require instantaneous save
 async function setThrottle(key, value)
 {
-	clearTimeout(throttles[key]);
-
 	storageJson[key] = value;
 
-	throttles[key] = setTimeout(function(){
-
-		clearTimeout(debounces[key]);
-		debounces[key] = false;
+	app.setThrottle('storage-'+key, function(){
 
 		ejs.set(key, storageJson[key], function(error){});
 
-	}, 300);
-
-	if(debounces[key] === undefined || debounces[key] === false)
-	{
-		debounces[key] = setTimeout(function(){
-
-			clearTimeout(throttles[key]);
-			debounces[key] = false;
-
-			ejs.set(key, storageJson[key], function(error){});
-
-		}, 3000);
-	}
+	}, 300, 3000);
 }
 
 var storageKeys = [];
@@ -809,7 +819,6 @@ function start(callback)
 		callback();
 	});
 }
-
 
 
 function get(key)

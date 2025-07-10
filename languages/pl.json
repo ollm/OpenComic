@@ -27,7 +27,11 @@
 			"main": "Widok",
 			"module": "Siatka",
 			"list": "Lista",
-			"moduleSize": "Rozmiar siatki"
+			"moduleSize": "Rozmiar siatki",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "Tylko z folderów głównych",

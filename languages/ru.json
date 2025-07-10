@@ -27,7 +27,11 @@
 			"main": "Вид",
 			"module": "Сетка",
 			"list": "Список",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

@@ -27,7 +27,11 @@
 			"main": "Vista",
 			"module": "Quadrícula",
 			"list": "Llista",
-			"moduleSize": "Mida de la quadrícula"
+			"moduleSize": "Mida de la quadrícula",
+			"fadeCompleted": "Atenuar completats",
+			"progressBar": "Mostra barra de progrés",
+			"progressPages": "Mostrar pàgines",
+			"progressPercent": "Mostrar percentatge"
 		},
 		"filter": {
 			"onlyRoot": "Només des de les carpetes arrel",

@@ -307,36 +307,10 @@ async function getFileSize()
 	dom.queryAll('.file-info-size').html(size);
 }
 
-async function _countImages(path, file)
-{
-	const files = await file.read({}, path);
-
-	let count = 0;
-
-	for(let i = 0, len = files.length; i < len; i++)
-	{
-		const _file = files[i];
-
-		if(_file.folder || _file.compressed)
-		{
-			count += await _countImages(_file.path, file);
-		}
-		else if(compatible.image(_file.path))
-		{
-			count++;
-		}
-	}
-
-	return count;
-}
-
 async function countImages()
 {
-	const file = fileManager.file(currentPath);
-	const images = await _countImages(currentPath, file);
-	file.destroy();
-
-	dom.queryAll('.file-info-pages').html(images);
+	const pages = await reading.progress.countPages(currentPath, false);
+	dom.queryAll('.file-info-pages').html(pages);
 }
 
 function parseValue(value, key)
@@ -688,4 +662,5 @@ module.exports = {
 	resize: resize,
 	country: country,
 	findOn: findOn,
+	countImages: countImages,
 };

@@ -5,7 +5,9 @@ const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js')),
 	sidebar = require(p.join(appDir, 'scripts/reading/sidebar.js')),
-	discord = require(p.join(appDir, 'scripts/reading/discord.js'));
+	discord = require(p.join(appDir, 'scripts/reading/discord.js')),
+	progress = require(p.join(appDir, 'scripts/reading/progress.js'));
+
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
@@ -1031,7 +1033,7 @@ function goToImage(imageIndex, disableSave = false)
 	if(typeof imagesData[imageIndex] !== 'undefined')
 	{
 		if(!disableSave)
-			saveReadingProgressA = true;
+			progress.activeSave();
 
 		readingDirection = true;
 
@@ -1449,7 +1451,7 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 //Go to the next comic page
 function goNext()
 {
-	saveReadingProgressA = true;
+	progress.activeSave();
 
 	var nextIndex = currentIndex + 1;
 
@@ -1481,7 +1483,7 @@ function goNext()
 //Go to the previous comic page
 function goPrevious()
 {
-	saveReadingProgressA = true;
+	progress.activeSave();
 
 	var previousIndex = currentIndex - 1;
 
@@ -1516,7 +1518,7 @@ function goStart(force = false)
 	if(force || !readingManga() || 1)
 	{
 		const hasComic = readingManga() ? dom.nextComic() : dom.previousComic();
-		saveReadingProgressA = true;
+		progress.activeSave();
 
 		if((currentIndex > indexNum || (currentIndex - 1 == 0 && hasComic)) && (!maxPageVisibility || currentPageVisibility == 0))
 		{
@@ -1562,7 +1564,7 @@ function goEnd(force = false)
 	if(force || !readingManga() || 1)
 	{
 		const hasComic = readingManga() ? dom.previousComic() : dom.nextComic();
-		saveReadingProgressA = true;
+		progress.activeSave();
 
 		if((currentIndex < 1 || (currentIndex == indexNum && hasComic)) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
 		{
@@ -1730,7 +1732,7 @@ function onScroll(event)
 
 			if(imageIndex)
 			{
-				saveReadingProgressA = true;
+				progress.activeSave();
 
 				goToImageCL(imageIndex, true, true);
 			}
@@ -1873,9 +1875,9 @@ function showNextComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = indexNum + 1;
 	}
@@ -1970,9 +1972,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.saveReadingProgress(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -3608,97 +3610,11 @@ function deleteBookmark(key)
 	loadBookmarks(true);
 }
 
-var saveReadingProgressA = false, fromSkip = false;
+var fromSkip = false;
 
 function setFromSkip()
 {
 	fromSkip = true;
-}
-
-//Save current reading progress
-function saveReadingProgress(path = false, mainPath = false)
-{
-	if(!onReading || !isLoaded)
-		return;
-
-	hideMouseInFullscreen();
-
-	if(!saveReadingProgressA)
-		return;
-
-	if(!path)
-	{
-		let imageIndex = false;
-
-		let newIndex = (currentIndex - 1);
-
-		if(readingManga())
-			newIndex = (indexNum - newIndex) - 1;
-
-		eachImagesDistribution(newIndex, ['image'], function(image){
-
-			if(!imageIndex)
-				imageIndex = image.index;
-
-		});
-
-		if(imageIndex === false)
-			imageIndex = Object.keys(images)[0];
-
-		path = p.normalize(images[imageIndex].path);
-	}
-
-	if(mainPath === false)
-	{
-		mainPath = dom.history.mainPath;
-
-		// Save also the current folder progress
-		if(mainPath !== p.dirname(path))
-			saveReadingProgress(path, p.dirname(path));
-	}
-
-	let progress = 0;
-	let chapterIndex = 0;
-	let chapterProgress = 0;
-
-	if(readingIsEbook)
-	{
-		let imageIndex = imagesDistribution[currentIndex - 1][0].index;
-		let page = _ebook.pages[imageIndex - 1];
-
-		progress = page.progress;
-		chapterIndex = page.chapterIndex;
-		chapterProgress = page.chapterProgress;
-	}
-
-	const currentPage = reading.currentPage();
-	const totalPages = reading.totalPages();
-
-	storage.updateVar('readingProgress', mainPath, {
-		index: currentPage,
-		pages: totalPages,
-		percent: ((currentPage / totalPages) * 100),
-		complete: (currentPage >= totalPages),
-		path: path.replace(/\?page=[0-9]+$/, ''),
-		lastReading: Date.now(),
-		ebook: readingIsEbook,
-		progress: progress,
-		chapterIndex: chapterIndex,
-		chapterProgress: chapterProgress,
-	});
-
-	dom.history.updateLastComic(path);
-
-	return true;
-}
-
-var saveReadingProgressSI = false;
-
-function startSaveReadingProgressSI()
-{
-	clearTimeout(saveReadingProgressSI);
-
-	saveReadingProgressSI = setInterval(saveReadingProgress, 60 * 2 * 1000); // Save every 2 minutes
 }
 
 //Load the bookmarks in the current directory
@@ -4284,6 +4200,14 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	{
 		notFound();
 	}
+}
+
+function getImage(index = 0)
+{
+	if(images[index])
+		return images[index];
+
+	return images[Object.keys(images)[0]];
 }
 
 var generateEbookPagesDelayedST = false, generateEbookPagesCancel = false;
@@ -5082,7 +5006,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	loadReadingConfig(currentReadingConfigKey);
 
 	if(!fromSkip)
-		saveReadingProgressA = false;
+		progress.activeSave(false);
 
 	fromSkip = false;
 
@@ -5793,8 +5717,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	hideMouseInFullscreen();
 
 	filters.apply();
-
-	startSaveReadingProgressSI();
+	progress.setInterval();
 }
 
 module.exports = {
@@ -5854,11 +5777,10 @@ module.exports = {
 	realReadingDirection: function(){return realReadingDirection},
 	disableOnScroll: disableOnScroll,
 	activeOnScroll: function(){return activeOnScroll},
-	saveReadingProgress: saveReadingProgress,
-	saveReadingProgressA: function(){return saveReadingProgressA},
 	setFromSkip: setFromSkip,
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	deleteBookmark: deleteBookmark,
+	hideMouseInFullscreen: hideMouseInFullscreen,
 	currentIndex: function(){return currentIndex},
 	currentImagePosition: currentImagePosition,
 	currentImagePage: currentImagePage,
@@ -5866,6 +5788,7 @@ module.exports = {
 	currentPageVisibility: function(){return currentPageVisibility},
 	totalPages: function(){return imagesNum},
 	currentPage: function(){return currentPage},
+	getImage: getImage,
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,
 	loadReadingPages: loadReadingPages,
@@ -5911,6 +5834,7 @@ module.exports = {
 	isLoad: isLoad,
 	onLoad: onLoad,
 	ebook: readingEbook,
+	get _ebook() {return _ebook},
 	filters: filters,
 	music: music,
 	contextMenu: contextMenu,
@@ -5918,4 +5842,5 @@ module.exports = {
 	render: render,
 	sidebar: sidebar,
 	discord: discord,
+	progress: progress,
 };

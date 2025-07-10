@@ -27,7 +27,11 @@
 			"main": "檢視",
 			"module": "格子",
 			"list": "列表",
-			"moduleSize": ""
+			"moduleSize": "",
+			"fadeCompleted": "",
+			"progressBar": "",
+			"progressPages": "",
+			"progressPercent": ""
 		},
 		"filter": {
 			"onlyRoot": "",

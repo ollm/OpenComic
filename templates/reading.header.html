@@ -1,9 +1,9 @@
 <div class="bar-left {{barBack}}" style="{{headerAnimationDelay}}">
-	<div class="bar-back material-icon button button2 hover-text" hover-text="{{language.global.goBack}}" onclick="reading.saveReadingProgress(); dom.history.goBack()" style="{{headerAnimationDelay}}">arrow_back</div>
+	<div class="bar-back material-icon button button2 hover-text" hover-text="{{language.global.goBack}}" onclick="reading.progress.save(); dom.history.goBack()" style="{{headerAnimationDelay}}">arrow_back</div>
 	<div class="bar-title title-small" style="max-width: calc(100% - (1031px + 68px{{#if hasMusic}} + 74px{{/if}}));">
 		{{#if headerTitlePath}}
 			{{#each headerTitlePath}}
-				<span class="bar-title-a" onclick="reading.saveReadingProgress(); {{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}">{{name}}</span>
+				<span class="bar-title-a" onclick="reading.progress.save(); {{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}">{{name}}</span>
 				{{#unless last}} <i class="material-icon navegation">chevron_right</i> {{/unless}}
 			{{/each}}
 		{{else}}
