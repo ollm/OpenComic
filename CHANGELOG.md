@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Get Calibre `series` and `series_index` metadata in PDF and ePub [`da739de`](https://github.com/ollm/OpenComic/commit/da739ded8ff1cdbc2b5da39662e85e725cd71545)
 - Increase and decrease horizontal margin shortcuts [`0bae05f`](https://github.com/ollm/OpenComic/commit/0bae05f210018120b56210797cd5850e13254aa9)
 - Use single thread in HDD extractions [`a4874a6`](https://github.com/ollm/OpenComic/commit/a4874a6d5b92d29df845625ddfc45e2f7a95f82b)
-- Auto-hide mouse cursor in fullscreen mode
+- Auto-hide mouse cursor in fullscreen mode [`fbfa9f8`](https://github.com/ollm/OpenComic/commit/fbfa9f88c225ee2125535efaa6332d1e1b45d55e)
 
 ##### 🐛 Bug Fixes
 
@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Update electron to fix white lines in Webtoon mode [`2b98eb3`](https://github.com/ollm/OpenComic/commit/2b98eb3af7c1651149063e6176a5ae7e6b3d1c81)
 - Navigation back not working with shortcuts and gamepad [`ba8641f`](https://github.com/ollm/OpenComic/commit/ba8641f96ed3c8bdef8e35ce98af55b7e6d10bc8)
 - Correct invert some shortcuts in manga reading [`208fee6`](https://github.com/ollm/OpenComic/commit/208fee6d48c1dab69b131e45f997326323ac8625)
+- Optimized poster handling in file image retrieval
 
 ## [v1.5.0](https://github.com/ollm/OpenComic/releases/tag/v1.5.0) (19-06-2025)
 

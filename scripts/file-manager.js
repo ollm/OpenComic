@@ -542,8 +542,16 @@ var file = function(path, _config = false) {
 	// Get the first images of a folder/compressed
 	this.images = async function(only = 1, from = false, poster = false, _files = false, _path = false, _isCompressed = false) {
 
-		if(poster) this.updateConfig({specialFiles: true});
-		if(!this.alreadyRead) await this.read({cacheServer: true});
+		if(poster)
+		{
+			this.updateConfig({specialFiles: true});
+
+			let _poster = await this.poster();
+			if(_poster) return _poster;
+		}
+
+		if(!this.alreadyRead)
+			await this.read({cacheServer: true});
 
 		_files = _files || filtered(this.files, true);
 		_path = _path || this.path;
@@ -560,9 +568,7 @@ var file = function(path, _config = false) {
 
 		if(poster)
 		{
-			let _poster = await this.poster();
-			if(!_poster) _poster = this._poster(_files, _path, true, _isCompressed);
-
+			let _poster = this._poster(_files, _path, true, _isCompressed);
 			if(_poster) return _poster;
 		}
 
