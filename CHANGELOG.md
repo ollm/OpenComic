@@ -17,7 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Increase and decrease horizontal margin shortcuts [`0bae05f`](https://github.com/ollm/OpenComic/commit/0bae05f210018120b56210797cd5850e13254aa9)
 - Use single thread in HDD extractions [`a4874a6`](https://github.com/ollm/OpenComic/commit/a4874a6d5b92d29df845625ddfc45e2f7a95f82b)
 - Auto-hide mouse cursor in fullscreen mode [`fbfa9f8`](https://github.com/ollm/OpenComic/commit/fbfa9f88c225ee2125535efaa6332d1e1b45d55e)
-- Show progress bar, pages and percentage in library/browsing
+- Show progress bar, pages and percentage in library/browsing [`d0002d9`](https://github.com/ollm/OpenComic/commit/d0002d9da5b27543fe4702b273240093975ad8f4)
+- Progressive thumbnail/progress generation based on scroll position
 
 ##### 🐛 Bug Fixes
 

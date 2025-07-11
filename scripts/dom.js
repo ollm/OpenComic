@@ -6,7 +6,8 @@ const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
 	search = require(p.join(appDir, 'scripts/dom/search.js')),
 	header = require(p.join(appDir, 'scripts/dom/header.js')),
 	boxes = require(p.join(appDir, 'scripts/dom/boxes.js')),
-	history = require(p.join(appDir, 'scripts/dom/history.js'));
+	history = require(p.join(appDir, 'scripts/dom/history.js')),
+	scroll = require(p.join(appDir, 'scripts/dom/scroll.js'));
 
 /*Page - Index*/
 
@@ -128,7 +129,7 @@ function addImageToDom(sha, path, animation = true)
 	}
 }
 
-function addProgressToDom(sha, progress, animation = true)
+async function addProgressToDom(sha, progress, animation = true)
 {
 	const src = document.querySelectorAll('.sha-'+sha);
 	const _src = dom.this(src);
@@ -152,7 +153,7 @@ function addProgressToDom(sha, progress, animation = true)
 	if(handlebarsContext.page.progressBar)
 	{
 		const _progress = dom.this(src).find('.progress-bar', true);
-		_progress.addClass('show');
+		_progress.class(progress.percent, 'show');
 
 		for(const item of _progress._this)
 		{
@@ -176,7 +177,10 @@ function addProgressToDom(sha, progress, animation = true)
 	}
 
 	if(!animation)
+	{
+		await app.sleep(100);
 		_src.removeClass('disable-transitions');
+	}
 }
 
 function setWindowTitle(title = 'OpenComic')
@@ -570,6 +574,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	fileManager.revokeAllObjectURL();
 	workers.clean('convertImageToBlob');
 
+	scroll.reset();
 	reading.hideContent();
 	reading.music.pause();
 
@@ -1094,6 +1099,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	shortcuts.register(isOpds || _indexLabel.opds ? 'opds' : 'browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
 	reading.discord.update();
+	scroll.event();
 }
 
 function loadIndexContentLeft(animation)
@@ -1430,7 +1436,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 
 	if(Array.isArray(_images)) // 4 Images
 	{
-		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-poster, .sha-'+folderSha+' .progress-pages').remove();
+		if(isAsync) dom.queryAll('.sha-'+folderSha+' .folder-poster, .sha-'+folderSha+':not(.medium-list) .progress-pages').remove();
 
 		for(let i = 0, len = _images.length; i < len; i++)
 		{
@@ -1553,49 +1559,14 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 		addToQueueProgress = 2;
 	}
 
-	if(addToQueue)
-	{
-		(async function(){
-
-			await app.sleep(200);
-
-			threads.job('folderThumbnails', {useThreads: 0.2}, async function(path, folderSha) {
-
-				let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-				let _images = await file.images(4, false, true);
-
-				await _getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
-
-				file.destroy();
-
-				return;
-
-			}, path, folderSha).catch(function(error) {
-
-				dom.compressedError(error, false);
-				
-			});
-
-		})();
-	}
-
-	if(addToQueueProgress && getProgress)
-	{
-		(async function(){
-
-			await app.sleep(200);
-
-			threads.job('folderThumbnails', {useThreads: 0.2}, async function(path, folderSha, addToQueueProgress) {
-
-				const progress = await reading.progress.get(path);
-				addProgressToDom(folderSha, progress, (addToQueueProgress === 1));
-
-				return;
-
-			}, path, folderSha, addToQueueProgress).catch(function(error) {});
-
-		})();
-	}
+	scroll.setStatus(folderSha, {
+		index,
+		path,
+		forceSize,
+		thumbnails: addToQueue,
+		progress: addToQueueProgress,
+		folderSha,
+	});
 
 	return {poster: poster, images: images, addToQueue: addToQueue, progress: progress};
 }
@@ -2905,11 +2876,13 @@ module.exports = {
 	addSepToEnd: addSepToEnd,
 	currentPathScrollTop: function(){return currentPathScrollTop},
 	getFolderThumbnails: getFolderThumbnails,
+	_getFolderThumbnails: _getFolderThumbnails,
 	translatePageName: translatePageName,
 	metadataPathName: metadataPathName,
 	setWindowTitle: setWindowTitle,
 	fromLibrary: fromLibrary,
 	continueReadingError: continueReadingError,
+	calculateVisibleItems: calculateVisibleItems,
 	poster: domPoster,
 	search: search,
 	labels: labels,
@@ -2918,6 +2891,7 @@ module.exports = {
 	boxes: boxes,
 	header: header,
 	history: history,
+	scroll: scroll,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,
