@@ -365,6 +365,7 @@ async function getSizes(images)
 					const buffer = await fsp.readFile(image.image);
 					const images = await heic.all({buffer});
 					const properties = images[0] || {width: 1, height: 1};
+					images.dispose();
 
 					size = {
 						width: properties.width,
