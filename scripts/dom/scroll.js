@@ -10,25 +10,29 @@ var prevScroll = {};
 
 function scroll(event = false)
 {
-	const scrollTop = event?.target?.scrollTop || template._contentRight().firstElementChild.scrollTop;
-	const visibleItems = dom.calculateVisibleItems(handlebarsContext.page.view, scrollTop);
+	app.setThrottle('dom-scroll', function(){
 
-	if(prevScroll.start !== visibleItems.start || prevScroll.end !== visibleItems.end)
-	{
-		threads.clean('folderThumbnails');
+		const scrollTop = event?.target?.scrollTop || template._contentRight().firstElementChild.scrollTop;
+		const visibleItems = dom.calculateVisibleItems(handlebarsContext.page.view, scrollTop);
 
-		for(const sha in currentStatus)
+		if(prevScroll.start !== visibleItems.start || prevScroll.end !== visibleItems.end)
 		{
-			const status = currentStatus[sha];
+			threads.clean('folderThumbnails');
 
-			if((status.index >= visibleItems.start && status.index <= visibleItems.end) || status.forceSize)
+			for(const sha in currentStatus)
 			{
-				addToQueue(sha);
+				const status = currentStatus[sha];
+
+				if((status.index >= visibleItems.start && status.index <= visibleItems.end) || status.forceSize)
+				{
+					addToQueue(sha);
+				}
 			}
 		}
-	}
 
-	prevScroll = visibleItems;
+		prevScroll = visibleItems;
+
+	}, 50, 100);
 }
 
 function addToQueue(sha)
