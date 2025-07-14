@@ -35,8 +35,8 @@ if(process.platform == 'darwin')
 	exists(darwin+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 	// 7zip
-	exists(darwin+'/7zip-bin/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
-	exists(darwin+'/7zip-bin/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+	exists(darwin+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+	exists(darwin+'/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
 	console.log('Runed postbuild mas tests: Ok');
 }

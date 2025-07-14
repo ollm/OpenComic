@@ -41,7 +41,7 @@ if(process.platform == 'darwin')
 		exists(darwin+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
 
 		// 7zip
-		exists(darwin+'/7zip-bin/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwin+'/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -57,7 +57,7 @@ if(process.platform == 'darwin')
 		exists(darwinArm+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 		// 7zip
-		exists(darwinArm+'/7zip-bin/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinArm+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -78,8 +78,8 @@ if(process.platform == 'darwin')
 		exists(darwinMas+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 		// 7zip
-		exists(darwinMas+'/7zip-bin/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
-		exists(darwinMas+'/7zip-bin/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -97,7 +97,7 @@ else if(process.platform == 'linux')
 		exists(linux+'/@img/sharp-linux-x64/lib/sharp-linux-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
-		exists(linux+'/7zip-bin/linux/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+		exists(linux+'/7zip-bin-full/linux/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -113,7 +113,7 @@ else if(process.platform == 'linux')
 		exists(linuxArm+'/@img/sharp-linux-arm64/lib/sharp-linux-arm64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
-		exists(linuxArm+'/7zip-bin/linux/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+		exists(linuxArm+'/7zip-bin-full/linux/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -131,8 +131,8 @@ else if(process.platform == 'win32')
 		exists(windows+'/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
-		exists(windows+'/7zip-bin/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
-		exists(windows+'/7zip-bin/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+		exists(windows+'/7zip-bin-full/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
+		exists(windows+'/7zip-bin-full/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -148,8 +148,8 @@ else if(process.platform == 'win32')
 		exists(windowsArm+'/@img/sharp-win32-arm64/lib/sharp-win32-arm64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
-		exists(windowsArm+'/7zip-bin/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
-		exists(windowsArm+'/7zip-bin/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+		exists(windowsArm+'/7zip-bin-full/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
+		exists(windowsArm+'/7zip-bin-full/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}

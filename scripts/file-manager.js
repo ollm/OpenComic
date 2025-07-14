@@ -1896,7 +1896,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		// if(this._7z) return this._7z;
 
 		if(un7z === false) un7z = require('node-7z');
-		if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin').path7z);
+		if(bin7z === false) bin7z = asarToAsarUnpacked(require('7zip-bin-full').path7z);
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
