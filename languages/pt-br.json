@@ -49,6 +49,8 @@
 			"deletePermanently": "Apagar permanentemente",
 			"deletePermanentlyConfirm": "Você realmente deseja apagar permanentemente esse arquivo? Essa ação não pode ser desfeita",
 			"favorite": "Favoritar",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Abrir local do arquivo",
 			"openFolderLocation": "Abrir local da pasta",
 			"aboutFile": "Sobre esse arquivo",

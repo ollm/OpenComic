@@ -49,6 +49,8 @@
 			"deletePermanently": "Elimina permanentemente",
 			"deletePermanentlyConfirm": "Vuoi davvero eliminare permanentemente il file? Questa azione non può essere annullata",
 			"favorite": "Preferiti",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Apri percorso file",
 			"openFolderLocation": "Apri percorso cartella",
 			"aboutFile": "Informazioni sul file",

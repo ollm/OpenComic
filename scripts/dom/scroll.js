@@ -75,8 +75,8 @@ function addToQueue(sha)
 				progress: false,
 			});
 
-			const progress = await reading.progress.get(path);
-			dom.addProgressToDom(folderSha, progress, (progress === 1));
+			const _progress = await reading.progress.get(path);
+			dom.addProgressToDom(folderSha, _progress, (progress === 1));
 
 			return;
 

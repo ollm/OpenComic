@@ -49,6 +49,8 @@
 			"deletePermanently": "الحذف نهائياً",
 			"deletePermanentlyConfirm": "هل تريد الحذف نهائياً؟ لا يمكن التراجع عن هذه الخطوة",
 			"favorite": "المفضلة",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "فتح موقع الملف",
 			"openFolderLocation": "فتح موقع المجلد",
 			"aboutFile": "حول الملف",

@@ -49,6 +49,8 @@
 			"deletePermanently": "",
 			"deletePermanentlyConfirm": "",
 			"favorite": "Favoritmarkera",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Öppna filplats",
 			"openFolderLocation": "Öppna mapplats",
 			"aboutFile": "",

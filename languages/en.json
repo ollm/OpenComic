@@ -49,6 +49,8 @@
 			"deletePermanently": "Delete permanently",
 			"deletePermanentlyConfirm": "Do you really want to permanently delete this file? This action cannot be undone",
 			"favorite": "Favorite",
+			"markAsRead": "Mark as read",
+			"markAsUnread": "Mark as unread",
 			"openFileLocation": "Open file location",
 			"openFolderLocation": "Open folder location",
 			"aboutFile": "About this file",

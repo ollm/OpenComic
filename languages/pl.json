@@ -49,6 +49,8 @@
 			"deletePermanently": "Usuń trwale",
 			"deletePermanentlyConfirm": "Czy na pewno chcesz trwale usunąć ten plik? Tej akcji nie można cofnąć",
 			"favorite": "Ulubione",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Otwórz lokalizację pliku",
 			"openFolderLocation": "Otwórz lokalizację folderu",
 			"aboutFile": "Informacje o pliku",

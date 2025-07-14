@@ -27,7 +27,8 @@ function save(path = false, mainPath = false)
 			save(path, dirname);
 	}
 
-	const isParent = mainPath !== dirname ? true : false;
+	const hasChildFolders = Object.values(reading.currentComics()).find((comic) => comic.folder);
+	const isParent = mainPath !== dirname || hasChildFolders ? true : false;
 
 	// Calculate progress of eBook
 	let progress = 0;
@@ -80,10 +81,10 @@ function _setInterval()
 	interval = setInterval(save, 60 * 2 * 1000); // Save every 2 minutes
 }
 
-async function get(path, cacheOnly = false)
+async function get(path, cache = true, cacheOnly = false)
 {
-	const _readPages = readPages(path);
-	const totalPages = await countPages(path, cacheOnly);
+	const _readPages = await readPages(path);
+	const totalPages = await countPages(path, cache, cacheOnly);
 
 	let percent = (totalPages === 1) ? 0 : ((((_readPages || 1) - 1) / (totalPages - 1)) * 100);
 	if(percent > 100) percent = 100;
@@ -97,35 +98,19 @@ async function get(path, cacheOnly = false)
 	};
 }
 
-function readPages(path)
+async function readPages(path)
 {
-	const regex = new RegExp('^\s*'+pregQuote(path));
 	const readingProgress = storage.get('readingProgress');
 
-	let keys = Object.keys(readingProgress).filter(function(key){
-
-		return regex.test(key);
-
-	});
-
-	if(keys.length > 1)
-	{
-		// Remove parent key
-		keys = keys.filter(function(key){
-
-			return path !== key;
-
-		});
-	}
-
+	const paths = await findReadingProgressPaths(path, false);
 	let pages = 0;
 
-	for(const key of keys)
+	for(const key of paths)
 	{
 		const progress = readingProgress[key];
 
-		if(progress && (progress.page || progress.index))
-			pages += progress.page || progress.index;
+		if(progress && progress.page)
+			pages += progress.page;
 	}
 
 	return pages;
@@ -153,6 +138,8 @@ async function _countPages(path, file, first = false, cache = true)
 	const files = await file.read({}, path);
 
 	let count = 0;
+	let images = 0;
+	let hasChildFolders = false;
 
 	for(let i = 0, len = files.length; i < len; i++)
 	{
@@ -161,12 +148,16 @@ async function _countPages(path, file, first = false, cache = true)
 		if(_file.folder || _file.compressed)
 		{
 			count += await _countPages(_file.path, file, false, cache);
+			hasChildFolders = true;
 		}
 		else// if(compatible.image(_file.path))
 		{
-			count++;
+			images++;
 		}
 	}
+
+	if(!hasChildFolders)
+		count += images;
 
 	readingPages[path] = {
 		pages: count,
@@ -188,6 +179,133 @@ async function countPages(path = false, cache = true, cacheOnly = false)
 	file.destroy();
 
 	return pages;
+}
+
+async function _findReadingProgressPaths(path, file)
+{
+	let paths = [];
+	const files = await file.read({}, path);
+
+	let hasImages = false;
+
+	for(let i = 0, len = files.length; i < len; i++)
+	{
+		const _file = files[i];
+
+		if(_file.folder || _file.compressed)
+		{
+			paths = [...paths, ...(await _findReadingProgressPaths(_file.path, file))];
+		}
+		else// if(compatible.image(_file.path))
+		{
+			hasImages = true;
+		}
+	}
+
+	if(hasImages)
+		paths.push(path);
+
+	return paths;
+}
+
+async function findReadingProgressPaths(path, all = false)
+{
+	if(!all)
+	{
+		const regex = new RegExp('^\s*'+pregQuote(path)+'(?:[\\\/\\\\]|$)');
+		const readingProgress = storage.get('readingProgress');
+
+		let paths = Object.keys(readingProgress).filter(function(key){
+
+			return regex.test(key);
+
+		});
+
+		if(paths.length > 1)
+		{
+			// Remove parent key
+			paths = paths.filter(function(key){
+
+				return path !== key;
+
+			});
+		}
+
+		return paths;
+	}
+	else
+	{
+		const file = fileManager.file(path);
+		file.updateConfig({sort: false});
+		const paths = await _findReadingProgressPaths(path, file);
+		file.destroy();
+
+		return paths;
+	}
+}
+
+async function read(path)
+{
+	const readingProgress = storage.get('readingProgress');
+	const paths = await findReadingProgressPaths(path, true);
+
+	for(const key of paths)
+	{
+		const progress = readingProgress[key];
+		const pages = await countPages(key);
+
+		readingProgress[key] = {
+			...progress,
+			...{
+				page: pages,
+				pages: pages,
+				percent: 100,
+				completed: true,
+			}
+		};
+	}
+
+	storage.set('readingProgress', readingProgress);
+	updateProgress(path);
+
+}
+
+async function unread(path)
+{
+	const readingProgress = storage.get('readingProgress');
+	const paths = await findReadingProgressPaths(path, false);
+
+	for(const key of paths)
+	{
+		const progress = readingProgress[key];
+
+		progress.page = 0;
+		progress.percent = 0;
+		progress.completed = false;
+	}
+
+	storage.set('readingProgress', readingProgress);
+	updateProgress(path);
+}
+
+async function updateProgress(path)
+{
+	const progress = await get(path, false); // false to force a recount
+
+	const sizes = [
+		false,
+		100,
+		150,
+		200,
+		250,
+		300,
+	];
+
+	for(const size of sizes)
+	{
+		const folderSha = sha1(path+(size ? '?size='+size : ''));
+		dom.addProgressToDom(folderSha, progress, true);
+	}
 }
 
 function purge()
@@ -215,5 +333,7 @@ module.exports = {
 	get,
 	readPages,
 	countPages,
+	read,
+	unread,
 	purge,
 }

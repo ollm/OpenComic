@@ -49,6 +49,8 @@
 			"deletePermanently": "",
 			"deletePermanentlyConfirm": "",
 			"favorite": "Yêu thích",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Mở tệp trong trình quản lý tệp",
 			"openFolderLocation": "Mở thư mục trong trình quản lý tệp",
 			"aboutFile": "",

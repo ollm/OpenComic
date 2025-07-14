@@ -344,6 +344,23 @@ function migrateWebtoonNotEnlargeMoreThanOriginalSize(data)
 	return data;
 }
 
+function migrateSomeDataNewReadingProgress(data)
+{
+	console.time('Migration: someDataNewReadingProgress');
+
+	for(const path in data.readingProgress)
+	{
+		const progress = data.readingProgress[path];
+
+		if(!progress.page)
+			progress.page = progress.index;
+	}
+
+	console.timeEnd('Migration: someDataNewReadingProgress');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -379,6 +396,9 @@ function start(data)
 
 	if(changes < 119) // Fix compressed files with unsupported characters in Windows
 		data = migrateWebtoonNotEnlargeMoreThanOriginalSize(data);
+
+	if(changes < 125) // Add the index value to new page value
+		data = migrateSomeDataNewReadingProgress(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

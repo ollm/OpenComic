@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Auto-hide mouse cursor in fullscreen mode [`fbfa9f8`](https://github.com/ollm/OpenComic/commit/fbfa9f88c225ee2125535efaa6332d1e1b45d55e)
 - Show progress bar, pages and percentage in library/browsing [`d0002d9`](https://github.com/ollm/OpenComic/commit/d0002d9da5b27543fe4702b273240093975ad8f4)
 - Progressive thumbnail/progress generation based on scroll position [`1d22f22`](https://github.com/ollm/OpenComic/commit/1d22f2290e81785f3c785af9d2eef132cea2935f)
+- Option to mark as read and unread
 
 ##### 🐛 Bug Fixes
 

@@ -138,16 +138,29 @@ async function addProgressToDom(sha, progress, animation = true)
 		_src.addClass('disable-transitions');
 
 	// Fade completed
-	if(handlebarsContext.page.fadeCompleted && progress.completed)
+	if(handlebarsContext.page.fadeCompleted)
 	{
-		for(const item of src)
+		if(progress.completed)
 		{
-			if(item.classList.contains('medium-list'))
-				item.style.opacity = 0.3;
-			else
-				item.firstElementChild.style.opacity = 0.3;
+			for(const item of src)
+			{
+				if(item.classList.contains('medium-list'))
+					item.style.opacity = 0.3;
+				else
+					item.firstElementChild.style.opacity = 0.3;
+			}
 		}
-	} 
+		else
+		{
+			for(const item of src)
+			{
+				if(item.classList.contains('medium-list'))
+					item.style.opacity = '';
+				else
+					item.firstElementChild.style.opacity = '';
+			}
+		}
+	}
 
 	// Progress bar
 	if(handlebarsContext.page.progressBar)
@@ -2347,6 +2360,30 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	}
 
 	dom.query('#index-context-menu .separator-labels').css({display: fromIndex ? 'block' : 'none'});
+
+	// Mark read an unread
+	let markRead = document.querySelector('#index-context-menu .context-menu-mark-read');
+	let markUnread = document.querySelector('#index-context-menu .context-menu-mark-unread');
+	let separatorMark = document.querySelector('#index-context-menu .separator-mark');
+
+	if(fromIndex || folder)
+	{
+		const progress = await reading.progress.get(path);
+
+		markRead.style.display = (progress.completed) ? 'none' : 'block';
+		markRead.setAttribute('onclick', 'reading.progress.read(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+
+		markUnread.style.display = (progress.percent === 0) ? 'none' : 'block';
+		markUnread.setAttribute('onclick', 'reading.progress.unread(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+	
+		separatorMark.style.display = 'block';
+	}
+	else
+	{
+		markRead.style.display = 'none';
+		markUnread.style.display = 'none';
+		separatorMark.style.display = 'none';
+	}
 
 	// Favorite
 	let favorite = document.querySelector('#index-context-menu .context-menu-favorite');

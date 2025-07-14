@@ -49,6 +49,8 @@
 			"deletePermanently": "Supprimer définitivement",
 			"deletePermanentlyConfirm": "Confirmer la suppression définitive",
 			"favorite": "",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Ouvrir l'emplacement du fichier",
 			"openFolderLocation": "Ouvrir l'emplacement du dossier",
 			"aboutFile": "à propos du fichier",

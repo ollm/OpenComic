@@ -49,6 +49,8 @@
 			"deletePermanently": "Eliminar permanentment",
 			"deletePermanentlyConfirm": "Realment vols eliminar aquest arxiu de forma permanent? Aquesta acció no es pot desfer",
 			"favorite": "Favorit",
+			"markAsRead": "Marca com a llegit",
+			"markAsUnread": "Marca com a no llegit",
 			"openFileLocation": "Obre la ubicació de l'arxiu",
 			"openFolderLocation": "Obre la ubicació de la carpeta",
 			"aboutFile": "Sobre aquest arxiu",

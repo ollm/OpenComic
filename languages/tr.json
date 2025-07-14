@@ -49,6 +49,8 @@
 			"deletePermanently": "Kalıcı olarak sil",
 			"deletePermanentlyConfirm": "Bu dosyayı kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz",
 			"favorite": "Favorilere ekle",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Dosya konumunu aç",
 			"openFolderLocation": "Klasör konumunu aç",
 			"aboutFile": "Dosya hakkında",

@@ -49,6 +49,8 @@
 			"deletePermanently": "Удалить навсегда",
 			"deletePermanentlyConfirm": "Вы уверены, что хотите навсегда удалить этот элемент?",
 			"favorite": "Добавить в избранное",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "Открыть расположение файла",
 			"openFolderLocation": "Открыть расположение папки",
 			"aboutFile": "О файле",

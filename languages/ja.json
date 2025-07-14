@@ -49,6 +49,8 @@
 			"deletePermanently": "完全に削除",
 			"deletePermanentlyConfirm": "このファイルを完全に削除しますか? この操作は取り消せません。",
 			"favorite": "お気に入りに追加",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "ファイルの場所を開く",
 			"openFolderLocation": "フォルダーの場所を開く",
 			"aboutFile": "このファイルについて",

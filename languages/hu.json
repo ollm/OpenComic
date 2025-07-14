@@ -49,6 +49,8 @@
 			"deletePermanently": "",
 			"deletePermanentlyConfirm": "",
 			"favorite": "",
+			"markAsRead": "",
+			"markAsUnread": "",
 			"openFileLocation": "",
 			"openFolderLocation": "",
 			"aboutFile": "",
