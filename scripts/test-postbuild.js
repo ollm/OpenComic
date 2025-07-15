@@ -37,7 +37,7 @@ if(process.platform == 'darwin')
 		exists(darwin+'/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
 
 		// Sharp x64
-		exists(darwin+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
+		exists(darwin+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
 		exists(darwin+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
 
 		// 7zip
@@ -53,7 +53,7 @@ if(process.platform == 'darwin')
 		exists(darwinArm+'/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
 
 		// Sharp arm64
-		exists(darwinArm+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
+		exists(darwinArm+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.1.dylib', fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 		exists(darwinArm+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 		// 7zip
@@ -70,11 +70,11 @@ if(process.platform == 'darwin')
 		exists(darwinMas+'/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
 
 		// Sharp x64
-		exists(darwinMas+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
+		exists(darwinMas+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
 		exists(darwinMas+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
 
 		// Sharp arm64
-		exists(darwinMas+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.16.1.dylib', fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
+		exists(darwinMas+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.1.dylib', fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 		exists(darwinMas+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 		// 7zip
@@ -93,7 +93,7 @@ else if(process.platform == 'linux')
 		exists(linux+'/@toondepauw/node-zstd-linux-x64-gnu/node-zstd.linux-x64-gnu.node', fs.constants.R_OK);
 
 		// Sharp x64
-		exists(linux+'/@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.8.16.1', fs.constants.R_OK);
+		exists(linux+'/@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.8.17.1', fs.constants.R_OK);
 		exists(linux+'/@img/sharp-linux-x64/lib/sharp-linux-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
@@ -109,7 +109,7 @@ else if(process.platform == 'linux')
 		exists(linuxArm+'/@toondepauw/node-zstd-linux-arm64-gnu/node-zstd.linux-arm64-gnu.node', fs.constants.R_OK);
 
 		// Sharp arm64
-		exists(linuxArm+'/@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.8.16.1', fs.constants.R_OK);
+		exists(linuxArm+'/@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.8.17.1', fs.constants.R_OK);
 		exists(linuxArm+'/@img/sharp-linux-arm64/lib/sharp-linux-arm64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
@@ -127,7 +127,7 @@ else if(process.platform == 'win32')
 
 		// Sharp x64
 		exists(windows+'/@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
-		exists(windows+'/@img/sharp-win32-x64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
+		exists(windows+'/@img/sharp-win32-x64/lib/libvips-cpp-8.17.1.dll', fs.constants.R_OK);
 		exists(windows+'/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
@@ -144,7 +144,7 @@ else if(process.platform == 'win32')
 
 		// Sharp arm64
 		exists(windowsArm+'/@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK);
-		exists(windowsArm+'/@img/sharp-win32-arm64/lib/libvips-cpp-8.16.1.dll', fs.constants.R_OK);
+		exists(windowsArm+'/@img/sharp-win32-arm64/lib/libvips-cpp-8.17.1.dll', fs.constants.R_OK);
 		exists(windowsArm+'/@img/sharp-win32-arm64/lib/sharp-win32-arm64.node', fs.constants.X_OK | fs.constants.R_OK);
 
 		// 7zip
