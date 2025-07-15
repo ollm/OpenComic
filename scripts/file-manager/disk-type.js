@@ -161,8 +161,8 @@ function check(path)
 	}
 
 	return {
-		hdd: false,
-		ssd: true,
+		hdd: true,
+		ssd: false,
 		nvme: false,
 	};
 }
