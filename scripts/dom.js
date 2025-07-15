@@ -2369,6 +2369,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	if(fromIndex || folder)
 	{
 		const progress = await reading.progress.get(path);
+		reading.progress.updateProgress(path, progress);
 
 		markRead.style.display = (progress.completed) ? 'none' : 'block';
 		markRead.setAttribute('onclick', 'reading.progress.read(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');

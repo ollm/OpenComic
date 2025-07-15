@@ -288,9 +288,9 @@ async function unread(path)
 	updateProgress(path);
 }
 
-async function updateProgress(path)
+async function updateProgress(path, progress = false)
 {
-	const progress = await get(path, false); // false to force a recount
+	progress = progress || await get(path, false); // false to force a recount
 
 	const sizes = [
 		false,
@@ -335,5 +335,6 @@ module.exports = {
 	countPages,
 	read,
 	unread,
+	updateProgress,
 	purge,
 }
