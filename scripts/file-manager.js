@@ -3149,10 +3149,12 @@ function posixPath(path)
 	return path.split(p.sep).join(p.posix.sep);
 }
 
-function simpleExists(path)
+function simpleExists(path, server = false)
 {
 	if(isServer(path) || isOpds(path))
 	{
+		// TODO: Check if server path exists from cache file list
+
 		return true;
 	}
 	else

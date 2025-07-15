@@ -109,7 +109,7 @@ async function readPages(path)
 	{
 		const progress = readingProgress[key];
 
-		if(progress && progress.page)
+		if(progress && progress.page && fileManager.simpleExists(key, true))
 			pages += progress.page;
 	}
 

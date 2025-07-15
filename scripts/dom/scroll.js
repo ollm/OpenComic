@@ -40,27 +40,46 @@ function addToQueue(sha)
 	const status = currentStatus[sha] || {};
 	const {path, folderSha, forceSize, thumbnails, progress} = status;
 
-	if(thumbnails)
+	if(thumbnails || progress)
 	{
 		threads.job('folderThumbnails', {useThreads: 0.2}, async function() {
 
-			setStatus(sha, {
-				thumbnails: false,
-			});
+			if(thumbnails)
+			{
+				setStatus(sha, {
+					thumbnails: false,
+				});
 
-			const images = [
-				{cache: false, path: '', sha: folderSha+'-0'},
-				{cache: false, path: '', sha: folderSha+'-1'},
-				{cache: false, path: '', sha: folderSha+'-2'},
-				{cache: false, path: '', sha: folderSha+'-3'},
-			];
+				const images = [
+					{cache: false, path: '', sha: folderSha+'-0'},
+					{cache: false, path: '', sha: folderSha+'-1'},
+					{cache: false, path: '', sha: folderSha+'-2'},
+					{cache: false, path: '', sha: folderSha+'-3'},
+				];
 
-			const file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-			const _images = await file.images(4, false, true);
+				const file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
+				const _images = await file.images(4, false, true);
 
-			await dom._getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
+				await dom._getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
 
-			file.destroy();
+				file.destroy();
+			}
+
+			if(progress)
+			{
+				setStatus(sha, {
+					progress: false,
+				});
+
+				try
+				{
+					const _progress = await reading.progress.get(path, true, true);
+					dom.addProgressToDom(folderSha, _progress, (progress === 1));
+				}
+				catch(error)
+				{
+				}
+			}
 
 			return;
 
@@ -69,22 +88,6 @@ function addToQueue(sha)
 			dom.compressedError(error, false);
 			
 		});
-	}
-
-	if(progress)
-	{
-		threads.job('folderThumbnails', {useThreads: 0.2}, async function() {
-
-			setStatus(sha, {
-				progress: false,
-			});
-
-			const _progress = await reading.progress.get(path);
-			dom.addProgressToDom(folderSha, _progress, (progress === 1));
-
-			return;
-
-		}).catch(function(error) {});
 	}
 }
 
