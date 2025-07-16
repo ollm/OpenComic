@@ -553,7 +553,7 @@ var file = function(path, _config = false) {
 		if(!this.alreadyRead)
 			await this.read({cacheServer: true});
 
-		_files = _files || filtered(this.files, true);
+		_files = _files || filtered(this.files, true, false);
 		_path = _path || this.path;
 
 		_isCompressed = _isCompressed || isCompressed(_path);
@@ -561,7 +561,7 @@ var file = function(path, _config = false) {
 		if(config.ignoreSingleFoldersLibrary && _files.length == 1 && (_files[0].folder || _files[0].compressed))
 		{
 			const file = _files[0];
-			_files = file.files ? filtered(file.files, true) : await this.read({cacheServer: true}, file.path);
+			_files = file.files ? filtered(file.files, true, false) : await this.read({cacheServer: true}, file.path);
 
 			return this.images(only, from, poster, _files, file.path, _isCompressed);
 		}
@@ -3280,9 +3280,9 @@ function ignoreFilesRegex(ignoreFilesRegex = false, force = false)
 	return _ignoreFilesRegex;
 }
 
-function filtered(files, specialFiles = false)
+function filtered(files, specialFiles = false, ignoreFiles = true)
 {
-	const ignore = ignoreFilesRegex();
+	const ignore = ignoreFiles ? ignoreFilesRegex() : false;
 	const filtered = [];
 
 	if(files)
