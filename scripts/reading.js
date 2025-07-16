@@ -1015,6 +1015,8 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 
 		currentPage = index;
 		reading.discord.updateThrottle();
+
+		dom.this(template._contentRight()).find('.reading-progress').html(reading.currentPage()+' / '+reading.totalPages()).class(isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
 	}
 
 	const readingLeft = contentLeft.querySelector('.reading-left-images');
@@ -2995,6 +2997,8 @@ function hideContent(fullScreen = false, first = false)
 		hiddenBarHeader = false;
 	}
 
+	dom.this(template._contentRight()).find('.reading-progress').class(fullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
+
 	if(!first && onReading)
 		resized();
 }
@@ -3023,11 +3027,24 @@ function hideContentLeft(value = null)
 	hideContent(isFullScreen);
 }
 
+function showPageNumber(value = null)
+{
+	if(value === null) value = !(isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber);
+
+	if(isFullScreen)
+		storage.updateVar('config', 'readingShowPageNumberFullScreen', value);
+	else
+		storage.updateVar('config', 'readingShowPageNumber', value);
+
+	hideContent(isFullScreen);
+}
+
 function loadReadingMoreOptions()
 {
 	handlebarsContext.hideContent = {
 		barHeader: isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader,
 		contentLeft: isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft,
+		showPageNumber: isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber,
 		isFullScreen: isFullScreen,
 	};
 
@@ -5814,6 +5831,7 @@ module.exports = {
 	hideContent: hideContent,
 	hideContentLeft: hideContentLeft,
 	hideBarHeader: hideBarHeader,
+	showPageNumber: showPageNumber,
 	setShownContentLeft: function(value){shownContentLeft = value},
 	setShownBarHeader: function(value){shownBarHeader = value},
 	loadReadingMoreOptions: loadReadingMoreOptions,

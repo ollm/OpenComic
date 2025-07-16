@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Opzioni ",
 			"hideBarHeader": "Nascondi barra superiore",
-			"hideContentLeft": "Nascondi barra laterale"
+			"hideContentLeft": "Nascondi barra laterale",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Visualizza i segnalibri",
 		"addBookmark": "Aggiungi segnalibro",

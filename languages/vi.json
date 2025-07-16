@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Thêm tùy chọn",
 			"hideBarHeader": "Ẩn thanh công cụ",
-			"hideContentLeft": "Ẩn danh sách trang"
+			"hideContentLeft": "Ẩn danh sách trang",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Xem dấu trang",
 		"addBookmark": "Thêm dấu trang",

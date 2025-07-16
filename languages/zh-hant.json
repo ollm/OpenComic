@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "",
 			"hideBarHeader": "",
-			"hideContentLeft": ""
+			"hideContentLeft": "",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "檢視書籤",
 		"addBookmark": "新增書籤",

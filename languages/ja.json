@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "その他のオプション",
 			"hideBarHeader": "ヘッダーバーを隠す",
-			"hideContentLeft": "サイドバーを隠す"
+			"hideContentLeft": "サイドバーを隠す",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "ブックマークを表示",
 		"addBookmark": "ブックマークを追加",

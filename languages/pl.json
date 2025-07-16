@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Więcej opcji",
 			"hideBarHeader": "Ukryj pasek nagłówka",
-			"hideContentLeft": "Ukryj pasek boczny"
+			"hideContentLeft": "Ukryj pasek boczny",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Zobacz zakładki",
 		"addBookmark": "Dodaj zakładkę",

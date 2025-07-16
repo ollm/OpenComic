@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Mais opções",
 			"hideBarHeader": "Esconder a barra do cabeçalho",
-			"hideContentLeft": "Esconder a barra lateral"
+			"hideContentLeft": "Esconder a barra lateral",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Visualizar favoritos",
 		"addBookmark": "Adicionar a favorito",

@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Fler alternativ",
 			"hideBarHeader": "Dölj titelrad",
-			"hideContentLeft": "Dölj vänster sidofält"
+			"hideContentLeft": "Dölj vänster sidofält",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Visa bokmärken",
 		"addBookmark": "Lägg till bokmärke",

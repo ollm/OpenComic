@@ -359,6 +359,20 @@
 	display: none;
 }
 
+.reading-progress
+{
+	position: absolute;
+	display: none;
+	z-index: 10;
+	left: 10px;
+	top: 10px;
+}
+
+.reading-progress.active
+{
+	display: block;
+}
+
 .reading-skip > div
 {
 	background-color: var(--md-sys-color-surface-variant);

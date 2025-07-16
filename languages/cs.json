@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Více nastavení",
 			"hideBarHeader": "Skrýt vrchní panel",
-			"hideContentLeft": "Skrýt postranní panel"
+			"hideContentLeft": "Skrýt postranní panel",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Zobrazit záložky",
 		"addBookmark": "Přidat záložku",

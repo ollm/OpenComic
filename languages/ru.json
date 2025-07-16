@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Дополнительные параметры",
 			"hideBarHeader": "Скрыть панель заголовка",
-			"hideContentLeft": "Скрыть боковую панель"
+			"hideContentLeft": "Скрыть боковую панель",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Просмотр закладок",
 		"addBookmark": "Добавить закладку",

@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "",
 			"hideBarHeader": "",
-			"hideContentLeft": ""
+			"hideContentLeft": "",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Afficher signets",
 		"addBookmark": "Ajouter signet",

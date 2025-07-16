@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Daha fazla seçenek",
 			"hideBarHeader": "Araç çubuğunu gizle",
-			"hideContentLeft": "Yan çubuğu gizle"
+			"hideContentLeft": "Yan çubuğu gizle",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "Yer imlerini görüntüle",
 		"addBookmark": "Yer imi ekle",

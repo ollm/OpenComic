@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "Más opciones",
 			"hideBarHeader": "Ocultar barra superior",
-			"hideContentLeft": "Ocultar barra lateral"
+			"hideContentLeft": "Ocultar barra lateral",
+			"showPageNumber": "Mostrar número de página"
 		},
 		"viewBookmarks": "Ver marcadores",
 		"addBookmark": "Añadir marcador",

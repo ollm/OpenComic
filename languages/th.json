@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "ตัวเลือกเพิ่มเติม",
 			"hideBarHeader": "ซ่อนแถบส่วนบน",
-			"hideContentLeft": "ซ่อนแถบด้านข้าง"
+			"hideContentLeft": "ซ่อนแถบด้านข้าง",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "ดูบุ๊คมาร์ก",
 		"addBookmark": "เพิ่มบุ๊คมาร์ก",

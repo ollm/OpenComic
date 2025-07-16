@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Show progress bar, pages and percentage in library/browsing [`d0002d9`](https://github.com/ollm/OpenComic/commit/d0002d9da5b27543fe4702b273240093975ad8f4)
 - Progressive thumbnail/progress generation based on scroll position [`1d22f22`](https://github.com/ollm/OpenComic/commit/1d22f2290e81785f3c785af9d2eef132cea2935f)
 - Option to mark as read and unread [`82ae5ef`](https://github.com/ollm/OpenComic/commit/82ae5ef7e24afc47a6e817b6df5ef6d81099eeb5)
+- Option to show page number in the top right-hand corner
 
 ##### 🐛 Bug Fixes
 

@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 125; // Update this if readingPagesConfig is updated
+const changes = 126; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -159,8 +159,10 @@ const storageDefault = {
 		readingMagnifyingGlassRadius: 4,
 		readingHideContentLeft: false,
 		readingHideBarHeader: false,
+		readingShowPageNumber: false,
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
+		readingShowPageNumberFullScreen: false,
 		readingMaxMargin: 800,
 		readingGlobalZoom: true,
 		readingGlobalZoomSlide: true,

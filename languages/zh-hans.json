@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "更多选项",
 			"hideBarHeader": "隐藏标题栏",
-			"hideContentLeft": "隐藏左侧栏"
+			"hideContentLeft": "隐藏左侧栏",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "查看书签",
 		"addBookmark": "添加书签",

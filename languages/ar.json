@@ -241,7 +241,8 @@
 		"moreOptions": {
 			"main": "مزيد من الخيارات",
 			"hideBarHeader": "إخفاء الشريط العلوي",
-			"hideContentLeft": "إخفاء الشريط الجانبي"
+			"hideContentLeft": "إخفاء الشريط الجانبي",
+			"showPageNumber": ""
 		},
 		"viewBookmarks": "عرض العلامات",
 		"addBookmark": "إضافة علامة",
