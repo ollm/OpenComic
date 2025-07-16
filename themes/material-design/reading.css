@@ -814,6 +814,7 @@
 	/*pointer-events: none;*/
 	background-color: var(--md-sys-color-background);
 	display: flex;
+	transition: 0.3s background-color;
 }
 
 

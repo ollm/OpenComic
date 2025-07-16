@@ -1177,11 +1177,16 @@ a:hover
 	margin: 0px 12px;
 }
 
-.menu-simple-separator, .menu-simple-separator-min
+.menu-simple-separator, .menu-simple-separator-min, .menu-simple-separator-8
 {
 	border-top: 1px solid var(--md-sys-color-surface-variant);
 	transition: border-color 0.2s;
 	margin: 12px 0;
+}
+
+.menu-simple-separator-8
+{
+	margin: 8px 0;
 }
 
 .menu-simple-separator-min
@@ -1195,7 +1200,8 @@ a:hover
 	border-top: 1px dashed var(--md-sys-color-surface-variant);
 }
 
-.dialog-text .menu-simple-separator
+.dialog-text .menu-simple-separator,
+.dialog-text .menu-simple-separator-8
 {
 	width: calc(100% + 46px);
 	margin-left: -24px;
