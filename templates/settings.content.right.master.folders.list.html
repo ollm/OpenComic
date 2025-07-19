@@ -1,3 +1,3 @@
 {{#each masterFolders}}
-<div class="chip chip-icon-right label-large" onclick="electron.shell.openPath('{{chain 'escapeBackSlash' 'escapeQuotesSimples' @this}}');"><div></div>{{@this}}<i class="icon-18 material-icon right gamepad-item" onclick="event.stopPropagation(); settings.removeMasterFolder({{@key}});">close</i></div>
+<div class="chip chip-icon-right label-large" onclick="electron.shell.openPath('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}');"><div></div>{{path}}<i class="icon-18 material-icon right gamepad-item" onclick="event.stopPropagation(); settings.removeMasterFolder({{@key}});">close</i><i class="icon-18 material-icon right gamepad-item{{#if hasLabels}} fill{{/if}}" onclick="event.stopPropagation(); dom.labels.setLabels('{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}');" style="margin-right: 0px;">label</i></div>
 {{/each}}

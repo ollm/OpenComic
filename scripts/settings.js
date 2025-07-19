@@ -256,7 +256,7 @@ function removeMasterFolder(key)
 function updateMasterFolders()
 {
 	let masterFolders = storage.get('masterFolders');
-	handlebarsContext.masterFolders = masterFolders;
+	handlebarsContext.masterFolders = masterFolders.map(path => ({path, hasLabels: dom.labels.has(path)}));
 
 	let contentRight = template._contentRight();
 

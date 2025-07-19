@@ -2412,13 +2412,10 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	if(fromIndex || folder)
 	{
-		let comicLabels = storage.get('comicLabels');
-		let hasLabels = comicLabels[path] ? true : false;
-
 		labels.style.display = 'block';
 		labels.setAttribute('onclick', 'dom.labels.setLabels(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
 
-		if(hasLabels)
+		if(dom.labels.has(path))
 			labels.querySelector('i').classList.add('fill');
 		else
 			labels.querySelector('i').classList.remove('fill');

@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Progressive thumbnail/progress generation based on scroll position [`1d22f22`](https://github.com/ollm/OpenComic/commit/1d22f2290e81785f3c785af9d2eef132cea2935f)
 - Option to mark as read and unread [`82ae5ef`](https://github.com/ollm/OpenComic/commit/82ae5ef7e24afc47a6e817b6df5ef6d81099eeb5)
 - Option to show page number in the top right-hand corner [`35e44c6`](https://github.com/ollm/OpenComic/commit/35e44c6e271e545a09de4f66ecd0bd289e217447)
+- Add support for labels in master folders (auto config only)
 
 ##### 🐛 Bug Fixes
 
@@ -33,7 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Navigation back not working with shortcuts and gamepad [`ba8641f`](https://github.com/ollm/OpenComic/commit/ba8641f96ed3c8bdef8e35ce98af55b7e6d10bc8)
 - Correct invert some shortcuts in manga reading [`208fee6`](https://github.com/ollm/OpenComic/commit/208fee6d48c1dab69b131e45f997326323ac8625)
 - Optimized poster handling in file image retrieval [`53b5c42`](https://github.com/ollm/OpenComic/commit/53b5c42ee98ade28ad72c492bd9f6e67b119cd50)
-- Do not use the ignore pattern when searching for poster/images
+- Do not use the ignore pattern when searching for poster/images [`7b52b28`](https://github.com/ollm/OpenComic/commit/7b52b28952cf2b6140541087c88e6278de32824c)
 
 ## [v1.5.0](https://github.com/ollm/OpenComic/releases/tag/v1.5.0) (19-06-2025)
 

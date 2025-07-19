@@ -3825,10 +3825,9 @@ function updateConfigLabels()
 	list.innerHTML = template.load('reading.content.right.labels.list.html');
 }
 
-function getLabelConfigKey(path = false)
+function getLabelConfigKey()
 {
-	path = path || dom.history.mainPath;
-	const labels = dom.labels.has(path);
+	const labels = dom.labels.has(dom.history.path, true);
 
 	if(labels.length)
 	{
@@ -3864,7 +3863,7 @@ function purgeGlobalReadingPagesConfig()
 
 		if(configKey === 0)
 		{
-			const labelConfigKey = getLabelConfigKey(path);
+			const labelConfigKey = getLabelConfigKey();
 
 			if(labelConfigKey === 0)
 				storage.deleteVar('readingPagesConfig', path);
