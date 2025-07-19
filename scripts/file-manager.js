@@ -459,44 +459,46 @@ var file = function(path, _config = false) {
 		return;
 	}
 
-	this._images = async function(num, files, from = false, fromReached = false, poster = false, deep = 0) {
+	this._images = async function(num, files, fullFiltered, from = false, fromReached = false, findPoster = false, deep = 0) {
 
-		let images = [];
+		const images = [];
 		let imagesNum = 0;
 
-		let reverse = num < 0 ? true : false;
-		let len = files.length;
-
-		let stop = len == 0 ? true : false;
-		let i = reverse ? len - 1 : 0;
+		const reverse = num < 0 ? true : false;
+		const len = fullFiltered.length;
+		const start = reverse ? len - 1 : 0;
+		const end = reverse ? -1 : len;
+		const step = reverse ? -1 : 1;
 
 		let index = 0;
 
-		while(!stop)
+		for(let i = start; i !== end; i += step)
 		{
-			let file = files[i];
+			let file = fullFiltered[i];
 			let image = false;
 
 			if(!from || fromReached || new RegExp('^\s*'+pregQuote(file.path)).test(from))
 			{
 				if(file.folder || file.compressed)
 				{
-					let _poster = false;
-					let _files = file.files || await this.read({cacheServer: true}, file.path);
+					const _files = file.files || await this.read({cacheServer: true, filtered: false}, file.path);
+					const _fullFiltered = fileManager.filtered(_files);
+
+					let poster = false;
+
+					if(findPoster)
+					{
+						poster = this._poster(files, file.path); // Find poster in the same folder where the folder/file is located
+						if(!poster) poster = this._poster(_files, file.path, true); // Find poster inside folder/file
+					}
 
 					if(poster)
 					{
-						_poster = this._poster(files, file.path);
-						if(!_poster) _poster = this._poster(_files, file.path, true);
-					}
-
-					if(_poster)
-					{
-						image = _poster.path;
+						image = poster.path;
 					}
 					else
 					{
-						image = await this._images((reverse ? -1 : 1), _files, from, fromReached, poster, deep + 1);
+						image = await this._images((reverse ? -1 : 1), _files, _fullFiltered, from, fromReached, findPoster, deep + 1);
 						fromReached = image.fromReached;
 						image = image.images[0] || false;
 					}
@@ -519,17 +521,6 @@ var file = function(path, _config = false) {
 			if(file.path === from)
 				fromReached = true;
 
-			if(reverse)
-			{
-				i--;
-				stop = i < 0 ? true : false;
-			}
-			else
-			{
-				i++;
-				stop = i >= len ? true : false;
-			}
-
 			if(this.config.cacheOnly && index > 16 && deep > 0)
 				throw new Error('notCacheOnly');
 
@@ -540,39 +531,45 @@ var file = function(path, _config = false) {
 	}
 
 	// Get the first images of a folder/compressed
-	this.images = async function(only = 1, from = false, poster = false, _files = false, _path = false, _isCompressed = false) {
+	this.images = async function(only = 1, from = false, findPoster = false, _files = false, _path = false, _isCompressed = false) {
 
-		if(poster)
+		this.updateConfig({filtered: false});
+
+		// Find poster in the same folder where the folder/file is located
+		if(findPoster)
 		{
-			this.updateConfig({specialFiles: true});
-
-			let _poster = await this.poster();
-			if(_poster) return _poster;
+			const poster = await this.poster();
+			if(poster) return poster;
 		}
 
 		if(!this.alreadyRead)
-			await this.read({cacheServer: true});
+			await this.read({cacheServer: true, filtered: false});
 
-		_files = _files || filtered(this.files, true, false);
-		_path = _path || this.path;
+		const files = _files || this.files;
+		const path = _path || this.path;
 
-		_isCompressed = _isCompressed || isCompressed(_path);
+		const fullFiltered = fileManager.filtered(files);
 
-		if(config.ignoreSingleFoldersLibrary && _files.length == 1 && (_files[0].folder || _files[0].compressed))
+		_isCompressed = _isCompressed || isCompressed(path);
+
+		// Find poster inside folder/file
+		if(findPoster)
 		{
-			const file = _files[0];
-			_files = file.files ? filtered(file.files, true, false) : await this.read({cacheServer: true}, file.path);
-
-			return this.images(only, from, poster, _files, file.path, _isCompressed);
+			const poster = this._poster(files, path, true, _isCompressed);
+			if(poster) return poster;
 		}
 
-		if(poster)
+		// Inore single folders
+		if(config.ignoreSingleFoldersLibrary && fullFiltered.length == 1 && (fullFiltered[0].folder || fullFiltered[0].compressed))
 		{
-			let _poster = this._poster(_files, _path, true, _isCompressed);
-			if(_poster) return _poster;
+			const file = fullFiltered[0];
+			const files = file.files ? file.files : await this.read({cacheServer: true, filtered: false}, file.path);
+
+			return this.images(only, from, findPoster, files, file.path, _isCompressed);
 		}
 
-		let images = (await this._images(only, _files, from, false, poster)).images;
+		// If no poster is found, find as a list of images
+		let images = (await this._images(only, files, fullFiltered, from, false, findPoster)).images;
 
 		for(let i = 0, len = images.length; i < len; i++)
 		{
@@ -589,15 +586,15 @@ var file = function(path, _config = false) {
 
 		path = path || this.path;
 
-		let name = p.parse(path).name;
+		const name = p.parse(path).name;
+		const regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+'(?:[_-]?(?:cover|default|folder|series|poster|thumbnail))?'+(inside ? '|cover|default|folder|series|poster|thumbnail' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+$');
 
-		let regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+'(?:[_-]?(?:cover|default|folder|series|poster|thumbnail))?'+(inside ? '|cover|default|folder|series|poster|thumbnail' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+$');
+		const len = files.length;
 		let poster = false;
 
-		let len = files.length
 		for(let i = 0; i < len; i++)
 		{
-			let file = files[i];
+			const file = files[i];
 
 			if(!file.folder && !file.compressed && (regex.test(file.name) || file.poster))
 			{
@@ -624,7 +621,7 @@ var file = function(path, _config = false) {
 			{
 				for(let i = 0; i < len; i++)
 				{
-					let file = files[i];
+					const file = files[i];
 
 					if(!file.folder && !file.compressed)
 					{
@@ -650,17 +647,16 @@ var file = function(path, _config = false) {
 
 	this.poster = async function() {
 
-		let dirname = p.dirname(this.path);
+		const dirname = p.dirname(this.path);
 
 		try
 		{
-			let file = fileManager.file(dirname);
-			file.updateConfig({fastRead: true, specialFiles: true, sha: false, cacheServer: true});
-			let files = await file.read();
+			const file = fileManager.file(dirname);
+			file.updateConfig({fastRead: true, filtered: false, sha: false, cacheServer: true});
+			const files = await file.read();
+			file.destroy();
 
-			let poster = this._poster(files);
-
-			return poster;
+			return this._poster(files);
 		}
 		catch(error)
 		{
