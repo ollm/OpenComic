@@ -42,14 +42,24 @@ function addToQueue(sha)
 
 	if(thumbnails || progress)
 	{
-		threads.job('folderThumbnails', {useThreads: 0.2}, async function() {
+		threads.job('folderThumbnails', {key: sha, useThreads: 0.2}, async function() {
 
 			if(thumbnails)
 			{
 				setStatus(sha, {
 					thumbnails: false,
 				});
+			}
 
+			if(progress)
+			{
+				setStatus(sha, {
+					progress: false,
+				});
+			}
+
+			if(thumbnails)
+			{
 				const images = [
 					{cache: false, path: '', sha: folderSha+'-0'},
 					{cache: false, path: '', sha: folderSha+'-1'},
@@ -67,10 +77,6 @@ function addToQueue(sha)
 
 			if(progress)
 			{
-				setStatus(sha, {
-					progress: false,
-				});
-
 				try
 				{
 					const _progress = await reading.progress.get(path, true, true);

@@ -1,9 +1,14 @@
 var threads = false;
 var threadsList = {};
-var queue = {default: []};
-var queueIsStop = {default: false};
+
+var queues = {default: {
+	list: [],
+	keys: new Set(),
+	stop: false,
+	onEnd: false,
+}};
+
 var stats = {};
-var onEnd = {};
 
 function num()
 {
@@ -46,14 +51,38 @@ async function job(key = 'default', options = {}, callback = false)
 	return promise;
 }
 
+function getQueue(key)
+{
+	if(!queues[key])
+	{
+		queues[key] = {
+			stop: false,
+			list: [],
+			keys: new Set(),
+			onEnd: false,
+		};
+	}
+
+	return queues[key];
+}
+
 function addToQueue(key, options, callback, _arguments, promise)
 {
-	if(!queue[key]) queue[key] = [];
 	if(!stats[key]) stats[key] = {done: 0};
+
+	const queue = getQueue(key);
+
+	if(options.key)
+	{
+		if(queue.keys.has(options.key))
+			return;
+
+		queue.keys.add(options.key);
+	}
 
 	if(options.priorize)
 	{
-		queue[key].unshift({
+		queue.list.unshift({
 			options: options,
 			callback: callback,
 			arguments: _arguments,
@@ -62,7 +91,7 @@ function addToQueue(key, options, callback, _arguments, promise)
 	}
 	else
 	{
-		queue[key].push({
+		queue.list.push({
 			options: options,
 			callback: callback,
 			arguments: _arguments,
@@ -77,7 +106,9 @@ function processQueue(key = 'default')
 {
 	num();
 
-	if(queueIsStop[key])
+	const queue = getQueue(key);
+
+	if(queue.stop)
 		return;
 
 	for(let thread = 0; thread < threads; thread++)
@@ -89,7 +120,9 @@ function processQueue(key = 'default')
 
 function processJob(key = 'default', _thread = 0)
 {
-	if(queueIsStop[key])
+	const queue = getQueue(key);
+
+	if(queue.stop)
 		return;
 
 	const thread = getThread(key, _thread);
@@ -97,15 +130,13 @@ function processJob(key = 'default', _thread = 0)
 	if(thread.busy)
 		return false;
 
-	const _queue = queue[key] || [];
-
-	if(!_queue.length)
+	if(!queue.list.length)
 	{
 		checkEnd(key);
 		return null;
 	}
 
-	const job = _queue.shift();
+	const job = queue.list.shift();
 
 	if(job.options.useThreads < 1 && _thread !== 0)
 	{
@@ -113,7 +144,7 @@ function processJob(key = 'default', _thread = 0)
 
 		if(useThreads > job.options.useThreads)
 		{
-			_queue.unshift(job);
+			queue.list.unshift(job);
 			return null;
 		}
 	}
@@ -125,9 +156,11 @@ function processJob(key = 'default', _thread = 0)
 
 async function startJob(thread)
 {
+	const currentJob = thread.currentJob;
+
 	try
 	{
-		const result = await thread.currentJob.callback(...thread.currentJob.arguments);
+		const result = await currentJob.callback(...currentJob.arguments);
 
 		thread.currentJob.promise.resolve(result);
 		thread.currentJob = false;
@@ -145,6 +178,13 @@ async function startJob(thread)
 
 		processJob(thread.key, thread.thread);
 	}
+
+	if(currentJob.options.key)
+	{
+		const queue = getQueue(thread.key);
+		queue.keys.delete(currentJob.options.key);
+	}
+
 }
 
 function getThread(key = 'default', thread = 0)
@@ -166,39 +206,46 @@ function getThread(key = 'default', thread = 0)
 
 function stop(key = 'default')
 {
-	queueIsStop[key] = true;
+	const queue = getQueue(key);
+	queue.stop = true;
 }
 
 function resume(key = 'default')
 {
-	queueIsStop[key] = false;
+	const queue = getQueue(key);
+	queue.stop = false;
 	processQueue(key);
 }
 
 function clean(key = 'default')
 {
-	queue[key] = [];
+	const queue = getQueue(key);
+	queue.list = [];
+	queue.keys = new Set();
 }
 
 function checkEnd(key = 'default')
 {
-	if(onEnd[key])
+	const queue = getQueue(key);
+
+	if(queue.onEnd)
 	{
-		onEnd[key]();
-		onEnd[key] = false;
+		queue.onEnd();
+		queue.onEnd = false;
 	}
 }
 
 function end(key, callback)
 {
-	onEnd[key] = callback;
+	const queue = getQueue(key);
+	queue.onEnd = callback;
 }
 
 function getStats(key = false)
 {
 	const _stats = {};
 
-	for(let key in queue)
+	for(let key in queues)
 	{
 		const list = Object.values(threadsList[key] ?? {});
 
@@ -206,7 +253,8 @@ function getStats(key = false)
 			key: key,
 			done: stats[key]?.done || 0,
 			busy: list.filter(thread => thread.busy).length,
-			queue: queue[key]?.length,
+			queue: queues[key],
+			queueLength: queues[key]?.list?.length,
 			threads: (!list.length || list.length === threads) ? list.length : list.length - 1,
 		};
 	}
