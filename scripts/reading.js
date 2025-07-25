@@ -6,7 +6,8 @@ const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js')),
 	sidebar = require(p.join(appDir, 'scripts/reading/sidebar.js')),
 	discord = require(p.join(appDir, 'scripts/reading/discord.js')),
-	progress = require(p.join(appDir, 'scripts/reading/progress.js'));
+	progress = require(p.join(appDir, 'scripts/reading/progress.js')),
+	doublePage = require(p.join(appDir, 'scripts/reading/double-page.js'));
 
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
@@ -19,7 +20,7 @@ function blankPage(index)
 
 	var key = 0;
 
-	if(readingDoublePage() && _config.readingDoNotApplyToHorizontals)
+	if(doublePage.active() && _config.readingDoNotApplyToHorizontals)
 	{
 		for(let i = index; i < (imagesNum + 1); i++)
 		{
@@ -77,7 +78,7 @@ function calculateImagesDistribution()
 	imagesDistribution = [];
 	indexNum = 0;
 
-	if(readingDoublePage())
+	if(doublePage.active())
 	{
 		var data = [];
 
@@ -925,7 +926,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 
 	if(!fromPageRange)
 	{
-		render.focusIndex(index, readingDoublePage());
+		render.focusIndex(index, doublePage.active());
 		filters.focusIndex(index);
 	}
 
@@ -1141,7 +1142,7 @@ function goPageDialog(go = false)
 //Returns the highest image
 function returnLargerImage(index)
 {
-	if(readingDoublePage())
+	if(doublePage.active())
 	{
 		let image0 = template._contentRight().querySelector('.image-position'+(index)+'-0');
 		let image1 = template._contentRight().querySelector('.image-position'+(index)+'-1');
@@ -1440,7 +1441,7 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 	{
 		let index = closest.page.index + 1;
 
-		if(readingDoublePage())
+		if(doublePage.active())
 			index = Math.ceil(index / 2);
 
 		if(readingManga())
@@ -2298,7 +2299,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			scrollTop: scrollTop,
 		};
 
-		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), readingDoublePage());
+		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
 	}
 }
 
@@ -2477,7 +2478,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 			zoomMoveData.active = false;
 			currentZoomIndex = false;
 
-			render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), readingDoublePage());
+			render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
 		}
 	}
 }
@@ -2768,7 +2769,7 @@ function activeMagnifyingGlass(active = null, gamepad = false)
 	if(active)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
-		render.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom, readingDoublePage());
+		render.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom, doublePage.active());
 	
 		if(gamepad)
 		{
@@ -2804,7 +2805,7 @@ function changeMagnifyingGlass(mode, value, save)
 
 		if(save) storage.updateVar('config', 'readingMagnifyingGlassZoom', value);
 
-		render.setScaleMagnifyingGlass(value, readingDoublePage());
+		render.setScaleMagnifyingGlass(value, doublePage.active());
 	}
 	else if(mode == 2) //Set the size
 	{
@@ -2932,7 +2933,7 @@ async function resized()
 			stayInLine(true);
 		}
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 		fastUpdateEbookPages(false, true);
 		generateEbookPagesDelayed();
 		hideMouseInFullscreen();
@@ -3072,11 +3073,6 @@ function readingView()
 	return _config.readingView;
 }
 
-function readingDoublePage()
-{
-	return (_config.readingDoublePage && !_config.readingWebtoon);
-}
-
 function readingManga()
 {
 	return (_config.readingManga && !readingViewIs('scroll'));
@@ -3207,9 +3203,9 @@ function changePagesView(mode, value, save)
 	else if(mode == 6) // Set the reading to double page
 	{
 		if(value)
-			$('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
+			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
 		else
-			$('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').addClass('disable-pointer');
+			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').addClass('disable-pointer');
 
 		updateReadingPagesConfig('readingDoublePage', value);
 
@@ -3242,7 +3238,7 @@ function changePagesView(mode, value, save)
 
 		if(value)
 		{
-			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-ajust-to-width, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
+			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-ajust-to-width, .reading-margin-vertical, .reading-force-single-page').addClass('disable-pointer');
 		
 			if(!_config.readingNotEnlargeMoreThanOriginalSize)
 			{
@@ -3256,7 +3252,7 @@ function changePagesView(mode, value, save)
 				template.globalElement('.reading-ajust-to-width, .reading-force-single-page').removeClass('disable-pointer');
 			
 			if(_config.readingDoublePage)
-				template.globalElement('.reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
+				template.globalElement('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
 
 			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-margin-vertical').removeClass('disable-pointer');
 		}
@@ -3272,10 +3268,12 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: _config.readingMargin.top, bottom: _config.readingMargin.bottom, left: value, right: value});
 		updateEbook(save);
+
+		reading.doublePage.apply({left: value});
 	}
 	else if(mode == 11) // Set vertical margin of the pages
 	{
@@ -3283,7 +3281,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: _config.readingMargin.margin, top: value, bottom: value, left: _config.readingMargin.left, right: _config.readingMargin.right});
 		updateEbook(save);
@@ -3317,7 +3315,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: _config.readingHorizontalsMargin.top, bottom: _config.readingHorizontalsMargin.bottom, left: value, right: value});
 		updateEbook(save);
@@ -3341,7 +3339,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 		filters.cleanIsBlackAndWhiteCurrent();
 	}
 	else if(mode == 17) // Clip vertical images
@@ -3355,7 +3353,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 		filters.cleanIsBlackAndWhiteCurrent();
 	}
 	else if(mode == 18) // Do not enlarge images more than its original size
@@ -3375,7 +3373,7 @@ function changePagesView(mode, value, save)
 		calculateView();
 		stayInLine();
 
-		render.resized(readingDoublePage());
+		render.resized(doublePage.active());
 		// updateEbook(true);
 	}
 	else if(mode == 21) // Align double pages with the next horizontal image
@@ -3943,6 +3941,7 @@ function editReadingShortcutPagesConfig(event, key = 0)
 	loadReadingPages(key, true, selectTab);
 
 	filters.apply();
+	doublePage.apply();
 }
 
 function editReadingShortcutPagesConfigName(key = 0, save = false)
@@ -4354,7 +4353,7 @@ async function getEbookConfig(configReadingEbook = false)
 	}
 
 	let renderZone = {
-		width: ((rect.width - (readingMargin().left * (readingDoublePage() ? 3 : 2))) / (readingDoublePage() ? 2 : 1)) - (readingViewIs('scroll') ? 12 : 0),
+		width: ((rect.width - (readingMargin().left * (doublePage.active() ? 3 : 2))) / (doublePage.active() ? 2 : 1)) - (readingViewIs('scroll') ? 12 : 0),
 		height: (rect.height - (readingMargin().top * 2)),
 	};
 
@@ -4385,7 +4384,7 @@ async function getEbookConfig(configReadingEbook = false)
 
 	let maxWidth = configReadingEbook.maxWidth;
 	let minMargin = configReadingEbook.minMargin;
-	let verticalMargin = (readingViewIs('scroll') && !readingDoublePage()) ? 0 : configReadingEbook.verticalMargin;
+	let verticalMargin = (readingViewIs('scroll') && !doublePage.active()) ? 0 : configReadingEbook.verticalMargin;
 
 	let horizontalMargin = Math.round((width - maxWidth) / 2);
 
@@ -4473,7 +4472,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		let index = currentIndex;
 
-		if(doublePage && !readingDoublePage())
+		if(doublePage && !doublePage.active())
 			index = Math.ceil(index / 2);
 
 		let imageIndex = imagesDistribution[index - 1][0].index;
@@ -5592,7 +5591,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	readingFile = fileManager.file();
 	readingFileC = false;
 
-	render.setOnRender((readingDoublePage() && imagesNum > 1 ? 2 : 1), function() {
+	render.setOnRender((doublePage.active() && imagesNum > 1 ? 2 : 1), function() {
 
 		const contentRight = template._contentRight();
 
@@ -5733,6 +5732,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	hideMouseInFullscreen();
 
 	filters.apply();
+	doublePage.apply();
 	progress.setInterval();
 }
 
@@ -5846,7 +5846,6 @@ module.exports = {
 	rotateImage: rotateImage,
 	setIsLoaded: function(value){isLoaded=value},
 	isLoaded: function(value){return isLoaded},
-	doublePage: readingDoublePage,
 	manga: readingManga,
 	isLoad: isLoad,
 	onLoad: onLoad,
@@ -5860,4 +5859,5 @@ module.exports = {
 	sidebar: sidebar,
 	discord: discord,
 	progress: progress,
+	doublePage: doublePage,
 };

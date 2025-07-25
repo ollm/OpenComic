@@ -365,6 +365,14 @@
 					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
 				</div>
 			</div>
+			<div class="menu-simple-text reading-double-page-shadow gamepad-item{{#if _config.readingWebtoon}} disable-pointer{{/if}}">
+				{{language.reading.doublePage.shadow.main}}
+				<div class="switch{{#if _config.readingDoublePageShadow.active}} a{{/if}}" on="reading.doublePage.change('active', true);" off="reading.doublePage.change('active', false);">
+					<div></div>
+					<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+				</div>
+				<i class="material-icon menu-simple-icon" onclick="reading.doublePage.shadowDialog()">settings</i>
+			</div>
 			<div class="menu-simple-text reading-do-not-apply-to-horizontals gamepad-item{{#unless _config.readingDoublePage}} disable-pointer{{else if _config.readingWebtoon}} disable-pointer{{/unless}}">
 				{{language.reading.pages.doNotApplyToHorizontals}}
 				<div class="switch{{#if _config.readingDoNotApplyToHorizontals}} a{{/if}}" on="reading.changePagesView(7, true, false)" off="reading.changePagesView(7, false, false)">

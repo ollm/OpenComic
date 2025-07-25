@@ -238,6 +238,14 @@
 				"otherSoundsAndNumber": "Diğer sesler $1"
 			}
 		},
+		"doublePage": {
+			"shadow": {
+				"main": "",
+				"size": "",
+				"opacity": "",
+				"displacement": ""
+			}
+		},
 		"moreOptions": {
 			"main": "Daha fazla seçenek",
 			"hideBarHeader": "Araç çubuğunu gizle",

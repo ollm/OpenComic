@@ -21,7 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Progressive thumbnail/progress generation based on scroll position [`1d22f22`](https://github.com/ollm/OpenComic/commit/1d22f2290e81785f3c785af9d2eef132cea2935f)
 - Option to mark as read and unread [`82ae5ef`](https://github.com/ollm/OpenComic/commit/82ae5ef7e24afc47a6e817b6df5ef6d81099eeb5)
 - Option to show page number in the top right-hand corner [`35e44c6`](https://github.com/ollm/OpenComic/commit/35e44c6e271e545a09de4f66ecd0bd289e217447)
-- Add support for labels in master folders (auto config only)
+- Add support for labels in master folders (auto config only) [`50e42cd`](https://github.com/ollm/OpenComic/commit/50e42cd27b8127ed63e07f008d15279639cd1c7b)
+- Option to show shadow effect between pages in double page mode
 
 ##### 🐛 Bug Fixes
 

@@ -238,6 +238,14 @@
 				"otherSoundsAndNumber": "Altri effetti sonori $1"
 			}
 		},
+		"doublePage": {
+			"shadow": {
+				"main": "",
+				"size": "",
+				"opacity": "",
+				"displacement": ""
+			}
+		},
 		"moreOptions": {
 			"main": "Opzioni ",
 			"hideBarHeader": "Nascondi barra superiore",

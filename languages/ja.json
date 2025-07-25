@@ -238,6 +238,14 @@
 				"otherSoundsAndNumber": "その他の効果音 $1"
 			}
 		},
+		"doublePage": {
+			"shadow": {
+				"main": "",
+				"size": "",
+				"opacity": "",
+				"displacement": ""
+			}
+		},
 		"moreOptions": {
 			"main": "その他のオプション",
 			"hideBarHeader": "ヘッダーバーを隠す",

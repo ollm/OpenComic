@@ -238,6 +238,14 @@
 				"otherSoundsAndNumber": "เสียงอื่น $1"
 			}
 		},
+		"doublePage": {
+			"shadow": {
+				"main": "",
+				"size": "",
+				"opacity": "",
+				"displacement": ""
+			}
+		},
 		"moreOptions": {
 			"main": "ตัวเลือกเพิ่มเติม",
 			"hideBarHeader": "ซ่อนแถบส่วนบน",

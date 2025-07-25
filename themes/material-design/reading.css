@@ -219,6 +219,7 @@
 	/*background-color: var(--md-sys-color-background);*/
 	display: flex;
 	position: relative;
+	overflow: hidden;
 }
 
 .reading-body .r-img > oc-img > *, .reading-lens .r-img > oc-img > *
@@ -371,6 +372,11 @@
 .reading-progress.active
 {
 	display: block;
+}
+
+.reading-double-page-shadow-style
+{
+	display: none;
 }
 
 .reading-skip > div

@@ -48,7 +48,7 @@ function save(path = false, mainPath = false)
 	let currentPage = reading.currentPage();
 	const totalPages = reading.totalPages();
 
-	if(reading.doublePage() && totalPages - currentPage === 1)
+	if(reading.doublePage.active() && totalPages - currentPage === 1)
 		currentPage++;
 
 	const percent = (totalPages === 1) ? 0 : (((currentPage - 1) / (totalPages - 1)) * 100);

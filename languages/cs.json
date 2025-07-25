@@ -238,6 +238,14 @@
 				"otherSoundsAndNumber": ""
 			}
 		},
+		"doublePage": {
+			"shadow": {
+				"main": "",
+				"size": "",
+				"opacity": "",
+				"displacement": ""
+			}
+		},
 		"moreOptions": {
 			"main": "Více nastavení",
 			"hideBarHeader": "Skrýt vrchní panel",

@@ -238,6 +238,14 @@
 				"otherSoundsAndNumber": "Altres sons $1"
 			}
 		},
+		"doublePage": {
+			"shadow": {
+				"main": "Efecte de sombra entre pàgines",
+				"size": "Mida",
+				"opacity": "Opacitat",
+				"displacement": "Desplaçament de la sombra"
+			}
+		},
 		"moreOptions": {
 			"main": "Més opcions",
 			"hideBarHeader": "Amaga la barra superior",

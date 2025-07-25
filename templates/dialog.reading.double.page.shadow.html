@@ -1,0 +1,43 @@
+
+
+<div style="padding-left: 0px; padding-right: 0px;" class="simple-slider gamepad-item" data-margin="0,24,0,24" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+	<div class="simple-slider-text">{{language.reading.doublePage.shadow.size}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="7">undo</i><span>{{normalizeNumber _config.readingDoublePageShadow.size "0.05"}}</span>%</div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="50" min="0.05" step="0.05" value="{{_config.readingDoublePageShadow.size}}" onrange="reading.doublePage.change('size', \{{value}});">
+	</div>
+</div>
+
+<div style="padding-left: 0px; padding-right: 0px;" class="simple-slider gamepad-item" data-margin="0,24,0,24" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+	<div class="simple-slider-text">{{language.reading.doublePage.shadow.opacity}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="50">undo</i><span>{{_config.readingDoublePageShadow.opacity}}</span>%</div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="100" min="0" step="1" value="{{_config.readingDoublePageShadow.opacity}}" onrange="reading.doublePage.change('opacity', \{{value}});">
+	</div>
+</div>
+
+<div style="padding-left: 0px; padding-right: 0px;" class="simple-slider gamepad-item" data-margin="0,24,0,24" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+	<div class="simple-slider-text">{{language.reading.doublePage.shadow.displacement}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="5">undo</i><span>{{normalizeNumber _config.readingDoublePageShadow.displacement "0.05"}}</span>%</div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="50" min="0.05" step="0.05" value="{{_config.readingDoublePageShadow.displacement}}" onrange="reading.doublePage.change('displacement', \{{value}});">
+	</div>
+</div>

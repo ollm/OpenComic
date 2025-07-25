@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 126; // Update this if readingPagesConfig is updated
+const changes = 127; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -42,6 +42,12 @@ const readingPagesConfig = {
 	},
 	readingDelayComicSkip: 1,
 	readingDoublePage: false,
+	readingDoublePageShadow: {
+		active: false,
+		size: 7,
+		opacity: 50,
+		displacement: 5,
+	},
 	readingDoNotApplyToHorizontals: true,
 	readingAlignWithNextHorizontal: true,
 	readingBlankPage: false,
