@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to mark as read and unread [`82ae5ef`](https://github.com/ollm/OpenComic/commit/82ae5ef7e24afc47a6e817b6df5ef6d81099eeb5)
 - Option to show page number in the top right-hand corner [`35e44c6`](https://github.com/ollm/OpenComic/commit/35e44c6e271e545a09de4f66ecd0bd289e217447)
 - Add support for labels in master folders (auto config only) [`50e42cd`](https://github.com/ollm/OpenComic/commit/50e42cd27b8127ed63e07f008d15279639cd1c7b)
-- Option to show shadow effect between pages in double page mode
+- Option to show shadow effect between pages in double page mode [`5bfee80`](https://github.com/ollm/OpenComic/commit/5bfee8068b4e45d6817e610c8c35fb175262f5bb)
 
 ##### 🐛 Bug Fixes
 
