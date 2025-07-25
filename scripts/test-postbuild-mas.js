@@ -11,9 +11,9 @@ function exists(path, permissions = false, fix = false)
 		{
 			fs.accessSync(path, permissions);
 		}
-		catch (err)
+		catch (error)
 		{
-			throw new Error('No access! '+path);
+			throw new Error('No access! '+path+', '+error.message);
 		}
 	}
 }
@@ -28,11 +28,11 @@ if(process.platform == 'darwin')
 
 	// Sharp x64
 	exists(darwin+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.1.dylib', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
-	exists(darwin+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
+	exists(darwin+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.R_OK, 'npm install --cpu=x64 --os=darwin sharp');
 
 	// Sharp arm64
 	exists(darwin+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.1.dylib', fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
-	exists(darwin+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.X_OK | fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
+	exists(darwin+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.R_OK, 'npm install --cpu=arm64 --os=darwin sharp');
 
 	// 7zip
 	exists(darwin+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
