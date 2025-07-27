@@ -67,9 +67,9 @@ Translate by [Matyáš Caras](https://github.com/hernikplays)
 
 [de.json](https://github.com/ollm/OpenComic/blob/master/languages/de.json)
 
-Translate by [Hernesto Sanchez](https://github.com/herrsunchess)
+Translate by [Hernesto Sanchez](https://github.com/herrsunchess) and [Mett-mit-Zwiebel](https://github.com/Mett-mit-Zwiebel)
 
-`19.7% | Remain 416 | Translated 102`
+`100% | Remain 0 | Translated 518`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/de.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/de.svg" /></a>
 
