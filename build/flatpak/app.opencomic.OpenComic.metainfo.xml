@@ -82,6 +82,41 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.6.0" date="2025-07-27">
+            <description>
+                <p><em>🚀 New Features</em></p>
+                <ul>
+                    <li>Allow disabling <code>Do not enlarge more than its original size</code> in Webtoon mode </li>
+                    <li>Improved rotation and support for rotating in PDF </li>
+                    <li>PDFs are rendered to a blob image instead of a canvas </li>
+                    <li>Optimized sidebar thumbnails </li>
+                    <li>Support Discord Rich Presence </li>
+                    <li>Get Calibre <code>series</code> and <code>series_index</code> metadata in PDF and ePub </li>
+                    <li>Increase and decrease horizontal margin shortcuts </li>
+                    <li>Use single thread in HDD extractions </li>
+                    <li>Auto-hide mouse cursor in fullscreen mode </li>
+                    <li>Show progress bar, pages and percentage in library/browsing </li>
+                    <li>Progressive thumbnail/progress generation based on scroll position </li>
+                    <li>Option to mark as read and unread </li>
+                    <li>Option to show page number in the top right-hand corner </li>
+                    <li>Add support for labels in master folders (auto config only) </li>
+                    <li>Option to show shadow effect between pages in double page mode </li>
+                </ul>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Error opening files from the system file explorer </li>
+                    <li>Invert tap zones in manga reading </li>
+                    <li>Error opening an OPDS Catalog </li>
+                    <li>Correct support Komga OPDS server </li>
+                    <li>Some mime types are not correct detected </li>
+                    <li>Update electron to fix white lines in Webtoon mode </li>
+                    <li>Navigation back not working with shortcuts and gamepad </li>
+                    <li>Correct invert some shortcuts in manga reading </li>
+                    <li>Optimized poster handling in file image retrieval </li>
+                    <li>Do not use the ignore pattern when searching for poster/images </li>
+                </ul>
+            </description>
+        </release>
         <release version="1.5.0" date="2025-06-19">
             <description>
                 <p><em>🚀 New Features</em></p>
