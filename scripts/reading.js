@@ -4468,11 +4468,11 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 	}
 	else if(!nextOpenChapterProgress && imagesDistribution && imagesDistribution[0] && !imagePath)
 	{
-		const doublePage = imagesDistribution[0].length > 1 ? true : false;
+		const _doublePage = imagesDistribution[0].length > 1 ? true : false;
 
 		let index = currentIndex;
 
-		if(doublePage && !doublePage.active())
+		if(_doublePage && !doublePage.active())
 			index = Math.ceil(index / 2);
 
 		let imageIndex = imagesDistribution[index - 1][0].index;
