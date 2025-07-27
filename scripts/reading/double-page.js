@@ -22,7 +22,7 @@ function apply(options = false)
 		return;
 	}
 
-	const left = options ? options.left : _config.readingMargin.left;
+	const left = options ? options.left : reading.margin().left;
 	const translate = left ? 0 : -1;
 
 	style.innerHTML = `

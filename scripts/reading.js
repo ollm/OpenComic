@@ -5847,6 +5847,7 @@ module.exports = {
 	setIsLoaded: function(value){isLoaded=value},
 	isLoaded: function(value){return isLoaded},
 	manga: readingManga,
+	margin: readingMargin,
 	isLoad: isLoad,
 	onLoad: onLoad,
 	ebook: readingEbook,
