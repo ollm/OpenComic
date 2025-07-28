@@ -689,7 +689,7 @@ var client = function(path) {
 
 		if(this.smb) return this.smb;
 
-		if(smb2 === false) smb2 = require('@stifani/smb2');
+		if(smb2 === false) smb2 = require('@awo00/smb2');
 
 		this.smb = {
 			client: false,
