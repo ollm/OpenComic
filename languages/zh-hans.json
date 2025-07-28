@@ -28,10 +28,10 @@
 			"module": "网格",
 			"list": "列表",
 			"moduleSize": "网格大小",
-			"fadeCompleted": "",
-			"progressBar": "",
-			"progressPages": "",
-			"progressPercent": ""
+			"fadeCompleted": "淡入淡出完成",
+			"progressBar": "显示进度条",
+			"progressPages": "显示页面",
+			"progressPercent": "显示百分比"
 		},
 		"filter": {
 			"onlyRoot": "仅来自根文件夹",
@@ -49,8 +49,8 @@
 			"deletePermanently": "永久删除",
 			"deletePermanentlyConfirm": "确实要永久删除此文件吗？此操作无法撤消",
 			"favorite": "收藏",
-			"markAsRead": "",
-			"markAsUnread": "",
+			"markAsRead": "标记为已读",
+			"markAsUnread": "标记为未读",
 			"openFileLocation": "打开文件所在位置",
 			"openFolderLocation": "打开文件夹位置",
 			"aboutFile": "关于此文件",
@@ -132,18 +132,18 @@
 			"fade": "淡出",
 			"adjustToWidth": "适应屏幕",
 			"notEnlargeMoreThanOriginalSize": "请勿放大超过原始尺寸",
-			"rotate": "",
+			"rotate": "旋转",
 			"rotateHorizontals": "旋转水平线",
-			"rotateLeft": "",
-			"rotateRight": "",
-			"rotateUpsideDown": "",
+			"rotateLeft": "向左旋转",
+			"rotateRight": "向右旋转",
+			"rotateUpsideDown": "倒转",
 			"forceSinglePage": "每次只显示一页",
 			"margin": "边距",
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",
 			"differentMarginInHorizontals": "横幅画面差异",
-			"increaseHorizontalMargin": "",
-			"decreaseHorizontalMargin": "",
+			"increaseHorizontalMargin": "增加水平边距",
+			"decreaseHorizontalMargin": "减少水平边距",
 			"doublePage": "双页展示",
 			"doNotApplyToHorizontals": "不用于横幅画面",
 			"alignWithNextHorizontal": "与下一个水平对齐",
@@ -240,17 +240,17 @@
 		},
 		"doublePage": {
 			"shadow": {
-				"main": "",
-				"size": "",
-				"opacity": "",
-				"displacement": ""
+				"main": "页面之间的阴影效果",
+				"size": "大小",
+				"opacity": "不透明度",
+				"displacement": "阴影位移"
 			}
 		},
 		"moreOptions": {
 			"main": "更多选项",
 			"hideBarHeader": "隐藏标题栏",
 			"hideContentLeft": "隐藏左侧栏",
-			"showPageNumber": ""
+			"showPageNumber": "显示页码"
 		},
 		"viewBookmarks": "查看书签",
 		"addBookmark": "添加书签",
@@ -382,7 +382,7 @@
 		"tapZones": {
 			"main": "点击区域",
 			"disable": "禁用点击区域",
-			"invertInManga": "",
+			"invertInManga": "在阅读漫画时反转点击区域",
 			"leftClick": "左键单击",
 			"rightClick": "右键单击",
 			"middleClick": "单击鼠标中键"
@@ -584,7 +584,7 @@
 				"creatorTool": "创作者工具",
 				"notes": "笔记",
 				"GTIN": "GTIN",
-				"ISBN": ""
+				"ISBN": "ISBN"
 			}
 		},
 		"requestFileAccess": {
