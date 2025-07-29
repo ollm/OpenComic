@@ -60,7 +60,7 @@ function clickTapZone(event, button)
 	const action = shortcuts[currentlyRegistered].tapZones[vertical][horizontal][button];
 
 	if(shortcuts[currentlyRegistered].actions[action])
-		shortcuts[currentlyRegistered].actions[action].function();
+		shortcuts[currentlyRegistered].actions[action].function(event);
 
 	return true;
 }
