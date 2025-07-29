@@ -24,7 +24,7 @@ async function box(_comics, single, title, order, orderKey = false, orderKey2 = 
 	{
 		if(comics[i].addToQueue === 2 || (viewModuleSize !== 100 && viewModuleSize !== 150))
 		{
-			const images = await dom.getFolderThumbnails(comics[i].path, (viewModuleSize === 100 ? 100 : false));
+			const images = await dom.getFolderThumbnails(comics[i].path, (viewModuleSize === 100 ? 100 : null));
 
 			comics[i].poster = images.poster;
 			comics[i].images = images.images;

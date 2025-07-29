@@ -67,12 +67,23 @@ function addToQueue(sha)
 					{cache: false, path: '', sha: folderSha+'-3'},
 				];
 
-				const file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-				const _images = await file.images(4, false, true);
+				try
+				{
 
-				await dom._getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
+					const file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
+					const _images = await file.images(4, false, true);
+				
+					await dom._getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
 
-				file.destroy();
+					file.destroy();
+				}
+				catch(error)
+				{
+					console.error(error);
+
+					dom.compressedError(error, false);
+					fileManager.requestFileAccess.check(path, error);
+				}
 			}
 
 			if(progress)
@@ -84,6 +95,7 @@ function addToQueue(sha)
 				}
 				catch(error)
 				{
+					console.error(error);
 				}
 			}
 

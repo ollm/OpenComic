@@ -1274,7 +1274,6 @@ function continueReadingError()
 
 function compressedError(error, showInPage = true, snackbarKey = '')
 {
-
 	if(showInPage)
 	{
 		handlebarsContext.compressedError = error ? (error.detail || error.message) : '';
@@ -1572,14 +1571,17 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 		addToQueueProgress = 2;
 	}
 
-	scroll.setStatus(folderSha, {
-		index,
-		path,
-		forceSize,
-		thumbnails: addToQueue,
-		progress: addToQueueProgress,
-		folderSha,
-	});
+	if(forceSize !== null)
+	{
+		scroll.setStatus(folderSha, {
+			index,
+			path,
+			forceSize,
+			thumbnails: addToQueue,
+			progress: addToQueueProgress,
+			folderSha,
+		});
+	}
 
 	return {poster: poster, images: images, addToQueue: addToQueue, progress: progress};
 }
