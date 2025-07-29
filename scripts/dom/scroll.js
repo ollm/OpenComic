@@ -3,7 +3,12 @@ var currentStatus = {};
 
 function setStatus(sha, value)
 {
-	currentStatus[sha] = {...(currentStatus[sha] || {}), ...value};
+	const current = currentStatus[sha] || {};
+
+	value.addToQueue = value.addToQueue || current.addToQueue || false;
+	value.addToQueueProgress = value.addToQueueProgress || current.addToQueueProgress || false;
+
+	currentStatus[sha] = {...current, ...value};
 }
 
 var prevScroll = {};

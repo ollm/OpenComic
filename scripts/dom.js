@@ -1571,7 +1571,7 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 		addToQueueProgress = 2;
 	}
 
-	if(forceSize !== null)
+	if(forceSize !== null || addToQueue || addToQueueProgress)
 	{
 		scroll.setStatus(folderSha, {
 			index,
