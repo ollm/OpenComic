@@ -49,4 +49,4 @@ modules:
       - type: script
         dest-filename: run.sh
         commands:
-          - zypak-wrapper /app/main/OpenComic "$@"
+          - zypak-wrapper /app/main/opencomic "$@"
