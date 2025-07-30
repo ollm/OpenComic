@@ -39,6 +39,8 @@ var tracked = {}, trackST = [], trackIndex = 0;
 
 async function track(chapter = false, volume = false, onlySite = false, reduceIfTrackingAtTheEndIsEnabled = false)
 {
+	await app.sleep(200);
+
 	let fromDialog = false;
 
 	if(chapter !== false || volume !== false)

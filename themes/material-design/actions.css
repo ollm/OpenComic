@@ -1395,6 +1395,7 @@
 	box-sizing: border-box;
 	word-wrap: break-word;
 	word-break: break-word;
+	flex: 1;
 }
 
 .snackbar-buttons
