@@ -694,8 +694,19 @@ function getTitlesAndMetadata()
 			titles.push(compressedName);
 	}
 
+	const images = [];
+
+	for(let i = 0, len = handlebarsContext.comics?.length; i < len; i++)
+	{
+		const comic = handlebarsContext.comics[i];
+		
+		if(comic.name)
+			images.push(comic.name);
+	}
+
 	return {
 		titles: titles,
+		images: images,
 		chapter: 0, // metadata.bookNumber ?? 0,
 		volume: metadata.volume ?? 0,
 		metadata,
@@ -723,15 +734,19 @@ function getChapter()
 
 	let number = data.chapter;
 
-	const patterns = [
+	const reliablePatterns = [
 		// Match common patterns like Chapter 5, Capítulo-5, etc.
-		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
+		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 
 		// Match ending patterns like 5話
 		new RegExp(/((?:\d+\.)?\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
 
 		// Match Ch. 5, Ep 3, etc.
-		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
+		new RegExp(/(?:^|[\.\-_:;\(\)\[\]\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
+	];
+
+	const patterns = [
+		...reliablePatterns,
 
 		// Range chapters
 		/[0-9]{1,4}-([0-9]{1,4})/iu,
@@ -742,6 +757,18 @@ function getChapter()
 		if(number) break;
 
 		for(const regex of patterns)
+		{
+			number = app.extract(regex, title, 1);
+			if(number) break;
+		}
+	}
+
+	// Find in image names
+	for(const title of data.images)
+	{
+		if(number) break;
+
+		for(const regex of reliablePatterns)
 		{
 			number = app.extract(regex, title, 1);
 			if(number) break;
@@ -800,15 +827,19 @@ function getVolume()
 
 	let number = data.volume;
 
-	const patterns = [
+	const reliablePatterns = [
 		// Match common patterns like volume 5, Tom-5, etc.
-		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
+		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 
 		// Match ending patterns like 5巻
 		new RegExp(/((?:\d+\.)?\d+)/.source+'(?:'+joinRegexs(regexsEnd).source+')', 'iu'),
 
 		// Match Vo. 5, Vol 3, etc.
-		new RegExp(/(?:^|[\.\-_:;\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\s]*((?:\d+\.)?\d+)/.source, 'iu'),
+		new RegExp(/(?:^|[\.\-_:;\(\)\[\]\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
+	];
+
+	const patterns = [
+		...reliablePatterns,
 	];
 
 	for(const title of data.titles)
@@ -816,6 +847,18 @@ function getVolume()
 		if(number) break;
 
 		for(const regex of patterns)
+		{
+			number = app.extract(regex, title, 1);
+			if(number) break;
+		}
+	}
+
+	// Find in image names
+	for(const title of data.images)
+	{
+		if(number) break;
+
+		for(const regex of reliablePatterns)
 		{
 			number = app.extract(regex, title, 1);
 			if(number) break;

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## v1.6.1 (dd-mm-yyyy)
 
+##### 🚀 New Features
+
+- Extract tracking chapter/volumes also from image names
+
 ##### 🐛 Bug Fixes
 
 - Show page number doesn't work properly on scroll reading [`c72814b`](https://github.com/ollm/OpenComic/commit/c72814bcb6508646ec2abf669b191cf266ee75f7)
