@@ -301,18 +301,18 @@ async function track(toTrack)
 			let status, chapters, volumes;
 
 			// Status
-			if((totalChapters && toTrack.chapters && toTrack.chapters == totalChapters) || (totalVolumes && toTrack.volumes && toTrack.volumes == totalVolumes))
+			if((totalChapters && toTrack.chaptersInt && toTrack.chaptersInt == totalChapters) || (totalVolumes && toTrack.volumesInt && toTrack.volumesInt == totalVolumes))
 				status = 'COMPLETED';
 			else if(!userStatus || userStatus !== 'CURRENT')
 				status = 'CURRENT';
 
 			// Chapters
-			if(toTrack.chapters && (!userChapters || toTrack.chapters > userChapters))
-				chapters = toTrack.chapters;
+			if(toTrack.chaptersInt && (!userChapters || toTrack.chaptersInt > userChapters))
+				chapters = toTrack.chaptersInt;
 
 			// Volumes
-			if(toTrack.volumes && (!userVolumes || toTrack.volumes > userVolumes))
-				volumes = toTrack.volumes;
+			if(toTrack.volumesInt && (!userVolumes || toTrack.volumes > userVolumes))
+				volumes = toTrack.volumesInt;
 
 			const variables = {mediaId: toTrack.id};
 			if(status && (chapters || volumes)) variables.status = status;

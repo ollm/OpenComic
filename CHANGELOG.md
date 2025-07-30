@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Extract tracking chapter/volumes also from image names
+- Extract tracking chapter/volumes also from image names [`2218bfb`](https://github.com/ollm/OpenComic/commit/2218bfbb76f14fb5c53414ddef489a16198914d5)
 
 ##### 🐛 Bug Fixes
 

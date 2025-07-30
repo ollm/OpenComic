@@ -104,8 +104,10 @@ async function track(toTrack)
 	toTrack:
 	{
 		id: 0, // Comic id in site
-		chapters: 1, // Chapters to mark
-		volumes: 1, // Volumes to mark
+		chapters: 1.1, // Chapters to mark
+		chaptersInt: 1, // Chapters to mark
+		volumes: 1.1, // Volumes to mark
+		volumesInt: 1, // Volumes to mark
 		mainPath: '', // Used in tracking.setTrackingChapters
 	}
 	*/

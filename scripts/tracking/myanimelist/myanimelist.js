@@ -216,16 +216,16 @@ async function track(toTrack)
 			let status, chapters, volumes;
 
 			// Status
-			if((totalChapters && toTrack.chapters && toTrack.chapters == totalChapters) || (totalVolumes && toTrack.volumes && toTrack.volumes == totalVolumes))
+			if((totalChapters && toTrack.chaptersInt && toTrack.chaptersInt == totalChapters) || (totalVolumes && toTrack.volumesInt && toTrack.volumesInt == totalVolumes))
 				status = 'completed';
 
 			// Chapters
-			if(toTrack.chapters && (!userChapters || toTrack.chapters > userChapters))
-				chapters = toTrack.chapters;
+			if(toTrack.chaptersInt && (!userChapters || toTrack.chaptersInt > userChapters))
+				chapters = toTrack.chaptersInt;
 
 			// Volumes
-			if(toTrack.volumes && (!userVolumes || toTrack.volumes > userVolumes))
-				volumes = toTrack.volumes;
+			if(toTrack.volumesInt && (!userVolumes || toTrack.volumesInt > userVolumes))
+				volumes = toTrack.volumesInt;
 
 			const variables = new URLSearchParams();
 			if(status && (chapters || volumes)) variables.append('status', status);
