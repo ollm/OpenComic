@@ -100,7 +100,8 @@ function addToQueue(sha)
 				}
 				catch(error)
 				{
-					console.error(error);
+					if(!error.message || !/notCacheOnly/.test(error.message))
+						console.error(error);
 				}
 			}
 
