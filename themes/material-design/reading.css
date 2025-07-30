@@ -365,13 +365,49 @@
 	position: absolute;
 	display: none;
 	z-index: 10;
-	left: 10px;
+	left: 6px;
 	top: 10px;
+	pointer-events: none;
 }
 
 .reading-progress.active
 {
 	display: block;
+}
+
+.reading-progress svg path
+{
+	stroke: transparent;
+}
+
+.reading-progress svg
+{
+	width: 200px;
+	height: 20px;
+}
+
+.reading-progress svg text
+{
+	dominant-baseline: middle;
+	transform: translate(-4px, 0px);
+}
+
+.reading-progress svg text textPath
+{
+	font-size: 14px;
+	fill: var(--md-sys-color-on-surface);
+	fill: #fff;
+	transition: fill 0.2s, stroke 0.2s;
+	mix-blend-mode: difference;
+}
+
+.reading-progress svg text textPath:first-child
+{
+	fill: var(--md-sys-color-surface);
+	stroke: var(--md-sys-color-surface);
+	stroke-width: 2;
+	opacity: 0.8;
+	opacity: 0;
 }
 
 .reading-double-page-shadow-style

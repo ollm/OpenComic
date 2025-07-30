@@ -1017,7 +1017,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		currentPage = index;
 		reading.discord.updateThrottle();
 
-		dom.this(template._contentRight()).find('.reading-progress').html(reading.currentPage()+' / '+reading.totalPages()).class(isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
+		dom.this(template._contentRight()).find('.reading-progress').class(isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active').find('textPath', true).html(reading.currentPage()+' / '+reading.totalPages());
 	}
 
 	const readingLeft = contentLeft.querySelector('.reading-left-images');
