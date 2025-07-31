@@ -122,21 +122,36 @@ async function search(text)
 
 		for(let i = 0, len = matches.length; i < len; i++)
 		{
-			indexs[matches[i].index] = true;
+			indexs[matches[i].index] = matches[i];
 		}
 
 		let contentRight = template._contentRight();
 		let elements = contentRight.querySelectorAll('div:not(.box-content) > .content-view-module > div, div:not(.box-content) > .content-view-list > div');
 
+		dom.scroll.useTempIndex(true, true);
+		let tempIndex = 0;
+
 		for(let i = 0, len = elements.length; i < len; i++)
 		{
-			let element = elements[i];
+			const element = elements[i];
+			const data = indexs[i];
 
-			if(indexs[i])
+			if(data)
 				element.style.display = '';
 			else
 				element.style.display = 'none';
+
+			if(data)
+			{
+				dom.scroll.setStatusIndex(data.index, {
+					tempIndex,
+				});
+
+				tempIndex++;
+			}
 		}
+
+		dom.scroll.check();
 
 		dom.queryAll('.boxes').css({display: 'none'});
 
@@ -235,6 +250,9 @@ function searchClick(event)
 				dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 			else
 				saveRecentlySearched();
+
+			dom.scroll.useTempIndex(false);
+			dom.scroll.check();
 		}
 
 		hide(true);

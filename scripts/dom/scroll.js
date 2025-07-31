@@ -1,5 +1,5 @@
 
-var currentStatus = {};
+var currentStatus = {}, shaIndex = {}, _useTempIndex = false;
 
 function setStatus(sha, value)
 {
@@ -9,26 +9,50 @@ function setStatus(sha, value)
 	value.addToQueueProgress = value.addToQueueProgress || current.addToQueueProgress || false;
 
 	currentStatus[sha] = {...current, ...value};
+	shaIndex[value.index] = sha;
+}
+
+function setStatusIndex(index, value)
+{
+	if(shaIndex[index])
+		setStatus(shaIndex[index], value);
+}
+
+function useTempIndex(value, reset = false)
+{
+	_useTempIndex = value;
+
+	if(reset)
+	{
+		for(const sha in currentStatus)
+		{
+			const status = currentStatus[sha];
+			status.tempIndex = 9999999;
+		}
+	}
+
+	return _useTempIndex;
 }
 
 var prevScroll = {};
 
-function scroll(event = false)
+function scroll(event = false, throttle = true, force = false)
 {
-	app.setThrottle('dom-scroll', function(){
+	const check = function(){
 
 		const scrollTop = event?.target?.scrollTop || template._contentRight().firstElementChild.scrollTop;
 		const visibleItems = dom.calculateVisibleItems(handlebarsContext.page.view, scrollTop);
 
-		if(prevScroll.start !== visibleItems.start || prevScroll.end !== visibleItems.end)
+		if(force || prevScroll.start !== visibleItems.start || prevScroll.end !== visibleItems.end)
 		{
 			threads.clean('folderThumbnails');
 
 			for(const sha in currentStatus)
 			{
 				const status = currentStatus[sha];
+				const index = _useTempIndex ? status.tempIndex : status.index;
 
-				if((status.index >= visibleItems.start && status.index <= visibleItems.end) || status.forceSize)
+				if((index >= visibleItems.start && index <= visibleItems.end) || status.forceSize)
 				{
 					addToQueue(sha);
 				}
@@ -37,7 +61,12 @@ function scroll(event = false)
 
 		prevScroll = visibleItems;
 
-	}, 50, 100);
+	};
+
+	if(throttle)
+		app.setThrottle('dom-scroll', check, 50, 100);
+	else
+		check();
 }
 
 function addToQueue(sha)
@@ -131,8 +160,12 @@ function reset()
 }
 
 module.exports = {
+	check: function(){scroll(false, false, true)},
 	reset,
 	event,
 	setStatus,
+	setStatusIndex,
+	useTempIndex: useTempIndex,
+	get _useTempIndex() {return _useTempIndex},
 	get currentStatus() {return currentStatus},
 }
