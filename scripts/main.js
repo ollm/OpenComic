@@ -171,10 +171,21 @@ let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.j
 
 if(folderPortable.check())
 {
-	if(process.env.PORTABLE_EXECUTABLE_DIR)
-		configInitFile = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage', 'configInit.json');
+	const executableDir = process.env.OPENCOMIC_PORTABLE_EXECUTABLE_DIR || process.env.PORTABLE_EXECUTABLE_DIR;
+
+	if(executableDir)
+	{
+		configInitFile = path.join(executableDir, 'opencomic', 'storage', 'configInit.json');
+	}
 	else
-		configInitFile = path.join(__dirname, '../../../../', 'opencomic', 'storage', 'configInit.json');
+	{
+		const outsidePath = path.join(__dirname, '../../../../', 'opencomic');
+
+		if(fs.existsSync(outsidePath))
+			configInitFile = path.join(outsidePath, 'storage', 'configInit.json');
+		else
+			configInitFile = path.join(__dirname, '../../../', 'storage', 'configInit.json');
+	}
 }
 
 const configInit = fs.existsSync(configInitFile) ? JSON.parse(fs.readFileSync(configInitFile, 'utf8')) : {};
