@@ -376,11 +376,6 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			if(magnifyingGlass)
 				_scale = scale * scaleMagnifyingGlass;
 
-			if(magnifyingGlass)
-				renderedMagnifyingGlass[index] = _scale;
-			else
-				rendered[index] = _scale;
-
 			_scale = _scale * window.devicePixelRatio;
 
 			let _config = {
@@ -514,6 +509,11 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 				await decodeImage(img, true);
 			else
 				decodeImage(img, false);
+
+			if(magnifyingGlass)
+				renderedMagnifyingGlass[index] = _scale;
+			else
+				rendered[index] = _scale;
 		}
 
 		if(onRender)
@@ -608,4 +608,5 @@ module.exports = {
 	resized: resized,
 	setEbookConfigChanged: setEbookConfigChanged,
 	setOnRender: setOnRender,
+	get rendered() {return rendered},
 }

@@ -9,13 +9,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Extract tracking chapter/volume also from image names [`2218bfb`](https://github.com/ollm/OpenComic/commit/2218bfbb76f14fb5c53414ddef489a16198914d5)
-- Tracking also by current page/image chapter/volume
+- Tracking also by current page/image chapter/volume [`5ff5932`](https://github.com/ollm/OpenComic/commit/5ff59327b1ea7f2c8cc76d228bcf7ca27e9da702)
 
 ##### 🐛 Bug Fixes
 
 - Show page number doesn't work properly on scroll reading [`c72814b`](https://github.com/ollm/OpenComic/commit/c72814bcb6508646ec2abf669b191cf266ee75f7)
 - Some tap zones events not working [`225de43`](https://github.com/ollm/OpenComic/commit/225de437284d4db2b10b5a42bd90ddfe8711c001)
 - Thumbnails and progress missing when filtering current page [`beb5f90`](https://github.com/ollm/OpenComic/commit/beb5f908deb81606269aff9a6b041e7511006a2e)
+- Rare cases of blank images during reading
 
 ## [v1.6.0](https://github.com/ollm/OpenComic/releases/tag/v1.6.0) (27-07-2025)
 
