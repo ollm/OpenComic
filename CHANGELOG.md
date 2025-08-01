@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Show page number doesn't work properly on scroll reading [`c72814b`](https://github.com/ollm/OpenComic/commit/c72814bcb6508646ec2abf669b191cf266ee75f7)
 - Some tap zones events not working [`225de43`](https://github.com/ollm/OpenComic/commit/225de437284d4db2b10b5a42bd90ddfe8711c001)
-- Thumbnails and progress missing when filtering current page
+- Thumbnails and progress missing when filtering current page [`beb5f90`](https://github.com/ollm/OpenComic/commit/beb5f908deb81606269aff9a6b041e7511006a2e)
 
 ## [v1.6.0](https://github.com/ollm/OpenComic/releases/tag/v1.6.0) (27-07-2025)
 

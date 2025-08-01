@@ -173,7 +173,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 							sitesScripts[site.key].track({
 								id: site.tracking.id,
 								chapters: vars.chapter,
-								chaptersInt: vars.chapters ? Math.floor(vars.chapters) : vars.chapters,
+								chaptersInt: vars.chapter ? Math.floor(vars.chapter) : vars.chapter,
 								volumes: vars.volume,
 								volumesInt: vars.volume ? Math.floor(vars.volume) : vars.volume,
 								mainPath: mainPath,
