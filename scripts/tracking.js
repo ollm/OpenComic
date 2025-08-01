@@ -871,6 +871,22 @@ function getChapter(string = false)
 	return number > 0 ? +number : false;
 }
 
+function getChapterImage(fallback = false)
+{
+	const image = reading.getImage(reading.currentPage());
+
+	if(image)
+	{
+		const name = p.basename(image.path);
+		const current = currentImages.find((image) => image.name === name);
+
+		if(current.chapter)
+			return current.chapter;
+	}
+
+	return fallback ? getChapter() : null;
+}
+
 function regexVolume()
 {
 	const regexs = [
@@ -952,6 +968,22 @@ function getVolume(string = false)
 	return number > 0 ? +number : false;
 }
 
+function getVolumeImage(fallback = false)
+{
+	const image = reading.getImage(reading.currentPage());
+
+	if(image)
+	{
+		const name = p.basename(image.path);
+		const current = currentImages.find((image) => image.name === name);
+
+		if(current.volume)
+			return current.volume;
+	}
+
+	return fallback ? getVolume() : null;
+}
+
 function handleOpenUrl(url = false)
 {
 	if(!getRedirectResultResolve) return;
@@ -993,6 +1025,8 @@ module.exports = {
 	trackST: function(){return trackST},
 	getChapter: getChapter,
 	getVolume: getVolume,
+	getChapterImage: getChapterImage,
+	getVolumeImage: getVolumeImage,
 	getTitlesAndMetadata,
 	getImagesChapter,
 	getStatus,

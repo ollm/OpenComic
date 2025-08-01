@@ -66,8 +66,8 @@ var times = {}, currentTime = {}, cache = {};
 
 function getState(data)
 {
-	const chapter = data.chapter = data.chapter ?? tracking.getChapter();
-	const volume = data.volume = data.volume ?? tracking.getVolume();
+	const chapter = data.chapter = data.chapter ?? tracking.getChapterImage(true);
+	const volume = data.volume = data.volume ?? tracking.getVolumeImage(true);
 
 	let state = (chapter !== false ? language.reading.tracking.chapter+' '+chapter : '')+(volume !== false ? (chapter !== false ? ' · ' : '')+language.reading.tracking.volume+' '+volume : '');
 
