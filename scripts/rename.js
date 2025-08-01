@@ -36,7 +36,7 @@ const type = process.argv[2];
 
 switch(type)
 {
-	case 'portable':
+	case '--portable':
 
 		for(const file of files)
 		{
@@ -48,7 +48,7 @@ switch(type)
 
 		break;
 
-	case 'folder-portable':
+	case '--folder-portable':
 
 		for(const file of files)
 		{
@@ -64,7 +64,7 @@ switch(type)
 
 		break;
 
-	case 'win-arm':
+	case '--win-arm':
 
 		for(const file of files)
 		{
