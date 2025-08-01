@@ -37,7 +37,7 @@ function setSiteData(site)
 
 var tracked = {}, trackST = [], trackIndex = 0;
 
-async function track(chapter = false, volume = false, onlySite = false, reduceIfTrackingAtTheEndIsEnabled = false)
+async function track(chapter = false, volume = false, onlySite = false, reduceIfTrackingAtTheEndIsEnabled = false, fromTrackImage = false)
 {
 	await app.sleep(200);
 
@@ -45,7 +45,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 
 	if(chapter !== false || volume !== false)
 	{
-		fromDialog = true;
+		fromDialog = !fromTrackImage;
 	}
 	else
 	{
@@ -113,23 +113,9 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 
 			let allTracked = true;
 
-			for(let key in _trackingSites)
+			for(const site of _trackingSites)
 			{
-				const site = _trackingSites[key];
-				let prevTracked = false;
-
-				if(tracked[mainPath] && tracked[mainPath][site.key])
-				{
-					for(let key2 in tracked[mainPath][site.key])
-					{
-						if(readingCurrentPath == tracked[mainPath][site.key][key2])
-						{
-							prevTracked = true;
-
-							break;
-						}
-					}
-				}
+				const prevTracked = (tracked?.[mainPath]?.[site.key] || []).some((item) => (item.chapter === chapter && item.volume === volume));
 
 				const progress = tracking[site.key]?.progress || {};
 				const prevTrackedInSite = ((!chapter || chapter <= progress.chapters) && (!volume || volume <= progress.volumes)) ? true : false;
@@ -142,31 +128,15 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 			{
 				trackST[trackIndex] = setTimeout(function(vars) {
 
-					console.log('Tracking');
-
-					for(let key in _trackingSites)
+					for(const site of _trackingSites)
 					{
-						const site = _trackingSites[key];
-						let prevTracked = false;
-
-						if(tracked[mainPath] && tracked[mainPath][site.key])
-						{
-							for(let key2 in tracked[mainPath][site.key])
-							{
-								if(readingCurrentPath == tracked[mainPath][site.key][key2])
-								{
-									prevTracked = true;
-
-									break;
-								}
-							}
-						}
+						const prevTracked = (tracked?.[mainPath]?.[site.key] || []).some((item) => (item.chapter === vars.chapter && item.volume === vars.volume));
 
 						if(site.config.session.valid && ((vars.onlySite && vars.onlySite == site.key) || (site.tracking.active && !prevTracked && !vars.onlySite)))
 						{
 							if(!tracked[mainPath]) tracked[mainPath] = {};
 							if(!tracked[mainPath][site.key]) tracked[mainPath][site.key] = [];
-							tracked[mainPath][site.key].push(readingCurrentPath);
+							tracked[mainPath][site.key].push({chapter: vars.chapter, volume: vars.volume});
 
 							loadSiteScript(site.key);
 
@@ -185,6 +155,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 					chapter: chapter,
 					volume: volume,
 					onlySite: onlySite,
+					fromTrackImage: fromTrackImage,
 				});
 
 				// Remove prev
@@ -208,6 +179,52 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 
 				trackIndex++;
 			}
+		}
+	}
+}
+
+var trackImageChapters = new Set();
+
+function trackImage()
+{
+	let currentPage = reading.currentPage();
+	const totalPages = reading.totalPages();
+	if(reading.doublePage.active() && totalPages - currentPage === 1) currentPage++;
+
+
+	const image = reading.getImage(currentPage);
+	if(!image) return;
+
+	const name = p.basename(image.path);
+	const current = currentImages.find((image) => image.name === name);
+
+	if(!current || (!current.chapter && !current.volume)) return;
+
+	const prev = currentImages.slice(0, current.i).findLast((image) => (image.chapter && image.chapter !== current.chapter) || (image.volume && image.volume !== current.volume)) || false;
+	const next = currentImages.slice(current.i + 1).find((image) => (image.chapter && image.chapter !== current.chapter) || (image.volume && image.volume !== current.volume)) || false;
+
+	let _track = false;
+
+	if(config.readingTrackingAtTheEnd)
+	{
+		if(totalPages === currentPage)
+			_track = next || current;
+		else
+			_track = prev;
+	}
+	else
+	{
+		_track = current;
+	}
+
+	if(_track && (_track.chapter || _track.volume))
+	{
+		const key = (_track.chapter || 0)+':'+(_track.volume || 0);
+
+		if(!trackImageChapters.has(key))
+		{
+			trackImageChapters.add(key);
+			track(_track.chapter, _track.volume, false, false, true);
 		}
 	}
 }
@@ -698,26 +715,50 @@ function getTitlesAndMetadata()
 			titles.push(compressedName);
 	}
 
-	const images = [];
-
-	for(let i = 0, len = handlebarsContext.comics?.length; i < len; i++)
-	{
-		const comic = handlebarsContext.comics[i];
-		
-		if(comic.name)
-			images.push(comic.name);
-	}
-
 	return {
 		titles: titles,
-		images: images,
+		images: currentImages,
 		chapter: 0, // metadata.bookNumber ?? 0,
 		volume: metadata.volume ?? 0,
 		metadata,
 	};
 }
 
-function getChapter()
+var currentImages = [];
+
+function getImagesChapter()
+{
+	const images = [];
+	let index = 0;
+
+	for(let i = 0, len = handlebarsContext.comics?.length; i < len; i++)
+	{
+		const comic = handlebarsContext.comics[i];
+		
+		if(comic.name)
+		{
+			images.push({
+				i: index++,
+				name: p.basename(comic.path),
+				chapter: getChapter(comic.name),
+				volume: getVolume(comic.name),
+			});
+		}
+	}
+
+	currentImages = images;
+	trackImageChapters = new Set();
+	trackImage();
+
+	return images;
+}
+
+const regexs = {
+	chapter: regexChapter(),
+	volume: regexVolume(),
+};
+
+function regexChapter()
 {
 	const regexs = [
 		/chapters?|episodes?|issues?/, // English
@@ -732,11 +773,6 @@ function getChapter()
 	const regexsMin = [
 		/ch?|ep?/, // English
 	];
-
-	const data = getTitlesAndMetadata();
-	if(!data) return false;
-
-	let number = data.chapter;
 
 	const reliablePatterns = [
 		// Match common patterns like Chapter 5, Capítulo-5, etc.
@@ -756,11 +792,41 @@ function getChapter()
 		/[0-9]{1,4}-([0-9]{1,4})/iu,
 	];
 
+	const patternsLast = [
+		// Match only a number at the start of the title
+		/^\s*([0-9]+)/iu
+	];
+
+	return {
+		reliablePatterns,
+		patterns,
+		patternsLast,
+	};
+}
+
+function getChapter(string = false)
+{
+	if(string)
+	{
+		for(const regex of regexs.chapter.reliablePatterns)
+		{
+			const number = app.extract(regex, string, 1);
+			if(number) return +number;
+		}
+
+		return false;
+	}
+
+	const data = getTitlesAndMetadata();
+	if(!data) return false;
+
+	let number = data.chapter;
+
 	for(const title of data.titles)
 	{
 		if(number) break;
 
-		for(const regex of patterns)
+		for(const regex of regexs.chapter.patterns)
 		{
 			number = app.extract(regex, title, 1);
 			if(number) break;
@@ -768,28 +834,23 @@ function getChapter()
 	}
 
 	// Find in image names
-	for(const title of data.images)
+	for(const image of data.images)
 	{
 		if(number) break;
 
-		for(const regex of reliablePatterns)
+		if(image.chapter)
 		{
-			number = app.extract(regex, title, 1);
-			if(number) break;
+			number = image.chapter;
+			break;
 		}
 	}
 
 	// Run this patters after the main patterns
-	const patternsLast = [
-		// Match only a number at the start of the title
-		/^\s*([0-9]+)/iu
-	];
-
 	for(const title of data.titles)
 	{
 		if(number) break;
 
-		for(const regex of patternsLast)
+		for(const regex of regexs.chapter.patternsLast)
 		{
 			number = app.extract(regex, title, 1);
 			if(number) break;
@@ -810,7 +871,7 @@ function getChapter()
 	return number > 0 ? +number : false;
 }
 
-function getVolume()
+function regexVolume()
 {
 	const regexs = [
 		/volumes?/, // English
@@ -825,11 +886,6 @@ function getVolume()
 	const regexsMin = [
 		/vo?|vol/, // English
 	];
-
-	const data = getTitlesAndMetadata();
-	if(!data) return false;
-
-	let number = data.volume;
 
 	const reliablePatterns = [
 		// Match common patterns like volume 5, Tom-5, etc.
@@ -846,11 +902,35 @@ function getVolume()
 		...reliablePatterns,
 	];
 
+	return {
+		reliablePatterns,
+		patterns,
+	};
+}
+
+function getVolume(string = false)
+{
+	if(string)
+	{
+		for(const regex of regexs.volume.reliablePatterns)
+		{
+			const number = app.extract(regex, string, 1);
+			if(number) return +number;
+		}
+
+		return false;
+	}
+
+	const data = getTitlesAndMetadata();
+	if(!data) return false;
+
+	let number = data.volume;
+
 	for(const title of data.titles)
 	{
 		if(number) break;
 
-		for(const regex of patterns)
+		for(const regex of regexs.volume.patterns)
 		{
 			number = app.extract(regex, title, 1);
 			if(number) break;
@@ -858,14 +938,14 @@ function getVolume()
 	}
 
 	// Find in image names
-	for(const title of data.images)
+	for(const image of data.images)
 	{
 		if(number) break;
 
-		for(const regex of reliablePatterns)
+		if(image.volume)
 		{
-			number = app.extract(regex, title, 1);
-			if(number) break;
+			number = image.volume;
+			break;
 		}
 	}
 
@@ -909,10 +989,12 @@ module.exports = {
 	setTrackingId: setTrackingId,
 	setTrackingChapters: setTrackingChapters,
 	track: track,
+	trackImage: trackImage,
 	trackST: function(){return trackST},
 	getChapter: getChapter,
 	getVolume: getVolume,
 	getTitlesAndMetadata,
+	getImagesChapter,
 	getStatus,
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,
 	tracked: function(){return tracked},

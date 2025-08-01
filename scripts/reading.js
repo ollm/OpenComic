@@ -1018,6 +1018,8 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		reading.discord.updateThrottle();
 
 		dom.this(template._contentRight()).find('.reading-progress').class(isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active').find('textPath', true).html(reading.currentPage()+' / '+reading.totalPages());
+
+		tracking.trackImage();
 	}
 
 	const readingLeft = contentLeft.querySelector('.reading-left-images');
@@ -5721,6 +5723,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	}
 
 	template.contentRight().children('div').css({scrollbarGutter: readingViewIs('scroll') ? '' : 'initial'});
+
+	tracking.getImagesChapter();
 	
 	if(!config.readingTrackingAtTheEnd)
 	{
