@@ -754,10 +754,21 @@ function start(callback)
 
 	if(folderPortable.check())
 	{
-		if(process.env.PORTABLE_EXECUTABLE_DIR)
-			storagePath = p.join(process.env.PORTABLE_EXECUTABLE_DIR, 'opencomic', 'storage');
+		const executableDir = process.env.OPENCOMIC_PORTABLE_EXECUTABLE_DIR || process.env.PORTABLE_EXECUTABLE_DIR;
+
+		if(executableDir)
+		{
+			storagePath = p.join(executableDir, 'opencomic', 'storage');
+		}
 		else
-			storagePath = p.join(__dirname, '../../../../', 'opencomic', 'storage');
+		{
+			const outsidePath = p.join(__dirname, '../../../../', 'opencomic');
+
+			if(fs.existsSync(outsidePath))
+				storagePath = p.join(outsidePath, 'storage');
+			else
+				storagePath = p.join(__dirname, '../../../', 'storage');
+		}
 	}
 
 	ejs.setDataPath(storagePath);
