@@ -2763,7 +2763,7 @@ function rotateImage(rotated = false, x = 0, y = 0)
 }
 
 //Turn the magnifying glass on and off
-function activeMagnifyingGlass(active = null, gamepad = false)
+function activeMagnifyingGlass(active = null, gamepad = false, fromSwitch = false)
 {
 	// Toggle magnifying glass
 	if(active === null) active = !config.readingMagnifyingGlass;
@@ -2772,7 +2772,7 @@ function activeMagnifyingGlass(active = null, gamepad = false)
 	{
 		storage.updateVar('config', 'readingMagnifyingGlass', true);
 		render.setMagnifyingGlassStatus(config.readingMagnifyingGlassZoom, doublePage.active());
-	
+
 		if(gamepad)
 		{
 			let contentRight = template._contentRight();
@@ -2782,6 +2782,10 @@ function activeMagnifyingGlass(active = null, gamepad = false)
 			let pageY = (rect.height / 2) + rect.top;
 
 			magnifyingGlassControl(1, {pageX: pageX, pageY: pageY, originalEvent: {touches: false}});
+		}
+		else if(pointermoveEvent && !fromSwitch)
+		{
+			magnifyingGlassControl(1, pointermoveEvent);
 		}
 	}
 	else
@@ -2840,14 +2844,16 @@ function magnifyingGlassControlPrev()
 //Magnifying glass control
 var magnifyingGlassControlST = false;
 
-function magnifyingGlassControl(mode, e = false, lensData = false)
+function magnifyingGlassControl(mode, event = false, lensData = false)
 {
 	let x = 0, y = 0;
 
-	if(e)
+	if(event)
 	{
-		x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX || !e.clientX ? e.pageX : e.clientX);
-		y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY || !e.clientY ? e.pageY : e.clientY);
+		const originalEvent = event.originalEvent || event;
+
+		x = originalEvent.touches ? originalEvent.touches[0].pageX : (event.pageX || !event.clientX ? event.pageX : event.clientX);
+		y = originalEvent.touches ? originalEvent.touches[0].pageY : (event.pageY || !event.clientY ? event.pageY : event.clientY);
 	}
 
 	let contentRight = template._contentRight();
@@ -2893,6 +2899,8 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 			y: y,
 			mode: mode,
 		};
+
+		contentRight.style.cursor = 'none';
 	}
 	else
 	{
@@ -2908,6 +2916,8 @@ function magnifyingGlassControl(mode, e = false, lensData = false)
 		dom.this(contentRight).find('.reading-lens').removeClass('a').addClass('d');
 		magnifyingGlassView = false;
 		magnifyingGlassPosition.mode = mode;
+
+		contentRight.style.cursor = '';
 	}
 
 	//calculateView();
@@ -4627,10 +4637,12 @@ function applyMoveZoomWithMouse(pageX = false, pageY = false)
 }
 
 // Events functions
-var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'};
+var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
 
 function pointermove(event)
 {
+	pointermoveEvent = event;
+
 	let pageX = app.pageX(event);
 	let pageY = app.pageY(event);
 
@@ -5010,7 +5022,7 @@ function mouseleave()
 	isMouseenter.document = false;
 }
 
-var touchTimeout, mouseout = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
+var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
@@ -5036,11 +5048,11 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	filters.setImagesPath(false);
 
-	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseout click');
+	$(window).off('keydown touchstart touchend mouseup mousemove touchmove mouseleave click');
 	template.contentRight().off('mousewheel');
 	$('.reading-body, .reading-lens').off('mousemove');
 	$('.reading-lens').off('mousemove');
-	$('.reading-body').off('mouseout mouseenter mousedown touchstart touchmove');
+	$('.reading-body').off('mouseleave mouseenter mousedown touchstart touchmove');
 	$('.content-right > div > div').off('scroll');
 
 	events.eventHover();
@@ -5347,34 +5359,34 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	});
 
-	template.contentRight('.reading-body').on('mouseout', function(e) {
+	template.contentRight('.reading-body').on('mouseleave', function(event) {
 
 		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseout.body = true;
+			mouseleave.body = true;
 
-			if(mouseout.lens) magnifyingGlassControl(0, e);
+			if(mouseleave.lens) magnifyingGlassControl(0, event);
 		}
 
 	});
 
-	template.contentRight('.reading-body').on('mouseenter', function(e) {
+	template.contentRight('.reading-body').on('mouseenter', function(event) {
 
 		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseout.body = false;
+			mouseleave.body = false;
 		}
 
 	});
 
-	$(window).on('mouseout', function(e) {
+	$(window).on('mouseleave', function(event) {
 
 		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseout.lens = true;
+			mouseleave.lens = true;
 
-			var x = e.originalEvent.touches ? e.originalEvent.touches[0].pageX : (e.pageX ? e.pageX : e.clientX);
-			var y = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
+			var x = event.originalEvent.touches ? event.originalEvent.touches[0].pageX : (event.pageX ? event.pageX : event.clientX);
+			var y = event.originalEvent.touches ? event.originalEvent.touches[0].pageY : (event.pageY ? event.pageY : event.clientY);
 
 			var rbHeight = template.contentRight('.reading-body').height();
 			var rbWidth = template.contentRight('.reading-body').width();
@@ -5383,7 +5395,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 			if(!(x > rbOffsetLeft && y > rbOffsetTop && x < (rbWidth + rbOffsetLeft) && y < (rbHeight + rbOffsetTop)))
 			{
-				magnifyingGlassControl(0, e);
+				magnifyingGlassControl(0, event);
 			}
 		}
 
@@ -5393,7 +5405,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		if(onReading && isLoaded && config.readingMagnifyingGlass && !readingTouchEvent)
 		{
-			mouseout.lens = false;
+			mouseleave.lens = false;
 		}
 
 	})

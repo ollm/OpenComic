@@ -321,6 +321,7 @@
 	z-index: 3;
 	transition: background-color 0.2s;
 	contain: strict;
+	pointer-events: none;
 }
 
 .reading-lens > div
