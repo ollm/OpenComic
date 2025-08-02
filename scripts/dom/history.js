@@ -60,7 +60,12 @@ function goBack()
 	current = goBack || false;
 
 	if(!goBack)
+	{
+		if(handlebarsContext?.page?.key !== 'index')
+			dom.loadIndexPage(true);
+
 		return;
+	}
 
 	if(goBack.root)
 	{
