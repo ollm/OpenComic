@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Extract tracking chapter/volume also from image names [`2218bfb`](https://github.com/ollm/OpenComic/commit/2218bfbb76f14fb5c53414ddef489a16198914d5)
 - Tracking also by current page/image chapter/volume [`5ff5932`](https://github.com/ollm/OpenComic/commit/5ff59327b1ea7f2c8cc76d228bcf7ca27e9da702)
+- Pick at random button
 
 ##### 🐛 Bug Fixes
 

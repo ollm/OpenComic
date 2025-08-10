@@ -1439,6 +1439,20 @@ async function showIfHasPrevOrNext(path, mainPath)
 	}
 }
 
+function pickAtRandom()
+{
+	const contentRight = template._contentRight();
+	const comics = contentRight.querySelectorAll('div:not(.box-content) > .content-view-module > div, .content-view-list .medium-list');
+
+	const random = Math.floor(Math.random() * comics.length);
+	const item = comics[random];
+
+	const onclick = item.getAttribute('onclick');
+
+	if(onclick)
+		eval(onclick);
+}
+
 async function _getFolderThumbnails(file, images, _images, path, folderSha, isAsync = false, forceSize = false)
 {
 	const viewModuleSize = forceSize ? forceSize : (handlebarsContext.page.viewModuleSize || 150);
@@ -2899,6 +2913,7 @@ module.exports = {
 	previousComic: function(){return skipPreviousComic},
 	goNextComic: goNextComic,
 	goPrevComic: goPrevComic,
+	pickAtRandom: pickAtRandom,
 	orderBy: orderBy,
 	nightMode: nightMode,
 	nightModeConfig: nightModeConfig,
