@@ -259,9 +259,9 @@ Translate by [無情天](https://github.com/kofzhanganguo)
 
 [zh-hant.json](https://github.com/ollm/OpenComic/blob/master/languages/zh-hant.json)
 
-Translate by [珩](https://github.com/inkiron)
+Translate by [珩](https://github.com/inkiron) and [Sayoko123f](https://github.com/Sayoko123f)
 
-`13.9% | Remain 446 | Translated 72`
+`100% | Remain 0 | Translated 518`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hant.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hant.svg" /></a>
 
