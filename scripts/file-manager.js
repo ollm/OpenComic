@@ -80,7 +80,7 @@ var file = function(path, _config = false) {
 		}
 
 		if(this.config.sort)
-			files = sort(files);
+			files = sort(files, this.config.sort);
 
 		if(this.config.only && typeof this.config.only === 'number')
 			files = this.only(files);
@@ -3301,13 +3301,15 @@ function filtered(files, specialFiles = false, ignoreFiles = true)
 	return filtered;
 }
 
-function sort(files)
+function sort(files, options = {})
 {
 	if(files)
 	{
-		let sort = config.sort;
-		let sortInvert = config.sortInvert;
-		let foldersFirst = config.foldersFirst;
+		const extraKey = options?.extraKey ?? '';
+
+		const sort = config['sort'+extraKey];
+		const sortInvert = config['sortInvert'+extraKey];
+		const foldersFirst = config['foldersFirst'+extraKey];
 
 		let order = '';
 

@@ -255,8 +255,8 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 
 	// Get comic reading progress image
 	let _readingProgress = storage.get('readingProgress');
-	let readingProgress = _readingProgress[mainPath] || false;
-	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
+	let readingProgress = _readingProgress[mainPath]?.path ? _readingProgress[mainPath] : false;
+	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path]?.path ? _readingProgress[path] : false) : false;
 
 	// const isCompressed = fileManager.isCompressed(fileManager.firstCompressedFile(path));
 	const isCompressed = fileManager.isCompressed(path);
@@ -327,6 +327,11 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 	{
 		let first;
 
+		if(file.files)
+			file.files = fileManager.sort(file.files, {extraKey: 'Reading'});
+
+		file.updateConfig({sort: {extraKey: 'Reading'}});
+
 		try
 		{
 			first = await file.images(1);
@@ -372,8 +377,8 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 	// Get comic reading progress image
 	let _readingProgress = storage.get('readingProgress');
 
-	let readingProgress = _readingProgress[mainPath] || false;
-	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path] || false) : false;
+	let readingProgress = _readingProgress[mainPath]?.path ? _readingProgress[mainPath] : false;
+	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path]?.path ? _readingProgress[path] : false) : false;
 
 	if(files)
 	{
@@ -2033,6 +2038,8 @@ function setCurrentPageVars(page, _indexLabel = false)
 		extraKey = 'RecentlyOpened';
 	else if(page == 'index')
 		extraKey = 'Index';
+	else if(page == 'reading')
+		extraKey = 'Reading';
 
 	const sortAndViewOpds = config.sortAndView.opds || defaultSortAndView;
 
@@ -2044,7 +2051,7 @@ function setCurrentPageVars(page, _indexLabel = false)
 			view: sortAndView ? sortAndView.view : config['view'+extraKey],
 			sort: sortAndView ? sortAndView.sort : config['sort'+extraKey],
 			sortInvert: sortAndView ? sortAndView.sortInvert : config['sortInvert'+extraKey],
-			foldersFirst: sortAndView ? false : (config['foldersFirst'+extraKey] || false),
+			foldersFirst: sortAndView ? true : (config['foldersFirst'+extraKey] || false),
 			boxes: (page == 'recently-opened' || page == 'browsing') ? false : true,
 			continueReading: sortAndView ? sortAndView.continueReading : config['continueReading'+extraKey],
 			recentlyAdded: sortAndView ? sortAndView.recentlyAdded : config['recentlyAdded'+extraKey],
@@ -2097,6 +2104,8 @@ function changeView(mode, page)
 			extraKey = 'RecentlyOpened';
 		else if(page == 'index')
 			extraKey = 'Index';
+		else if(page == 'reading')
+			extraKey = 'Reading';
 
 		if(mode != config['view'+extraKey])
 		{
@@ -2148,6 +2157,8 @@ function changeViewModuleSize(size, end, page)
 			extraKey = 'RecentlyOpened';
 		else if(page == 'index')
 			extraKey = 'Index';
+		else if(page == 'reading')
+			extraKey = 'Reading';
 
 		if(size != config['viewModuleSize'+extraKey])
 		{
@@ -2209,6 +2220,8 @@ function changeSort(type, mode, page)
 			extraKey = 'RecentlyOpened';
 		else if(page == 'index')
 			extraKey = 'Index';
+		else if(page == 'reading')
+			extraKey = 'Reading';
 
 		if(type == 1)
 		{
@@ -2642,6 +2655,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	fileManager.revokeAllObjectURL();
 	workers.clean('convertImageToBlob');
 
+	dom.setCurrentPageVars('reading');
+
 	// Start reading comic
 	if(config.readingStartReadingInFullScreen && !fromNextAndPrev && !fromGoBack)
 	{
@@ -2676,7 +2691,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	try
 	{
-		files = await file.read({filtered: false});
+		files = await file.read({filtered: false, sort: {extraKey: 'Reading'}});
 	}
 	catch(error)
 	{

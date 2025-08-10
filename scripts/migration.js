@@ -361,6 +361,19 @@ function migrateSomeDataNewReadingProgress(data)
 	return data;
 }
 
+function migrateSeparateOrderOfBrowsingAndReading(data)
+{
+	console.time('Migration: separateOrderOfBrowsingAndReading');
+
+	data.config.sortReading = data.config.sort;
+	data.config.sortInvertReading = data.config.sortInvert;
+	data.config.foldersFirstReading = data.config.foldersFirst;
+
+	console.timeEnd('Migration: separateOrderOfBrowsingAndReading');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -399,6 +412,9 @@ function start(data)
 
 	if(changes < 125) // Add the index value to new page value
 		data = migrateSomeDataNewReadingProgress(data);
+
+	if(changes < 128) // Separate order of browsing and reading
+		data = migrateSeparateOrderOfBrowsingAndReading(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 
