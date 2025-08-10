@@ -21,6 +21,7 @@
 			"lastReading": "По последнему читавшему",
 			"lastOpened": "По последнему открытию",
 			"foldersFirst": "Сначала папки",
+			"compressedFirst": "",
 			"invert": "Инвертировать"
 		},
 		"view": {

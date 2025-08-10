@@ -21,6 +21,7 @@
 			"lastReading": "最後閱讀時間",
 			"lastOpened": "上次打開",
 			"foldersFirst": "資料夾優先",
+			"compressedFirst": "",
 			"invert": "反轉排序"
 		},
 		"view": {

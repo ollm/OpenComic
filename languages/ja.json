@@ -21,6 +21,7 @@
 			"lastReading": "最近読んだ順",
 			"lastOpened": "最近開いた順",
 			"foldersFirst": "フォルダーを先に表示",
+			"compressedFirst": "",
 			"invert": "並びを反転"
 		},
 		"view": {

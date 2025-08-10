@@ -21,6 +21,7 @@
 			"lastReading": "Last reading",
 			"lastOpened": "Last opened",
 			"foldersFirst": "Folders first",
+			"compressedFirst": "Compressed first",
 			"invert": "Invert"
 		},
 		"view": {

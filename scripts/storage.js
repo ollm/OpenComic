@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 128; // Update this if readingPagesConfig is updated
+const changes = 129; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -112,6 +112,8 @@ const storageDefault = {
 		zoomFactor: 1,
 		foldersFirst: true,
 		foldersFirstReading: true,
+		compressedFirst: true,
+		compressedFirstReading: true,
 		view: 'module',
 		viewIndex: 'module',
 		viewRecentlyOpened: 'module',
@@ -148,6 +150,7 @@ const storageDefault = {
 				sort: 'name',
 				sortInvert: false,
 				foldersFirst: true,
+				compressedFirst: true,
 				continueReading: true,
 				recentlyAdded: true,
 				viewModuleSize: 150,	

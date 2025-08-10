@@ -21,6 +21,7 @@
 			"lastReading": "最后阅读",
 			"lastOpened": "上次打开",
 			"foldersFirst": "文件夹置前",
+			"compressedFirst": "",
 			"invert": "倒序"
 		},
 		"view": {

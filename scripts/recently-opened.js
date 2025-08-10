@@ -24,7 +24,6 @@ async function load(animation = true, content = false)
 
 	let sort = config.sortRecentlyOpened;
 	let sortInvert = config.sortInvertRecentlyOpened;
-	let foldersFirst = config.foldersFirstRecentlyOpened;
 
 	let order = '';
 	let orderKey = 'name';

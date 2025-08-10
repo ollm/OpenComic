@@ -3310,6 +3310,7 @@ function sort(files, options = {})
 		const sort = config['sort'+extraKey];
 		const sortInvert = config['sortInvert'+extraKey];
 		const foldersFirst = config['foldersFirst'+extraKey];
+		const compressedFirst = config['compressedFirst'+extraKey];
 
 		let order = '';
 
@@ -3321,8 +3322,16 @@ function sort(files, options = {})
 			order = 'simple-numeric';
 
 		files.sort(function (a, b) {
-			if(foldersFirst && (a.folder || a.compressed) && !(b.folder || b.compressed)) return -1; 
-			if(foldersFirst && (b.folder || b.compressed) && !(a.folder || a.compressed)) return 1; 
+
+			const aFirst = (foldersFirst && a.folder) || (compressedFirst && a.compressed);
+			const bFirst = (foldersFirst && b.folder) || (compressedFirst && b.compressed);
+
+			if(aFirst && !bFirst)
+				return -1; 
+
+			if(bFirst && !aFirst)
+				return 1;
+
 			return (sortInvert) ? -(dom.orderBy(a, b, order, 'name')) : dom.orderBy(a, b, order, 'name');
 		});
 

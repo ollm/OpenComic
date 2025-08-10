@@ -2052,6 +2052,7 @@ function setCurrentPageVars(page, _indexLabel = false)
 			sort: sortAndView ? sortAndView.sort : config['sort'+extraKey],
 			sortInvert: sortAndView ? sortAndView.sortInvert : config['sortInvert'+extraKey],
 			foldersFirst: sortAndView ? true : (config['foldersFirst'+extraKey] || false),
+			compressedFirst: sortAndView ? true : (config['compressedFirst'+extraKey] || false),
 			boxes: (page == 'recently-opened' || page == 'browsing') ? false : true,
 			continueReading: sortAndView ? sortAndView.continueReading : config['continueReading'+extraKey],
 			recentlyAdded: sortAndView ? sortAndView.recentlyAdded : config['recentlyAdded'+extraKey],
@@ -2237,7 +2238,6 @@ function changeSort(type, mode, page)
 			if(mode != config['sortInvert'+extraKey])
 			{
 				storage.updateVar('config', 'sortInvert'+extraKey, mode);
-				selectElement('.sort-'+mode);
 				changed = true;
 			}
 		}
@@ -2246,7 +2246,14 @@ function changeSort(type, mode, page)
 			if(mode != config['foldersFirst'+extraKey])
 			{
 				storage.updateVar('config', 'foldersFirst'+extraKey, mode);
-				selectElement('.sort-'+mode);
+				changed = true;
+			}
+		}
+		else if(type == 4)
+		{
+			if(mode != config['compressedFirst'+extraKey])
+			{
+				storage.updateVar('config', 'compressedFirst'+extraKey, mode);
 				changed = true;
 			}
 		}

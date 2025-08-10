@@ -21,6 +21,7 @@
 			"lastReading": "Ultimo letto",
 			"lastOpened": "Ultimo aperto",
 			"foldersFirst": "Prima le cartelle",
+			"compressedFirst": "",
 			"invert": "Inverti"
 		},
 		"view": {
