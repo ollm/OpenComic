@@ -5736,6 +5736,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	template.contentRight().children('div').css({scrollbarGutter: readingViewIs('scroll') ? '' : 'initial'});
 
+	tracking.autoPrompt();
 	tracking.getImagesChapter();
 	
 	if(!config.readingTrackingAtTheEnd)

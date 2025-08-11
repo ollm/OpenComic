@@ -87,7 +87,7 @@ async function load(animation = true, content = false)
 
 	cache.cleanQueue();
 	cache.stopQueue();
-	queue.stop('folderThumbnails');
+	threads.stop('folderThumbnails');
 
 	if(comics.length > 0)
 	{
@@ -121,7 +121,7 @@ async function load(animation = true, content = false)
 		template.loadContentRight('index.content.right.'+config.viewRecentlyOpened+'.html', animation);
 
 	cache.resumeQueue();
-	queue.resume('folderThumbnails');
+	threads.resume('folderThumbnails');
 
 	handlebarsContext.headerTitle = false;
 	handlebarsContext.headerTitlePath = false;

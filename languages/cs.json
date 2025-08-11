@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": "",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Můžete tak učinit teď nebo počkat, až budou detekovány v jiné kapitole.",
 			"setChapterNumber": "Označit do kapitoly",
 			"setVolumeNumber": "Označit do svazku",
-			"activate": "Povolit sledování"
+			"activate": "Povolit sledování",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Vytvořit nové nastavení",
@@ -603,6 +606,9 @@
 		"ok": "Ok",
 		"on": "",
 		"off": "",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "",
 		"undo": "Vrátit",
 		"dismiss": "Dobře",

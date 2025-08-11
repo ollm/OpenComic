@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "Faire pivoter horizontalement dans le sens anti-horaire",
 			"startReadingInFullScreen": "Commencer la lecture en plein écran",
 			"trackingAtTheEnd": "Suivi à la fin",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Vous pouvez le faire maintenant ou attendre que cela se fasse par la détection automatique dans un autre chapitre.",
 			"setChapterNumber": "Marquer jusqu'au chapitre",
 			"setVolumeNumber": "Marquer jusqu'au volume",
-			"activate": "Activer le suivi"
+			"activate": "Activer le suivi",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "",
@@ -603,6 +606,9 @@
 		"ok": "Ok",
 		"on": "",
 		"off": "",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "",
 		"undo": "Retour",
 		"dismiss": "Abandonner",

@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "採逆時針方向旋轉水平圖像",
 			"startReadingInFullScreen": "啟動全螢幕閱讀",
 			"trackingAtTheEnd": "追蹤章節/卷末進度",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": "Discord 自訂狀態"
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "您可以立刻執行此操作，也可以等待在另一章中自動檢測到它",
 			"setChapterNumber": "標記至章節",
 			"setVolumeNumber": "標記至卷",
-			"activate": "啟用追蹤"
+			"activate": "啟用追蹤",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "建立新設定",
@@ -603,6 +606,9 @@
 		"ok": "確定",
 		"on": "開",
 		"off": "關",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "儲存",
 		"undo": "復原",
 		"dismiss": "忽略",

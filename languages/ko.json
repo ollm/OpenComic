@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": "",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "",
 			"setChapterNumber": "",
 			"setVolumeNumber": "",
-			"activate": ""
+			"activate": "",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "",
@@ -603,6 +606,9 @@
 		"ok": "확인",
 		"on": "",
 		"off": "",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "저장",
 		"undo": "실행 취소",
 		"dismiss": "무시",

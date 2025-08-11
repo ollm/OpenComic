@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "Поворачивать горизонтальные против часовой стрелки",
 			"startReadingInFullScreen": "Начинать чтение в полноэкранном режиме",
 			"trackingAtTheEnd": "Отслеживание в конце",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Вы можете сделать это сейчас или подождать, пока это будет автоматически обнаружено в другой главе.",
 			"setChapterNumber": "Отметить до главы",
 			"setVolumeNumber": "Отметить до тома",
-			"activate": "Активировать отслеживание"
+			"activate": "Активировать отслеживание",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Создать новую конфигурацию",
@@ -603,6 +606,9 @@
 		"ok": "ОК",
 		"on": "Вкл",
 		"off": "Выкл",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "Сохранить",
 		"undo": "Отменить",
 		"dismiss": "Отклонить",

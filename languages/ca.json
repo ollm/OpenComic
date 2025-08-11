@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "Al rotar imatges horitzontals fer-ho en sentit antihorari",
 			"startReadingInFullScreen": "Començar la lectura a pantalla completa",
 			"trackingAtTheEnd": "Seguiment al final del capítol/tom",
+			"trackingAutoPrompt": "Avís automàtic per fer el seguiment",
+			"trackingAutoPromptFavorites": "Avís automàtic per fer el seguiment (Solament llocs favorits)",
 			"discordRcp": "Discord Rich Presence"
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Pot fer això ara o esperar que es detecti automàticament en un altre capítol",
 			"setChapterNumber": "Marcar fins al següent capítol",
 			"setVolumeNumber": "Marcar fins al següent tom",
-			"activate": "Activa seguiment"
+			"activate": "Activa seguiment",
+			"wantToTrack": "Voleu fer un seguiment?"
 		},
 		"pages": {
 			"readingConfigNewHeader": "Crear nova configuració",
@@ -603,6 +606,9 @@
 		"ok": "Ok",
 		"on": "Encès",
 		"off": "Apagat",
+		"yes": "Sí",
+		"no": "No",
+		"edit": "Edita",
 		"save": "Guardar",
 		"undo": "Desfer",
 		"dismiss": "Descarta",

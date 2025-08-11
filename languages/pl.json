@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "Obracając obrazy poziome, rób to w kierunku przeciwnym do ruchu wskazówek zegara",
 			"startReadingInFullScreen": "Rozpoczynaj czytanie w trybie pełnoekranowym",
 			"trackingAtTheEnd": "Śledzenie na końcu rozdziału/tomu",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Możesz to zrobić teraz lub poczekać, aż zostanie to automatycznie wykryte w innym rozdziale.",
 			"setChapterNumber": "Oznacz do rozdziału",
 			"setVolumeNumber": "Oznacz do tomu",
-			"activate": "Aktywuj śledzenie"
+			"activate": "Aktywuj śledzenie",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Utwórz nową konfigurację",
@@ -603,6 +606,9 @@
 		"ok": "OK",
 		"on": "Włącz",
 		"off": "Wyłącz",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "Zapisz",
 		"undo": "Cofnij",
 		"dismiss": "Odrzuć",

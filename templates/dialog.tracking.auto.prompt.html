@@ -1,0 +1,24 @@
+<div class="tracking-current" style="margin-top: 8px;">
+	<div class="tracking-current-image" style="background-image: url({{autoPrompt.result.image}})"></div>
+	<div class="tracking-current-center">
+		<span class="dialog-header title-large">{{autoPrompt.result.title}}</span>
+		<div class="tracking-current-progress">
+			<div class="tracking-current-progress-chapters">
+				<div>{{autoPrompt.result.authors}}</div>
+			</div>
+		</div>
+	</div>
+	<a target="_blank" href="{{autoPrompt.result.url}}"><div class="tracking-current-logo" style="background-image: url({{autoPrompt.site.logo}})"></div></a>
+</div>
+
+<div class="dialog-buttons" style="margin: -76px -10px -24px 0px;">
+	<div class="simple-button transparent">
+		<div class="touch-effect" onclick="events.closeDialog(); tracking.setAutoPrompt(false); setTimeout(function(){tracking.searchDialog('{{autoPrompt.site.key}}')}, 150)">{{language.buttons.edit}}</div>
+	</div>
+	<div class="simple-button transparent">
+		<div class="touch-effect" onclick="events.closeDialog(); tracking.setAutoPrompt(false);">{{language.buttons.no}}</div>
+	</div>
+	<div class="simple-button transparent">
+		<div class="touch-effect" onclick="events.closeDialog(); tracking.setAutoPrompt(true);">{{language.buttons.yes}}</div>
+	</div>
+</div>

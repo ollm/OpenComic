@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Khởi động trình đọc trong chế độ toàn màn hình",
 			"trackingAtTheEnd": "Theo dõi tại đầu của chương/tập truyện",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Bạn có thể thực hiện ngay hoặc đợi tự động phát hiện trong các chương sau.",
 			"setChapterNumber": "Đánh dấu đến chương",
 			"setVolumeNumber": "Đánh dấu đến tập",
-			"activate": "Kích hoạt trình theo dõi"
+			"activate": "Kích hoạt trình theo dõi",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Tạo cấu hình mới",
@@ -603,6 +606,9 @@
 		"ok": "Ok",
 		"on": "",
 		"off": "",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "Lưu",
 		"undo": "Hoàn tác",
 		"dismiss": "Ẩn",

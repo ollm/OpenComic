@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "横向き画像を回転するとき反時計回りにする",
 			"startReadingInFullScreen": "読書を全画面で開始",
 			"trackingAtTheEnd": "章/巻の最後でサイト連携を更新",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "今すぐ行うことも、別の章が自動検出されるのを待つこともできます",
 			"setChapterNumber": "どの章までマークするか",
 			"setVolumeNumber": "どの巻までマークするか",
-			"activate": "連携を有効にする"
+			"activate": "連携を有効にする",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "新しい設定を作成",
@@ -603,6 +606,9 @@
 		"ok": "OK",
 		"on": "オン",
 		"off": "オフ",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "保存",
 		"undo": "元に戻す",
 		"dismiss": "閉じる",

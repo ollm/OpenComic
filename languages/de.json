@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "Beim Drehen horizontaler Bilder gegen den Uhrzeigersinn drehen",
 			"startReadingInFullScreen": "Lesen im Vollbildmodus starten",
 			"trackingAtTheEnd": "Tracking am Ende des Kapitels/Bandes",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": "Discord Rich Presence"
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Du kannst das jetzt machen oder warten bis es automatisch in einem anderen Kapitel erkannt wird",
 			"setChapterNumber": "Markiere bis zum Kapitel",
 			"setVolumeNumber": "Markiere bis zur Ausgabe",
-			"activate": "Tracken aktivieren"
+			"activate": "Tracken aktivieren",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Neue Konfiguration erstellen",
@@ -603,6 +606,9 @@
 		"ok": "Ok",
 		"on": "An",
 		"off": "Aus",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "Speichern",
 		"undo": "Rückgängig machen",
 		"dismiss": "Ignorieren",

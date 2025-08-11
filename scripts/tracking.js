@@ -81,7 +81,6 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 				$('.bar-right-buttons .button-tracking-sites').html('sync').removeClass('tracking-problem');
 
 			const mainPath = dom.history.mainPath;
-			const readingCurrentPath = reading.readingCurrentPath();
 
 			let chapters = '??';
 			let volumes = '??';
@@ -227,6 +226,93 @@ function trackImage()
 			track(_track.chapter, _track.volume, false, false, true);
 		}
 	}
+}
+
+var currentAutoPrompt = {};
+
+async function autoPrompt()
+{
+	if(!config.readingTrackingAutoPrompt && !config.readingTrackingAutoPromptFavorites)
+		return;
+
+	const toAutoPrompt = trackingSites.list(true).filter(function(site) {
+
+		if(!site.tracking.id && !site.tracking.autoPrompt && site.config.session.valid)
+		{
+			if(config.readingTrackingAutoPrompt || (config.readingTrackingAutoPromptFavorites && site.config.favorite))
+				return true;
+		}
+
+		return false;
+
+	});
+
+	const title = getTitle();
+
+	for(const site of toAutoPrompt)
+	{
+		currentAutoPrompt = {
+			site: site.key,
+		};
+
+		await new Promise(async function(resolve) {
+
+			currentAutoPrompt.resolve = resolve;
+
+			const results = await searchComic(site.key, title, true);
+			const result = results[0] ?? false;
+
+			if(!result)
+				return resolve();
+
+			currentAutoPrompt.result = result;
+
+			handlebarsContext.autoPrompt = {
+				site,
+				result: {
+					...result,
+					url: site.pageUrl.replace('{{siteId}}', result.id),
+				},
+			}
+
+			events.dialog({
+				header: language.dialog.tracking.wantToTrack,
+				width: 500,
+				height: 248,
+				content: template.load('dialog.tracking.auto.prompt.html'),
+				onClose: 'tracking.setAutoPrompt(false);',
+				buttons: false,
+			});
+
+		});
+
+		await app.sleep(150);
+		currentAutoPrompt = {};
+	}
+
+}
+
+function setAutoPrompt(status = false)
+{
+	if(currentAutoPrompt.site)
+	{
+		const site = currentAutoPrompt.site;
+
+		if(status)
+		{
+			if(currentAutoPrompt.result)
+				setTrackingId(site, currentAutoPrompt.result.id);
+		}
+		else
+		{
+			setTrackingData(site, {
+				autoPrompt: true,
+			});
+		}
+	}
+
+	if(currentAutoPrompt.resolve)
+		currentAutoPrompt.resolve();
 }
 
 function saveSiteConfig(site, key, value)
@@ -519,7 +605,7 @@ function searchDialog(site)
 	searchComic(site, title);
 }
 
-async function searchComic(site, title = false)
+async function searchComic(site, title = false, _return = false)
 {
 	if(!title)
 		title = getTitle();
@@ -539,6 +625,9 @@ async function searchComic(site, title = false)
 		return result;
 
 	});
+
+	if(_return)
+		return results;
 
 	handlebarsContext.trackingResults = results;
 
@@ -580,6 +669,13 @@ function setTrackingId(site, siteId)
 	tracking.track(false, false, false, true);
 
 	// Snackbar here
+}
+
+function setTrackingData(site, data)
+{
+	const _tracking = storage.getKey('tracking', dom.history.mainPath) || {};
+	_tracking[site] = {...(_tracking[site] ?? {}), ...data};
+	storage.updateVar('tracking', dom.history.mainPath, _tracking);
 }
 
 function setTrackingChapters(site, options = {}, path = dom.history.mainPath)
@@ -1023,6 +1119,8 @@ module.exports = {
 	track: track,
 	trackImage: trackImage,
 	trackST: function(){return trackST},
+	autoPrompt,
+	setAutoPrompt,
 	getChapter: getChapter,
 	getVolume: getVolume,
 	getChapterImage: getChapterImage,

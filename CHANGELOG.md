@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Tracking also by current page/image chapter/volume [`5ff5932`](https://github.com/ollm/OpenComic/commit/5ff59327b1ea7f2c8cc76d228bcf7ca27e9da702)
 - Pick at random button [`6423fe9`](https://github.com/ollm/OpenComic/commit/6423fe93ea8cef5624a8ad97a61ff599d58688f0)
 - Separate order of browsing and reading [`e08faea`](https://github.com/ollm/OpenComic/commit/e08faea31038fc51c207a940d853734a45b32c7a)
-- Sort option to list compressed files first, separated from folders
+- Sort option to list compressed files first, separated from folders [`508fd1a`](https://github.com/ollm/OpenComic/commit/508fd1aa1886f11aee0ca6559754200d312da706)
+- Auto-prompt to track
 
 ##### 🐛 Bug Fixes
 

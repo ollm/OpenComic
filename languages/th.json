@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "เมื่อหมุนรูปแนวนอนให้ทำแบบทวนเข็มนาฬิกา",
 			"startReadingInFullScreen": "เริ่มอ่านแบบเต็มจอ",
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "คุณสามารถทำตอนนี้หรือรอให้ตรวจพบโดยอัตโนมัติจากตอนอื่น",
 			"setChapterNumber": "ทำเครื่องหมายจนถึงตอน",
 			"setVolumeNumber": "ทำเครื่องหมายจนถึงเล่ม",
-			"activate": "เปิดใช้งานการติดตาม"
+			"activate": "เปิดใช้งานการติดตาม",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "สร้างการกำหนดค่าใหม่",
@@ -603,6 +606,9 @@
 		"ok": "ตกลง",
 		"on": "เปิด",
 		"off": "ปิด",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "จัดเก็บ",
 		"undo": "ย้อนกลับ",
 		"dismiss": "ปิด",

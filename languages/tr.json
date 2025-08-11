@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "Yatay resimleri döndürürken saat yönünün tersine çevir",
 			"startReadingInFullScreen": "Okumaya her zaman tam ekranda başla",
 			"trackingAtTheEnd": "Sadece bölüm/cilt sonlarını takip et",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Şimdi yapabilir ya da bir bölüm tespit edildiğinde otomatik olarak yapmasını bekleyebilirsiniz",
 			"setChapterNumber": "Bölüme kadar işaretle",
 			"setVolumeNumber": "Cilte kadar işaretle",
-			"activate": "Okuma takibini etkinleştir"
+			"activate": "Okuma takibini etkinleştir",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Yeni yapılandırma oluştur",
@@ -603,6 +606,9 @@
 		"ok": "Tamam",
 		"on": "Açık",
 		"off": "Kapalı",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "Kaydet",
 		"undo": "Geri al",
 		"dismiss": "Kapat",

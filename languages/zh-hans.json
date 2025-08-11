@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "您可以立即执行此操作，也可以等待在另一章中自动检测到它。",
 			"setChapterNumber": "标记至章节",
 			"setVolumeNumber": "标记至卷",
-			"activate": "激活跟踪"
+			"activate": "激活跟踪",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "创建新配置",
@@ -603,6 +606,9 @@
 		"ok": "确定",
 		"on": "开",
 		"off": "关",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "保存",
 		"undo": "撤消",
 		"dismiss": "屏除",

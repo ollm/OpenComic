@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
 			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "Du kan göra det nu eller vänta tills det upptäcks automatiskt i ett annat kapitel",
 			"setChapterNumber": "Markera fram till kapitlet",
 			"setVolumeNumber": "Markera fram till volymen",
-			"activate": "Aktivera spårning"
+			"activate": "Aktivera spårning",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "Skapa ny konfiguration",
@@ -603,6 +606,9 @@
 		"ok": "Ok",
 		"on": "",
 		"off": "",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "Spara",
 		"undo": "Ångra",
 		"dismiss": "Avvisa",

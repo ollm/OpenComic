@@ -58,7 +58,7 @@ function list(returnTrackingActive = false)
 			script: p.join(tracking.scriptsPath(key), key+'.js'),
 			config: getSiteConfig(key),
 			auth: trackingSitesKeys[key] || {},
-			tracking: returnTrackingActive ? (_tracking?.[key] || {id: '', active: false}) : undefined,
+			tracking: returnTrackingActive ? (_tracking?.[key] || {id: '', active: false, autoPrompt: false}) : undefined,
 		};
 
 	});

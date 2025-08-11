@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 129; // Update this if readingPagesConfig is updated
+const changes = 130; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -184,6 +184,8 @@ const storageDefault = {
 		readingGoNextPrevChapterWithScroll: true,
 		readingStartReadingInFullScreen: false,
 		readingTrackingAtTheEnd: true,
+		readingTrackingAutoPrompt: false,
+		readingTrackingAutoPromptFavorites: true,
 		readingDiscordRcp: false,
 		readingImageInterpolationMethodDownscaling: 'lanczos3',
 		readingImageInterpolationMethodUpscaling: 'chromium',
@@ -365,6 +367,7 @@ const storageDefault = {
 			wildcard: {
 				id: '',
 				active: false,
+				autoPrompt: false,
 				chapters: 0,
 				volumes: 0,
 				progress: {

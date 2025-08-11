@@ -275,6 +275,8 @@
 			"rotateHorizontalsAnticlockwise": "تدوير الصور الأفقية بعكس اتجاه عقارب الساعة",
 			"startReadingInFullScreen": "بدء القراءة في وضع كامل الشاشة",
 			"trackingAtTheEnd": "التتبع في نهاية الفصل/الجزء",
+			"trackingAutoPrompt": "",
+			"trackingAutoPromptFavorites": "",
 			"discordRcp": ""
 		},
 		"imageInterpolation": {
@@ -489,7 +491,8 @@
 			"setWaitMessage": "بإمكانك عمل ذلك الآن أو الانتظار لاكتشافها تلقائياً في فصل آخر",
 			"setChapterNumber": "حدد حتى الفصل",
 			"setVolumeNumber": "حدد حتى الجزء",
-			"activate": "تفعيل التتبع"
+			"activate": "تفعيل التتبع",
+			"wantToTrack": ""
 		},
 		"pages": {
 			"readingConfigNewHeader": "إنشاء إعداد جديد",
@@ -603,6 +606,9 @@
 		"ok": "موافق",
 		"on": "تشغيل",
 		"off": "إيقاف",
+		"yes": "",
+		"no": "",
+		"edit": "",
 		"save": "حفظ",
 		"undo": "تراجع",
 		"dismiss": "إلغاء",
