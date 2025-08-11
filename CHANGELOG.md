@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Pick at random button [`6423fe9`](https://github.com/ollm/OpenComic/commit/6423fe93ea8cef5624a8ad97a61ff599d58688f0)
 - Separate order of browsing and reading [`e08faea`](https://github.com/ollm/OpenComic/commit/e08faea31038fc51c207a940d853734a45b32c7a)
 - Sort option to list compressed files first, separated from folders [`508fd1a`](https://github.com/ollm/OpenComic/commit/508fd1aa1886f11aee0ca6559754200d312da706)
-- Auto-prompt to track
+- Auto-prompt to track [`30608da`](https://github.com/ollm/OpenComic/commit/30608da602868c9e8c2ea2d528868c9b6464fc61)
 
 ##### 🐛 Bug Fixes
 
@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Rare cases of blank images during reading [`e1f27b3`](https://github.com/ollm/OpenComic/commit/e1f27b315bc9023e35c7ea52122d3c918564f5e3)
 - Show magnifying glass instantaneous when enabled from shortcuts [`43bc73d`](https://github.com/ollm/OpenComic/commit/43bc73dcf85d80e756f1b674a64c66c7ce75529c)
 - goBack not working if OpenComic starts directly on reading [`2f6e2fc`](https://github.com/ollm/OpenComic/commit/2f6e2fc0ccb6d6d22eaa2c543a87d3a8b91bfc46)
+- Error on migrating some config
 
 ## [v1.6.0](https://github.com/ollm/OpenComic/releases/tag/v1.6.0) (27-07-2025)
 

@@ -329,13 +329,13 @@ function migrateWebtoonNotEnlargeMoreThanOriginalSize(data)
 
 	for(let key in data.readingShortcutPagesConfig)
 	{
-		if(data.readingShortcutPagesConfig[key].readingWebtoon)
+		if(data.readingShortcutPagesConfig[key]?.readingWebtoon)
 			data.readingShortcutPagesConfig[key].readingNotEnlargeMoreThanOriginalSize = true;
 	}
 
 	for(let key in data.readingPagesConfig)
 	{
-		if(data.readingPagesConfig[key].readingWebtoon)
+		if(data.readingPagesConfig[key]?.readingWebtoon)
 			data.readingPagesConfig[key].readingNotEnlargeMoreThanOriginalSize = true;
 	}
 
@@ -352,7 +352,7 @@ function migrateSomeDataNewReadingProgress(data)
 	{
 		const progress = data.readingProgress[path];
 
-		if(!progress.page)
+		if(!progress?.page)
 			progress.page = progress.index;
 	}
 
