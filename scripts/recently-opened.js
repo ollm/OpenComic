@@ -92,7 +92,7 @@ async function load(animation = true, content = false)
 	if(comics.length > 0)
 	{
 		// Comic reading progress
-		let readingProgress = storage.get('readingProgress');
+		let readingProgress = relative.get('readingProgress');
 
 		for(let key in comics)
 		{

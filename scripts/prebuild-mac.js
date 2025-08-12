@@ -5,7 +5,6 @@ function change(path, search, replacement)
 	if(!fs.existsSync(path))
 		throw new Error('Not exists! '+path+'\n');
 
-	
 	let buffer = fs.readFileSync(path);
 
 	search = Buffer.from(search, 'utf8');

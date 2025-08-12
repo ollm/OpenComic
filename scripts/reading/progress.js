@@ -53,9 +53,9 @@ function save(path = false, mainPath = false)
 
 	const percent = (totalPages === 1) ? 0 : (((currentPage - 1) / (totalPages - 1)) * 100);
 
-	storage.updateVar('readingProgress', mainPath, {
+	storage.updateVar('readingProgress', relative.path(mainPath), {
 		index: currentPage,
-		path: path.replace(/\?page=[0-9]+$/, ''),
+		path: relative.path(path.replace(/\?page=[0-9]+$/, '')),
 		lastReading: Date.now(),
 		ebook: reading.isEbook(),
 		progress: progress,
@@ -100,7 +100,7 @@ async function get(path, cache = true, cacheOnly = false)
 
 async function readPages(path)
 {
-	const readingProgress = storage.get('readingProgress');
+	const readingProgress = relative.get('readingProgress');
 
 	const paths = await findReadingProgressPaths(path, false);
 	let pages = 0;
@@ -120,7 +120,8 @@ var readingPages = false;
 
 async function _countPages(path, file, first = false, cache = true)
 {
-	const progress = storage.getKey('readingProgress', path);
+	const readingProgress = relative.get('readingProgress');
+	const progress = readingProgress[path];
 	if(progress && progress.pages) return progress.pages;
 
 	if(readingPages === false)
@@ -213,7 +214,7 @@ async function findReadingProgressPaths(path, all = false)
 	if(!all)
 	{
 		const regex = new RegExp('^\s*'+pregQuote(path)+'(?:[\\\/\\\\]|$)');
-		const readingProgress = storage.get('readingProgress');
+		const readingProgress = relative.get('readingProgress');
 
 		let paths = Object.keys(readingProgress).filter(function(key){
 
@@ -249,8 +250,10 @@ async function read(path)
 	const readingProgress = storage.get('readingProgress');
 	const paths = await findReadingProgressPaths(path, true);
 
-	for(const key of paths)
+	for(let key of paths)
 	{
+		key = relative.path(key);
+
 		const progress = readingProgress[key];
 		const pages = await countPages(key);
 
@@ -275,8 +278,9 @@ async function unread(path)
 	const readingProgress = storage.get('readingProgress');
 	const paths = await findReadingProgressPaths(path, false);
 
-	for(const key of paths)
+	for(let key of paths)
 	{
+		key = relative.path(key);
 		const progress = readingProgress[key];
 
 		progress.page = 0;

@@ -713,6 +713,21 @@
 	background-size: cover;
 	margin: 4px 12px 0px 0px;
 	float: left;
+	overflow: hidden;
+}
+
+.menu-simple-element-medium .menu-simple-element-image img
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	opacity: 0;
+}
+
+.menu-simple-element-medium .menu-simple-element-image img.active
+{
+	opacity: 1;
 }
 
 .menu-simple-element-dialog

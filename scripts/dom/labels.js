@@ -7,6 +7,7 @@ function masterFolder(folder, index)
 
 function setFavorite(path)
 {
+	path = relative.path(path);
 	let favorites = storage.get('favorites');
 
 	if(favorites[path])
@@ -162,8 +163,8 @@ function filterList(comics, filter = {favorites: false, labels: false, withoutLa
 	if(!filter.favorites && !filter.labels && !filter.withoutLabels)
 		return comics;
 
-	const favorites = storage.get('favorites');
-	const comicLabels = storage.get('comicLabels');
+	const favorites = relative.get('favorites');
+	const comicLabels = relative.get('comicLabels');
 
 	return comics.filter(function(comic){
 
@@ -295,9 +296,9 @@ function setLabels(path, save = false)
 	}
 	else
 	{
-		labelsDialogPath = path;
+		labelsDialogPath = relative.path(path);
 
-		const comicLabels = storage.get('comicLabels');
+		const comicLabels = relative.get('comicLabels');
 		const labels = getLabels(comicLabels[path] || []);
 
 		handlebarsContext.labels = labels;
@@ -652,7 +653,7 @@ function getName(indexLabel, recentlyOpened)
 
 function has(path, parents = false)
 {
-	const comicLabels = storage.get('comicLabels');
+	const comicLabels = relative.get('comicLabels');
 
 	if(comicLabels[path])
 		return comicLabels[path];

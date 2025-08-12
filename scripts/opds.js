@@ -876,7 +876,7 @@ async function boxes(path = false, mainPath = false)
 		if(len)
 		{
 			// Comic reading progress
-			let readingProgress = storage.get('readingProgress');
+			let readingProgress = relative.get('readingProgress');
 
 			for(let i = 0; i < len; i++)
 			{

@@ -222,7 +222,7 @@ function addMasterFolder()
 
 		if(files.filePaths && files.filePaths[0])
 		{
-			let folder = files.filePaths[0];
+			let folder = relative.path(files.filePaths[0]);
 			let masterFolders = storage.get('masterFolders');
 
 			if(!inArray(folder, masterFolders))
@@ -256,7 +256,7 @@ function removeMasterFolder(key)
 function updateMasterFolders()
 {
 	let masterFolders = storage.get('masterFolders');
-	handlebarsContext.masterFolders = masterFolders.map(path => ({path, hasLabels: dom.labels.has(path)}));
+	handlebarsContext.masterFolders = masterFolders.map(path => ({path: relative.resolve(path), hasLabels: dom.labels.has(path)}));
 
 	let contentRight = template._contentRight();
 

@@ -95,36 +95,17 @@ function orderBy(a, b, mode, key = false, key2 = false)
 	}
 }
 
-
-//Get reading progres of path
-function getReadingProgress(path, callback)
-{
-	path = p.normalize(path);
-
-	var readingProgress = storage.getKey('readingProgress');
-
-	for(let rpPath in readingProgress)
-	{
-		var data = readingProgress[rpPath];
-
-		if(typeof data.progress[path] !== 'undefined')		
-			return data;
-	}
-
-	return false;
-}
-
 function addImageToDom(sha, path, animation = true)
 {
 	const src = dom.queryAll('img.sha-image-'+sha).setAttribute('src', path);
 
 	if(animation)
 	{
-		src.addClass('a', 'border');
+		src.addClass('a', 'active', 'border');
 	}
 	else
 	{
-		src.addClass('border');
+		src.addClass('active', 'border');
 		src.filter('.folder-poster-img').addClass('has-poster');
 	}
 }
@@ -254,7 +235,7 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 	};
 
 	// Get comic reading progress image
-	let _readingProgress = storage.get('readingProgress');
+	let _readingProgress = relative.get('readingProgress');
 	let readingProgress = _readingProgress[mainPath]?.path ? _readingProgress[mainPath] : false;
 	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path]?.path ? _readingProgress[path] : false) : false;
 
@@ -375,7 +356,7 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 	let thumbnails = [];
 
 	// Get comic reading progress image
-	let _readingProgress = storage.get('readingProgress');
+	let _readingProgress = relative.get('readingProgress');
 
 	let readingProgress = _readingProgress[mainPath]?.path ? _readingProgress[mainPath] : false;
 	let readingProgressCurrentPath = (mainPath != path) ? (_readingProgress[path]?.path ? _readingProgress[path] : false) : false;
@@ -734,15 +715,17 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		let ignore = fileManager.ignoreFilesRegex();
 
 		// Get comics in master folders
-		let masterFolders = storage.get('masterFolders');
+		let masterFolders = relative.get('masterFolders');
 
 		if(!isEmpty(masterFolders))
 		{
-			for(let key in masterFolders)
+			for(let path of masterFolders)
 			{
-				if(fs.existsSync(masterFolders[key]) && (!_indexLabel.masterFolder || _indexLabel.masterFolder == masterFolders[key]) && !_indexLabel.server)
+				path = path;
+
+				if(fs.existsSync(path) && (!_indexLabel.masterFolder || _indexLabel.masterFolder == path) && !_indexLabel.server)
 				{
-					let file = fileManager.file(masterFolders[key]);
+					let file = fileManager.file(path);
 					let files = await file.readDir();
 					file.destroy();
 
@@ -856,18 +839,20 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		}
 
 		// Get comics in library
-		let comicsStorage = storage.get('comics');
+		let comicsStorage = relative.get('comics');
 
 		if(!isEmpty(comicsStorage) && !_indexLabel.masterFolder && !_indexLabel.server)
 		{
-			for(let key in comicsStorage)
+			for(const comic of comicsStorage)
 			{
-				if(!comicPaths.has(comicsStorage[key].path) && fs.existsSync(comicsStorage[key].path))
-				{
-					comicsStorage[key].name = metadataPathName(comicsStorage[key]);
-					comics.push(comicsStorage[key]);
+				const path = comic.path;
 
-					comicPaths.add(comicsStorage[key].path);
+				if(!comicPaths.has(path) && fs.existsSync(path))
+				{
+					comic.name = metadataPathName(comic);
+					comics.push(comic);
+
+					comicPaths.add(path);
 				}
 			}
 		}
@@ -878,7 +863,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			const labelsPath = [];
 
 			// Favorites
-			const favorites = storage.get('favorites');
+			const favorites = relative.get('favorites');
 
 			for(let path in favorites)
 			{
@@ -886,7 +871,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			}
 
 			// Labels
-			const comicLabels = storage.get('comicLabels');
+			const comicLabels = relative.get('comicLabels');
 
 			for(let path in comicLabels)
 			{
@@ -927,7 +912,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			if(_indexLabel.favorites)
 			{
-				let favorites = storage.get('favorites');
+				let favorites = relative.get('favorites');
 				let _comics = [];
 
 				for(let i = 0; i < len; i++)
@@ -944,7 +929,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				let labels = storage.get('labels') || [];
 				let label = labels[_indexLabel.index] || false;
 
-				let comicLabels = storage.get('comicLabels');
+				let comicLabels = relative.get('comicLabels');
 				let _comics = [];
 
 				for(let i = 0; i < len; i++)
@@ -967,7 +952,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		if(len)
 		{
 			// Comic reading progress
-			let readingProgress = storage.get('readingProgress');
+			let readingProgress = relative.get('readingProgress');
 
 			for(let i = 0; i < len; i++)
 			{
@@ -1123,21 +1108,22 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 function loadIndexContentLeft(animation)
 {
 	// Master folders
-	let masterFolders = storage.get('masterFolders');
+	let masterFolders = relative.get('masterFolders');
 
-	let _masterFolders = [];
+	masterFolders = masterFolders.map(function(path, i) {
 
-	for(let i = 0, len = masterFolders.length; i < len; i++)
-	{
-		_masterFolders.push({
+		path = path;
+
+		return {
 			id: 'master-folder-'+i,
 			key: i,
-			name: p.basename(masterFolders[i]),
-			path: masterFolders[i],
-		});
-	}
+			name: p.basename(path),
+			path: path,
+		};
 
-	_masterFolders.sort(function(a, b){
+	});
+
+	masterFolders.sort(function(a, b){
 
 		if(a.name === b.name)
 			return 0;
@@ -1146,7 +1132,7 @@ function loadIndexContentLeft(animation)
 
 	});
 
-	handlebarsContext.masterFolders = _masterFolders;
+	handlebarsContext.masterFolders = masterFolders;
 
 	// Labels
 	let labels = storage.get('labels');
@@ -2427,7 +2413,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	if(fromIndex || folder)
 	{
-		let favorites = storage.get('favorites');
+		let favorites = relative.get('favorites');
 		let isFavorte = favorites[path] ? true : false;
 
 		favorite.style.display = 'block';
@@ -2596,6 +2582,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 // Remove the comic from OpenComic
 function removeComic(path, confirm = false, reload = true)
 {
+	path = relative.path(path);
 	var _comics = [], comics = storage.get('comics');
 
 	for(let i in comics)

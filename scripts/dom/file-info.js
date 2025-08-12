@@ -135,7 +135,7 @@ async function show(path, opds = false)
 
 		metadata.size = '<span class="file-info-size">...</span>';
 
-		let readingProgress = storage.get('readingProgress');
+		let readingProgress = relative.get('readingProgress');
 		readingProgress = readingProgress[path] || false;
 
 		if(readingProgress)

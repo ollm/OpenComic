@@ -1,6 +1,6 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
 
-const changes = 130; // Update this if readingPagesConfig is updated
+const changes = 131; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -278,7 +278,7 @@ const storageDefault = {
 	},
 	{
 		name: 'Pepper & Carrot',
-		path: asarToAsarUnpacked(p.join(appDir, 'Pepper & Carrot')),
+		path: relative.path(asarToAsarUnpacked(p.join(appDir, 'Pepper & Carrot'))),
 		added: 0,
 		compressed: false,
 		bookmark: false,
@@ -710,6 +710,7 @@ function updateVar(key, keyVar, value)
 	storageJson[key][keyVar] = value;
 
 	ejs.set(key, storageJson[key], function(error){});
+	setLastUpdate(key);
 }
 
 function deleteVar(key, keyVar)
@@ -720,6 +721,7 @@ function deleteVar(key, keyVar)
 	delete storageJson[key][keyVar];
 
 	ejs.set(key, storageJson[key], function(error){});
+	setLastUpdate(key);
 }
 
 function update(key, value)
@@ -727,6 +729,7 @@ function update(key, value)
 	storageJson[key] = value;
 
 	ejs.set(key, storageJson[key], function(error){});
+	setLastUpdate(key);
 }
 
 function push(key, item)
@@ -734,6 +737,7 @@ function push(key, item)
 	storageJson[key].push(item);
 
 	ejs.set(key, storageJson[key], function(error){});
+	setLastUpdate(key);
 }
 
 var throttles = {};
@@ -747,6 +751,7 @@ async function setThrottle(key, value)
 	app.setThrottle('storage-'+key, function(){
 
 		ejs.set(key, storageJson[key], function(error){});
+		setLastUpdate(key);
 
 	}, 300, 3000);
 }
@@ -760,27 +765,6 @@ for(let key in storageDefault)
 
 function start(callback)
 {
-	let storagePath = p.join(electronRemote.app.getPath('userData'), 'storage');
-
-	if(folderPortable.check())
-	{
-		const executableDir = process.env.OPENCOMIC_PORTABLE_EXECUTABLE_DIR || process.env.PORTABLE_EXECUTABLE_DIR;
-
-		if(executableDir)
-		{
-			storagePath = p.join(executableDir, 'opencomic', 'storage');
-		}
-		else
-		{
-			const outsidePath = p.join(__dirname, '../../../../', 'opencomic');
-
-			if(fs.existsSync(outsidePath))
-				storagePath = p.join(outsidePath, 'storage');
-			else
-				storagePath = p.join(__dirname, '../../../', 'storage');
-		}
-	}
-
 	ejs.setDataPath(storagePath);
 
 	ejs.getMany(storageKeys, function(error, data) {
@@ -860,10 +844,23 @@ function getKey(key, key2)
 	return storageJson[key][key2];
 }
 
+const lastUpdate = new Map();
+
+function setLastUpdate(key)
+{
+	lastUpdate.set(key, (lastUpdate.get(key) || 0) + 1);
+}
+
+function _lastUpdate(key)
+{
+	return lastUpdate.get(key) || 0;
+}
+
 module.exports = {
 	start: start,
 	get: get,
 	getKey: getKey,
+	lastUpdate: _lastUpdate,
 	updateVar: updateVar,
 	setVar: updateVar,
 	deleteVar: deleteVar,

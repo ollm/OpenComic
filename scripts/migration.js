@@ -374,6 +374,26 @@ function migrateSeparateOrderOfBrowsingAndReading(data)
 	return data;
 }
 
+function migrateBookmarksPath(data)
+{
+	console.time('Migration: bookmarksPath');
+
+	for(const path in data.bookmarks)
+	{
+		if(data.bookmarks[path] && data.bookmarks[path].length)
+		{
+			for(const bookmark of data.bookmarks[path])
+			{
+				bookmark.path = p.relative(path, bookmark.path);
+			}
+		}
+	}
+
+	console.timeEnd('Migration: bookmarksPath');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -415,6 +435,9 @@ function start(data)
 
 	if(changes < 128) // Separate order of browsing and reading
 		data = migrateSeparateOrderOfBrowsingAndReading(data);
+
+	if(changes < 131) // Bookmarks path
+		data = migrateBookmarksPath(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

@@ -3493,6 +3493,7 @@ function activeBookmark(active = false)
 //Check if a path is a bookmarks
 function isBookmark(path, _return = false)
 {
+	path = p.relative(dom.history.mainPath, path);
 	let i = false;
 
 	if(readingIsEbook)
@@ -3597,7 +3598,7 @@ function createAndDeleteBookmark(index = false)
 		}
 
 		let newBookmark = {
-			path: path.replace(/\?page=[0-9]+$/, ''),
+			path: p.relative(dom.history.mainPath, path.replace(/\?page=[0-9]+$/, '')),
 			index: imagesPath[path],
 			ebook: readingIsEbook,
 			progress: progress,
@@ -3625,14 +3626,14 @@ function createAndDeleteBookmark(index = false)
 			activeBookmark(true);
 		}
 
-		storage.updateVar('bookmarks', dom.history.mainPath, readingCurrentBookmarks);
+		storage.updateVar('bookmarks', relative.path(dom.history.mainPath), readingCurrentBookmarks);
 	}
 }
 
 function deleteBookmark(key)
 {
 	readingCurrentBookmarks.splice(key, 1);
-	storage.updateVar('bookmarks', dom.history.mainPath, readingCurrentBookmarks);
+	storage.updateVar('bookmarks', relative.path(dom.history.mainPath), readingCurrentBookmarks);
 
 	loadBookmarks(true);
 }
@@ -3655,25 +3656,26 @@ function loadBookmarks(bookmarksChild = false)
 	{
 		if(typeof readingCurrentBookmarks[key].path != 'undefined')
 		{
-			let bookmark = readingCurrentBookmarks[key];
+			const bookmark = readingCurrentBookmarks[key];
+			const path = p.join(mainPath, bookmark.path);
 
-			let bookmarkDirname = p.dirname(bookmark.path);
+			let bookmarkDirname = p.dirname(path);
 
 			if(typeof bookmarksPath[bookmarkDirname] === 'undefined') bookmarksPath[bookmarkDirname] = [];
 
-			let sha = sha1(bookmark.path);
-			images.push({path: bookmark.path, sha: sha});
+			let sha = sha1(path);
+			images.push({path: path, sha: sha});
 
-			let name = p.basename(bookmark.path);
+			let name = p.basename(path);
 			let chapterIndex = +app.extract(/^([0-9]+)\_sortonly/, name, 1);
 
 			bookmarksPath[bookmarkDirname].push({
 				key: key,
-				name: dom.translatePageName(decodeURI(p.basename(bookmark.path).replace(/\.[^\.]*$/, ''))),
-				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[bookmark.path],
+				name: dom.translatePageName(decodeURI(p.basename(path).replace(/\.[^\.]*$/, ''))),
+				index: (bookmarkDirname !== readingCurrentPath) ? bookmark.index : imagesPath[path],
 				sha: sha,
 				mainPath: mainPath,
-				path: bookmark.path,
+				path: path,
 				chapterIndex: chapterIndex,
 				ebook: bookmark.ebook,
 				progress: bookmark.progress,
@@ -3704,7 +3706,8 @@ function loadBookmarks(bookmarksChild = false)
 		});
 	}
 
-	let readingProgress = storage.getKey('readingProgress', dom.history.mainPath);
+	let readingProgress = relative.get('readingProgress');
+	readingProgress = readingProgress[dom.history.mainPath];
 
 	if(readingProgress)
 	{
@@ -5041,10 +5044,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 	readingCurrentPath = path;
 
-	if(typeof storage.get('bookmarks') !== 'undefined' && typeof storage.get('bookmarks')[dom.history.mainPath] !== 'undefined')
-		readingCurrentBookmarks = storage.get('bookmarks')[dom.history.mainPath];
-	else
-		readingCurrentBookmarks = undefined;
+	const bookmarks = relative.get('bookmarks');
+	readingCurrentBookmarks = bookmarks?.[dom.history.mainPath] ?? undefined;
 
 	filters.setImagesPath(false);
 

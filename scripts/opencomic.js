@@ -188,9 +188,31 @@ handlebarsContext.packageJson = _package;
 
 //console.time('Require time 2');
 
+const folderPortable = require(p.join(appDir, 'scripts/folder-portable.js'));
+var storagePath = p.join(electronRemote.app.getPath('userData'), 'storage');
+
+if(folderPortable.check())
+{
+	const executableDir = process.env.OPENCOMIC_PORTABLE_EXECUTABLE_DIR || process.env.PORTABLE_EXECUTABLE_DIR;
+
+	if(executableDir)
+	{
+		storagePath = p.join(executableDir, 'opencomic', 'storage');
+	}
+	else
+	{
+		const outsidePath = p.join(__dirname, '../../../../', 'opencomic');
+
+		if(fs.existsSync(outsidePath))
+			storagePath = p.join(outsidePath, 'storage');
+		else
+			storagePath = p.join(__dirname, '../../../', 'storage');
+	}
+}
+
 const app = require(p.join(appDir, 'scripts/app.js')),
 	installedFromStore = require(p.join(appDir, 'scripts/installed-from-store.js')),
-	folderPortable = require(p.join(appDir, 'scripts/folder-portable.js')),
+	relative = require(p.join(appDir, 'scripts/relative.js')),
 	storage = require(p.join(appDir, 'scripts/storage.js')),
 	compatible = require(p.join(appDir, 'scripts/compatible.js')),
 	image = require(p.join(appDir, 'scripts/image.js')),
@@ -315,7 +337,7 @@ async function startApp()
 
 		if(config.startInContinueReading)
 		{
-			let readingProgress = storage.get('readingProgress');
+			let readingProgress = relative.get('readingProgress');
 			let highest = 0;
 
 			for(let key in readingProgress)
@@ -336,15 +358,17 @@ async function startApp()
 				let mainPaths = {};
 
 				// Comics in master folders
-				let masterFolders = storage.get('masterFolders');
+				let masterFolders = relative.get('masterFolders');
 
 				if(!isEmpty(masterFolders))
 				{
 					for(let key in masterFolders)
 					{
-						if(fs.existsSync(masterFolders[key]))
+						const path = masterFolders[key];
+
+						if(fs.existsSync(path))
 						{
-							let file = fileManager.file(masterFolders[key]);
+							let file = fileManager.file(path);
 							let files = await file.readDir();
 							file.destroy();
 
@@ -360,13 +384,15 @@ async function startApp()
 				}
 
 				// Comics in library
-				let comicsStorage = storage.get('comics');
+				let comicsStorage = relative.get('comics');
 
 				if(!isEmpty(comicsStorage))
 				{
+					const path = comicsStorage[key].path;
+
 					for(let key in comicsStorage)
 					{
-						mainPaths[comicsStorage[key].path] = true;
+						mainPaths[path] = true;
 					}
 				}
 
@@ -1365,8 +1391,8 @@ function addComicsToLibrary(files, reload = true)
 				}
 			}
 
+			path = relative.path(path);
 			let comics = storage.get('comics');
-
 			let exists = false;
 
 			for(let key in comics)
