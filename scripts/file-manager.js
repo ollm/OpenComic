@@ -3114,10 +3114,10 @@ function splitPath(path)
 
 function isParentPath(parentPath, fullPath)
 {
-	if(new RegExp('^\s*'+pregQuote(parentPath)).test(fullPath))
-		return true;
+	parentPath = parentPath.endsWith(p.sep) ? parentPath : parentPath + p.sep;
+	fullPath = fullPath.endsWith(p.sep) ? fullPath : fullPath + p.sep;
 
-	return false;
+	return fullPath.startsWith(parentPath);
 }
 
 function removePathPart(path, partToRemove)
