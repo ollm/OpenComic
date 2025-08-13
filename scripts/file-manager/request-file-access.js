@@ -5,9 +5,9 @@ function check(path, error)
 {
 	error = error.message || error || '';
 
-	if(macosMAS && /operation not permitted|EPERM/.test(error))
+	if(macosMAS && /operation not permitted|EPERM/iu.test(error))
 	{
-		path = app.extract(/(?:scandir|open)\s*['"](.+?)['"]\s*$/m, error) || path;
+		path = app.extract(/(?:scandir|open)\s*['"](.+?)['"]\s*$/m, error) || app.extract(/Error:\s*['"]?(\/.+?)['"]?\s*:\s*opening/iu, error) || path;
 		if(path) setFile(path);
 	}
 }
