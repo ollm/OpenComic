@@ -172,8 +172,9 @@ function saveImages(toSave = [], leadingZeros = 3)
 {
 	if(config.saveImageToFolder)
 	{
-		fileManager.macosStartAccessingSecurityScopedResource(config.saveImageFolder);
-		_saveImages(toSave, leadingZeros, config.saveImageFolder, config.saveImageTemplate);
+		const saveImageFolder = relative.resolve(config.saveImageFolder);
+		fileManager.macosStartAccessingSecurityScopedResource(saveImageFolder);
+		_saveImages(toSave, leadingZeros, saveImageFolder, config.saveImageTemplate);
 	}
 	else
 	{

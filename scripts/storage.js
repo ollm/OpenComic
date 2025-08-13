@@ -200,9 +200,9 @@ const storageDefault = {
 		disableTapZones: false,
 		invertTapZonesInManga: true,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
-		saveImageFolder: getDownloadsPath(),
+		saveImageFolder: relative.path(getDownloadsPath()),
 		saveImageToFolder: false,
-		downloadOpdsFolder: p.join(getDocumentsPath(), 'OPDS'),
+		downloadOpdsFolder: relative.path(p.join(getDocumentsPath(), 'OPDS')),
 		downloadOpdsToFolder: false,
 		startInFullScreen: false,
 		startInContinueReading: false,
@@ -756,12 +756,7 @@ async function setThrottle(key, value)
 	}, 300, 3000);
 }
 
-var storageKeys = [];
-
-for(let key in storageDefault)
-{
-	storageKeys.push(key);
-}
+const storageKeys = Object.keys(storageDefault);
 
 function start(callback)
 {
@@ -771,32 +766,39 @@ function start(callback)
 
 		// if(error) throw error;
 
-		if(!isEmpty(data))
-			var config = data.config;
+		const setup = !data?.config?.appVersion; // Check if this is the first run
 
-		let _appVersion = config.appVersion;
-		let _changes = config.changes;
+		const _appVersion = data?.config?.appVersion || false;
+		const _changes = data?.config.changes || false;
 
-		if(_changes != changes)
+		if(!setup && _changes != changes)
 		{
-			let migration = require(p.join(appDir, 'scripts/migration.js'));
+			const migration = require(p.join(appDir, 'scripts/migration.js'));
 			data = migration.start(data);
 		}
 
-		for(let i in storageKeys)
+		for(const key of storageKeys)
 		{
-			var key = storageKeys[i];
-
-			if(typeof data == 'undefined' || typeof data[key] == 'undefined')
+			if(setup)
 			{
 				if(key == 'config')
 					storageDefault[key].language = getLocaleUserLanguage();
 
-				let storageNew = updateStorageMD(false, storageDefault[key]);
+				let baseData = false;
 
-				ejs.set(key, storageNew, function(error){});
+				switch (key)
+				{
+					case 'opdsCatalogs':
 
-				storageJson[key] = storageNew;
+						baseData = opds.addNewDefaultCatalogs({opdsCatalogs: []}, 0).opdsCatalogs;
+
+						break;
+				}
+
+				const newData = updateStorageMD(baseData, storageDefault[key]);
+
+				ejs.set(key, newData, function(error){});
+				storageJson[key] = newData;
 			}
 			else
 			{
@@ -805,12 +807,7 @@ function start(callback)
 					if(key == 'config')
 						storageDefault[key].language = getLocaleUserLanguage();
 
-					let newData;
-
-					if(_changes != changes)
-						newData = updateStorageMD(data[key], storageDefault[key]);
-					else
-						newData = data[key];
+					const newData = (_changes != changes) ? updateStorageMD(data[key], storageDefault[key]) : data[key];
 
 					if(key == 'config')
 					{
@@ -819,7 +816,6 @@ function start(callback)
 					}
 
 					ejs.set(key, newData, function(error){});
-
 					storageJson[key] = newData;
 				}
 				else
@@ -830,6 +826,7 @@ function start(callback)
 		}
 
 		callback();
+
 	});
 }
 

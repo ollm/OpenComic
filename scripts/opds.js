@@ -486,6 +486,7 @@ function downloadDialog(link, confirm = false)
 	downloadLink = link;
 
 	handlebarsContext.downloadLink = link;
+	handlebarsContext.downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
 
 	events.dialog({
 		header: language.dialog.opds.downloadTitle,
@@ -514,13 +515,14 @@ async function download(link = false)
 
 	if(link)
 	{
-		fileManager.macosStartAccessingSecurityScopedResource(config.downloadOpdsFolder);
+		const downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
+		fileManager.macosStartAccessingSecurityScopedResource(downloadOpdsFolder);
 
 		const button = document.querySelector('.dialog .file-info-odps-button-'+link.button);
 		events.buttonLoading(button, true);
 
 		const fileName = getFileName(link);
-		const downloadPath = fileManager.genearteFilePath(config.downloadOpdsFolder, fileName);
+		const downloadPath = fileManager.genearteFilePath(downloadOpdsFolder, fileName);
 		const _downloadPath = escapeQuotes(escapeBackSlash(downloadPath));
 
 		if(!fs.existsSync(downloadPath))

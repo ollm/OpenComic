@@ -8,6 +8,8 @@ function start()
 	handlebarsContext.openingBehaviorFolder = getOpeningBehaviorName(config.openingBehaviorFolder);
 	handlebarsContext.openingBehaviorFile = getOpeningBehaviorName(config.openingBehaviorFile);
 	handlebarsContext.turnPagesWithMouseWheelShortcut = getTurnPagesWithMouseWheelShortcut();
+	handlebarsContext.saveImageFolder = relative.resolve(config.saveImageFolder);
+	handlebarsContext.downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
 }
 
 function startSecond()
@@ -1310,7 +1312,7 @@ function changeSaveImageFolder()
 		if(files.filePaths && files.filePaths[0])
 		{
 			const folder = files.filePaths[0];
-			settings.set('saveImageFolder', folder);
+			settings.set('saveImageFolder', relative.path(folder));
 			dom.queryAll('.settings-save-image-folder .path-selector span').html(folder);
 		}
 
@@ -1328,7 +1330,7 @@ function changeDownloadOpdsFolder()
 		if(files.filePaths && files.filePaths[0])
 		{
 			const folder = files.filePaths[0];
-			settings.set('downloadOpdsFolder', folder);
+			settings.set('downloadOpdsFolder', relative.path(folder));
 			dom.queryAll('.settings-download-opds-folder .path-selector span').html(folder);
 		}
 
