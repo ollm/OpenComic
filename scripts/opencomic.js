@@ -710,9 +710,9 @@ function loadLanguage(lan = false)
 
 function asarToAsarUnpacked(path)
 {
-	if(!/app\.asar\.unpacked/.test(path))
+	if(!/app(-(?:arm64|x64))?\.asar\.unpacked/.test(path))
 	{
-		var pathUnpacked = path.replace(/app\.asar/, 'app.asar.unpacked');
+		var pathUnpacked = path.replace(/app(-(?:arm64|x64))?\.asar/, 'app$1.asar.unpacked');
 
 		if(fs.existsSync(pathUnpacked)) path = pathUnpacked;
 	}

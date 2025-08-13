@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Separate order of browsing and reading [`e08faea`](https://github.com/ollm/OpenComic/commit/e08faea31038fc51c207a940d853734a45b32c7a)
 - Sort option to list compressed files first, separated from folders [`508fd1a`](https://github.com/ollm/OpenComic/commit/508fd1aa1886f11aee0ca6559754200d312da706)
 - Auto-prompt to track [`30608da`](https://github.com/ollm/OpenComic/commit/30608da602868c9e8c2ea2d528868c9b6464fc61)
-- Improve relative path support for folder portable
+- Improve relative path support for folder portable [`0e3b2a8`](https://github.com/ollm/OpenComic/commit/0e3b2a8799daa1e4ae3a53e7fe205990d953266d)
 
 ##### 🐛 Bug Fixes
 
