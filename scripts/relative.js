@@ -8,7 +8,7 @@ function getBase()
 
 	base = {
 		path: storagePath,
-		disk: (process.platform === 'win32') ? p.parse(storagePath).root[0] + ':' : '',
+		disk: (process.platform === 'win32') ? p.parse(storagePath).root[0] : '',
 	};
 
 	return base;
