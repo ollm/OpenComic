@@ -111,7 +111,7 @@
 		"pdfjs-dist": "^5.4.54",
 		"sanitize-html": "^2.17.0",
 		"sharp": "^0.34.3",
-		"short-windows-path": "^1.0.4",
+		"short-windows-path": "^1.0.5",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "v12.0.1",
 		"systeminformation": "^5.27.7",
