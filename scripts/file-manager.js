@@ -357,11 +357,11 @@ var file = function(path, _config = false) {
 
 			this.updateConfig({cacheOnly: cacheOnly});
 
-			if(this.config.cacheOnly)
-				throw new Error('notCacheOnly');
-
 			if(files !== false)
 				return files; 
+
+			if(this.config.cacheOnly)
+				throw new Error('notCacheOnly');
 		}
 
 		let firstCompressed = firstCompressedFile(path, 0);
