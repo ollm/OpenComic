@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Show magnifying glass instantaneous when enabled from shortcuts [`43bc73d`](https://github.com/ollm/OpenComic/commit/43bc73dcf85d80e756f1b674a64c66c7ce75529c)
 - goBack not working if OpenComic starts directly on reading [`2f6e2fc`](https://github.com/ollm/OpenComic/commit/2f6e2fc0ccb6d6d22eaa2c543a87d3a8b91bfc46)
 - Error on migrating some config [`3b4e1ce`](https://github.com/ollm/OpenComic/commit/3b4e1ceb8c167bb76a7355a4085a09e2173c520d)
+- Server connections do not work in some cases on Windows
 
 ## [v1.6.0](https://github.com/ollm/OpenComic/releases/tag/v1.6.0) (27-07-2025)
 

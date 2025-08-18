@@ -2819,7 +2819,8 @@ function downloadedCompressedFile(path)
 
 function realPath(path, index = 0, prefixes = false)
 {
-	const segments = splitPath(path);
+	const _isServer = isServer(path);
+	const segments = splitPath(_isServer ? serverClient.fixPath(path) : path);
 	const len = segments.length;
 	const numSegments = len + index;
 
@@ -2827,7 +2828,7 @@ function realPath(path, index = 0, prefixes = false)
 
 	let newPath = virtualPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
 
-	if(isServer(path))
+	if(_isServer)
 	{
 		let adress = p.normalize(serverClient.getAdress(path));
 

@@ -636,36 +636,13 @@ var client = function(path) {
 
 	this.getServerInfo = function() {
 
-		let servers = storage.get('servers');
+		const self = this;
+		const servers = storage.get('servers');
 
-		let server = false;
-
-		for(let i = 0, len = servers.length; i < len; i++)
-		{
-			let path = servers[i].path;
-
-			if(path === this.path)
-			{
-				server = servers[i];
-				break;
-			}
-		}
+		let server = servers.find((server) => server.path === self.path);
 
 		if(!server)
-		{
-			let regex = new RegExp('^'+pregQuote(this.path));
-
-			for(let i = 0, len = servers.length; i < len; i++)
-			{
-				let path = servers[i].path;
-
-				if(regex.test(path))
-				{
-					server = servers[i];
-					break;
-				}
-			}
-		}
+			server = servers.find((server) => server.path.startsWith(self.path));
 
 		if(!server)
 			throw new Error('server_not_found');
