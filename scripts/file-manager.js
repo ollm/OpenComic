@@ -357,7 +357,7 @@ var file = function(path, _config = false) {
 
 			this.updateConfig({cacheOnly: cacheOnly});
 
-			if(files !== false)
+			if(files !== false && files?.length)
 				return files; 
 
 			if(this.config.cacheOnly)
