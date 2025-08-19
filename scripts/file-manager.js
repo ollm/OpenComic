@@ -227,7 +227,7 @@ var file = function(path, _config = false) {
 
 		if(this.config.cache)
 		{
-			if(json)
+			if(json && json.files)
 			{
 				if(json.mtime == mtime || _isServer)
 				{
@@ -306,7 +306,7 @@ var file = function(path, _config = false) {
 		{
 			let json = cache.readJson(cacheFile);
 
-			if(json)
+			if(json && json.files)
 				return json.files;
 		}
 
@@ -409,7 +409,7 @@ var file = function(path, _config = false) {
 			if(this.config.cacheOnly)
 				throw new Error('notCacheOnly');
 
-			if(files !== false)
+			if(files !== false && files?.length)
 				return files; 
 		}
 
@@ -3338,6 +3338,8 @@ function sort(files, options = {})
 
 		return files;
 	}
+
+	return files;
 }
 
 function macosSecurityScopedBookmarks(files)
