@@ -39,7 +39,12 @@ async function search(text)
 	if(!text)
 	{
 		if(filterCurrentPage)
+		{
+			dom.scroll.useTempIndex(false);
+			dom.scroll.check();
+			
 			dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
+		}
 
 		showRecentlySearched();
 
