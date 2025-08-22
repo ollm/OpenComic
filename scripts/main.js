@@ -1,4 +1,4 @@
-const {app, ipcMain, BrowserWindow, Menu, nativeImage, shell} = require('electron');
+const {app, ipcMain, BrowserWindow, screen, Menu, nativeImage, shell} = require('electron');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
@@ -163,6 +163,27 @@ function createWindow() {
 		return {action: 'deny'};
 
 	});
+
+	let wasInside = false;
+
+	setInterval(function() {
+
+		if(!win || win.isDestroyed())
+			return;
+
+		const cursor = screen.getCursorScreenPoint();
+		const bounds = win.getBounds();
+
+		const inside = (cursor.x >= bounds.x) && (cursor.x <= bounds.x + bounds.width) && (cursor.y >= bounds.y) && (cursor.y <= bounds.y + bounds.height);
+
+		if(inside && !wasInside)
+			win.webContents.send('cursorenter');
+		else if(!inside && wasInside)
+			win.webContents.send('cursorleave');
+
+		wasInside = inside;
+
+	}, 100);
 
 	mainWindowState.manage(win);
 }

@@ -4936,7 +4936,7 @@ function hideMouseInFullscreen(event = false, hide = false)
 	}
 }
 
-function pointerleave()
+function hideContentLeftAndHeader()
 {
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 	{
@@ -4956,6 +4956,24 @@ function pointerleave()
 		}
 	}
 }
+
+function pointerleave()
+{
+	if(!onReading || !isLoaded)
+		return;
+
+	hideContentLeftAndHeader();
+}
+
+function cursorleave()
+{
+	if(!onReading || !isLoaded)
+		return;
+
+	hideContentLeftAndHeader();
+}
+
+electron.ipcRenderer.on('cursorleave', cursorleave);
 
 function mousedown(event)
 {
