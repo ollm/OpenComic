@@ -963,9 +963,10 @@ function invertBackslash(string)
 
 function encodeSrcURI(string)
 {
-	let segments = fileManager.splitPath(string);
+	const vars = string.split('?');
+	const segments = fileManager.splitPath(vars[0] ?? '');
 
-	for(let i in segments)
+	for(let i = 0, len = segments.length; i < len; i++)
 	{
 		if(i != 0)
 			segments[i] = encodeURIComponent(segments[i]);
@@ -973,7 +974,7 @@ function encodeSrcURI(string)
 			segments[i] = segments[i];
 	}
 
-	return segments.join(p.sep);
+	return segments.join(p.sep)+(vars[1] ? '?'+vars[1] : '');
 }
 
 function toUnixPath(string)

@@ -40,6 +40,7 @@ var epub = function(path, config = {}) {
 	this.makeAvailable = async function() {
 
 		let files = fileManager.fileCompressed('').filesToOnedimension(this.zipFiles);
+		files = files.filter((file) => !file.folder);
 
 		this.extracted = await this.zip.makeAvailable(files);
 

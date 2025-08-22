@@ -1445,7 +1445,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 				for(let i = 0, len = files.length; i < len; i++)
 				{
-					let file = files[i];
+					const file = files[i];
+
+					if(file.folder)
+						continue;
 
 					const _path = p.join(this.path, file.pathInCompressed);
 					const globalExtracting = getGlobalExtracting(_path);
@@ -2674,11 +2677,11 @@ var extractingPromisesST = {};
 
 function setGlobalExtracting(path)
 {
-	extractingPromisesST[path] = setTimeout(function(){
+	extractingPromisesST[path] = setTimeout(function() {
 
-		globalWhenExtractFile(path);
+		globalWhenExtractFileReject(path);
 
-	}, 60000);
+	}, 600000);
 
 	let _resolve = false;
 	let _reject = false;

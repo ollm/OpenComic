@@ -97,7 +97,7 @@ function orderBy(a, b, mode, key = false, key2 = false)
 
 function addImageToDom(sha, path, animation = true)
 {
-	const src = dom.queryAll('img.sha-image-'+sha).setAttribute('src', path);
+	const src = dom.queryAll('img.sha-image-'+sha).setAttribute('src', app.encodeSrcURI(app.shortWindowsPath(path, true)));
 
 	if(animation)
 	{
