@@ -39,11 +39,11 @@ async function search(text)
 	if(!text)
 	{
 		if(filterCurrentPage)
-		{
+		{			
+			dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
+
 			dom.scroll.useTempIndex(false);
 			dom.scroll.check();
-			
-			dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 		}
 
 		showRecentlySearched();
@@ -595,7 +595,12 @@ async function hide(fromSearchClick = false)
 	app.eventOff(window, 'click', searchClick, {capture: true});
 
 	if(filterCurrentPage && !fromSearchClick)
+	{
 		dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
+
+		dom.scroll.useTempIndex(false);
+		dom.scroll.check();
+	}
 
 	hideST = setTimeout(showRecentlySearched, 500);
 
