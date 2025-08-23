@@ -3118,6 +3118,9 @@ function splitPath(path)
 
 function isParentPath(parentPath, fullPath)
 {
+	parentPath = serverClient.fixPath(parentPath);
+	fullPath = serverClient.fixPath(fullPath);
+
 	parentPath = parentPath.endsWith(p.sep) ? parentPath : parentPath + p.sep;
 	fullPath = fullPath.endsWith(p.sep) ? fullPath : fullPath + p.sep;
 
@@ -3126,8 +3129,11 @@ function isParentPath(parentPath, fullPath)
 
 function removePathPart(path, partToRemove)
 {
-	path = path.replace(new RegExp('^\s*'+pregQuote(partToRemove)), '');
-	path = path.replace(new RegExp('^\s*'+pregQuote(p.sep)), '');
+	path = serverClient.fixPath(path);
+	partToRemove = serverClient.fixPath(partToRemove);
+
+	path = path.startsWith(partToRemove) ? path.slice(partToRemove.length) : path;
+	path = path.startsWith(p.sep) ? path.slice(p.sep.length) : path;
 
 	return path;
 }
