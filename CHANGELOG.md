@@ -26,7 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - goBack not working if OpenComic starts directly on reading [`2f6e2fc`](https://github.com/ollm/OpenComic/commit/2f6e2fc0ccb6d6d22eaa2c543a87d3a8b91bfc46)
 - Error on migrating some config [`3b4e1ce`](https://github.com/ollm/OpenComic/commit/3b4e1ceb8c167bb76a7355a4085a09e2173c520d)
 - Server connections do not work in some cases on Windows [`65ecdf6`](https://github.com/ollm/OpenComic/commit/65ecdf6e5ef94170cce3ebcf0062fd2b3ebac2fe)
-- Some compressed files wouldn't open from the servers
+- Some compressed files wouldn't open from the servers [`b1c7aef`](https://github.com/ollm/OpenComic/commit/b1c7aef929666ebe0f8b5283cdb8bde19051ba91)
 
 ## [v1.6.0](https://github.com/ollm/OpenComic/releases/tag/v1.6.0) (27-07-2025)
 

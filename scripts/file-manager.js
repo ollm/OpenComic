@@ -2999,7 +2999,7 @@ function firstCompressedFile(path, index = 0, checkDirectory = true)
 
 	for(let i = 1; i < len; i++)
 	{
-		newPath = p.join(newPath, segments[i]);
+		newPath = join(newPath, segments[i]);
 
 		if(i < numSegments)
 		{
@@ -3029,7 +3029,7 @@ function lastCompressedFile(path, index = 0)
 
 	for(let i = 1; i < len; i++)
 	{
-		newPath = p.join(newPath, segments[i]);
+		newPath = join(newPath, segments[i]);
 
 		if(i < numSegments)
 		{
@@ -3055,7 +3055,7 @@ function allCompressedFiles(path, index = 0)
 
 	for(let i = 1; i < len; i++)
 	{
-		newPath = p.join(newPath, segments[i]);
+		newPath = join(newPath, segments[i]);
 
 		if(i < numSegments)
 		{
@@ -3104,6 +3104,18 @@ function compressedMetadata(path = false)
 		return cache.readJson(cacheFile).metadata || false;
 
 	return false;
+}
+
+function join()
+{
+	const string = p.join.apply(null, arguments);
+	return serverClient.fixPath(string);
+}
+
+function normalize()
+{
+	const string = p.normalize.apply(null, arguments);
+	return serverClient.fixPath(string);
 }
 
 function splitPath(path)
@@ -3633,6 +3645,8 @@ module.exports = {
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
 	compressedMetadata: compressedMetadata,
+	join: join,
+	normalize: normalize,
 	splitPath: splitPath,
 	isParentPath: isParentPath,
 	simpleExists: simpleExists,

@@ -395,7 +395,7 @@ function parseTextUrls(text)
 {
 	text = text.replace(/\(([^\)]+)\)\s*\[(http[^\]]+)\]/iug, '<a href="$2" target="_blank">$1</a>');
 	text = text.replace(/\[([^\]]+)\]\s*\((http[^\)]+)\)/iug, '<a href="$2" target="_blank">$1</a>');
-	text = text.replace(/(^|[^"])(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s,"]{2,})/iug, '$1<a href="$2" target="_blank">$2</a>');
+	text = text.replace(/(^|[^">])(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s,"<]{2,})/iug, '$1<a href="$2" target="_blank">$2</a>');
 
 	return text;
 }
