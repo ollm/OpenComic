@@ -21,7 +21,7 @@
 			"lastReading": "最后阅读",
 			"lastOpened": "上次打开",
 			"foldersFirst": "文件夹置前",
-			"compressedFirst": "",
+			"compressedFirst": "压缩文件置前",
 			"invert": "倒序"
 		},
 		"view": {
@@ -85,7 +85,7 @@
 		"retry": "重试",
 		"search": "搜索",
 		"filterCurrentPage": "筛选当前页面",
-		"pickAtRandom": "",
+		"pickAtRandom": "随机挑选",
 		"language": "语言",
 		"settings": "设置",
 		"theme": "主题",
@@ -275,9 +275,9 @@
 			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪",
-			"trackingAutoPrompt": "",
-			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"trackingAutoPrompt": "自动提示跟踪",
+			"trackingAutoPromptFavorites": "自动提示跟踪（仅限收藏站点）",
+			"discordRcp": "Discord Rich Presence"
 		},
 		"imageInterpolation": {
 			"main": "图像插值",
@@ -492,7 +492,7 @@
 			"setChapterNumber": "标记至章节",
 			"setVolumeNumber": "标记至卷",
 			"activate": "激活跟踪",
-			"wantToTrack": ""
+			"wantToTrack": "你想跟踪吗？"
 		},
 		"pages": {
 			"readingConfigNewHeader": "创建新配置",
@@ -606,9 +606,9 @@
 		"ok": "确定",
 		"on": "开",
 		"off": "关",
-		"yes": "",
-		"no": "",
-		"edit": "",
+		"yes": "是",
+		"no": "否",
+		"edit": "编辑",
 		"save": "保存",
 		"undo": "撤消",
 		"dismiss": "屏除",
