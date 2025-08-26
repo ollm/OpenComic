@@ -62,11 +62,11 @@ switch(type)
 			}
 			else if(/^opencomic\-([0-9.]+)\.7z$/.test(file))
 			{
-				renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^opencomic\-([0-9.]+)\.7z$/, 'opencomic-folder-portable-$1.7z')));
+				renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^opencomic\-([0-9.]+)\.7z$/, 'opencomic-folder-portable-linux-$1.7z')));
 			}
 			else if(/^opencomic\-([0-9.]+)\-arm64\.7z$/.test(file))
 			{
-				renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^opencomic\-([0-9.]+)\-arm64\.7z$/, 'opencomic-folder-portable-$1-arm64.7z')));
+				renameWithRetry(p.join(dist, file), p.join(dist, file.replace(/^opencomic\-([0-9.]+)\-arm64\.7z$/, 'opencomic-folder-portable-linux-$1-arm64.7z')));
 			}
 		}
 

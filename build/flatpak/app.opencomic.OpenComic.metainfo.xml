@@ -82,6 +82,32 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.6.1" date="2025-08-26">
+            <description>
+                <p><em>🚀 New Features</em></p>
+                <ul>
+                    <li>Extract tracking chapter/volume also from image names</li>
+                    <li>Tracking also by current page/image chapter/volume</li>
+                    <li>Pick at random button</li>
+                    <li>Separate order of browsing and reading</li>
+                    <li>Sort option to list compressed files first, separated from folders</li>
+                    <li>Auto-prompt to track</li>
+                    <li>Improve relative path support for folder portable</li>
+                </ul>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Show page number doesn't work properly on scroll reading</li>
+                    <li>Some tap zones events not working</li>
+                    <li>Thumbnails and progress missing when filtering current page</li>
+                    <li>Rare cases of blank images during reading</li>
+                    <li>Show magnifying glass instantaneous when enabled from shortcuts</li>
+                    <li>goBack not working if OpenComic starts directly on reading</li>
+                    <li>Error on migrating some config</li>
+                    <li>Server connections do not work in some cases on Windows</li>
+                    <li>Some compressed files wouldn't open from the servers</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.6.0" date="2025-07-27">
             <description>
                 <p><em>🚀 New Features</em></p>
