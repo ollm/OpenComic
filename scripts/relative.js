@@ -18,7 +18,7 @@ const cacheResolve = new Map();
 
 function resolve(relatives)
 {
-	if(!relatives.includes('|||||'))
+	if(!relatives || !relatives.includes('|||||'))
 		return relatives;
 
 	if(cacheResolve.has(relatives))
