@@ -388,10 +388,9 @@ async function startApp()
 
 				if(!isEmpty(comicsStorage))
 				{
-					const path = comicsStorage[key].path;
-
 					for(let key in comicsStorage)
 					{
+						const path = comicsStorage[key].path;
 						mainPaths[path] = true;
 					}
 				}

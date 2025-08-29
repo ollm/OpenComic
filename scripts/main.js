@@ -104,7 +104,8 @@ function createWindow() {
 	}));
 
 	// Open the DevTools.
-	// win.webContents.openDevTools()
+	if(configInit.openDevTools)
+		win.webContents.openDevTools()
 
 	if(toOpenFile)
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
