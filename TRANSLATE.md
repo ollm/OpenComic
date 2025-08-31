@@ -189,7 +189,7 @@ Translate by [LoadSec](https://ggames.com.br) and [Lecca Linn](https://github.co
 
 Translate by [vanja-san](https://github.com/vanja-san)
 
-`80.4% | Remain 103 | Translated 423`
+`100% | Remain 0 | Translated 526`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ru.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ru.svg" /></a>
 
@@ -249,7 +249,7 @@ Translate by [Nguyen Do](https://github.com/catouberos)
 
 Translate by [無情天](https://github.com/kofzhanganguo)
 
-`98.3% | Remain 9 | Translated 517`
+`100% | Remain 0 | Translated 526`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hans.svg" /></a>
 
