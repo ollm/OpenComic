@@ -6,10 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## v1.6.2 (dd-mm-yyyy)
 
+##### 🚀 New Features
+
+- Option to change labels from app bar
+
 ##### 🐛 Bug Fixes
 
 - Prevent app freeze when relative path receives undefined value [`2d9cca5`](https://github.com/ollm/OpenComic/commit/2d9cca5581fac5f8818bf5b0f008ae68b50d31d5)
-- Error on start directly in last reading
+- Error on start directly in last reading [`9c20ba0`](https://github.com/ollm/OpenComic/commit/9c20ba00b1ed69ea5897ef01f11898ce4300d4e7)
 
 ## [v1.6.1](https://github.com/ollm/OpenComic/releases/tag/v1.6.1) (26-08-2025)
 

@@ -40,8 +40,13 @@ function openFileLocation()
 function aboutFile()
 {
 	const vars = getVars();
-
 	dom.fileInfo.show(vars.pathIsFolder ? vars.currentPath : fileManager.lastCompressedFile(vars.currentPath));
+}
+
+function labels()
+{
+	const vars = getVars();
+	dom.labels.setLabels(vars.pathIsFolder ? vars.currentPath : fileManager.lastCompressedFile(vars.currentPath));
 }
 
 function getCurrentImage()
@@ -358,6 +363,7 @@ module.exports = {
 	show: show,
 	openFileLocation: openFileLocation,
 	aboutFile: aboutFile,
+	labels: labels,
 	setAsPoster: setAsPoster,
 	setAsPosterFolders: setAsPosterFolders,
 	saveImage: saveImage,

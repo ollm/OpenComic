@@ -812,6 +812,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
+					{label: language.global.labels, enabled: currentPath, click: function(){reading.contextMenu.labels()}},
 					{label: pathIsFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, enabled: currentPath, click: function(){reading.contextMenu.openFileLocation()}},
 					{label: language.global.contextMenu.aboutFile, enabled: currentPath, click: function(){reading.contextMenu.aboutFile()}},
 					{type: 'separator'},
