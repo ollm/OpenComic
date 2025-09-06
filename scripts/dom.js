@@ -878,15 +878,13 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			{
 				if(!comicPaths.has(path) && fileManager.simpleExists(path))
 				{
-					if(fileManager.isServer(path))
-						continue;
-
+					const isServer = fileManager.isServer(path);
 					const firstCompressedFile = fileManager.firstCompressedFile(path, 0, false);
 
 					comics.push({
 						name: metadataPathName({path: path, name: p.basename(path)}),
 						path: path,
-						added: Math.round(fs.statSync(firstCompressedFile).ctimeMs / 1000),
+						added: isServer ? 0 : Math.round(fs.statSync(firstCompressedFile).ctimeMs / 1000),
 						folder: true,
 						compressed: compatible.compressed(path),
 						fromMasterFolder: true,
@@ -2331,7 +2329,7 @@ function nightModeConfig(_app = false)
 async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
 {	
 	let isServer = fileManager.isServer(path);
-	if((!fromIndex && isServer) || fileManager.isOpds(path)) return;
+	if(fileManager.isOpds(path)) return;
 
 	const canBeDelete = (!fileManager.isServer(path) && !fileManager.lastCompressedFile(p.dirname(path))) ? true : false;
 
