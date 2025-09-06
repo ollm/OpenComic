@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Option to change labels from app bar [`bea5b5c`](https://github.com/ollm/OpenComic/commit/bea5b5cbd7c8785c56624b7d16192aa23050eb4f)
 - Context menu in continue reading bar [`b2637c2`](https://github.com/ollm/OpenComic/commit/b2637c26cad23f421f86374f24d8013e67432fd5)
-- Support multi-layer folder labeling in servers
+- Support multi-layer folder labeling in servers [`3eeabc5`](https://github.com/ollm/OpenComic/commit/3eeabc552930fa34f405843a51622122d449d0d3)
 
 ##### 🐛 Bug Fixes
 
