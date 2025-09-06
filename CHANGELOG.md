@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Option to change labels from app bar
+- Option to change labels from app bar [`bea5b5c`](https://github.com/ollm/OpenComic/commit/bea5b5cbd7c8785c56624b7d16192aa23050eb4f)
+- Context menu in continue reading bar
 
 ##### 🐛 Bug Fixes
 

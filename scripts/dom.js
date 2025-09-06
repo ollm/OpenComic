@@ -486,41 +486,40 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 
 	handlebarsContext.comics = pathFiles;
 
+	const processReadingProgress = function(progress) {
+
+		const sha = progress.sha;
+		const thumbnail = thumbnails[sha];
+
+		progress.sha = sha;
+		progress.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+		progress.mainPath = mainPath;
+		progress.pathText = returnTextPath(progress.path, mainPath, true, !progress.ebook);
+		progress.exists = fileManager.simpleExists(progress.path);
+
+		const path = p.dirname(progress.path);
+		const folder = (fs.existsSync(path) && fs.statSync(path).isDirectory()) ? true : false;
+
+		progress.contextMenu = {
+			path: path,
+			folder: folder || fileManager.isCompressed(path),
+		};
+
+		return progress;
+
+	}
+
 	// Comic reading progress
 	if(readingProgress)
-	{
-		let sha = readingProgress.sha;
-		let thumbnail = thumbnails[sha];
-
-		readingProgress.sha = sha;
-		readingProgress.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-		readingProgress.mainPath = mainPath;
-		readingProgress.pathText = returnTextPath(readingProgress.path, mainPath, true, !readingProgress.ebook);
-		readingProgress.exists = fileManager.simpleExists(readingProgress.path);
-		handlebarsContext.comicsReadingProgress = readingProgress;
-	}
+		handlebarsContext.comicsReadingProgress = processReadingProgress(readingProgress);
 	else
-	{
 		handlebarsContext.comicsReadingProgress = false;
-	}
 
 	// Current folder reading progress
 	if(readingProgressCurrentPath && (!readingProgress || readingProgress.path !== readingProgressCurrentPath.path))
-	{
-		let sha = readingProgressCurrentPath.sha;
-		let thumbnail = thumbnails[sha];
-
-		readingProgressCurrentPath.sha = sha;
-		readingProgressCurrentPath.thumbnail = (thumbnail.cache) ? thumbnail.path : '';
-		readingProgressCurrentPath.mainPath = mainPath;
-		readingProgressCurrentPath.pathText = returnTextPath(readingProgressCurrentPath.path, path, true, !readingProgressCurrentPath.ebook);
-		readingProgressCurrentPath.exists = fileManager.simpleExists(readingProgressCurrentPath.path);
-		handlebarsContext.comicsReadingProgressCurrentPath = readingProgressCurrentPath;
-	}
+		handlebarsContext.comicsReadingProgressCurrentPath = processReadingProgress(readingProgressCurrentPath);
 	else
-	{
 		handlebarsContext.comicsReadingProgressCurrentPath = false;
-	}
 
 	if(!pathFiles.length && fileManager.isServer(path) && serverClient.serverLastError())
 	{
