@@ -497,12 +497,8 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 		progress.pathText = returnTextPath(progress.path, mainPath, true, !progress.ebook);
 		progress.exists = fileManager.simpleExists(progress.path);
 
-		const path = p.dirname(progress.path);
-		const folder = (fs.existsSync(path) && fs.statSync(path).isDirectory()) ? true : false;
-
 		progress.contextMenu = {
-			path: path,
-			folder: folder || fileManager.isCompressed(path),
+			path: p.dirname(progress.path),
 		};
 
 		return progress;
