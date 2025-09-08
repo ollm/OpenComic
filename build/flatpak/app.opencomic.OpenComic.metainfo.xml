@@ -82,6 +82,21 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.6.2" date="2025-09-08">
+            <description>
+                <p><em>🚀 New Features</em></p>
+                <ul>
+                    <li>Option to change labels from app bar</li>
+                    <li>Context menu in continue reading bar</li>
+                    <li>Support multi-layer folder labeling in servers</li>
+                </ul>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Prevent app freeze when relative path receives undefined value</li>
+                    <li>Error on start directly in last reading</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.6.1" date="2025-08-26">
             <description>
                 <p><em>🚀 New Features</em></p>
