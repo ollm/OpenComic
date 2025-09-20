@@ -2398,6 +2398,10 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 		}
 		catch(error)
 		{
+			markRead.style.display = 'none';
+			markUnread.style.display = 'none';
+			separatorMark.style.display = 'none';
+			
 			console.error(error);
 		}
 	}
