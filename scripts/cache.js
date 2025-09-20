@@ -391,9 +391,18 @@ function readJson(name)
 
 		if(fs.existsSync(path))
 		{
-			json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
-			setJsonInMemory(name, json);
-			return json;
+			try
+			{
+				json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
+				setJsonInMemory(name, json);
+				return json;
+			}
+			catch(error) // Corrupted file, remove it
+			{
+				fs.unlinkSync(path);
+				console.error(error);
+				return false;
+			}
 		}
 		else
 		{
@@ -406,9 +415,18 @@ function readJson(name)
 
 		if(fs.existsSync(path))
 		{
-			json = JSON.parse(fs.readFileSync(path));
-			setJsonInMemory(name, json);
-			return json;
+			try
+			{
+				json = JSON.parse(fs.readFileSync(path));
+				setJsonInMemory(name, json);
+				return json;
+			}
+			catch(error) // Corrupted file, remove it
+			{
+				fs.unlinkSync(path);
+				console.error(error);
+				return false;
+			}
 		}
 		else
 		{
