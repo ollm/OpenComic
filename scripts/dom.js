@@ -2383,16 +2383,23 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	if(fromIndex || folder)
 	{
-		const progress = await reading.progress.get(path);
-		reading.progress.updateProgress(path, progress);
+		try
+		{
+			const progress = await reading.progress.get(path);
+			reading.progress.updateProgress(path, progress);
 
-		markRead.style.display = (progress.completed) ? 'none' : 'block';
-		markRead.setAttribute('onclick', 'reading.progress.read(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+			markRead.style.display = (progress.completed) ? 'none' : 'block';
+			markRead.setAttribute('onclick', 'reading.progress.read(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
 
-		markUnread.style.display = (progress.percent === 0) ? 'none' : 'block';
-		markUnread.setAttribute('onclick', 'reading.progress.unread(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
-	
-		separatorMark.style.display = 'block';
+			markUnread.style.display = (progress.percent === 0) ? 'none' : 'block';
+			markUnread.setAttribute('onclick', 'reading.progress.unread(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+		
+			separatorMark.style.display = 'block';
+		}
+		catch(error)
+		{
+			console.error(error);
+		}
 	}
 	else
 	{
