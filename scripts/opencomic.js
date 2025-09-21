@@ -269,7 +269,9 @@ var appBaseLoaded = new Promise(function(resolve) {
 
 });
 
-window.onload = function() {
+async function start()
+{
+	await electronRemote.app.whenReady();
 
 	storage.start(function() {
 
@@ -295,7 +297,6 @@ window.onload = function() {
 		startApp();
 
 	});
-
 }
 
 async function startApp()
@@ -1465,3 +1466,6 @@ const NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
 const ERROR_UNZIPPING_THE_FILE = 2;
 const ERROR_READING_THE_FILE = 3;
 const ERROR_RENDERING_THE_FILE = 4;
+
+
+start();

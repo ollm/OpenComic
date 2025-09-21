@@ -96,6 +96,27 @@ function createWindow() {
 
 	win.removeMenu();
 
+	let windowShowed = false;
+
+	const showWindow = function(message = '') {
+
+		if(!windowShowed)
+		{
+			win.show();
+			windowShowed = true;
+
+			if(message)
+				console.log(message);
+		}
+
+	}
+
+	win.once('ready-to-show', showWindow);
+
+	// https://github.com/electron/electron/issues/42409
+	win.webContents.once('did-finish-load', () => showWindow('Warning: win.show() from did-finish-load and not from ready-to-show'));
+	setTimeout(() => showWindow('Warning: win.show() from setTimeout and not from ready-to-show'), 5000);
+
 	// and load the index.html of the app.
 	win.loadURL(url.format({
 		pathname: path.join(__dirname, '../templates/index.html'),
@@ -137,24 +158,6 @@ function createWindow() {
 		// when you should delete the corresponding element.
 
 		win = null
-	});
-
-	let windowShowed = false;
-
-	let showTimeout = setTimeout(function() {
-
-		win.show();
-		windowShowed = true;
-		console.log('Warning: win.show() from setTimeout and not from ready-to-show');
-
-	}, 2000);
-
-	win.once('ready-to-show', function() {
-
-		clearTimeout(showTimeout);
-		
-		if(!windowShowed) win.show();
-
 	});
 
 	win.webContents.setWindowOpenHandler(function(details) {
