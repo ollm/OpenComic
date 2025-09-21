@@ -1707,7 +1707,7 @@ function onScroll(event)
 
 		scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
 
-		currentPageVisibility = Math.round((previousScrollTop - (imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
+		currentPageVisibility = Math.round((scrollTop - (imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
 		if(currentPageVisibility < 0) currentPageVisibility = 0;
 
 		if(currentIndex != selIndex + 1)

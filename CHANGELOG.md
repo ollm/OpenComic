@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Add error handling for reading progress in comic context menu
 - Error handling for corrupted JSON/ZSTD files in cache and remove them
+- Header bar buttons don't register start/end of chapter if scrolled with scrollbar
 
 ## [v1.6.2](https://github.com/ollm/OpenComic/releases/tag/v1.6.2) (08-09-2025)
 

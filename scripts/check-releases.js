@@ -76,6 +76,7 @@ function check(force = false)
 	fetch('https://api.github.com/repos/ollm/OpenComic/releases', options).then(async function(response){
 
 		let json = await response.json();
+		if(json.message) return console.log(json.message);
 
 		let lastRelease = false;
 
