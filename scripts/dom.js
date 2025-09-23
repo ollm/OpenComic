@@ -2325,9 +2325,13 @@ function nightModeConfig(_app = false)
 		_app.classList.remove('night-mode-white-blank-page');
 }
 
+let comicContextMenuIndex = 0;
+
 // Show the comic context menu
 async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMasterFolders = true, folder = false, gamepad = false)
 {	
+	comicContextMenuIndex++;
+
 	let isServer = fileManager.isServer(path);
 	if(fileManager.isOpds(path)) return;
 
@@ -2383,25 +2387,42 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	if(fromIndex || folder)
 	{
-		try
-		{
-			const progress = await reading.progress.get(path);
-			reading.progress.updateProgress(path, progress);
+		const currentIndex = comicContextMenuIndex;
 
-			markRead.style.display = (progress.completed) ? 'none' : 'block';
-			markRead.setAttribute('onclick', 'reading.progress.read(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+		markRead.classList.add('disable-pointer');
+		markUnread.classList.add('disable-pointer');
 
-			markUnread.style.display = (progress.percent === 0) ? 'none' : 'block';
-			markUnread.setAttribute('onclick', 'reading.progress.unread(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
-		
-			separatorMark.style.display = 'block';
-		}
-		catch(error)
-		{
-			markRead.style.display = 'none';
-			markUnread.style.display = 'none';
-			separatorMark.style.display = 'none';
-		}
+		(async function(){
+
+			try
+			{
+				const progress = await reading.progress.get(path);
+				reading.progress.updateProgress(path, progress);
+
+				if(currentIndex !== comicContextMenuIndex)
+					return;
+
+				dom.this(markRead).class(progress.completed, 'disable-pointer');
+				markRead.setAttribute('onclick', 'reading.progress.read(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+
+				dom.this(markUnread).class((progress.percent === 0), 'disable-pointer');
+				markUnread.setAttribute('onclick', 'reading.progress.unread(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
+			
+				separatorMark.style.display = 'block';
+			}
+			catch(error)
+			{
+				console.error(error);
+
+				if(currentIndex !== comicContextMenuIndex)
+					return;
+
+				markRead.style.display = 'none';
+				markUnread.style.display = 'none';
+				separatorMark.style.display = 'none';
+			}
+
+		})()
 	}
 	else
 	{
