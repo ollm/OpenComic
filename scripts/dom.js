@@ -2413,13 +2413,6 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 			catch(error)
 			{
 				console.error(error);
-
-				if(currentIndex !== comicContextMenuIndex)
-					return;
-
-				markRead.style.display = 'none';
-				markUnread.style.display = 'none';
-				separatorMark.style.display = 'none';
 			}
 
 		})()
