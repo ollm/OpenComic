@@ -98,11 +98,37 @@ async function get(path, cache = true, cacheOnly = false)
 	};
 }
 
+async function simpleGet(path, cache = true, cacheOnly = false)
+{
+	const _someRead = await someRead(path);
+
+	return {
+		completed: !_someRead ? false : await getCompleted(path),
+		someRead: _someRead,
+	};
+}
+
+async function someRead(path)
+{
+	const readingProgress = relative.get('readingProgress');
+	const paths = await findReadingProgressPaths(path, false);
+
+	for(const key of paths)
+	{
+		const progress = readingProgress[key];
+
+		if(progress && progress.page && fileManager.simpleExists(key, true))
+			return true;
+	}
+
+	return false;
+}
+
 async function readPages(path)
 {
 	const readingProgress = relative.get('readingProgress');
-
 	const paths = await findReadingProgressPaths(path, false);
+
 	let pages = 0;
 
 	for(const key of paths)
@@ -180,6 +206,34 @@ async function countPages(path = false, cache = true, cacheOnly = false)
 	file.destroy();
 
 	return pages;
+}
+
+async function _getCompleted(path, file, first = false) // TODO: unfinished function
+{
+	const readingProgress = relative.get('readingProgress');
+	const progress = readingProgress[path];
+
+	if(progress && progress.pages)
+		return (progress.pages === progress.page) ? true : false;
+
+	/*if(first)
+	{
+
+	}*/
+
+	return false;
+}
+
+async function getCompleted(path)
+{
+	if(!path) return false;
+
+	const file = fileManager.file(path);
+	file.updateConfig({sort: false});
+	const completed = await _getCompleted(path, file, true);
+	file.destroy();
+
+	return completed;
 }
 
 async function _findReadingProgressPaths(path, file)
@@ -335,6 +389,7 @@ module.exports = {
 	activeSave: function(active = true){saveIsActive = active},
 	setInterval: _setInterval,
 	get,
+	simpleGet,
 	readPages,
 	countPages,
 	read,
