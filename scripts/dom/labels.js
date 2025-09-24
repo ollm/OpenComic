@@ -658,9 +658,11 @@ function has(path, parents = false)
 	if(comicLabels[path])
 		return comicLabels[path];
 
+	const len = path.split(p.sep).filter(Boolean).length;
+
 	if(parents)
 	{
-		while(path)
+		for(let i = 0; i < len; i++)
 		{
 			path = p.dirname(path);
 
