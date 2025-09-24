@@ -2389,6 +2389,10 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	{
 		const currentIndex = comicContextMenuIndex;
 
+		markRead.style.display = 'block';
+		markUnread.style.display = 'block';
+		separatorMark.style.display = 'block';
+
 		markRead.classList.add('disable-pointer');
 		markUnread.classList.add('disable-pointer');
 
@@ -2407,8 +2411,6 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 				dom.this(markUnread).class((progress.percent === 0), 'disable-pointer');
 				markUnread.setAttribute('onclick', 'reading.progress.unread(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
-			
-				separatorMark.style.display = 'block';
 			}
 			catch(error)
 			{

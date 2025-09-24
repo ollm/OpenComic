@@ -8,11 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🐛 Bug Fixes
 
-- Add error handling for reading progress in comic context menu
-- Error handling for corrupted JSON/ZSTD files in cache and remove them
-- Header bar buttons don't register start/end of chapter if scrolled with scrollbar
-- Asynchronous progress check in the context menu (Mark as read/unread)
-- The application loops and freezes when opening files on the network (UNC paths)
+- Add error handling for reading progress in comic context menu [`b3a6bbf`](https://github.com/ollm/OpenComic/commit/b3a6bbf012beaca669839594675c8faac55d8085)
+- Error handling for corrupted JSON/ZSTD files in cache and remove them [`978e281`](https://github.com/ollm/OpenComic/commit/978e281cca7c6b7e6aff78357a15275ea7fc746b)
+- Header bar buttons don't register start/end of chapter if scrolled with scrollbar [`b9cb5ea`](https://github.com/ollm/OpenComic/commit/b9cb5ea8d034fbca72c53212bc5faf9f144a879d)
+- Asynchronous progress check in the context menu (Mark as read/unread) [`ca51b12`](https://github.com/ollm/OpenComic/commit/ca51b122372c89b4414572b31f7bf05ac7800c22)
+- The application loops and freezes when opening files on the network (UNC paths) [`7ca4d20`](https://github.com/ollm/OpenComic/commit/7ca4d200730d5b2814e24cad4b34969ab38a2857)
 
 ## [v1.6.2](https://github.com/ollm/OpenComic/releases/tag/v1.6.2) (08-09-2025)
 
