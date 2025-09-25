@@ -153,6 +153,7 @@
 			"!node_modules/ssh2/lib/protocol/crypto/build/node_gyp_bins",
 			"!node_modules/@img/",
 			"node_modules/@img/*${arch}*/**/*",
+			"node_modules/@img/colour/**/*",
 			"!node_modules/@img/*linuxmusl*/**/*",
 			"!node_modules/7zip-bin-full/+(linux|win|mac)/**",
 			"node_modules/7zip-bin-full/${os}/${arch}",
