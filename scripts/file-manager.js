@@ -7,6 +7,7 @@ var un7z = false, bin7z = false, fastXmlParser = false, Minimatch = false;
 var file = function(path, _config = false) {
 
 	this.path = path;
+	this._sha = sha1(p.normalize(path || ''));
 
 	this.files = [];
 
@@ -49,6 +50,28 @@ var file = function(path, _config = false) {
 	this.alreadyRead = false;
 
 	this.read = async function(config = {}, path = false) {
+
+		const sha = path ? sha1(p.normalize(path)) : this._sha;
+		const key = 'read--'+sha+(config.forceType ? '--'+config.forceType : '')+(config.prefixes ? '--'+Object.values(config.prefixes).join('-') : '');
+
+		const release = await mutex.lock(key);
+
+		try
+		{
+			return await this._read(config, path);
+		}
+		catch(error)
+		{
+			throw error;
+		}
+		finally
+		{
+			release();
+		}
+
+	}
+
+	this._read = async function(config = {}, path = false) {
 
 		path = path || this.path;
 		let _realPath = realPath(path, -1);
@@ -1129,9 +1152,10 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.setTmpUsage();
 
+		const release = await mutex.lock('readCompressed--'+this.sha+'--'+this.features.ext+'--'+this.features.fileExt);
 		const message = 'readCompressed | '+this.features.ext+(this.features.fileExt && this.features.ext !== this.features.fileExt ? ' ('+this.features.fileExt+')' : '')+' | '+this.path;
-		this.time(message);
 
+		this.time(message);
 		let files = false;
 
 		if(this.features['7z'])
@@ -1142,6 +1166,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			files = await this.readEpub();
 
 		this.timeEnd(message);
+		release();
 
 		return files;
 	}
@@ -1379,29 +1404,24 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.setTmpUsage();
 
-		const self = this;
+		const release = await mutex.lock('extractCurrent--'+this.sha+'--'+this.features.ext+'--'+this.features.fileExt);
 		const message = 'extractCompressed | '+this.features.ext+(this.features.fileExt && this.features.ext !== this.features.fileExt ? ' ('+this.features.fileExt+')' : '')+' |'+(this.config._only ? ' ('+this.config._only.length+' files)' : '')+' '+this.path;
 
+		this.time(message);
 		let files = false;
 
-		await threads.job('extractCurrent--'+this.sha, {useThreads: 0.01}, async function() {
-
-			self.time(message);
-
-			if(self.features['7z'])
-				files = await self.extract7z();
-			else if(self.features.pdf)
-				files = await self.extractPdf();
-			else if(self.features.epub)
-				files = await self.extractEpub();
-
-			return;
-
-		});
+		if(this.features['7z'])
+			files = await this.extract7z();
+		else if(this.features.pdf)
+			files = await this.extractPdf();
+		else if(this.features.epub)
+			files = await this.extractEpub();
 
 		this.timeEnd(message);
+		release();
 
 		return files;
+
 	}
 
 	this.checkIfAlreadyExtracted = async function() {
@@ -1880,9 +1900,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const disk = diskType.check(this.realPath);
 
 		if(disk.hdd)
-			return {readKey: 'readUsingThreadsHDD', extractKey: 'extractUsingThreadsHDD', read: 0.01, extract: 0.01};
+			return {readKey: 'readUsingThreadsHDD', extractKey: 'extractUsingThreadsHDD', read: threads.SINGLE, extract: threads.SINGLE};
 		else
-			return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: 1, extract: 1};
+			return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: threads.ALL, extract: threads.ALL};
 
 	}
 

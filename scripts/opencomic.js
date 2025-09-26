@@ -227,6 +227,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	ebook = require(p.join(appDir, 'scripts/ebook.js')),
 	workers = require(p.join(appDir, 'scripts/workers.js')),
 	threads = require(p.join(appDir, 'scripts/threads.js')),
+	mutex = require(p.join(appDir, 'scripts/mutex.js')),
 	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
 	serverClient = require(p.join(appDir, 'scripts/server-client.js')),
 	opds = require(p.join(appDir, 'scripts/opds.js')),
@@ -254,7 +255,6 @@ else if(!fs.existsSync(tempFolder))
 }
 
 var macosMAS = false;
-fileManager.removeTmpVector();
 
 macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
 
@@ -1467,5 +1467,5 @@ const ERROR_UNZIPPING_THE_FILE = 2;
 const ERROR_READING_THE_FILE = 3;
 const ERROR_RENDERING_THE_FILE = 4;
 
-
+fileManager.removeTmpVector();
 start();

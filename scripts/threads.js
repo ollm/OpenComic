@@ -138,11 +138,11 @@ function processJob(key = 'default', _thread = 0)
 
 	const job = queue.list.shift();
 
-	if(job.options.useThreads < 1 && _thread !== 0)
+	if((job.options.singleThread || job.options.useThreads < 1) && _thread !== 0)
 	{
 		const useThreads = _thread / threads;
 
-		if(useThreads > job.options.useThreads)
+		if(job.options.singleThread || useThreads > job.options.useThreads)
 		{
 			queue.list.unshift(job);
 			return null;
@@ -295,4 +295,6 @@ module.exports = {
 	end: end,
 	stats: getStats,
 	sumStats: sumStats,
+	SINGLE: 0.000001,
+	ALL: 1,
 }
