@@ -1158,15 +1158,24 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.time(message);
 		let files = false;
 
-		if(this.features['7z'])
-			files = await this.read7z();
-		else if(this.features.pdf)
-			files = await this.readPdf();
-		else if(this.features.epub)
-			files = await this.readEpub();
-
-		this.timeEnd(message);
-		release();
+		try
+		{
+			if(this.features['7z'])
+				files = await this.read7z();
+			else if(this.features.pdf)
+				files = await this.readPdf();
+			else if(this.features.epub)
+				files = await this.readEpub();
+		}
+		catch(error)
+		{
+			throw error;
+		}
+		finally
+		{
+			this.timeEnd(message);
+			release();
+		}
 
 		return files;
 	}
@@ -1410,15 +1419,24 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		this.time(message);
 		let files = false;
 
-		if(this.features['7z'])
-			files = await this.extract7z();
-		else if(this.features.pdf)
-			files = await this.extractPdf();
-		else if(this.features.epub)
-			files = await this.extractEpub();
-
-		this.timeEnd(message);
-		release();
+		try
+		{
+			if(this.features['7z'])
+				files = await this.extract7z();
+			else if(this.features.pdf)
+				files = await this.extractPdf();
+			else if(this.features.epub)
+				files = await this.extractEpub();
+		}
+		catch(error)
+		{
+			throw error;
+		}
+		finally
+		{
+			this.timeEnd(message);
+			release();
+		}
 
 		return files;
 
