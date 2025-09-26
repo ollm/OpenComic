@@ -1256,7 +1256,7 @@ function continueReadingError()
 	});
 }
 
-function compressedError(error, showInPage = true, snackbarKey = '')
+function compressedError(error, showInPage = true, snackbarKey = '', path = false)
 {
 	if(showInPage)
 	{
@@ -1266,9 +1266,11 @@ function compressedError(error, showInPage = true, snackbarKey = '')
 	}
 	else
 	{
+		const message = language.error.uncompress.title+(error ? ': '+(error.detail || error.message) : '');
+
 		events.snackbar({
 			key: 'compressedError'+snackbarKey,
-			text: language.error.uncompress.title+(error ? ': '+(error.detail || error.message) : ''),
+			text: message,
 			duration: 6,
 			update: true,
 			updateShown: true,
@@ -1279,6 +1281,9 @@ function compressedError(error, showInPage = true, snackbarKey = '')
 				},
 			],
 		});
+
+		if(path)
+			console.warn('%cError loading compressed file %c'+path+'%c: '+message, '', 'color: #cc0000;', '');
 	}
 }
 

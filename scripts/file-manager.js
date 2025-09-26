@@ -255,7 +255,7 @@ var file = function(path, _config = false) {
 				if(json.mtime == mtime || _isServer)
 				{
 					if(json.error && !this.config.fromThumbnailsGeneration && !this.config.subtask)
-						dom.compressedError({message: json.error}, false, sha1(this.path));
+						dom.compressedError({message: json.error}, false, sha1(this.path), this.path);
 
 					setFileData(path, json.files);
 
@@ -1972,7 +1972,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 					if(readSome)
 					{
 						//self.saveErrorToCache(error);
-						dom.compressedError(error, false, sha1(self.path));
+						dom.compressedError(error, false, sha1(self.path), self.path);
 
 						// Just in case the 'end' event is not called
 						setTimeout(function() {
@@ -2115,7 +2115,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 						else if(extractedSome)
 						{
 							self.saveErrorToCache(error);
-							dom.compressedError(error, false, sha1(self.path));
+							dom.compressedError(error, false, sha1(self.path), self.path);
 
 							await Promise.all(waitDisk);
 							resolve();

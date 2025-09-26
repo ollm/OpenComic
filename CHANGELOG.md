@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Header bar buttons don't register start/end of chapter if scrolled with scrollbar [`b9cb5ea`](https://github.com/ollm/OpenComic/commit/b9cb5ea8d034fbca72c53212bc5faf9f144a879d)
 - Asynchronous progress check in the context menu (Mark as read/unread) [`ca51b12`](https://github.com/ollm/OpenComic/commit/ca51b122372c89b4414572b31f7bf05ac7800c22)
 - The application loops and freezes when opening files on the network (UNC paths) [`7ca4d20`](https://github.com/ollm/OpenComic/commit/7ca4d200730d5b2814e24cad4b34969ab38a2857)
-- Prevent concurrent reads of the same file
+- Prevent concurrent reads of the same file [`cefa1c5`](https://github.com/ollm/OpenComic/commit/cefa1c552309a27e04ec6c6c5b7d2549028eeed5)
 
 ## [v1.6.2](https://github.com/ollm/OpenComic/releases/tag/v1.6.2) (08-09-2025)
 
