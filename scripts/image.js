@@ -163,7 +163,7 @@ async function resizeToBlob(fromImage, config = {})
 				// URL.createObjectURL(resizedBlob)
 				// URL.revokeObjectURL();
 
-				resolve({blob: URL.createObjectURL(blob), info: info});
+				resolve({blob: URL.createObjectURL(blob), info: info, size: blob.size});
 			}
 
 		});

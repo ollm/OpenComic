@@ -216,6 +216,9 @@ async function focusIndex(index, doublePage = false)
 
 function revokeAllObjectURL()
 {
+	// const total = renderedObjectsURL.reduce((acc, o) => acc + o.data.size, 0);
+	// console.log(`Total blob payload megabytes: ${(total / (1024 * 1024)).toFixed(2)} MB in ${renderedObjectsURL.length} images`);
+
 	for(let i = 0, len = renderedObjectsURL.length; i < len; i++)
 	{
 		renderedObjectsURL[i].img.classList.remove('blobRendered');
@@ -426,7 +429,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						if(name)
 						{
 							data = await file.renderBlob(name, _config);
-							if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+							if(queueIndex !== queue.index('readingRender')) return URL.revokeObjectURL(data.blob); // Return if the queue is different
 
 							img.src = data.blob;
 							img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
@@ -479,7 +482,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					try
 					{
 						let data = await image.resizeToBlob(src, _config);
-						if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+						if(queueIndex !== queue.index('readingRender')) return URL.revokeObjectURL(data.blob); // Return if the queue is different
 
 						img.src = data.blob;
 						img.classList.add('blobRendered', 'blobRender');
@@ -608,5 +611,6 @@ module.exports = {
 	resized: resized,
 	setEbookConfigChanged: setEbookConfigChanged,
 	setOnRender: setOnRender,
+	revokeAllObjectURL: revokeAllObjectURL,
 	get rendered() {return rendered},
 }

@@ -2419,7 +2419,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			this.setFileStatus(file, {rendered: true, widthRendered: this.config.width});
 
-			return {blob: URL.createObjectURL(blob), width: viewport.width, height: viewport.height};
+			return {blob: URL.createObjectURL(blob), width: viewport.width, height: viewport.height, size: blob.size};
 		}
 
 		return false;
@@ -3637,7 +3637,7 @@ function revokeObjectURL(path)
 }
 
 function revokeAllObjectURL()
-{
+{	
 	for(let key in blobObjectsURL)
 	{
 		URL.revokeObjectURL(blobObjectsURL[key]);

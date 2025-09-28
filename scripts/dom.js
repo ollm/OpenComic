@@ -566,6 +566,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	onReading = _onReading = false;
 
 	fileManager.revokeAllObjectURL();
+	reading.render.revokeAllObjectURL();
 	workers.clean('convertImageToBlob');
 
 	scroll.reset();
@@ -1283,7 +1284,7 @@ function compressedError(error, showInPage = true, snackbarKey = '', path = fals
 		});
 
 		if(path)
-			console.warn('%cError loading compressed file %c'+path+'%c: '+message, '', 'color: #cc0000;', '');
+			console.warn('%cError when unzipping %c'+path+'%c: '+message, '', 'color: #cc0000;', '');
 	}
 }
 
@@ -2670,6 +2671,7 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
 	fileManager.revokeAllObjectURL();
+	reading.render.revokeAllObjectURL();
 	workers.clean('convertImageToBlob');
 
 	dom.setCurrentPageVars('reading');
