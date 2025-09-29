@@ -84,7 +84,7 @@ const electron = require('electron'),
 	ejs = require('electron-json-storage'),
 	crypto = require('crypto'),
 	p = require('path'),
-	isEqual = require('lodash.isequal'),
+	isEqual = require('node:util').isDeepStrictEqual,
 	shortWindowsPath = require('short-windows-path'),
 	$ = require('jquery');
 
