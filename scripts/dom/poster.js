@@ -1,4 +1,3 @@
-const mv = require('mv');
 
 function canAddPosterInside(path = false)
 {
@@ -78,7 +77,9 @@ function setNewPoster(path, reload = true, message = false)
 		if(fs.existsSync(posterPath))
 			fs.unlinkSync(posterPath);
 
-		mv(tmp, posterPath, async function(error) {
+		console.log(tmp, posterPath);
+
+		fs.rename(tmp, posterPath, async function(error) {
 
 			if(!error)
 			{

@@ -104,7 +104,6 @@
 		"jxl-oxide-wasm": "^0.12.4",
 		"marked": "^16.3.0",
 		"minimatch": "^10.0.3",
-		"mv": "^2.1.1",
 		"node-7z": "github:ollm/node-7z",
 		"node-scp": "^0.0.25",
 		"pdfjs-dist": "^5.4.149",
