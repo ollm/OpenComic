@@ -529,6 +529,31 @@ function getDocumentsPath()
 	return path;
 }
 
+function purgeOldAtomic()
+{
+	// Remove old atomic files
+	const files = fs.readdirSync(storagePath);
+	const now = Date.now();
+
+	for(const file of files)
+	{
+		const path = p.join(storagePath, file);
+		const stats = fs.statSync(path);
+
+		if(/^[a-z]+\.json\.[0-9]+$/iu.test(file) && (now - stats.mtimeMs) > 86400000) // 24 hours
+		{
+			try
+			{
+				fs.unlinkSync(p.join(storagePath, file));
+			}
+			catch(error)
+			{
+				console.error(error);
+			}
+		}
+	}
+}
+
 var languagesList = false, getLocaleUserLanguageCache = {};
 
 function getLocaleUserLanguage(userLanguage = false)
@@ -830,7 +855,6 @@ function start(callback)
 	});
 }
 
-
 function get(key)
 {
 	return storageJson[key];
@@ -872,5 +896,6 @@ module.exports = {
 	readingPagesConfig: readingPagesConfig,
 	changes: changes,
 	getDownloadsPath: getDownloadsPath,
+	purgeOldAtomic,
 	safe: safe,
 };

@@ -124,7 +124,8 @@
 		"nodemon": "^3.1.10"
 	},
 	"overrides": {
-		"@napi-rs/canvas": "0.0.0"
+		"@napi-rs/canvas": "0.0.0",
+		"write-file-atomic": "6.0.0"
 	},
 	"build": {
 		"appId": "org.opencomic.app",
