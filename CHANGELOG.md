@@ -14,7 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Asynchronous progress check in the context menu (Mark as read/unread) [`ca51b12`](https://github.com/ollm/OpenComic/commit/ca51b122372c89b4414572b31f7bf05ac7800c22)
 - The application loops and freezes when opening files on the network (UNC paths) [`7ca4d20`](https://github.com/ollm/OpenComic/commit/7ca4d200730d5b2814e24cad4b34969ab38a2857)
 - Prevent concurrent reads of the same file [`cefa1c5`](https://github.com/ollm/OpenComic/commit/cefa1c552309a27e04ec6c6c5b7d2549028eeed5)
-- Memory leak in blob files when browsing extremely quickly while reading
+- Memory leak in blob files when browsing extremely quickly while reading [`ccdcdbc`](https://github.com/ollm/OpenComic/commit/ccdcdbc7194e3703c16f0ae5c979f1947d3b7517)
+- TypeError by ensuring countries is an array [`4fb987d`](https://github.com/ollm/OpenComic/commit/4fb987d50d299d8b5c58a979f35eaef11e4c3be0)
 
 ## [v1.6.2](https://github.com/ollm/OpenComic/releases/tag/v1.6.2) (08-09-2025)
 
