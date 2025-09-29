@@ -877,6 +877,21 @@ function _lastUpdate(key)
 	return lastUpdate.get(key) || 0;
 }
 
+function info()
+{
+	const toKB = (bytes) => (bytes / (1024 ** 1)).toFixed(1);
+	let sizes = '';
+
+	for(const key in storage.storageJson)
+	{
+		sizes += key+': '+toKB(JSON.stringify(storage.get(key)).length)+'KB\n';
+	}
+
+	console.log('');
+	console.log('Storage info: {key: size}');
+	console.log(sizes);
+}
+
 module.exports = {
 	start: start,
 	get: get,
@@ -897,5 +912,6 @@ module.exports = {
 	changes: changes,
 	getDownloadsPath: getDownloadsPath,
 	purgeOldAtomic,
+	info,
 	safe: safe,
 };
