@@ -952,6 +952,18 @@ function showAboutWindow()
 	});
 }
 
+function showBlobInternals()
+{
+	const win = new electronRemote.BrowserWindow({
+		webPreferences: {
+			nodeIntegration: false,
+			contextIsolation: true,
+		}
+	});
+
+	win.loadURL('chrome://blob-internals/');
+}
+
 function escapeBackSlash(string)
 {
 	return (string || '').replace(/\\/g, '\\\\');
