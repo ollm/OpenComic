@@ -544,7 +544,7 @@ function purgeOldAtomic()
 		{
 			try
 			{
-				fs.unlinkSync(p.join(storagePath, file));
+				fs.unlinkSync(path);
 			}
 			catch(error)
 			{
