@@ -190,6 +190,10 @@ function get(name)
 
 	let globalList = structuredClone(findOn.global);
 	let countries = dom.fileInfo.country.get();
+	// If countries isn't set as an array, it returns null and causes an uncaught TypeError.
+	if (!Array.isArray(countries)) {
+        countries = [];
+    }
 
 	let list = {
 		store: {
