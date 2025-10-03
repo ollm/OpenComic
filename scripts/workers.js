@@ -388,10 +388,91 @@ async function ping(options = {})
 	return result;
 }
 
+class WorkerClass
+{
+	worker;
+	#index = 0;
+	#idleTimeout;
+	#key = crypto.randomUUID();
+	onClose = false;
+	promisses = [];
+
+	constructor(options = {}) {
+
+		this.worker = new NodeWorker(p.join(appDir, 'scripts/worker.js'));
+		this.worker.addEventListener('message', (event) => this.message(event));
+
+		this.#idleTimeout = options.idleTimeout || false;
+
+		if(this.#idleTimeout && options.idleTimeoutInit)
+			app.setDebounce(this.#key, () => this.close(), this.#idleTimeout);
+
+	}
+
+	message(event) {
+
+		const arrayIndex = this.promisses.findIndex(item => item.index === event.data.index);
+		const promise = this.promisses[arrayIndex];
+		this.promisses.splice(arrayIndex, 1);
+
+		if(event.data.error)
+			promise.reject(event.data.error);
+		else
+			promise.resolve(event.data.result);
+
+	}
+
+	work(options = {}) {
+
+		if(this.#idleTimeout)
+			app.setDebounce(this.#key, () => this.close(), this.#idleTimeout);
+
+		const index = this.#index++;
+
+		this.worker.postMessage({
+			index: index,
+			...options,
+		});
+
+		let resolve = false, reject = false;
+
+		const promise = new Promise(function(_resolve, _reject){
+
+			resolve = _resolve;
+			reject = _reject;
+
+		});
+
+		this.promisses.push({
+			index: index,
+			resolve: resolve,
+			reject: reject,
+		});
+
+		return promise;
+
+	}
+
+	onClose(callback) {
+		this.onClose = callback;
+	}
+
+	close() {
+
+		if(this.onClose)
+			this.onClose();
+
+		this.worker.terminate();
+		delete this.worker;
+
+	}
+}
+
 module.exports = {
 	closeAllWorkers: closeAllWorkers,
 	convertImage: convertImage,
 	convertImageToBlob: convertImageToBlob,
 	ping: ping,
 	clean: clean,
+	Worker: WorkerClass,
 }

@@ -10,35 +10,29 @@ async function resize(fromImage, toImage, config = {})
 {
 	await loadSharp();
 
-	if(!config.blob)
+	if(!config.blob && !config.worker)
 	{
 		fromImage = app.shortWindowsPath(fromImage);
 		fileManager.macosStartAccessingSecurityScopedResource(fromImage);
+
+		const extension = app.extname(fromImage);
+
+		if(/*compatible.image.ico.has(extension)/* || */compatible.image.ico.has(extension)) // Unsupported images format for resize
+			throw new Error({});
 	}
 
-	config = {...{
+	config = {
 		width: 200,
 		fit: sharp.fit.inside,
 		quality: 95,
 		background: 'white',
-	}, ...config};
+		...config,
+	};
 
-	return new Promise(function(resolve, reject) {
-
-		if(!config.blob)
-		{
-			const extension = app.extname(fromImage);
-
-			if(/*compatible.image.ico.has(extension)/* || */compatible.image.ico.has(extension)) // Unsupported images format for resize
-				return reject({});
-		}
-
-		_resize(fromImage, toImage, config, resolve, reject);
-
-	});
+	return _resize(fromImage, toImage, config);
 }
 
-async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 0)
+async function _resize(fromImage, toImage, config = {}, deep = 0)
 {
 	let options = {}
 
@@ -48,18 +42,24 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 	if(config.blob)
 		fromImage = await (await fetch(fromImage)).arrayBuffer();
 
-	sharp(fromImage, options).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage, async function(error) {
+	try
+	{
+		await sharp(fromImage, options).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage);
 
+		return toImage;
+	}
+	catch(error)
+	{
 		if(error && /unsupported image format/iu.test(error?.message || '') && !config.blob)
 		{
-			reject(error);
+			throw error;
 		}
 		else if(error)
 		{
 			if(deep > 3)
 			{
 				console.error(fromImage, error);
-				reject(error);
+				throw error;
 			}
 			else
 			{
@@ -71,125 +71,89 @@ async function _resize(fromImage, toImage, config = {}, resolve, reject, deep = 
 					console.log('Log: Image resizing failed, Trying again in '+(100 * deep)+'ms | '+fromImage, error);
 
 				await app.sleep(100 * deep);
-				_resize(fromImage, toImage, config, resolve, reject, deep);
+				return _resize(fromImage, toImage, config, deep);
 			}
 		}
-		else
-		{
-			resolve(toImage);
-		}
-	});
+	}
 }
 
 async function resizeToBlob(fromImage, config = {})
 {
 	await loadSharp();
 
-	if(!config.blob)
+	if(!config.blob && !config.worker)
 	{
 		fromImage = app.shortWindowsPath(fromImage);
 		fileManager.macosStartAccessingSecurityScopedResource(fromImage);
 	}
 
-	config = {...{
+	config = {
 		kernel: 'lanczos3',
 		compressionLevel: 0,
-	}, ...config};
+		...config,
+	};
 
-	if(config.width && config.width < 1)
-		config.width = 1;
+	if(config.width && config.width < 1) config.width = 1;
+	if(config.height && config.height < 1) config.height = 1;
 
-	if(config.height && config.height < 1)
-		config.height = 1;
+	if(config.blob)
+		fromImage = await (await fetch(fromImage)).arrayBuffer();
 
-	return new Promise(async function(resolve, reject) {
+	let _sharp = sharp(fromImage).keepIccProfile();
 
-		// pipelineColourspace('rgb16').toColourspace('rgb16')
+	if(config.interpolator && !config.kernel)
+	{
+		let imageWidth = config.imageWidth;
+		let imageHeight = config.imageHeight;
 
-		if(config.blob)
-			fromImage = await (await fetch(fromImage)).arrayBuffer();
-
-		let _sharp = sharp(fromImage).keepIccProfile();
-
-		if(config.interpolator && !config.kernel)
+		if(config.width < imageWidth)
 		{
-			let imageWidth = config.imageWidth;
-			let imageHeight = config.imageHeight;
+			let m = Math.floor(imageWidth / config.width);
 
-			if(config.width < imageWidth)
+			if(m >= 2)
 			{
-				let m = Math.floor(imageWidth / config.width);
-
-				if(m >= 2)
-				{
-					imageWidth = Math.round(imageWidth / m);
-					imageHeight = Math.round(imageHeight / m);
-				}
+				imageWidth = Math.round(imageWidth / m);
+				imageHeight = Math.round(imageHeight / m);
 			}
-
-			if(imageWidth != config.imageWidth)
-				_sharp.resize({kernel: 'cubic', width: imageWidth});
-
-			_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
-		}
-		else
-		{
-			_sharp = _sharp.resize(config);
 		}
 
-		_sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer(function(error, buffer, info) {
-		
-			if(error || !buffer)
-			{
-				reject(error);
-			}
-			else
-			{
-				let blob;
+		if(imageWidth != config.imageWidth)
+			_sharp.resize({kernel: 'cubic', width: imageWidth});
 
-				try
-				{
+		_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
+	}
+	else
+	{
+		_sharp = _sharp.resize(config);
+	}
 
-					blob = new Blob([buffer], {type: 'image/png'});
-				}
-				catch(error)
-				{
-					console.error(error);
+	try
+	{
+		const {data, info} = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer({resolveWithObject: true});
 
-					reject();
-					return;
-				}
+		if(config.returnData)
+			return {data, info};
 
-				// URL.createObjectURL(resizedBlob)
-				// URL.revokeObjectURL();
+		const blob = new Blob([data], {type: 'image/png'});
+		const url = URL.createObjectURL(blob);
 
-				resolve({blob: URL.createObjectURL(blob), info: info, size: blob.size});
-			}
-
-		});
-	});
-
-	/*
-	sharpen({
-		sigma: 0.5,
-	})
-
-	convolve({
-		width: 3,
-		height: 3,
-		kernel: [0.0, -0.125, 0.0, -0.125, 1.5, -0.125, 0.0, -0.125, 0.0],
-	})*/
-
+		return {blob: url, info, size: blob.size};
+	}
+	catch(error)
+	{
+		throw error;
+	}
 }
 
 async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 {
 	await loadSharp();
 
-	config = {...{
+	config = {
 		kernel: 'nearest',
 		compressionLevel: 2,
-	}, ...config};
+		...config,
+	};
 
 	return new Promise(function(resolve, reject) {
 
@@ -214,10 +178,11 @@ async function rawToBuffer(fromBuffer, raw = {}, config = {})
 {
 	await loadSharp();
 
-	config = {...{
+	config = {
 		kernel: 'nearest',
 		compressionLevel: 0,
-	}, ...config};
+		...config,
+	};
 
 	return new Promise(function(resolve, reject) {
 

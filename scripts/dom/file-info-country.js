@@ -2608,9 +2608,9 @@ function getCountry()
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 	if(timezone === '' || !timezone)
-		return null;
+		return [];
 
-	return timezones[timezone].c || null;
+	return timezones[timezone].c || [];
 }
 
 module.exports = {

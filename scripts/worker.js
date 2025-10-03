@@ -70,7 +70,6 @@ self.addEventListener('message', async function(message) {
 				convertImage = require(p.join(__dirname, '../scripts/worker/convert-image.js'));
 
 			const image = await convertImage.convert(data.path, data.mime);
-
 			self.postMessage(image);
 
 			break;

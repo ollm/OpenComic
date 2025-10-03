@@ -964,6 +964,29 @@ function showBlobInternals()
 	win.loadURL('chrome://blob-internals/');
 }
 
+function printMemoryUsage()
+{
+	const memoryUsage = process.memoryUsage();
+	const memory = performance.memory;
+
+	const toGB = (bytes) => (bytes / (1024 ** 3)).toFixed(2);
+
+	let message = '';
+
+	message += 'RSS: '+toGB(memoryUsage.rss)+'GB\n';
+	message += 'Heap Total: '+toGB(memoryUsage.heapTotal)+'GB\n';
+	message += 'Heap Used: '+toGB(memoryUsage.heapUsed)+'GB\n';
+	message += 'External: '+toGB(memoryUsage.external)+'GB\n';
+	message += 'Array Buffers: '+toGB(memoryUsage.arrayBuffers)+'GB\n';
+	message += '-----\n';
+	message += 'Total JS Heap Size: '+toGB(memory.totalJSHeapSize)+'GB\n';
+	message += 'Used JS Heap Size: '+toGB(memory.usedJSHeapSize)+'GB\n';
+
+	console.log('');
+	console.log('Memory usage');
+	console.log(message);
+}
+
 function escapeBackSlash(string)
 {
 	return (string || '').replace(/\\/g, '\\\\');

@@ -451,6 +451,7 @@ module.exports = {
 	sleep: sleep,
 	setImmediate: setImmediate,
 	setThrottle: setThrottle,
+	setDebounce: setDebounce,
 	transition: transition,
 	scrollTransition: scrollTransition,
 	scrollAnimation: scrollAnimation,
