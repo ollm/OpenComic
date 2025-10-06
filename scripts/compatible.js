@@ -315,12 +315,13 @@ compatible.image.all = [
 	...compatible.image.heic,
 ];
 compatible.image.blob = [ // This image formats requires conversion to Blob to be displayed
+
+];
+compatible.image.convert = [ // This image formats requires conversion to PNG to be displayed
+	...compatible.image.jxr,
 	...compatible.image.jp2,
 	...compatible.image.jxl,
 	...compatible.image.heic,	
-];
-compatible.image.convert = [ // This image formats requires conversion to PNG to be displayed
-	...compatible.image.jxr,	
 ];
 
 // Join compressed
@@ -346,12 +347,13 @@ compatibleMime.image.all = [
 	...compatibleMime.image.heic,
 ];
 compatibleMime.image.blob = [ // This image formats requires conversion to Blob to be displayed
-	...compatibleMime.image.jp2,
-	...compatibleMime.image.jxl,
-	...compatibleMime.image.heic,	
+
 ];
 compatibleMime.image.convert = [ // This image formats requires conversion to PNG to be displayed
-	...compatibleMime.image.jxr,	
+	...compatibleMime.image.jxr,
+	...compatibleMime.image.jp2,
+	...compatibleMime.image.jxl,
+	...compatibleMime.image.heic,
 ];
 
 // Join mime compressed

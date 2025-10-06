@@ -234,11 +234,8 @@ async function show(path, opds = false)
 				height: Math.round(600 * window.devicePixelRatio),
 			};
 
-			if(compatible.image.blob(src)) // Convert unsupported images to blob
-			{
-				src = await workers.convertImageToBlob(src, {priorize: true});
-				options.blob = true;
-			}
+			if(compatible.image.convert(images.path)) // Convert unsupported images
+				src = await workers.convertImage(images.path, {priorize: true});
 
 			let data = await image.resizeToBlob(src, options);
 			images.realPath = data.blob;

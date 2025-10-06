@@ -314,6 +314,7 @@ async function copyImageToClipboard()
 	for(let i = 0; i < len; i++)
 	{
 		let src = images[i].image;
+		let path = images[i].path;
 
 		const size = resizes[i];
 		const options = {
@@ -323,11 +324,8 @@ async function copyImageToClipboard()
 			compressionLevel: 0,
 		};
 
-		if(compatible.image.blob(src)) // Convert unsupported images to blob
-		{
-			src = await workers.convertImageToBlob(src, {priorize: true});
-			options.blob = true;
-		}
+		if(compatible.image.blob(path)) // Convert unsupported images
+			src = await workers.convertImage(path, {priorize: true});
 
 		let data = await image.resizeToBlob(src, options);
 

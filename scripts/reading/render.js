@@ -391,15 +391,13 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			_config.kernel = _config.width > imageData.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
 
 			let src = img.dataset.src;
+			let path = img.dataset.path;
 			let key = src+'|'+_config.width+'x'+_config.height;
 
 			fileManager.macosStartAccessingSecurityScopedResource(src);
 
-			if(compatible.image.blob(src)) // Convert unsupported images to blob
-			{
-				src = await workers.convertImageToBlob(src, {priorize: true});
-				_config.blob = true;
-			}
+			if(compatible.image.convert(path)) // Convert unsupported images
+				src = await workers.convertImage(path, {priorize: true});
 
 			if(renderCanvas)
 			{

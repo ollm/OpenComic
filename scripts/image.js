@@ -1,5 +1,8 @@
 var sharp = false, imageSize = false, heic = false;
 
+inChildFork = typeof inChildFork !== 'undefined' ? inChildFork : false;
+const useChildFork = (process.platform === 'linux' && !inChildFork) ? true : false;
+
 async function loadSharp()
 {
 	if(sharp !== false) return;
@@ -10,7 +13,7 @@ async function resize(fromImage, toImage, config = {})
 {
 	await loadSharp();
 
-	if(!config.blob && !config.worker)
+	if(!inChildFork)
 	{
 		fromImage = app.shortWindowsPath(fromImage);
 		fileManager.macosStartAccessingSecurityScopedResource(fromImage);
@@ -34,13 +37,15 @@ async function resize(fromImage, toImage, config = {})
 
 async function _resize(fromImage, toImage, config = {}, deep = 0)
 {
+	if(useChildFork && !inChildFork)
+		return childFork._resize(fromImage, toImage, config, deep);
+
+	await loadSharp();
+
 	let options = {}
 
 	if(deep > 3)
 		options = {failOn: 'none'};
-
-	if(config.blob)
-		fromImage = await (await fetch(fromImage)).arrayBuffer();
 
 	try
 	{
@@ -50,7 +55,7 @@ async function _resize(fromImage, toImage, config = {}, deep = 0)
 	}
 	catch(error)
 	{
-		if(error && /unsupported image format/iu.test(error?.message || '') && !config.blob)
+		if(error && /unsupported image format/iu.test(error?.message || ''))
 		{
 			throw error;
 		}
@@ -81,7 +86,7 @@ async function resizeToBlob(fromImage, config = {})
 {
 	await loadSharp();
 
-	if(!config.blob && !config.worker)
+	if(!inChildFork)
 	{
 		fromImage = app.shortWindowsPath(fromImage);
 		fileManager.macosStartAccessingSecurityScopedResource(fromImage);
@@ -96,8 +101,20 @@ async function resizeToBlob(fromImage, config = {})
 	if(config.width && config.width < 1) config.width = 1;
 	if(config.height && config.height < 1) config.height = 1;
 
-	if(config.blob)
-		fromImage = await (await fetch(fromImage)).arrayBuffer();
+	if(useChildFork && !inChildFork)
+	{
+		const toFile = p.join(tempFolder, crypto.randomUUID()+'.png');
+		config.toFile = toFile;
+
+		const info = await childFork.resizeToBlob(fromImage, config);
+		const data = await fsp.readFile(toFile);
+		fsp.unlink(toFile);
+
+		const blob = new Blob([data], {type: 'image/png'});
+		const url = URL.createObjectURL(blob);
+
+		return {blob: url, info, size: blob.size};
+	}
 
 	let _sharp = sharp(fromImage).keepIccProfile();
 
@@ -129,6 +146,12 @@ async function resizeToBlob(fromImage, config = {})
 
 	try
 	{
+		if(config.toFile)
+		{
+			const info = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toFile(config.toFile);
+			return {data: [], info, size: 0};
+		}
+
 		const {data, info} = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer({resolveWithObject: true});
 
 		if(config.returnData)
@@ -320,14 +343,17 @@ async function getSizes(images)
 
 			try
 			{
-				const extension = app.extname(image.image);
 
-				if(compatible.image.heic.has(extension))
+				const path = fileManager.realPath(image.path, -1);
+				const extension = app.extname(image.image);
+				const pathExtension = app.extname(path);
+
+				if(compatible.image.heic.has(pathExtension))
 				{
 					if(heic === false)
 						heic = require('heic-decode');
 
-					const buffer = await fsp.readFile(image.image);
+					const buffer = await fsp.readFile(path);
 					const images = await heic.all({buffer});
 					const properties = images[0] || {width: 1, height: 1};
 					images.dispose();
@@ -337,12 +363,12 @@ async function getSizes(images)
 						height: properties.height,
 					};
 				}
-				else if(compatible.image.jp2.has(extension))
+				else if(compatible.image.jp2.has(pathExtension))
 				{
 					if(pdfjsDecoders === false)
 						await loadPdfjsDecoders();
 
-					const buffer = await fsp.readFile(image.image);
+					const buffer = await fsp.readFile(path);
 					const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
 
 					size = {
@@ -350,12 +376,12 @@ async function getSizes(images)
 						height: properties.height,
 					};
 				}
-				else if(compatible.image.jxl.has(extension))
+				else if(compatible.image.jxl.has(pathExtension))
 				{
 					if(JxlImage === false)
 						await loadJxlImage();
 
-					const buffer = await fsp.readFile(image.image);
+					const buffer = await fsp.readFile(path);
 
 					const jxlImage = new JxlImage();
 					jxlImage.feedBytes(buffer);
@@ -368,14 +394,14 @@ async function getSizes(images)
 						height: jxlImage.height,
 					};
 				}
-				else if(compatible.image.blob.has(extension))
+				else if(compatible.image.convert.has(pathExtension))
 				{
 					if(imageSize === false)
 						imageSize = require('image-size/fromFile').imageSizeFromFile;
 
 					try
 					{
-						const dimensions = await imageSize(image.image);
+						const dimensions = await imageSize(path);
 
 						size = {
 							width: dimensions.width,
@@ -384,10 +410,9 @@ async function getSizes(images)
 					}
 					catch(error)
 					{
-						const blob = await workers.convertImageToBlob(image.image);
-						const buffer = await (await fetch(blob)).arrayBuffer();
+						const image = await workers.convertImage(path);
 
-						const _sharp = sharp(buffer);
+						const _sharp = sharp(image);
 						const metadata = await _sharp.metadata();
 
 						size = {
@@ -453,6 +478,7 @@ async function getSizes(images)
 
 module.exports = {
 	resize: resize,
+	_resize: _resize,
 	resizeToBlob: resizeToBlob,
 	rawToPng: rawToPng,
 	rawToBuffer: rawToBuffer,

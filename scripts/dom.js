@@ -567,7 +567,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 	fileManager.revokeAllObjectURL();
 	reading.render.revokeAllObjectURL();
-	workers.clean('convertImageToBlob');
+	workers.clean('convertImage');
 
 	scroll.reset();
 	reading.hideContent();
@@ -2670,9 +2670,10 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
+	settings.purgeTemporaryFilesEveryTimes(10);
 	fileManager.revokeAllObjectURL();
 	reading.render.revokeAllObjectURL();
-	workers.clean('convertImageToBlob');
+	workers.clean('convertImage');
 
 	dom.setCurrentPageVars('reading');
 
@@ -2768,8 +2769,6 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	{
 		await file.makeAvailable(files, false, true);
 	}
-
-	await fileManager.convertUnsupportedImages(files);
 
 	if(hasMusic) files.pop(); // Remove now
 

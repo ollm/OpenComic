@@ -42,16 +42,12 @@ async function processTheImageQueue(img = false)
 	const ratios = getRatios();
 	const forceSize = img.forceSize || 150;
 
-	let blob = false;
-
-	if(compatible.image.blob(realPath)) // Convert unsupported images to blob
-		blob = await workers.convertImageToBlob(realPath, {useThreads: 0.3/*0.4*/});
+	if(compatible.image.convert(img.file)) // Convert unsupported images
+		await workers.convertImage(img.file, {useThreads: 0.3/*0.4*/});
 
 	return new Promise(function(resolve, reject) {
 
-		image.resize(blob || realPath, toImage, {blob: blob ? true : false, width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
-
-			//if(blob) fileManager.revokeObjectURL(path);
+		image.resize(realPath, toImage, {width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
 
 			if(typeof data[sha] === 'undefined') data[sha] = {lastAccess: app.time()};
 			data[sha].size = img.size;
@@ -62,8 +58,6 @@ async function processTheImageQueue(img = false)
 			resolve();
 
 		}).catch(function(){
-
-			//if(blob) fileManager.revokeObjectURL(path);
 
 			img.callback({cache: true, path: escapeBackSlash(realPath), sha: sha}, img.vars);
 
@@ -76,9 +70,6 @@ async function processTheImageQueue(img = false)
 
 async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 {
-	if(compatible.image.convert(file)) // Convert unsupported images
-		await workers.convertImage(file);
-
 	threads.job('cache', {useThreads: 1}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
 }
 

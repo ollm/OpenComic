@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Prevent concurrent reads of the same file [`cefa1c5`](https://github.com/ollm/OpenComic/commit/cefa1c552309a27e04ec6c6c5b7d2549028eeed5)
 - Memory leak in blob files when browsing extremely quickly while reading [`ccdcdbc`](https://github.com/ollm/OpenComic/commit/ccdcdbc7194e3703c16f0ae5c979f1947d3b7517)
 - TypeError by ensuring countries is an array [`4fb987d`](https://github.com/ollm/OpenComic/commit/4fb987d50d299d8b5c58a979f35eaef11e4c3be0)
+- High memory usage on Linux due to a compatibility issue between Sharp and Electron
 
 ## [v1.6.2](https://github.com/ollm/OpenComic/releases/tag/v1.6.2) (08-09-2025)
 

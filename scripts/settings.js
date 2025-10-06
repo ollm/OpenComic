@@ -133,7 +133,20 @@ function removeTemporaryPath(path)
 	return size;
 }
 
-function purgeTemporaryFiles(tmpMaxSize = false)
+let purgeTemporaryFilesCount = 0;
+
+function purgeTemporaryFilesEveryTimes(times = 10)
+{
+	purgeTemporaryFilesCount++;
+
+	if(purgeTemporaryFilesCount >= times)
+	{
+		purgeTemporaryFilesCount = 0;
+		purgeTemporaryFiles(false, true);
+	}
+}
+
+function purgeTemporaryFiles(tmpMaxSize = false, onlyExedeMaxSize = false)
 {
 	tmpMaxSize = tmpMaxSize || config.tmpMaxSize;
 
@@ -154,26 +167,30 @@ function purgeTemporaryFiles(tmpMaxSize = false)
 			let dataArray = [];
 
 			// Remove not usage files
-			for(let path in tmpUsage)
+			if(!onlyExedeMaxSize)
 			{
-				if(time - tmpUsage[path].lastAccess > tmpMaxOld)
+				for(let path in tmpUsage)
 				{
-					if(fs.existsSync(path))
-						fs.unlinkSync(path);
+					if(time - tmpUsage[path].lastAccess > tmpMaxOld)
+					{
+						if(fs.existsSync(path))
+							fs.unlinkSync(path);
 
-					delete tmpUsage[path];
-				}
-				else
-				{
-					dataArray.push({
-						path: path,
-						lastAccess: tmpUsage[path].lastAccess,
-					});
+						delete tmpUsage[path];
+					}
+					else
+					{
+						dataArray.push({
+							path: path,
+							lastAccess: tmpUsage[path].lastAccess,
+						});
+					}
 				}
 			}
 
 			// Remove unreferenced files
-			removeUnreferencedTemporaryFiles(tmpUsage, tempFolder, true);
+			if(!onlyExedeMaxSize)
+				removeUnreferencedTemporaryFiles(tmpUsage, tempFolder, true);
 
 			// Remove if exede tmp max size
 			let tmpSize = fileManager.dirSizeSync(tempFolder);
@@ -1550,5 +1567,6 @@ module.exports = {
 	clearCache: clearCache,
 	removeTemporaryFiles: removeTemporaryFiles,
 	purgeTemporaryFiles: purgeTemporaryFiles,
+	purgeTemporaryFilesEveryTimes: purgeTemporaryFilesEveryTimes,
 	generateShortcutsTable: generateShortcutsTable,
 };
