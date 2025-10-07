@@ -427,7 +427,11 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						if(name)
 						{
 							data = await file.renderBlob(name, _config);
-							if(queueIndex !== queue.index('readingRender')) return URL.revokeObjectURL(data.blob); // Return if the queue is different
+
+							renderedObjectsURL.push({data: data, img: img});
+							renderedObjectsURLCache[key] = data;
+
+							if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
 
 							img.src = data.blob;
 							img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
@@ -435,9 +439,6 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 
 							img.dataset.width = Math.round(data.width);
 							img.dataset.height = Math.round(data.height);
-
-							renderedObjectsURL.push({data: data, img: img});
-							renderedObjectsURLCache[key] = data;
 						}
 						else
 						{
@@ -480,14 +481,15 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					try
 					{
 						let data = await image.resizeToBlob(src, _config);
-						if(queueIndex !== queue.index('readingRender')) return URL.revokeObjectURL(data.blob); // Return if the queue is different
+
+						renderedObjectsURL.push({data: data, img: img});
+						renderedObjectsURLCache[key] = {blob: data.blob};
+
+						if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
 
 						img.src = data.blob;
 						img.classList.add('blobRendered', 'blobRender');
 						img.style.imageRendering = '';
-
-						renderedObjectsURL.push({data: data, img: img});
-						renderedObjectsURLCache[key] = {blob: data.blob};
 					}
 					catch(error)
 					{

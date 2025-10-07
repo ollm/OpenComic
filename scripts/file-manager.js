@@ -2396,7 +2396,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let status = this.getFileStatus(file);
 
-		if((status && (status.widthRendered !== this.config.width)) || this.config.force)
+		if(status)
 		{
 			this.log('renderBlobPdf');
 
