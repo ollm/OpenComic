@@ -82,6 +82,24 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.6.3" date="2025-10-07">
+            <description>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Add error handling for reading progress in comic context menu</li>
+                    <li>Error handling for corrupted JSON/ZSTD files in cache and remove them</li>
+                    <li>Header bar buttons don't register start/end of chapter if scrolled with scrollbar</li>
+                    <li>Asynchronous progress check in the context menu (Mark as read/unread)</li>
+                    <li>The application loops and freezes when opening files on the network (UNC paths)</li>
+                    <li>Prevent concurrent reads of the same file</li>
+                    <li>Memory leak in blob files when browsing extremely quickly while reading</li>
+                    <li>TypeError by ensuring countries is an array</li>
+                    <li>High memory usage on Linux due to a compatibility issue between Sharp and Electron</li>
+                    <li>Incorrect page is being set as a poster in manga mode</li>
+                    <li>Image breaks sometimes in PDF render</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.6.2" date="2025-09-08">
             <description>
                 <p><em>🚀 New Features</em></p>
