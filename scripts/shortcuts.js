@@ -627,7 +627,7 @@ function loadShortcuts()
 				contextMenu: {
 					name: language.settings.shortcuts.contextMenu,
 					function: function(event, gamepad = false){
-						reading.contextMenu.show(!!gamepad);
+						reading.contextMenu.show(event, !!gamepad);
 						return true;
 					},
 				},

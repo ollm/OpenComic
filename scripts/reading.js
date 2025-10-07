@@ -4240,6 +4240,27 @@ function getImage(index = 0)
 	return images[Object.keys(images)[0]];
 }
 
+function getImageByPosition(position = 0, subindex = 0)
+{
+	let image = false;
+	let _subindex = 0;
+
+	for(let key in images)
+	{
+		if(position === false || position == imagesData[key].position)
+		{
+			image = images[key];
+
+			if(_subindex === subindex)
+				break;
+
+			_subindex++;
+		}
+	}
+
+	return image || images[Object.keys(images)[0]];
+}
+
 var generateEbookPagesDelayedST = false, generateEbookPagesCancel = false;
 
 function generateEbookPagesDelayed()
@@ -5826,6 +5847,7 @@ module.exports = {
 	totalPages: function(){return imagesNum},
 	currentPage: function(){return currentPage},
 	getImage: getImage,
+	getImageByPosition: getImageByPosition,
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,
 	loadReadingPages: loadReadingPages,

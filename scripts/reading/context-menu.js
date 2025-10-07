@@ -1,6 +1,11 @@
 
-function show(gamepad = false)
+var elementFromPointIndex = false;
+
+function show(event, gamepad = false)
 {
+	const elementFromPoint = !gamepad ? document.elementFromPoint(event.clientX, event.clientY) : false;
+	elementFromPointIndex = (elementFromPoint && elementFromPoint.tagName.toLowerCase() === 'img' && elementFromPoint.dataset.index) ? +elementFromPoint.dataset.index : false;
+
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
 	dom.queryAll('.separator-set-as-poster, .separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
 
@@ -51,18 +56,11 @@ function labels()
 
 function getCurrentImage()
 {
-	const currentIndex = reading.currentIndex() - 1;
+	if(elementFromPointIndex !== false)
+		return reading.getImage(elementFromPointIndex).path;
 
-	const images = reading.images();
-	const imagesData = reading.imagesData();
-
-	for(let key in images)
-	{
-		if(currentIndex == imagesData[key].position)
-			return images[key].path;
-	}
-
-	return false;	
+	const image = reading.getImageByPosition(reading.currentImagePosition(), 0);
+	return image.path;
 }
 
 function setAsPoster()
