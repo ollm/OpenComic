@@ -27,18 +27,18 @@ const store = process.argv.includes('--store');
 if(store)
 {
 	// Sharp x64
-	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.1.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.2.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList');
 
 	// Sharp arm64
-	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.1.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.2.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList');
 }
 else
 {
 	// Sharp x64
-	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.1.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.2.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList');
 
 	// Sharp arm64
-	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.1.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.2.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList');
 }
 
 console.log('Runed tests: Ok');
