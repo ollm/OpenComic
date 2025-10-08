@@ -29,12 +29,12 @@ modules:
     sources:
       - type: archive
         url: https://github.com/ollm/OpenComic/releases/download/v1.6.3/opencomic-1.6.3.tar.gz
-        sha256: 644a9b64cbe2f5913e3c038abcdcc3f59b88afdb0f2e667378c4dcbe2e4b0872
+        sha256: 0926d7afe0a3979f827c839eb488905209e6e87510fe32801ad2d17aeaf7d9e8
         only-arches:
           - x86_64
       - type: archive
         url: https://github.com/ollm/OpenComic/releases/download/v1.6.3/opencomic-1.6.3-arm64.tar.gz
-        sha256: efff8b16a139d1f3da0a3f166f5a8d98bbbfa008ed6fe0cbcede2482fa7c3c2d
+        sha256: cddb4c34b97b899b07e588c1e2cc98f2ec0620f0c78ab2d005fd07c208cf1bea
         only-arches:
           - aarch64
       - type: file
