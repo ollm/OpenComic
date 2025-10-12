@@ -1820,7 +1820,7 @@ function rightClick(e)
 	return false;
 }
 
-var showComicSkip;
+var showComicSkip = false;
 
 //Begins to show the next comic
 function showNextComic(mode, animation = true, invert = false)
@@ -1849,7 +1849,7 @@ function showNextComic(mode, animation = true, invert = false)
 
 				var scale = ((contentHeight - 132) / contentHeight);
 
-				template.contentRight('.reading-body, .reading-lens > div').css({
+				template.contentRight('.reading-body').css({
 					'transform-origin': 'center '+(template.contentRight('.reading-body').height() - contentHeight)+'px',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -1868,7 +1868,7 @@ function showNextComic(mode, animation = true, invert = false)
 
 				var scale = ((contentWidth - 132) / contentWidth);
 
-				template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+				template.contentRight('.reading-body > div').css({
 					'transform-origin': '0px center',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -1896,7 +1896,7 @@ function showNextComic(mode, animation = true, invert = false)
 				'opacity': 0,
 			});
 
-			template.contentRight('.reading-body, .reading-lens > div').css({
+			template.contentRight('.reading-body').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
@@ -1909,12 +1909,13 @@ function showNextComic(mode, animation = true, invert = false)
 				'opacity': 0,
 			});
 
-			template.contentRight('.reading-body > div, .reading-lens > div > div').css({
+			template.contentRight('.reading-body > div').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(-'+(contentWidth * (readingViewIs('slide') ? (indexNum - 1) : 0))+'px, 0px)',
 			});
 		}
 
+		showComicSkip = setTimeout(function(){showComicSkip = false}, _config.readingViewSpeed * 1000);
 		currentIndex = indexNum;
 	}
 }
@@ -1946,7 +1947,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 				var scale = ((contentHeight - 132) / contentHeight);
 
-				template.contentRight('.reading-body, .reading-lens > div').css({
+				template.contentRight('.reading-body').css({
 					'transform-origin': 'center '+contentHeight+'px',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -1965,7 +1966,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 				var scale = ((contentWidth - 132) / contentWidth);
 
-				template.contentRight('.reading-body, .reading-lens > div').css({
+				template.contentRight('.reading-body').css({
 					'transform-origin': contentWidth+'px center',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
@@ -1995,7 +1996,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 				'opacity': 0,
 			});
 
-			template.contentRight('.reading-body, .reading-lens > div').css({
+			template.contentRight('.reading-body').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
@@ -2010,12 +2011,13 @@ function showPreviousComic(mode, animation = true, invert = false)
 				'opacity': 0,
 			});
 
-			template.contentRight('.reading-body, .reading-lens > div').css({
+			template.contentRight('.reading-body').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
 
+		showComicSkip = setTimeout(function(){showComicSkip = false}, _config.readingViewSpeed * 1000);
 		currentIndex = 1;
 	}
 }
@@ -2842,7 +2844,7 @@ function magnifyingGlassControlPrev()
 }
 
 //Magnifying glass control
-var magnifyingGlassControlST = false;
+var magnifyingGlassControlST = false, prevMagnifyingGlassControlRect = false;
 
 function magnifyingGlassControl(mode, event = false, lensData = false)
 {
@@ -2874,7 +2876,8 @@ function magnifyingGlassControl(mode, event = false, lensData = false)
 		let top = (y - lensHeightM);
 		let left = (x - (lensWidth / 2));
 
-		let rect = contentRight.querySelector('.reading-body').getBoundingClientRect();
+		let rect = showComicSkip !== false && prevMagnifyingGlassControlRect ? prevMagnifyingGlassControlRect : contentRight.querySelector('.reading-body').getBoundingClientRect();
+		prevMagnifyingGlassControlRect = rect;
 
 		let topLens = y - rect.top - (lensHeightM / zoom);
 		let leftLens = x - rect.left - lensWidthM;
@@ -2889,7 +2892,9 @@ function magnifyingGlassControl(mode, event = false, lensData = false)
 		}).removeClass('d', 'h').addClass('a');
 
 		dom.this(contentRight).find('.reading-lens > div').css({
-			transform: ' scale('+zoom+') translate(' + (-(leftLens)) + 'px, ' + (-(topLens)) + 'px)'
+			transform: 'scale('+zoom+') translate(' + (-(leftLens)) + 'px, ' + (-(topLens)) + 'px)',
+			transformOrigin: '',
+			transition: '',
 		});
 
 		magnifyingGlassView = true;
@@ -5069,7 +5074,7 @@ var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMous
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [];
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false;
 
 	isLoaded = false;
 	magnifyingGlassPosition.mode = false;
