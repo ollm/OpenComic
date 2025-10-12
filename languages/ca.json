@@ -268,7 +268,7 @@
 			"globalZoom": "Zoom global en comptes d'imatge a imatge (Lectura vertical)",
 			"globalZoomSlide": "Zoom global en comptes d'imatge a imatge (Lectura horitzontal)",
 			"moveZoomWithMouse": "Moure el zoom mitjançant el cursor (Desactiva moure mitjançant arrossegar i deixar anar)",
-			"scrollWithMouse": "Realitzar desplaçament movent el cursor per les vores de la pantalla (Desactiva desplaçament mitjançant arrossegar i deixar anar)",
+			"scrollWithMouse": "Desplaçament automàtic en moure el cursor verticalment al centre de la pantalla (Desactiva desplaçament mitjançant arrossegar i deixar anar)",
 			"goNextPrevChapterWithScroll": "Anar al capítol següent/anterior amb el desplaçament del ratolí (Lectura vertical)",
 			"turnPagesWithMouseWheel": "Passar pàgines amb la roda del ratolí (Zoom només amb la tecla Ctrl pressionada)",
 			"mouseWheelSensitivityInZoom": "Sensibilitat de la roda del ratolí en fer zoom",

@@ -268,7 +268,7 @@
 			"globalZoom": "Global zoom instead of image by image (Vertical reading)",
 			"globalZoomSlide": "Global zoom instead of image by image (Slide reading)",
 			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
-			"scrollWithMouse": "Scroll by moving the cursor along the edges of the screen (Disables drag and drop scrolling)",
+			"scrollWithMouse": "Auto-scroll when vertically moving the cursor in the middle of the screen (Disables drag and drop scrolling)",
 			"goNextPrevChapterWithScroll": "Go next/previous chapter with mouse scroll (Vertical reading)",
 			"turnPagesWithMouseWheel": "Turn pages with mouse wheel (Zoom only with Ctrl key pressed)",
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
