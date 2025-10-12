@@ -2746,6 +2746,8 @@ function scrollWithMouse()
 
 			scrollWithMouseStatus.scrollTop = scrollTop;
 			scrollWithMouseStatus.content.scrollTop = scrollTop;
+
+			reading.scrollNextOrPrevComic(offset < 0, true);
 		}
 	}
 

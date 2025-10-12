@@ -6,9 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## v1.6.5 (dd-mm-yyyy)
 
+##### 🚀 New Features
+
+- Go prev/next chapter with auto-scroll (Moving the cursor in the middle of the screen)
+
 ##### 🐛 Bug Fixes
 
-- Cancelling prev/next chapter breaks the magnifier tool
+- Cancelling prev/next chapter breaks the magnifier tool [`d851178`](https://github.com/ollm/OpenComic/commit/d8511789dbb63f2cf0b3ef043dca2619d1e6ed60)
 
 ## [v1.6.4] (https://github.com/ollm/OpenComic/releases/tag/v1.6.4) (11-10-2025)
 
