@@ -316,7 +316,7 @@
 			},
 			"openingBehaviorFolder": "Поведінка під час відкриття каталогів",
 			"openingBehaviorFolderDescription": "Встановлює бажану поведінку під час відкриття каталогів під час перегляду веб-сторінок",
-			"openingBehaviorFile": "Поведінка під час відкриття файлів",	
+			"openingBehaviorFile": "Поведінка під час відкриття файлів",
 			"openingBehaviorFileDescription": "Встановлює бажану поведінку під час відкриття файлів під час перегляду веб-сторінок",
 			"openingBehavior": {
 				"fileList": "Список файлів",

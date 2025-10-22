@@ -23,7 +23,7 @@ You can send a pull request or open a issue with the new translated file, it is 
 ## Translation Status
 
 <!-- translation --><!-- translation -->
-OpenComic has translations into 20 languages.
+OpenComic has translations into 21 languages.
 
 &nbsp;
 
@@ -228,6 +228,18 @@ Translate by [seaque](https://github.com/seaque)
 `92.6% | Remain 39 | Translated 487`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/tr.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/tr.svg" /></a>
+
+&nbsp;
+
+### &lrm;українська
+
+[uk.json](https://github.com/ollm/OpenComic/blob/master/languages/uk.json)
+
+Translate by [Maksym Nedvyha](https://github.com/ImuS663)
+
+`100% | Remain 0 | Translated 526`
+
+<a href="https://github.com/ollm/OpenComic/blob/master/languages/uk.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/uk.svg" /></a>
 
 &nbsp;
 
