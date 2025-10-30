@@ -8,13 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Go prev/next chapter with auto-scroll (Moving the cursor in the middle of the screen)
+- Go prev/next chapter with auto-scroll (Moving the cursor in the middle of the screen) [`d9dfaa0`](https://github.com/ollm/OpenComic/commit/d9dfaa0e609cd268c7bec459646d09da634b8805)
 
 ##### 🐛 Bug Fixes
 
 - Cancelling prev/next chapter breaks the magnifier tool [`d851178`](https://github.com/ollm/OpenComic/commit/d8511789dbb63f2cf0b3ef043dca2619d1e6ed60)
+- Downgrade Electron to 37.8.0 to fix font rendering issues on Linux
 
-## [v1.6.4] (https://github.com/ollm/OpenComic/releases/tag/v1.6.4) (11-10-2025)
+## [v1.6.4](https://github.com/ollm/OpenComic/releases/tag/v1.6.4) (11-10-2025)
 
 ##### 🐛 Bug Fixes
 
