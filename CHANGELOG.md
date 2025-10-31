@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🐛 Bug Fixes
 
 - Cancelling prev/next chapter breaks the magnifier tool [`d851178`](https://github.com/ollm/OpenComic/commit/d8511789dbb63f2cf0b3ef043dca2619d1e6ed60)
-- Downgrade Electron to 37.8.0 to fix font rendering issues on Linux
+- Downgrade Electron to 37.8.0 to fix font rendering issues on Linux [`fbdff55`](https://github.com/ollm/OpenComic/commit/fbdff5543cc8b120aa518a31b00c200e801128f4)
 
 ## [v1.6.4](https://github.com/ollm/OpenComic/releases/tag/v1.6.4) (11-10-2025)
 
