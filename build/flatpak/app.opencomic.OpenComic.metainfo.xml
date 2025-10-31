@@ -82,6 +82,19 @@
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
     <releases>
+        <release version="1.6.5" date="2025-10-31">
+            <description>
+                <p><em>🚀 New Features</em></p>
+                <ul>
+                    <li>Go prev/next chapter with auto-scroll (Moving the cursor in the middle of the screen)</li>
+                </ul>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Cancelling prev/next chapter breaks the magnifier tool</li>
+                    <li>Downgrade Electron to 37.8.0 to fix font rendering issues on Linux</li>
+                </ul>
+            </description>
+        </release>
         <release version="1.6.3" date="2025-10-07">
             <description>
                 <p><em>🐛 Bug Fixes</em></p>
