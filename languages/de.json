@@ -50,6 +50,7 @@
 			"deletePermanently": "Dauerhaft löschen",
 			"deletePermanentlyConfirm": "Möchten Sie diese Datei wirklich dauerhaft löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
 			"favorite": "Favorit",
+			"openInNewWindow": "",
 			"markAsRead": "Als gelesen markieren",
 			"markAsUnread": "Als ungelesen markieren",
 			"openFileLocation": "Dateispeicherort öffnen",

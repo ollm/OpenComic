@@ -337,6 +337,36 @@ function scrollAnimation()
 
 }
 
+function isDifferent(a1, a2, ignore = {})
+{
+	if(a1 === a2)
+		return false;
+
+	if(!a1 || !a2 || typeof a1 !== 'object' || typeof a2 !== 'object')
+		return a1 !== a2;
+
+	if(Array.isArray(a1)) a1 = [...a1].sort();
+	if(Array.isArray(a2)) a2 = [...a2].sort();
+
+	const keys = new Set([...Object.keys(a1), ...Object.keys(a2)]);
+
+	for(const key of keys)
+	{
+		if(ignore[key] === true)
+			continue;
+
+		const nextIgnore = typeof ignore[key] === 'object' ? ignore[key] : {};
+
+		if(!(key in a1) || !(key in a2))
+			return true;
+
+		if(isDifferent(a1[key], a2[key], nextIgnore))
+			return true;
+	}
+
+	return false;
+}
+
 var throttles = {};
 var debounces = {};
 
@@ -457,4 +487,5 @@ module.exports = {
 	scrollAnimation: scrollAnimation,
 	shortWindowsPath: _shortWindowsPath,
 	encodeSrcURI: _encodeSrcURI,
+	isDifferent: isDifferent,
 };

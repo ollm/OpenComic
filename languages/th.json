@@ -50,6 +50,7 @@
 			"deletePermanently": "ลบอย่างถาวร",
 			"deletePermanentlyConfirm": "คุณต้องการลบไฟล์นี้อย่างถาวรจริงหรือไม่? การกระทำนี้ไม่สามารถยกเลิกได้",
 			"favorite": "เรื่องที่ชอบ",
+			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
 			"openFileLocation": "เปิดตำแหน่งไฟล์",

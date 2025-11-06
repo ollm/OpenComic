@@ -14,8 +14,17 @@ var win, appClosing;
 
 process.traceProcessWarnings = true;
 
+function getArgValue(flag, defaultValue = null)
+{
+	const arg = process.argv.find(a => a.startsWith(flag+'='));
+	if(!arg) return defaultValue;
+	return arg.split('=')[1];
+}
+
 function createWindow() {
 	// Create the browser window.
+
+	const newWindow = process.argv.includes('--new-window');
 
 	let gotSingleInstanceLock = app.requestSingleInstanceLock();
 	if(!gotSingleInstanceLock)
@@ -32,14 +41,14 @@ function createWindow() {
 		{
 			let arg = process.argv[i];
 
-			if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
+			if(arg && !['--no-sandbox', 'scripts/main.js', '.', '--new-window'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 			{
 				_toOpenFile = arg;
 				break;
 			}
 		}
 
-		if(_toOpenFile) app.quit();
+		if(_toOpenFile && !newWindow) app.quit();
 	}
 
 	let mainWindowState = windowStateKeeper({
@@ -50,12 +59,19 @@ function createWindow() {
 
 	let image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png'));
 
+	const windowOffset = (newWindow && !mainWindowState.isMaximized && !mainWindowState.isFullScreen ? 30 : 0);
+
+	const x = windowOffset ? +getArgValue('--window-x', mainWindowState.x) : mainWindowState.x;
+	const y = windowOffset ? +getArgValue('--window-y', mainWindowState.y) : mainWindowState.y;
+	const width = windowOffset ? +getArgValue('--window-width', mainWindowState.width) : mainWindowState.width;
+	const height = windowOffset ? +getArgValue('--window-height', mainWindowState.height) : mainWindowState.height;
+
 	win = new BrowserWindow({
 		show: false,
-		x: mainWindowState.x,
-		y: mainWindowState.y,
-		width: mainWindowState.width,
-		height: mainWindowState.height,
+		x: x + windowOffset,
+		y: y + windowOffset,
+		width: width,
+		height: height,
 		minWidth: 320,
 		minHeight: 200,
 		icon: image,
@@ -189,7 +205,8 @@ function createWindow() {
 
 	}, 100);
 
-	mainWindowState.manage(win);
+	if(gotSingleInstanceLock)
+		mainWindowState.manage(win);
 }
 
 let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');

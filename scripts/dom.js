@@ -545,6 +545,22 @@ function reload(fromSetOfflineMode = false)
 		reloadIndex(fromSetOfflineMode);
 }
 
+storage.onChangeFromOtherInstance(['comics', 'recentlySearched', 'masterFolders', 'favorites', 'labels', 'comicLabels', 'readingProgress', 'readingPages', 'recentlyOpened', 'opdsCatalogs'], function() {
+
+	if(!onReading)
+	{
+		if(!document.querySelector('.dialogs .dialog, .menu-close.a, .search-bar.active'))
+		{
+			app.setThrottle('reloadOnChangeFromOtherInstance', function() {
+
+				dom.reload();
+
+			}, 100, 200);
+		}
+	}
+
+});
+
 var indexLabel = false, prevIndexLabel = false;
 
 function setIndexLabel(options)
@@ -2385,6 +2401,10 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	}
 
 	dom.query('#index-context-menu .separator-labels').css({display: fromIndex ? 'block' : 'none'});
+
+	// Open in new window
+	let openInNewWindow = document.querySelector('#index-context-menu .context-menu-open-in-new-window');
+	openInNewWindow.setAttribute('onclick', 'openPathInNewWindow(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(mainPath), 'simples')+'\');');
 
 	// Mark read an unread
 	let markRead = document.querySelector('#index-context-menu .context-menu-mark-read');

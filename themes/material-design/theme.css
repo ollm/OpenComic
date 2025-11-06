@@ -1226,6 +1226,15 @@ a:hover
 	background-repeat: no-repeat;
 }
 
+.icon-48
+{
+	height: 48px;
+	width: 48px;
+	background-size: 48px;
+	font-size: 48px;
+	background-repeat: no-repeat;
+}
+
 .icon-18
 {
 	height: 18px;

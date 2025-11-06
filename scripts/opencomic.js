@@ -116,6 +116,9 @@ electronRemote.app.on('second-instance', function(event, argv) {
 	if(!electronRemote.app.hasSingleInstanceLock())
 		return;
 
+	if(argv.includes('--new-window'))
+		return;
+
 	const win = electronRemote.getCurrentWindow();
 	if(win.isMinimized()) win.restore();
 	win.focus();
@@ -300,6 +303,13 @@ async function start()
 	});
 }
 
+function getArgValue(argv, flag, defaultValue = null)
+{
+	const arg = argv.find(a => a.startsWith(flag+'='));
+	if(!arg) return defaultValue;
+	return arg.split('=')[1];
+}
+
 async function startApp()
 {
 	if(config.checkReleases)
@@ -314,6 +324,8 @@ async function startApp()
 	template.loadGlobalElement('global.elements.menus.html', 'global-menus');
 	template.loadGlobalElement('index.elements.menus.html', 'menus');
 	dom.loadIndexContentLeft(false);
+
+	let toOpenFileMainPath = getArgValue(electronRemote.process.argv, '--main-path', '') || false;
 
 	if(!toOpenFile)
 	{
@@ -331,7 +343,7 @@ async function startApp()
 
 	if(toOpenFile && fs.existsSync(toOpenFile))
 	{
-		openComic(toOpenFile, false);
+		openComic(toOpenFile, false, toOpenFileMainPath);
 	}
 	else
 	{
@@ -438,6 +450,35 @@ async function startApp()
 
 	windowHasLoaded = true;
 
+}
+
+function openNewInstance(args = [])
+{
+	const {spawn} = require('child_process');
+	const appPath = electronRemote.app.getPath('exe');
+
+	if(!electronRemote.app.isPackaged)
+	{
+		if(process.platform === 'linux')
+			args.push('--no-sandbox');
+
+		args.unshift('scripts/main.js');
+	}
+
+	console.log('Opening new instance with args:', appPath, args);
+
+	const child = spawn(appPath, args, {
+		detached: true,
+		stdio: 'ignore',
+	});
+
+	child.unref();
+}
+
+function openPathInNewWindow(path, mainPath = '')
+{
+	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
+	openNewInstance([path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath]);
 }
 
 var currentContextMenuInput = false;
@@ -1312,7 +1353,7 @@ function openComicDialog(folders = false)
 
 var fromLibrary = true;
 
-function openComic(filePath, animation = true)
+function openComic(filePath, animation = true, forceMainPath = false)
 {
 	if(pathIsSupported(filePath))
 	{
@@ -1341,6 +1382,9 @@ function openComic(filePath, animation = true)
 
 		if(mainPath === false)
 			mainPath = path;
+
+		if(forceMainPath !== false)
+			mainPath = forceMainPath;
 
 		if(onReading)
 			reading.progress.save();
