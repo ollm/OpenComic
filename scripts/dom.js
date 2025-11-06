@@ -529,20 +529,20 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 
 }
 
-async function reloadIndex(fromSetOfflineMode = false)
+async function reloadIndex(fromSetOfflineMode = false, animation = true)
 {
 	indexLabel = prevIndexLabel;
-	loadIndexPage(true, history.path, true, true, history.mainPath, false, true, fromSetOfflineMode);
+	loadIndexPage(animation, history.path, true, true, history.mainPath, false, true, fromSetOfflineMode);
 }
 
-function reload(fromSetOfflineMode = false)
+function reload(fromSetOfflineMode = false, animation = true)
 {
 	if(onReading)
 		reading.reload(true);
 	else if(handlebarsContext.page.key == 'recently-opened')
-		recentlyOpened.reload();
+		recentlyOpened.reload(animation);
 	else
-		reloadIndex(fromSetOfflineMode);
+		reloadIndex(fromSetOfflineMode, animation);
 }
 
 storage.onChangeFromOtherInstance(['comics', 'recentlySearched', 'masterFolders', 'favorites', 'labels', 'comicLabels', 'readingProgress', 'recentlyOpened', 'opdsCatalogs'], function(key) {
