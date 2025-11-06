@@ -545,7 +545,7 @@ function reload(fromSetOfflineMode = false)
 		reloadIndex(fromSetOfflineMode);
 }
 
-/*storage.onChangeFromOtherInstance(['comics', 'recentlySearched', 'masterFolders', 'favorites', 'labels', 'comicLabels', 'readingProgress', 'readingPages', 'recentlyOpened', 'opdsCatalogs'], function() {
+storage.onChangeFromOtherInstance(['comics', 'recentlySearched', 'masterFolders', 'favorites', 'labels', 'comicLabels', 'readingProgress', 'recentlyOpened', 'opdsCatalogs'], function(key) {
 
 	if(!onReading)
 	{
@@ -559,7 +559,7 @@ function reload(fromSetOfflineMode = false)
 		}
 	}
 
-});*/
+});
 
 var indexLabel = false, prevIndexLabel = false;
 

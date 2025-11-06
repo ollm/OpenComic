@@ -885,6 +885,9 @@ function getDataFromDiskAsync(key, callback = false)
 			storageJson[key] = data;
 			setLastUpdate(key);
 
+			if(key === 'config')
+				config = storage.get('config');
+
 			if(callback)
 				callback();
 		}
@@ -910,6 +913,9 @@ function getPeriodicallyFromDisk()
 			{
 				storageJson[key] = data[key];
 				setLastUpdate(key);
+
+				if(key === 'config')
+					config = storage.get('config');
 			}
 		}
 
@@ -926,7 +932,7 @@ function updatedFromOtherInstance(key)
 		{
 			for(const callback of storageChangeCallbacks.get(key))
 			{
-				callback();
+				callback(key);
 			}
 		}
 
