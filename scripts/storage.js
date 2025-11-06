@@ -734,7 +734,6 @@ function updateVar(key, keyVar, value)
 	if(typeof storageJson[key] === 'undefined')
 		storageJson[key] = {};
 
-	getDataFromDisk(key);
 	storageJson[key][keyVar] = value;
 
 	setData(key, storageJson[key]);
@@ -754,7 +753,6 @@ function deleteVar(key, keyVar)
 
 function update(key, value)
 {
-	getDataFromDisk(key);
 	storageJson[key] = value;
 
 	setData(key, storageJson[key]);
@@ -763,7 +761,6 @@ function update(key, value)
 
 function push(key, item)
 {
-	getDataFromDisk(key);
 	storageJson[key].push(item);
 
 	setData(key, storageJson[key]);
@@ -780,9 +777,7 @@ async function setThrottle(key, value)
 
 	app.setThrottle('storage-'+key, function() {
 
-		getDataFromDisk(key);
 		setData(key, storageJson[key]);
-
 		setLastUpdate(key);
 
 	}, 300, 3000);
@@ -874,27 +869,6 @@ function start(callback)
 	});
 
 	syncInstances.init();
-}
-
-// Get data from disk and update the in-memory storageJson when saved data
-function getDataFromDisk(key)
-{
-	if(syncIgnoreKeys.includes(key) || syncInstances.num === 1) // Only one instance, no need to sync
-		return;
-
-	try
-	{
-		// storageJson[key] = ejs.getSync(key);
-		const data = fs.readFileSync(p.join(storagePath, key+'.json'), 'utf-8');
-		const json = JSON.parse(data);
-		storageJson[key] = json;
-	}
-	catch(error)
-	{
-		console.error(error);
-	}
-
-	return;
 }
 
 function getDataFromDiskAsync(key, callback = false)
@@ -1033,7 +1007,6 @@ module.exports = {
 	getDownloadsPath: getDownloadsPath,
 	purgeOldAtomic,
 	info,
-	getDataFromDisk,
 	getDataFromDiskAsync,
 	updatedFromOtherInstance,
 	safe,

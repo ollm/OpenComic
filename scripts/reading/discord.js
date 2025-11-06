@@ -86,7 +86,7 @@ var status = false;
 
 async function update(focused = true)
 {
-	if(!config.readingDiscordRcp)
+	if(!config.readingDiscordRcp || !electronRemote.app.hasSingleInstanceLock())
 		return;
 
 	await login();
@@ -163,7 +163,7 @@ function events()
 
 function interval()
 {
-	if(!config.readingDiscordRcp)
+	if(!config.readingDiscordRcp || !electronRemote.app.hasSingleInstanceLock())
 		return;
 
 	if(!discord.client || !discord.logged || !onReading || !focused)
