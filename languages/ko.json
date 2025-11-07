@@ -50,6 +50,7 @@
 			"deletePermanently": "영구 삭제",
 			"deletePermanentlyConfirm": "정말로 영구 삭제 하겠습니까? 이 작업은 되돌릴 수 없습니다.",
 			"favorite": "즐겨찾기",
+			"openInNewWindow": "",
 			"markAsRead": "읽음으로 표시",
 			"markAsUnread": "안 읽음으로 표시",
 			"openFileLocation": "파일 위치 열기",
@@ -636,9 +637,14 @@
 		"contributedBy": "",
 		"translators": [
 			{
-				"name": "",
+				"name": "Guaseon",
+				"email": "guaseon@proton.me",
+				"url": "https://github.com/guaseon"
+			},
+			{
+				"name": "moroccansunset-ux",
 				"email": "",
-				"url": ""
+				"url": "https://github.com/moroccansunset-ux"
 			}
 		]
 	}

@@ -151,9 +151,9 @@ Translate by [Yasuyuki Takeo](https://github.com/yasuflatland-lf) and [wany-oh](
 
 [ko.json](https://github.com/ollm/OpenComic/blob/master/languages/ko.json)
 
-Translate by [Guaseon](https://github.com/guaseon)
+Translate by [Guaseon](https://github.com/guaseon) and [moroccansunset-ux](https://github.com/moroccansunset-ux)
 
-`18.4% | Remain 430 | Translated 97`
+`91.1% | Remain 47 | Translated 479`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ko.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ko.svg" /></a>
 
