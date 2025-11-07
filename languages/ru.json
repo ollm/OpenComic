@@ -50,6 +50,7 @@
 			"deletePermanently": "Удалить навсегда",
 			"deletePermanentlyConfirm": "Вы действительно хотите безвозвратно удалить этот файл? Это действие нельзя отменить",
 			"favorite": "В избранное",
+			"openInNewWindow": "",
 			"markAsRead": "Отметить как прочитанное",
 			"markAsUnread": "Отметить как непрочитанное",
 			"openFileLocation": "Открыть расположение файла",

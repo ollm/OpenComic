@@ -529,21 +529,37 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 
 }
 
-async function reloadIndex(fromSetOfflineMode = false)
+async function reloadIndex(fromSetOfflineMode = false, animation = true)
 {
 	indexLabel = prevIndexLabel;
-	loadIndexPage(true, history.path, true, true, history.mainPath, false, true, fromSetOfflineMode);
+	loadIndexPage(animation, history.path, true, true, history.mainPath, false, true, fromSetOfflineMode);
 }
 
-function reload(fromSetOfflineMode = false)
+function reload(fromSetOfflineMode = false, animation = true)
 {
 	if(onReading)
 		reading.reload(true);
 	else if(handlebarsContext.page.key == 'recently-opened')
-		recentlyOpened.reload();
+		recentlyOpened.reload(animation);
 	else
-		reloadIndex(fromSetOfflineMode);
+		reloadIndex(fromSetOfflineMode, animation);
 }
+
+storage.onChangeFromOtherInstance(['comics', 'recentlySearched', 'masterFolders', 'favorites', 'labels', 'comicLabels', 'readingProgress', 'recentlyOpened', 'opdsCatalogs'], function(key) {
+
+	if(!onReading)
+	{
+		if(!document.querySelector('.dialogs .dialog, .menu-close.a, .search-bar.active'))
+		{
+			app.setThrottle('reloadOnChangeFromOtherInstance', function() {
+
+				dom.reload();
+
+			}, 100, 200);
+		}
+	}
+
+});
 
 var indexLabel = false, prevIndexLabel = false;
 
@@ -2385,6 +2401,10 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	}
 
 	dom.query('#index-context-menu .separator-labels').css({display: fromIndex ? 'block' : 'none'});
+
+	// Open in new window
+	let openInNewWindow = document.querySelector('#index-context-menu .context-menu-open-in-new-window');
+	openInNewWindow.setAttribute('onclick', 'openPathInNewWindow(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(mainPath), 'simples')+'\');');
 
 	// Mark read an unread
 	let markRead = document.querySelector('#index-context-menu .context-menu-mark-read');

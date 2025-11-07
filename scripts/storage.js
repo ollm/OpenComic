@@ -1,4 +1,5 @@
-const safe = require(p.join(appDir, 'scripts/storage/safe.js'));
+const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
+	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
 const changes = 131; // Update this if readingPagesConfig is updated
 
@@ -489,6 +490,7 @@ const storageDefault = {
 	},
 };
 
+const syncIgnoreKeys = ['cache', 'tmpUsage'];
 const storageJson = {};
 
 function getDownloadsPath()
@@ -734,7 +736,7 @@ function updateVar(key, keyVar, value)
 
 	storageJson[key][keyVar] = value;
 
-	ejs.set(key, storageJson[key], function(error){});
+	setData(key, storageJson[key]);
 	setLastUpdate(key);
 }
 
@@ -745,7 +747,7 @@ function deleteVar(key, keyVar)
 
 	delete storageJson[key][keyVar];
 
-	ejs.set(key, storageJson[key], function(error){});
+	setData(key, storageJson[key]);
 	setLastUpdate(key);
 }
 
@@ -753,7 +755,7 @@ function update(key, value)
 {
 	storageJson[key] = value;
 
-	ejs.set(key, storageJson[key], function(error){});
+	setData(key, storageJson[key]);
 	setLastUpdate(key);
 }
 
@@ -761,7 +763,7 @@ function push(key, item)
 {
 	storageJson[key].push(item);
 
-	ejs.set(key, storageJson[key], function(error){});
+	setData(key, storageJson[key]);
 	setLastUpdate(key);
 }
 
@@ -773,12 +775,24 @@ async function setThrottle(key, value)
 {
 	storageJson[key] = value;
 
-	app.setThrottle('storage-'+key, function(){
+	app.setThrottle('storage-'+key, function() {
 
-		ejs.set(key, storageJson[key], function(error){});
+		setData(key, storageJson[key]);
 		setLastUpdate(key);
 
 	}, 300, 3000);
+}
+
+function setData(key, data)
+{
+	ejs.set(key, data, function(error) {
+
+		if(syncIgnoreKeys.includes(key))
+			return;
+
+		syncInstances.storageUpdated(key);
+
+	});
 }
 
 const storageKeys = Object.keys(storageDefault);
@@ -853,6 +867,92 @@ function start(callback)
 		callback();
 
 	});
+
+	syncInstances.init();
+}
+
+function getDataFromDiskAsync(key, callback = false)
+{
+	if(syncIgnoreKeys.includes(key) || syncInstances.num === 1)
+		return;
+
+	ejs.get(key, function(error, data) {
+
+		if(error) return;
+
+		if(app.isDifferent(storageJson[key], data))
+		{
+			storageJson[key] = data;
+			setLastUpdate(key);
+
+			if(key === 'config')
+				config = storage.get('config');
+
+			if(callback)
+				callback();
+		}
+
+	});
+
+	return;
+}
+
+// Periodically get data from disk to keep it updated if multiple windows are open
+function getPeriodicallyFromDisk()
+{
+	if(syncInstances.num === 1) // Only one instance, no need to sync
+		return;
+
+	ejs.getMany(storageKeys, async function(error, data) {
+
+		if(error) return;
+
+		for(const key of storageKeys)
+		{
+			if(app.isDifferent(storageJson[key], data[key]))
+			{
+				storageJson[key] = data[key];
+				setLastUpdate(key);
+
+				if(key === 'config')
+					config = storage.get('config');
+			}
+		}
+
+	});
+}
+
+setInterval(getPeriodicallyFromDisk, 60000); // Every 60 seconds
+
+function updatedFromOtherInstance(key)
+{
+	getDataFromDiskAsync(key, function() {
+
+		if(storageChangeCallbacks.has(key))
+		{
+			for(const callback of storageChangeCallbacks.get(key))
+			{
+				callback(key);
+			}
+		}
+
+	});
+}
+
+const storageChangeCallbacks = new Map();
+
+function onChangeFromOtherInstance(keys, callback) {
+
+	if(typeof keys === 'string')
+		keys = [keys];
+
+	for(const key of keys)
+	{
+		if(!storageChangeCallbacks.has(key))
+			storageChangeCallbacks.set(key, []);
+
+		storageChangeCallbacks.get(key).push(callback);
+	}
 }
 
 function get(key)
@@ -913,5 +1013,9 @@ module.exports = {
 	getDownloadsPath: getDownloadsPath,
 	purgeOldAtomic,
 	info,
-	safe: safe,
+	getDataFromDiskAsync,
+	updatedFromOtherInstance,
+	safe,
+	syncInstances,
+	onChangeFromOtherInstance,
 };

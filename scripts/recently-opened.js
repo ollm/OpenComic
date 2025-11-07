@@ -3,9 +3,9 @@ function start()
 	load();
 }
 
-async function reload()
+async function reload(animation = true)
 {
-	load(true, true);
+	load(animation, true);
 }
 
 async function load(animation = true, content = false)

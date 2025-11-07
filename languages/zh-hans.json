@@ -50,6 +50,7 @@
 			"deletePermanently": "永久删除",
 			"deletePermanentlyConfirm": "确实要永久删除此文件吗？此操作无法撤消",
 			"favorite": "收藏",
+			"openInNewWindow": "",
 			"markAsRead": "标记为已读",
 			"markAsUnread": "标记为未读",
 			"openFileLocation": "打开文件所在位置",

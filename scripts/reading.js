@@ -3488,6 +3488,15 @@ function change(key, value)
 	}*/
 }
 
+storage.onChangeFromOtherInstance('bookmarks', function() {
+
+	if(onReading && isLoaded)
+	{
+		currentPageIsBookmark()
+	}
+
+});
+
 //Change the bookmark icon
 function activeBookmark(active = false)
 {
@@ -3497,11 +3506,32 @@ function activeBookmark(active = false)
 		template.barHeader('.button-bookmark').removeClass('fill').attr('hover-text', language.reading.addBookmark);
 }
 
+function getBookmarks()
+{
+	const bookmarks = relative.get('bookmarks');
+	return bookmarks?.[dom.history.mainPath] ?? [];
+}
+
+function currentPageIsBookmark()
+{
+	const images = reading.getImageByPosition(reading.currentImagePosition(), false);
+
+	for(const image of images)
+	{
+		if(isBookmark(p.normalize(image.path)))
+			return true;
+	}
+
+	return false;
+}
+
 //Check if a path is a bookmarks
 function isBookmark(path, _return = false)
 {
 	path = p.relative(dom.history.mainPath, path);
 	let i = false;
+
+	const bookmarks = getBookmarks();
 
 	if(readingIsEbook)
 	{
@@ -3513,9 +3543,9 @@ function isBookmark(path, _return = false)
 		let min = page.chapterProgressSize == page.chapterProgress ? 0 : page.chapterProgress - (page.chapterProgressSize / 2);
 		let max = page.chapterProgress + (page.chapterProgressSize / 2);
 
-		for(let key in readingCurrentBookmarks)
+		for(let key in bookmarks)
 		{
-			let bookmark = readingCurrentBookmarks[key];
+			let bookmark = bookmarks[key];
 
 			if(bookmark.path === _path && bookmark.chapterProgress >= min && bookmark.chapterProgress < max)
 			{
@@ -3526,9 +3556,9 @@ function isBookmark(path, _return = false)
 	}
 	else
 	{
-		for(let key in readingCurrentBookmarks)
+		for(let key in bookmarks)
 		{
-			if(readingCurrentBookmarks[key].path === path)
+			if(bookmarks[key].path === path)
 			{
 				i = key;
 				break;
@@ -3591,6 +3621,7 @@ function createAndDeleteBookmark(index = false)
 
 	if(currentIndex <= contentNum && currentIndex > 0 && imageIndex)
 	{
+		const bookmarks = getBookmarks();
 		let path = p.normalize(images[imageIndex].path);
 
 		let progress = 0;
@@ -3612,35 +3643,29 @@ function createAndDeleteBookmark(index = false)
 			chapterProgress: chapterProgress,
 		};
 
-		if(typeof readingCurrentBookmarks !== 'undefined')
-		{
-			let i = isBookmark(path, true);
+	
+		let i = isBookmark(path, true);
 
-			if(i !== false)
-			{
-				readingCurrentBookmarks.splice(i, 1);
-				activeBookmark(false);
-			}
-			else
-			{
-				readingCurrentBookmarks.push(newBookmark);
-				activeBookmark(true);
-			}
+		if(i !== false)
+		{
+			bookmarks.splice(i, 1);
+			activeBookmark(false);
 		}
 		else
 		{
-			readingCurrentBookmarks = [newBookmark];
+			bookmarks.push(newBookmark);
 			activeBookmark(true);
 		}
 
-		storage.updateVar('bookmarks', relative.path(dom.history.mainPath), readingCurrentBookmarks);
+		storage.updateVar('bookmarks', relative.path(dom.history.mainPath), bookmarks);
 	}
 }
 
 function deleteBookmark(key)
 {
-	readingCurrentBookmarks.splice(key, 1);
-	storage.updateVar('bookmarks', relative.path(dom.history.mainPath), readingCurrentBookmarks);
+	const bookmarks = getBookmarks();
+	bookmarks.splice(key, 1);
+	storage.updateVar('bookmarks', relative.path(dom.history.mainPath), bookmarks);
 
 	loadBookmarks(true);
 }
@@ -3655,15 +3680,16 @@ function setFromSkip()
 //Load the bookmarks in the current directory
 function loadBookmarks(bookmarksChild = false)
 {
+	const bookmarks = getBookmarks();
 	var bookmarksPath = {}, mainPath = dom.history.mainPath;
 
 	let images = [];
 
-	for(let key in readingCurrentBookmarks)
+	for(let key in bookmarks)
 	{
-		if(typeof readingCurrentBookmarks[key].path != 'undefined')
+		if(typeof bookmarks[key].path != 'undefined')
 		{
-			const bookmark = readingCurrentBookmarks[key];
+			const bookmark = bookmarks[key];
 			const path = p.join(mainPath, bookmark.path);
 
 			let bookmarkDirname = p.dirname(path);
@@ -3691,7 +3717,7 @@ function loadBookmarks(bookmarksChild = false)
 		}
 	}
 
-	let bookmarks = [];
+	const _bookmarks = [];
 
 	for(let path in bookmarksPath)
 	{
@@ -3704,7 +3730,7 @@ function loadBookmarks(bookmarksChild = false)
 			return 0;
 		});
 
-		bookmarks.push({
+		_bookmarks.push({
 			continueReading: false,
 			current: (path === readingCurrentPath) ? true : false,
 			path: path,
@@ -3723,7 +3749,7 @@ function loadBookmarks(bookmarksChild = false)
 		let sha = sha1(readingProgress.path);
 		images.push({path: readingProgress.path, sha: sha});
 
-		bookmarks.push({
+		_bookmarks.push({
 			continueReading: true,
 			current: (bookmarkDirname === readingCurrentPath) ? true : false,
 			path: bookmarkDirname,
@@ -3748,16 +3774,16 @@ function loadBookmarks(bookmarksChild = false)
 
 	}, readingFile);
 
-	for(let i = 0, len = bookmarks.length; i < len; i++)
+	for(let i = 0, len = _bookmarks.length; i < len; i++)
 	{
-		for(let i2 = 0, len2 = bookmarks[i].bookmarks.length; i2 < len2; i2++)
+		for(let i2 = 0, len2 = _bookmarks[i].bookmarks.length; i2 < len2; i2++)
 		{
-			let thumbnail = thumbnails[bookmarks[i].bookmarks[i2].sha] || {};
-			bookmarks[i].bookmarks[i2].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
+			let thumbnail = thumbnails[_bookmarks[i].bookmarks[i2].sha] || {};
+			_bookmarks[i].bookmarks[i2].thumbnail = (thumbnail.cache) ? thumbnail.path : '';
 		}
 	}
 
-	bookmarks.sort(function (a, b) {
+	_bookmarks.sort(function (a, b) {
 
 		if(a.current || a.continueReading) return -1;
 
@@ -3766,7 +3792,7 @@ function loadBookmarks(bookmarksChild = false)
 		return dom.orderBy(a, b, 'simple', 'path');
 	});
 
-	handlebarsContext.bookmarks = bookmarks;
+	handlebarsContext.bookmarks = _bookmarks;
 	handlebarsContext.bookmarksChild = bookmarksChild;
 	handlebarsContext.bookmarksSaveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
 
@@ -4250,6 +4276,7 @@ function getImage(index = 0)
 function getImageByPosition(position = 0, subindex = 0)
 {
 	let image = false;
+	let _images = [];
 	let _subindex = 0;
 
 	for(let key in images)
@@ -4257,6 +4284,7 @@ function getImageByPosition(position = 0, subindex = 0)
 		if(position === false || position == imagesData[key].position)
 		{
 			image = images[key];
+			_images.push(image);
 
 			if(_subindex === subindex)
 				break;
@@ -4264,6 +4292,9 @@ function getImageByPosition(position = 0, subindex = 0)
 			_subindex++;
 		}
 	}
+
+	if(subindex === false)
+		return _images.length ? _images : ([image] || [images[Object.keys(images)[0]]]);
 
 	return image || images[Object.keys(images)[0]];
 }
@@ -5071,7 +5102,7 @@ function mouseleave()
 	isMouseenter.document = false;
 }
 
-var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, readingCurrentBookmarks = undefined, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
+var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsCanvas = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
@@ -5089,9 +5120,6 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	fromSkip = false;
 
 	readingCurrentPath = path;
-
-	const bookmarks = relative.get('bookmarks');
-	readingCurrentBookmarks = bookmarks?.[dom.history.mainPath] ?? undefined;
 
 	filters.setImagesPath(false);
 
