@@ -77,7 +77,9 @@ function setNewPoster(path, reload = true, message = false)
 		if(fs.existsSync(posterPath))
 			fs.unlinkSync(posterPath);
 
-		fs.rename(tmp, posterPath, async function(error) {
+		fs.copyFile(tmp, posterPath, async function(error) {
+
+			fs.unlinkSync(tmp);
 
 			if(!error)
 			{

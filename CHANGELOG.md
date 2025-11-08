@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Support for multiple instances (Open multiple OpenComic windows) [`bbf6f56`](https://github.com/ollm/OpenComic/commit/bbf6f56f282d51379b26e2a64b50c3f80846dfad)
 
+##### 🐛 Bug Fixes
+
+- Adding or changing poster not working when the drive is different from the system drive
+
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 
 ##### 🚀 New Features
