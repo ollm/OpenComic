@@ -4957,9 +4957,10 @@ function hideMouseInFullscreen(event = false, hide = false)
 	if(hide)
 	{
 		const contentRight = template._contentRight();
-		const element = event ? document.elementFromPoint(event.clientX, event.clientY) : false;
+		const validCoords = event && Number.isFinite(event.clientX) && Number.isFinite(event.clientY);
+		const element = validCoords ? document.elementFromPoint(event.clientX, event.clientY) : false;
 
-		if(!event || contentRight.contains(element || event.target))
+		if((!validCoords && !event?.target) || contentRight.contains(element || event.target))
 		{
 			if(!status.hidden)
 			{
