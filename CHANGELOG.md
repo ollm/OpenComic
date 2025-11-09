@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🐛 Bug Fixes
 
 - Adding or changing poster not working when the drive is different from the system drive [`8ce3d5f`](https://github.com/ollm/OpenComic/commit/8ce3d5f01a7694c26fa1e6d477c1eab99c299a0e)
-- Hiding cursor in fullscreen mode fails in some cases
+- Hiding cursor in fullscreen mode fails in some cases [`828d504`](https://github.com/ollm/OpenComic/commit/828d504e700e43ab1f6d9e5081195ad496f65920)
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 
