@@ -1579,7 +1579,5 @@ const ERROR_UNZIPPING_THE_FILE = 2;
 const ERROR_READING_THE_FILE = 3;
 const ERROR_RENDERING_THE_FILE = 4;
 
-console.log('End of file');
-
 fileManager.removeTmpVector();
 start();
