@@ -98,6 +98,9 @@ var toOpenFile = toOpenFile || false, windowHasLoaded = false;
 
 electronRemote.app.on('open-file', function(event, path) {
 
+	if(storage.syncInstances.client)
+		return;
+
 	if(windowHasLoaded)
 		openComic(path, true);
 	else
@@ -106,6 +109,9 @@ electronRemote.app.on('open-file', function(event, path) {
 });
 
 electronRemote.app.on('open-url', function(event, url) {
+
+	if(storage.syncInstances.client)
+		return;
 
 	handleOpenUrl(url);
 
@@ -117,6 +123,9 @@ electronRemote.app.on('second-instance', function(event, argv) {
 		return;
 
 	if(argv.includes('--new-window'))
+		return;
+
+	if(storage.syncInstances.client)
 		return;
 
 	const win = electronRemote.getCurrentWindow();
@@ -325,7 +334,10 @@ async function startApp()
 	template.loadGlobalElement('index.elements.menus.html', 'menus');
 	dom.loadIndexContentLeft(false);
 
-	let toOpenFileMainPath = getArgValue(electronRemote.process.argv, '--main-path', '') || false;
+	const args = [...process.argv, ...electronRemote.process.argv];
+
+	let toOpenFileMainPath = getArgValue(args, '--main-path', false);
+	toOpenFile = toOpenFile || getArgValue(args, '--path', false);
 
 	if(!toOpenFile)
 	{
@@ -452,6 +464,7 @@ async function startApp()
 
 }
 
+// Open new instance not woking on macOS Sandboxed app
 function openNewInstance(args = [])
 {
 	const {spawn} = require('child_process');
@@ -475,10 +488,16 @@ function openNewInstance(args = [])
 	child.unref();
 }
 
+function openNewWindow(args = [])
+{
+	console.log('Opening new window with args:', args);
+	electron.ipcRenderer.invoke('open-new-window', {args});
+}
+
 function openPathInNewWindow(path, mainPath = '')
 {
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
-	openNewInstance([path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath]);
+	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath]);
 }
 
 var currentContextMenuInput = false;

@@ -2,6 +2,7 @@ const {app, ipcMain, BrowserWindow, screen, Menu, nativeImage, shell} = require(
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const crypto = require('crypto');
 const windowStateKeeper = require('electron-window-state');
 const folderPortable = require(path.join(__dirname, 'folder-portable.js'));
 
@@ -10,36 +11,44 @@ require('@electron/remote/main').initialize();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-var win, appClosing;
+const windows = new Map();
+let firstWindowCreated = false;
 
 process.traceProcessWarnings = true;
 
-function getArgValue(flag, defaultValue = null)
+function getArgValue(args, flag, defaultValue = null)
 {
-	const arg = process.argv.find(a => a.startsWith(flag+'='));
+	const arg = args.find(a => a.startsWith(flag+'='));
 	if(!arg) return defaultValue;
 	return arg.split('=')[1];
 }
 
-function createWindow() {
-	// Create the browser window.
+function createWindow(options = {}) {
 
-	const newWindow = process.argv.includes('--new-window');
+	const args = options.args ?? process.argv;
+
+	// Create the browser window.
+	const id = crypto.randomUUID();
+	const newWindow = args.includes('--new-window');
+
+	let win = null;
+	let appClosing = false;
+	let windowShowed = false;
 
 	let gotSingleInstanceLock = app.requestSingleInstanceLock();
 	if(!gotSingleInstanceLock)
 	{
 		let _toOpenFile = false;
 
-		const len = process.argv.length;
-		const last = process.argv[len - 1];
+		const len = args.length;
+		const last = args[len - 1];
 
 		if(/^opencomic:\/\//.test(last))
 			app.quit();
 
 		for(let i = 1; i < len; i++)
 		{
-			let arg = process.argv[i];
+			let arg = args[i];
 
 			if(arg && !['--no-sandbox', 'scripts/main.js', '.', '--new-window'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 			{
@@ -61,10 +70,10 @@ function createWindow() {
 
 	const windowOffset = (newWindow && !mainWindowState.isMaximized && !mainWindowState.isFullScreen ? 30 : 0);
 
-	const x = windowOffset ? +getArgValue('--window-x', mainWindowState.x) : mainWindowState.x;
-	const y = windowOffset ? +getArgValue('--window-y', mainWindowState.y) : mainWindowState.y;
-	const width = windowOffset ? +getArgValue('--window-width', mainWindowState.width) : mainWindowState.width;
-	const height = windowOffset ? +getArgValue('--window-height', mainWindowState.height) : mainWindowState.height;
+	const x = windowOffset ? +getArgValue(args, '--window-x', mainWindowState.x) : mainWindowState.x;
+	const y = windowOffset ? +getArgValue(args, '--window-y', mainWindowState.y) : mainWindowState.y;
+	const width = windowOffset ? +getArgValue(args, '--window-width', mainWindowState.width) : mainWindowState.width;
+	const height = windowOffset ? +getArgValue(args, '--window-height', mainWindowState.height) : mainWindowState.height;
 
 	win = new BrowserWindow({
 		show: false,
@@ -83,6 +92,7 @@ function createWindow() {
 			enableRemoteModule: true,
 			backgroundThrottling: false,
 			nativeWindowOpen: false,
+			additionalArguments: options.args ?? [],
 		},
 		titleBarStyle: (process.platform == 'linux' && !configInit.forceLinuxHiddenTitleBar) ? 'native' : 'hidden',
 		titleBarOverlay: {
@@ -94,7 +104,7 @@ function createWindow() {
 		backgroundColor: '#242a30',
 	});
 
-	require("@electron/remote/main").enable(win.webContents)
+	require('@electron/remote/main').enable(win.webContents)
 
 	let menuTemplate = [
 		{
@@ -112,8 +122,6 @@ function createWindow() {
 
 	win.removeMenu();
 
-	let windowShowed = false;
-
 	const showWindow = function(message = '') {
 
 		if(!windowShowed)
@@ -126,7 +134,6 @@ function createWindow() {
 		}
 
 	}
-
 	win.once('ready-to-show', showWindow);
 
 	// https://github.com/electron/electron/issues/42409
@@ -144,7 +151,7 @@ function createWindow() {
 	if(configInit.openDevTools)
 		win.webContents.openDevTools()
 
-	if(toOpenFile)
+	if(toOpenFile && !newWindow)
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
 
 	win.on('close',	function(event) {
@@ -156,9 +163,9 @@ function createWindow() {
 			win.webContents.executeJavaScript('var saved = reading.progress.save(); settings.purgeTemporaryFiles(); cache.purge(); ebook.closeAllRenders(); workers.closeAllWorkers(); storage.purgeOldAtomic(); saved;', false).then(function(value) {
 
 				if(!value)
-					app.quit();
+					win.close();
 				else // Wait for it to save
-					setTimeout(function(win){app.quit();}, 200, win);
+					setTimeout(function(win){win.close()}, 200, win);
 
 			});
 
@@ -169,11 +176,13 @@ function createWindow() {
 
 	// Emitted when the window is closed.
 	win.on('closed', function() {
+
 		// Dereference the window object, usually you would store windows
 		// in an array if your app supports multi windows, this is the time
 		// when you should delete the corresponding element.
+		windows.delete(id);
+		win = null;
 
-		win = null
 	});
 
 	win.webContents.setWindowOpenHandler(function(details) {
@@ -205,8 +214,11 @@ function createWindow() {
 
 	}, 100);
 
-	if(gotSingleInstanceLock)
+	if(gotSingleInstanceLock && !newWindow)
 		mainWindowState.manage(win);
+
+	windows.set(id, win);
+	firstWindowCreated = true;
 }
 
 let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
@@ -239,7 +251,8 @@ var toOpenFile = false;
 
 app.on('open-file', function(event, path) {
 
-	toOpenFile = path;
+	if(!firstWindowCreated)
+		toOpenFile = path;
 
 });
 
@@ -254,20 +267,21 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+
 	// On macOS it is common for applications and their menu bar
 	// to stay active until the user quits explicitly with Cmd + Q
-
-	if (process.platform !== 'darwin') {
+	if(process.platform !== 'darwin')
 		app.quit()
-	}
+
 })
 
 app.on('activate', () => {
+
 	// On macOS it's common to re-create a window in the app when the
 	// dock icon is clicked and there are no other windows open.
-	if (win === null) {
+	if(windows.size === 0)
 		createWindow()
-	}
+
 })
 
 ipcMain.on('open-at-login', function(event, active = false) {
@@ -281,6 +295,12 @@ ipcMain.on('open-at-login', function(event, active = false) {
 ipcMain.handle('move-to-trash', function(event, path) {
 
 	return shell.trashItem(path);
+
+});
+
+ipcMain.handle('open-new-window', function(event, options = {}) {
+
+	createWindow(options)
 
 });
 

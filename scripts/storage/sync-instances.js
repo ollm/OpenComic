@@ -216,6 +216,8 @@ function storageUpdated(storageKey)
 
 module.exports = {
 	init,
-	get num() {return numInstances;},
+	get num() {return numInstances},
+	get main() {return current.server !== false},
+	get client() {return current.client !== false},
 	storageUpdated,
 };
