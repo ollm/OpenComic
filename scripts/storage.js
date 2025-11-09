@@ -797,78 +797,100 @@ function setData(key, data)
 
 const storageKeys = Object.keys(storageDefault);
 
-function start(callback)
+async function start(callback)
 {
+	syncInstances.init();
 	ejs.setDataPath(storagePath);
 
-	ejs.getMany(storageKeys, function(error, data) {
+	const data = {};
+	const promises = [];
 
-		// if(error) throw error;
+	for(const key of storageKeys)
+	{
+		promises.push(new Promise(async function(resolve) {
 
-		const setup = !data?.config?.appVersion; // Check if this is the first run
+			try
+			{
+				const json = await fsp.readFile(p.join(storagePath, key+'.json'), 'utf8');
+				const _data = JSON.parse(json) || {};
+				data[key] = _data;
+				resolve();
+			}
+			catch
+			{
+				ejs.get(key, function(_data) {
 
-		const _appVersion = data?.config?.appVersion || false;
-		const _changes = data?.config.changes || false;
+					data[key] = _data;
+					resolve();
 
-		if(!setup && _changes != changes)
+				});
+			}
+
+		}));
+	}
+
+	await Promise.all(promises);
+
+	const setup = !data?.config?.appVersion; // Check if this is the first run
+
+	const _appVersion = data?.config?.appVersion || false;
+	const _changes = data?.config.changes || false;
+
+	if(!setup && _changes != changes)
+	{
+		const migration = require(p.join(appDir, 'scripts/migration.js'));
+		data = migration.start(data);
+	}
+
+	for(const key of storageKeys)
+	{
+		if(setup)
 		{
-			const migration = require(p.join(appDir, 'scripts/migration.js'));
-			data = migration.start(data);
+			if(key == 'config')
+				storageDefault[key].language = getLocaleUserLanguage();
+
+			let baseData = false;
+
+			switch (key)
+			{
+				case 'opdsCatalogs':
+
+					baseData = opds.addNewDefaultCatalogs({opdsCatalogs: []}, 0).opdsCatalogs;
+
+					break;
+			}
+
+			const newData = updateStorageMD(baseData, storageDefault[key]);
+
+			ejs.set(key, newData, function(error){});
+			storageJson[key] = newData;
 		}
-
-		for(const key of storageKeys)
+		else
 		{
-			if(setup)
+			if(_appVersion != _package.version || _changes != changes)
 			{
 				if(key == 'config')
 					storageDefault[key].language = getLocaleUserLanguage();
 
-				let baseData = false;
+				const newData = (_changes != changes) ? updateStorageMD(data[key], storageDefault[key]) : data[key];
 
-				switch (key)
+				if(key == 'config')
 				{
-					case 'opdsCatalogs':
-
-						baseData = opds.addNewDefaultCatalogs({opdsCatalogs: []}, 0).opdsCatalogs;
-
-						break;
+					newData.appVersion = _package.version;
+					newData.changes = changes;
 				}
-
-				const newData = updateStorageMD(baseData, storageDefault[key]);
 
 				ejs.set(key, newData, function(error){});
 				storageJson[key] = newData;
 			}
 			else
 			{
-				if(_appVersion != _package.version || _changes != changes)
-				{
-					if(key == 'config')
-						storageDefault[key].language = getLocaleUserLanguage();
-
-					const newData = (_changes != changes) ? updateStorageMD(data[key], storageDefault[key]) : data[key];
-
-					if(key == 'config')
-					{
-						newData.appVersion = _package.version;
-						newData.changes = changes;
-					}
-
-					ejs.set(key, newData, function(error){});
-					storageJson[key] = newData;
-				}
-				else
-				{
-					storageJson[key] = data[key];
-				}
+				storageJson[key] = data[key];
 			}
 		}
+	}
 
-		callback();
-
-	});
-
-	syncInstances.init();
+	callback();
 }
 
 function getDataFromDiskAsync(key, callback = false)
