@@ -319,8 +319,16 @@ function getArgValue(argv, flag, defaultValue = null)
 	return arg.split('=')[1];
 }
 
+electron.ipcRenderer.on('init-data', function(event, data) {
+
+	if(data.history)
+		dom.history.load(data.history);
+
+});
+
 async function startApp()
 {
+
 	if(config.checkReleases)
 		checkReleases.check();
 
@@ -488,16 +496,21 @@ function openNewInstance(args = [])
 	child.unref();
 }
 
-function openNewWindow(args = [])
+function openNewWindow(args = [], options = {})
 {
-	console.log('Opening new window with args:', args);
-	electron.ipcRenderer.invoke('open-new-window', {args});
+	options = {
+		args,
+		...options,
+	};
+
+	console.log('Opening new window with options:', options);
+	electron.ipcRenderer.invoke('open-new-window', options);
 }
 
 function openPathInNewWindow(path, mainPath = '')
 {
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
-	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath]);
+	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath], {initHistory: dom.history.serialize()});
 }
 
 var currentContextMenuInput = false;
@@ -1565,6 +1578,8 @@ const NOT_POSSIBLE_WITHOUT_DECOMPRESSING = 1;
 const ERROR_UNZIPPING_THE_FILE = 2;
 const ERROR_READING_THE_FILE = 3;
 const ERROR_RENDERING_THE_FILE = 4;
+
+console.log('End of file');
 
 fileManager.removeTmpVector();
 start();

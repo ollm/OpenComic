@@ -154,6 +154,13 @@ function createWindow(options = {}) {
 	if(toOpenFile && !newWindow)
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
 
+	const initData = {};
+
+	if(options.initHistory)
+		initData.history = options.initHistory;
+
+	win.webContents.send('init-data', initData);
+
 	win.on('close',	function(event) {
 
 		if(!appClosing)

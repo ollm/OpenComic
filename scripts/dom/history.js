@@ -127,6 +127,24 @@ function goForwards()
 	}
 }
 
+function serialize()
+{
+	return {
+		history,
+		forwardHistory,
+		current,
+		root,
+	};
+}
+
+function load(data)
+{
+	history = data.history || [];
+	forwardHistory = data.forwardHistory || [];
+	current = data.current || false;
+	root = data.root || {};
+}
+
 function status()
 {
 	return {
@@ -146,6 +164,8 @@ module.exports = {
 	goBack,
 	goForwards,
 	status,
+	serialize,
+	load,
 	current: function() {return current},
 	root: function() {return root},
 	fromGoForwards: function(){return fromGoForwards},
