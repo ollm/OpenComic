@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Lagring",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Cache",
 			"cacheDescription": "Miniatyrbilder och index för de komprimerade filerna lagras här. Det rekommenderas inte att rensa det om det inte är mycket stort eller om det finns ett fel relaterat till det",
 			"cacheMaxSize": "Maximal cachestorlek",

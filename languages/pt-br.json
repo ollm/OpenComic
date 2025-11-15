@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Armazenamento",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Cache",
 			"cacheDescription": "As capas e indíces dos arquivos comprimidos são guardados aqui, não é recomendado limpar isso a menos que esteja muito grande ou se tiver um erro relacionado a isso",
 			"cacheMaxSize": "Tamanho máximo de cache",

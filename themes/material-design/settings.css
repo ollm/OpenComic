@@ -53,10 +53,16 @@
 }
 
 .settings-body .settings-save-image-folder,
-.settings-body .settings-download-opds-folder
+.settings-body .settings-download-opds-folder,
+.settings-body .settings-custom-cache-and-tmp-folder
 {
 	padding: 0px 24px;
 	margin-top: 14px;
+}
+
+.settings-body .settings-custom-cache-and-tmp-folder
+{
+	margin-bottom: 32px;
 }
 
 .settings-master-folders-empty,

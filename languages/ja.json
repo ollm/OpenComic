@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "ストレージ",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "キャッシュ",
 			"cacheDescription": "サムネイルや圧縮ファイルのインデックスをここに保存します。容量が大きい場合やエラーがある場合以外は削除を推奨しません。",
 			"cacheMaxSize": "キャッシュの最大サイズ",

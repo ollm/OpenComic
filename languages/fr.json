@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Stockage",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Cache",
 			"cacheDescription": "Description du Cache",
 			"cacheMaxSize": "Taille Maximale du Cache",

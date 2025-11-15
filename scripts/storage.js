@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 132; // Update this if readingPagesConfig is updated
+const changes = 133; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -224,6 +224,8 @@ const storageDefault = {
 		lastCheckedRelease: '',
 		lastCheckedReleaseTime: 0,
 		serverTimeoutMultiplier: 1,
+		useCustomCacheAndTmpFolder: false,
+		customCacheAndTmpFolder: '',
 		cacheMaxSize: 256, // MB
 		cacheMaxOld: 60,
 		tmpMaxSize: 4, // GB
@@ -894,6 +896,16 @@ async function start(callback)
 	callback();
 }
 
+function _config()
+{
+	config = storage.get('config');
+
+	tempFolder = settings.getTmpFolder();
+	cache.setCacheFolder(settings.getCacheFolder());
+
+	return config;
+}
+
 function getDataFromDiskAsync(key, callback = false)
 {
 	if(syncIgnoreKeys.includes(key) || syncInstances.num === 1)
@@ -909,7 +921,7 @@ function getDataFromDiskAsync(key, callback = false)
 			setLastUpdate(key);
 
 			if(key === 'config')
-				config = storage.get('config');
+				storage.config();
 
 			if(callback)
 				callback();
@@ -938,7 +950,7 @@ function getPeriodicallyFromDisk()
 				setLastUpdate(key);
 
 				if(key === 'config')
-					config = storage.get('config');
+					storage.config();
 			}
 		}
 
@@ -1017,6 +1029,7 @@ function info()
 
 module.exports = {
 	start: start,
+	config: _config,
 	get: get,
 	getKey: getKey,
 	lastUpdate: _lastUpdate,

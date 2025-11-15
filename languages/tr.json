@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Depolama",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Önbellek",
 			"cacheDescription": "Küçük resimler ve sıkıştırılmış dosyaların dizini burada saklanır, çok yer kaplamadığı veya hata yaşanmadığı sürece temizlenmesi önerilmez",
 			"cacheMaxSize": "Maksimum önbellek boyutu",

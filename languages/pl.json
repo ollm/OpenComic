@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Pamięć masowa",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Pamięć podręczna (cache)",
 			"cacheDescription": "Są tu przechowywane miniatury i indeksy skompresowanych plików. Nie zaleca się jej czyszczenia, chyba że jest bardzo duża lub wystąpił błąd z nią związany.",
 			"cacheMaxSize": "Maksymalny rozmiar pamięci podręcznej",

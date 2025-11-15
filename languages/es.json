@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Almacenamiento",
+			"useCustomCacheAndTmpFolder": "Usar carpeta personalizada para caché y archivos temporales (Los archivos existentes se copiarán a la nueva ubicación)",
 			"cache": "Caché",
 			"cacheDescription": "Las miniaturas y el índice de los archivos comprimidos se almacenan aquí, no se recomienda limpiarla a no ser que sea muy grande o haya algún error relacionado con ella",
 			"cacheMaxSize": "Tamaño máximo de la caché",

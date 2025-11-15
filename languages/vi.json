@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Lưu trữ",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Bộ nhớ đệm",
 			"cacheDescription": "Ảnh bìa và mục lục của các tệp tin nén được lưu trữ tại đây, và được khuyến khích không nên xóa trừ khi đã quá lớn hoặc có lỗi xảy ra liên quan đến nó",
 			"cacheMaxSize": "Kích thước bộ nhớ đệm tối đa",

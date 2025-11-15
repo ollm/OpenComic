@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Speicher",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Cache",
 			"cacheDescription": "Die Miniaturansichten und der Index der komprimierten Dateien werden hier gespeichert. Es wird nicht empfohlen, ihn zu leeren, es sei denn, er ist sehr groß oder es liegt ein damit zusammenhängender Fehler vor.",
 			"cacheMaxSize": "Maximale Cache-Größe",

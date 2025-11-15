@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "儲存",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "快取",
 			"cacheDescription": "這裡儲存壓縮檔的縮圖和索引，除非它很大或出現相關錯誤，否則不建議清理",
 			"cacheMaxSize": "最大快取大小",

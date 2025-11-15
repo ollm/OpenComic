@@ -158,7 +158,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 				openPathInNewWindow(arg);
 				return;
 			}
-			
+
 			openComic(arg, true);
 			break;
 		}
@@ -240,6 +240,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	storage = require(p.join(appDir, 'scripts/storage.js')),
 	compatible = require(p.join(appDir, 'scripts/compatible.js')),
 	image = require(p.join(appDir, 'scripts/image.js')),
+	settings = require(p.join(appDir, 'scripts/settings.js')),
 	cache = require(p.join(appDir, 'scripts/cache.js')),
 	queue = require(p.join(appDir, 'scripts/queue.js')),
 	templates = require(p.join(appDir, 'scripts/builded/templates.js')),
@@ -258,7 +259,6 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	opds = require(p.join(appDir, 'scripts/opds.js')),
 	reading = require(p.join(appDir, 'scripts/reading.js')),
 	recentlyOpened = require(p.join(appDir, 'scripts/recently-opened.js')),
-	settings = require(p.join(appDir, 'scripts/settings.js')),
 	theme = require(p.join(appDir, 'scripts/theme.js')),
 	dragAndDrop = require(p.join(appDir, 'scripts/drag-and-drop.js')),
 	checkReleases = require(p.join(appDir, 'scripts/check-releases.js')),
@@ -266,19 +266,7 @@ const app = require(p.join(appDir, 'scripts/app.js')),
 	tracking = require(p.join(appDir, 'scripts/tracking.js')),
 	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
 
-var tempFolder = p.join(os.tmpdir(), 'opencomic');
-
-// Use cache folder on Linux and Darwin to avoid tmp system cleanup on reboot
-if(process.platform == 'linux' || process.platform == 'darwin')
-{
-	tempFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic', 'tmp');
-	if(!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder);
-}
-else if(!fs.existsSync(tempFolder))
-{
-	fs.mkdirSync(tempFolder);
-}
-
+var tempFolder = settings.getTmpFolder();
 var macosMAS = false;
 
 macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
@@ -300,7 +288,7 @@ async function start()
 
 	storage.start(function() {
 
-		config = storage.get('config');
+		config = storage.config();
 		_config = copy(config);
 
 		handlebarsContext.config = config;

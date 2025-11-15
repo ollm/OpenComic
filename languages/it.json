@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Memoria",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "Cache",
 			"cacheDescription": "Le anteprime ed indici dei file compressi sono memorizzati qui, non è raccomandato eliminarla ammenoché sia molto grande o ci sia un errore correlato ad essa",
 			"cacheMaxSize": "Dimensione massima cache",

@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "",
 			"cacheDescription": "",
 			"cacheMaxSize": "",

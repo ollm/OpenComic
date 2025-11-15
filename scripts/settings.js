@@ -10,6 +10,7 @@ function start()
 	handlebarsContext.turnPagesWithMouseWheelShortcut = getTurnPagesWithMouseWheelShortcut();
 	handlebarsContext.saveImageFolder = relative.resolve(config.saveImageFolder);
 	handlebarsContext.downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
+	handlebarsContext.customCacheAndTmpFolder = relative.resolve(config.customCacheAndTmpFolder);
 }
 
 function startSecond()
@@ -1354,6 +1355,53 @@ function changeDownloadOpdsFolder()
 	});
 }
 
+function changeCustomCacheAndTmpFolder()
+{
+	const dialog = electronRemote.dialog;
+
+	dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], filters: [{name: language.dialog.opds.autoSave}], securityScopedBookmarks: macosMAS, defaultPath: config.customCacheAndTmpFolder}).then(async function (files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
+
+		if(files.filePaths && files.filePaths[0])
+		{
+			const folder = files.filePaths[0];
+			const path = relative.path(folder);
+			changedCustomCacheAndTmpFolder({customCacheAndTmpFolder: path});
+
+			settings.set('customCacheAndTmpFolder', path);
+			dom.queryAll('.settings-custom-cache-and-tmp-folder .path-selector span').html(folder);
+		}
+
+	});
+}
+
+function changedCustomCacheAndTmpFolder(options = {})
+{
+	const currentTmpFolder = settings.getTmpFolder();
+	const newTmpFolder = settings.getTmpFolder(options);
+
+	if(currentTmpFolder !== newTmpFolder)
+	{
+		fs.cpSync(currentTmpFolder, newTmpFolder, {recursive: true});
+		fse.emptyDirSync(currentTmpFolder);
+	}
+
+	const currentCacheFolder = settings.getCacheFolder();
+	const newCacheFolder = settings.getCacheFolder(options);
+
+	if(currentCacheFolder !== newCacheFolder)
+	{
+		fs.cpSync(currentCacheFolder, newCacheFolder, {recursive: true});
+		fse.emptyDirSync(currentCacheFolder);
+	}
+
+	// Update paths
+	tempFolder = newTmpFolder;
+	cache.setCacheFolder(newCacheFolder);
+
+}
+
 function setMaxMargin(value, save = false)
 {
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
@@ -1495,6 +1543,13 @@ function set(key, value, save = true)
 			reading.discord.set(value);
 
 			break;
+
+		case 'useCustomCacheAndTmpFolder': 
+
+			dom.query('.settings-body .settings-custom-cache-and-tmp-folder').class(!value, 'disable-pointer');
+			changedCustomCacheAndTmpFolder({useCustomCacheAndTmpFolder: value});
+
+			break;
 	}
 
 	if(save)
@@ -1515,6 +1570,65 @@ function setInit(key, value, save = true)
 
 	if(save)
 		storage.updateVar('configInit', key, value);
+}
+
+function getTmpFolder(options = {})
+{
+	options = {
+		useCustomCacheAndTmpFolder: config.useCustomCacheAndTmpFolder,
+		customCacheAndTmpFolder: config.customCacheAndTmpFolder,
+		...options,
+	};
+
+	let tmpFolder;
+	const customCacheAndTmpFolder = relative.resolve(options.customCacheAndTmpFolder);
+
+	if(options.useCustomCacheAndTmpFolder && customCacheAndTmpFolder && fs.existsSync(customCacheAndTmpFolder))
+	{
+		tmpFolder = p.join(customCacheAndTmpFolder, 'opencomic', 'tmp');
+	}
+	else
+	{
+		// Use cache folder on Linux and Darwin to avoid tmp system cleanup on reboot
+		if(process.platform == 'linux' || process.platform == 'darwin')
+			tmpFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic', 'tmp');
+		else
+			tmpFolder = p.join(os.tmpdir(), 'opencomic');
+	}
+
+	if(!fs.existsSync(tmpFolder))
+		fs.mkdirSync(tmpFolder, {recursive: true});
+
+	return tmpFolder;
+}
+
+function getCacheFolder(options = {})
+{
+	options = {
+		useCustomCacheAndTmpFolder: config.useCustomCacheAndTmpFolder,
+		customCacheAndTmpFolder: config.customCacheAndTmpFolder,
+		...options,
+	};
+
+	let cacheFolder;
+	const customCacheAndTmpFolder = relative.resolve(options.customCacheAndTmpFolder);
+
+	if(options.useCustomCacheAndTmpFolder && customCacheAndTmpFolder && fs.existsSync(customCacheAndTmpFolder))
+	{
+		cacheFolder = p.join(customCacheAndTmpFolder, 'opencomic', 'cache');
+	}
+	else
+	{
+		cacheFolder = p.join(electronRemote.app.getPath('cache'), 'opencomic', 'cache');
+
+		if(process.platform == 'win32' || process.platform == 'win64')
+			cacheFolder = cacheFolder.replace(/AppData\\Roaming/, 'AppData\\Local');
+	}
+
+	if(!fs.existsSync(cacheFolder))
+		fs.mkdirSync(cacheFolder, {recursive: true});
+
+	return cacheFolder;
 }
 
 module.exports = {
@@ -1562,6 +1676,7 @@ module.exports = {
 	getOpeningBehavior: getOpeningBehavior,
 	changeSaveImageFolder: changeSaveImageFolder,
 	changeDownloadOpdsFolder: changeDownloadOpdsFolder,
+	changeCustomCacheAndTmpFolder: changeCustomCacheAndTmpFolder,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,
@@ -1569,4 +1684,6 @@ module.exports = {
 	purgeTemporaryFiles: purgeTemporaryFiles,
 	purgeTemporaryFilesEveryTimes: purgeTemporaryFilesEveryTimes,
 	generateShortcutsTable: generateShortcutsTable,
+	getTmpFolder,
+	getCacheFolder,
 };

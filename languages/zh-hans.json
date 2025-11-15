@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "存储",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "缓存",
 			"cacheDescription": "这里存储压缩文件的缩略图和索引，不建议清理它，除非它很大或者有与之相关的错误",
 			"cacheMaxSize": "最大缓存大小",

@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "스토리지",
+			"useCustomCacheAndTmpFolder": "",
 			"cache": "캐시",
 			"cacheDescription": "썸네일과 압축 파일 인덱스를 여기 저장합니다. 용량이 너무 크거나 오류가 발생하지 않는 한 삭제하지 않는 걸 추천합니다.",
 			"cacheMaxSize": "캐시 최대 크기",

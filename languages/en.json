@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Storage",
+			"useCustomCacheAndTmpFolder": "Use custom folder for cache and temporary files (Existing files will be copied to the new location)",
 			"cache": "Cache",
 			"cacheDescription": "The thumbnails and index of the compressed files are stored here, it is not recommended to clean it unless it is very large or there is an error related to it",
 			"cacheMaxSize": "Maximum cache size",

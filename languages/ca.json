@@ -418,6 +418,7 @@
 		},
 		"storage": {
 			"main": "Emmagatzematge",
+			"useCustomCacheAndTmpFolder": "Utilitzar una carpeta personalitzada per a la memòria cau i arxius temporals (Els arxius existents es copiaran a la nova ubicació)",
 			"cache": "Memòria cau",
 			"cacheDescription": "Les miniatures i l'índex dels arxius comprimits s'emmagatzemen aquí, no es recomana netejar-la tret que sigui molt gran o hi hagi algun error relacionat amb ella",
 			"cacheMaxSize": "Tamany màxim de la memòria cau",
