@@ -101,6 +101,12 @@ electronRemote.app.on('open-file', function(event, path) {
 	if(storage.syncInstances.client)
 		return;
 
+	if(config.openFilesInNewWindow)
+	{
+		openPathInNewWindow(path);
+		return;
+	}
+
 	if(windowHasLoaded)
 		openComic(path, true);
 	else
@@ -147,6 +153,12 @@ electronRemote.app.on('second-instance', function(event, argv) {
 
 		if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 		{
+			if(config.openFilesInNewWindow)
+			{
+				openPathInNewWindow(arg);
+				return;
+			}
+			
 			openComic(arg, true);
 			break;
 		}

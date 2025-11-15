@@ -330,6 +330,7 @@
 			"showFullPathLibrary": "Visa fullständig filväg när du öppnar serietidningar i biblioteket",
 			"showFullPathOpened": "Visa fullständig filväg när en fil eller mapp öppnas",
 			"showLibraryPath": "",
+			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": ""
 		},
 		"saveImages": {

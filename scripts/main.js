@@ -68,7 +68,7 @@ function createWindow(options = {}) {
 
 	let image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png'));
 
-	const windowOffset = (newWindow && !mainWindowState.isMaximized && !mainWindowState.isFullScreen ? 30 : 0);
+	const windowOffset = (newWindow && !mainWindowState.isMaximized && !mainWindowState.isFullScreen ? 24 : 0);
 
 	const x = windowOffset ? +getArgValue(args, '--window-x', mainWindowState.x) : mainWindowState.x;
 	const y = windowOffset ? +getArgValue(args, '--window-y', mainWindowState.y) : mainWindowState.y;

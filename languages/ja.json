@@ -330,6 +330,7 @@
 			"showFullPathLibrary": "ライブラリ内のコミックを開く際、フルパスを表示",
 			"showFullPathOpened": "ファイルやフォルダーを開く際、フルパスを表示",
 			"showLibraryPath": "ヘッダーのパスにライブラリ/お気に入り/ラベル等を表示",
+			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "最近開いたファイルの保存数"
 		},
 		"saveImages": {

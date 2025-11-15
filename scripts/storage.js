@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 131; // Update this if readingPagesConfig is updated
+const changes = 132; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -205,6 +205,7 @@ const storageDefault = {
 		saveImageToFolder: false,
 		downloadOpdsFolder: relative.path(p.join(getDocumentsPath(), 'OPDS')),
 		downloadOpdsToFolder: false,
+		openFilesInNewWindow: false,
 		startInFullScreen: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,
@@ -802,7 +803,7 @@ async function start(callback)
 	syncInstances.init();
 	ejs.setDataPath(storagePath);
 
-	const data = {};
+	let data = {};
 	const promises = [];
 
 	for(const key of storageKeys)

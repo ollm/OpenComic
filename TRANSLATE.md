@@ -33,7 +33,7 @@ OpenComic has translations into 21 languages.
 
 Translate by [محمد أبو عويمر](https://github.com/vic2pal)
 
-`90.1% | Remain 52 | Translated 475`
+`90% | Remain 53 | Translated 475`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ar.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ar.svg" /></a>
 
@@ -45,7 +45,7 @@ Translate by [محمد أبو عويمر](https://github.com/vic2pal)
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 527`
+`100% | Remain 0 | Translated 528`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ca.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ca.svg" /></a>
 
@@ -57,7 +57,7 @@ Translate by [Oleguer Llopart](https://github.com/ollm)
 
 Translate by [Matyáš Caras](https://github.com/hernikplays)
 
-`22% | Remain 411 | Translated 116`
+`22% | Remain 412 | Translated 116`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/cs.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/cs.svg" /></a>
 
@@ -69,7 +69,7 @@ Translate by [Matyáš Caras](https://github.com/hernikplays)
 
 Translate by [Hernesto Sanchez](https://github.com/herrsunchess) and [Mett-mit-Zwiebel](https://github.com/Mett-mit-Zwiebel)
 
-`98.3% | Remain 9 | Translated 518`
+`98.1% | Remain 10 | Translated 518`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/de.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/de.svg" /></a>
 
@@ -81,7 +81,7 @@ Translate by [Hernesto Sanchez](https://github.com/herrsunchess) and [Mett-mit-Z
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 527`
+`100% | Remain 0 | Translated 528`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/en.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/en.svg" /></a>
 
@@ -93,7 +93,7 @@ Translate by [Oleguer Llopart](https://github.com/ollm)
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 527`
+`100% | Remain 0 | Translated 528`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/es.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/es.svg" /></a>
 
@@ -105,7 +105,7 @@ Translate by [Oleguer Llopart](https://github.com/ollm)
 
 Translate by [Nikwok](https://github.com/nikwok)
 
-`64.9% | Remain 185 | Translated 342`
+`64.8% | Remain 186 | Translated 342`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/fr.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/fr.svg" /></a>
 
@@ -117,7 +117,7 @@ Translate by [Nikwok](https://github.com/nikwok)
 
 Translate by [Tóth Róbert](https://github.com/Nekomajin42)
 
-`19.4% | Remain 425 | Translated 102`
+`19.3% | Remain 426 | Translated 102`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/hu.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/hu.svg" /></a>
 
@@ -129,7 +129,7 @@ Translate by [Tóth Róbert](https://github.com/Nekomajin42)
 
 Translate by [Albano Battistella](https://www.zorinos.com), [Matteo Orlando](https://github.com/teor0), and [Simone Governatori](https://github.com/soggow)
 
-`79.9% | Remain 106 | Translated 421`
+`79.7% | Remain 107 | Translated 421`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/it.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/it.svg" /></a>
 
@@ -141,7 +141,7 @@ Translate by [Albano Battistella](https://www.zorinos.com), [Matteo Orlando](htt
 
 Translate by [Yasuyuki Takeo](https://github.com/yasuflatland-lf) and [wany-oh](https://github.com/wany-oh)
 
-`90.3% | Remain 51 | Translated 476`
+`90.2% | Remain 52 | Translated 476`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ja.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ja.svg" /></a>
 
@@ -153,7 +153,7 @@ Translate by [Yasuyuki Takeo](https://github.com/yasuflatland-lf) and [wany-oh](
 
 Translate by [Guaseon](https://github.com/guaseon) and [moroccansunset-ux](https://github.com/moroccansunset-ux)
 
-`90.9% | Remain 48 | Translated 479`
+`90.7% | Remain 49 | Translated 479`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ko.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ko.svg" /></a>
 
@@ -165,7 +165,7 @@ Translate by [Guaseon](https://github.com/guaseon) and [moroccansunset-ux](https
 
 Translate by [zafchiel](https://github.com/zafchiel)
 
-`94.5% | Remain 29 | Translated 498`
+`94.3% | Remain 30 | Translated 498`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/pl.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/pl.svg" /></a>
 
@@ -177,7 +177,7 @@ Translate by [zafchiel](https://github.com/zafchiel)
 
 Translate by [LoadSec](https://ggames.com.br) and [Lecca Linn](https://github.com/leccalinn)
 
-`89% | Remain 58 | Translated 469`
+`88.8% | Remain 59 | Translated 469`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/pt-br.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/pt-br.svg" /></a>
 
@@ -189,7 +189,7 @@ Translate by [LoadSec](https://ggames.com.br) and [Lecca Linn](https://github.co
 
 Translate by [vanja-san](https://github.com/vanja-san)
 
-`99.8% | Remain 1 | Translated 526`
+`99.6% | Remain 2 | Translated 526`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ru.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ru.svg" /></a>
 
@@ -201,7 +201,7 @@ Translate by [vanja-san](https://github.com/vanja-san)
 
 Translate by [Viktor Engkvist](https://github.com/PineappleSnackz)
 
-`57.1% | Remain 226 | Translated 301`
+`57% | Remain 227 | Translated 301`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/sv.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/sv.svg" /></a>
 
@@ -213,7 +213,7 @@ Translate by [Viktor Engkvist](https://github.com/PineappleSnackz)
 
 Translate by [Yutthaphon Inchaiya](https://github.com/SubMaRk)
 
-`92.4% | Remain 40 | Translated 487`
+`92.2% | Remain 41 | Translated 487`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/th.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/th.svg" /></a>
 
@@ -225,7 +225,7 @@ Translate by [Yutthaphon Inchaiya](https://github.com/SubMaRk)
 
 Translate by [seaque](https://github.com/seaque)
 
-`92.4% | Remain 40 | Translated 487`
+`92.2% | Remain 41 | Translated 487`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/tr.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/tr.svg" /></a>
 
@@ -237,7 +237,7 @@ Translate by [seaque](https://github.com/seaque)
 
 Translate by [Maksym Nedvyha](https://github.com/ImuS663)
 
-`99.8% | Remain 1 | Translated 526`
+`99.6% | Remain 2 | Translated 526`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/uk.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/uk.svg" /></a>
 
@@ -249,7 +249,7 @@ Translate by [Maksym Nedvyha](https://github.com/ImuS663)
 
 Translate by [Nguyen Do](https://github.com/catouberos)
 
-`56.4% | Remain 230 | Translated 297`
+`56.3% | Remain 231 | Translated 297`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/vi.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/vi.svg" /></a>
 
@@ -261,7 +261,7 @@ Translate by [Nguyen Do](https://github.com/catouberos)
 
 Translate by [無情天](https://github.com/kofzhanganguo)
 
-`99.8% | Remain 1 | Translated 526`
+`99.6% | Remain 2 | Translated 526`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hans.svg" /></a>
 
@@ -273,7 +273,7 @@ Translate by [無情天](https://github.com/kofzhanganguo)
 
 Translate by [珩](https://github.com/inkiron) and [Sayoko123f](https://github.com/Sayoko123f)
 
-`98.3% | Remain 9 | Translated 518`
+`98.1% | Remain 10 | Translated 518`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hant.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hant.svg" /></a>
 

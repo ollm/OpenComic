@@ -330,6 +330,7 @@
 			"showFullPathLibrary": "Mostra percorso intero quando apri la libreria dei fumetti",
 			"showFullPathOpened": "Mostra percorso intero quando apri un file o una cartella",
 			"showLibraryPath": "Mostra percorso libreria nella barra superiore",
+			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Numero di elementi da salvare negli Aggiunti di recente"
 		},
 		"saveImages": {

@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Support for multiple instances (Open multiple OpenComic windows) [`bbf6f56`](https://github.com/ollm/OpenComic/commit/bbf6f56f282d51379b26e2a64b50c3f80846dfad)
+- Add option to open files from outside OpenComic in a new window
 
 ##### 🐛 Bug Fixes
 

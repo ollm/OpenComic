@@ -330,6 +330,7 @@
 			"showFullPathLibrary": "Hiển thị đường dẫn đầy đủ khi mở truyện trong thư viện",
 			"showFullPathOpened": "Hiển thị đường dẫn đầy đủ khi mở tệp tin hoặc thư mục",
 			"showLibraryPath": "",
+			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": ""
 		},
 		"saveImages": {

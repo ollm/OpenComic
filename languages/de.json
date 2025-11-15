@@ -330,6 +330,7 @@
 			"showFullPathLibrary": "Vollständigen Pfad beim Öffnen von Bibliotheks-Comics anzeigen",
 			"showFullPathOpened": "Vollständigen Pfad beim Öffnen einer Datei oder eines Ordners anzeigen",
 			"showLibraryPath": "Bibliothek, Favoriten, Labels usw. im Kopfzeilenpfad anzeigen",
+			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Anzahl der in 'Kürzlich geöffnet' zu speichernden Elemente"
 		},
 		"saveImages": {

@@ -330,6 +330,7 @@
 			"showFullPathLibrary": "عرض المسار كاملاً عند فتح قصة في المكتبة",
 			"showFullPathOpened": "عرض المسار كاملاً عند فتح ملف أو مجلد",
 			"showLibraryPath": "أظهر المكتبة، المفضلة، التصنيفات، إلخ في المسار العلوي",
+			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "عدد العناصر المحفوظة في قائمة (المفتوح مؤخراً)"
 		},
 		"saveImages": {
