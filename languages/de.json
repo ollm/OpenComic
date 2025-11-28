@@ -219,6 +219,7 @@
 			"background": "Hintergrund",
 			"perspective": "Perspektive",
 			"angle": "Winkel",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

@@ -219,6 +219,7 @@
 			"background": "背景",
 			"perspective": "透視",
 			"angle": "角度",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

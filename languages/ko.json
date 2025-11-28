@@ -219,6 +219,7 @@
 			"background": "배경",
 			"perspective": "원근감",
 			"angle": "각도",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

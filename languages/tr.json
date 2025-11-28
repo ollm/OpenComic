@@ -219,6 +219,7 @@
 			"background": "Arka plan",
 			"perspective": "Perspektif",
 			"angle": "Açı",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

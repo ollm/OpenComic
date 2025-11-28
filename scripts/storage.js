@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 135; // Update this if readingPagesConfig is updated
+const changes = 136; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -98,6 +98,14 @@ const readingPagesConfig = {
 		colorsTheme: 'app',
 	},
 	readingAi: {
+		artifactRemoval: {
+			active: false,
+			model: '1x-SaiyaJin-DeJpeg',
+		},
+		descreen: {
+			active: false,
+			model: '1x_halftone_patch_060000_G',
+		},
 		upscale: {
 			active: false,
 			model: 'realcugan',
@@ -106,14 +114,6 @@ const readingPagesConfig = {
 			noise: 0,
 			autoScale: true,
 		},
-		descreen: {
-			active: false,
-			model: '1x_halftone_patch_060000_G',
-		}
-
-		// Best JPEG artifact removal models
-		// 1x_JPEGDestroyerV2_96000G
-		// 1x_NMKD-Jaywreck3-Soft-Lite_320k or 1x_NMKD-Jaywreck3-Lite_320k
 	},
 };
 

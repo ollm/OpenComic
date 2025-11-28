@@ -219,6 +219,7 @@
 			"background": "พื้นหลัง",
 			"perspective": "มุมการมอง",
 			"angle": "มุม",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

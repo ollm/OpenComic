@@ -132,6 +132,13 @@ function image(src, imageSize, options = {})
 	const toUpscale = reading.ai.toUpscale(imageSize);
 	const _pipeline = [];
 
+	if(_config.readingAi.artifactRemoval.active)
+	{
+		_pipeline.push({
+			model: _config.readingAi.artifactRemoval.model,
+		});
+	}
+
 	if(_config.readingAi.descreen.active)
 	{
 		_pipeline.push({

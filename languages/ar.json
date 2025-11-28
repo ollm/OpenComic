@@ -219,6 +219,7 @@
 			"background": "الخلفية",
 			"perspective": "المنظور",
 			"angle": "الزاوية",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

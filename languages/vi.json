@@ -219,6 +219,7 @@
 			"background": "Ảnh nền",
 			"perspective": "",
 			"angle": "",
+			"aiArtifactRemoval": "",
 			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",

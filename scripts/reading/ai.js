@@ -57,12 +57,7 @@ function change(feaute, key, value, save = true)
 				case 'model':
 
 					const model = OpenComicAI.model(value);
-
-					fixScale(model);
-					fixNoise(model);
-
 					dom.queryAll('.reading-ai-descreen-models .text').html(getModelName(value));
-
 					events.eventRange();
 
 					break;
@@ -70,6 +65,27 @@ function change(feaute, key, value, save = true)
 				case 'active':
 
 					dom.query('.ai-descreen').class(!value, 'disable-pointer');
+
+					break;
+			}
+
+			break;
+
+		case 'artifactRemoval':
+
+			switch (key)
+			{
+				case 'model':
+
+					const model = OpenComicAI.model(value);
+					dom.queryAll('.reading-ai-artifact-removal-models .text').html(getModelName(value));
+					events.eventRange();
+
+					break;
+
+				case 'active':
+
+					dom.query('.ai-artifact-removal').class(!value, 'disable-pointer');
 
 					break;
 			}
@@ -225,10 +241,11 @@ function getModelSpeed(speed)
 		return speed;
 }
 
-function loadUpscaleModels()
+function loadModels(key)
 {
-	const models = OpenComicAI.modelsTypeList.upscale;
-	const current = _config.readingAi.model;
+	const queryKey = key === 'artifactRemoval' ? 'artifact-removal' : key;
+	const models = OpenComicAI.modelsTypeList[queryKey];
+	const current = _config.readingAi[key].model;
 	const items = [];
 
 	for(const model of models)
@@ -241,7 +258,7 @@ function loadUpscaleModels()
 			//rightText: modeInfo.speed+' (~'+app.normalizeNumber(app.round(modeInfo.latency, 1), 0.1)+'s)',
 			rightText: getModelSpeed(modeInfo.speed),
 			select: current == model ? true : false,
-			function: 'reading.ai.change(\'upscale\', \'model\', \''+model+'\');',
+			function: 'reading.ai.change(\''+key+'\', \'model\', \''+model+'\');',
 		});
 	}
 
@@ -249,34 +266,7 @@ function loadUpscaleModels()
 		items: items,
 	};
 
-	document.querySelector('#reading-ai-upscale-models .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
-}
-
-function loadDescreenModels()
-{
-	const models = OpenComicAI.modelsTypeList.descreen;
-	const current = _config.readingAi.model;
-	const items = [];
-
-	for(const model of models)
-	{
-		const modeInfo = OpenComicAI.model(model);
-
-		items.push({
-			key: model,
-			name: getModelName(model),
-			//rightText: modeInfo.speed+' (~'+app.normalizeNumber(app.round(modeInfo.latency, 1), 0.1)+'s)',
-			rightText: getModelSpeed(modeInfo.speed),
-			select: current == model ? true : false,
-			function: 'reading.ai.change(\'descreen\', \'model\', \''+model+'\');',
-		});
-	}
-
-	handlebarsContext.menu = {
-		items: items,
-	};
-
-	document.querySelector('#reading-ai-descreen-models .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
+	document.querySelector('#reading-ai-'+queryKey+'-models .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
 }
 
 function processContext()
@@ -308,6 +298,9 @@ function processContext()
 
 	// Descreen
 	handlebarsContext.readingDescreenModel = getModelName(_config.readingAi.descreen.model);
+
+	// Artifact Removal
+	handlebarsContext.readingArtifactRemovalModel = getModelName(_config.readingAi.artifactRemoval.model);
 }
 
 
@@ -315,7 +308,6 @@ module.exports = {
 	change,
 	toUpscale,
 	size,
-	loadUpscaleModels,
-	loadDescreenModels,
+	loadModels,
 	processContext,
 };
