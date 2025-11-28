@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "ファイル キャッシュをクリアしました",
 			"closeApp": "OpenComic を閉じる"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "戻る",
 		"goBack": "前のページへ戻る",
 		"goForwards": "次のページへ進む",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "ページ設定",
 			"pageLayout": "ページ レイアウト",
+			"pageLayoutShort": "",
 			"ebookLayout": "eBook レイアウト",
+			"ebookLayoutShort": "",
 			"colorFilters": "カラー フィルター",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "スライド リーダー",
 			"scroll": "縦スクロール",
 			"roughPageTurn": "ページめくり（ラフ）",
@@ -206,7 +218,14 @@
 			"links": "リンク",
 			"background": "背景",
 			"perspective": "パース",
-			"angle": "角度"
+			"angle": "角度",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "拡大鏡",

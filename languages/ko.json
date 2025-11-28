@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "파일 캐시가 삭제되었습니다",
 			"closeApp": "OpenComic 종료"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "뒤로",
 		"goBack": "이전 페이지로 돌아가기",
 		"goForwards": "다음 페이지로 이동",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "페이지 설정",
 			"pageLayout": "페이지 레이아웃",
+			"pageLayoutShort": "",
 			"ebookLayout": "eBook 레이아웃",
+			"ebookLayoutShort": "",
 			"colorFilters": "색상 필터",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "슬라이드 보기",
 			"scroll": "스크롤 보기",
 			"roughPageTurn": "책장 넘기기(거칠게)",
@@ -206,7 +218,14 @@
 			"links": "링크",
 			"background": "배경",
 			"perspective": "원근감",
-			"angle": "각도"
+			"angle": "각도",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "돋보기",

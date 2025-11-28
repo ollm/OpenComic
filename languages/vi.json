@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "",
 			"closeApp": "Đóng OpenComic"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Trở về",
 		"goBack": "",
 		"goForwards": "",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Trang",
 			"pageLayout": "Chế độ dàn trang",
+			"pageLayoutShort": "",
 			"ebookLayout": "Chế độ dàn eBook",
+			"ebookLayoutShort": "",
 			"colorFilters": "Bộ lọc màu",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Trình đọc ngang",
 			"scroll": "Trình đọc dọc",
 			"roughPageTurn": "",
@@ -206,7 +218,14 @@
 			"links": "Đường dẫn",
 			"background": "Ảnh nền",
 			"perspective": "",
-			"angle": ""
+			"angle": "",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Kính lúp",

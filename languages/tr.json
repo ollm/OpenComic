@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "Dosya önbelleği başarıyla temizlendi",
 			"closeApp": "OpenComic'i kapat"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Geri",
 		"goBack": "Geri git",
 		"goForwards": "İleri git",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Sayfalar",
 			"pageLayout": "Sayfa düzeni",
+			"pageLayoutShort": "",
 			"ebookLayout": "E-kitap düzeni",
+			"ebookLayoutShort": "",
 			"colorFilters": "Renk filtreleri",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Slayt Okuyucu",
 			"scroll": "Dikey Okuyucu",
 			"roughPageTurn": "Sayfa çevirme",
@@ -206,7 +218,14 @@
 			"links": "Bağlantılar",
 			"background": "Arka plan",
 			"perspective": "Perspektif",
-			"angle": "Açı"
+			"angle": "Açı",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Büyüteç",

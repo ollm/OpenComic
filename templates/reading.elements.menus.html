@@ -95,12 +95,19 @@
 	</div>
 	<div class="menu-close" onclick="events.hideSelect(true);" style="z-index: 124;"></div>
 </div>
+<div class="menu" id="reading-ai-upscale-models">
+	<div class="menu-simple menu-simple-header elevation-2" style="width: 552px; z-index: 14;">
+		<div class="menu-simple-content">
+		</div>
+	</div>
+	<div class="menu-close" onclick="events.hideSelect(true);" style="z-index: 13;"></div>
+</div>
 <div class="menu reading-elements-menus" id="reading-pages">
 	<div class="menu-simple menu-simple-header elevation-2" style="width: 600px;">
 		<div class="menu-simple-content">
 		</div>
 	</div>
-	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); if(handlebarsContext.editReadingShortcutPagesConfig){reading.changePagesView(0)} events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-ebook-layout, .bar-right-buttons .button-page-layout, .bar-right-buttons .button-filters');"></div>
+	<div class="menu-close" onclick="reading.magnifyingGlassControl(2); if(handlebarsContext.editReadingShortcutPagesConfig){reading.changePagesView(0)} events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-ebook-layout, .bar-right-buttons .button-page-layout, .bar-right-buttons .button-filters, .bar-right-buttons .button-ai');"></div>
 	<div class="menu-clip-path-shadow elevation-2"></div>
 </div>
 <div class="menu" id="reading-music">
@@ -159,6 +166,11 @@
 				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'filters'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');})()">
 					<i class="material-icon menu-simple-icon-first">invert_colors</i>
 					{{language.reading.pages.colorFilters}}
+				</div>
+
+				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); reading.loadReadingPages(false, false, 'ai'); events.activeMenu('#reading-pages', false, 'gamepad', 'gamepad');})()">
+					<i class="material-icon menu-simple-icon-first">auto_awesome</i>
+					{{language.reading.pages.aiTools}}
 				</div>
 
 				<div class="menu-simple-element gamepad-item" onclick="(async function(){await events.desactiveMenu('#reading-menu-gamepad'); events.activeMenu('#reading-sort', false, 'gamepad', 'gamepad');})()">

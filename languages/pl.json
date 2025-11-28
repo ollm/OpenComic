@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "Pamięć podręczna pliku została pomyślnie wyczyszczona",
 			"closeApp": "Zamknij OpenComic"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Wstecz",
 		"goBack": "Wróć",
 		"goForwards": "Do przodu",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Strony",
 			"pageLayout": "Układ strony",
+			"pageLayoutShort": "",
 			"ebookLayout": "Układ eBooka",
+			"ebookLayoutShort": "",
 			"colorFilters": "Filtry kolorów",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Czytnik Slajdów",
 			"scroll": "Czytnik Pionowy",
 			"roughPageTurn": "Przewracanie stron",
@@ -206,7 +218,14 @@
 			"links": "Odnośniki",
 			"background": "Tło",
 			"perspective": "Perspektywa",
-			"angle": "Kąt"
+			"angle": "Kąt",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

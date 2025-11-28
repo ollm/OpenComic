@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "تم حذف الملفات المؤقتة",
 			"closeApp": "إغلاق البرنامج"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "الخلف",
 		"goBack": "إذهب للخلف",
 		"goForwards": "إذهب للأمام",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "الصفحات",
 			"pageLayout": "عرض الصفحة",
+			"pageLayoutShort": "",
 			"ebookLayout": "عرض الكتاب الإلكتروني",
+			"ebookLayoutShort": "",
 			"colorFilters": "الفلاتر اللونية",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "القراءة الأفقية",
 			"scroll": "القراءة العمودية",
 			"roughPageTurn": "تقليب الصفحات",
@@ -206,7 +218,14 @@
 			"links": "الروابط",
 			"background": "الخلفية",
 			"perspective": "المنظور",
-			"angle": "الزاوية"
+			"angle": "الزاوية",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "العدسة المكبرة",

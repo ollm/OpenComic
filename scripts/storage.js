@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 133; // Update this if readingPagesConfig is updated
+const changes = 134; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -96,6 +96,22 @@ const readingPagesConfig = {
 		pLineHeight: 0.3,
 		lineHeight: 1.6,
 		colorsTheme: 'app',
+	},
+	readingAi: {
+		upscale: {
+			active: false,
+			model: 'realcugan',
+			maxMegapixels: 1.5,
+			scale: 4,
+			noise: 0,
+			autoScale: true,
+		}
+		// Best Descreening models
+		// 1x_halftone_patch_060000_G
+
+		// Best JPEG artifact removal models
+		// 1x_JPEGDestroyerV2_96000G
+		// 1x_NMKD-Jaywreck3-Soft-Lite_320k or 1x_NMKD-Jaywreck3-Lite_320k
 	},
 };
 
@@ -272,9 +288,9 @@ const storageDefault = {
 		path: 'Files path',
 		added: 0,
 		compressed: false,
-		bookmark: false,  // I think this is no longer used now, but I not sure
+		bookmark: false,  // TODO: I think this is no longer used now, but I not sure
 		folder: true,
-		readingProgress: { // I think this is no longer used now, but I not sure
+		readingProgress: { // TODO: I think this is no longer used now, but I not sure
 			path: 'Path',
 			lastReading: 0,
 			progress: 0,

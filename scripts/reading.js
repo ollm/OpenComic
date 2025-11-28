@@ -1,5 +1,6 @@
 const render = require(p.join(appDir, 'scripts/reading/render.js')),
 	filters = require(p.join(appDir, 'scripts/reading/filters.js')),
+	ai = require(p.join(appDir, 'scripts/reading/ai.js')),
 	music = require(p.join(appDir, 'scripts/reading/music.js')),
 	contextMenu = require(p.join(appDir, 'scripts/reading/context-menu.js')),
 	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
@@ -402,13 +403,13 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
-				let size = imagesData[first.index];
+				let size = ai.size(imagesData[first.index]);
 				let originalSize = false;
 
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
-					let sizeClip = imagesDataClip[first.index];
+					let sizeClip = ai.size(imagesDataClip[first.index]);
 
 					if(size && (imgWidth0 * dpr > size.width || imgHeight0 * dpr > size.height))
 					{
@@ -474,13 +475,13 @@ function disposeImages(data = false)
 
 			if(image1)
 			{
-				let size = imagesData[second.index];
+				let size = ai.size(imagesData[second.index]);
 				let originalSize = false;
 
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
-					let sizeClip = imagesDataClip[second.index];
+					let sizeClip = ai.size(imagesDataClip[second.index]);
 
 					if(size && (imgWidth1 * dpr > size.width || imgHeight1 * dpr > size.height))
 					{
@@ -588,13 +589,13 @@ function disposeImages(data = false)
 
 			if(image0)
 			{
-				let size = imagesData[first.index];
+				let size = ai.size(imagesData[first.index]);
 				let originalSize = false;
 
 				if(readingNotEnlargeMoreThanOriginalSize)
 				{
 					let dpr = window.devicePixelRatio;
-					let sizeClip = imagesDataClip[first.index];
+					let sizeClip = ai.size(imagesDataClip[first.index]);
 
 					if(size && (imgWidth * dpr > size.width || imgHeight * dpr > size.height))
 					{
@@ -2440,7 +2441,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 
 		if(_image && !_image.folder && !_image.blank)
 		{
-			let image = imagesData[_image.index] || [];
+			let image = ai.size(imagesData[_image.index]) || [];
 			let img = template._contentRight().querySelector('.r-img-i'+_image.index+' oc-img');
 
 			if(img)
@@ -3931,6 +3932,7 @@ function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 
 	filters.processContext();
 	readingEbook.processContext();
+	ai.processContext();
 
 	let menuSimpleContent = document.querySelector('#reading-pages .menu-simple-content');
 	menuSimpleContent.innerHTML = template.load('reading.elements.menus.pages.html');
@@ -3973,7 +3975,7 @@ function setReadingShortcutPagesConfig(key = 0, desactiveMenu = true)
 	changePagesView(0);
 
 	if(desactiveMenu)
-		events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-page-layout, .bar-right-buttons .button-filters');
+		events.desactiveMenu('#reading-pages', '.bar-right-buttons .button-ebook-layout, .bar-right-buttons .button-page-layout, .bar-right-buttons .button-filters, .bar-right-buttons .button-ai');
 }
 
 function editReadingShortcutPagesConfig(event, key = 0)
@@ -5940,4 +5942,5 @@ module.exports = {
 	discord: discord,
 	progress: progress,
 	doublePage: doublePage,
+	ai: ai,
 };

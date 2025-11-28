@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "File cache has been successfully cleared",
 			"closeApp": "Close OpenComic"
 		},
+		"speed": {
+			"veryFast": "Very fast",
+			"fast": "Fast",
+			"medium": "Medium",
+			"slow": "Slow",
+			"verySlow": "Very slow"
+		},
 		"back": "Back",
 		"goBack": "Go back",
 		"goForwards": "Go forwards",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Pages",
 			"pageLayout": "Page layout",
+			"pageLayoutShort": "Page",
 			"ebookLayout": "eBook layout",
+			"ebookLayoutShort": "eBook",
 			"colorFilters": "Color filters",
+			"colorFiltersShort": "Filters",
+			"aiTools": "AI tools",
+			"aiToolsShort": "AI",
 			"slide": "Slide Reader",
 			"scroll": "Vertical Reader",
 			"roughPageTurn": "Page turn",
@@ -206,7 +218,14 @@
 			"links": "Links",
 			"background": "Background",
 			"perspective": "Perspective",
-			"angle": "Angle"
+			"angle": "Angle",
+			"aiUpscale": "AI upscale",
+			"aiModel": "Model",
+			"downloadingAiModel": "Downloading AI model",
+			"maxMegapixels": "Max input image resolution (Megapixels)",
+			"autoScale": "Auto scale",
+			"scale": "Scale",
+			"noiseReduction": "Noise reduction"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",

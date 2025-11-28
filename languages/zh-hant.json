@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "檔案快取已成功清除",
 			"closeApp": "結束 OpenComic"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "返回",
 		"goBack": "返回",
 		"goForwards": "前進",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "頁面設定",
 			"pageLayout": "版面配置",
+			"pageLayoutShort": "",
 			"ebookLayout": "電子書版面配置",
+			"ebookLayoutShort": "",
 			"colorFilters": "顏色濾鏡",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "水平閱讀",
 			"scroll": "垂直閱讀",
 			"roughPageTurn": "翻頁",
@@ -206,7 +218,14 @@
 			"links": "連結",
 			"background": "背景",
 			"perspective": "透視",
-			"angle": "角度"
+			"angle": "角度",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "放大鏡",

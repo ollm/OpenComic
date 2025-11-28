@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "",
 			"closeApp": ""
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Zpět",
 		"goBack": "",
 		"goForwards": "",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Stránky",
 			"pageLayout": "",
+			"pageLayoutShort": "",
 			"ebookLayout": "",
+			"ebookLayoutShort": "",
 			"colorFilters": "",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Režim Prezentace",
 			"scroll": "Režim Vertikální Čtečka",
 			"roughPageTurn": "",
@@ -206,7 +218,14 @@
 			"links": "",
 			"background": "",
 			"perspective": "",
-			"angle": ""
+			"angle": "",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

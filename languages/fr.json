@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "",
 			"closeApp": "Fermer l'application"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Retour",
 		"goBack": "revenir en arrière",
 		"goForwards": "aller en avant",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Pages",
 			"pageLayout": "",
+			"pageLayoutShort": "",
 			"ebookLayout": "",
+			"ebookLayoutShort": "",
 			"colorFilters": "",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Lecture horizontale",
 			"scroll": "Lecture verticale",
 			"roughPageTurn": "",
@@ -206,7 +218,14 @@
 			"links": "Liens",
 			"background": "Arrière-plan",
 			"perspective": "",
-			"angle": ""
+			"angle": "",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Loupe",

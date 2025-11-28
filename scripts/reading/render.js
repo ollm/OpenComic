@@ -1,3 +1,5 @@
+const ai = require(p.join(appDir, 'scripts/reading/render/ai.js'));
+
 var file = false,
 	ebook = false,
 	ebookConfigChanged = false,
@@ -40,6 +42,7 @@ async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'canv
 	scale = 1;
 	scaleMagnifyingGlass = _scaleMagnifyingGlass;
 	globalZoom = false;
+	ai.clean(true);
 
 	if(renderImages)
 		revokeAllObjectURL();
@@ -58,6 +61,7 @@ async function reset(_scaleMagnifyingGlass = false)
 	scale = 1;
 	scaleMagnifyingGlass = _scaleMagnifyingGlass;
 	globalZoom = false;
+	ai.clean(true);
 
 	if(renderImages)
 		revokeAllObjectURL();
@@ -104,6 +108,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 	clearTimeout(sendToQueueST);
 
 	queue.clean('readingRender');
+	ai.clean();
 
 	scale = _scale;
 	globalZoom = _globalZoom;
@@ -145,6 +150,7 @@ function setScaleMagnifyingGlass(_scale = 1, doublePage = false)
 	clearTimeout(sendToQueueST);
 
 	queue.clean('readingRender');
+	ai.clean();
 
 	renderedMagnifyingGlass = {};
 	scaleMagnifyingGlass = _scale;
@@ -167,6 +173,7 @@ function resized(doublePage = false)
 	clearTimeout(sendToQueueST);
 
 	queue.clean('readingRender');
+	ai.clean();
 
 	if(renderImages)
 		revokeAllObjectURL();
@@ -202,6 +209,7 @@ async function focusIndex(index, doublePage = false)
 	clearTimeout(sendToQueueST);
 
 	queue.clean('readingRender');
+	ai.clean();
 
 	currentIndex = index;
 
@@ -227,6 +235,20 @@ function revokeAllObjectURL()
 
 	renderedObjectsURL = [];
 	renderedObjectsURLCache = {};
+}
+
+function revokeObjectURL(key)
+{
+	const index = renderedObjectsURL.findIndex(o => o.key === key);
+
+	if(index !== -1)
+	{
+		// renderedObjectsURL[index].img.classList.remove('blobRendered');
+		URL.revokeObjectURL(renderedObjectsURL[index].data.blob);
+
+		renderedObjectsURL.splice(index, 1);
+		delete renderedObjectsURLCache[key];
+	}
 }
 
 async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false, prioritizeNext = false)
@@ -295,6 +317,7 @@ var onRender = false;
 async function setOnRender(num = 1, callback = false)
 {
 	queue.clean('readingRender');
+	ai.clean();
 
 	onRender = {
 		num: num,
@@ -302,7 +325,7 @@ async function setOnRender(num = 1, callback = false)
 	};
 }
 
-async function render(index, _scale = false, magnifyingGlass = false, queueIndex = 0)
+async function render(index, _scale = false, magnifyingGlass = false, queueIndex = 0, runAi = true)
 {
 	let imageData = imagesData[index] || false;
 
@@ -388,16 +411,62 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 				// kernel: 'lanczos3',
 			};
 
-			_config.kernel = _config.width > imageData.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
-
 			let src = img.dataset.src;
-			let path = img.dataset.path;
-			let key = src+'|'+_config.width+'x'+_config.height;
+			const path = img.dataset.path;
+			const key = src+'|'+_config.width+'x'+_config.height;
 
 			fileManager.macosStartAccessingSecurityScopedResource(src);
 
 			if(compatible.image.convert(path)) // Convert unsupported images
 				src = await workers.convertImage(path, {priorize: true});
+
+			const aiPath = ai.image(src, imageData, {
+				run: runAi,
+				start: function() {
+
+					if(!magnifyingGlass && !ocImg.querySelector('.ai-loading'))
+					{
+						const html = template.load('ai.loading.html');
+						ocImg.insertAdjacentHTML('beforeend', html);
+
+						//const loading = ocImg.querySelector('.ai-loading .loading');
+						//if(loading) events.loadingProgress(loading, 0);
+					}
+
+				},
+				progress: function(progress) {
+
+					/*const icon = ocImg.querySelector('.ai-loading .material-icon');
+					if(icon) icon.style.animationDuration = '1s';
+
+					const loading = ocImg.querySelector('.ai-loading .loading');
+					if(loading)
+					{
+						loading.style.opacity = 1;
+						events.loadingProgress(loading, progress);
+					}*/
+
+				},
+				end: function(aiPath) {
+
+					const aiLoading = ocImg.querySelector('.ai-loading');
+					if(aiLoading) aiLoading.remove();
+
+					queue.add('readingRender', async function(queueIndex) {
+
+						revokeObjectURL(key);
+						return render(index, _scale, magnifyingGlass, queueIndex, false); // TODO: Check magnifying glass
+
+					}, queue.index('readingRender'));
+
+				}
+			});
+
+			if(aiPath)
+				src = aiPath;
+
+			const imageSize = aiPath ? reading.ai.size(imageData) : imageData;
+			_config.kernel = _config.width > imageSize.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
 
 			if(renderCanvas)
 			{
@@ -428,7 +497,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						{
 							data = await file.renderBlob(name, _config);
 
-							renderedObjectsURL.push({data: data, img: img});
+							renderedObjectsURL.push({data: data, img: img, key});
 							renderedObjectsURLCache[key] = data;
 
 							if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
@@ -453,7 +522,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					}
 				}
 			}
-			else if(_config.width !== imageData.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
+			else if(_config.width !== imageSize.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
 			{
 				if(cssMethods[_config.kernel])
 				{
@@ -471,8 +540,8 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 				{
 					if(affineInterpolationMethods[_config.kernel])
 					{
-						_config.imageWidth = rotated90 ? imageData.height : imageData.width;
-						_config.imageHeight = rotated90 ? imageData.width : imageData.height;
+						_config.imageWidth = rotated90 ? imageSize.height : imageSize.width;
+						_config.imageHeight = rotated90 ? imageSize.width : imageSize.height;
 						_config.interpolator = affineInterpolationMethods[_config.kernel];
 
 						_config.kernel = false;
@@ -482,7 +551,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						let data = await image.resizeToBlob(src, _config);
 
-						renderedObjectsURL.push({data: data, img: img});
+						renderedObjectsURL.push({data: data, img: img, key});
 						renderedObjectsURLCache[key] = {blob: data.blob};
 
 						if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different

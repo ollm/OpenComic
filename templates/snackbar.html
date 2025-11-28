@@ -3,7 +3,7 @@
 		<div class="snackbar-text body-medium">{{snackbar.text}}</div>
 		<div class="snackbar-buttons">
 			{{#each snackbar.buttons}}
-			<div class="simple-button transparent"{{#if right}} style="right: {{right}}px"{{/if}}>
+			<div class="simple-button transparent{{#if className}} {{className}}{{/if}}"{{#if right}} style="right: {{right}}px"{{/if}}>
 				<div class="touch-effect" onclick="{{function}}">{{text}}</div>
 			</div>
 			{{/each}}

@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "Кэш файлов успешно очищен",
 			"closeApp": "Закрыть OpenComic"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Назад",
 		"goBack": "Вернуться назад",
 		"goForwards": "Вперёд",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Страницы",
 			"pageLayout": "Расположение страниц",
+			"pageLayoutShort": "",
 			"ebookLayout": "Макет электронной книги",
+			"ebookLayoutShort": "",
 			"colorFilters": "Цветовые фильтры",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Чтение с прокруткой",
 			"scroll": "Вертикальное чтение",
 			"roughPageTurn": "Перелистывание",
@@ -206,7 +218,14 @@
 			"links": "Ссылки",
 			"background": "Фон",
 			"perspective": "Перспектива",
-			"angle": "Угол"
+			"angle": "Угол",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Лупа",

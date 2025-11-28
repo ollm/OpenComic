@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "Кеш успішно очищено",
 			"closeApp": "Закрити OpenComic"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "Назад",
 		"goBack": "Повернутися",
 		"goForwards": "Вперед",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Сторінки",
 			"pageLayout": "Макет сторінки",
+			"pageLayoutShort": "",
 			"ebookLayout": "Макет електронної книги",
+			"ebookLayoutShort": "",
 			"colorFilters": "Фільтри кольорів",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "Горизонтальне читання",
 			"scroll": "Вертикальне читання",
 			"roughPageTurn": "Перегортання сторінок",
@@ -206,7 +218,14 @@
 			"links": "Посилання",
 			"background": "Фон",
 			"perspective": "Перспектива",
-			"angle": "Кут"
+			"angle": "Кут",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "Збільшувальне скло",

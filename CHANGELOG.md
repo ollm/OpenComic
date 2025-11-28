@@ -10,7 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Support for multiple instances (Open multiple OpenComic windows) [`bbf6f56`](https://github.com/ollm/OpenComic/commit/bbf6f56f282d51379b26e2a64b50c3f80846dfad)
 - Add option to open files from outside OpenComic in a new window [`906a5b7`](https://github.com/ollm/OpenComic/commit/906a5b758685e0df2d67102856c1f3f74c53760c)
-- Add setting to use a custom folder for cache and temporary files
+- Add setting to use a custom folder for cache and temporary files [`5b7a3a1`](https://github.com/ollm/OpenComic/commit/5b7a3a150d65eef9ed92b4265c72818c30a29ec9)
+- AI image upscaling tool
 
 ##### 🐛 Bug Fixes
 

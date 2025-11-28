@@ -376,7 +376,7 @@ function rangePosition(input, range, percent = false)
 	let step = input.getAttribute('step') || 1;
 
 	if(percent === false)
-		percent = (min === max) ? 0 : (value - min) / (max - min) * 100;
+		percent = (min === max) ? (input.dataset.singlePercent ? +input.dataset.singlePercent : 0) : (value - min) / (max - min) * 100;
 
 	if(isNaN(percent))
 		percent = 0;
@@ -1115,7 +1115,9 @@ function snackbar(config)
 
 		let duration = config.duration;
 
-		if(duration > 10)
+		if(duration === INFINITY)
+			duration = 600; // Max duration 10 minutes
+		else if(duration > 10)
 			duration = 10;
 		else if(duration < 4)
 			duration = 4;
@@ -1418,6 +1420,8 @@ function buttonLoading(button, progress = false)
 	}
 }
 
+const INFINITY = 'Infinity';
+
 module.exports = {
 	eventButton: eventButton,
 	eventHover: eventHover,
@@ -1448,4 +1452,5 @@ module.exports = {
 	loadingProgress: loadingProgress,
 	buttonLoading: buttonLoading,
 	swiftClick: swiftClick,
+	INFINITY,
 };

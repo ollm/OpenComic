@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "ล้างไฟล์แคชออกเรียบร้อยแล้ว",
 			"closeApp": "ปิด OpenComic"
 		},
+		"speed": {
+			"veryFast": "",
+			"fast": "",
+			"medium": "",
+			"slow": "",
+			"verySlow": ""
+		},
 		"back": "กลับ",
 		"goBack": "ย้อนกลับ",
 		"goForwards": "ไปข้างหน้า",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "หน้า",
 			"pageLayout": "เค้าโครงหน้า",
+			"pageLayoutShort": "",
 			"ebookLayout": "เค้าโครงอีบุ๊ก",
+			"ebookLayoutShort": "",
 			"colorFilters": "ฟิลเตอร์สี",
+			"colorFiltersShort": "",
+			"aiTools": "",
+			"aiToolsShort": "",
 			"slide": "อ่านแบบเลื่อนข้าง",
 			"scroll": "อ่านแบบเลื่อนลง",
 			"roughPageTurn": "พลิกหน้า",
@@ -206,7 +218,14 @@
 			"links": "ลิ้งก์",
 			"background": "พื้นหลัง",
 			"perspective": "มุมการมอง",
-			"angle": "มุม"
+			"angle": "มุม",
+			"aiUpscale": "",
+			"aiModel": "",
+			"downloadingAiModel": "",
+			"maxMegapixels": "",
+			"autoScale": "",
+			"scale": "",
+			"noiseReduction": ""
 		},
 		"magnifyingGlass": {
 			"main": "แว่นขยาย",

@@ -2613,6 +2613,12 @@ a:hover
 	transition: 0.3s stroke-dasharray;
 }
 
+.snackbar .loading > svg > circle
+{
+	stroke: var(--md-sys-color-on-primary-light);
+	stroke: var(--md-sys-color-primary-container-light);
+}
+
 .loading > svg > circle:nth-child(2)
 {
 	stroke: var(--md-sys-color-surface-container);

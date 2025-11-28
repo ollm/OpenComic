@@ -43,6 +43,11 @@ if(process.platform == 'darwin')
 		// 7zip
 		exists(darwin+'/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
+		// OpenComicAI
+		exists(darwin+'/opencomic-ai-bin/mac/x64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwin+'/opencomic-ai-bin/mac/x64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwin+'/opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
+
 		checkSome = true;
 	}
 
@@ -58,6 +63,11 @@ if(process.platform == 'darwin')
 
 		// 7zip
 		exists(darwinArm+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+
+		// OpenComicAI
+		exists(darwinArm+'/opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinArm+'/opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinArm+'/opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -81,6 +91,14 @@ if(process.platform == 'darwin')
 		exists(darwinMas+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinMas+'/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
+		// OpenComicAI
+		exists(darwinMas+'/opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/opencomic-ai-bin/mac/x64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/opencomic-ai-bin/mac/x64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
+		exists(darwinMas+'/opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
+
 		checkSome = true;
 	}
 }
@@ -99,6 +117,11 @@ else if(process.platform == 'linux')
 		// 7zip
 		exists(linux+'/7zip-bin-full/linux/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
+		// OpenComicAI
+		exists(linux+'/opencomic-ai-bin/linux/x64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
+		exists(linux+'/opencomic-ai-bin/linux/x64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
+		exists(linux+'/opencomic-ai-bin/linux/x64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
+
 		checkSome = true;
 	}
 
@@ -114,6 +137,10 @@ else if(process.platform == 'linux')
 
 		// 7zip
 		exists(linuxArm+'/7zip-bin-full/linux/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
+
+		// OpenComicAI
+		exists(linuxArm+'/opencomic-ai-bin/linux/arm64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
+		exists(linuxArm+'/opencomic-ai-bin/linux/arm64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -134,6 +161,11 @@ else if(process.platform == 'win32')
 		exists(windows+'/7zip-bin-full/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
 		exists(windows+'/7zip-bin-full/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 
+		// OpenComicAI
+		exists(windows+'/opencomic-ai-bin/win/x64/realcugan/realcugan-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
+		exists(windows+'/opencomic-ai-bin/win/x64/waifu2x/waifu2x-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
+		exists(windows+'/opencomic-ai-bin/win/x64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
+
 		checkSome = true;
 	}
 
@@ -150,6 +182,9 @@ else if(process.platform == 'win32')
 		// 7zip
 		exists(windowsArm+'/7zip-bin-full/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
 		exists(windowsArm+'/7zip-bin-full/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+
+		// OpenComicAI
+		// Not supported
 
 		checkSome = true;
 	}

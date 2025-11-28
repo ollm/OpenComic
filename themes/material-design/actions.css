@@ -587,7 +587,8 @@
 	margin-bottom: -26px;
 }
 
-.menu-simple-element > span > span
+.menu-simple-element > span > span,
+.menu-simple-element-right-text
 {
 	color: color-mix(in srgb, var(--md-sys-color-on-surface-variant), transparent 20%);
 }
@@ -974,7 +975,7 @@
 	top: 50% !important;
 	width: 50% !important;
 	left: 50% !important;
-	max-width: 640px;
+	max-width: 648px;
 	transform: translateY(-50%) translateX(-50%) !important; /*! Keep this line */
 	transform: translateY(round(-50%, 1px)) translateX(round(-50%, 1px)) !important;
 	padding: 0px;
@@ -1571,6 +1572,12 @@
 	top: 2px;
 	border-radius: 100px;
 	background-color: var(--md-sys-color-secondary-container);
+}
+
+.snackbars .button-loading
+{
+	background-color: var(--md-sys-color-inverse-surface);
+
 }
 
 .simple-button.normal .button-loading,

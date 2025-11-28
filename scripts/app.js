@@ -453,6 +453,30 @@ function setImmediate()
 	});
 }
 
+function clamp(value, min, max)
+{
+	return Math.min(Math.max(value, min), max);
+}
+
+function normalizeNumber(value, decimals) {
+
+	if(isNaN(value))
+		value = 0;
+	else
+		value = +value;
+
+	value = String(value);
+
+	const has = value.replace(/.*?(\.|$)/, '').length;
+	decimals = String(decimals).replace(/.*?(\.|$)/, '').length;
+
+	if(decimals != 0)
+		value = value+(/\./.test(value) ? '' : '.')+('0'.repeat(decimals - has));
+
+	return value;
+
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
@@ -488,4 +512,6 @@ module.exports = {
 	shortWindowsPath: _shortWindowsPath,
 	encodeSrcURI: _encodeSrcURI,
 	isDifferent: isDifferent,
+	clamp: clamp,
+	normalizeNumber: normalizeNumber,
 };

@@ -151,6 +151,8 @@ function purgeTemporaryFiles(tmpMaxSize = false, onlyExedeMaxSize = false)
 {
 	tmpMaxSize = tmpMaxSize || config.tmpMaxSize;
 
+	const aiModelsPath = p.join(tempFolder, 'ai-models');
+
 	try
 	{
 		if(tmpMaxSize == 0)
@@ -212,6 +214,10 @@ function purgeTemporaryFiles(tmpMaxSize = false, onlyExedeMaxSize = false)
 				for(let i = 0, len = dataArray.length; i < len; i++)
 				{
 					let path = dataArray[i].path;
+
+					if(path.startsWith(aiModelsPath)) // Ignore AI models, only delete if exeds tmpMaxOld
+						continue;
+
 					delete tmpUsage[path];
 
 					let size = removeTemporaryPath(path);

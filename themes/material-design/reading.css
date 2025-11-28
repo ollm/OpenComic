@@ -212,6 +212,71 @@
 	height: 100%;
 }
 
+oc-img .ai-loading
+{
+	position: absolute !important;
+	right: 0px !important;
+	top: 0px !important;
+	background: transparent !important;
+	mix-blend-mode: difference;
+	width: 48px;
+	height: 48px;
+}
+
+oc-img .ai-loading .material-icon
+{
+	color: white !important;
+	margin: 12px 12px 12px 10px;
+	animation: ai-blink 1.5s ease-in-out infinite;
+}
+
+oc-img .ai-loading .loading
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	opacity: 0;
+}
+
+oc-img .ai-loading circle
+{
+	stroke: white !important;
+}
+
+@keyframes ai-blink
+{
+	0%, 100%
+	{
+		opacity: 1;
+	}
+	50%
+	{
+		opacity: 0;
+	}
+}
+
+.ai-sample-images
+{
+	height: 100px;
+	width: 100%;
+	display: flex;
+	padding: 0px 24px;
+	box-sizing: border-box;
+	justify-content: space-between;
+	margin-bottom: 12px;
+	margin-top: 8px;
+}
+
+.ai-sample-images > img
+{
+	height: 100px;
+	width: calc(50% - 10px);
+	border: 1px solid var(--md-sys-color-surface-variant);
+	border-radius: 12px;
+	object-fit: cover;
+	box-sizing: border-box;
+}
+
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img, .reading-body .r-img.blank > div, .reading-lens .r-img.blank > div/*, .reading-body .r-folder, .reading-lens .r-folder*/
 {
 	transition: background-color 0.2s;

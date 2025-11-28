@@ -1313,20 +1313,7 @@ hb.registerHelper('shortWindowsPath', function(string) {
 
 hb.registerHelper('normalizeNumber', function(value, decimals) {
 
-	if(isNaN(value))
-		value = 0;
-	else
-		value = +value;
-
-	value = String(value);
-
-	const has = value.replace(/.*?(\.|$)/, '').length;
-	decimals = decimals.replace(/.*?(\.|$)/, '').length;
-
-	if(decimals != 0)
-		value = value+(/\./.test(value) ? '' : '.')+('0'.repeat(decimals - has));
-
-	return value;
+	return app.normalizeNumber(value, decimals);
 
 });
 

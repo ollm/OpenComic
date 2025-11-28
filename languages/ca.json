@@ -75,6 +75,13 @@
 			"clearFileCacheSuccessfully": "S'ha netejat correctament la memòria cau de l'arxiu",
 			"closeApp": "Tancar OpenComic"
 		},
+		"speed": {
+			"veryFast": "Molt ràpid",
+			"fast": "Ràpid",
+			"medium": "Mitjà",
+			"slow": "Lent",
+			"verySlow": "Molt lent"
+		},
 		"back": "Enrere",
 		"goBack": "Anar enrere",
 		"goForwards": "Anar endavant",
@@ -126,8 +133,13 @@
 		"pages": {
 			"main": "Pàgines",
 			"pageLayout": "Disseny de pàgina",
+			"pageLayoutShort": "Pàgina",
 			"ebookLayout": "Disseny de l'eBook",
+			"ebookLayoutShort": "eBook",
 			"colorFilters": "Filtres de color",
+			"colorFiltersShort": "Filtres",
+			"aiTools": "Eines d'IA",
+			"aiToolsShort": "IA",
 			"slide": "Lectura horitzontal",
 			"scroll": "Lectura vertical",
 			"roughPageTurn": "Passar pàgina",
@@ -206,7 +218,14 @@
 			"links": "Enllaços",
 			"background": "Fons",
 			"perspective": "Perspectiva",
-			"angle": "Angle"
+			"angle": "Angle",
+			"aiUpscale": "Escalat amb IA",
+			"aiModel": "Model",
+			"downloadingAiModel": "Descarregant model d'IA",
+			"maxMegapixels": "Resolució màxima de la imatge d'entrada (Megapíxels)",
+			"autoScale": "Escalat automàtic",
+			"scale": "Escalat",
+			"noiseReduction": "Reducció de soroll"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",
