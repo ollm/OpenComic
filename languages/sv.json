@@ -219,6 +219,7 @@
 			"background": "Bakgrund",
 			"perspective": "",
 			"angle": "",
+			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",
 			"downloadingAiModel": "",

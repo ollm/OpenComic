@@ -132,6 +132,13 @@ function image(src, imageSize, options = {})
 	const toUpscale = reading.ai.toUpscale(imageSize);
 	const _pipeline = [];
 
+	if(_config.readingAi.descreen.active)
+	{
+		_pipeline.push({
+			model: _config.readingAi.descreen.model,
+		});
+	}
+
 	if(toUpscale)
 	{
 		_pipeline.push({

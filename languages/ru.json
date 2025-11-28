@@ -219,6 +219,7 @@
 			"background": "Фон",
 			"perspective": "Перспектива",
 			"angle": "Угол",
+			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",
 			"downloadingAiModel": "",

@@ -219,6 +219,7 @@
 			"background": "Sfondo",
 			"perspective": "Prospettiva",
 			"angle": "Angolo",
+			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",
 			"downloadingAiModel": "",

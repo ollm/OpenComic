@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 134; // Update this if readingPagesConfig is updated
+const changes = 135; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -105,9 +105,11 @@ const readingPagesConfig = {
 			scale: 4,
 			noise: 0,
 			autoScale: true,
+		},
+		descreen: {
+			active: false,
+			model: '1x_halftone_patch_060000_G',
 		}
-		// Best Descreening models
-		// 1x_halftone_patch_060000_G
 
 		// Best JPEG artifact removal models
 		// 1x_JPEGDestroyerV2_96000G

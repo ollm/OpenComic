@@ -15,7 +15,7 @@ function change(feaute, key, value, save = true)
 					fixScale(model);
 					fixNoise(model);
 
-					dom.queryAll('.reading-ai-upscale-models .text').html(getUpscaleModelName(value));
+					dom.queryAll('.reading-ai-upscale-models .text').html(getModelName(value));
 
 					events.eventRange();
 
@@ -44,6 +44,32 @@ function change(feaute, key, value, save = true)
 
 					fixNoise(false, value);
 					events.eventRange();
+
+					break;
+			}
+
+			break;
+
+		case 'descreen':
+
+			switch (key)
+			{
+				case 'model':
+
+					const model = OpenComicAI.model(value);
+
+					fixScale(model);
+					fixNoise(model);
+
+					dom.queryAll('.reading-ai-descreen-models .text').html(getModelName(value));
+
+					events.eventRange();
+
+					break;
+
+				case 'active':
+
+					dom.query('.ai-descreen').class(!value, 'disable-pointer');
 
 					break;
 			}
@@ -177,13 +203,13 @@ function size(options = {})
 	return options;
 }
 
-function getUpscaleModelName(model)
+function getModelName(model)
 {
 	const modeInfo = OpenComicAI.model(model);
 	return modeInfo ? modeInfo.name : model;
 }
 
-function getUpscaleModelSpeed(speed)
+function getModelSpeed(speed)
 {
 	if(speed === 'Very Fast')
 		return language.global.speed.veryFast;
@@ -211,9 +237,9 @@ function loadUpscaleModels()
 
 		items.push({
 			key: model,
-			name: getUpscaleModelName(model),
+			name: getModelName(model),
 			//rightText: modeInfo.speed+' (~'+app.normalizeNumber(app.round(modeInfo.latency, 1), 0.1)+'s)',
-			rightText: getUpscaleModelSpeed(modeInfo.speed),
+			rightText: getModelSpeed(modeInfo.speed),
 			select: current == model ? true : false,
 			function: 'reading.ai.change(\'upscale\', \'model\', \''+model+'\');',
 		});
@@ -226,10 +252,37 @@ function loadUpscaleModels()
 	document.querySelector('#reading-ai-upscale-models .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
 }
 
+function loadDescreenModels()
+{
+	const models = OpenComicAI.modelsTypeList.descreen;
+	const current = _config.readingAi.model;
+	const items = [];
+
+	for(const model of models)
+	{
+		const modeInfo = OpenComicAI.model(model);
+
+		items.push({
+			key: model,
+			name: getModelName(model),
+			//rightText: modeInfo.speed+' (~'+app.normalizeNumber(app.round(modeInfo.latency, 1), 0.1)+'s)',
+			rightText: getModelSpeed(modeInfo.speed),
+			select: current == model ? true : false,
+			function: 'reading.ai.change(\'descreen\', \'model\', \''+model+'\');',
+		});
+	}
+
+	handlebarsContext.menu = {
+		items: items,
+	};
+
+	document.querySelector('#reading-ai-descreen-models .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
+}
+
 function processContext()
 {
 	const model = OpenComicAI.model(_config.readingAi.upscale.model);
-	handlebarsContext.readingUpscaleModel = getUpscaleModelName(_config.readingAi.upscale.model);
+	handlebarsContext.readingUpscaleModel = getModelName(_config.readingAi.upscale.model);
 
 	// Scale
 	{
@@ -252,6 +305,9 @@ function processContext()
 
 		handlebarsContext.readingUpscaleNoise = {compatible: !!model.noise, noise, max, min, step};
 	}
+
+	// Descreen
+	handlebarsContext.readingDescreenModel = getModelName(_config.readingAi.descreen.model);
 }
 
 
@@ -260,5 +316,6 @@ module.exports = {
 	toUpscale,
 	size,
 	loadUpscaleModels,
+	loadDescreenModels,
 	processContext,
 };

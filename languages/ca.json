@@ -219,6 +219,7 @@
 			"background": "Fons",
 			"perspective": "Perspectiva",
 			"angle": "Angle",
+			"aiDescreen": "Desentramat amb IA",
 			"aiUpscale": "Escalat amb IA",
 			"aiModel": "Model",
 			"downloadingAiModel": "Descarregant model d'IA",

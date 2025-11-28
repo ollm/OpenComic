@@ -264,6 +264,11 @@ oc-img .ai-loading circle
 	box-sizing: border-box;
 	justify-content: space-between;
 	margin-bottom: 12px;
+	margin-top: 28px;
+}
+
+.ai-sample-images:first-of-type
+{
 	margin-top: 8px;
 }
 

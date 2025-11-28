@@ -219,6 +219,7 @@
 			"background": "背景",
 			"perspective": "看法",
 			"angle": "角度",
+			"aiDescreen": "",
 			"aiUpscale": "",
 			"aiModel": "",
 			"downloadingAiModel": "",
