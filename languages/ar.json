@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "حفظ الصورة المميزة الحالية",
 			"saveAllBookmarksImages": "حفظ كل الصور المميزة",
 			"saveImagesMessage": "تم حفظ الصورة بنجاح",
+			"saveImageMessage": "",
 			"copyImage": "نسخ الصورة إلى الحافظة",
 			"copyImageMessage": "تم نسخ الصورة إلى الحافظة",
 			"clearFileCache": "حذف الملفات المؤقتة",

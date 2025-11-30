@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "Salvar as imagens marcadas atualmente",
 			"saveAllBookmarksImages": "Salvar todas as imagens marcadas",
 			"saveImagesMessage": "Imagens foram salvas com sucesso",
+			"saveImageMessage": "",
 			"copyImage": "Copiar imagem para a área de transferência",
 			"copyImageMessage": "A imagem foi copiada para a área de transferência",
 			"clearFileCache": "Limpar arquivo do cache",

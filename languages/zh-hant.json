@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "儲存當前已加書籤的圖片",
 			"saveAllBookmarksImages": "儲存所有已加書籤的圖片",
 			"saveImagesMessage": "圖片已成功儲存",
+			"saveImageMessage": "",
 			"copyImage": "複製圖片到剪貼簿",
 			"copyImageMessage": "圖片已成功複製",
 			"clearFileCache": "清除檔案快取",

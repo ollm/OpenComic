@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "現在のブックマーク画像を保存",
 			"saveAllBookmarksImages": "すべてのブックマーク画像を保存",
 			"saveImagesMessage": "画像を保存しました",
+			"saveImageMessage": "",
 			"copyImage": "画像をクリップボードにコピー",
 			"copyImageMessage": "画像をクリップボードにコピーしました",
 			"clearFileCache": "ファイル キャッシュをクリア",

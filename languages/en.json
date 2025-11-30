@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "Save current bookmarked images",
 			"saveAllBookmarksImages": "Save all bookmarked images",
 			"saveImagesMessage": "Images have been saved successfully",
+			"saveImageMessage": "Image has been saved successfully",
 			"copyImage": "Copy image to clipboard",
 			"copyImageMessage": "Image has been copied to clipboard",
 			"clearFileCache": "Clear file cache",

@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "保存当前已加书签的图片",
 			"saveAllBookmarksImages": "保存所有已加书签的图片",
 			"saveImagesMessage": "图片已成功保存",
+			"saveImageMessage": "",
 			"copyImage": "将图像复制到剪贴板",
 			"copyImageMessage": "图像已复制到剪贴板",
 			"clearFileCache": "清除文件缓存",

@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "Aktuelle mit Lesezeichen versehene Bilder speichern",
 			"saveAllBookmarksImages": "Alle mit Lesezeichen versehenen Bilder speichern",
 			"saveImagesMessage": "Bilder wurden erfolgreich gespeichert.",
+			"saveImageMessage": "",
 			"copyImage": "Bild in die Zwischenablage kopieren",
 			"copyImageMessage": "Bild wurde in die Zwischenablage kopiert.",
 			"clearFileCache": "Datei-Cache leeren",

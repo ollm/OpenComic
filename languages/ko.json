@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "현재 북마크 이미지 저장",
 			"saveAllBookmarksImages": "모든 북마크 이미지 저장",
 			"saveImagesMessage": "이미지가 저장되었습니다",
+			"saveImageMessage": "",
 			"copyImage": "이미지 복사",
 			"copyImageMessage": "이미지가 클립보드에 복사되었습니다",
 			"clearFileCache": "파일 캐시 지우기",

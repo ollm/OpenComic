@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "จัดเก็บรูปจากคลังปัจจุบัน",
 			"saveAllBookmarksImages": "จัดเก็บรูปจากคลังทั้งหมด",
 			"saveImagesMessage": "จัดเก็บรูปทั้งหมดเสร็จสิ้น",
+			"saveImageMessage": "",
 			"copyImage": "คัดลอกรูปไปยังคลิปบอร์ด",
 			"copyImageMessage": "คัดลอกรูปไปยังคลิปบอร์ดแล้ว",
 			"clearFileCache": "ล้างไฟล์แคช",

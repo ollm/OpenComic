@@ -3,7 +3,8 @@ var elementFromPointIndex = false;
 
 function show(event, gamepad = false)
 {
-	const elementFromPoint = !gamepad ? document.elementFromPoint(event.clientX, event.clientY) : false;
+	const validCoords = event && Number.isFinite(event.clientX) && Number.isFinite(event.clientY);
+	const elementFromPoint = !gamepad && validCoords ? document.elementFromPoint(event.clientX, event.clientY) : false;
 	elementFromPointIndex = (elementFromPoint && elementFromPoint.tagName.toLowerCase() === 'img' && elementFromPoint.dataset.index) ? +elementFromPoint.dataset.index : false;
 
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
@@ -54,13 +55,16 @@ function labels()
 	dom.labels.setLabels(vars.pathIsFolder ? vars.currentPath : fileManager.lastCompressedFile(vars.currentPath));
 }
 
-function getCurrentImage()
+function getCurrentImage(onlyElementFromPoint = false)
 {
 	if(elementFromPointIndex !== false)
-		return reading.getImage(elementFromPointIndex).path;
+		return reading.getImage(elementFromPointIndex);
+
+	if(onlyElementFromPoint)
+		return false;
 
 	const image = reading.getImageByPosition(reading.currentImagePosition(), 0);
-	return image.path;
+	return image || false;
 }
 
 function setAsPoster()
@@ -68,7 +72,7 @@ function setAsPoster()
 	const image = getCurrentImage();
 	if(!image) return;
 
-	dom.poster.setAsPoster(image);
+	dom.poster.setAsPoster(image.path);
 }
 
 function setAsPosterFolders()
@@ -76,7 +80,7 @@ function setAsPosterFolders()
 	const image = getCurrentImage();
 	if(!image) return;
 
-	dom.poster.setAsPosterFolders(image, dom.history.mainPath);
+	dom.poster.setAsPosterFolders(image.path, dom.history.mainPath);
 }
 
 function generateFileName(path, page, leadingZeros, fileName)
@@ -109,10 +113,12 @@ function generateFileName(path, page, leadingZeros, fileName)
 function saveImage()
 {
 	const position = reading.currentImagePosition();
-	saveAllImages(position);
+	const image = getCurrentImage(true);
+
+	saveAllImages(position, image);
 }
 
-function saveAllImages(position = false, _return = false)
+function saveAllImages(position = false, image = false, _return = false)
 {
 	const images = reading.images();
 	const imagesData = reading.imagesData();
@@ -122,14 +128,20 @@ function saveAllImages(position = false, _return = false)
 
 	for(let key in images)
 	{
-		const path = images[key].path;
+		if(!image)
+		{
+			const path = images[key].path;
 
-		if(position === false || position == imagesData[key].position)
-			toSave.push({path: path, page: key});
+			if(position === false || position == imagesData[key].position)
+				toSave.push({path: path, page: key});
+		}
 
 		if(+key > highestPage)
 			highestPage = +key;
 	}
+
+	if(image)
+		toSave.push({path: image.path, page: image.index});
 
 	if(_return)
 		return toSave;
@@ -203,7 +215,9 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 		await file.makeAvailable(toSave);
 		file.destroy();
 
-		for(let i = 0, len = toSave.length; i < len; i++)
+		const len = toSave.length;
+
+		for(let i = 0; i < len; i++)
 		{
 			const image = toSave[i];
 			const realPath = fileManager.realPath(image.path);
@@ -219,7 +233,7 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 	
 		events.snackbar({
 			key: 'saveAllImages',
-			text: language.global.contextMenu.saveImagesMessage,
+			text: len === 1 ? language.global.contextMenu.saveImageMessage : language.global.contextMenu.saveImagesMessage,
 			duration: 6,
 			buttons: [
 				{
@@ -258,7 +272,8 @@ function saveDialogDirectory(callback)
 async function copyImageToClipboard()
 {
 	const position = reading.currentImagePosition();
-	let images = saveAllImages(position, true);
+	const _image = getCurrentImage(true);
+	let images = saveAllImages(position, _image, true);
 	let len = images.length;
 
 	if(!len)

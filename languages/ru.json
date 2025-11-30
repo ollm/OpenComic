@@ -69,6 +69,7 @@
 			"saveBookmarksImages": "Сохранить текущие закладки",
 			"saveAllBookmarksImages": "Сохранить все закладки",
 			"saveImagesMessage": "Изображения успешно сохранены",
+			"saveImageMessage": "",
 			"copyImage": "Копировать изображение в буфер обмена",
 			"copyImageMessage": "Изображение скопировано в буфер обмена",
 			"clearFileCache": "Очистить кэш файлов",
