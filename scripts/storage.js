@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 136; // Update this if readingPagesConfig is updated
+const changes = 137; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -502,6 +502,19 @@ const storageDefault = {
 		wildcard: {
 			lastAccess: 0,
 			size: 0,
+		}
+	},
+	cacheFolderThumbnails: {
+		wildcard: {
+			lastAccess: 0,
+			poster: {
+				path: '',
+				sha: '',
+			},
+			images: [{
+				path: '',
+				sha: '',
+			}],
 		}
 	},
 	tmpUsage: {

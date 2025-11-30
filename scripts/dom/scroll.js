@@ -106,6 +106,7 @@ function addToQueue(sha)
 
 					const file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
 					const _images = await file.images(4, false, true);
+					cache.folderThumbnails.set(path, _images);
 				
 					await dom._getFolderThumbnails(file, images, _images, path, folderSha, true, forceSize);
 

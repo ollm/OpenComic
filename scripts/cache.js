@@ -1,3 +1,5 @@
+const folderThumbnails = require(p.join(appDir, 'scripts/cache/folder-thumbnails.js'));
+
 let zstd = false;
 let zstdEncoder = false;
 let zstdDecoder = false;
@@ -540,6 +542,14 @@ function addCacheVars(path, size, sha)
 	return path+'?size='+size+(cacheImagesDeleted[sha] ? '&a='+cacheImagesDeleted[sha] : '');
 }
 
+function simpleExists(image)
+{
+	if(!data) data = storage.get('cache') || {};
+
+	const sha = imageSizeSha(image);
+	return !!data[sha];
+}
+
 var cacheImagesDeleted = [];
 
 async function _deleteInCache(sha)
@@ -684,6 +694,9 @@ function purge()
 	// Purge reading progress cache
 	reading.progress.purge();
 
+	// Purge folder thumbnails cache
+	folderThumbnails.purge();
+
 	return;
 }
 
@@ -827,6 +840,7 @@ module.exports = {
 	deleteJson: deleteJson,
 	existsFile: existsFile,
 	deleteInCache: deleteInCache,
+	simpleExists: simpleExists,
 	flushJsonMemory: flushJsonMemory,
 	imageSizeSha: imageSizeSha,
 	addImageVars: addImageVars,
@@ -836,4 +850,5 @@ module.exports = {
 	purge: purge,
 	validate: validate,
 	zstd: zstd,
+	folderThumbnails,
 };

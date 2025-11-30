@@ -56,6 +56,8 @@ async function getStorageSize()
 async function clearCache()
 {
 	storage.set('cache', {});
+	// storage.set('readingPages', {});
+	storage.set('cacheFolderThumbnails', {});
 	await fse.emptyDir(cache.folder);
 	cache.flushJsonMemory();
 

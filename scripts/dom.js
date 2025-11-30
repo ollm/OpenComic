@@ -1550,7 +1550,19 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 		{
 			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
 			file.updateConfig({cacheOnly: true});
-			let _images = await file.images(4, false, true);
+
+			let _images = cache.folderThumbnails.get(path, forceSize);
+
+			if(_images)
+			{
+				_images = _images.poster ? _images.poster : _images.images;
+				addToQueue = 1;
+			}
+			else
+			{
+				_images = await file.images(4, false, true);
+				cache.folderThumbnails.set(path, _images);
+			}
 
 			_images = await _getFolderThumbnails(file, images, _images, path, folderSha, false, forceSize);
 

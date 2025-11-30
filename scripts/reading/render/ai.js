@@ -158,8 +158,6 @@ function image(src, imageSize, options = {})
 	if(!_pipeline.length)
 		return;
 
-	console.log(src, _pipeline);
-
 	const folderSha = sha1(p.dirname(src));
 	const imageSha = sha1(`${src}|${JSON.stringify(_pipeline)}`);
 
