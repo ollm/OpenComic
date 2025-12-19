@@ -202,7 +202,7 @@ function metadataPathName(file, force = false)
 		if(metadata && metadata.title) return metadata.title;
 	}
 
-	return file.name;
+	return config.showFileExtension ? file.name : file.name.replace(/\.[^\.]*$/, '');
 }
 
 async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsing, fromGoForwards)

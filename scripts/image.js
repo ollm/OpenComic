@@ -135,7 +135,7 @@ async function resizeToBlob(fromImage, config = {})
 		}
 
 		if(imageWidth != config.imageWidth)
-			_sharp.resize({kernel: 'cubic', width: imageWidth});
+			_sharp = _sharp.resize({kernel: 'cubic', width: imageWidth});
 
 		_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
 	}

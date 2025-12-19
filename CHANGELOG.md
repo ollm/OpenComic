@@ -14,7 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - AI image upscaling tool [`566295e`](https://github.com/ollm/OpenComic/commit/566295e86c3ecd0af95b022ddf7fbeab9ce7477d)
 - AI image descreen tool [`aa88777`](https://github.com/ollm/OpenComic/commit/aa88777d5a57c1e8819bed8284d844b3b05fdaf1)
 - AI image artifact removal tool [`f27e851`](https://github.com/ollm/OpenComic/commit/f27e85168f485d1e0a904fbd3b87d0345fbdf96e)
-- Cache the folder's thumbnails/poster file lists to reduce disk I/O
+- Cache the folder's thumbnails/poster file lists to reduce disk I/O [`01a962b`](https://github.com/ollm/OpenComic/commit/01a962bd245ce1ad427fcca8e1c547e531bee0b1)
+- Hide file extension by default
 
 ##### 🐛 Bug Fixes
 

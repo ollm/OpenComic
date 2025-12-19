@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "Mostra o caminho completo quando estiver abrindo a biblioteca de quadrinhos",
 			"showFullPathOpened": "Mostra o caminho completo quando estiver abrindo um arquivo ou pasta",
 			"showLibraryPath": "Mostra biblioteca, etiquetas, etc no caminho do cabeçalho",
+			"showFileExtension": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Número de itens para salvar em Abertos recentemente"
 		},

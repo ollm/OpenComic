@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "Afficher le chemin complet de la bibliothèque",
 			"showFullPathOpened": "Afficher le chemin complet ouvert",
 			"showLibraryPath": "Afficher le chemin de la bibliothèque",
+			"showFileExtension": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": ""
 		},

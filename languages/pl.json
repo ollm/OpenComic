@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "Pokazuj pełną ścieżkę przy otwieraniu komiksów z biblioteki",
 			"showFullPathOpened": "Pokazuj pełną ścieżkę przy otwieraniu pliku lub folderu",
 			"showLibraryPath": "Pokazuj w nagłówku ścieżkę biblioteki, ulubionych, etykiet itp.",
+			"showFileExtension": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Liczba elementów do zapisania w „Ostatnio otwartych”"
 		},

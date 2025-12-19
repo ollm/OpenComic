@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "Mostrar la ruta completa a l'obrir els còmics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta",
 			"showLibraryPath": "Mostra la biblioteca, favorits, etiquetes, etc a la ruta de la capçalera",
+			"showFileExtension": "Mostrar l'extensió de l'arxiu a la llista d'arxius",
 			"openFilesInNewWindow": "Obrir arxius en una nova finestra (Només s'aplica a arxius oberts des de fora d'OpenComic)",
 			"recentlyOpenedItems": "Nombre d'elements a guardar a Obert recentment"
 		},

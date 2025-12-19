@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
 	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
 
-const changes = 137; // Update this if readingPagesConfig is updated
+const changes = 138; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -183,6 +183,7 @@ const storageDefault = {
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
 		showLibraryPath: true,
+		showFileExtension: false,
 		...readingPagesConfig,
 		readingMagnifyingGlass: false,
 		readingMagnifyingGlassZoom: 2,

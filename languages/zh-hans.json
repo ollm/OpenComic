@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "打开库时显示漫画完整路径",
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径",
 			"showLibraryPath": "在标题路径中显示库、收藏夹、标签等",
+			"showFileExtension": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "最近打开的要保存的项目数"
 		},

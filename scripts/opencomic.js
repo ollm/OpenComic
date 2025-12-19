@@ -1486,7 +1486,7 @@ function addComicsToLibrary(files, reload = true)
 				}
 				else
 				{
-					name = p.basename(filePath).replace(/\.[^\.]*$/, '');
+					name = p.basename(filePath); // .replace(/\.[^\.]*$/, '');
 					path = filePath;
 					compressed = true;
 				}

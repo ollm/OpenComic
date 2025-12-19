@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "打開書庫時顯示漫畫完整路徑",
 			"showFullPathOpened": "打開檔案或資料夾時顯示完整路徑",
 			"showLibraryPath": "在標題列中顯示書庫、收藏、標籤等",
+			"showFileExtension": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "最近打開的項目保存數量"
 		},

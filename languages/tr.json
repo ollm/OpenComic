@@ -352,6 +352,7 @@
 			"showFullPathLibrary": "Kütüphane çizgi romanlarını açarken tam dizini göster",
 			"showFullPathOpened": "Bir dosya veya klasör açarken tam dizini göster",
 			"showLibraryPath": "Kütüphane, favoriler, etiketler vb.'yi başlık dizininde ek olarak göster",
+			"showFileExtension": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Son açılanlarda kaydedilecek öğe sayısı"
 		},
