@@ -37,7 +37,7 @@ function save(path = false, mainPath = false)
 
 	if(reading.isEbook())
 	{
-		const page = reading._ebook.pages[reading.currentPage()];
+		const page = reading._ebook.pages[reading.currentPageIndex()];
 
 		progress = page.progress;
 		chapterIndex = page.chapterIndex;

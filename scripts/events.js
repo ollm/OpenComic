@@ -951,6 +951,8 @@ async function activeMenu(query, query2 = false, posX = 'left', posY = 'top', in
 
 	if(!menuClose.getAttribute('onclick'))
 		addCloseEvents(menuClose);
+
+	_dialogOrMenuActive();
 }
 
 async function activeContextMenu(query)
@@ -998,6 +1000,8 @@ async function activeContextMenu(query)
 
 	if(!menuClose.getAttribute('onclick'))
 		addCloseEvents(menuClose);
+
+	_dialogOrMenuActive();
 }
 
 async function addCloseEvents(menuClose)
@@ -1052,6 +1056,8 @@ async function desactiveMenu(query, query2 = false, insideMenu = false)
 
 	if(fromGamepadMenu)
 		gamepad.showMenu();
+
+	_dialogOrMenuActive();
 }
 
 // Dialogs
@@ -1076,6 +1082,8 @@ function dialog(config)
 
 	onReading = false;
 	generateAppMenu();
+
+	_dialogOrMenuActive();
 }
 
 function closeDialog()
@@ -1088,6 +1096,7 @@ function closeDialog()
 	closeDialogST = setTimeout(function(){
 
 		toRemove.remove();
+		_dialogOrMenuActive();
 
 	}, 400);
 
@@ -1420,6 +1429,25 @@ function buttonLoading(button, progress = false)
 	}
 }
 
+let dialogOrMenuActive = false;
+
+function _dialogOrMenuActive()
+{
+	// Dialog
+	const dialogActive = document.querySelector('.dialogs .dialog');
+
+	if(dialogActive)
+		return dialogOrMenuActive = true;
+
+	// Menu
+	const menuActive = document.querySelector('.menu-close.a');
+
+	if(menuActive)
+		return dialogOrMenuActive = true;
+
+	return dialogOrMenuActive = false;
+}
+
 const INFINITY = 'Infinity';
 
 module.exports = {
@@ -1452,5 +1480,6 @@ module.exports = {
 	loadingProgress: loadingProgress,
 	buttonLoading: buttonLoading,
 	swiftClick: swiftClick,
+	dialogOrMenuActive: function(){return dialogOrMenuActive},
 	INFINITY,
 };

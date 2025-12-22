@@ -15,13 +15,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - AI image descreen tool [`aa88777`](https://github.com/ollm/OpenComic/commit/aa88777d5a57c1e8819bed8284d844b3b05fdaf1)
 - AI image artifact removal tool [`f27e851`](https://github.com/ollm/OpenComic/commit/f27e85168f485d1e0a904fbd3b87d0345fbdf96e)
 - Cache the folder's thumbnails/poster file lists to reduce disk I/O [`01a962b`](https://github.com/ollm/OpenComic/commit/01a962bd245ce1ad427fcca8e1c547e531bee0b1)
-- Hide file extension by default
+- Hide file extension by default [`ad33247`](https://github.com/ollm/OpenComic/commit/ad332470f47b1f110f22ee85a4384f75a19bce99)
 
 ##### 🐛 Bug Fixes
 
 - Adding or changing poster not working when the drive is different from the system drive [`8ce3d5f`](https://github.com/ollm/OpenComic/commit/8ce3d5f01a7694c26fa1e6d477c1eab99c299a0e)
 - Hiding cursor in fullscreen mode fails in some cases [`828d504`](https://github.com/ollm/OpenComic/commit/828d504e700e43ab1f6d9e5081195ad496f65920)
 - Save/Copy uses the image under the mouse cursor instead of the active page [`26c5923`](https://github.com/ollm/OpenComic/commit/26c5923d5dc920b691be5db591c20b8b92d9f320)
+- Error saving the progress of the final page in epub files
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 

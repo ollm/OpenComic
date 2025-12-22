@@ -2709,7 +2709,7 @@ function scrollWithMouse()
 {
 	if(!scrollWithMouseStatus.active) return;
 
-	if(onReading && isLoaded && readingViewIs('scroll'))
+	if(onReading && isLoaded && readingViewIs('scroll') && !events.dialogOrMenuActive())
 	{
 		let contentScrollTop = scrollWithMouseStatus.content.scrollTop;
 		let scrollTop = scrollWithMouseStatus.scrollTop;
@@ -5884,6 +5884,7 @@ module.exports = {
 	currentPageVisibility: function(){return currentPageVisibility},
 	totalPages: function(){return imagesNum},
 	currentPage: function(){return currentPage},
+	currentPageIndex: function(){return currentPage - 1},
 	getImage: getImage,
 	getImageByPosition: getImageByPosition,
 	loadBookmarks: loadBookmarks,
