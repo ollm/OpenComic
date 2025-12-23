@@ -251,7 +251,31 @@ function revokeObjectURL(key)
 	}
 }
 
-async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false, prioritizeNext = false)
+function reRenderImage(index, runAi = false)
+{
+	const image = imagesData[index] || false;
+	if(!image) return;
+
+	const contentRight = template._contentRight();
+
+	const img = contentRight.querySelector('.reading-body > div > div.r-flex .r-img-i'+index+' oc-img img');
+	if(!img) return;
+
+	const src = img.dataset.src;
+
+	const toRevoke = renderedObjectsURL.filter(o => o.src === src).map(o => o.key);
+	toRevoke.forEach(revokeObjectURL);
+
+	renderedMagnifyingGlass[index] = false;
+	rendered[index] = false;
+
+	setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, false, false, runAi);
+
+	if(scaleMagnifyingGlass)
+		setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true, false, runAi);
+}
+
+async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false, prioritizeNext = false, runAi = true)
 {
 	//console.time('readingRender');
 
@@ -270,13 +294,13 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 		{
 			if(renderEbook) // Render ebook instantly
 			{
-				await render(nextI, scale, magnifyingGlass);
+				await render(nextI, scale, magnifyingGlass, 0, runAi);
 			}
 			else
 			{
 				queue.add('readingRender', async function(queueIndex) {
 
-					return render(nextI, scale, magnifyingGlass, queueIndex);
+					return render(nextI, scale, magnifyingGlass, queueIndex, runAi);
 
 				}, queue.index('readingRender'));
 			}
@@ -291,13 +315,13 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 			{
 				if(renderEbook) // Render ebook instantly
 				{
-					render(prevI, scale, magnifyingGlass);
+					render(prevI, scale, magnifyingGlass, 0, runAi);
 				}
 				else
 				{
 					queue.add('readingRender', async function(queueIndex) {
 
-						return render(prevI, scale, magnifyingGlass, queueIndex);
+						return render(prevI, scale, magnifyingGlass, queueIndex, runAi);
 
 					}, queue.index('readingRender'));
 				}
@@ -452,12 +476,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					const aiLoading = ocImg.querySelector('.ai-loading');
 					if(aiLoading) aiLoading.remove();
 
-					queue.add('readingRender', async function(queueIndex) {
-
-						revokeObjectURL(key);
-						return render(index, _scale, magnifyingGlass, queueIndex, false); // TODO: Check magnifying glass
-
-					}, queue.index('readingRender'));
+					reRenderImage(index, false);
 
 				}
 			});
@@ -497,7 +516,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						{
 							data = await file.renderBlob(name, _config);
 
-							renderedObjectsURL.push({data: data, img: img, key});
+							renderedObjectsURL.push({data: data, img: img, key, src});
 							renderedObjectsURLCache[key] = data;
 
 							if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
@@ -551,7 +570,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						let data = await image.resizeToBlob(src, _config);
 
-						renderedObjectsURL.push({data: data, img: img, key});
+						renderedObjectsURL.push({data: data, img: img, key, src});
 						renderedObjectsURLCache[key] = {blob: data.blob};
 
 						if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different

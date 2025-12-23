@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Adding or changing poster not working when the drive is different from the system drive [`8ce3d5f`](https://github.com/ollm/OpenComic/commit/8ce3d5f01a7694c26fa1e6d477c1eab99c299a0e)
 - Hiding cursor in fullscreen mode fails in some cases [`828d504`](https://github.com/ollm/OpenComic/commit/828d504e700e43ab1f6d9e5081195ad496f65920)
 - Save/Copy uses the image under the mouse cursor instead of the active page [`26c5923`](https://github.com/ollm/OpenComic/commit/26c5923d5dc920b691be5db591c20b8b92d9f320)
-- Error saving the progress of the final page in epub files
+- Error saving the progress of the final page in epub files [`ff42c18`](https://github.com/ollm/OpenComic/commit/ff42c181e7a6a324ef1065c836dc0ed175e1b623)
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 
