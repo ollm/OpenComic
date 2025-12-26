@@ -1,4 +1,5 @@
 const OpenComicAI = require('opencomic-ai-bin');
+const sharp = require('sharp');
 
 OpenComicAI.setDirname(asarToAsarUnpacked(OpenComicAI.__dirname));
 
@@ -209,6 +210,7 @@ function image(src, imageSize, options = {})
 				image = convertPath;
 			}
 
+			OpenComicAI.keepIccProfile(sharp, 'rgb16');
 			await OpenComicAI.pipeline(image, path, _pipeline, options.progress || false, downloading);
 
 			fileManager.setTmpUsage(path);
