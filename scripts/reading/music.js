@@ -54,30 +54,20 @@ async function read(_audios, files)
 		pause();
 }
 
-function process(_audios, files)
+function process(audios, files)
 {
-	const audios = [];
+	if(!audios || !audios.length) return false;
 
 	const find = function(filename, files) {
 
-		if(!filename) return false;
+		if (!filename) return false;
 
-		for(let i = 0, len = files.length; i < len; i++)
-		{
-			const file = files[i];
-			const name = p.parse(file.name).name;
+		return files.find(file => p.parse(file.name).name === filename) || false;
 
-			if(name === filename)
-				return file;
-		}
+	};
 
-		return false;
+	return audios.map(function(file) {
 
-	}
-
-	for(let i = 0, len = _audios.length; i < len; i++)
-	{
-		const file = _audios[i];
 		const name = p.parse(file.name).name.replace(/bgm[\s\-_]*/iug, '');
 		const split = name.split('-');
 
@@ -87,7 +77,7 @@ function process(_audios, files)
 		const filePlay = find(filenamePlay, files);
 		const fileStop = find(filenameStop, files);
 
-		audios.push({
+		return {
 			indexPlay: 0,
 			indexStop: 0,
 			filenamePlay,
@@ -95,10 +85,9 @@ function process(_audios, files)
 			filePlay,
 			fileStop,
 			file,
-		});
-	}
+		};
 
-	return audios.length ? audios : false;
+	});
 
 }
 
@@ -110,35 +99,30 @@ function focusIndex(index)
 	{
 		const audio = audios[i];
 
-		const indexPlay = audio.filePlay ? (reading.getImageByName(audio.filePlay.name)?.index ?? 0) : 0;
-		const indexStop = audio.fileStop ? (reading.getImageByName(audio.fileStop.name)?.index ?? 0) : 0;
-
-		audio.indexPlay = indexPlay;
-		audio.indexStop = indexStop;
+		audio.indexPlay = audio.filePlay ? (reading.getImageByName(audio.filePlay.name)?.index ?? 0) : 0;
+		audio.indexStop = audio.fileStop ? (reading.getImageByName(audio.fileStop.name)?.index ?? 0) : 0;
 	}
 
 	let path = false;
 
 	for(let i = audios.length - 1; i >= 0; i--)
 	{
-		const audio = audios[i];
+		const {indexPlay, indexStop, file} = audios[i];
 
-		if(audio.indexStop && index > audio.indexStop)
+		if(indexStop && index > indexStop)
 			continue;
 
-		if(audio.indexPlay && index > audio.indexPlay)
+		if(indexPlay && index > indexPlay)
 		{
-			path = audio.file.path;
+			path = file.path;
 			break;
 		}
 	}
 
 	if(!path)
 	{
-		for(let i = 0, len = audios.length; i < len; i++)
+		for(const audio of audios)
 		{
-			const audio = audios[i];
-
 			if(audio.indexStop === 0 && audio.indexPlay === 0)
 			{
 				path = audio.file.path;
@@ -189,13 +173,13 @@ function generate(path)
 
 function play()
 {
-	if(!audio) return;
+	if(!audio || !audio.paused) return;
 	audio.play();
 }
 
 function pause()
 {
-	if(!audio) return;
+	if(!audio || audio.paused) return;
 	audio.pause();
 }
 
