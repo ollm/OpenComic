@@ -1,16 +1,21 @@
 const soundEffect = require(p.join(appDir, 'scripts/reading/music/sound-effect.js'));
 
-let current = false, audio = false;
+let audios = false, audio = false;
 
 async function has(files, findParent = false)
 {
+	const audios = [];
+
 	for(let i = 0, len = files.length; i < len; i++)
 	{
 		let _file = files[i];
 
 		if(compatible.audio(_file.name))
-			return _file;
+			audios.push(_file);
 	}
+
+	if(audios.length)
+		return audios;
 
 	if(findParent)
 	{
@@ -41,13 +46,110 @@ async function has(files, findParent = false)
 	return false;
 }
 
-async function read(file)
+async function read(_audios, files)
 {
-	current = file;
+	audios = process(_audios, files);
 
-	if(file)
+	if(!audios)
+		pause();
+}
+
+function process(_audios, files)
+{
+	const audios = [];
+
+	const find = function(filename, files) {
+
+		if(!filename) return false;
+
+		for(let i = 0, len = files.length; i < len; i++)
+		{
+			const file = files[i];
+			const name = p.parse(file.name).name;
+
+			if(name === filename)
+				return file;
+		}
+
+		return false;
+
+	}
+
+	for(let i = 0, len = _audios.length; i < len; i++)
 	{
-		generate();
+		const file = _audios[i];
+		const name = p.parse(file.name).name.replace(/bgm[\s\-_]*/iug, '');
+		const split = name.split('-');
+
+		const filenamePlay = split[0] || '';
+		const filenameStop = split[1] || '';
+
+		const filePlay = find(filenamePlay, files);
+		const fileStop = find(filenameStop, files);
+
+		audios.push({
+			indexPlay: 0,
+			indexStop: 0,
+			filenamePlay,
+			filenameStop,
+			filePlay,
+			fileStop,
+			file,
+		});
+	}
+
+	return audios.length ? audios : false;
+
+}
+
+function focusIndex(index)
+{
+	if(!audios || !audios.length) return;
+
+	for(let i = 0, len = audios.length; i < len; i++)
+	{
+		const audio = audios[i];
+
+		const indexPlay = audio.filePlay ? (reading.getImageByName(audio.filePlay.name)?.index ?? 0) : 0;
+		const indexStop = audio.fileStop ? (reading.getImageByName(audio.fileStop.name)?.index ?? 0) : 0;
+
+		audio.indexPlay = indexPlay;
+		audio.indexStop = indexStop;
+	}
+
+	let path = false;
+
+	for(let i = audios.length - 1; i >= 0; i--)
+	{
+		const audio = audios[i];
+
+		if(audio.indexStop && index > audio.indexStop)
+			continue;
+
+		if(audio.indexPlay && index > audio.indexPlay)
+		{
+			path = audio.file.path;
+			break;
+		}
+	}
+
+	if(!path)
+	{
+		for(let i = 0, len = audios.length; i < len; i++)
+		{
+			const audio = audios[i];
+
+			if(audio.indexStop === 0 && audio.indexPlay === 0)
+			{
+				path = audio.file.path;
+				break;
+			}
+		}
+	}
+
+	if(audios && path)
+	{
+		generate(path);
 
 		if(config.readingMusic.play)
 			play();
@@ -56,10 +158,15 @@ async function read(file)
 	{
 		pause();
 	}
+
 }
 
-function generate()
+let currentPath = false;
+
+function generate(path)
 {
+	if(currentPath === path) return;
+
 	let globalElement = template._globalElement();
 
 	audio = globalElement.querySelector('.reading-music');
@@ -76,9 +183,8 @@ function generate()
 		globalElement.appendChild(audio);
 	}
 
-	audio.src = fileManager.realPath(current.path);
-
-	current = audio;
+	audio.src = fileManager.realPath(path);
+	currentPath = path;
 }
 
 function play()
@@ -131,6 +237,7 @@ module.exports = {
 	pause: pause,
 	volume: volume,
 	setPlay: setPlay,
+	focusIndex: focusIndex,
 	loadMenu: loadMenu,
 	soundEffect: soundEffect,
 };

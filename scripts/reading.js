@@ -929,6 +929,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 	{
 		render.focusIndex(index, doublePage.active());
 		filters.focusIndex(index);
+		music.focusIndex(index);
 	}
 
 	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
@@ -4301,6 +4302,17 @@ function getImageByPosition(position = 0, subindex = 0)
 	return image || images[Object.keys(images)[0]];
 }
 
+function getImageByName(name = '')
+{
+	for(let key in images)
+	{
+		if(p.basename(images[key].path) === name)
+			return images[key];
+	}
+
+	return false;
+}
+
 var generateEbookPagesDelayedST = false, generateEbookPagesCancel = false;
 
 function generateEbookPagesDelayed()
@@ -5887,6 +5899,7 @@ module.exports = {
 	currentPageIndex: function(){return currentPage - 1},
 	getImage: getImage,
 	getImageByPosition: getImageByPosition,
+	getImageByName: getImageByName,
 	loadBookmarks: loadBookmarks,
 	loadTrackigSites: loadTrackigSites,
 	loadReadingPages: loadReadingPages,

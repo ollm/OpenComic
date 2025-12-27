@@ -190,7 +190,6 @@ function trackImage()
 	const totalPages = reading.totalPages();
 	if(reading.doublePage.active() && totalPages - currentPage === 1) currentPage++;
 
-
 	const image = reading.getImage(currentPage);
 	if(!image) return;
 

@@ -27,7 +27,7 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 - 🌄 Support these image formats: `JPG`, `JP2`, `JXR`, `JXL`, `PNG`, `APNG`, `AVIF`, `HEIC`, `WEBP`, `GIF`, `SVG`, `BMP`, `ICO`
 - 📦 Support these compressed formats: `RAR`, `ZIP`, `7Z`, `TAR`, `LZH`, `ACE`, `CBR`, `CBZ`, `CBA`, `CB7`, `CBT`
 - 📄 Support these document/ebook formats: `PDF`, `EPUB` (Alpha)
-- 🎵 Support background music from folder: `MP3`, `M4A`, `WEBM`, `WEBA`, `OGG`, `OPUS`, `WAV`, `FLAC`
+- 🎵 Support background music from folder: `MP3`, `M4A`, `MP4`, `WEBM`, `WEBA`, `OGG`, `OPUS`, `WAV`, `FLAC`
 - ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`, `s3://`, `webdav://`, `webdavs://`
 - 📁 Master folders support
 - 📚 OPDS support

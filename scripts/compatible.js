@@ -122,6 +122,7 @@ const compatible = {
 			'mp3': 'audio/mpeg',
 			'mpga': 'audio/mpeg',
 			'm4a': 'audio/mp4',
+			'mp4': 'audio/mp4',
 			'webm': 'video/webm',
 			'weba': 'audio/webm',
 			'oga': 'audio/ogg',

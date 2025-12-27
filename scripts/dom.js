@@ -2775,7 +2775,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	let isEbook = false;
 	let compressedFile = fileManager.lastCompressedFile(path);
 
-	if(hasMusic) files.push(hasMusic); // Only to make available
+	if(hasMusic) files.push(...hasMusic); // Only to make available
 
 	if(compressedFile)
 	{
@@ -2803,7 +2803,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		await file.makeAvailable(files, false, true);
 	}
 
-	if(hasMusic) files.pop(); // Remove now
+	if(hasMusic) // Remove now
+		files.splice(-hasMusic.length);
 
 	file.destroy();
 
@@ -2931,7 +2932,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	reading.read(path, indexStart, end, isCanvas, isEbook, imagePath);
 	reading.hideContent(isFullScreen, true);
-	reading.music.read(hasMusic);
+	reading.music.read(hasMusic, files);
 
 	generateAppMenu();
 	
