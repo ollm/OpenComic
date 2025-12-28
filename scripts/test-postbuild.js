@@ -141,6 +141,7 @@ else if(process.platform == 'linux')
 		// OpenComicAI
 		exists(linuxArm+'/opencomic-ai-bin/linux/arm64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 		exists(linuxArm+'/opencomic-ai-bin/linux/arm64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
+		exists(linuxArm+'/opencomic-ai-bin/linux/arm64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}
@@ -184,7 +185,7 @@ else if(process.platform == 'win32')
 		exists(windowsArm+'/7zip-bin-full/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 
 		// OpenComicAI
-		// Not supported
+		exists(windowsArm+'/opencomic-ai-bin/win/arm64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
 	}

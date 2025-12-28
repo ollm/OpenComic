@@ -68,6 +68,7 @@ else if(process.platform == 'linux')
 	// OpenComicAI
 	exists('./node_modules/opencomic-ai-bin/linux/arm64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/linux/arm64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/opencomic-ai-bin/linux/arm64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/linux/x64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/linux/x64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/linux/x64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
@@ -97,6 +98,7 @@ else if(process.platform == 'win32')
 	exists('./node_modules/opencomic-ai-bin/win/x64/realcugan/realcugan-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/win/x64/waifu2x/waifu2x-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/win/x64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/opencomic-ai-bin/win/arm64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
 }
 
 console.log('Runed tests: Ok');
