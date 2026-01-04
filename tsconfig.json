@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "CommonJS",
+		"declaration": false,
+		"declarationMap": false,
+		"strict": false,
+		"allowJs": true,
+		"checkJs": false,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"noImplicitAny": false, 
+		"resolveJsonModule": true,
+		"baseUrl": "./scripts",
+		"paths": {
+			"@scripts/*": ["../scripts/*"],
+		},
+		"outDir": ".dist"
+	},
+	"include": [
+		"./scripts/**/*",
+	],
+	"exclude": ["node_modules"]
+}

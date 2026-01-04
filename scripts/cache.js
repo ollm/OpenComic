@@ -1,4 +1,4 @@
-const folderThumbnails = require(p.join(appDir, 'scripts/cache/folder-thumbnails.js'));
+const folderThumbnails = require(p.join(appDir, '.dist/cache/folder-thumbnails.js'));
 
 let zstd = false;
 let zstdEncoder = false;

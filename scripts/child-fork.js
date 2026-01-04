@@ -12,7 +12,7 @@ class ChildFork
 
 	constructor(options = {}) {
 
-		this.fork = fork(p.join(appDir, 'scripts/fork.js'));
+		this.fork = fork(p.join(appDir, '.dist/fork.js'));
 		this.fork.on('message', (event) => this.message(event));
 
 		this.#idleTimeout = options.idleTimeout || false;

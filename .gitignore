@@ -1,5 +1,6 @@
 node_modules/
 dist/
+.dist/
 scripts/builded
 scripts/tracking/_tracking-sites-keys.js
 !build/node-zstd-native-dependencies/node_modules/

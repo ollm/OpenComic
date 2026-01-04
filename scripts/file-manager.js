@@ -1,6 +1,6 @@
-const requestFileAccess = require(p.join(appDir, 'scripts/file-manager/request-file-access.js'))
-	filePassword = require(p.join(appDir, 'scripts/file-manager/file-password.js')),
-	diskType = require(p.join(appDir, 'scripts/file-manager/disk-type.js'));
+const requestFileAccess = require(p.join(appDir, '.dist/file-manager/request-file-access.js'))
+	filePassword = require(p.join(appDir, '.dist/file-manager/file-password.js')),
+	diskType = require(p.join(appDir, '.dist/file-manager/disk-type.js'));
 
 var un7z = false, bin7z = false, fastXmlParser = false, Minimatch = false;
 
@@ -2433,7 +2433,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(this.epub) return this.epub;
 
 		if(ebook.epub === false)
-			ebook.epub = require(p.join(appDir, 'scripts/ebook/epub.js'));
+			ebook.epub = require(p.join(appDir, '.dist/ebook/epub.js'));
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 		this.epub = ebook.epub.load(this.realPath);
@@ -3015,6 +3015,14 @@ function isServer(path)
 function isOpds(path)
 {
 	if(/^(?:\.[\/\\]+)?(?:opds)\:[\/\\]{1,2}/.test(path))
+		return true;
+
+	return false;
+}
+
+function isBase64(path)
+{
+	if(/^base64,/.test(path))
 		return true;
 
 	return false;
@@ -3677,6 +3685,7 @@ module.exports = {
 	isCompressed: isCompressed,
 	isServer: isServer,
 	isOpds: isOpds,
+	isBase64: isBase64,
 	setServerInOfflineMode: setServerInOfflineMode,
 	serverInOfflineMode: function(){return serverInOfflineMode},
 	firstCompressedFile: firstCompressedFile,

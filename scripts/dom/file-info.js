@@ -1,6 +1,6 @@
 const _sanitizeHtml = require('sanitize-html'),
-	country = require(p.join(appDir, 'scripts/dom/file-info-country.js')),
-	findOn = require(p.join(appDir, 'scripts/dom/file-info-find-on.js'));
+	country = require(p.join(appDir, '.dist/dom/file-info-country.js')),
+	findOn = require(p.join(appDir, '.dist/dom/file-info-find-on.js'));
 
 // Also support ComicInfo.xml if it is in a folder
 

@@ -2,9 +2,9 @@ const p = require('path'),
 	fs = require('fs');
 
 global.inChildFork = true;
-global.app = require(p.join(__dirname, '../scripts/app.js'));
+global.app = require(p.join(__dirname, '../.dist/app.js'));
 
-const image = require(p.join(__dirname, '../scripts/image.js'));
+const image = require(p.join(__dirname, '../.dist/image.js'));
 
 process.on('message', async function(data) {
 

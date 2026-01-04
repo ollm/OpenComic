@@ -67,7 +67,7 @@ self.addEventListener('message', async function(message) {
 		case 'convertImageToBlob':
 
 			if(convertImage === false)
-				convertImage = require(p.join(__dirname, '../scripts/worker/convert-image.js'));
+				convertImage = require(p.join(__dirname, '../.dist/worker/convert-image.js'));
 
 			const image = await convertImage.convert(data.path, data.mime);
 			self.postMessage(image);

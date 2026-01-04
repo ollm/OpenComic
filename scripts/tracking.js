@@ -1090,7 +1090,7 @@ function handleOpenUrl(url = false)
 
 function scriptsPath(site = '')
 {
-	return p.join(appDir, 'scripts/tracking/'+site);
+	return p.join(appDir, '.dist/tracking/'+site);
 }
 
 function start()

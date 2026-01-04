@@ -1,4 +1,4 @@
-const soundEffect = require(p.join(appDir, 'scripts/reading/music/sound-effect.js'));
+const soundEffect = require(p.join(appDir, '.dist/reading/music/sound-effect.js'));
 
 let audios = false, audio = false;
 

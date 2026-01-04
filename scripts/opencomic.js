@@ -151,7 +151,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 	{
 		const arg = argv[i];
 
-		if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
+		if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 		{
 			if(config.openFilesInNewWindow)
 			{
@@ -212,7 +212,7 @@ handlebarsContext.packageJson = _package;
 
 //console.time('Require time 2');
 
-const folderPortable = require(p.join(appDir, 'scripts/folder-portable.js'));
+const folderPortable = require(p.join(appDir, '.dist/folder-portable.js'));
 var storagePath = p.join(electronRemote.app.getPath('userData'), 'storage');
 
 if(folderPortable.check())
@@ -234,37 +234,37 @@ if(folderPortable.check())
 	}
 }
 
-const app = require(p.join(appDir, 'scripts/app.js')),
-	installedFromStore = require(p.join(appDir, 'scripts/installed-from-store.js')),
-	relative = require(p.join(appDir, 'scripts/relative.js')),
-	storage = require(p.join(appDir, 'scripts/storage.js')),
-	compatible = require(p.join(appDir, 'scripts/compatible.js')),
-	image = require(p.join(appDir, 'scripts/image.js')),
-	settings = require(p.join(appDir, 'scripts/settings.js')),
-	cache = require(p.join(appDir, 'scripts/cache.js')),
-	queue = require(p.join(appDir, 'scripts/queue.js')),
-	templates = require(p.join(appDir, 'scripts/builded/templates.js')),
-	template = require(p.join(appDir, 'scripts/template.js')),
-	titleBar = require(p.join(appDir, 'scripts/title-bar.js')),
-	gamepad = require(p.join(appDir, 'scripts/gamepad.js')),
-	dom = require(p.join(appDir, 'scripts/dom.js')),
-	events = require(p.join(appDir, 'scripts/events.js')),
-	ebook = require(p.join(appDir, 'scripts/ebook.js')),
-	workers = require(p.join(appDir, 'scripts/workers.js')),
-	childFork = require(p.join(appDir, 'scripts/child-fork.js')),
-	threads = require(p.join(appDir, 'scripts/threads.js')),
-	mutex = require(p.join(appDir, 'scripts/mutex.js')),
-	fileManager = require(p.join(appDir, 'scripts/file-manager.js')),
-	serverClient = require(p.join(appDir, 'scripts/server-client.js')),
-	opds = require(p.join(appDir, 'scripts/opds.js')),
-	reading = require(p.join(appDir, 'scripts/reading.js')),
-	recentlyOpened = require(p.join(appDir, 'scripts/recently-opened.js')),
-	theme = require(p.join(appDir, 'scripts/theme.js')),
-	dragAndDrop = require(p.join(appDir, 'scripts/drag-and-drop.js')),
-	checkReleases = require(p.join(appDir, 'scripts/check-releases.js')),
-	shortcuts = require(p.join(appDir, 'scripts/shortcuts.js')),
-	tracking = require(p.join(appDir, 'scripts/tracking.js')),
-	trackingSites = require(p.join(appDir, 'scripts/tracking/tracking-sites.js'));
+const app = require(p.join(appDir, '.dist/app.js')),
+	installedFromStore = require(p.join(appDir, '.dist/installed-from-store.js')),
+	relative = require(p.join(appDir, '.dist/relative.js')),
+	storage = require(p.join(appDir, '.dist/storage.js')),
+	compatible = require(p.join(appDir, '.dist/compatible.js')),
+	image = require(p.join(appDir, '.dist/image.js')),
+	settings = require(p.join(appDir, '.dist/settings.js')),
+	cache = require(p.join(appDir, '.dist/cache.js')),
+	queue = require(p.join(appDir, '.dist/queue.js')),
+	templates = require(p.join(appDir, '.dist/builded/templates.js')),
+	template = require(p.join(appDir, '.dist/template.js')),
+	titleBar = require(p.join(appDir, '.dist/title-bar.js')),
+	gamepad = require(p.join(appDir, '.dist/gamepad.js')),
+	dom = require(p.join(appDir, '.dist/dom.js')),
+	events = require(p.join(appDir, '.dist/events.js')),
+	ebook = require(p.join(appDir, '.dist/ebook.js')),
+	workers = require(p.join(appDir, '.dist/workers.js')),
+	childFork = require(p.join(appDir, '.dist/child-fork.js')),
+	threads = require(p.join(appDir, '.dist/threads.js')),
+	mutex = require(p.join(appDir, '.dist/mutex.js')),
+	fileManager = require(p.join(appDir, '.dist/file-manager.js')),
+	serverClient = require(p.join(appDir, '.dist/server-client.js')),
+	opds = require(p.join(appDir, '.dist/opds.js')),
+	reading = require(p.join(appDir, '.dist/reading.js')),
+	recentlyOpened = require(p.join(appDir, '.dist/recently-opened.js')),
+	theme = require(p.join(appDir, '.dist/theme.js')),
+	dragAndDrop = require(p.join(appDir, '.dist/drag-and-drop.js')),
+	checkReleases = require(p.join(appDir, '.dist/check-releases.js')),
+	shortcuts = require(p.join(appDir, '.dist/shortcuts.js')),
+	tracking = require(p.join(appDir, '.dist/tracking.js')),
+	trackingSites = require(p.join(appDir, '.dist/tracking/tracking-sites.js'));
 
 var tempFolder = settings.getTmpFolder();
 var macosMAS = false;
@@ -353,7 +353,7 @@ async function startApp()
 		{
 			const arg = electronRemote.process.argv[i];
 
-			if(arg && !['--no-sandbox', 'scripts/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
+			if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 			{
 				toOpenFile = arg;
 				break;
@@ -483,7 +483,8 @@ function openNewInstance(args = [])
 		if(process.platform === 'linux')
 			args.push('--no-sandbox');
 
-		args.unshift('scripts/main.js');
+		// args.unshift('scripts/main.js');
+		args.unshift('.dist/main.js');
 	}
 
 	console.log('Opening new instance with args:', appPath, args);
@@ -970,7 +971,7 @@ function showAboutWindow()
 		},
 	});
 
-	const packageLock = require(p.join(appDir, 'scripts/builded/package-lock.js'));
+	const packageLock = require(p.join(appDir, '.dist/builded/package-lock.js'));
 	const highlight = [
 		'electron',
 		'sharp',

@@ -50,7 +50,7 @@ function createWindow(options = {}) {
 		{
 			let arg = args[i];
 
-			if(arg && !['--no-sandbox', 'scripts/main.js', '.', '--new-window'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
+			if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.', '--new-window'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 			{
 				_toOpenFile = arg;
 				break;
@@ -148,7 +148,7 @@ function createWindow(options = {}) {
 	}));
 
 	// Open the DevTools.
-	if(configInit.openDevTools)
+	if(configInit.openDevTools || true)
 		win.webContents.openDevTools()
 
 	if(toOpenFile && !newWindow)

@@ -43,16 +43,16 @@ for(let i = 0, len = themes.length; i < len; i++)
 
 templatesJs += 'hb.partials = hb.templates = templatesCache; module.exports = {templatesCacheTheme: templatesCacheTheme, templatesCache: templatesCache};';
 
-if(!fs.existsSync(p.join(__dirname, '../scripts/builded/')))
-	fs.mkdirSync(p.join(__dirname, '../scripts/builded/'));
+if(!fs.existsSync(p.join(__dirname, '../.dist/builded/')))
+	fs.mkdirSync(p.join(__dirname, '../.dist/builded/'));
 
-fs.writeFileSync(p.join(__dirname, '../scripts/builded/templates.js'), templatesJs);
+fs.writeFileSync(p.join(__dirname, '../.dist/builded/templates.js'), templatesJs);
 
-fs.writeFileSync(p.join(__dirname, '../scripts/installed-from-store.js'), `module.exports = {
+fs.writeFileSync(p.join(__dirname, '../.dist/installed-from-store.js'), `module.exports = {
 	check: function(){return false},
 };`);
 
-fs.writeFileSync(p.join(__dirname, '../scripts/folder-portable.js'), `module.exports = {
+fs.writeFileSync(p.join(__dirname, '../.dist/folder-portable.js'), `module.exports = {
 	check: function(){return false},
 };`);
 
@@ -60,9 +60,9 @@ fs.writeFileSync(p.join(__dirname, '../scripts/folder-portable.js'), `module.exp
 const packageLock = JSON.parse(fs.readFileSync(p.join(__dirname, '../package-lock.json'), 'utf8'));
 const packageVersions = {};
 
-for(let package in packageLock.packages)
+for(let _package in packageLock.packages)
 {
-	packageVersions[package] = packageLock.packages[package].version;
+	packageVersions[_package] = packageLock.packages[_package].version;
 }
 
-fs.writeFileSync(p.join(__dirname, '../scripts/builded/package-lock.js'), 'module.exports = '+JSON.stringify(packageVersions)+';');
+fs.writeFileSync(p.join(__dirname, '../.dist/builded/package-lock.js'), 'module.exports = '+JSON.stringify(packageVersions)+';');

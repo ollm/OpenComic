@@ -1,14 +1,14 @@
-const render = require(p.join(appDir, 'scripts/reading/render.js')),
-	filters = require(p.join(appDir, 'scripts/reading/filters.js')),
-	ai = require(p.join(appDir, 'scripts/reading/ai.js')),
-	music = require(p.join(appDir, 'scripts/reading/music.js')),
-	contextMenu = require(p.join(appDir, 'scripts/reading/context-menu.js')),
-	pageTransitions = require(p.join(appDir, 'scripts/reading/page-transitions.js')),
-	readingEbook = require(p.join(appDir, 'scripts/reading/ebook.js')),
-	sidebar = require(p.join(appDir, 'scripts/reading/sidebar.js')),
-	discord = require(p.join(appDir, 'scripts/reading/discord.js')),
-	progress = require(p.join(appDir, 'scripts/reading/progress.js')),
-	doublePage = require(p.join(appDir, 'scripts/reading/double-page.js'));
+const render = require(p.join(appDir, '.dist/reading/render.js')),
+	filters = require(p.join(appDir, '.dist/reading/filters.js')),
+	ai = require(p.join(appDir, '.dist/reading/ai.js')),
+	music = require(p.join(appDir, '.dist/reading/music.js')),
+	contextMenu = require(p.join(appDir, '.dist/reading/context-menu.js')),
+	pageTransitions = require(p.join(appDir, '.dist/reading/page-transitions.js')),
+	readingEbook = require(p.join(appDir, '.dist/reading/ebook.js')),
+	sidebar = require(p.join(appDir, '.dist/reading/sidebar.js')),
+	discord = require(p.join(appDir, '.dist/reading/discord.js')),
+	progress = require(p.join(appDir, '.dist/reading/progress.js')),
+	doublePage = require(p.join(appDir, '.dist/reading/double-page.js'));
 
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;

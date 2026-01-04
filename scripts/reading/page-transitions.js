@@ -7,8 +7,8 @@ const bottomBezier = new Bezier(0,0, 500,200, 500,200, 1000,0),
 	easeInBezier = new Bezier(0,0, 400,0, 1000,1000, 1000,1000),
 	easeOutQuadBezier = new Bezier(0,0, 500,1000, 890,1000, 1000,1000);
 
-const roughPageTurn = require(p.join(appDir, 'scripts/reading/page-transitions/rough-page-turn.js')),
-	smoothPageTurn = require(p.join(appDir, 'scripts/reading/page-transitions/smooth-page-turn.js'));
+const roughPageTurn = require(p.join(appDir, '.dist/reading/page-transitions/rough-page-turn.js')),
+	smoothPageTurn = require(p.join(appDir, '.dist/reading/page-transitions/smooth-page-turn.js'));
 
 var prevDirection = null, prevIndex = -1, waitTransition = false, waitTransitionResolver = false;
 

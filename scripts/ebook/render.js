@@ -1,8 +1,8 @@
 const ipcRenderer = require('electron').ipcRenderer,
 	p = require('path');
 
-const app = require(p.join(__dirname, '../scripts/app.js'));
-const ebook = require(p.join(__dirname, '../scripts/ebook.js'));
+const app = require(p.join(__dirname, '../.dist/app.js'));
+const ebook = require(p.join(__dirname, '../.dist/ebook.js'));
 const book = ebook.load();
 
 var windowIsLoaded = false, toProcess = false;

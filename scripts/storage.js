@@ -1,7 +1,7 @@
-const safe = require(p.join(appDir, 'scripts/storage/safe.js')),
-	syncInstances = require(p.join(appDir, 'scripts/storage/sync-instances.js'));
+const safe = require(p.join(appDir, '.dist/storage/safe.js')),
+	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 138; // Update this if readingPagesConfig is updated
+const changes = 139; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -324,6 +324,7 @@ const storageDefault = {
 		path: '',
 		user: '',
 		pass: '',
+		auth: '',
 		domain: '',
 		showOnLibrary: false,
 		filesInSubfolders: false,
@@ -873,7 +874,7 @@ async function start(callback)
 
 	if(!setup && _changes != changes)
 	{
-		const migration = require(p.join(appDir, 'scripts/migration.js'));
+		const migration = require(p.join(appDir, '.dist/migration.js'));
 		data = migration.start(data);
 	}
 

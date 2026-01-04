@@ -1,13 +1,13 @@
-const domPoster = require(p.join(appDir, 'scripts/dom/poster.js')),
-	domManager = require(p.join(appDir, 'scripts/dom/dom.js')),
-	labels = require(p.join(appDir, 'scripts/dom/labels.js')),
-	fileInfo = require(p.join(appDir, 'scripts/dom/file-info.js')),
-	clearFileCache = require(p.join(appDir, 'scripts/dom/clear-file-cache.js')),
-	search = require(p.join(appDir, 'scripts/dom/search.js')),
-	header = require(p.join(appDir, 'scripts/dom/header.js')),
-	boxes = require(p.join(appDir, 'scripts/dom/boxes.js')),
-	history = require(p.join(appDir, 'scripts/dom/history.js')),
-	scroll = require(p.join(appDir, 'scripts/dom/scroll.js'));
+const domPoster = require(p.join(appDir, '.dist/dom/poster.js')),
+	domManager = require(p.join(appDir, '.dist/dom/dom.js')),
+	labels = require(p.join(appDir, '.dist/dom/labels.js')),
+	fileInfo = require(p.join(appDir, '.dist/dom/file-info.js')),
+	clearFileCache = require(p.join(appDir, '.dist/dom/clear-file-cache.js')),
+	search = require(p.join(appDir, '.dist/dom/search.js')),
+	header = require(p.join(appDir, '.dist/dom/header.js')),
+	boxes = require(p.join(appDir, '.dist/dom/boxes.js')),
+	history = require(p.join(appDir, '.dist/dom/history.js')),
+	scroll = require(p.join(appDir, '.dist/dom/scroll.js'));
 
 /*Page - Index*/
 
@@ -192,7 +192,7 @@ function translatePageName(name)
 
 function metadataPathName(file, force = false)
 {
-	if(fileManager.isOpds(file.path))
+	if(fileManager.isOpds(file.path) || fileManager.isBase64(file.name))
 	{
 		return opds.pathName(file.name);
 	}
@@ -2368,7 +2368,18 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 	comicContextMenuIndex++;
 
 	let isServer = fileManager.isServer(path);
-	if(fileManager.isOpds(path)) return;
+	if(fileManager.isOpds(path))
+	{
+		const onclick = this.getAttribute('onclick');
+
+		if(onclick)
+		{
+			opds.fromContextMenu = true;
+			eval(onclick);
+		}
+
+		return;
+	}
 
 	const canBeDelete = (!fileManager.isServer(path) && !fileManager.lastCompressedFile(p.dirname(path))) ? true : false;
 

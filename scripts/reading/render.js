@@ -1,4 +1,4 @@
-const ai = require(p.join(appDir, 'scripts/reading/render/ai.js'));
+const ai = require(p.join(appDir, '.dist/reading/render/ai.js'));
 
 var file = false,
 	ebook = false,

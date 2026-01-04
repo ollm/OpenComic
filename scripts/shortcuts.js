@@ -1,4 +1,4 @@
-const MouseWheel = require(p.join(appDir, 'scripts/shortcuts/mouse-wheel.js'));
+const MouseWheel = require(p.join(appDir, '.dist/shortcuts/mouse-wheel.js'));
 
 var shosho = false;
 

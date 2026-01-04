@@ -1,4 +1,4 @@
-const pageTurn = require(p.join(appDir, 'scripts/reading/page-transitions/page-turn.js'));
+const pageTurn = require(p.join(appDir, '.dist/reading/page-transitions/page-turn.js'));
 
 var currentPageTurnDirection = null;
 

@@ -2,7 +2,7 @@
 	"name": "opencomic",
 	"productName": "OpenComic",
 	"version": "1.6.6",
-	"main": "scripts/main.js",
+	"main": ".dist/main.js",
 	"type": "commonjs",
 	"keywords": [
 		"comics",
@@ -23,20 +23,20 @@
 		"url": "git+https://github.com/ollm/OpenComic.git"
 	},
 	"scripts": {
-		"start": "npm run prebuild-start && electron scripts/main.js --no-sandbox",
-		"test": "node scripts/test.js",
-		"prebuild": "npm run test && npm run prebuild-start",
-		"prebuild-mac": "node scripts/prebuild-mac.js",
-		"prebuild-mac-store": "node scripts/prebuild-mac.js --store",
-		"prebuild-start": "node scripts/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
-		"prebuild-store": "node scripts/build-store.js",
-		"prebuild-folder-portable": "node scripts/build-folder-portable.js",
-		"postbuild": "node scripts/test-postbuild.js",
-		"postbuild-mas": "node scripts/test-postbuild-mas.js",
-		"rename-portable": "node scripts/rename.js --portable",
-		"rename-folder-portable": "node scripts/rename.js --folder-portable",
-		"rename-win-arm": "node scripts/rename.js --win-arm",
-		"watch": "nodemon --ignore 'dist/' --ignore scripts/builded --watch * --exec npm run start",
+		"start": "npm run prebuild-start && electron .dist/main.js --no-sandbox",
+		"watch": "tsc --watch",
+		"test": "node .dist/test.js",
+		"prebuild": "tsc && npm run test && npm run prebuild-start",
+		"prebuild-mac": "tsc && node .dist/prebuild-mac.js",
+		"prebuild-mac-store": "tsc && node .dist/prebuild-mac.js --store",
+		"prebuild-start": "tsc && node .dist/build.js && node themes/material-design/colors/generate-colors.js && node languages/fill-languages.js",
+		"prebuild-store": "tsc && node .dist/build-store.js",
+		"prebuild-folder-portable": "tsc && node .dist/build-folder-portable.js",
+		"postbuild": "node .dist/test-postbuild.js",
+		"postbuild-mas": "node .dist/test-postbuild-mas.js",
+		"rename-portable": "node .dist/rename.js --portable",
+		"rename-folder-portable": "node .dist/rename.js --folder-portable",
+		"rename-win-arm": "node .dist/rename.js --win-arm",
 		"build": "npm run prebuild && electron-builder build && npm run postbuild",
 		"build-dist": "npm run build-linux-folder-portable && npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z flatpak && electron-builder --arm64 --linux deb rpm AppImage 7z flatpak && npm run postbuild",
 		"build-linux": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z tar.gz && npm run postbuild",
@@ -77,7 +77,7 @@
 		"build-7z-arm": "npm run prebuild && electron-builder --arm64 --linux 7z && npm run postbuild",
 		"snapcraft": "npm run prebuild && cd dist/__snap-amd64/ && snapcraft && npm run postbuild",
 		"snapcraft-arm": "npm run prebuild && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64 && npm run postbuild",
-		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
+		"postinstall": "electron-builder install-app-deps && node .dist/zstd-copy-native.js"
 	},
 	"dependencies": {
 		"@awo00/smb2": "^1.1.1",
@@ -117,11 +117,13 @@
 		"webdav": "^5.8.0"
 	},
 	"devDependencies": {
+		"@types/electron": "^1.4.38",
 		"electron": "^37.8.0",
 		"electron-builder": "^26.1.0",
 		"env-cmd": "^11.0.0",
 		"node-abi": "^4.17.0",
-		"nodemon": "^3.1.10"
+		"nodemon": "^3.1.10",
+		"typescript": "^5.9.3"
 	},
 	"overrides": {
 		"@napi-rs/canvas": "0.0.0",
