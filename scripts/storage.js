@@ -870,7 +870,7 @@ async function start(callback)
 	const setup = !data?.config?.appVersion; // Check if this is the first run
 
 	const _appVersion = data?.config?.appVersion || false;
-	const _changes = data?.config.changes || false;
+	const _changes = data?.config?.changes || false;
 
 	if(!setup && _changes != changes)
 	{
