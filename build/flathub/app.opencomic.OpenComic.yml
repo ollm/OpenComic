@@ -7,7 +7,8 @@ base-version: '24.08'
 command: run.sh
 separate-locales: false
 finish-args:
-  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
   - --socket=pulseaudio
   - --device=dri
   - --share=network
