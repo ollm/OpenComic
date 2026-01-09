@@ -13,7 +13,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="106" transform="rotate(-90)">ES</text>
 		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="100" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="124" transform="rotate(-90)">FR</text>
-		<rect style="fill: #f1cc09;" height="87.1" width="6" rx="2" y="52.9" x="118" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="118" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="142" transform="rotate(-90)">HU</text>
 		<rect style="fill: #f6664c;" height="26" width="6" rx="2" y="114" x="136" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="160" transform="rotate(-90)">IT</text>

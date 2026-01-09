@@ -103,9 +103,9 @@ Translate by [Oleguer Llopart](https://github.com/ollm)
 
 [fr.json](https://github.com/ollm/OpenComic/blob/master/languages/fr.json)
 
-Translate by [Nikwok](https://github.com/nikwok)
+Translate by [Nikwok](https://github.com/nikwok) and [Loocist23](https://github.com/Loocist23/)
 
-`62.2% | Remain 208 | Translated 342`
+`100% | Remain 0 | Translated 550`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/fr.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/fr.svg" /></a>
 
