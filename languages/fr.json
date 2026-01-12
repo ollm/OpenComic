@@ -545,6 +545,7 @@
 			"add": "Ajouter un catalogue",
 			"delete": "Supprimer le catalogue",
 			"confirmDelete": "Êtes-vous sûr de vouloir supprimer ce catalogue ?",
+			"downloadAuto": "",
 			"showOnLeft": "Afficher dans le panneau de navigation",
 			"downloadTitle": "Dossier OPDS",
 			"downloadDescription": "Dossier où seront enregistrés les fichiers téléchargés via OPDS",

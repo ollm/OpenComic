@@ -545,6 +545,7 @@
 			"add": "Katalog hinzufügen",
 			"delete": "Katalog löschen",
 			"confirmDelete": "Sind Sie sicher, dass Sie diesen Katalog löschen möchten?",
+			"downloadAuto": "",
 			"showOnLeft": "Im Navigationsbereich anzeigen",
 			"downloadTitle": "OPDS-Ordner",
 			"downloadDescription": "Ordner, in dem über OPDS heruntergeladene Dateien gespeichert werden.",

@@ -545,6 +545,7 @@
 			"add": "カタログを追加",
 			"delete": "カタログを削除",
 			"confirmDelete": "このカタログを削除してよろしいですか?",
+			"downloadAuto": "",
 			"showOnLeft": "ナビゲーション ドロワーに表示",
 			"downloadTitle": "OPDS フォルダー",
 			"downloadDescription": "OPDS 経由でダウンロードしたファイルを保存するフォルダー",

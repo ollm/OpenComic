@@ -545,6 +545,7 @@
 			"add": "Dodaj katalog",
 			"delete": "Usuń katalog",
 			"confirmDelete": "Czy na pewno chcesz usunąć ten katalog?",
+			"downloadAuto": "",
 			"showOnLeft": "Pokazuj w panelu nawigacji",
 			"downloadTitle": "Folder OPDS",
 			"downloadDescription": "Folder, w którym będą zapisywane pliki pobrane przez OPDS.",

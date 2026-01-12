@@ -545,6 +545,7 @@
 			"add": "新增目錄",
 			"delete": "刪除目錄",
 			"confirmDelete": "您確定要刪除此目錄嗎？",
+			"downloadAuto": "",
 			"showOnLeft": "在導航欄顯示",
 			"downloadTitle": "OPDS 資料夾",
 			"downloadDescription": "通過 OPDS 下載的檔案保存資料夾",

@@ -450,7 +450,7 @@ var client = function(path) {
 		return false;
 	}
 
-	this.whenDownloadFile = function(path, filePath, callbackWhenFileDownload = false) {
+	this.whenDownloadFile = function(path, filePath, callbackWhenFileDownload = false, error = false) {
 
 		globalIsDownloading[filePath] = false;
 		const isDownloading = p.join(p.dirname(filePath), sha1(filePath)+'-is-downloading.txt');
@@ -653,6 +653,7 @@ var client = function(path) {
 			domain: server.domain,
 			user: server.user,
 			pass: storage.safe.decrypt(server.pass),
+			auth: server.auth,
 			share: getShare(server.path),
 			path: server.path,
 		};
@@ -1637,11 +1638,113 @@ var client = function(path) {
 
 	}
 
-
 	// opds
+	this.opds = false;
+
+	this.connectOpds = async function() {
+
+		if(this.opds) return this.opds;
+
+		let serverInfo;
+
+		try
+		{
+			serverInfo = this.getServerInfo();
+		}
+		catch(error)
+		{
+			this.opds = false;
+
+			if(error.message !== 'server_not_found')
+				throw new Error(error);
+		}
+
+		if(serverInfo && serverInfo.user && serverInfo.pass)
+		{
+			const opdsAuth = opds.auth.get(serverInfo.host, {
+				user: serverInfo.user,
+				pass: serverInfo.pass,
+				auth: serverInfo.auth,
+			});
+
+			opdsAuth.setAuth = function(auth) {
+
+				console.log(auth);
+
+				opdsAuth.auth.auth = auth;
+
+			}
+		
+			this.opds = opdsAuth;
+		}
+		else
+		{
+			this.opds = opds.auth.basicOpdsAuth;
+		}
+
+		return this.opds;
+
+	}
+
 	this.readOpds = async function(path) {
 
-		return [];
+		console.time('readOpds');
+
+		const opdsAuth = await this.connectOpds();
+		const url = opds.opds.base64ToUrl(path);
+
+		const response = await opdsAuth.fetch(url);
+		const body = await response.text();
+
+		if(!response.ok)
+			throw new Error('Invalid response: '+response.status+' '+response.statusText);
+
+		const data = await opds.opds.parse(body, url, path, path);
+		const files = [];
+
+		const getFiles = function(_files) {
+
+			for(let i = 0, len = _files.length; i < len; i++)
+			{
+				const file = _files[i];
+
+				const bestAcquisitionLink = file.acquisitionLinks?.download?.links ? opds.findBestAcquisitionLink(file.acquisitionLinks.download.links) : null;
+
+				if(!file.path && !bestAcquisitionLink)
+				{
+					if(file.navigation)
+						getFiles(file.navigation);
+
+					continue;
+				}
+
+				const folder = bestAcquisitionLink ? false : true;
+				const path = bestAcquisitionLink?.path ?? file.path;
+				const basename = p.basename(path);
+
+				files.push({
+					name: file.metadata?.title ?? file.title,
+					path: bestAcquisitionLink?.path ?? file.path,
+					folder: folder,
+					compressed: !folder ? fileManager.isCompressed(basename) : false,
+					// mtime: Date.parse(entry.lastmod)
+				});
+			}
+
+		}
+
+		/*if(data.navigation)
+			getFiles(data.navigation);*/
+
+		if(data.groups)
+			getFiles(data.groups);
+
+		if(data.publications)
+			getFiles(data.publications);
+
+
+		console.timeEnd('readOpds');
+		return files;
 
 	}
 
@@ -1650,6 +1753,8 @@ var client = function(path) {
 		const files = [];
 		const _this = this;
 		const _only = this.config._only;
+
+		const opdsAuth = await this.connectOpds();
 
 		const promises = [];
 
@@ -1674,6 +1779,8 @@ var client = function(path) {
 				if(!fs.existsSync(folderPath))
 					fs.mkdirSync(folderPath, {recursive: true});
 
+				let error = false;
+
 				// Avoid downloading the same files at the same time
 				if(!serverClient.existsOrDownloading(filePath))
 				{
@@ -1690,15 +1797,24 @@ var client = function(path) {
 						const dirname = p.dirname(path);
 						const basename = p.basename(path).replace(/\.[^\.]*$/, '');
 
-						let url = p.join(dirname, opds.opds.atob(basename));
-						url = posixPath(url).replace(/^opdsf/, 'http');
+						let url = /^base64\,/.test(basename) ? opds.opds.base64ToUrl(basename) : opds.opds.atob(basename);
 
-						const response = await opds.auth.fetch(url);
+						if(!/^https?:/.test(url))
+						{
+							url = p.join(dirname, url);
+							url = posixPath(url).replace(/^opdsf/, 'http');
+						}
+
+						const response = await opdsAuth.fetch(url);
 
 						if(response.ok)
 						{
 							const fileContents = await response.arrayBuffer();
 							await fsp.writeFile(filePath, Buffer.from(fileContents));
+						}
+						else
+						{
+							error = true;
 						}
 
 						downloading.resolve();
@@ -1708,7 +1824,7 @@ var client = function(path) {
 				progressIndex++;
 
 				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
+				_this.whenDownloadFile(path, filePath, !error ? callbackWhenFileDownload : false);
 
 				task.resolve();
 				resolve();

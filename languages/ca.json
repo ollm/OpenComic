@@ -545,6 +545,7 @@
 			"add": "Afegir catàleg",
 			"delete": "Eliminar catàleg",
 			"confirmDelete": "Esteu segur que voleu eliminar aquest catàleg?",
+			"downloadAuto": "Descarregar automàticament els arxius del catàleg OPDS",
 			"showOnLeft": "Mostra el tauler de navegació",
 			"downloadTitle": "Carpeta OPDS",
 			"downloadDescription": "Carpeta on es guardaran els arxius descarregats a través de OPDS",

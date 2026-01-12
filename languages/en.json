@@ -545,6 +545,7 @@
 			"add": "Add catalog",
 			"delete": "Delete catalog",
 			"confirmDelete": "Are you sure you want to delete this catalog?",
+			"downloadAuto": "Auto-download files from OPDS catalog",
 			"showOnLeft": "Show in navigation drawer",
 			"downloadTitle": "OPDS folder",
 			"downloadDescription": "Folder where files downloaded via OPDS will be saved",

@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 139; // Update this if readingPagesConfig is updated
+const changes = 141; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -405,12 +405,16 @@ const storageDefault = {
 		title: '',
 		subtitle: '',
 		url: '',
+		downloadAuto: false,
 		showOnLeft: false,
 		pass: '',
 		user: '',
 		auth: '',
 		downloadFiles: {
-			wildcard: '',
+			wildcard: {
+				path: '',
+				name: '',
+			},
 		},
 	}],
 	shortcuts: {

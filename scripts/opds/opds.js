@@ -295,7 +295,7 @@ function convertPublicationsToFile(feed, path, mainPath, currentUrl)
 			publication.currentUrl = currentUrl;
 			publication.mainPath = mainPath;
 			publication.metadata.poster = poster;
-			publication.acquisitionLinks = findAcquisitionLinks(publication.links, currentUrl, metadata.title);
+			publication.acquisitionLinks = findAcquisitionLinks(publication.links, currentUrl, metadata.title, path, mainPath);
 			publication.price = bestPrince(publication.acquisitionLinks);
 
 			if(!publication.metadata.description)
@@ -347,7 +347,7 @@ const acquisitionLinksIcons = {
 	preview: 'visibility',
 };
 
-function findAcquisitionLinks(links, currentUrl, publicationTitle)
+function findAcquisitionLinks(links, currentUrl, publicationTitle, path, mainPath)
 {
 	acquisitionLinks = {};
 
@@ -364,6 +364,12 @@ function findAcquisitionLinks(links, currentUrl, publicationTitle)
 			const name = language.buttons[type] || type;
 			const icon = acquisitionLinksIcons[type];
 			const fill = (type == 'download' || type == 'buy'/* || type == 'borrow'*/) ? true : false;
+
+			const _base64 = base64(resolveUrl(currentUrl, link.href))+'.'+compatible.extension.get(mime);
+			opds.addPathName(_base64, publicationTitle);
+
+			link.path = addOpdsfProtocol(serverClient.fixStart(p.join(path, _base64)), link.href);
+			link.mainPath = addOpdsfProtocol(mainPath, link.href);
 
 			link.url = resolveUrl(currentUrl, link.href);
 			link.html = link.type === 'text/html' ? true : false;
@@ -491,6 +497,12 @@ function addOpdsProtocol(path)
 	return path.replace(/^https?/, 'opds');
 }
 
+function addOpdsfProtocol(path, protocolUrl)
+{
+	const https = /^https/.test(protocolUrl);
+	return path.replace(/^opds[fs]?/, 'opdsf'+(https ? 's' : ''));
+}
+
 function differentHost(currentUrl, path)
 {
 	if(!/^http/.test(path))
@@ -525,6 +537,10 @@ function base64(url)
 function base64ToUrl(path)
 {
 	const basename = p.basename(path);
+
+	if(!/^base64\,/.test(basename))
+		return path.replace(/^opdsf(s)?/, 'http$1');
+
 	return atob(basename.replace(/^base64\,/, ''));
 }
 
@@ -552,6 +568,7 @@ function getPath(item, currentUrl, mainPath)
 
 module.exports = {
 	read: read,
+	parse: parse,
 	abort: abort,
 	resolveUrl: resolveUrl,
 	differentHost: differentHost,

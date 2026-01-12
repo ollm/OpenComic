@@ -1,6 +1,6 @@
-const opds = require(p.join(appDir, 'scripts/opds/opds.js')),
-	search = require(p.join(appDir, 'scripts/opds/search.js')),
-	auth = require(p.join(appDir, 'scripts/opds/auth.js'));
+const opds = require(p.join(appDir, '.dist/opds/opds.js')),
+	search = require(p.join(appDir, '.dist/opds/search.js')),
+	auth = require(p.join(appDir, '.dist/opds/auth.mjs')).default;
 
 const opdsPathNames = {};
 const defaultCatalogs = [
@@ -59,6 +59,7 @@ function addNewDefaultCatalogs(data, changes)
 				title: catalog.title,
 				subtitle: catalog.subtitle,
 				url: catalog.url,
+				downloadAuto: false,
 				showOnLeft: false,
 			});
 
@@ -172,7 +173,7 @@ async function home()
 	events.events();
 }
 
-var currentFeed = false, currentSearch = false;
+var currentFeed = false, currentSearch = false, fromContextMenu = false;
 
 async function browse(path, mainPath, keepScroll)
 {
@@ -231,7 +232,16 @@ async function browse(path, mainPath, keepScroll)
 	}
 
 	isFromFacets = false;
+	fromContextMenu = false;
 	events.events();
+}
+
+async function read(path, mainPath)
+{
+	const url = opds.base64ToUrl(path);
+	const feed = await opds.read(url, path, mainPath);
+
+	return [];
 }
 
 function getPublications(feed)
@@ -322,30 +332,19 @@ async function publication(path = false)
 	publication.path = path;
 	currentPublication = publication;
 
+	if(!fromContextMenu && hasDownloadable(publication.acquisitionLinks) && currentCatalog.downloadAuto)
+	{
+		openBestAcquisitionLink(publication.acquisitionLinks, currentCatalog.downloadFiles);
+		
+		return;
+	}
+
 	const currentUrl = publication.currentUrl;
 	const mainPath = publication.mainPath;
 	const metadata = publication.metadata;
 
 	// Find and show download file from this publication
-	let downloadFile = false;
-
-	toBreak:
-	for(const key in publication.acquisitionLinks)
-	{
-		for(const link of publication.acquisitionLinks[key].links)
-		{
-			if(link.type !== 'text/html' && currentCatalog.downloadFiles[link.href])
-			{
-				const _downloadFile = currentCatalog.downloadFiles[link.href];
-
-				if(fs.existsSync(_downloadFile))
-				{
-					downloadFile = _downloadFile;
-					break toBreak;
-				}
-			}
-		}
-	}
+	let downloadFile = findDownloadFile(publication.acquisitionLinks, currentCatalog.downloadFiles);
 
 	handlebarsContext.opdsDownloadFile = downloadFile;
 	handlebarsContext.opdsAcquisitionLinks = publication.acquisitionLinks;
@@ -418,11 +417,111 @@ async function publication(path = false)
 		modifiedDate: metadata.modified || '',
 	});
 
+	fromContextMenu = false;
+
 	return;
 
 	handlebarsContext.opdsPublication = html;
 
 	template.loadContentRight('opds.content.right.publication.html', true);
+}
+
+function hasDownloadable(acquisitionLinks)
+{
+	return acquisitionLinks.download.links && acquisitionLinks.download.links.some(link => link.type !== 'text/html');
+}
+
+function findDownloadFile(acquisitionLinks, downloadFiles)
+{
+	let downloadFile = false;
+
+	toBreak:
+	for(const key in acquisitionLinks)
+	{
+		for(const link of acquisitionLinks[key].links)
+		{
+			if(link.type !== 'text/html' && downloadFiles[link.href])
+			{
+				const _downloadFile = downloadFiles[link.href].path;
+
+				if(fs.existsSync(_downloadFile))
+				{
+					downloadFile = _downloadFile;
+					break toBreak;
+				}
+			}
+		}
+	}
+
+	return downloadFile;
+}
+
+function openBestAcquisitionLink(acquisitionLinks, downloadFiles)
+{
+	let downloadFile = findDownloadFile(acquisitionLinks, downloadFiles);
+
+	if(downloadFile)
+	{
+		dom.loadIndexPage(true, downloadFile, false, false, downloadFile);
+		return;
+	}
+
+	const bestLink = findBestAcquisitionLink(acquisitionLinks.download.links);
+
+	console.log(bestLink);
+
+	dom.loadIndexPage(true, bestLink.path, false, false, bestLink.path);
+	// dom.loadIndexPage(true, bestLink.path, false, false, bestLink.mainPath);
+
+	const name = dom.metadataPathName({
+		name: p.basename(bestLink.path),
+		path: bestLink.path,
+		compressed: fileManager.isCompressed(bestLink.path),
+	}); // OR bestLink.publicationTitle
+
+	currentCatalog.downloadFiles[bestLink.href] = {path: bestLink.path, name: name};
+	updateCatalog(currentCatalog.index, {downloadFiles: currentCatalog.downloadFiles});
+}
+
+function findBestAcquisitionLink(acquisitionLinks)
+{
+	const orders = [
+		'7z',
+		'pdf',
+		'epub',
+	];
+
+	const len = orders.length;
+
+	acquisitionLinks = app.copy(acquisitionLinks);
+	acquisitionLinks = acquisitionLinks.map(function(link) {
+
+		let order = len;
+
+		for(let i = 0; i < len; i++)
+		{
+			const ext = orders[i];
+
+			if(compatible.mime.compressed[ext](link.mime))
+			{
+				order = i;
+				break;
+			}
+		}
+
+		link.order = order;
+		return link;
+
+	});
+
+	acquisitionLinks.sort(function(a, b) {
+
+		return a.order - b.order;
+
+	});
+
+	const bestLink = acquisitionLinks[0];
+	return bestLink;
 }
 
 function downloadOrSelect(type, index = false)
@@ -590,7 +689,7 @@ async function download(link = false)
 		// Add to library
 		addComicsToLibrary([downloadPath], false);
 
-		currentCatalog.downloadFiles[link.href] = downloadPath;
+		currentCatalog.downloadFiles[link.href] = {path: downloadPath};
 		updateCatalog(currentCatalog.index, {downloadFiles: currentCatalog.downloadFiles});
 
 		const odpsButtonOpen = document.querySelector('.file-info-odps-button-open');
@@ -674,7 +773,8 @@ function addPathName(path, name)
 
 function pathName(path)
 {
-	return opdsPathNames[opdsPath(path)] || 'Null';
+	const _path = path.replace(/\.[^\.]*$/, '');
+	return opdsPathNames[opdsPath(_path)] || opdsPathNames[opdsPath(path)] || 'Null';
 }
 
 function opdsPath(path)
@@ -688,6 +788,7 @@ function getInputValues()
 	let url = document.querySelector('.input-url').value;
 	let user = document.querySelector('.input-user') ? document.querySelector('.input-user').value : '';
 	let pass = document.querySelector('.input-pass') ? document.querySelector('.input-pass').value : '';
+	let downloadAuto = !!+document.querySelector('.input-download-auto').dataset.value;
 	let showOnLeft = !!+document.querySelector('.input-show-on-left').dataset.value;
 
 	return {
@@ -695,6 +796,7 @@ function getInputValues()
 		url: url,
 		user: user,
 		pass: pass,
+		downloadAuto: downloadAuto,
 		showOnLeft: showOnLeft,
 	};
 }
@@ -711,6 +813,7 @@ function add(save = false)
 			title: values.title,
 			subtitle: '',
 			url: values.url,
+			downloadAuto: values.downloadAuto,
 			showOnLeft: values.showOnLeft,
 			downloadFiles: {},
 		});
@@ -759,6 +862,7 @@ function edit(key, save = false)
 		opdsCatalog.url = values.url;
 		opdsCatalog.user = values.user;
 		opdsCatalog.pass = storage.safe.encrypt(values.pass);
+		opdsCatalog.downloadAuto = values.downloadAuto;
 		opdsCatalog.showOnLeft = values.showOnLeft;
 
 		storage.set('opdsCatalogs', opdsCatalogs);
@@ -850,15 +954,17 @@ async function boxes(path = false, mainPath = false)
 
 		for(let i = 0, len = files.length; i < len; i++)
 		{
-			const path = files[i];
+			const file = files[i];
+			const path = file.path;
+			const isServer = fileManager.isServer(path);
 
-			if(fs.existsSync(path))
+			if(fs.existsSync(path) || isServer)
 			{
-				const stat = fs.statSync(path);
+				const stat = !isServer ? fs.statSync(path) : {ctimeMs: 0};
 				const compressed = fileManager.isCompressed(path);
 
 				const name = dom.metadataPathName({
-					name: p.basename(path),
+					name: file.name || p.basename(path),
 					path: path,
 					compressed: compressed,
 				});
@@ -914,6 +1020,7 @@ module.exports = {
 	addNewDefaultCatalogs: addNewDefaultCatalogs,
 	home: home,
 	browse: browse,
+	read: read,
 	fromFacets: fromFacets,
 	pathName: pathName,
 	addPathName: addPathName,
@@ -924,13 +1031,17 @@ module.exports = {
 	download: download,
 	downloadDialog: downloadDialog,
 	currentCatalog: function(){return currentCatalog},
+	setCurrentCatalog: function(catalog){currentCatalog = catalog;},
 	updateCatalog: updateCatalog,
 	getFeed: function() {return currentFeed},
 	getSearch: function() {return currentSearch},
+	findBestAcquisitionLink,
 	add: add,
 	edit: edit,
 	delete: _delete,
 	opds: opds,
 	search: search,
 	auth: auth,
+	set fromContextMenu(value) {fromContextMenu = value},
+	get fromContextMenu() {return fromContextMenu},
 }
