@@ -394,6 +394,27 @@ function migrateBookmarksPath(data)
 	return data;
 }
 
+function migrateOpdsDownloadFiles(data)
+{
+	console.time('Migration: opdsDownloadFiles');
+
+	if(data.opdsCatalogs && data.opdsCatalogs.length)
+	{
+		for(const catalog of data.opdsCatalogs)
+		{
+			for(const key in catalog.downloadFiles)
+			{
+				const path = catalog.downloadFiles[key];
+				catalog.downloadFiles[key] = {path};
+			}
+		}
+	}
+
+	console.timeEnd('Migration: opdsDownloadFiles');
+
+	return data;
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -438,6 +459,9 @@ function start(data)
 
 	if(changes < 131) // Bookmarks path
 		data = migrateBookmarksPath(data);
+
+	if(changes < 141) // OPDS download files
+		data = migrateOpdsDownloadFiles(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

@@ -545,6 +545,7 @@
 			"add": "Añadir catálogo",
 			"delete": "Eliminar catálogo",
 			"confirmDelete": "¿Está seguro de que desea eliminar este catálogo?",
+			"downloadAuto": "Descargar archivos automáticamente desde el catálogo OPDS",
 			"showOnLeft": "Mostrar en el panel de navegación",
 			"downloadTitle": "Carpeta OPDS",
 			"downloadDescription": "Carpeta donde se guardarán los archivos descargados a través de OPDS",

@@ -1,78 +1,131 @@
+import crypto from 'node:crypto';
 
-async function _fetch(url, options)
-{
-	const response = await fetch(url, {...options, headers: headers(url)});
+declare const events: any;
+declare const hb: any;
+declare const language: any;
+declare const opds: any;
+declare const storage: any;
+declare const template: any;
 
-	if(!response.ok)
-	{
-		const valid = valid(response);
-
-		if(valid)
-			return fetch(url, {...options, headers: headers(url)});
-	}
-
-	return response; 
+interface Auth {
+	auth: string;
+	user: string;
+	pass: string;
 }
 
-function headers(url)
+interface AuthData {
+	type: string | false;
+	realm: string;
+	nonce: string;
+	algorithm: string;
+	qop: string;
+	nonceCount: string;
+	cnonce: string;
+	user?: string;
+	pass?: string;
+	uri?: string;
+}
+
+interface Headers {
+	Authorization?: string;
+}
+
+class OpdsAuth
 {
-	const currentCatalog = opds.currentCatalog();
+	auth: Auth | null = null;
 
-	if(currentCatalog.auth && currentCatalog.user && currentCatalog.pass)
+	constructor(auth: Auth | null = null)
 	{
-		const data = parseAuth(currentCatalog.auth);
-		data.user = currentCatalog.user || '';
-		data.pass = storage.safe.decrypt(currentCatalog.pass || '');
-		data.uri = new URL(url).pathname;
+		this.auth = auth;
+	}
 
-		let auth = false;
+	async fetch(url: string, options: RequestInit = {}): Promise<Response>
+	{
+		const response = await fetch(url, {...options, headers: this.headers(url)});
 
-		switch (data.type)
+		if(!response.ok)
 		{
-			case 'basic':
+			const valid = this.valid(response);
 
-				auth = basic(data);
-
-				break;
-			case 'digest':
-
-				auth = digest(data);
-
-				break;
+			if(valid)
+				return fetch(url, {...options, headers: this.headers(url)});
 		}
 
-		if(auth)
-		{
-			return {
-				Authorization: auth,
-			};
-		}
+		return response; 
 	}
 
-	return {};
-}
-
-function valid(response)
-{
-	const auth = response.headers.get('www-authenticate');
-	const data = parseAuth(auth || '');
-
-	if(data.type === 'basic' || data.type === 'digest')
+	headers(url: string): HeadersInit
 	{
-		const currentCatalog = opds.currentCatalog();
-		opds.updateCatalog(currentCatalog.index, {auth: auth});
+		const auth = this.auth || opds.currentCatalog() as Auth;
 
-		return true;
+		if(auth.auth && auth.user && auth.pass)
+		{
+			const data = parseAuth(auth.auth || '');
+			data.user = auth.user || '';
+			data.pass = storage.safe.decrypt(auth.pass || '');
+			data.uri = new URL(url).pathname;
+
+			let authorization: string | boolean = false;
+
+			switch (data.type)
+			{
+				case 'basic':
+
+					authorization = basic(data);
+
+					break;
+				case 'digest':
+
+					authorization = digest(data);
+
+					break;
+			}
+
+			if(authorization)
+			{
+				return {
+					Authorization: authorization,
+				};
+			}
+		}
+
+		return {};
 	}
 
-	return false;
+	setAuth: (auth: Partial<Auth>) => void | null = null;
+
+	valid(response): boolean
+	{
+		const auth = response.headers.get('www-authenticate');
+		const data = parseAuth(auth || '');
+
+		if(data.type === 'basic' || data.type === 'digest')
+		{
+			if(this.setAuth)
+			{
+				this.setAuth(auth);
+			}
+			else
+			{
+				const currentCatalog = opds.currentCatalog();
+				opds.updateCatalog(currentCatalog.index, {auth: auth});
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
 }
 
-function parseAuth(auth)
+const basicOpdsAuth = new OpdsAuth();
+
+function parseAuth(auth: string): AuthData
 {
 	const type = auth.trim().split(/\s/)[0].toLowerCase();
 
-	const data = {
+	const data: AuthData = {
 		type: ['basic', 'digest'].includes(type) ? type : false,
 		realm: '',
 		nonce: '',
@@ -104,7 +157,7 @@ function parseAuth(auth)
 
 var credentialsResolve, credentialsReject;
 
-async function requestCredentials(response, forceCredentials = false)
+async function requestCredentials(response: Response, forceCredentials: boolean = false): Promise<boolean>
 {
 	const currentCatalog = opds.currentCatalog();
 	const auth = response.headers.get('www-authenticate');
@@ -112,7 +165,7 @@ async function requestCredentials(response, forceCredentials = false)
 
 	if(!currentCatalog.user || !currentCatalog.pass || forceCredentials)
 	{
-		const promise = new Promise(function(resolve, reject) {
+		const promise = new Promise<void>(function(resolve, reject) {
 			
 			credentialsResolve = resolve;
 			credentialsReject = reject;
@@ -134,7 +187,7 @@ async function requestCredentials(response, forceCredentials = false)
 	return true;
 }
 
-function requestCredentialsDialog(siteName = false, save = null)
+function requestCredentialsDialog(siteName: string | boolean = false, save: boolean | null = null): void
 {
 	if(save !== null)
 	{
@@ -142,8 +195,8 @@ function requestCredentialsDialog(siteName = false, save = null)
 		{
 			const currentCatalog = opds.currentCatalog();
 
-			const user = document.querySelector('.input-user').value;
-			const pass = document.querySelector('.input-pass').value;
+			const user = (document.querySelector('.input-user') as HTMLInputElement).value;
+			const pass = (document.querySelector('.input-pass') as HTMLInputElement).value;
 
 			opds.updateCatalog(currentCatalog.index, {
 				user: user,
@@ -181,7 +234,7 @@ function requestCredentialsDialog(siteName = false, save = null)
 	}
 }
 
-function basic(data)
+function basic(data: AuthData): string
 {
 	const auth = btoa(data.user+':'+data.pass);
 	return 'Basic '+auth;
@@ -189,13 +242,13 @@ function basic(data)
 
 var nonceCount = 0;
 
-function hex8(number)
+function hex8(number: number): string
 {
 	const hex = number.toString(16);
 	return hex.padStart(8, '0');
 }
 
-function digest(data)
+function digest(data: AuthData): string
 {
 	let algorithm = 'md5';
 
@@ -218,7 +271,7 @@ function digest(data)
 	nonceCount++;
 
 	const sess = /sess/.test(data.algorithm) ? true : false;
-	const _nonceCount = hex8(nonceCount, 8);
+	const _nonceCount = hex8(nonceCount);
 
 	const hash1 = crypto.hash(algorithm, data.user+':'+data.realm+':'+data.pass, 'hex');
 	const hash2 = crypto.hash(algorithm, (data.qop === 'auth-int' ? '' : 'GET:'+data.uri), 'hex');
@@ -235,10 +288,25 @@ function digest(data)
 	return 'Digest '+auth;
 }
 
-module.exports = {
-	fetch: _fetch,
-	headers: headers,
-	valid: valid,
+const auths = new Map<string, OpdsAuth>();
+
+function getAuth(key: string, auth: Auth): OpdsAuth
+{
+	key = key+'|'+auth.user+'|'+auth.pass;
+
+	if(!auths.has(key))
+		auths.set(key, new OpdsAuth(auth));
+
+	return auths.get(key) as OpdsAuth;
+}
+
+export default {
+	get: getAuth,
+	basicOpdsAuth,
+	fetch: basicOpdsAuth.fetch,
+	headers: basicOpdsAuth.headers,
+	valid: basicOpdsAuth.valid,
 	requestCredentials: requestCredentials,
 	requestCredentialsDialog: requestCredentialsDialog,
-};
+	OpdsAuth: OpdsAuth,
+};	

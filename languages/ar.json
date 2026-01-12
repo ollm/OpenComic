@@ -545,6 +545,7 @@
 			"add": "إضافة فهرس",
 			"delete": "حذف فهرس",
 			"confirmDelete": "هل أنت متأكد من حذف الفهرس؟",
+			"downloadAuto": "",
 			"showOnLeft": "أظهر في درج الاستعراض",
 			"downloadTitle": "مجلد التوزيع العام",
 			"downloadDescription": "المجلد حيث الملفات المحملة من حلال التوزيع العام OPDS سيتم حفظها",

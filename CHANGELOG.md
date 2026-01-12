@@ -16,7 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - AI image artifact removal tool [`f27e851`](https://github.com/ollm/OpenComic/commit/f27e85168f485d1e0a904fbd3b87d0345fbdf96e)
 - Cache the folder's thumbnails/poster file lists to reduce disk I/O [`01a962b`](https://github.com/ollm/OpenComic/commit/01a962bd245ce1ad427fcca8e1c547e531bee0b1)
 - Hide file extension by default [`ad33247`](https://github.com/ollm/OpenComic/commit/ad332470f47b1f110f22ee85a4384f75a19bce99)
-- Support playing background music on a specific page
+- Support playing background music on a specific page [`23aae8a`](https://github.com/ollm/OpenComic/commit/23aae8abdc8c1bd983411f0f9eeac974218694fa)
+- Options in OPDS to auto-download files from the catalog
 
 ##### 🐛 Bug Fixes
 

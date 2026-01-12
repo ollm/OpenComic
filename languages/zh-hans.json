@@ -545,6 +545,7 @@
 			"add": "添加目录",
 			"delete": "删除目录",
 			"confirmDelete": "您确实要删除该目录吗？",
+			"downloadAuto": "",
 			"showOnLeft": "在抽屉式导航栏中显示",
 			"downloadTitle": "OPDS 文件夹",
 			"downloadDescription": "通过 OPDS 下载的文件保存文件夹",

@@ -545,6 +545,7 @@
 			"add": "Katalog ekle",
 			"delete": "Katalog sil",
 			"confirmDelete": "Bu kataloğu silmek istediğinizden emin misiniz?",
+			"downloadAuto": "",
 			"showOnLeft": "Navigasyon çekmecesinde göster",
 			"downloadTitle": "OPDS klasörü",
 			"downloadDescription": "OPDS aracılığıyla indirilen dosyaların kaydedileceği klasör",

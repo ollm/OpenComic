@@ -545,6 +545,7 @@
 			"add": "카탈로그 추가",
 			"delete": "카탈로그 삭제",
 			"confirmDelete": "이 카탈로그를 삭제하시겠습니까?",
+			"downloadAuto": "",
 			"showOnLeft": "좌측 탐색 서랍에 표시",
 			"downloadTitle": "OPDS 다운로드 폴더",
 			"downloadDescription": "OPDS를 통해 다운로드한 파일을 저장할 폴더",

@@ -545,6 +545,7 @@
 			"add": "Adicionar catálogo",
 			"delete": "Remover catálogo",
 			"confirmDelete": "Você tem certeza que deseja remover esse catálogo?",
+			"downloadAuto": "",
 			"showOnLeft": "Mostrar na barra de navegação",
 			"downloadTitle": "Pasta OPDS",
 			"downloadDescription": "Pasta onde arquivos baixados por OPDS vão ser salvos",

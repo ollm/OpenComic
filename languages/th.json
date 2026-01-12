@@ -545,6 +545,7 @@
 			"add": "เพิ่มหมวดหมู่",
 			"delete": "ลบหมวดหมู่",
 			"confirmDelete": "คุณต้องการลบหมวดหมู่นี้หรือไม่?",
+			"downloadAuto": "",
 			"showOnLeft": "แสดงในแถบนำทาง",
 			"downloadTitle": "โฟลเดอร์ OPDS",
 			"downloadDescription": "โฟลเดอร์ที่ใช้จัดเก็บไฟล์ที่ถูกดาวน์โหลดโดย OPDS",
