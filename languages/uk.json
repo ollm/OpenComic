@@ -50,6 +50,7 @@
 			"deletePermanently": "Видалити назавжди",
 			"deletePermanentlyConfirm": "Ви дійсно хочете назавжди видалити цей файл? Цю дію неможливо скасувати.",
 			"favorite": "Обране",
+			"openInNewTab": "",
 			"openInNewWindow": "Відкрити в новому вікні",
 			"markAsRead": "Позначити як прочитане",
 			"markAsUnread": "Позначити як непрочитане",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "Показати повний шлях при відкритті файлу або каталогу",
 			"showLibraryPath": "Показати бібліотеку, вибране, мітки тощо в шляху заголовка",
 			"showFileExtension": "Показати розширення файлів у списку файлів",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "Відкривати файли в новому вікні (застосовується тільки до файлів, відкритих ззовні OpenComic)",
 			"recentlyOpenedItems": "Кількість елементів для збереження у списку нещодавно відкритих"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "Поведінка при запуску",
 			"startInFullScreen": "Запускати OpenComic у повноекранному режимі",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "Почати безпосередньо з останнього прочитаного",
 			"startOnlyFromLibrary": "Тільки якщо нещодавно прочитано є в бібліотеці",
 			"startOnStartup": "Запускати OpenComic під час запуску системи"

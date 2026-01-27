@@ -961,7 +961,7 @@ var file = false,
 	isBlackAndWhite = {},
 	isBlackAndWhiteCurrent = {},
 	isBlackAndWhiteQueue = {},
-	processingIsBlackAndWhiteQueue = false;
+	processingIsBlackAndWhiteQueue = false,
 	toCheck = [];
 
 function setImagesPath(_imagesPath = false, mainPath = false)

@@ -73,14 +73,14 @@ async function play(config = {})
 		setTimeout(function(){
 
 			audio.play();
-			audio.onended = function(){delete audio}
+			audio.onended = function(){audio = null}
 
 		}, delay);
 	}
 	else
 	{
 		audio.play();
-		audio.onended = function(){delete audio}
+		audio.onended = function(){audio = null}
 	}
 }
 

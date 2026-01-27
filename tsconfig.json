@@ -4,7 +4,7 @@
 		"module": "CommonJS",
 		"declaration": false,
 		"declarationMap": false,
-		"strict": false,
+		"strict": true,
 		"allowJs": true,
 		"checkJs": false,
 		"esModuleInterop": true,
@@ -15,7 +15,7 @@
 		"resolveJsonModule": true,
 		"baseUrl": "./scripts",
 		"paths": {
-			"@scripts/*": ["../scripts/*"],
+			"@types": ["../scripts/types.mts"],
 		},
 		"outDir": ".dist"
 	},

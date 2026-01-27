@@ -633,7 +633,7 @@ async function searchComic(site, title = false, _return = false)
 	$('.tracking-search').html(template.load('dialog.tracking.search.results.html'));
 }
 
-searchInputST = false;
+var searchInputST = false;
 
 function searchInput(site)
 {

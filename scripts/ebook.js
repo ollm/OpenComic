@@ -852,7 +852,7 @@ var ebook = function(book, config = {}) {
 
 		for(let i = 0, len = pages.length; i < len; i++)
 		{
-			startPage = index;
+			const startPage = index;
 
 			for(let i2 = 0, len2 = pages[i].length; i2 < len2; i2++)
 			{

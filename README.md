@@ -31,7 +31,8 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 - ☁️ Server connection support: `smb://`, `ftp://`, `ftps://`, `scp://`, `sftp://`, `ssh://`, `s3://`, `webdav://`, `webdavs://`
 - 📁 Master folders support
 - 📚 OPDS support
-- 🪟 Multiple windows support
+<!-- - 🗂️ Tab support -->
+<!-- - 🪟 Multi-window support -->
 - ❤️ Favorite labels
 - 🏷️ Custom labels
 - 🇯🇵 Manga read mode

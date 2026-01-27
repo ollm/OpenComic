@@ -479,12 +479,12 @@
 
 .menu-simple-header
 {
-	max-height: calc(100vh - 72px - var(--title-var-height));
+	max-height: calc(100vh - 72px - var(--title-and-tabs-bar-height));
 }
 
 .menu-simple-header .menu-simple-content
 {
-	max-height: calc(100vh - 88px - var(--title-var-height));
+	max-height: calc(100vh - 88px - var(--title-and-tabs-bar-height));
 }
 
 .menu-simple.a
@@ -1127,8 +1127,8 @@
 	position: fixed;
 	width: 280px;
 	left: 50%;
-	top: calc(50% + (var(--title-var-height) / 2));
-	max-height: calc(100vh - 32px - var(--title-var-height));
+	top: calc(50% + (var(--title-and-tabs-bar-height) / 2));
+	max-height: calc(100vh - 32px - var(--title-and-tabs-bar-height));
 	max-width: calc(100vw - 32px);
 	animation-fill-mode: forwards;
 	animation-name: dialog-show;
@@ -1146,7 +1146,7 @@
 {
 	position: relative;
 	height: 100%;
-	max-height: calc(100vh - 32px - var(--title-var-height));
+	max-height: calc(100vh - 32px - var(--title-and-tabs-bar-height));
 	overflow: auto;
 	animation-name: expand-in-clip-path-center;
 	animation-duration: 0.4s;
@@ -2886,7 +2886,7 @@ table tbody td.lh0
 	width: 600px;
 	max-width: calc(100% - 192px - 32px);
 	right: calc(50% - 400px);
-	top: calc(64px + var(--title-var-height));
+	top: calc(64px + var(--title-and-tabs-bar-height));
 	z-index: 4;
 	background-color: var(--md-sys-color-surface-container-high);
 	color: var(--md-sys-color-on-surface);

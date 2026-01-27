@@ -1,7 +1,144 @@
 
+function middleClick(event, key, data)
+{
+	if(event.button !== 1) return;
+
+	let title = '';
+	let tabData = {
+		file: false,
+		indexLabel: {},
+		isComic: false,
+		mainPath: false,
+		page: false,
+		path: false,
+		recentlyOpened: false,
+		root: true,
+	};
+
+	let history = [];
+
+	switch(key)
+	{
+		case 'page':
+			
+			tabData = {
+				...tabData,
+				...pageData(data),
+			};
+
+			break;
+
+		case 'library':
+
+			tabData = {
+				...tabData,
+				title: language.global.library,
+			};
+
+			break;
+
+		case 'recently-opened':
+
+			tabData = {
+				...tabData,
+				title: language.global.recentlyOpened,
+				recentlyOpened: true,
+			};
+
+			break;
+
+		case 'favorites':
+
+			tabData = {
+				...tabData,
+				indexLabel: favoritesData(),
+			};
+
+			break;
+
+		case 'opds':
+
+			tabData = opdsData(data ?? {}).map(item => ({
+				...tabData,
+				indexLabel: item,
+			}));
+
+			break;
+
+		case 'master-folder':
+			
+			tabData = {
+				...tabData,
+				indexLabel: masterFolderData(data),
+			};
+
+			break;
+
+		case 'server':
+
+			tabData = {
+				...tabData,
+				indexLabel: serverData(data),
+			};
+
+			break;
+
+		case 'label':
+
+			tabData = {
+				...tabData,
+				indexLabel: labelData(data),
+			};
+
+			break;
+
+	}
+
+	if(Array.isArray(tabData))
+		history = tabData;
+	else
+		history = [tabData];
+
+	const last = history[history.length - 1];
+	title = last.title ?? last.name ?? last.indexLabel.title ?? last.indexLabel.name ?? '';
+
+	console.log(title, history);
+
+	const materialIcon = event.currentTarget.querySelector('.material-icon');
+	const icon = materialIcon ? materialIcon.innerHTML : 'indeterminate_question_box';
+
+	console.log(event.currentTarget);
+
+	tabs.openTab(title, icon, history);
+
+}
+
+function pageData(page)
+{
+	console.log(page);
+
+	const titles = {
+		language: language.global.language,
+		theme: language.global.theme,
+		settings: language.global.settings,
+	};
+
+	return {
+		page,
+		title: titles[page],
+	};
+}
+
+function masterFolderData({folder, index})
+{
+	return {masterFolder: folder, index: index, name: p.basename(folder)};
+}
+
 function masterFolder(folder, index)
 {
-	dom.setIndexLabel({masterFolder: folder, index: index, name: p.basename(folder)});
+	const data = masterFolderData({folder, index});
+
+	dom.setIndexLabel(data);
 	dom.loadIndexPage(true);
 }
 
@@ -23,10 +160,27 @@ function setFavorite(path)
 		dom.reload();
 }
 
+function favoritesData()
+{
+	return {favorites: true, name: language.global.favorites};
+}
+
 function favorites()
 {
-	dom.setIndexLabel({favorites: true, name: language.global.favorites});
+	const data = favoritesData();
+
+	dom.setIndexLabel(data);
 	dom.loadIndexPage(true);
+}
+
+function opdsData({url = false, index = false, title = false})
+{
+	const data = [{opds: true, index: index, name: language.global.catalogs}];
+
+	if(url)
+		data.push({opds: true, index: index, name: title});
+
+	return data;
 }
 
 async function _opds(url = false, index = false, title = false)
@@ -46,15 +200,29 @@ async function _opds(url = false, index = false, title = false)
 	}
 }
 
+function labelData({name, index})
+{
+	return {label: name, index: index, name: name};
+}
+
 function label(name, index)
 {
-	dom.setIndexLabel({label: name, index: index, name: name});
+	const data = labelData({name, index});
+
+	dom.setIndexLabel(data);
 	dom.loadIndexPage(true);
+}
+
+function serverData({server, index, name})
+{
+	return {server, index, name};
 }
 
 function server(path, index, name)
 {
-	dom.setIndexLabel({server: path, index: index, name: name});
+	const data = serverData({server: path, index, name});
+
+	dom.setIndexLabel(data);
 	dom.loadIndexPage(true);
 }
 
@@ -812,6 +980,7 @@ function applyShortcutPageConfigToAll(label = '', apply = false)
 }
 
 module.exports = {
+	middleClick,
 	masterFolder,
 	setFavorite,
 	favorites,

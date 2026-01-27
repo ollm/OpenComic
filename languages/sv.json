@@ -50,6 +50,7 @@
 			"deletePermanently": "",
 			"deletePermanentlyConfirm": "",
 			"favorite": "Favoritmarkera",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "Visa fullständig filväg när en fil eller mapp öppnas",
 			"showLibraryPath": "",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": ""
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "Startbeteende",
 			"startInFullScreen": "Starta OpenComic i helskärmsläge",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "Starta direkt i den senaste läsningen",
 			"startOnlyFromLibrary": "Endast om den senaste läsningen är i biblioteket",
 			"startOnStartup": "Starta OpenComic vid uppstart"

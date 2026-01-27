@@ -101,7 +101,12 @@ electronRemote.app.on('open-file', function(event, path) {
 	if(storage.syncInstances.client)
 		return;
 
-	if(config.openFilesInNewWindow)
+	if(config.openFilesInNewTab)
+	{
+		openPathInNewTab(path, path);
+		return;
+	}
+	else if(config.openFilesInNewWindow)
 	{
 		openPathInNewWindow(path);
 		return;
@@ -153,7 +158,12 @@ electronRemote.app.on('second-instance', function(event, argv) {
 
 		if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 		{
-			if(config.openFilesInNewWindow)
+			if(config.openFilesInNewTab)
+			{
+				openPathInNewTab(arg, arg);
+				return;
+			}
+			else if(config.openFilesInNewWindow)
 			{
 				openPathInNewWindow(arg);
 				return;
@@ -201,8 +211,9 @@ registreOpenUrl();
 var handlebarsContext = {};
 var language = {};
 var config = false, _config = false;
-var onReading = _onReading = false;
+var onReading = false, _onReading = false;
 var readingTouchEvent = false;
+var inChildFork = false;
 
 var appDir = p.join(__dirname, '../');
 
@@ -246,6 +257,7 @@ const app = require(p.join(appDir, '.dist/app.js')),
 	templates = require(p.join(appDir, '.dist/builded/templates.js')),
 	template = require(p.join(appDir, '.dist/template.js')),
 	titleBar = require(p.join(appDir, '.dist/title-bar.js')),
+	tabs = require(p.join(appDir, '.dist/tabs.mjs')).default,
 	gamepad = require(p.join(appDir, '.dist/gamepad.js')),
 	dom = require(p.join(appDir, '.dist/dom.js')),
 	events = require(p.join(appDir, '.dist/events.js')),
@@ -363,10 +375,14 @@ async function startApp()
 
 	if(toOpenFile && fs.existsSync(toOpenFile))
 	{
+		tabs.start(false);
+
 		openComic(toOpenFile, false, toOpenFileMainPath);
 	}
 	else
 	{
+		tabs.start(true);
+
 		let lastReading = false;
 
 		if(config.startInContinueReading)
@@ -434,10 +450,13 @@ async function startApp()
 			}
 		}
 
-		if(lastReading && fs.existsSync(lastReading.mainPath))
-			dom.openComic(false, lastReading.path, lastReading.mainPath);
-		else
-			dom.loadIndexPage(false);
+		if(!config.restoreTabsFromLastSession || tabs.tabs.length <= 1)
+		{
+			if(lastReading && fs.existsSync(lastReading.mainPath))
+				dom.openComic(false, lastReading.path, lastReading.mainPath);
+			else
+				dom.loadIndexPage(false);
+		}
 	}
 
 	dragAndDrop.start();
@@ -512,6 +531,12 @@ function openPathInNewWindow(path, mainPath = '')
 {
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
 	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath], {initHistory: dom.history.serialize()});
+}
+
+function openPathInNewTab(path, mainPath = '')
+{
+	const tabId = tabs.openPath(path, mainPath);
+	tabs.switch(tabId);
 }
 
 var currentContextMenuInput = false;

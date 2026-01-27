@@ -1,4 +1,4 @@
-const requestFileAccess = require(p.join(appDir, '.dist/file-manager/request-file-access.js'))
+const requestFileAccess = require(p.join(appDir, '.dist/file-manager/request-file-access.js')),
 	filePassword = require(p.join(appDir, '.dist/file-manager/file-password.js')),
 	diskType = require(p.join(appDir, '.dist/file-manager/disk-type.js'));
 

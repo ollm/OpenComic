@@ -349,7 +349,7 @@ const acquisitionLinksIcons = {
 
 function findAcquisitionLinks(links, currentUrl, publicationTitle, path, mainPath)
 {
-	acquisitionLinks = {};
+	const acquisitionLinks = {};
 
 	for(let i = 0, len = links.length; i < len; i++)
 	{

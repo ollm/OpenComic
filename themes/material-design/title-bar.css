@@ -1,11 +1,11 @@
 .app
 {
-	--title-var-height: 30px;
+	--title-bar-height: 30px;
 }
 
 .app.hide-title-bar
 {
-	--title-var-height: 0px;
+	--title-bar-height: 0px;
 }
 
 .title-bar

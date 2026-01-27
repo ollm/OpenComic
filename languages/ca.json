@@ -50,6 +50,7 @@
 			"deletePermanently": "Eliminar permanentment",
 			"deletePermanentlyConfirm": "Realment vols eliminar aquest arxiu de forma permanent? Aquesta acció no es pot desfer",
 			"favorite": "Favorit",
+			"openInNewTab": "Obrir en una pestanya nova",
 			"openInNewWindow": "Obrir en una finestra nova",
 			"markAsRead": "Marca com a llegit",
 			"markAsUnread": "Marca com a no llegit",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "Mostrar la ruta completa a l'obrir un arxiu o carpeta",
 			"showLibraryPath": "Mostra la biblioteca, favorits, etiquetes, etc a la ruta de la capçalera",
 			"showFileExtension": "Mostrar l'extensió de l'arxiu a la llista d'arxius",
+			"openFilesInNewTab": "Obrir arxius en una nova pestanya (Només s'aplica a arxius oberts des de fora d'OpenComic)",
 			"openFilesInNewWindow": "Obrir arxius en una nova finestra (Només s'aplica a arxius oberts des de fora d'OpenComic)",
 			"recentlyOpenedItems": "Nombre d'elements a guardar a Obert recentment"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "Comportament d'inici",
 			"startInFullScreen": "Inicia OpenComic a pantalla completa",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "Iniciar directament a l'última lectura",
 			"startOnlyFromLibrary": "Només si l'última lectura és de la biblioteca",
 			"startOnStartup": "Iniciar OpenComic a l'inici"

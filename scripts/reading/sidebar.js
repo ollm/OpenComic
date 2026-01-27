@@ -146,6 +146,7 @@ async function goToImage(index)
 }
 
 var disableEventST = false;
+var activeEvent = false;
 
 function disableEvent(delay = 0)
 {

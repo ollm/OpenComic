@@ -50,6 +50,7 @@
 			"deletePermanently": "",
 			"deletePermanentlyConfirm": "",
 			"favorite": "",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "",
 			"showLibraryPath": "",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": ""
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "",
 			"startInFullScreen": "",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "",
 			"startOnlyFromLibrary": "",
 			"startOnStartup": ""

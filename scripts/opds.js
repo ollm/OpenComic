@@ -133,11 +133,12 @@ function updateSearchButton()
 	}
 }
 
-async function home()
-{
-	opds.abort();
+let opdsCatalogsLoaded = false;
 
-	publicationsCache = {};
+function loadOpdsCatalogs()
+{
+	if(opdsCatalogsLoaded)
+		return;
 
 	const catalogs = [];
 	const opdsCatalogs = storage.get('opdsCatalogs');
@@ -158,8 +159,19 @@ async function home()
 		addPathName(base64, catalog.title);
 	}
 
-	handlebarsContext.opds = false;
 	handlebarsContext.opdsCatalogs = catalogs;
+	opdsCatalogsLoaded = true;
+}
+
+async function home()
+{
+	opds.abort();
+
+	publicationsCache = {};
+
+	loadOpdsCatalogs();
+
+	handlebarsContext.opds = false;
 	currentFeed = false;
 	currentSearch = false;
 
@@ -171,6 +183,7 @@ async function home()
 	updateSearchButton();
 
 	events.events();
+	tabs.update();
 }
 
 var currentFeed = false, currentSearch = false, fromContextMenu = false;
@@ -179,6 +192,8 @@ async function browse(path, mainPath, keepScroll)
 {
 	if(isPublication(path))
 		return publication(path);
+
+	loadOpdsCatalogs();
 
 	publicationsCache = {};
 	handlebarsContext.opds = {...currentFeed, loading: true, showFacets: isFromFacets};
@@ -234,6 +249,7 @@ async function browse(path, mainPath, keepScroll)
 	isFromFacets = false;
 	fromContextMenu = false;
 	events.events();
+	tabs.update();
 }
 
 async function read(path, mainPath)
@@ -1036,6 +1052,7 @@ module.exports = {
 	getFeed: function() {return currentFeed},
 	getSearch: function() {return currentSearch},
 	findBestAcquisitionLink,
+	loadOpdsCatalogs,
 	add: add,
 	edit: edit,
 	delete: _delete,

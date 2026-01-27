@@ -11,6 +11,8 @@ function start()
 	handlebarsContext.saveImageFolder = relative.resolve(config.saveImageFolder);
 	handlebarsContext.downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
 	handlebarsContext.customCacheAndTmpFolder = relative.resolve(config.customCacheAndTmpFolder);
+	handlebarsContext.settingsTab = activeTab || 'general';
+	activeTab = false;
 }
 
 function startSecond()
@@ -1410,6 +1412,25 @@ function changedCustomCacheAndTmpFolder(options = {})
 
 }
 
+function getTabState()
+{
+	const contentRight = template._contentRight();
+	const activeTab = contentRight.querySelector('.tabs .active').dataset.name;
+
+	const data = {
+		activeTab,
+	};
+
+	return data;
+}
+
+let activeTab = false;
+
+async function setTabState(data)
+{
+	activeTab = data.activeTab;
+}
+
 function setMaxMargin(value, save = false)
 {
 	if(save) storage.updateVar('config', 'readingMaxMargin', value);
@@ -1558,6 +1579,12 @@ function set(key, value, save = true)
 			changedCustomCacheAndTmpFolder({useCustomCacheAndTmpFolder: value});
 
 			break;
+	
+		case 'openFilesInNewTab': 
+
+			dom.query('.settings-body .settings-open-files-in-new-tab').class(value, 'disable-pointer');
+
+			break;
 	}
 
 	if(save)
@@ -1692,6 +1719,8 @@ module.exports = {
 	purgeTemporaryFiles: purgeTemporaryFiles,
 	purgeTemporaryFilesEveryTimes: purgeTemporaryFilesEveryTimes,
 	generateShortcutsTable: generateShortcutsTable,
+	getTabState,
+	setTabState,
 	getTmpFolder,
 	getCacheFolder,
 };

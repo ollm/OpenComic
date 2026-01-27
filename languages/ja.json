@@ -50,6 +50,7 @@
 			"deletePermanently": "完全に削除",
 			"deletePermanentlyConfirm": "このファイルを完全に削除しますか? この操作は取り消せません。",
 			"favorite": "お気に入りに追加",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "ファイルやフォルダーを開く際、フルパスを表示",
 			"showLibraryPath": "ヘッダーのパスにライブラリ/お気に入り/ラベル等を表示",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "最近開いたファイルの保存数"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "起動時の動作",
 			"startInFullScreen": "OpenComic を全画面で起動",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "最後に読んでいたページから開始",
 			"startOnlyFromLibrary": "最後に読んだコミックがライブラリ内の場合のみ",
 			"startOnStartup": "OS 起動時に OpenComic を起動"

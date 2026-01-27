@@ -50,8 +50,8 @@ function generateBoxShadow(percent)
 	const rightSize = reading.rightSize();
 	const size = Math.min(rightSize.width, rightSize.height) / 500;
 
-	bBezier = reading.pageTransitions.bottomBezier2.get(percent);
-	percentBezier = bBezier.y / 225;
+	const bBezier = reading.pageTransitions.bottomBezier2.get(percent);
+	const percentBezier = bBezier.y / 225;
 
 	return '0px 2px '+(6 + 120 * percent * size)+'px '+(2 + 20 * percent * size)+'px rgba(0, 0, 0, '+(0.15 + 0.5 * percent)+'), 0px 1px '+(2 + 1200 * percent * size)+'px rgba(0, 0, 0,  '+(0.1 + 0.9 * percentBezier)+')';
 }

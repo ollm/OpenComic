@@ -829,7 +829,7 @@ var client = function(path) {
 
 		if(basicFtp === false) basicFtp = require('basic-ftp');
 
-		this.ftp = new basicFtp.Client(timeout = 5000 * config.serverTimeoutMultiplier);
+		this.ftp = new basicFtp.Client(5000 * config.serverTimeoutMultiplier);
 		// this.ftp.ftp.verbose = true
 
 		let serverInfo;
@@ -1805,14 +1805,21 @@ var client = function(path) {
 							url = posixPath(url).replace(/^opdsf/, 'http');
 						}
 
-						const response = await opdsAuth.fetch(url);
-
-						if(response.ok)
+						try
 						{
-							const fileContents = await response.arrayBuffer();
-							await fsp.writeFile(filePath, Buffer.from(fileContents));
+							const response = await opdsAuth.fetch(url);
+
+							if(response.ok)
+							{
+								const fileContents = await response.arrayBuffer();
+								await fsp.writeFile(filePath, Buffer.from(fileContents));
+							}
+							else
+							{
+								error = true;
+							}
 						}
-						else
+						catch
 						{
 							error = true;
 						}

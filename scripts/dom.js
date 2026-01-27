@@ -562,7 +562,7 @@ storage.onChangeFromOtherInstance(['comics', 'recentlySearched', 'masterFolders'
 
 });
 
-var indexLabel = false, prevIndexLabel = false;
+var indexLabel = false, prevIndexLabel = {};
 
 function setIndexLabel(options)
 {
@@ -577,6 +577,27 @@ function setPrevIndexLabel(options)
 }
 
 var currentPath = false, currentPathScrollTop = [];
+
+function setCurrentPathScrollTop(path = false)
+{
+	const isOpds = fileManager.isOpds(currentPath);
+
+	const contentRight = template._contentRight();
+	const scrollElement = isOpds ? contentRight.querySelector('.opds-browse-content') : contentRight.firstElementChild;
+
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = scrollElement ? scrollElement.scrollTop : 0;
+
+	if(path !== false)
+	{
+		for(let _path in currentPathScrollTop)
+		{
+			if(_path != 0 && !new RegExp('^'+pregQuote(_path)).test(path))
+				delete currentPathScrollTop[_path];
+		}
+	}
+
+	currentPath = path;
+}
 
 async function loadIndexPage(animation = true, path = false, content = false, keepScroll = false, mainPath = false, fromGoBack = false, notAutomaticBrowsing = false, fromSetOfflineMode = false, fromGoForwards = false)
 {
@@ -593,22 +614,15 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	setWindowTitle();
 
 	const isOpds = fileManager.isOpds(path);
+	setCurrentPathScrollTop(path);
 
-	currentPathScrollTop[currentPath === false ? 0 : currentPath] = isOpds ? template.contentRight().find('.opds-browse-content').scrollTop() : template.contentRight().children().scrollTop();
+	const pathScrollTopKey = path === false ? 0 : path;
 
-	for(let _path in currentPathScrollTop)
-	{
-		if(_path != 0 && !new RegExp('^'+pregQuote(_path)).test(path))
-			delete currentPathScrollTop[_path];
-	}
-
-	if(currentPathScrollTop[path === false ? 0 : path])
-		keepScroll = currentPathScrollTop[path === false ? 0 : path];
+	if(currentPathScrollTop[pathScrollTopKey])
+		keepScroll = currentPathScrollTop[pathScrollTopKey];
 
 	const _indexLabel = prevIndexLabel = (indexLabel || {});
 	indexLabel = false;
-
-	currentPath = path;
 
 	handlebarsContext.serverLastError = false;
 
@@ -618,6 +632,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	{
 		if(!template._contentLeft().querySelector('.menu-list'))
 			dom.loadIndexContentLeft(animation);
+
+		opds.loadOpdsCatalogs();
 		
 		if(!path)
 		{
@@ -1057,12 +1073,18 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		headerPath(path, mainPath);
 
 		dom.loadIndexHeader(false, animation);
-		template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+
+		let ST = setTimeout(function(){
+
+			if(!template._contentLeft().querySelector('.menu-list'))
+				dom.loadIndexContentLeft(animation);
+
+			template.loadContentRight('index.content.right.loading.html', animation, keepScroll);
+			ST = false;
+
+		}, 50);
 
 		contentRightIndex = template.contentRightIndex();
-
-		if(!template._contentLeft().querySelector('.menu-list'))
-			dom.loadIndexContentLeft(animation);
 
 		if(!content)
 		{
@@ -1082,7 +1104,21 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		const indexData = await loadFilesIndexPage(files.files, file, animation, path, keepScroll, mainPath, _indexLabel);
 		file.destroy();
 
-		let contentRightScroll = template.contentRight().children().html(indexData.html);
+		let contentRightScroll = template.contentRight().children()
+
+		if(ST === false)
+		{
+			contentRightScroll.html(indexData.html);
+		}
+		else
+		{
+			clearTimeout(ST);
+
+			if(!template._contentLeft().querySelector('.menu-list'))
+				dom.loadIndexContentLeft(animation);
+			
+			template.changeContentRight(indexData.html, animation, keepScroll);
+		}
 
 		if(keepScroll > 1)
 			contentRightScroll.scrollTop(keepScroll);
@@ -1114,6 +1150,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
 	reading.discord.update();
 	scroll.event();
+	tabs.update();
 }
 
 function loadIndexContentLeft(animation)
@@ -1312,6 +1349,8 @@ function addSepToEnd(path)
 
 	return path;
 }
+
+var mainPathR = false;
 
 function returnTextPath(path, mainPath, image = false, extension = true)
 {
@@ -1693,14 +1732,14 @@ function goStartPath()
 var barBackStatus = false;
 
 // This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
-function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false, fromRecentlyOpened = false)
+function indexPathControl(path = false, mainPath = false, isComic = false, fromNextAndPrev = false, fromRecentlyOpened = false, fromPage = false)
 {
 	if(path === false || mainPath === false)
 	{
 		handlebarsContext.fromRecentlyOpened = fromRecentlyOpened;
 
 		history.clean();
-		history.add({root: true, file: false, path: false, mainPath: false, isComic: false, indexLabel: prevIndexLabel, recentlyOpened: fromRecentlyOpened});
+		history.add({root: true, file: false, path: false, mainPath: false, isComic: false, indexLabel: prevIndexLabel, recentlyOpened: fromRecentlyOpened, page: fromPage});
 	}
 	else
 	{
@@ -1742,8 +1781,8 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 			template.setHeaderDelay();
 			handlebarsContext.barBack = 'show';
 
-			dom.queryAll('.bar-left, .bar-back').css({animationDelay: ''});
-			dom.queryAll('.bar-left').removeClass('disable', 'active').addClass('show');
+			//dom.queryAll('.bar-left, .bar-back').css({animationDelay: ''});
+			//dom.queryAll('.bar-left').removeClass('disable', 'active').addClass('show');
 		}
 		else
 		{
@@ -1759,8 +1798,8 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 			template.setHeaderDelay();
 			handlebarsContext.barBack = 'disable';
 
-			dom.queryAll('.bar-left, .bar-back').css({animationDelay: ''});
-			dom.queryAll('.bar-left').removeClass('active', 'show').addClass('disable');
+			//dom.queryAll('.bar-left, .bar-back').css({animationDelay: ''});
+			//dom.queryAll('.bar-left').removeClass('active', 'show').addClass('disable');
 		}
 		else
 		{
@@ -1792,12 +1831,14 @@ function loadRecentlyOpened(animation = true)
 
 /* Page - Theme */
 
-/*Page - Languages*/
+/*Page - Language*/
 
-function loadLanguagesPage(animation = true)
+function loadLanguagePage(animation = true)
 {
-	indexPathControl(false);
+	indexPathControl(false, false, false, false, false, 'languages');
 	selectMenuItem('language');
+
+	setCurrentPathScrollTop();
 
 	onReading = _onReading = false;
 
@@ -1807,7 +1848,7 @@ function loadLanguagesPage(animation = true)
 
 	if(typeof handlebarsContext.languagesList == 'undefined')
 	{
-		var languagesList = $.parseJSON(readFileApp('/languages/languagesList.json'));
+		var languagesList = JSON.parse(readFileApp('/languages/languagesList.json'));
 
 		handlebarsContext.languagesList = [];
 
@@ -1836,6 +1877,7 @@ function loadLanguagesPage(animation = true)
 
 	events.events();
 	gamepad.updateBrowsableItems('languagesPage');
+	tabs.update();
 
 	if(readingActive)
 		readingActive = false;
@@ -1853,14 +1895,17 @@ function changeLanguage(lan)
 	storage.updateVar('config', 'language', lan);
 
 	gamepad.updateBrowsableItems(gamepad.currentKey());
+	tabs.update();
 }
 
 /* Page - Settings */
 
 function loadSettingsPage(animation = true)
 {
-	indexPathControl(false);
+	indexPathControl(false, false, false, false, false, 'settings');
 	selectMenuItem('settings');
+
+	setCurrentPathScrollTop();
 
 	onReading = _onReading = false;
 
@@ -1879,14 +1924,18 @@ function loadSettingsPage(animation = true)
 
 	if(readingActive)
 		readingActive = false;
+
+	tabs.update();
 }
 
 /* Page - Theme */
 
 function loadThemePage(animation = true)
 {
-	indexPathControl(false);
+	indexPathControl(false, false, false, false, false, 'themes');
 	selectMenuItem('theme');
+
+	setCurrentPathScrollTop();
 
 	onReading = _onReading = false;
 
@@ -1903,6 +1952,8 @@ function loadThemePage(animation = true)
 
 	if(readingActive)
 		readingActive = false;
+
+	tabs.update();
 }
 
 var currentSelectMenuItem = false;
@@ -2426,6 +2477,10 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	dom.query('#index-context-menu .separator-labels').css({display: fromIndex ? 'block' : 'none'});
 
+	// Open in new tab
+	let openInNewTab = document.querySelector('#index-context-menu .context-menu-open-in-new-tab');
+	openInNewTab.setAttribute('onclick', 'tabs.openPath(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(mainPath), 'simples')+'\');');
+
 	// Open in new window
 	let openInNewWindow = document.querySelector('#index-context-menu .context-menu-open-in-new-window');
 	openInNewWindow.setAttribute('onclick', 'openPathInNewWindow(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', \''+escapeQuotes(escapeBackSlash(mainPath), 'simples')+'\');');
@@ -2731,8 +2786,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	reading.setIsLoaded(false);
 	onReading = _onReading = true;
 
-	currentPathScrollTop[currentPath === false ? 0 : currentPath] = template.contentRight().children().scrollTop();
-	currentPath = path;
+	setCurrentPathScrollTop(path);
 
 	let now = Date.now();
 
@@ -2779,8 +2833,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		file.updateContentRightIndex();
 	}
 
+	handlebarsContext.barBack = 'active';
 	template.loadHeader('reading.header.html', animation);
 	template.loadContentLeft('reading.content.left.html', animation);
+	tabs.update();
 
 	let isCanvas = false;
 	let isEbook = false;
@@ -2949,6 +3005,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	
 	shortcuts.register('reading');
 	gamepad.updateBrowsableItems('reading-'+sha1(path));
+	tabs.update();
 }
 
 // Gamepad events
@@ -2971,7 +3028,7 @@ module.exports = {
 	reloadIndex: reloadIndex,
 	reload: reload,
 	loadRecentlyOpened: loadRecentlyOpened,
-	loadLanguagesPage: loadLanguagesPage,
+	loadLanguagePage: loadLanguagePage,
 	loadSettingsPage: loadSettingsPage,
 	loadThemePage: loadThemePage,
 	changeLanguage: changeLanguage,

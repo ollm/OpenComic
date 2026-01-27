@@ -50,6 +50,7 @@
 			"deletePermanently": "영구 삭제",
 			"deletePermanentlyConfirm": "정말로 영구 삭제 하겠습니까? 이 작업은 되돌릴 수 없습니다.",
 			"favorite": "즐겨찾기",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "읽음으로 표시",
 			"markAsUnread": "안 읽음으로 표시",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "파일/폴더 열 때 전체 경로 표시",
 			"showLibraryPath": "헤더에 책장/즐겨찾기/라벨 등 표시",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "최근 연 파일 보관 개수"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "시작 시 동작",
 			"startInFullScreen": "OpenComic을 전체 화면으로 시작",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "마지막으로 읽던 페이지부터 시작",
 			"startOnlyFromLibrary": "마지막으로 읽은 작품이 책장에 있을 때만",
 			"startOnStartup": "OS 부팅 시 OpenComic 자동 실행"

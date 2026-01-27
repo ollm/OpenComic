@@ -167,7 +167,7 @@ function createWindow(options = {}) {
 		{
 			appClosing = true;
 
-			win.webContents.executeJavaScript('var saved = reading.progress.save(); settings.purgeTemporaryFiles(); cache.purge(); ebook.closeAllRenders(); workers.closeAllWorkers(); storage.purgeOldAtomic(); saved;', false).then(function(value) {
+			win.webContents.executeJavaScript('var saved = reading.progress.save(); tabs.restore.save(); settings.purgeTemporaryFiles(); cache.purge(); ebook.closeAllRenders(); workers.closeAllWorkers(); storage.purgeOldAtomic(); saved;', false).then(function(value) {
 
 				if(!value)
 					win.close();

@@ -50,6 +50,7 @@
 			"deletePermanently": "永久删除",
 			"deletePermanentlyConfirm": "确实要永久删除此文件吗？此操作无法撤消",
 			"favorite": "收藏",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "标记为已读",
 			"markAsUnread": "标记为未读",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径",
 			"showLibraryPath": "在标题路径中显示库、收藏夹、标签等",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "最近打开的要保存的项目数"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "启动行为",
 			"startInFullScreen": "全屏启动 OpenComic",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "直接从上次阅读开始",
 			"startOnlyFromLibrary": "仅当来自库的最后一次阅读时",
 			"startOnStartup": "开机启动时打开 OpenComic"

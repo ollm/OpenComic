@@ -51,7 +51,7 @@ class OpdsAuth
 				return fetch(url, {...options, headers: this.headers(url)});
 		}
 
-		return response; 
+		return response;
 	}
 
 	headers(url: string): HeadersInit
@@ -92,7 +92,7 @@ class OpdsAuth
 		return {};
 	}
 
-	setAuth: (auth: Partial<Auth>) => void | null = null;
+	setAuth: ((auth: Partial<Auth>) => void) | null = null;
 
 	valid(response): boolean
 	{

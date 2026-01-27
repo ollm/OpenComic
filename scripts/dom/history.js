@@ -1,6 +1,6 @@
 var history = [],
 	forwardHistory = [],
-	current = false
+	current = false,
 	root = {};
 
 function add(page = {}, _clean = false)
@@ -47,6 +47,54 @@ function cleanForwards()
 function cleanCurrent()
 {
 	history.pop();
+}
+
+async function goTo(goTo = false, animation = true)
+{
+	if(!goTo) return;
+
+	if(goTo.root)
+	{
+		if(goTo.page)
+		{
+			switch(goTo.page)
+			{
+				case 'language':
+					dom.loadLanguagePage(animation);
+					break;
+
+				case 'theme':
+					dom.loadThemePage(animation);
+					break;
+
+				case 'settings':
+					dom.loadSettingsPage(animation);
+					break;
+			}
+
+			return;
+		}
+
+		if(goTo.indexLabel && !goTo.recentlyOpened)
+			dom.setIndexLabel(goTo.indexLabel);
+
+		if(goTo.recentlyOpened)
+			await recentlyOpened.load(animation);
+		else
+			await dom.loadIndexPage(animation, false);
+	}
+	else if(goTo)
+	{
+		dom.setIndexLabel(goTo.indexLabel);
+
+		if(fileManager.simpleExists(goTo.path))
+		{
+			if(goTo.isComic)
+				await dom.openComic(animation, goTo.path, goTo.mainPath, false, false);
+			else
+				await dom.loadIndexPage(animation, goTo.path, false, false, goTo.mainPath, false);
+		}
+	}
 }
 
 function goBack()
@@ -161,6 +209,7 @@ module.exports = {
 	clean,
 	cleanForwards,
 	cleanCurrent,
+	goTo,
 	goBack,
 	goForwards,
 	status,

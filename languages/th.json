@@ -50,6 +50,7 @@
 			"deletePermanently": "ลบอย่างถาวร",
 			"deletePermanentlyConfirm": "คุณต้องการลบไฟล์นี้อย่างถาวรจริงหรือไม่? การกระทำนี้ไม่สามารถยกเลิกได้",
 			"favorite": "เรื่องที่ชอบ",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "แสดงที่ตั้งแบบเต็มเมื่อเปิดไฟล์หรือโฟลเดอร์",
 			"showLibraryPath": "แสดงเส้นทางห้องสมุด เรื่องที่ชอบ ป้ายกำกับ และอื่น ๆ บนส่วนหัว",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "จำนวนรายการที่จัดเก็บในรายการที่เปิดล่าสุด"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "การกระทำเมื่อเริ่มต้น",
 			"startInFullScreen": "เปิด OpenComic แบบเต็มจอ",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "เปิดที่อ่านล่าสุดโดยตรง",
 			"startOnlyFromLibrary": "เฉพาะการอ่านล่าสุดจากห้องสมุด",
 			"startOnStartup": "เปิด OpenComic เมื่อเริ่มต้นระบบ"

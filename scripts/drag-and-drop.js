@@ -18,7 +18,7 @@ function showDropZone(event)
 	if(!dragAndDropStarted)
 		dropZone.innerHTML = template.load('drop.zone.html');
 
-	if(event.target.classList.contains('drop-zone') || event.target.classList.contains('drop-open') || event.target.classList.contains('drop-add') || event.target.classList.contains('drop-open-in-new-window'))
+	if(event.target.classList.contains('drop-zone') || event.target.classList.contains('drop-open') || event.target.classList.contains('drop-add') || event.target.classList.contains('drop-open-in-new-window') || event.target.classList.contains('drop-open-in-new-tab'))
 	{
 		dragAndDropFocus = false;
 
@@ -97,6 +97,8 @@ function handleDrop(event)
 				addComicsToLibrary(files);
 			else if(type == 'open-in-new-window')
 				openPathInNewWindow(files[0]);
+			else if(type == 'open-in-new-tab')
+				tabs.openPath(files[0], files[0]);
 			else
 				openComic(files[0]);
 		}

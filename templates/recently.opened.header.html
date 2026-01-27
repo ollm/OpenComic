@@ -1,10 +1,10 @@
 <div class="bar-left {{barBack}}" style="{{headerAnimationDelay}}">
 	<div class="bar-back material-icon button button2 hover-text" hover-text="{{language.global.goBack}}" onclick="dom.history.goBack()" style="{{headerAnimationDelay}}">arrow_back</div>
-	<div class="bar-title title-small" style="max-width: calc(100% - ({{#if comicsDeep2}}488px{{else}}364px{{/if}} + 68px));">
+	<div class="bar-title title-small scroll-fade-x" style="max-width: calc(100% - ({{#if comicsDeep2}}488px{{else}}364px{{/if}} + 68px));">
 		{{language.global.recentlyOpened}}
 	</div>
 </div>
-<div class="bar-right-buttons">
+<div class="bar-right-buttons scroll-fade-x">
 	<div>
 		<div class="material-icon button button1 button-sort hover-text" hover-text="{{language.global.sort.main}}" onclick="events.activeMenu('#index-sort', '.bar-right-buttons .button-sort', 'right');">sort</div>
 		<div class="material-icon button button1 button-view hover-text" hover-text="{{language.global.view.main}}" onclick="events.activeMenu('#index-view', '.bar-right-buttons .button-view', 'right');">

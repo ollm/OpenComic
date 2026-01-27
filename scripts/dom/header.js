@@ -40,5 +40,6 @@ async function event()
 }
 
 module.exports = {
+	wheel,
 	event: event,
 };

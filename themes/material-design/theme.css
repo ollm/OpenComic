@@ -15,6 +15,7 @@
 @import url('./drag-and-drop.css');
 @import url('./gamepad.css');
 @import url('./title-bar.css');
+@import url('./tabs-bar.css');
 @import url('./file-info.css');
 @import url('./boxes.css');
 @import url('./opds.css');
@@ -730,11 +731,23 @@ a:hover
 	transition: none !important;
 }
 
+.disable-transitions-and-animations,
+.disable-transitions-and-animations *
+{
+	transition: none !important;
+	animation: none !important;
+}
+
+.app
+{
+	--title-and-tabs-bar-height: calc(var(--title-bar-height) + var(--tabs-bar-height));
+}
+
 .bar-header
 {
 	height: 48px;
 	position: fixed;
-	top: var(--title-var-height);
+	top: var(--title-and-tabs-bar-height);
 	left: 0px;
 	width: 100%;
 	padding: 0px 50px;
@@ -748,13 +761,13 @@ a:hover
 
 .hide-bar-header .bar-header
 {
-	top: calc(-64px + var(--title-var-height));
+	top: calc(-64px + var(--title-and-tabs-bar-height));
 	box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.26);
 }
 
 .hide-bar-header .bar-header.show
 {
-	transform: translate(0px, 64px);
+	transform: translate(0px, calc(64px + var(--tabs-bar-height-always-visible)));
 }
 
 .bar-header > div
@@ -790,10 +803,11 @@ a:hover
 
 .bar-left.show
 {
-	animation-name: bar-back-a;
+	/*animation-name: bar-back-a;
 	animation-duration: 0.2s;
-	animation-fill-mode: forwards;
+	animation-fill-mode: forwards;*/
 	cursor: pointer !important;
+	transform: translate(0px, 0px);
 }
 
 .bar-left.active
@@ -805,9 +819,10 @@ a:hover
 
 .bar-left.disable
 {
-	animation-name: bar-back-d;
+	/*animation-name: bar-back-d;
 	animation-duration: 0.2s;
-	animation-fill-mode: forwards;
+	animation-fill-mode: forwards;*/
+	transform: translate(-50px, 0px);
 	cursor: default !important;
 }
 
@@ -823,9 +838,10 @@ a:hover
 
 .bar-left.show .bar-back
 {
-	animation-name: show-in;
+	/*animation-name: show-in;
 	animation-duration: 0.2s;
-	animation-fill-mode: forwards;
+	animation-fill-mode: forwards;*/
+	opacity: 1 !important;
 	cursor: pointer !important;
 }
 
@@ -846,10 +862,10 @@ a:hover
 .content-left
 {
 	position: fixed;
-	top: calc(48px + var(--title-var-height));
+	top: calc(48px + var(--title-and-tabs-bar-height));
 	left: 0px;
 	width: 192px;
-	height: calc(100% - 48px - var(--title-var-height));
+	height: calc(100% - 48px - var(--title-and-tabs-bar-height));
 	padding: 50px 0px;
 	margin-top: -50px;
 	background-color: var(--md-sys-color-surface-container);
@@ -1008,10 +1024,10 @@ a:hover
 .content-right
 {
 	position: absolute;
-	top: calc(48px + var(--title-var-height));
+	top: calc(48px + var(--title-and-tabs-bar-height));
 	left: 192px;
 	width: calc(100% - 192px);
-	height: calc(100% - 48px - var(--title-var-height));
+	height: calc(100% - 48px - var(--title-and-tabs-bar-height));
 	z-index: 1;
 	background-color: var(--md-sys-color-surface-container);
 	transition: background-color 0.2s;
@@ -1025,8 +1041,8 @@ a:hover
 
 .hide-bar-header .content-right
 {
-	height: calc(100% - var(--title-var-height));
-	top: var(--title-var-height);
+	height: calc(100% - var(--title-and-tabs-bar-height));
+	top: var(--title-and-tabs-bar-height);
 }
 
 .content-right > div.a
@@ -2738,6 +2754,109 @@ a:hover
 ::-webkit-scrollbar-thumb:window-inactive
 {
 	background-color: rgba(0, 0, 0, 0.06);
+}
+
+
+
+@property --scroll-fade-top
+{
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+@property --scroll-fade-bottom
+{
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+.scroll-fade-y
+{
+	mask-image: linear-gradient(to bottom, transparent 0, #000 var(--scroll-fade-top), #000 calc(100% - var(--scroll-fade-bottom)), transparent 100%);
+	mask-size: 100% 100%;
+	mask-repeat: no-repeat;
+	animation: scroll-fade-top 1 linear both, scroll-fade-bottom 1 linear both;
+	animation-timeline: scroll(y self), scroll(y self);
+	animation-range: 0% 12%, 88% 100%;
+}
+
+@keyframes scroll-fade-top
+{
+	from
+	{
+		--scroll-fade-top: 0px;
+	}
+
+	to
+	{
+		--scroll-fade-top: 40px;
+	}
+}
+
+@keyframes scroll-fade-bottom
+{
+	from
+	{
+		--scroll-fade-bottom: 40px;
+	}
+
+	to
+	{
+		--scroll-fade-bottom: 0px;
+	}
+}
+
+@property --scroll-fade-left
+{
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+@property --scroll-fade-right
+{
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+.scroll-fade-x
+{
+	mask-image: linear-gradient(to right, transparent 0, #000 var(--scroll-fade-left), #000 calc(100% - var(--scroll-fade-right)), transparent 100%);
+	mask-size: 100% 100%;
+	mask-repeat: no-repeat;
+	animation: scroll-fade-left 1 linear both, scroll-fade-right 1 linear both;
+	animation-timeline: scroll(x self), scroll(x self);
+	animation-range: 0% 12%, 88% 100%;
+
+}
+
+@keyframes scroll-fade-left
+{
+	from
+	{
+		--scroll-fade-left: 0px;
+	}
+
+	to
+	{
+		--scroll-fade-left: 40px;
+	}
+}
+
+@keyframes scroll-fade-right
+{
+	from
+	{
+		--scroll-fade-right: 40px;
+	}
+
+	to
+	{
+		--scroll-fade-right: 0px;
+	}
 }
 
 .bar-right-buttons::-webkit-scrollbar,

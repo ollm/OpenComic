@@ -166,10 +166,11 @@ function eventButton()
 
 var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, showedHoverText = false, currentPageX, currentPageY;
 
-function hoverEnter()
+function hoverEnter(event)
 {
-	eventHoverTimeoutActive = true;
+	const hoverDelay = +this.dataset.hoverDelay || 300;
 
+	eventHoverTimeoutActive = hoverDelay;
 	eventHoverTimeoutThis = this;
 
 	//eventHoverTimeout = setTimeout('events.showHoverText()', 300);
@@ -200,7 +201,7 @@ function windowMove1()
 	eventHoverTimeout = false;
 
 	if(eventHoverTimeoutActive)
-		eventHoverTimeout = setTimeout('events.showHoverText()', 300);
+		eventHoverTimeout = setTimeout('events.showHoverText()', eventHoverTimeoutActive);
 	else
 		hideHoverText();
 }
@@ -225,7 +226,7 @@ function eventHover()
 	app.event(window, 'mousemove touchstart touchmove', windowMove2);
 }
 
-switchRemoveAnimeST = false;
+var switchRemoveAnimeST = false;
 
 function switchRemoveAnime()
 {
@@ -674,6 +675,9 @@ function events()
 
 function showHoverText()
 {
+	if(!eventHoverTimeoutThis.checkVisibility({opacityProperty: true, visibilityProperty: true}))
+		return;
+
 	const parent = document.querySelector('.global-elements .hover');
 	const hover = document.querySelector('.global-elements .hover > div');
 	hover.innerHTML = eventHoverTimeoutThis.getAttribute('hover-text');
@@ -759,7 +763,6 @@ let currentSelect = {};
 
 function showSelect(This, menu = false, insideMenu = false, ajustWidth = false)
 {
-	selectThis = This;
 	This.classList.add('active');
 
 	let text = This.querySelector('.text');

@@ -91,8 +91,7 @@ function extnameC(path)
 
 function round(number, precision = 0) {
 
-	multipler = Math.pow(10, precision);
-
+	const multipler = Math.pow(10, precision);
 	return Math.round(number * multipler) / multipler;
 
 }
@@ -477,6 +476,38 @@ function normalizeNumber(value, decimals) {
 
 }
 
+function returnDeg(y1, x1, y2, x2) {
+
+	var y = y1 - y2;
+	var x = x1 - x2;
+
+	var deg = Math.atan2(y, x) * (180 / Math.PI);
+
+	return deg;
+
+}
+
+function degIs(type, deg) {
+
+	const rules = {
+		veryHorizontal:            () => (deg < 22.5 && deg > -22.5) || deg > 157.5 || deg < -157.5,
+		middleHorizontal:          () => (deg < 35 && deg > -35) || deg > 145 || deg < -145,
+		horizontal:                () => (deg < 45 && deg > -45) || deg > 135 || deg < -135,
+
+		veryHorizontalFromRight:   () => deg < 22.5 && deg > -22.5,
+		middleHorizontalFromRight: () => deg < 35 && deg > -35,
+		horizontalFromRight:       () => deg < 45 && deg > -45,
+
+		veryHorizontalFromLeft:    () => deg > 157.5 || deg < -157.5,
+		middleHorizontalFromLeft:  () => deg > 145 || deg < -145,
+		horizontalFromLeft:        () => deg > 135 || deg < -135,
+
+		vertical:                  () => (deg > -135 && deg < -45) || (deg > 45 && deg < 135),
+	};
+
+	return rules[type]?.() ?? false;
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
@@ -514,4 +545,6 @@ module.exports = {
 	isDifferent: isDifferent,
 	clamp: clamp,
 	normalizeNumber: normalizeNumber,
+	returnDeg: returnDeg,
+	degIs: degIs,
 };

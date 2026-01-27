@@ -50,6 +50,7 @@
 			"deletePermanently": "الحذف نهائياً",
 			"deletePermanentlyConfirm": "هل تريد الحذف نهائياً؟ لا يمكن التراجع عن هذه الخطوة",
 			"favorite": "المفضلة",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "عرض المسار كاملاً عند فتح ملف أو مجلد",
 			"showLibraryPath": "أظهر المكتبة، المفضلة، التصنيفات، إلخ في المسار العلوي",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "عدد العناصر المحفوظة في قائمة (المفتوح مؤخراً)"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "التصرف عند فتح البرنامج",
 			"startInFullScreen": "فتح البرنامج في وضع كامل الشاشة",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "الفتح مباشرة حيث انتهت القراءة الأخيرة",
 			"startOnlyFromLibrary": "فقط إذا كانت القراءة الأخيرة من المكتبة",
 			"startOnStartup": "تشغيل البرنامج مع بدء تشغيل النظام"

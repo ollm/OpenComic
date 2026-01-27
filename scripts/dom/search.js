@@ -422,7 +422,6 @@ async function _indexFiles(file, mainPath, first = false)
 					}
 
 					_file.destroy();
-					delete _file;
 				}
 
 				let promises = [];

@@ -1,0 +1,6 @@
+<div class="tab tab--{{tab.id}}{{#unless restored}} opening{{/unless}} body-medium {{#if tab.active}} active{{/if}}" onclick="tabs.switch({{tab.id}})" onmouseup="tabs.middleClickClose(event, {{tab.id}})" hover-text="{{tab.title}}" data-hover-delay="600" data-id="{{tab.id}}">
+	<i class="icon-18 material-icon">{{tab.icon}}</i>
+	<div class="tab-title">{{tab.title}}</div>
+	<i class="icon-18 material-icon" onclick="tabs.close({{tab.id}}); event.stopPropagation();">close_small</i>
+</div>
+<div class="tab-separator tab-separator--{{tab.id}}"></div>

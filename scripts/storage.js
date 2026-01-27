@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 141; // Update this if readingPagesConfig is updated
+const changes = 142; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -224,8 +224,10 @@ const storageDefault = {
 		saveImageToFolder: false,
 		downloadOpdsFolder: relative.path(p.join(getDocumentsPath(), 'OPDS')),
 		downloadOpdsToFolder: false,
+		openFilesInNewTab: true,
 		openFilesInNewWindow: false,
 		startInFullScreen: false,
+		restoreTabsFromLastSession: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,
 		startOnStartup: false,
@@ -385,6 +387,22 @@ const storageDefault = {
 			path: '',
 			lastOpened: 0,
 		},
+	},
+	tabs: {
+		idCounter: 0,
+		lastUsedTabs: [0],
+		list: [
+			{
+				id: 0,
+				title: '',
+				type: '',
+				icon: '',
+				active: false,
+				position: 0,
+				parents: [0],
+				data: '', // Serialized this
+			}
+		],
 	},
 	tracking: {
 		wildcard: {
@@ -663,7 +681,7 @@ function parseDefaultObj(defaultObj)
 	{
 		newData = defaultObj;
 	}
-	else if($.isArray(defaultObj))
+	else if(Array.isArray(defaultObj))
 	{
 		newData = updateStorageArrayMD([], defaultObj);
 	}
@@ -673,7 +691,7 @@ function parseDefaultObj(defaultObj)
 
 		for(let key in defaultObj)
 		{
-			if($.isArray(defaultObj[key]))
+			if(Array.isArray(defaultObj[key]))
 				newData[key] = updateStorageArrayMD([], defaultObj[key]);
 			else if(key !== 'wildcard' && typeof defaultObj[key] == 'object')
 				newData[key] = parseDefaultObj(defaultObj[key]);
@@ -718,7 +736,7 @@ function updateStorageMD(data, defaultObj)
 {
 	let newData;
 
-	if($.isArray(defaultObj))
+	if(Array.isArray(defaultObj))
 	{
 		newData = updateStorageArrayMD(data, defaultObj);
 	}
@@ -751,7 +769,7 @@ function updateStorageMD(data, defaultObj)
 			{
 				newData[key] = parseDefaultObj(defaultObj[key]);
 			}
-			else if($.isArray(defaultObj[key]))
+			else if(Array.isArray(defaultObj[key]))
 			{
 				newData[key] = updateStorageArrayMD(data[key], defaultObj[key]);
 			}

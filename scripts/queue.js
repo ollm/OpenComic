@@ -75,7 +75,7 @@ function startProcessTheQueue(key)
 
 async function addToQueue(key, callback)
 {
-	_arguments = [];
+	const _arguments = [];
 
 	for(let i = 2, len = arguments.length; i < len; i++)
 	{

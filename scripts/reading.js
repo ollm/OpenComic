@@ -196,7 +196,7 @@ function setCurrentComics(comics)
 
 function applyMangaReading(distribution)
 {
-	_distribution = JSON.parse(JSON.stringify(distribution));
+	const _distribution = JSON.parse(JSON.stringify(distribution));
 
 	if(_config.readingManga)
 	{
@@ -896,8 +896,6 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 
 	if(!isEqual(prevChangeHeaderButtons, currentChangeHeaderButtons))
 	{
-		changeHeaderButtonsDelay = false;
-
 		dom.this([prev, firstPage]).class(!canGoPrev, 'disable-pointer');
 		dom.this([next, lastPage]).class(!canGoNext, 'disable-pointer');
 
@@ -916,7 +914,6 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 		}
 
 		prevChangeHeaderButtons = currentChangeHeaderButtons;
-		changeHeaderButtonsDelayed = false;
 	}
 }
 
@@ -1181,7 +1178,7 @@ function calculateRealReadingDirection(index)
 		realReadingDirection = true;
 }
 
-goScrollPercentST = false;
+var goScrollPercentST = false;
 
 function goScrollPercent(screenPercent = 50, animation = true)
 {
@@ -2626,14 +2623,19 @@ function notCrossZoomLimits(x, y, scale = false)
 }
 
 // Drag zoom
-function dragZoom(x, y, animation = false)
+function dragZoom(dx, dy, animation = false)
+{
+	return applyZoom(scalePrevData.tranX2 + dx, scalePrevData.tranY2 + dy, animation);
+}
+
+function applyZoom(x, y, animation)
 {
 	const transition = app.scrollTransition('dragZoom', animation ? _config.readingViewSpeed : 0);
-	const withLimits = notCrossZoomLimits(scalePrevData.tranX2 + x, scalePrevData.tranY2 + y);
+	const withLimits = notCrossZoomLimits(x, y);
 
 	const diff = {
-		x: (scalePrevData.tranX2 + x) - withLimits.x,
-		y: (scalePrevData.tranY2 + y) - withLimits.y,
+		x: x - withLimits.x,
+		y: y - withLimits.y,
 	};
 
 	x = withLimits.x;
@@ -2647,8 +2649,8 @@ function dragZoom(x, y, animation = false)
 		zoomMoveData.tranY = scalePrevData.tranY;
 
 		dom.this(contentRight).find('.reading-body > div').css({
-			transition: 'transform '+transition.speed+'s '+transition.function+', z-index 0s',
-			transform: 'translateX('+app.roundDPR(x)+'px) translateY('+app.roundDPR(scalePrevData.tranY)+'px) scale('+scalePrevData.scale+')',
+			transition: `transform ${transition.speed}s ${transition.function}, z-index 0s`,
+			transform: `translateX(${app.roundDPR(x)}px) translateY(${app.roundDPR(scalePrevData.tranY)}px) scale(${scalePrevData.scale})`,
 			transformOrigin: 'top center',
 		});
 	}
@@ -2658,14 +2660,15 @@ function dragZoom(x, y, animation = false)
 		zoomMoveData.tranY = y;
 
 		dom.this(contentRight).find('.image-position'+currentZoomIndex, true).css({
-			transition: 'transform '+transition.speed+'s '+transition.function+', z-index 0s',
-			transform: 'translateX('+app.roundDPR(x)+'px) translateY('+app.roundDPR(y)+'px) scale('+scalePrevData.scale+')',
+			transition: `transform ${transition.speed}s ${transition.function}, z-index 0s`,
+			transform: `translateX(${app.roundDPR(x)}px) translateY(${app.roundDPR(y)}px) scale(${scalePrevData.scale})`,
 			transformOrigin: 'center center',
 		});
 	}
 
 	return diff;
 }
+
 
 function dragZoomEnd(force = false)
 {
@@ -2678,6 +2681,31 @@ function dragZoomEnd(force = false)
 		}
 
 		zoomMoveData.active = false;
+	}
+}
+
+function getTabState()
+{
+	const data = {
+		scaleData: scalePrevData,
+	};
+
+	return data;
+}
+
+async function setTabState(data)
+{
+	const scaleData = data?.scaleData ?? false;
+
+	if(scaleData && scaleData.scale !== 1)
+	{
+		await onLoadPromise.promise;
+
+		applyScale(false, scaleData.scale, true, (scaleData.scale < 1) ? true : false);
+		applyZoom(scaleData.tranX, scaleData.tranY, false);
+
+		currentScale = scaleData.scale;
+		scalePrevData = scaleData;
 	}
 }
 
@@ -2985,11 +3013,11 @@ function hideContent(fullScreen = false, first = false)
 
 	clearTimeout(hideContentDisableTransitionsST);
 
-	$('.bar-header, .content-left').css('transition', '0s');
+	$('.bar-header, .content-left, .tabs-bar').css('transition', '0s');
 
 	hideContentDisableTransitionsST = setTimeout(function(){
 
-		$('.bar-header, .content-left').css('transition', '');
+		$('.bar-header, .content-left, .tabs-bar').css('transition', '');
 
 	});
 
@@ -3009,13 +3037,13 @@ function hideContent(fullScreen = false, first = false)
 
 	if(_hideBarHeader)
 	{
-		app.addClass('hide-bar-header');
+		app.addClass('hide-bar-header hide-tabs-bar');
 		hiddenBarHeader = true;
 	}
 	else
 	{
-		app.removeClass('hide-bar-header');
-		$('.bar-header').removeClass('show');
+		app.removeClass('hide-bar-header hide-tabs-bar');
+		$('.bar-header, .tabs-bar').removeClass('show');
 		hiddenBarHeader = false;
 	}
 
@@ -4898,7 +4926,7 @@ function pointermove(event)
 			{
 				hideContentST = setTimeout(function(){
 
-					dom.query('.bar-header').addClass('show');
+					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
 					reading.setShownBarHeader(true);
 
 				}, 300);
@@ -4936,7 +4964,7 @@ function pointermove(event)
 		{
 			clearTimeout(hideContentST);
 
-			dom.query('.bar-header').removeClass('show');
+			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
 
 			hideContentRunningST = false;
@@ -5019,7 +5047,7 @@ function hideContentLeftAndHeader()
 
 		if(shownBarHeader && !document.querySelector('.menu-simple.a'))
 		{
-			dom.query('.bar-header').removeClass('show');
+			dom.queryAll('.bar-header, .tabs-header').removeClass('show');
 			reading.setShownBarHeader(false);
 		}
 
@@ -5917,6 +5945,8 @@ module.exports = {
 	imagesDistribution: function(){return imagesDistribution},
 	applyMangaReading: applyMangaReading,
 	haveZoom: function(){return haveZoom},
+	getTabState: getTabState,
+	setTabState: setTabState,
 	imagesPosition: function(){return imagesPosition},
 	imagesFullPosition: function(){return imagesFullPosition},
 	readingCurrentPath: function () {return readingCurrentPath},

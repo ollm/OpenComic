@@ -1,6 +1,8 @@
 const MouseWheel = require(p.join(appDir, '.dist/shortcuts/mouse-wheel.js'));
 
 var shosho = false;
+var shoshoMouse = false;
+var mouseWheel = false;
 
 var shortcuts = false;
 
@@ -47,6 +49,9 @@ function clickTapZone(event, button)
 
 	let pageX = app.pageX(event) - rect.left;
 	let pageY = app.pageY(event) - rect.top;
+
+	if(pageX < 0 || pageY < 0 || pageX > rect.width || pageY > rect.height)
+		return false;
 
 	pageY = pageY / rect.height;
 	pageX = pageX / rect.width;

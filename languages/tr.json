@@ -50,6 +50,7 @@
 			"deletePermanently": "Kalıcı olarak sil",
 			"deletePermanentlyConfirm": "Bu dosyayı kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz",
 			"favorite": "Favorilere ekle",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "Bir dosya veya klasör açarken tam dizini göster",
 			"showLibraryPath": "Kütüphane, favoriler, etiketler vb.'yi başlık dizininde ek olarak göster",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Son açılanlarda kaydedilecek öğe sayısı"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "Başlangıç davranışı",
 			"startInFullScreen": "Tam ekranda başlat",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "Direkt son okunandan başlat",
 			"startOnlyFromLibrary": "Yalnızca son okuma kütüphaneden ise",
 			"startOnStartup": "Sistem başlangıçta başlat"

@@ -50,6 +50,7 @@
 			"deletePermanently": "Usuń trwale",
 			"deletePermanentlyConfirm": "Czy na pewno chcesz trwale usunąć ten plik? Tej akcji nie można cofnąć",
 			"favorite": "Ulubione",
+			"openInNewTab": "",
 			"openInNewWindow": "",
 			"markAsRead": "",
 			"markAsUnread": "",
@@ -353,6 +354,7 @@
 			"showFullPathOpened": "Pokazuj pełną ścieżkę przy otwieraniu pliku lub folderu",
 			"showLibraryPath": "Pokazuj w nagłówku ścieżkę biblioteki, ulubionych, etykiet itp.",
 			"showFileExtension": "",
+			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Liczba elementów do zapisania w „Ostatnio otwartych”"
 		},
@@ -365,6 +367,7 @@
 		"startupBehavior": {
 			"main": "Zachowanie przy uruchomieniu",
 			"startInFullScreen": "Uruchom OpenComic w trybie pełnoekranowym",
+			"restoreTabsFromLastSession": "",
 			"startInContinueReading": "Uruchom bezpośrednio od ostatnio czytanego",
 			"startOnlyFromLibrary": "Tylko jeśli ostatnio czytany jest z biblioteki",
 			"startOnStartup": "Uruchom OpenComic przy starcie systemu"
