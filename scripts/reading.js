@@ -1704,7 +1704,7 @@ function onScroll(event)
 
 		let contentHeightRes = pageVisibility > 0 ? ((rightSize.height * pageVisibility) - imgHeight) / pageVisibility : 0;
 
-		scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
+		const scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
 
 		currentPageVisibility = Math.round((scrollTop - (imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
 		if(currentPageVisibility < 0) currentPageVisibility = 0;

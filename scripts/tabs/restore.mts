@@ -18,10 +18,13 @@ interface TabSaved {
 	data: string;
 }
 
-function save(throttle: boolean = true): void {
+function save(throttle: boolean = true, updateActive: boolean = false): void {
 
 	if(!config.restoreTabsFromLastSession)
 		return;
+
+	if(updateActive)
+		tabs.update(true);
 
 	const _tabs: Tab[] = tabs.tabs;
 	const idCounter = tabs.idCounter;

@@ -244,7 +244,7 @@ function update(id: number, tab: Partial<Tab>, retrieveData: boolean = true): vo
 	if(tab.data !== undefined) _tab.data = tab.data;
 }
 
-function _update(): void
+function _update(retrieveData: boolean = false): void
 {
 	const activeTab = tabs.find(t => t.active);
 	if(!activeTab) return;
@@ -259,7 +259,7 @@ function _update(): void
 
 	const type = onReading ? 'reading' : 'normal';
 
-	update(activeTab.id, {icon, title});
+	update(activeTab.id, {icon, title}, retrieveData);
 	restore.save();
 }
 
