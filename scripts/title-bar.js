@@ -172,6 +172,7 @@ function setColors()
 }
 
 var animateSetTitleBarOverlayStart = 0;
+var animateSetTitleBarOverlayData = 0;
 
 function _animateSetTitleBarOverlay(win)
 {
