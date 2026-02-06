@@ -15,8 +15,8 @@
 		"sort": {
 			"main": "Ordenar",
 			"name": "Nombre",
-			"number": "Numerico",
-			"nameNumber": "Nombre / Numerico",
+			"number": "Numérico",
+			"nameNumber": "Nombre/Numérico",
 			"lastAdd": "Último agregado",
 			"lastReading": "Última lectura",
 			"lastOpened": "Último abierto",
@@ -26,7 +26,7 @@
 		},
 		"view": {
 			"main": "Vista",
-			"module": "Cuadricula",
+			"module": "Cuadrícula",
 			"list": "Lista",
 			"moduleSize": "Tamaño de la cuadrícula",
 			"fadeCompleted": "Atenuar completados",
@@ -35,7 +35,7 @@
 			"progressPercent": "Mostrar porcentaje"
 		},
 		"filter": {
-			"onlyRoot": "Sólo de las carpetas raíz",
+			"onlyRoot": "Solo de las carpetas raíz",
 			"requireAllLabels": "Requerir todas las etiquetas seleccionadas"
 		},
 		"contextMenu": {
@@ -60,21 +60,21 @@
 			"addPoster": "Añadir póster",
 			"changePoster": "Cambiar póster",
 			"deletePoster": "Eliminar póster",
-			"cannotAddPoster": "No es posible añadir el póster si la carpeta está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc",
-			"cannotDeletePoster": "No es posible eliminar el póster si está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc",
+			"cannotAddPoster": "No es posible añadir el póster si la carpeta está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc.",
+			"cannotDeletePoster": "No es posible eliminar el póster si está dentro de un archivo comprimido, tendrá que editar el archivo mediante 7-zip, unrar, etc.",
 			"setAsPoster": "Usar imagen como póster",
-			"setAsPosterFolders": "Usar imagen como poster de otra carpeta",
+			"setAsPosterFolders": "Usar imagen como póster de otra carpeta",
 			"posterSetSuccessfully": "La imagen se ha establecido como póster",
 			"saveImage": "Guardar imagen",
 			"saveAllImages": "Guardar todas las imágenes",
 			"saveBookmarksImages": "Guardar las imágenes marcadas actuales",
 			"saveAllBookmarksImages": "Guardar todas las imágenes marcadas",
-			"saveImagesMessage": "Se han guardado correctamente las imágenes",
-			"saveImageMessage": "Se ha guardado correctamente la imagen",
+			"saveImagesMessage": "Las imágenes han sido guardadas correctamente",
+			"saveImageMessage": "La imagen ha sido guardada correctamente",
 			"copyImage": "Copiar imagen al portapapeles",
 			"copyImageMessage": "Se ha copiado la imagen al portapapeles",
 			"clearFileCache": "Limpiar caché del archivo",
-			"clearFileCacheSuccessfully": "Se ha limpiado correctamente la caché del archivo",
+			"clearFileCacheSuccessfully": "Se ha limpiado la caché del archivo correctamente",
 			"closeApp": "Cerrar OpenComic"
 		},
 		"speed": {
@@ -95,7 +95,7 @@
 		"retry": "Reintentar",
 		"search": "Buscar",
 		"filterCurrentPage": "Filtrar la página actual",
-		"pickAtRandom": "Elige al azar",
+		"pickAtRandom": "Elegir al azar",
 		"language": "Idioma",
 		"settings": "Ajustes",
 		"theme": "Tema",
@@ -104,19 +104,19 @@
 		"valueCannotBeEmpty": "El valor no puede estar vació",
 		"viewAll": "Ver todo",
 		"title": "Título",
-		"nightMode": "Modo noche",
+		"nightMode": "Modo oscuro",
 		"beta": "Beta",
 		"alpha": "Alfa"
 	},
 	"comics": {
 		"continueReading": "Continuar leyendo",
-		"continueReadingNotExists": "El archivo guardado en continuar leyendo no existe actualmente",
+		"continueReadingNotExists": "El archivo guardado en Continuar leyendo no existe actualmente",
 		"recentlyAdded": "Añadido recientemente",
 		"emptyIndex": "No hay ningún cómic en la biblioteca",
 		"emptyFolder": "No hay ningún archivo compatible en esta carpeta",
 		"emptyRecentlyOpened": "No hay archivos abiertos recientemente",
 		"emptyFavorites": "No hay cómics favoritos",
-		"emptyLabel": "No hay cómics en esta etiqueta."
+		"emptyLabel": "No hay cómics en esta etiqueta"
 	},
 	"servers": {
 		"offlineMode": "Modo sin conexión",
@@ -154,7 +154,7 @@
 			"rotateLeft": "Girar a la izquierda",
 			"rotateRight": "Girar a la derecha",
 			"rotateUpsideDown": "Girar boca abajo",
-			"forceSinglePage": "Mostrar sólo una página a la vez",
+			"forceSinglePage": "Mostrar solo una página a la vez",
 			"margin": "Margen",
 			"marginHorizontal": "Margen horizontal",
 			"marginVertical": "Margen vertical",
@@ -183,7 +183,7 @@
 			"hueRotate": "Rotación de tono",
 			"tone": "Tono",
 			"colorize": "Colorear",
-			"onlyBlackAndWhite": "Sólo en imágenes en blanco y negro",
+			"onlyBlackAndWhite": "Solo en imágenes en blanco y negro",
 			"colorPreset": "Preajuste de color",
 			"multiplier": "Mult.",
 			"saveAsPreset": "Guardar como preajuste",
@@ -209,7 +209,7 @@
 			"textJustify": "Justificado",
 			"textLeft": "Izquierda",
 			"textRight": "Derecha",
-			"maxWidth": "Anchura máxima",
+			"maxWidth": "Ancho máximo",
 			"letterSpacing": "Espaciado entre letras",
 			"wordSpacing": "Espaciado entre palabras",
 			"paragraphSpacing": "Espaciado entre párrafos",
@@ -227,7 +227,7 @@
 			"aiModel": "Modelo",
 			"downloadingAiModel": "Descargando el modelo de IA",
 			"maxMegapixels": "Resolución máxima de imagen de entrada (Megapíxeles)",
-			"autoScale": "Escala automatica",
+			"autoScale": "Escala automática",
 			"scale": "Escala",
 			"noiseReduction": "Reducción de ruido"
 		},
@@ -256,7 +256,7 @@
 			"main": "Música",
 			"volume": "Volumen",
 			"pageSoundEffect": "Efecto de sonido al pasar la página",
-			"adaptToAnimationSpeed": "Adaptarse a la velocidad de la animación",
+			"adaptToAnimationSpeed": "Adaptar a la velocidad de la animación",
 			"soundEffect": {
 				"pageTurn": "Pasar página",
 				"pageTurnAndNumber": "Pasar página $1",
@@ -291,10 +291,10 @@
 			"maxMargin": "Margen horizontal y vertical máximo",
 			"globalZoom": "Zoom global en vez de imagen a imagen (Lectura vertical)",
 			"globalZoomSlide": "Zoom global en vez de imagen a imagen (Lectura horizontal)",
-			"moveZoomWithMouse": "Mover el zoom mediante el cursor (Desactiva mover mediante arrastrar y soltar)",
-			"scrollWithMouse": "Desplazamiento automático al mover el cursor verticalmente en el centro de la pantalla (Desactiva desplazamiento mediante arrastrar y soltar)",
-			"goNextPrevChapterWithScroll": "Ir al capítulo siguiente/anterior con el desplazamiento del mouse (Lectura vertical)",
-			"turnPagesWithMouseWheel": "Pasar páginas con la rueda del raton (Zoom solo con la tecla Ctrl presionada)",
+			"moveZoomWithMouse": "Mover el zoom mediante el puntero (Desactiva mover mediante arrastrar y soltar)",
+			"scrollWithMouse": "Desplazamiento automático al mover el puntero verticalmente en el centro de la pantalla (Desactiva desplazamiento mediante arrastrar y soltar)",
+			"goNextPrevChapterWithScroll": "Ir al capítulo siguiente/anterior con el desplazamiento del ratón (Lectura vertical)",
+			"turnPagesWithMouseWheel": "Pasar páginas con la rueda del ratón (Zoom solo con la tecla Ctrl presionada)",
 			"mouseWheelSensitivityInZoom": "Sensibilidad de la rueda del ratón al hacer zoom",
 			"rotateHorizontalsAnticlockwise": "Al rotar imágenes horizontales hacerlo en sentido antihorario",
 			"startReadingInFullScreen": "Empezar la lectura en pantalla completa",
@@ -310,12 +310,12 @@
 			"downscaling": "Al reducir la resolución de la imagen",
 			"downscalingDescription": "Este método solo se utilizará cuando sea necesario reducir la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas",
 			"upscaling": "Al aumentar la resolución de la imagen",
-			"upscalingDescription": "Este método solo se utilizará cuando sea necesario aumantar la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas. Advertencia: Los métodos Sharp pueden ser lentos al aumentar la resolución"
+			"upscalingDescription": "Este método solo se utilizará cuando sea necesario aumentar la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas. Advertencia: Los métodos Sharp pueden ser lentos al aumentar la resolución"
 		},
 		"colorProfile": {
 			"main": "Perfil de color",
 			"force": "Forzar perfil de color",
-			"forceDescription": "Fuerza a OpenComic a usar un perfil de color específico en lugar del color del monitor actual, según lo especificado por el sistema operativo. Esto requiere reiniciar la app",
+			"forceDescription": "Fuerza a OpenComic a usar un perfil de color específico en lugar del color del monitor actual, según lo especificado por el sistema operativo. Se requiere reiniciar la app",
 			"default": "Por defecto"
 		},
 		"navigation": {
@@ -336,7 +336,7 @@
 				"regexPattern": "Regex o patrón de archivo",
 				"addRegex": "Añadir regex o patrón de archivo",
 				"noRegex": "Sin regex o patrones de archivo",
-				"invalidRegex": "Regex o patrón de archivo invalido"
+				"invalidRegex": "Regex o patrón de archivo inválido"
 			},
 			"openingBehaviorFolder": "Comportamiento al abrir carpetas",
 			"openingBehaviorFolderDescription": "Establece el comportamiento deseado al abrir carpetas durante la navegación",
@@ -352,7 +352,7 @@
 			"useTheFirstImageAsPoster": "Utilizar la primera imagen como póster (Solo si no hay ninguno actualmente)",
 			"showFullPathLibrary": "Mostrar la ruta completa al abrir los cómics de la biblioteca",
 			"showFullPathOpened": "Mostrar la ruta completa al abrir un archivo o carpeta",
-			"showLibraryPath": "Mostrar la biblioteca, favoritos, etiquetas, etc en la ruta del encabezado",
+			"showLibraryPath": "Mostrar la biblioteca, favoritos, etiquetas, etc. en la ruta del encabezado",
 			"showFileExtension": "Mostrar la extensión del archivo en la lista de archivos",
 			"openFilesInNewTab": "Abrir archivos en una nueva pestaña (Solo se aplica a archivos abiertos desde fuera de la aplicación)",
 			"openFilesInNewWindow": "Abrir archivos en una nueva ventana (Solo se aplica a archivos abiertos desde fuera de la aplicación)",
@@ -361,21 +361,21 @@
 		"saveImages": {
 			"main": "Guardar imágenes",
 			"filenameTemplate": "Plantilla de nombre de archivo",
-			"filenameTemplateDescription": "Esta es la plantilla por defecto que se utilizara al guardar imágenes, si ya hay una imagen con el mismo nombre se guardará con un número incremental.<br>Variables:",
+			"filenameTemplateDescription": "Esta es la plantilla por defecto que se utilizará al guardar imágenes, si ya hay una imagen con el mismo nombre se guardará con un número incremental.<br>Variables:",
 			"autoSave": "Guardar automáticamente las imágenes en esta carpeta"
 		},
 		"startupBehavior": {
 			"main": "Comportamiento de inicio",
 			"startInFullScreen": "Iniciar OpenComic en pantalla completa",
-			"restoreTabsFromLastSession": "",
+			"restoreTabsFromLastSession": "Restaurar pestañas de la última sesión",
 			"startInContinueReading": "Iniciar directamente en la última lectura",
-			"startOnlyFromLibrary": "Sólo si la última lectura es de la biblioteca",
+			"startOnlyFromLibrary": "Solo si la última lectura es de la biblioteca",
 			"startOnStartup": "Iniciar OpenComic al inicio"
 		},
 		"theme": {
-			"systemNightMode": "Cambiar al modo noche/claro cuando el sistema operativo lo haga",
-			"nightModeBlackBackground": "Utilizar el color negro como fondo en el modo noche",
-			"nightModeWhiteBlankPage": "Mostrar las páginas en blanco de color blanco en el modo noche",
+			"systemNightMode": "Cambiar al modo oscuro/claro cuando el sistema operativo lo haga",
+			"nightModeBlackBackground": "Utilizar el color negro como fondo en el modo oscuro",
+			"nightModeWhiteBlankPage": "Mostrar las páginas en blanco de color blanco en el modo oscuro",
 			"colors": {
 				"blue": "Azul",
 				"green": "Verde",
@@ -438,9 +438,9 @@
 			"user": "Usuario",
 			"pass": "Contraseña",
 			"domain": "Dominio",
-			"onlyIn": "Sólo usado en",
+			"onlyIn": "Solo usado en",
 			"showOnLibrary": "Mostrar cómics en la biblioteca",
-			"filesInSubfolders": "En la biblioteca mostrar archivos de las subcarpetas"
+			"filesInSubfolders": "Mostrar archivos de las subcarpetas en la biblioteca"
 		},
 		"storage": {
 			"main": "Almacenamiento",
@@ -486,7 +486,7 @@
 			"main": "Ir"
 		},
 		"debug": {
-			"main": "Depuracion",
+			"main": "Depuración",
 			"reload": "Recargar",
 			"forceReload": "Recargar de forma forzada",
 			"toggleDevTools": "Herramientas para desarrolladores"
@@ -510,13 +510,13 @@
 		},
 		"tracking": {
 			"getTokenHeader": "Iniciar sesión en {{siteName}} mediante token",
-			"getTokenInput": "El token de {{siteName}}",
+			"getTokenInput": "Token de {{siteName}}",
 			"invalidTokenHeader": "Token de {{siteName}} no válido",
 			"resendToken": "¿Quiere volver a agregar el token de {{siteName}}?",
 			"serachIn": "Buscar en {{siteName}}",
 			"emptySearch": "No se ha encontrado ningún resultado",
 			"setHeader": "Marcar manualmente",
-			"setMessage": "Si lo desea puede marcar manualmente los capítulos",
+			"setMessage": "Si lo desea, puede marcar manualmente los capítulos",
 			"setWaitMessage": "Puede hacer esto ahora o esperar a que se detecte automáticamente en otro capítulo",
 			"setChapterNumber": "Marcar hasta el siguiente capítulo",
 			"setVolumeNumber": "Marcar hasta el siguiente tomo",
@@ -528,7 +528,7 @@
 			"readingConfigEditHeader": "Editar configuración",
 			"readingConfigName": "Nombre de la configuración",
 			"readingConfigRemoveHeader": "Eliminar configuración",
-			"readingConfigRemove": "¿Seguro que quiere eliminar esta configuración?",
+			"readingConfigRemove": "¿Está seguro de que quiere eliminar esta configuración?",
 			"readingConfigApplyToLabels": "Autoaplicar esta configuración a carpetas/archivos con estas etiquetas",
 			"readingConfigApplyToAllLabel": "Aplicar esta configuración a carpetas/archivos con esta etiqueta",
 			"readingConfigApplyToAllLabelDescription": "Esto fuerza a aplicar esta configuración a todas las carpetas/archivos que tengan la etiqueta, incluso si la configuración se ha modificado manualmente",
@@ -542,7 +542,7 @@
 			"labelName": "Nombre de etiqueta",
 			"labelExists": "Esta etiqueta ya existe",
 			"deleteLabel": "Eliminar etiqueta",
-			"confirmDelete": "¿Seguro que quiere eliminar esta etiqueta?"
+			"confirmDelete": "¿Está seguro de que quiere eliminar esta etiqueta?"
 		},
 		"opds": {
 			"add": "Añadir catálogo",
@@ -633,7 +633,7 @@
 	},
 	"buttons": {
 		"cancel": "Cancelar",
-		"ok": "Ok",
+		"ok": "Aceptar",
 		"on": "Encendido",
 		"off": "Apagado",
 		"yes": "Sí",
