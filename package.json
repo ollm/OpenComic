@@ -104,7 +104,7 @@
 		"jquery-bez": "^1.0.11",
 		"jxl-oxide-wasm": "^0.12.5",
 		"marked": "^17.0.1",
-		"minimatch": "^10.1.2",
+		"minimatch": "^10.2.2",
 		"node-7z": "github:ollm/node-7z",
 		"node-scp": "^0.0.25",
 		"opencomic-ai-bin": "^1.2.1",
