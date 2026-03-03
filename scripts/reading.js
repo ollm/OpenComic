@@ -4943,20 +4943,25 @@ function pointermove(event)
 
 		if(!readingDragScroll.start)
 		{
-			readingDragScroll.start = true;
-
-			dom.query('body').addClass('dragging');
+			if(Math.abs(pageY - readingDragScroll.pageY) > 16)
+			{
+				readingDragScroll.pageY = pageY;
+				readingDragScroll.start = true;
+				dom.query('body').addClass('dragging');
+			}
 		}
+		else
+		{
+			if(readingDragScroll.speed.length > 2)
+				readingDragScroll.speed.shift();
 
-		if(readingDragScroll.speed.length > 2)
-			readingDragScroll.speed.shift();
+			readingDragScroll.speed.push({
+				time: performance.now(),
+				pageY: pageY,
+			});
 
-		readingDragScroll.speed.push({
-			time: performance.now(),
-			pageY: pageY,
-		});
-
-		readingDragScroll.content.scrollTop(readingDragScroll.scrollTop - (pageY - readingDragScroll.pageY));
+			readingDragScroll.content.scrollTop(readingDragScroll.scrollTop - (pageY - readingDragScroll.pageY));
+		}
 	}
 
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
@@ -5271,7 +5276,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		if(onReading && isLoaded && (!haveZoom || config.readingGlobalZoom) && !config.readingScrollWithMouse && readingViewIs('scroll'))
 		{
-			if(e.originalEvent.pointerType != 'touch' && e.originalEvent.button >= 0 && e.originalEvent.button <= 2)
+			if(e.originalEvent.pointerType != 'touch' && e.originalEvent.button >= 0 && e.originalEvent.button <= 1)
 			{
 				// e.preventDefault();
 
