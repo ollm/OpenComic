@@ -1,6 +1,7 @@
 const requestFileAccess = require(p.join(appDir, '.dist/file-manager/request-file-access.js')),
 	filePassword = require(p.join(appDir, '.dist/file-manager/file-password.js')),
-	diskType = require(p.join(appDir, '.dist/file-manager/disk-type.js'));
+	diskType = require(p.join(appDir, '.dist/file-manager/disk-type.js')),
+	pdfImagesProvider = require(p.join(appDir, '.dist/file-manager/pdf-images-provider.mjs')).default;
 
 var un7z = false, bin7z = false, fastXmlParser = false, Minimatch = false;
 
@@ -21,6 +22,7 @@ var file = function(path, _config = false) {
 		sha: true,
 		only: false,
 		log: true,
+		extractDocumentImages: false,
 	};
 
 	if(_config) this.config = {...this.config, ..._config};
@@ -75,6 +77,19 @@ var file = function(path, _config = false) {
 
 		path = path || this.path;
 		let _realPath = realPath(path, -1);
+
+		const lastCompressed = lastCompressedFile(path);
+
+		if(lastCompressed && (compatible.compressed.pdf(lastCompressed) || compatible.compressed.epub(lastCompressed)))
+		{
+			const fileConfig = reading.getConfig(path, path, false, false, true);
+
+			if(fileConfig.readingExtractDocumentImages && config.prefixes?.epub !== 'epub-zip')
+			{
+				config.prefixes = {pdf: 'pdf-images', epub: 'epub-images'};
+				config.extractDocumentImages = true;
+			}
+		}
 
 		this.updateConfig(config);
 
@@ -279,7 +294,7 @@ var file = function(path, _config = false) {
 		if(metadata.poster)
 			files = this.setPosterFromMetadata(files, metadata.poster);
 
-		if(!json || json.mtime != mtime)
+		if(!json || json.mtime != mtime || json.files.length !== files.length)
 			cache.writeJson(compressed.cacheFile, {mtime: mtime, files: files, metadata: metadata});
 
 		setFileData(path, files);
@@ -2183,6 +2198,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.readPdf = async function() {
 
+		if(this.prefixes?.pdf === 'pdf-images')
+			return this.readPdfImages();
+
 		let _this = this;
 
 		let files = [];
@@ -2338,6 +2356,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	this.extractPdf = async function() {
 
+		if(this.prefixes?.pdf === 'pdf-images')
+			return this.extractPdfImages();
+
 		let pdf = await this.openPdf();
 		let pages = pdf.numPages;
 		let leadingZeros = Math.max(String(pages).length, 4);
@@ -2425,6 +2446,66 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		return false;
 	}
 
+	// PDF as images (prefixes.pdf = 'pdf-images')
+	this.pdfImages = false;
+
+	this.openPdfImages = async function() {
+
+		if(this.pdfImages) return this.pdfImages;
+
+		this.macosStartAccessingSecurityScopedResource(this.realPath);
+		this.pdfImages = new pdfImagesProvider(this.realPath);
+
+		return this.pdfImages;
+
+	}
+
+	this.readPdfImages = async function() {
+
+		const files = [];
+
+		const pdfImages = await this.openPdfImages();
+		const _files = await pdfImages.read();
+
+		for(let i = 0, len = _files.length; i < len; i++)
+		{
+			const file = _files[i];
+			const name = file.name;
+
+			files.push({name: name, path: p.join(this.path, name), folder: false, compressed: false});
+			this.setFileStatus(name, {extracted: false, width: file.width, height: file.height});
+		}
+
+		return this.files = files;
+
+	}
+
+	this.extractPdfImages = async function() {
+
+		const pdfImages = await this.openPdfImages();
+
+		const self = this;
+		const only = this.config._only;
+
+		await pdfImages.extract(this.tmp, {
+			files: only,
+			progress: function(progress, name) {
+
+				const virtualPath = p.join(self.path, name);
+
+				self.setFileStatus(name, {extracted: true});
+				self.setProgress(progress);
+				self.whenExtractFile(virtualPath);
+
+			}
+		});
+
+		this.setProgress(1);
+
+		return;
+
+	}
+
 	// ePub
 	this.epub = false;
 
@@ -2443,6 +2524,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	}
 
 	this.readEpub = async function() {
+
+		if(this.prefixes?.epub === 'epub-images')
+			return this.readEpubImages();
 
 		let _this = this;
 
@@ -2514,6 +2598,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	}
 
 	this.extractEpub = async function() {
+
+		if(this.prefixes?.epub === 'epub-images')
+			return this.extractEpubImages();
 
 		let epub = await this.openEpub();
 		let only = this.config.only;
@@ -2613,6 +2700,59 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		let epub = await this.openEpub();
 		return epub.ebook;
+
+	}
+
+	// EPUB as images (prefixes.epub = 'epub-images')
+	this.readEpubImages = async function() {
+
+		const files = [];
+
+		const epub = await this.openEpub();
+		const _files = await epub.readEpubImages();
+
+		for(let i = 0, len = _files.length; i < len; i++)
+		{
+			const file = _files[i];
+
+			files.push({name: file, path: p.join(this.path, file), folder: false, compressed: false});
+			this.setFileStatus(file, {extracted: false});
+		}
+
+		console.log(files);
+
+		return this.files = files;
+
+	}
+
+	this.extractEpubImages = async function() {
+
+		const epub = await this.openEpub();
+
+		const self = this;
+		const only = this.config._only;
+
+		console.log(this.tmp);
+		console.log(only);
+
+		await epub.extractEpubImages(this.tmp, {
+			files: only,
+			progress: function(progress, name) {
+
+				const virtualPath = p.join(self.path, name);
+
+				self.setFileStatus(name, {extracted: true});
+				self.setProgress(progress);
+				self.whenExtractFile(virtualPath);
+
+			}
+		});
+
+		console.log('finalized');
+
+		this.setProgress(1);
+
+		return;
 
 	}
 
@@ -2893,17 +3033,28 @@ function realPath(path, index = 0, prefixes = false)
 
 			if(extension)
 			{
+				const virtualPathN = p.normalize(virtualPath);
+
 				if(compatible.compressed.has(extension) /* && fs.existsSync(newPath) && !fs.statSync(newPath).isDirectory()*/)
 				{
-					let sha = sha1(p.normalize(virtualPath));
+					let sha = sha1(virtualPathN);
+					let _prefixes = prefixes;
 
-					if(prefixes)
+					if(!_prefixes && (compatible.compressed.pdf.has(extension) || compatible.compressed.epub.has(extension)))
 					{
-						for(let ext in prefixes)
+						const fileConfig = reading.getConfig(virtualPathN, virtualPathN, false, false, true);
+
+						if(fileConfig.readingExtractDocumentImages && _prefixes?.epub !== 'epub-zip')
+							_prefixes = {pdf: 'pdf-images', epub: 'epub-images'};
+					}
+
+					if(_prefixes)
+					{
+						for(let ext in _prefixes)
 						{
 							if(compatible.compressed[ext].has(extension))
 							{
-								sha = prefixes[ext]+'-'+sha;
+								sha = _prefixes[ext]+'-'+sha;
 
 								break;
 							}
@@ -2914,7 +3065,7 @@ function realPath(path, index = 0, prefixes = false)
 				}
 				else if(compatible.image.convert.has(extension) && i + 1 === len)
 				{
-					const sha = sha1(p.dirname(p.normalize(virtualPath)));
+					const sha = sha1(p.dirname(virtualPathN));
 
 					let image = p.basename(virtualPath);
 					image = image+'.png';
@@ -3035,26 +3186,32 @@ function isCompressed(name)
 
 function firstCompressedFile(path, index = 0, checkDirectory = true)
 {
-	let segments = splitPath(path);
-	let len = segments.length;
+	const segments = splitPath(path);
+	const len = segments.length;
 
-	let newPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
-	let numSegments = len + index;
+	const newPath = (len > 0) ? (isEmpty(segments[0]) ? ['/'] : [segments[0]]) : [];
+	const numSegments = len + index;
 
 	let _isServer = isServer(path);
 
 	for(let i = 1; i < len; i++)
 	{
-		newPath = join(newPath, segments[i]);
+		const segment = segments[i];
+		newPath.push(segment);
 
 		if(i < numSegments)
 		{
-			if(compatible.compressed(newPath) && (!checkDirectory || _isServer || !fs.existsSync(newPath) || !fs.statSync(newPath).isDirectory()))
-				return newPath;
+			if(compatible.compressed(segment))
+			{
+				const joinedPath = join(...newPath);
+
+				if(!checkDirectory || _isServer || !fs.existsSync(joinedPath) || !fs.statSync(joinedPath).isDirectory())
+					return join(...newPath);
+			}
 		}
 	}
 
-	return newPath;
+	return join(...newPath);
 }
 
 function firstCompressedFileRealPath(path, index = 0)
@@ -3062,29 +3219,29 @@ function firstCompressedFileRealPath(path, index = 0)
 	return isServer(path) ? realPath(firstCompressedFile(path, index), -1) : firstCompressedFile(path, index);
 }
 
-
 function lastCompressedFile(path, index = 0)
 {
-	let segments = splitPath(path);
-	let len = segments.length;
+	const segments = splitPath(path);
+	const len = segments.length;
 
-	let newPath = (len > 0) ? (isEmpty(segments[0]) ? '/' : segments[0]) : '';
-	let numSegments = len + index;
+	const newPath = (len > 0) ? (isEmpty(segments[0]) ? ['/'] : [segments[0]]) : [];
+	const numSegments = len + index;
 
-	let lastCompressed = false;
+	let lastCompressed = null;
 
 	for(let i = 1; i < len; i++)
 	{
-		newPath = join(newPath, segments[i]);
+		const segment = segments[i];
+		newPath.push(segment);
 
 		if(i < numSegments)
 		{
-			if(compatible.compressed(newPath))
-				lastCompressed = newPath;
+			if(compatible.compressed(segment))
+				lastCompressed = newPath.slice();
 		}
 	}
 
-	return lastCompressed;
+	return lastCompressed ? join(...lastCompressed) : false;
 }
 
 function allCompressedFiles(path, index = 0)
@@ -3718,4 +3875,5 @@ module.exports = {
 	requestFileAccess: requestFileAccess,
 	filePassword: filePassword,
 	diskType: diskType,
+	pdfImagesProvider: pdfImagesProvider,
 }

@@ -3468,6 +3468,25 @@ function changePagesView(mode, value, save)
 
 		reading.reload(false, imageIndex);
 	}
+	else if(mode == 23) // Extract images from document (PDF / EPUB)
+	{
+		updateReadingPagesConfig('readingExtractDocumentImages', value);
+
+		if(value)
+			template.globalElement('.reading-ebook-options').addClass('disable-pointer');
+		else
+			template.globalElement('.reading-ebook-options').removeClass('disable-pointer');
+
+		if(value)
+			dom.queryAll('.reading-extract-document-images .switch').addClass('a');
+		else
+			dom.queryAll('.reading-extract-document-images .switch').removeClass('a');
+
+		if(readingIsEbook) handlebarsContext.loading = true;
+		template.loadContentRight('reading.content.right.html', true);
+
+		reading.reload(true, imageIndex);
+	}
 }
 
 function reloadIndex()
@@ -3497,7 +3516,7 @@ function reload(full = false, imageIndex = false)
 
 	if(full)
 	{
-		dom.openComic(true, images[imageIndex].path, dom.history.mainPath, false, false, false, true);
+		dom.openComic(true, (images[imageIndex]?.path || dom.history.path), dom.history.mainPath, false, false, false, true);
 	}
 	else
 	{
@@ -3831,46 +3850,67 @@ function loadBookmarks(bookmarksChild = false)
 
 var currentReadingConfigKey = false;
 
-function loadReadingConfig(key = false)
+function getConfig(path = false, mainPath = '', key = false, _copy = false, parents = false)
 {
-	_config = copy(config);
-
-	currentReadingConfigKey = key;
+	// TODO: Copy just in case
+	let configData = _copy ? copy(config) : config;
 
 	if(key === false)
 	{
-		var readingPagesConfig = storage.getKey('readingPagesConfig', dom.history.mainPath);
+		let readingPagesConfig = storage.getKey('readingPagesConfig', mainPath);
+
+		if(!readingPagesConfig && mainPath && parents)
+		{
+			let pPath = mainPath;
+
+			while(true)
+			{
+				const parent = p.dirname(pPath);
+				if(parent === pPath) break;
+
+				pPath = parent;
+
+				readingPagesConfig = storage.getKey('readingPagesConfig', pPath);
+				if(readingPagesConfig) break;
+			}
+		}
 
 		if(readingPagesConfig)
 		{
 			if(readingPagesConfig.configKey)
 				key = readingPagesConfig.configKey;
 			else
-				_config = {..._config, ...readingPagesConfig, key: readingPagesConfig.configKey};
+				configData = {...configData, ...readingPagesConfig, key: readingPagesConfig.configKey};
 		}
 		else
 		{
-			key = getLabelConfigKey();
-			_config.key = key;
+			key = getLabelConfigKey(path);
+			configData.key = key;
 		}
 	}
 
 	if(key > 0)
 	{
-		var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', key);
+		const readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', key);
 
 		if(readingShortcutPagesConfig)
-			_config = {..._config, ...readingShortcutPagesConfig};
+			configData = {...configData, ...readingShortcutPagesConfig};
 
-		_config.key = key;
+		configData.key = key;
 	}
 	else if(key === 0)
 	{
-		_config.key = 0;
+		configData.key = 0;
 	}
 
-	_config = copy(_config);
+	return configData;
+}
 
+function loadReadingConfig(key = false)
+{
+	currentReadingConfigKey = key;
+
+	_config = copy(getConfig(false, dom.history.mainPath, key, true));
 	handlebarsContext._config = _config;
 }
 
@@ -3901,9 +3941,10 @@ function updateConfigLabels()
 	list.innerHTML = template.load('reading.content.right.labels.list.html');
 }
 
-function getLabelConfigKey()
+function getLabelConfigKey(path = false)
 {
-	const labels = dom.labels.has(dom.history.path, true);
+	path = path || dom.history.path;
+	const labels = dom.labels.has(path, true);
 
 	if(labels.length)
 	{
@@ -5966,6 +6007,7 @@ module.exports = {
 	readingFile: function(){return readingFile},
 	fastUpdateEbookPages: fastUpdateEbookPages,
 	generateEbookPagesDelayed: generateEbookPagesDelayed,
+	getConfig: getConfig,
 	isEbook: function(){return readingIsEbook},
 	isCanvas: function(){return readingIsCanvas},
 	rotateImage: rotateImage,

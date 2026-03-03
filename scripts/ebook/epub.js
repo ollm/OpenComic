@@ -162,6 +162,118 @@ var epub = function(path, config = {}) {
 
 	}
 
+	this.epubImages = false;
+	this.epubImagesList = false;
+
+	this.readEpubImages = async function() {
+
+		if(this.epubImagesList) return this.epubImagesList;
+
+		await this.openEpub();
+
+		const self = this;
+
+		this.epubImages = [];
+		this.epubImagesList = [];
+
+		if(this.epub.cover)
+		{
+			this.epubImagesList.push('cover.tbn');
+
+			this.epubImages.push({
+				name: 'cover.tbn',
+				src: this.epub.cover,
+				base: '/',
+				num: 0,
+			});
+		}
+
+		let len = this.epub.spine.items.length;
+		let num = 1;
+
+		const promises = [];
+
+		for(let i = 0; i < len; i++)
+		{
+			const _num = num++;
+
+			promises.push((async function() {
+
+				let item = self.epub.spine.items[i];
+				let chapter = await self.chapterHtml(i);
+
+				const images = chapter.html.querySelectorAll('img, image');
+
+				for(const image of images)
+				{
+					const src = image.getAttribute('src') || image.getAttribute('xlink:href');
+
+					if(src)
+					{
+						self.epubImages.push({
+							src,
+							base: p.dirname(item.url),
+							num: _num,
+						});
+					}
+				}
+
+			})());
+		}
+
+		await Promise.all(promises);
+
+		const leadingZeros = Math.max(String(num).length, 4);
+
+		for(const image of this.epubImages)
+		{
+			if(image.name)
+				continue;
+
+			const ext = app.extname(image.src);
+			image.name = `image-${String(image.num + 1).padStart(leadingZeros, '0')}.${ext}`;
+
+			this.epubImagesList.push(image.name);
+		}
+
+		return this.epubImagesList;
+
+	}
+
+	this.extractEpubImages = async function(dest, {files, progress}) {
+
+		await this.readEpubImages();
+
+		const self = this;
+		const set = new Set(files ?? []);
+
+		const extractLen = files ? this.epubImages.filter(image => set.has(image.name)).length : this.epubImages.length;
+		let extracted = 0;
+
+		const promises = [];
+
+		for(const image of this.epubImages)
+		{
+			if(!files || set.has(image.name))
+			{
+				promises.push((async function() {
+
+					const outputPath = p.join(dest, image.name);
+
+					const path = p.join(self.removeFileScheme(image.base), self.removeFileScheme(image.src));
+					await fsp.copyFile(path, outputPath);
+
+					if(progress)
+						progress(++extracted / extractLen, image.name);
+
+				})());
+			}
+		}
+
+		await Promise.all(promises);
+
+	}
+
 	this.getElements = function(opf, tagName, query = false) {
 
 		const elements = [];

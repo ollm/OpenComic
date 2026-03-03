@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 143; // Update this if readingPagesConfig is updated
+const changes = 144; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -54,6 +54,7 @@ const readingPagesConfig = {
 	readingBlankPage: false,
 	readingManga: false,
 	readingWebtoon: false,
+	readingExtractDocumentImages: false,
 	readingSoundEffect: {
 		page: {
 			play: false,

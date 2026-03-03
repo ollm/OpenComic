@@ -229,7 +229,8 @@
 			"maxMegapixels": "Resolució màxima de la imatge d'entrada (Megapíxels)",
 			"autoScale": "Escalat automàtic",
 			"scale": "Escalat",
-			"noiseReduction": "Reducció de soroll"
+			"noiseReduction": "Reducció de soroll",
+			"extractDocumentImages": "Extreure imatges del document"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

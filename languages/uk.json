@@ -229,7 +229,8 @@
 			"maxMegapixels": "Максимальна роздільна здатність вхідного зображення (Мегапікселі)",
 			"autoScale": "Автоматичне масштабування",
 			"scale": "Масштабування",
-			"noiseReduction": "Зниження шуму"
+			"noiseReduction": "Зниження шуму",
+			"extractDocumentImages": ""
 		},
 		"magnifyingGlass": {
 			"main": "Збільшувальне скло",

@@ -229,7 +229,8 @@
 			"maxMegapixels": "حداکثر وضوح ورودی (مگاپیکسل)",
 			"autoScale": "مقیاس خودکار",
 			"scale": "مقیاس",
-			"noiseReduction": "کاهش نویز"
+			"noiseReduction": "کاهش نویز",
+			"extractDocumentImages": ""
 		},
 		"magnifyingGlass": {
 			"main": "ذره‌بین",

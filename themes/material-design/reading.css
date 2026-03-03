@@ -267,9 +267,9 @@ oc-img .ai-loading circle
 	margin-top: 28px;
 }
 
-.ai-sample-images:first-of-type
+.ai-sample-images-first
 {
-	margin-top: 8px;
+	margin-top: 12px;
 }
 
 .ai-sample-images > img

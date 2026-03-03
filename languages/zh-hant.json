@@ -229,7 +229,8 @@
 			"maxMegapixels": "",
 			"autoScale": "",
 			"scale": "",
-			"noiseReduction": ""
+			"noiseReduction": "",
+			"extractDocumentImages": ""
 		},
 		"magnifyingGlass": {
 			"main": "放大鏡",

@@ -229,7 +229,8 @@
 			"maxMegapixels": "Resolución máxima de imagen de entrada (Megapíxeles)",
 			"autoScale": "Escala automática",
 			"scale": "Escala",
-			"noiseReduction": "Reducción de ruido"
+			"noiseReduction": "Reducción de ruido",
+			"extractDocumentImages": "Extraer imágenes del documento"
 		},
 		"magnifyingGlass": {
 			"main": "Lupa",

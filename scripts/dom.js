@@ -2784,6 +2784,9 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	reading.setIsLoaded(false);
 	onReading = _onReading = true;
 
+	// Remove page param in epub files
+	path = path.replace(/\?page=\d+/, '');
+
 	setCurrentPathScrollTop(path);
 
 	let now = Date.now();
@@ -2847,12 +2850,12 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		let features = fileManager.fileCompressed(compressedFile);
 		features = features.getFeatures();
 
-		if(features.canvas)
+		if(features.canvas && !file.config.extractDocumentImages)
 		{
 			await file.makeAvailable([{path: compressedFile}]);
 			isCanvas = true;
 		}
-		else if(features.ebook)
+		else if(features.ebook && !file.config.extractDocumentImages)
 		{
 			await file.makeAvailable([{path: compressedFile}]);
 			isEbook = true;

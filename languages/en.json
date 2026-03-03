@@ -229,7 +229,8 @@
 			"maxMegapixels": "Max input image resolution (Megapixels)",
 			"autoScale": "Auto scale",
 			"scale": "Scale",
-			"noiseReduction": "Noise reduction"
+			"noiseReduction": "Noise reduction",
+			"extractDocumentImages": "Extract document images"
 		},
 		"magnifyingGlass": {
 			"main": "Magnifying glass",
