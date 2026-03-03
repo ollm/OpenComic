@@ -92,7 +92,7 @@
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
-		"fast-xml-parser": "^5.3.4",
+		"fast-xml-parser": "^5.3.8",
 		"file-type": "^21.3.0",
 		"foliate-js": "github:johnfactotum/foliate-js",
 		"font-list": "^2.0.2",
