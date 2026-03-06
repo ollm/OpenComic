@@ -30,8 +30,9 @@ var ebook = function(book, config = {}) {
 
 		for(let i = 0, len = this.book.chapters.length; i < len; i++)
 		{
-			promises.push(new Promise(function(resolve){
+			promises.push(new Promise(async function(resolve){
 
+				const chapter = _this.book.chapters[i];
 				let htmlString = _this.book.chapters[i].html;
 
 				if(typeof htmlString !== 'string')
@@ -40,12 +41,24 @@ var ebook = function(book, config = {}) {
 					htmlString = serializer.serializeToString(htmlString);
 				}
 
+				const _chapter = {
+					fixedLayout: chapter.fixedLayout,
+					width: chapter.width,
+					height: chapter.height,
+					pageSpread: chapter.pageSpread,
+				};
+
+				// Only for debug splitInPages
+				// const html = new DOMParser().parseFromString(htmlString, 'application/xhtml+xml');
+				// const data = await _this.splitInPages(html.documentElement, chapter.basePath, chapter.path, _chapter);
+				// resolve(data);
+
 				addToQueue(async function(data){
 
 					if(callback) await callback(i, data);
 					resolve(data);
 
-				}, len, 'split-in-pages', _this.config, htmlString, _this.book.chapters[i].basePath, _this.book.chapters[i].path)
+				}, len, 'split-in-pages', _this.config, htmlString, chapter.basePath, chapter.path, _chapter);
 
 			}));
 		}
@@ -66,6 +79,8 @@ var ebook = function(book, config = {}) {
 
 		for(let i = 0, len = this.book.chapters.length; i < len; i++)
 		{
+			const chapter = _this.book.chapters[i];
+
 			promises.push(new Promise(function(resolve){
 
 				let htmlString = _this.book.chapters[i].html;
@@ -76,12 +91,27 @@ var ebook = function(book, config = {}) {
 					htmlString = serializer.serializeToString(htmlString);
 				}
 
+				const _chapter = {
+					fixedLayout: chapter.fixedLayout,
+					width: chapter.width,
+					height: chapter.height,
+					pageSpread: chapter.pageSpread,
+				};
+
+				let _config = {};
+
+				if(chapter.fixedLayout)
+				{
+					_config.width = chapter.width;
+					_config.height = chapter.height;
+				}
+
 				addToQueue(async function(data){
 
 					if(callback) await callback(i, data);
 					resolve(data);
 
-				}, len, 'render-page', _this.config, htmlString, _this.book.chapters[i].basePath)
+				}, len, 'render-page', {..._this.config, ..._config}, htmlString, _this.book.chapters[i].basePath, false, _chapter);
 
 			}));
 		}
@@ -150,18 +180,21 @@ var ebook = function(book, config = {}) {
 
 	}
 
-	this.splitInPages = async function(html, basePath, path = false) {
+	this.splitInPages = async function(html, basePath, path = false, chapter = {}) {
 
 		html = html.cloneNode(true);
 		html = await this.removeScripts(html); // This is unsafe, later the Sanitizer API would have to be applied
 		html = await this.resolvePaths(html, basePath);
-		html = await this.applyConfigToHtml(html);
+		html = await this.applyConfigToHtml(html, chapter);
+
+		const width = chapter.fixedLayout ? chapter.width : this.config.width;
+		const height = chapter.fixedLayout ? chapter.height : this.config.height;
 
 		//console.time('Load iframe');
 
 		let iframe = document.createElement('iframe');
-		iframe.style.width = this.config.width+'px';
-		iframe.style.height = this.config.height+'px';
+		iframe.style.width = width+'px';
+		iframe.style.height = height+'px';
 		iframe.style.position = 'absolute';
 		iframe.style.zIndex = '1000';
 		iframe.style.backgroundColor = 'white';
@@ -191,7 +224,7 @@ var ebook = function(book, config = {}) {
 			iframe.addEventListener('load', async function(event) {
 
 				//console.timeEnd('Load iframe');
-				resolve(await _this.calculateAndSplit(iframe, path));
+				resolve(await _this.calculateAndSplit(iframe, path, chapter));
 
 			});
 
@@ -358,7 +391,7 @@ var ebook = function(book, config = {}) {
 
 	}
 
-	this.calculateAndSplit = async function(iframe, path) {
+	this.calculateAndSplit = async function(iframe, path, chapter = {}) {
 
 		this._chaptersPage = [];
 		this._chaptersPageFirst = true;
@@ -371,7 +404,7 @@ var ebook = function(book, config = {}) {
 		let childs = parent.childNodes;
 		let len = childs.length;
 
-		let hasToSplit = this.checkIfNodeHasToSplit(parent);
+		let hasToSplit = chapter.fixedLayout || this.checkIfNodeHasToSplit(parent);
 
 		await this._calculateAndSplit(parent, childs, len, hasToSplit);
 		this._chaptersPages.push(this._chaptersPage);
@@ -384,6 +417,7 @@ var ebook = function(book, config = {}) {
 				path: path,
 				ids: await this.getPageIds(this._chaptersPages[i]),
 				html: await this.arrayBodyToHtml(iframe.contentDocument.head, this._chaptersPages[i]),
+				chapter,
 			};
 		}
 
@@ -517,23 +551,48 @@ var ebook = function(book, config = {}) {
 
 	}
 
-	this.applyConfigToHtml = function(doc) {
+	this.applyConfigToHtml = function(doc, chapter = {}) {
 
 		let body = doc.body || doc.querySelector('body');
 		let head = doc.head || doc.querySelector('head');
+
+		if(!body || !head)
+			return doc;
 
 		body.style.overflow = 'hidden';
 
 		let epubType = body.getAttribute('epub:type') || '';
 		epubType = app.extract(/^\s*([^\s]+)/, epubType, 1).toLowerCase();
 
-		if(epubType == 'cover')
+		if(chapter.fixedLayout)
+			this.applyFixedLayoutStyle(head, chapter);
+		else if(epubType == 'cover')
 			this.applyCoverStyle(head);
 		else
 			this.applyGeneralStyle(head);
 
 		return doc;
 
+	}
+
+	this.applyFixedLayoutStyle = function(head, chapter) {
+
+		let css = `
+			body
+			{
+				transform: scale(calc(100vw / ${chapter.width}px)) !important;
+				transform-origin: top left !important;
+				width: ${chapter.width}px;
+				height: ${chapter.height}px;
+			}
+		`;
+
+		let style = head.querySelector('.opencomic-style') || document.createElement('style')
+		style.className = 'opencomic-style';
+		style.type = 'text/css';
+		style.innerHTML = '';
+		style.appendChild(document.createTextNode(css))
+		head.appendChild(style);
 	}
 
 	this.applyCoverStyle = function(head) {
@@ -802,20 +861,19 @@ var ebook = function(book, config = {}) {
 
 	this.resolvePaths = async function(html, basePath) {
 
-		let href = html.querySelectorAll('[href]');
+		const svg = [...html.querySelectorAll('svg *')].filter(element => element.hasAttribute('xlink:href'));
+		const elements = [...html.querySelectorAll('[href], [src]'), ...svg];
 
-		for(let i = 0, len = href.length; i < len; i++)
+		for(const item of elements)
 		{
-			let item = href[i];
-			item.setAttribute('href', this.resolvePath(item.getAttribute('href'), basePath));
-		}
-	
-		let src = html.querySelectorAll('[src]');
+			if(item.hasAttribute('href'))
+				item.setAttribute('href', this.resolvePath(item.getAttribute('href'), basePath));
 
-		for(let i = 0, len = src.length; i < len; i++)
-		{
-			let item = src[i];
-			item.setAttribute('src', this.resolvePath(item.getAttribute('src'), basePath));
+			if(item.hasAttribute('src'))
+				item.setAttribute('src', this.resolvePath(item.getAttribute('src'), basePath));
+
+			if(item.hasAttribute('xlink:href'))
+				item.setAttribute('xlink:href', this.resolvePath(item.getAttribute('xlink:href'), basePath));
 		}
 
 		return html;
@@ -828,16 +886,20 @@ var ebook = function(book, config = {}) {
 
 	}
 
-	this.pageToIframe = function(html) {
+	this.pageToIframe = function(html, chapter = {}, configSize = false) {
 
-		let iframe = document.createElement('iframe');
+		const iframe = document.createElement('iframe');
 
-		iframe.style.width = this.config.width+'px';
-		iframe.style.height = this.config.height+'px';
+		const width = chapter.fixedLayout ? chapter.width : this.config.width;
+		const height = chapter.fixedLayout ? chapter.height : this.config.height;
+
+		iframe.style.width = configSize ? this.config.width+'px' : '100%';
+		iframe.style.height = configSize ? this.config.height+'px' : '100%';
 		iframe.style.backgroundColor = this.config.colors && this.config.colors.background ? this.config.colors.background : 'white';
 		iframe.style.pointerEvents = 'none';
 		iframe.sandbox = 'allow-same-origin';
 		iframe.srcdoc = html;
+		iframe.dataset.chapter = JSON.stringify(chapter);
 
 		return iframe;
 
@@ -986,7 +1048,7 @@ var ebook = function(book, config = {}) {
 
 let renderQueue = [], renderQueueNum = 1;
 
-async function addToQueue(callback, maxThreads, type, config, html, basePath, path = false)
+async function addToQueue(callback, maxThreads, type, config, html, basePath, path = false, chapter = {})
 {
 	renderQueue.push({
 		type: type,
@@ -995,6 +1057,7 @@ async function addToQueue(callback, maxThreads, type, config, html, basePath, pa
 		html: html,
 		path: path,
 		basePath: basePath,
+		chapter: chapter,
 		num: renderQueueNum++,
 	});
 
@@ -1035,6 +1098,7 @@ async function nextJobToRender(index = false, maxThreads = false)
 					html: job.html,
 					path: job.path,
 					basePath: job.basePath,
+					chapter: job.chapter,
 				};
 
 				renders[index].job = job;

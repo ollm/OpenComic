@@ -410,11 +410,12 @@ var epub = function(path, config = {}) {
 
 		await this.openEpub();
 
-		let chapters = [];
+		const fixedLayout = this.epub.packaging?.metadata?.layout === 'pre-paginated';
+		const chapters = [];
 
 		for(let i = 0, len = files.length; i < len; i++)
 		{
-			let file = files[i];
+			const file = files[i];
 
 			if(file.name == 'cover.tbn')
 			{
@@ -423,16 +424,31 @@ var epub = function(path, config = {}) {
 			}
 			else
 			{
-				let index = this.getFileIndex(file.name);
-				let chapter = await this.chapterHtml(index);
+				const index = this.getFileIndex(file.name);
 
-				let dirname = p.dirname(this.removeFileScheme(chapter.section.url));
+				const chapter = await this.chapterHtml(index);
+				const dirname = p.dirname(this.removeFileScheme(chapter.section.url));
+
+				const spine = this.epub.spine.items[index] || {};
+
+				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') ?? false;
+				const chapterFixedLayout = fixedLayout || spineFixed;
+
+				let pageSpread = '';
+
+				if(spine.properties?.includes('rendition:page-spread-right') || spine.properties?.includes('page-spread-right'))
+					pageSpread = 'right';
+				else if(spine.properties?.includes('rendition:page-spread-left') || spine.properties?.includes('page-spread-left'))
+					pageSpread = 'left';
 
 				chapters.push({
 					name: file.name,
 					path: file.path,
 					html: chapter.html,
 					basePath: dirname,
+					fixedLayout: chapterFixedLayout,
+					...(chapterFixedLayout ? this.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
+					pageSpread,
 				});
 			}
 		}
@@ -457,25 +473,41 @@ var epub = function(path, config = {}) {
 		await this.openEpub();
 		let files = await this.readEpubFiles();
 
-		let chapters = [];
+		const fixedLayout = this.epub.packaging?.metadata?.layout === 'pre-paginated';
+		const chapters = [];
 
 		for(let i = 0, len = files.length; i < len; i++)
 		{
-			let file = files[i];
+			const file = files[i];
 
 			if(file != 'cover.tbn')
 			{
-				let index = this.getFileIndex(file);
+				const index = this.getFileIndex(file);
 
-				let chapter = await this.chapterHtml(index);
-				let dirname = p.dirname(this.removeFileScheme(chapter.section.url));
+				const chapter = await this.chapterHtml(index);
+				const dirname = p.dirname(this.removeFileScheme(chapter.section.url));
+
+				const spine = this.epub.spine.items[index] || {};
+
+				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') || spine.properties?.includes('layout-pre-paginated') || false;
+				const chapterFixedLayout = fixedLayout || spineFixed;
+
+				let pageSpread = '';
+
+				if(spine.properties?.includes('rendition:page-spread-right') || spine.properties?.includes('page-spread-right'))
+					pageSpread = 'right';
+				else if(spine.properties?.includes('rendition:page-spread-left') || spine.properties?.includes('page-spread-left'))
+					pageSpread = 'left';
 
 				chapters.push({
 					name: file,
 					html: chapter.html,
 					path: p.join(this.path, file),
 					basePath: dirname,
-					spine: this.epub.spine.items[index] || {},
+					spine: spine,
+					fixedLayout: chapterFixedLayout,
+					...(chapterFixedLayout ? this.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
+					pageSpread,
 				});
 			}
 		}
@@ -503,6 +535,47 @@ var epub = function(path, config = {}) {
 		}
 
 		return {pages: [], tox: []};
+	}
+
+	this.fixedLayoutSize = function(html) {
+
+		if(!html)
+			return {width: 1, height: 1};
+
+		const viewport = html.querySelector('meta[name="viewport"]');
+
+		if(viewport)
+		{
+			const content = viewport.getAttribute('content');
+			const width = app.extract(/width=([0-9]+)/, content, 1);
+			const height = app.extract(/height=([0-9]+)/, content, 1);
+
+			if(width && height)
+			{
+				return {
+					width: +width || 1,
+					height: +height || 1,
+				}
+			}
+		}
+
+		const viewbox = html.querySelector('svg[viewBox], svg[viewbox]') || (html.matches('svg[viewBox], svg[viewbox]') ? html : false)
+
+		if(viewbox)
+		{
+			const viewboxValue = viewbox.getAttribute('viewBox');
+			const viewboxParts = viewboxValue.split(/\s+/);
+
+			if(viewboxParts.length === 4)
+			{
+				return {
+					width: +viewboxParts[2] || 1,
+					height: +viewboxParts[3] || 1,
+				}
+			}
+		}
+
+		return {width: 1, height: 1};
 	}
 
 	this.getFileIndex = function(name) {

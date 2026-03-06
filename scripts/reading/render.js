@@ -367,7 +367,9 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			rendered[index] = 1;
 			renderedMagnifyingGlass[index] = 1;
 
-			let iframe = ebook.pageToIframe(ebook.page(index - 1).html);
+			const page = ebook.page(index - 1);
+
+			let iframe = ebook.pageToIframe(page.html, page.chapter);
 			let iframeMG = iframe.cloneNode(true);
 
 			let ocImg = contentRight.querySelector('.r-img-i'+index+' oc-img');
@@ -391,8 +393,8 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 
 			if(ebookConfigChanged)
 			{
-				ebook.applyConfigToHtml(iframe.contentDocument);
-				ebook.applyConfigToHtml(iframeMG.contentDocument);
+				ebook.applyConfigToHtml(iframe.contentDocument, page.chapter);
+				ebook.applyConfigToHtml(iframeMG.contentDocument, page.chapter);
 			}
 		}
 		else if(renderImages || renderCanvas)

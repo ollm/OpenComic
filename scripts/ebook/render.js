@@ -34,10 +34,10 @@ async function process(data)
 	if(data.type == 'split-in-pages')
 	{
 		book.updateConfig(data.config);
-		let pages = await book.splitInPages(data.html.documentElement, data.basePath, data.path);
+
+		const pages = await book.splitInPages(data.html.documentElement, data.basePath, data.path, data.chapter);
 
 		ipcRenderer.send('rendered-ebook', data.index, pages);
-
 		removeDocumentIframes();
 	}
 	else if(data.type == 'render-page')
@@ -45,9 +45,9 @@ async function process(data)
 		removeDocumentIframes();
 
 		book.updateConfig(data.config);
-		let pages = await book.splitInPages(data.html.documentElement, data.basePath, data.path);
 
-		let renderPageIframe = book.pageToIframe(pages[0].html);
+		const pages = await book.splitInPages(data.html.documentElement, data.basePath, data.path, data.chapter);
+		const renderPageIframe = book.pageToIframe(pages[0].html, data.chapter, true);
 
 		renderPageIframe.addEventListener('load', function(event) {
 

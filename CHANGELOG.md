@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Options in OPDS to auto-download files from the catalog [`594d69f`](https://github.com/ollm/OpenComic/commit/594d69f81e3740c0be32e284dac3aed1aba69de9)
 - Support for tabs [`d9f7fa0`](https://github.com/ollm/OpenComic/commit/d9f7fa048b743c918c44e077e0bae08705e7b8c0)
 - Option to extract document images (PDF and EPUB) [`56b0f4f`](https://github.com/ollm/OpenComic/commit/56b0f4fda8c4b174469a2088c95ab786810d59b1)
+- New: Support for fixed-layout EPUBs
 
 ##### 🐛 Bug Fixes
 
@@ -30,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Prevent crash when retrieving metadata with Sharp for many large images (Linux only) [`d5616d8`](https://github.com/ollm/OpenComic/commit/d5616d86bd38841e02bf70d4a2e2502063c45328)
 - Extract files when the file in it starts with the '-' character [`3806516`](https://github.com/ollm/OpenComic/commit/38065169d0a7583a7543154fad44351af221a23c)
 - Use reading sort for thumbnail/poster generation [`cca841e`](https://github.com/ollm/OpenComic/commit/cca841e3eacc88b60ca55d619a5f67beeef7f646)
-- Improve drag scrolling (Ignore right-click and add activation dead zone)
+- Improve drag scrolling (Ignore right-click and add activation dead zone) [`2df49c4`](https://github.com/ollm/OpenComic/commit/2df49c44ce8d3970c92d2b8b1e832e560c868674)
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 

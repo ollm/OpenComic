@@ -78,19 +78,6 @@ var file = function(path, _config = false) {
 		path = path || this.path;
 		let _realPath = realPath(path, -1);
 
-		const lastCompressed = lastCompressedFile(path);
-
-		if(lastCompressed && (compatible.compressed.pdf(lastCompressed) || compatible.compressed.epub(lastCompressed)))
-		{
-			const fileConfig = reading.getConfig(path, path, false, false, true);
-
-			if(fileConfig.readingExtractDocumentImages && config.prefixes?.epub !== 'epub-zip')
-			{
-				config.prefixes = {pdf: 'pdf-images', epub: 'epub-images'};
-				config.extractDocumentImages = true;
-			}
-		}
-
 		this.updateConfig(config);
 
 		let files = [];
@@ -213,11 +200,12 @@ var file = function(path, _config = false) {
 
 		mtime = mtime || fs.statSync(firstCompressedFileRealPath(path)).mtime.getTime();
 
-		let now = Date.now();
+		const now = Date.now();
+		let opened = this.compressedOpened[path];
 
-		if(!this.compressedOpened[path] || this.compressedOpened[path].mtimeMainCompressed != mtime) // Check if the Compressed file has been modified since the last time it was opened
+		if(!opened || opened.mtimeMainCompressed != mtime) // Check if the Compressed file has been modified since the last time it was opened
 		{
-			this.compressedOpened[path] = {
+			opened = this.compressedOpened[path] = {
 				lastUsage: now,
 				mtimeMainCompressed: mtime,
 				compressed: fileManager.fileCompressed(path, _realPath, this.config.forceType, this.config.prefixes, {log: this.config.log}),
@@ -225,18 +213,23 @@ var file = function(path, _config = false) {
 		}
 		else
 		{
-			this.compressedOpened[path].lastUsage = now;
+			opened.lastUsage = now;
 		}
 
 		this.cleanCompressedOpened();
 
+		const compressed = opened.compressed;
+
 		if(this.config.progress)
-			this.compressedOpened[path].compressed.progress = this.config.progress;
+			compressed.progress = this.config.progress;
 
 		if(this.config.fromThumbnailsGeneration)
-			this.compressedOpened[path].compressed.config.fromThumbnailsGeneration = true;
+			compressed.config.fromThumbnailsGeneration = true;
 
-		return this.compressedOpened[path].compressed;
+		if(compressed.extractDocumentImages)
+			this.config.extractDocumentImages = true;
+
+		return compressed;
 
 	}
 
@@ -970,10 +963,24 @@ var file = function(path, _config = false) {
 // Compressed files
 var fileCompressed = function(path, _realPath = false, forceType = false, prefixes = false, _config = false) {
 
+	let extractDocumentImages = false;
+
+	if(compatible.compressed.pdf(path) || compatible.compressed.epub(path))
+	{
+		const fileConfig = reading.getConfig(path, path, false, false, true);
+
+		if(fileConfig.readingExtractDocumentImages && prefixes?.epub !== 'epub-zip')
+		{
+			prefixes = {pdf: 'pdf-images', epub: 'epub-images'};
+			extractDocumentImages = true;
+		}
+	}
+
 	this.path = path;
 	this.realPath = _realPath || realPath(path, -1);
 	this.forceType = forceType;
 	this.prefixes = prefixes;
+	this.extractDocumentImages = extractDocumentImages;
 	this.virtualPath = this.path;
 	this.sha = sha1(p.normalize(path));
 
@@ -2719,8 +2726,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			this.setFileStatus(file, {extracted: false});
 		}
 
-		console.log(files);
-
 		return this.files = files;
 
 	}
@@ -2731,9 +2736,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		const self = this;
 		const only = this.config._only;
-
-		console.log(this.tmp);
-		console.log(only);
 
 		await epub.extractEpubImages(this.tmp, {
 			files: only,
@@ -2747,8 +2749,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			}
 		});
-
-		console.log('finalized');
 
 		this.setProgress(1);
 

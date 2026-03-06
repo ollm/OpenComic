@@ -2513,6 +2513,12 @@ a:hover
 	height: 54px;
 	object-fit: cover;
 	object-position: center;
+	overflow: visible;
+}
+
+.continue-reading > div > div > img[src='']
+{
+	opacity: 0;
 }
 
 .continue-reading > div > span

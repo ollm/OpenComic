@@ -4585,6 +4585,9 @@ async function fastUpdateEbookPages(readingEbook = false, resize = false)
 
 	for(let index in imagesData)
 	{
+		if(imagesData[index].fixedLayout)
+			continue;
+
 		imagesData[index].width = ebookConfig.width;
 		imagesData[index].height = ebookConfig.height;
 		imagesData[index].aspectRatio = ebookConfig.width / ebookConfig.height;
@@ -4607,7 +4610,7 @@ async function fastUpdateEbookPages(readingEbook = false, resize = false)
 		for(let i = 0, len = iframes.length; i < len; i++)
 		{
 			let iframe = iframes[i];
-			await _ebook.applyConfigToHtml(iframe.contentDocument);
+			await _ebook.applyConfigToHtml(iframe.contentDocument, JSON.parse(iframe.dataset.chapter));
 		}
 	}
 }
@@ -4666,7 +4669,12 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			images[index] = {index: index, path: path};
 			imagesPath[path] = index;
 
-			imagesData[index] = {width: ebookConfig.width, height: ebookConfig.height, aspectRatio: (ebookConfig.width / ebookConfig.height), name: page.name};
+			const chapter = page.chapter;
+
+			const width = chapter.fixedLayout ? chapter.width : ebookConfig.width;
+			const height = chapter.fixedLayout ? chapter.height : ebookConfig.height;
+
+			imagesData[index] = {width, height, aspectRatio: (width / height), name: page.name, fixedLayout: chapter.fixedLayout};
 
 			comics.push({
 				index: i + 1,
