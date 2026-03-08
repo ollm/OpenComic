@@ -8,24 +8,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Generate Sponsors 💖 in README.md
-        uses: JamesIves/github-sponsors-readme-action@v1
+        uses: JamesIves/github-sponsors-readme-action@2fd9142e765f755780202122261dc85e78459405 # v1
         with:
           token: ${{ secrets.PAT }}
           file: 'README.md'
           template: '<a href="https://github.com/{{{ login }}}"><img src="https://github.com/{{{ login }}}.png" width="50px" style="border-radius: 50px;" alt="{{{ login }}}" /></a>&nbsp;&nbsp;'
 
       - name: Generate Sponsors 💖 in FUNDING.md
-        uses: JamesIves/github-sponsors-readme-action@v1
+        uses: JamesIves/github-sponsors-readme-action@2fd9142e765f755780202122261dc85e78459405 # v1
         with:
           token: ${{ secrets.PAT }}
           file: 'FUNDING.md'
           template: '<a href="https://github.com/{{{ login }}}"><img src="https://github.com/{{{ login }}}.png" width="50px" style="border-radius: 50px;" alt="{{{ login }}}" /></a>&nbsp;&nbsp;'
 
       - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
         with:
           branch: master
           folder: '.'

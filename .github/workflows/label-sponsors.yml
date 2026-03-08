@@ -9,7 +9,7 @@ jobs:
     name: is-sponsor-label
     runs-on: ubuntu-latest
     steps:
-      - uses: JasonEtco/is-sponsor-label-action@v2.0.0
+      - uses: JasonEtco/is-sponsor-label-action@565f3cb67b3518a8aae36c3f0bce9e8513430e84 # v2.0.0
         with:
           label: sponsor 💖
         env:
