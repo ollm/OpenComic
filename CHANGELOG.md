@@ -20,7 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Options in OPDS to auto-download files from the catalog [`594d69f`](https://github.com/ollm/OpenComic/commit/594d69f81e3740c0be32e284dac3aed1aba69de9)
 - Support for tabs [`d9f7fa0`](https://github.com/ollm/OpenComic/commit/d9f7fa048b743c918c44e077e0bae08705e7b8c0)
 - Option to extract document images (PDF and EPUB) [`56b0f4f`](https://github.com/ollm/OpenComic/commit/56b0f4fda8c4b174469a2088c95ab786810d59b1)
-- New: Support for fixed-layout EPUBs
+- Support for fixed-layout EPUBs [`808c7f6`](https://github.com/ollm/OpenComic/commit/808c7f65eff7178790257d398c6bae818ebd8b17)
+- Support for right-to-left and vertical EPUBs
 
 ##### 🐛 Bug Fixes
 

@@ -399,7 +399,7 @@ function visibility(animation: boolean = true): void
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
 
-	let diff = true;
+	let diff: boolean;
 
 	let from = 0;
 	let to = 41;

@@ -1,6 +1,8 @@
 const sanitizeHtml = require('sanitize-html'),
 	url = require('url');
 
+const DEBUG = true;
+
 var ebook = function(book, config = {}) {
 
 	this.book = book;
@@ -38,7 +40,7 @@ var ebook = function(book, config = {}) {
 				if(typeof htmlString !== 'string')
 				{
 					let serializer = new XMLSerializer();
-					htmlString = serializer.serializeToString(htmlString);
+					htmlString = _this.fixCss(serializer.serializeToString(htmlString));
 				}
 
 				const _chapter = {
@@ -49,9 +51,14 @@ var ebook = function(book, config = {}) {
 				};
 
 				// Only for debug splitInPages
-				// const html = new DOMParser().parseFromString(htmlString, 'application/xhtml+xml');
-				// const data = await _this.splitInPages(html.documentElement, chapter.basePath, chapter.path, _chapter);
-				// resolve(data);
+				if(DEBUG)
+				{
+					console.log('Split in pages chapter '+i);
+					const html = new DOMParser().parseFromString(htmlString, 'application/xhtml+xml');
+					const data = await _this.splitInPages(html.documentElement, chapter.basePath, chapter.path, _chapter);
+					resolve(data);
+					return;
+				}
 
 				addToQueue(async function(data){
 
@@ -61,6 +68,9 @@ var ebook = function(book, config = {}) {
 				}, len, 'split-in-pages', _this.config, htmlString, chapter.basePath, chapter.path, _chapter);
 
 			}));
+
+			if(DEBUG)
+				await promises[i];
 		}
 
 		this.chaptersPages = await Promise.all(promises);
@@ -88,7 +98,7 @@ var ebook = function(book, config = {}) {
 				if(typeof htmlString !== 'string')
 				{
 					let serializer = new XMLSerializer();
-					htmlString = serializer.serializeToString(htmlString);
+					htmlString = _this.fixCss(serializer.serializeToString(htmlString));
 				}
 
 				const _chapter = {
@@ -151,41 +161,15 @@ var ebook = function(book, config = {}) {
 		svg: true,
 	};
 
-	this.splitInPagesIframe = async function(html, basePath) {
-
-		html = html.cloneNode(true);
-		html = await this.removeScripts(html); // This is unsafe, later the Sanitizer API would have to be applied
-		html = await this.resolvePaths(html, basePath);
-		html = await this.addOptimizations(html);
-
-		let iframe = document.createElement('iframe');
-		iframe.style.width = this.config.width+'px';
-		iframe.style.height = this.config.height+'px';
-		iframe.style.position = 'absolute';
-		iframe.style.zIndex = '1000';
-		iframe.style.backgroundColor = 'white';
-		iframe.style.visibility = 'hidden';
-		iframe.sandbox = 'allow-same-origin';
-
-		let serializer = new XMLSerializer();
-		let htmlString = serializer.serializeToString(html);
-
-		htmlString = await this.convertStringMathML(htmlString);
-
-		iframe.srcdoc = htmlString;
-
-		let _this = this;
-
-		return iframe;
-
-	}
-
 	this.splitInPages = async function(html, basePath, path = false, chapter = {}) {
 
 		html = html.cloneNode(true);
 		html = await this.removeScripts(html); // This is unsafe, later the Sanitizer API would have to be applied
 		html = await this.resolvePaths(html, basePath);
 		html = await this.applyConfigToHtml(html, chapter);
+
+		const body = html.body || html.querySelector('body');
+		body.classList.add('opencomic-split-in-pages');
 
 		const width = chapter.fixedLayout ? chapter.width : this.config.width;
 		const height = chapter.fixedLayout ? chapter.height : this.config.height;
@@ -207,9 +191,8 @@ var ebook = function(book, config = {}) {
 		//iframe.contentDocument.head.setHTML(html.querySelector('head').innerHTML, {sanitizer: new Sanitizer({allowCustomElements: true, allowElements: this.allowElements})});
 		//iframe.contentDocument.body.setHTML(html.querySelector('body').innerHTML, {sanitizer: new Sanitizer({allowCustomElements: true, allowElements: this.allowElements})});
 
-
 		let serializer = new XMLSerializer();
-		let htmlString = serializer.serializeToString(html);
+		let htmlString = this.fixCss(serializer.serializeToString(html));
 
 		//console.time('convertStringMathML');
 		htmlString = await this.convertStringMathML(htmlString);
@@ -234,81 +217,99 @@ var ebook = function(book, config = {}) {
 
 	}
 
-	this._chaptersPage = false;
-	this._chaptersPageFirst = false;
 	this._chaptersPages = [];
-	this._chaptersPagesPage = 0;
-	this._currentPageTop = 0;
 	this.calculateAndSplitParents = [];
 
-	this.splitDocumentHere = async function(newTop = false) {
+	this.cornerPage = function({top, left}) {
 
-		this._chaptersPages.push(this._chaptersPage);
+		//top++;
+		//left++;
 
-		this._chaptersPage = [];
-		this._chaptersPageFirst = true;
+		const vertical = Math.ceil((top - this.config.margin.top) / (this.config.height - this.config.margin.top - this.config.margin.bottom));
+		const horizontal = Math.ceil((left - this.config.margin.left) / (this.config.width - this.config.margin.left - this.config.margin.right));
 
-		let highMarginTop = 0;
+		return Math.max(vertical, horizontal);
 
-		for(let i = 0, len = this.calculateAndSplitParents.length; i < len; i++)
+	}
+
+	this.calculateNodePages = function(node) {
+
+		const rects = node.getClientRects();
+		const corners = [];
+
+		for(let i = 0, len = rects.length; i < len; i++)
 		{
-			let style = window.getComputedStyle(this.calculateAndSplitParents[i]);
-			let marginTop = parseInt(style.marginTop);
+			let rect = rects[i];
 
-			if(marginTop > highMarginTop)
-				highMarginTop = marginTop;
-
-			let node = this.calculateAndSplitParents[i].cloneNode(false);
-			node.style.textIndent = 'initial';
-			node.classList.remove('opencomic-separate-words');
-
-			/*let osw = node.querySelectorAll('.opencomic-separate-words');
-
-			for(let i2 = 0, len2 = osw.length; i2 < len2; i2++)
-			{
-				osw[i2].classList.remove('opencomic-separate-words');
-			}*/
-
-			this._chaptersPage.push({
-				index: i,
-				node: node,
-			});
+			corners.push(this.cornerPage({top: rect.top + 1, left: rect.left + 1}));
+			corners.push(this.cornerPage({top: rect.top + 1, left: rect.right}));
+			corners.push(this.cornerPage({top: rect.bottom, left: rect.left + 1}));
+			corners.push(this.cornerPage({top: rect.bottom, left: rect.right}));
 		}
 
-		this._currentPageTop = newTop - highMarginTop;
-
-		return true;
+		const pages = [...new Set(corners.filter(Boolean))];
+		return pages.sort(function(a, b){return a - b;});
 
 	}
 
-	this.checkIfNodeHasToSplit = function(node) {
+	this.lastSetPage = 1;
 
-		let rect = node.getBoundingClientRect();
+	this.setNodeInPage = function(page, node, index, deepClone = true, style = false) {
 
-		if(rect.top + rect.height > this._currentPageTop + (this.config.height - this.config.margin.bottom))
-			return rect.top;
+		this.lastSetPage = page;
+		const pageIndex = page - 1;
 
-		return false;
-	}
+		if(!this._chaptersPages[pageIndex])
+		{
+			this._chaptersPages[pageIndex] = [];
+			let lastNode = false;
 
-	this._calculateAndSplit = async function(parent, childs, len, hasToSplit = false, isSeparateWords = false, index = 0) {
+			for(let i = 0, len = this.calculateAndSplitParents.length; i < len; i++)
+			{
+				const node = this.calculateAndSplitParents[i].cloneNode(false);
+				node.style.textIndent = 'initial';
+				node.classList.remove('opencomic-separate-words');
 
-		this._chaptersPage.push({
+				this._chaptersPages[pageIndex].push({
+					index: i,
+					node: node,
+				});
+
+				lastNode = node;
+			}
+		}
+
+		if(!node)
+			return;
+
+		const clonedNode = node.cloneNode(deepClone);
+
+		if(style)
+		{
+			for(let key in style)
+			{
+				clonedNode.style.setProperty(key, style[key], 'important');
+			}
+		}
+
+		this._chaptersPages[pageIndex].push({
 			index: index,
-			node: parent.cloneNode(false),
+			node: clonedNode,
 		});
 
+	}
+
+	this._calculateAndSplit = async function({parent, childs, len, index = 0, currentPage = 0, fixedLayout = false}) {
+
+		this.setNodeInPage(currentPage, parent, index, false);
 		this.calculateAndSplitParents.push(parent);
 
 		let elementI = 0;
 
 		for(let i = 0; i < len; i++)
 		{
-			if(elementI !== 0)
-				this._chaptersPageFirst = false;
-
-			let child = childs[i];
-			let nodeType = child.nodeType;
+			const child = childs[i];
+			const nodeType = child.nodeType;
 
 			if(nodeType == Node.TEXT_NODE)
 			{
@@ -316,112 +317,153 @@ var ebook = function(book, config = {}) {
 
 				if(textContent.trim())
 				{
-					if(isSeparateWords || !hasToSplit)
+					const pages = [];
+
+					// console.time('createRange');
+
+					const text = child.textContent;
+					const range = document.createRange();
+
+					let start = 0;
+					let lastRectCount = 0;
+
+					for(let i = 1; i <= text.length; i++)
 					{
-						if(hasToSplit)
-							await this.splitDocumentHere(hasToSplit);
+						range.setStart(child, start);
+						range.setEnd(child, i);
 
-						this._chaptersPage.push({
-							index: index + 1,
-							node: child.cloneNode(false),
-						});
+						const rects = range.getClientRects();
+
+						const isBreak = rects.length > lastRectCount;
+						const isEnd = i === text.length;
+
+						if(isBreak || isEnd)
+						{
+							const end = isBreak ? i - 1 : i;
+							const fragment = text.slice(start, end);
+
+							const rectIndex = Math.max(0, rects.length - (isBreak ? 2 : 1));
+							const rect = rects[rectIndex];
+
+							const page = !rect ? this.lastSetPage : this.cornerPage({top: rect.top + 1, left: rect.left + 1});
+
+							if(!pages[page]) pages[page] = '';
+							pages[page] += fragment;
+
+							start = end;
+						}
+
+						lastRectCount = rects.length;
 					}
-					else
+
+					// console.timeEnd('createRange');
+					// console.time('createElements');
+
+					for(let page = 0, _len = pages.length; page < _len; page++)
 					{
-						let span = document.createElement('span');
-						span.className = 'opencomic-separate-words';
-						span.innerHTML = textContent.replace(/(\s*[^\s]+\s*)/ug, '<span>$1</span>');
-						child.parentElement.replaceChild(span, child);
+						const text = pages[page];
 
-						let _childs = span.childNodes;
-						let _len = _childs.length;
+						if(text)
+						{
+							let _index = index;
+							const style = getComputedStyle(parent);
 
-						await this._calculateAndSplit(span, _childs, _len, hasToSplit, true, index + 1, true);
+							let justify = false;
+
+							if(style.textAlign === 'justify')
+								justify = true;
+
+							if(page !== currentPage)
+							{
+								const pageIndex = page - 1;
+
+								const chapterPage = this._chaptersPages[pageIndex] || [];
+								const lastNode = chapterPage ? chapterPage[chapterPage.length - 1] : false;
+
+								if(lastNode && _index === lastNode.index)
+								{
+									this.setNodeInPage(page, parent, _index + 1, false/*, {
+										'margin-top': '0px',
+										'padding-top': '0px',
+									}*/);
+
+									_index++;
+								}
+							}
+
+							let span = document.createElement('span');
+							span.className = 'opencomic-separate-words'+(justify ? ' last-opencomic-separate-words-justify' : '');
+							span.innerHTML = text;
+							this.setNodeInPage(page, span, _index + 1);
+
+							currentPage = page;
+						}
 					}
+
+					// console.timeEnd('createElements');
 				}
 			}
 			else if(nodeType != Node.COMMENT_NODE) // Not process this nodes
 			{
-				let _hasToSplit = hasToSplit ? this.checkIfNodeHasToSplit(child) : false;
+				const pages = this.calculateNodePages(child);
+				const pagesLenght = pages.length;
+				const tag = child.tagName.toLowerCase();
 
-				let _childs = child.childNodes;
-				let _len = _childs.length;
+				const page = fixedLayout ? 1 : (pages[0] && tag !== 'br' ? pages[0] : this.lastSetPage);
 
-				if(_len === 0)
+				if(pagesLenght === 1 || pagesLenght === 0 || fixedLayout)
 				{
-					if(_hasToSplit && !this._chaptersPageFirst)
-						await this.splitDocumentHere(_hasToSplit);
-
-					this._chaptersPage.push({
-						index: index + 1,
-						node: child.cloneNode(false),
-					});
-
-					//if(_hasToSplit && this._chaptersPageFirst)
-					//	await this.splitDocumentHere(_hasToSplit);
+					this.setNodeInPage(page, child, index + 1);
 				}
 				else
 				{
-					if(_hasToSplit && !this.notSplitElements[child.tagName.toLowerCase()])
+					let _childs = child.childNodes;
+					let _len = _childs.length;
+
+					if(_len === 0 || this.notSplitElements[tag])
 					{
-						await this._calculateAndSplit(child, _childs, _len, _hasToSplit, isSeparateWords, index + 1);
+						this.setNodeInPage(page, child, index + 1, false);
 					}
 					else
 					{
-						if(_hasToSplit && !this._chaptersPageFirst)
-							await this.splitDocumentHere(_hasToSplit);
-
-						this._chaptersPage.push({
-							index: index + 1,
-							node: child.cloneNode(true),
-						});
-
-						//if(_hasToSplit && this._chaptersPageFirst)
-						//	await this.splitDocumentHere(_hasToSplit);
+						await this._calculateAndSplit({parent: child, childs: _childs, len: _len, index: index + 1, currentPage: page});
 					}
 				}
-
-				elementI++;
 			}
 		}
 
 		this.calculateAndSplitParents.pop();
 
-		return this._chaptersPage;
-
 	}
 
 	this.calculateAndSplit = async function(iframe, path, chapter = {}) {
 
-		this._chaptersPage = [];
-		this._chaptersPageFirst = true;
 		this._chaptersPages = [];
-		this._chaptersPagesPage = 0;
-		this._currentPageTop = 0;
 		this.calculateAndSplitParents = [];
 
 		let parent = iframe.contentDocument.body;
 		let childs = parent.childNodes;
 		let len = childs.length;
 
-		let hasToSplit = chapter.fixedLayout || this.checkIfNodeHasToSplit(parent);
-
-		await this._calculateAndSplit(parent, childs, len, hasToSplit);
-		this._chaptersPages.push(this._chaptersPage);
+		await this._calculateAndSplit({parent, childs, len, fixedLayout: chapter.fixedLayout});
 
 		this.chapterIds = {};
+		this._chaptersPages = this._chaptersPages.filter(Boolean);
 
 		for(let i = 0, len = this._chaptersPages.length; i < len; i++)
 		{
+			const pages = this._chaptersPages[i]; // || ;
+
 			this._chaptersPages[i] = {
 				path: path,
-				ids: await this.getPageIds(this._chaptersPages[i]),
-				html: await this.arrayBodyToHtml(iframe.contentDocument.head, this._chaptersPages[i]),
+				ids: await this.getPageIds(pages),
+				html: await this.arrayBodyToHtml(iframe.contentDocument, pages, i, len),
 				chapter,
 			};
 		}
 
-		iframe.remove();
+		if(!DEBUG)
+			iframe.remove();
 
 		return this._chaptersPages;
 
@@ -468,11 +510,19 @@ var ebook = function(book, config = {}) {
 		return ids;
 	}
 
-	this.arrayBodyToHtml = async function(head, arrayBody) {
+	this.arrayBodyToHtml = async function(contentDocument, arrayBody, index, length) {
 
+		const attributes = contentDocument.documentElement.attributes;
+
+		const head = contentDocument.head;
 		let doc = document.implementation.createHTMLDocument();
 
-		doc.head.innerHTML = head.innerHTML;
+		for(let attr of attributes)
+		{
+			doc.documentElement.setAttribute(attr.name, attr.value);
+		}
+
+		doc.head.innerHTML = head.innerHTML// .replace(/column-width:\s*[0-9]+px;\s*/, '');
 
 		let base = false;
 		let parents = [];
@@ -484,6 +534,9 @@ var ebook = function(book, config = {}) {
 			if(i == 0)
 			{
 				doc.body.outerHTML = node.node.outerHTML;
+				doc.body.classList.remove('opencomic-split-in-pages');
+				if(index !== 0) doc.body.classList.add('opencomic-not-first-page');
+				if(index === length - 1) doc.body.classList.add('opencomic-last-page');
 				base = doc.body;
 			}
 			else
@@ -547,7 +600,7 @@ var ebook = function(book, config = {}) {
 		// doc = this.applyConfigToHtml(doc);
 
 		let serializer = new XMLSerializer();
-		return serializer.serializeToString(doc);
+		return this.fixCss(serializer.serializeToString(doc));
 
 	}
 
@@ -572,6 +625,13 @@ var ebook = function(book, config = {}) {
 			this.applyGeneralStyle(head);
 
 		return doc;
+
+	}
+
+	this.fixCss = function(htmlString) {
+
+		htmlString = htmlString.replace(/\*\:has\(&gt; \.last-opencomic-separate-words/, '*:has(> .last-opencomic-separate-words')
+		return htmlString;
 
 	}
 
@@ -626,6 +686,7 @@ var ebook = function(book, config = {}) {
 
 		const allCss = [];
 		const bodyCss = [];
+		const bodyCssNotSplit = [];
 
 		if(this.config.colors && this.config.colors.background)
 		{
@@ -646,7 +707,7 @@ var ebook = function(book, config = {}) {
 			allCss.push('font-style: italic !important');
 
 		if(this.config.textAlign)
-			bodyCss.push('text-align: '+this.config.textAlign+' !important');
+			bodyCssNotSplit.push('text-align: '+this.config.textAlign+' !important');
 
 		if(this.config.margin !== false)
 			bodyCss.push('margin: '+this.config.margin.top+'px '+this.config.margin.right+'px '+this.config.margin.bottom+'px '+this.config.margin.left+'px !important');
@@ -666,13 +727,40 @@ var ebook = function(book, config = {}) {
 		let pSpacing = (this.config.pSpacing !== false ? this.config.pSpacing : 0);
 
 		let css = `
+
 			body {
 				word-break: break-word;
+				column-fill: auto;
+				column-width: ${(this.config.width - horizontalMargin * 2)}px;
+				column-gap: 0px;
+				/*column-wrap: wrap;*/
+				width: ${(this.config.width - horizontalMargin * 2)}px;
+				height: ${(this.config.height - verticalMargin * 2)}px;
 				`+(bodyCss.join('; '))+`
 			}
 
-			body * {
+			body.opencomic-split-in-pages {
+				direction: ltr !important;
+			}
+
+			body:not(.opencomic-split-in-pages) {
+				width: auto;
+				height: auto;
+			}
+
+			body.opencomic-not-first-page {
+				column-width: initial;
+			}
+
+			body:not(.opencomic-split-in-pages) {
+				`+(bodyCssNotSplit.join('; '))+`
+			}
+
+			body:not(.opencomic-split-in-pages) * {
 				`+(this.config.textAlign ? 'text-align: '+this.config.textAlign+' !important;' : '')+`
+			}
+
+			body * {
 				`+(allCss.join('; '))+`
 			}
 
@@ -696,19 +784,27 @@ var ebook = function(book, config = {}) {
 			}
 
 			/* Fix justified content */
-			body .last-opencomic-separate-words:after {
+			${(!this.config.textAlign ? `body:not(.opencomic-split-in-pages):not(.opencomic-last-page) *:has(> .last-opencomic-separate-words.last-opencomic-separate-words-justify) {
+				text-align-last: justify !important;
+			}` : ``)}
+
+			${(this.config.textAlign === 'justify' ? `body:not(.opencomic-split-in-pages):not(.opencomic-last-page) *:has(> .last-opencomic-separate-words) {
+				text-align-last: justify !important;
+			}` : ``)}
+
+			/*body .last-opencomic-separate-words:after {
 				content: '';
 				display: inline-block;
 				width: 100%;
 				visibility: hidden
-			}
+			}*/
 		`;
 
 		let style = head.querySelector('.opencomic-style') || document.createElement('style')
 		style.className = 'opencomic-style';
 		style.type = 'text/css';
 		style.innerHTML = '';
-		style.appendChild(document.createTextNode(css))
+		style.appendChild(document.createTextNode(css));
 		head.appendChild(style);
 	}
 
@@ -756,92 +852,6 @@ var ebook = function(book, config = {}) {
 
 		return html.replace(/(<\/?)m:([a-z0-9]+)/ug, '$1$2');
 
-	}
-
-	this._separateWords = async function(parent, childs) {
-
-		for(let i = 0, len = childs.length; i < len; i++)
-		{
-			let child = childs[i];
-
-			if(child.nodeType == Node.TEXT_NODE)
-			{
-				let textContent = child.textContent;
-
-				if(!/^\s*([^\s]+)\s*$/.test(textContent))
-				{
-					let template = document.createElement('template');
-					template.innerHTML = textContent.replace(/([^\s]+)/ug, '<span>$1</span>');
-					parent.replaceChild(template.content, child);
-				}
-			}
-			else
-			{
-				let tagName = child.tagName;
-
-				if(tagName !== 'm:math' && tagName !== 'math' && tagName !== 'M:MATH' && tagName !== 'MATH')
-				{
-					await this._separateWords(child, child.childNodes);
-				}
-				else if(tagName === 'm:math' || tagName === 'M:MATH')
-				{
-					let newMath = document.createElement('math');
-					newMath.innerHTML = child.innerHTML.replace(/(<\/?)m:([a-z0-9]+)/ug, '$1$2');
-					parent.replaceChild(newMath, child);
-				}
-			}
-		}
-
-		return;
-
-	}
-
-	this.separateWords = async function(html) {
-
-		console.time('separateWords');
-
-		let body = html.querySelector('body');
-		await this._separateWords(body, body.childNodes);
-
-		/*let items = html.querySelectorAll('body *:not(:empty)');
-
-		for(let i = 0, len = items.length; i < len; i++)
-		{
-			let item = items[i];
-
-			for(let c = 0, len2 = item.childNodes.length; c < len2; c++)
-			{
-				let child = item.childNodes[c];
-
-				if(child.nodeType == Node.TEXT_NODE)
-				{
-					let textContent = child.textContent;
-
-					if(!/^\s*([^\s]+)\s*$/.test(textContent))
-					{
-						let template = document.createElement('template');
-						template.innerHTML = textContent.replace(/([^\s]+)/ug, '<span>$1</span>');
-						item.replaceChild(template.content, child);
-					}
-				}
-			}
-		}*/
-	
-		console.timeEnd('separateWords');
-
-		return html;
-	}
-
-	this.addOptimizations = async function(html) {
-
-		html.style.overflow = 'hidden';
-		/*let style = document.createElement('style')
-		style.className = 'opencomic-optimizations';
-		style.type = 'text/css';
-		style.appendChild(document.createTextNode('body {visibility: hidden;opacity: 0;}'))
-		html.querySelector('head').appendChild(style);*/
-
-		return html;
 	}
 
 	this.removeFileScheme = function(path) {

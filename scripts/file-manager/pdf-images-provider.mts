@@ -137,7 +137,7 @@ export default class PdfImagesProvider {
 		//	return;
 
 		const filters: string[] = [];
-		let filtersMatch: string = '';
+		let filtersMatch: string;
 
 		const multiFilters = /\/Filter\s*\[/.test(header);
 
