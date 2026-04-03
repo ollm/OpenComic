@@ -1434,18 +1434,30 @@ a:hover
 	animation: 4s blink normal 1s infinite ease-in-out;
 }
 
-.medium-list .medium-list-image
+.medium-list img
 {
 	width: 56px;
 	height: 56px;
 	border-radius: 12px;
 	float: left;
 	margin: -1px 11px 0px -1px;
-	float: left;
-	background-size: cover;
-	background-position: 50%;
-	background-color: rgba(0, 0, 0, 0.1);
-	transition: 0.3s;
+	object-fit: cover;
+	overflow-clip-margin: unset;
+	display: block;
+	background-color: #fff;
+	visibility: hidden;
+}
+
+.medium-list img.a
+{
+	animation-name: show-in;
+	animation-duration: 0.2s;
+	animation-fill-mode: forwards;
+}
+
+.medium-list img.border
+{
+	visibility: visible;
 	border: 1px solid var(--md-sys-color-surface-variant);
 }
 

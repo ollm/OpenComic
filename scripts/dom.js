@@ -432,7 +432,7 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 			}
 			else if(file.folder || file.compressed)
 			{
-				let images = await getFolderThumbnails(filePath, false, i, visibleItems.start, visibleItems.end);
+				let images = await getFolderThumbnails(filePath, false, i, visibleItems.start, visibleItems.end, config.view);
 
 				pathFiles.push({
 					sha: file.sha,
@@ -974,6 +974,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 			len = comics.length;
 		}
 
+		const view = (sortAndView ? sortAndView.view : config.viewIndex);
+
 		if(len)
 		{
 			// Comic reading progress
@@ -988,11 +990,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 				return (sortInvert) ? -(orderBy(a, b, order, orderKey, orderKey2)) : orderBy(a, b, order, orderKey, orderKey2);
 			});
 
-			let visibleItems = calculateVisibleItems((sortAndView ? sortAndView.view : config.viewIndex), keepScroll);
+			let visibleItems = calculateVisibleItems(view, keepScroll);
 
 			for(let i = 0; i < len; i++)
 			{
-				let images = await getFolderThumbnails(comics[i].path, false, i, visibleItems.start, visibleItems.end);
+				let images = await getFolderThumbnails(comics[i].path, false, i, visibleItems.start, visibleItems.end, view);
 
 				comics[i].sha = sha1(comics[i].path);
 				comics[i].poster = images.poster;
@@ -1016,7 +1018,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		handlebarsContext.comicsReadingProgress = false;
 		handlebarsContext.comicsReadingProgressCurrentPath = false;
 
-		template.loadContentRight('index.content.right.'+(sortAndView ? sortAndView.view : config.viewIndex)+'.html', animation, keepScroll);
+		template.loadContentRight('index.content.right.'+view+'.html', animation, keepScroll);
 
 		cache.resumeQueue();
 		threads.resume('folderThumbnails');
@@ -1563,7 +1565,7 @@ async function _getFolderThumbnails(file, images, _images, path, folderSha, isAs
 	return {poster: poster, images: images};
 }
 
-async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0, end = 99999)
+async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0, end = 99999, view = false)
 {
 	const getProgress = handlebarsContext.page.fadeCompleted || handlebarsContext.page.progressBar || handlebarsContext.page.progressPages || handlebarsContext.page.progressPercent;
 	const folderSha = sha1(path+(forceSize ? '?size='+forceSize : ''));
@@ -1584,44 +1586,51 @@ async function getFolderThumbnails(path, forceSize = false, index = 0, start = 0
 	
 	if(index >= start && index <= end)
 	{
-		try
+		if(view !== 'list')
 		{
-			let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
-			file.updateConfig({cacheOnly: true});
-
-			let _images = cache.folderThumbnails.get(path, forceSize);
-
-			if(_images)
+			try
 			{
-				_images = _images.poster ? _images.poster : _images.images;
-				addToQueue = 1;
+				let file = fileManager.file(path, {fromThumbnailsGeneration: true, subtask: true});
+				file.updateConfig({cacheOnly: true});
+
+				let _images = cache.folderThumbnails.get(path, forceSize);
+
+				if(_images)
+				{
+					_images = _images.poster ? _images.poster : _images.images;
+					addToQueue = 1;
+				}
+				else
+				{
+					_images = await file.images(4, false, true);
+					cache.folderThumbnails.set(path, _images);
+				}
+
+				_images = await _getFolderThumbnails(file, images, _images, path, folderSha, false, forceSize);
+
+				file.destroy();
+
+				poster = _images.poster;
+				images = _images.poster ? false : _images.images;
 			}
-			else
+			catch(error)
 			{
-				_images = await file.images(4, false, true);
-				cache.folderThumbnails.set(path, _images);
+				if(error.message && /notCacheOnly/.test(error.message))
+				{
+					addToQueue = 1;
+				}
+				else
+				{
+					console.error(error);
+
+					dom.compressedError(error, false);
+					fileManager.requestFileAccess.check(path, error);
+				}
 			}
-
-			_images = await _getFolderThumbnails(file, images, _images, path, folderSha, false, forceSize);
-
-			file.destroy();
-
-			poster = _images.poster;
-			images = _images.poster ? false : _images.images;
 		}
-		catch(error)
+		else
 		{
-			if(error.message && /notCacheOnly/.test(error.message))
-			{
-				addToQueue = 1;
-			}
-			else
-			{
-				console.error(error);
-
-				dom.compressedError(error, false);
-				fileManager.requestFileAccess.check(path, error);
-			}
+			addToQueue = 2;
 		}
 
 		try
