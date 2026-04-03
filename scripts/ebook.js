@@ -227,8 +227,11 @@ var ebook = function(book, config = {}) {
 		//top++;
 		//left++;
 
-		const vertical = Math.ceil((top - this.config.margin.top) / (this.config.height - this.config.margin.top - this.config.margin.bottom));
-		const horizontal = Math.ceil((left - this.config.margin.left) / (this.config.width - this.config.margin.left - this.config.margin.right));
+		const config = this.config;
+		const margin = config.margin || {top: 0, left: 0, right: 0, bottom: 0};
+
+		const vertical = Math.ceil((top - margin.top) / (config.height - margin.top - margin.bottom));
+		const horizontal = Math.ceil((left - margin.left) / (config.width - margin.left - margin.right));
 
 		return Math.max(vertical, horizontal);
 
@@ -241,12 +244,13 @@ var ebook = function(book, config = {}) {
 
 		for(let i = 0, len = rects.length; i < len; i++)
 		{
-			let rect = rects[i];
+			const rect = rects[i];
+			const {top, left, right, bottom} = rect;
 
-			corners.push(this.cornerPage({top: rect.top + 1, left: rect.left + 1}));
-			corners.push(this.cornerPage({top: rect.top + 1, left: rect.right}));
-			corners.push(this.cornerPage({top: rect.bottom, left: rect.left + 1}));
-			corners.push(this.cornerPage({top: rect.bottom, left: rect.right}));
+			corners.push(this.cornerPage({top: top + 1, left: left + 1}));
+			corners.push(this.cornerPage({top: top + 1, left: right}));
+			corners.push(this.cornerPage({top: bottom, left: left + 1}));
+			corners.push(this.cornerPage({top: bottom, left: right}));
 		}
 
 		const pages = [...new Set(corners.filter(Boolean))];
@@ -676,60 +680,62 @@ var ebook = function(book, config = {}) {
 		const bodyCss = [];
 		const bodyCssNotSplit = [];
 
-		if(this.config.colors && this.config.colors.background)
+		const config = this.config;
+
+		if(config.colors && config.colors.background)
 		{
-			bodyCss.push('background-color: '+this.config.colors.background+' !important');
-			bodyCss.push('color: '+this.config.colors.text+' !important');
+			bodyCss.push('background-color: '+config.colors.background+' !important');
+			bodyCss.push('color: '+config.colors.text+' !important');
 		}
 
-		if(this.config.fontFamily)
-			allCss.push('font-family: "'+this.config.fontFamily+'" !important');
+		if(config.fontFamily)
+			allCss.push('font-family: "'+config.fontFamily+'" !important');
 
-		if(this.config.fontSize > 10)
-			bodyCss.push('font-size: '+this.config.fontSize+'px !important');
+		if(config.fontSize > 10)
+			bodyCss.push('font-size: '+config.fontSize+'px !important');
 
-		if(this.config.fontWeight > 0)
-			allCss.push('font-weight: '+this.config.fontWeight+' !important');
+		if(config.fontWeight > 0)
+			allCss.push('font-weight: '+config.fontWeight+' !important');
 
-		if(this.config.italic)
+		if(config.italic)
 			allCss.push('font-style: italic !important');
 
-		if(this.config.textAlign)
-			bodyCssNotSplit.push('text-align: '+this.config.textAlign+' !important');
+		if(config.textAlign)
+			bodyCssNotSplit.push('text-align: '+config.textAlign+' !important');
 
-		if(this.config.margin !== false)
-			bodyCss.push('margin: '+this.config.margin.top+'px '+this.config.margin.right+'px '+this.config.margin.bottom+'px '+this.config.margin.left+'px !important');
+		if(config.margin !== false)
+			bodyCss.push('margin: '+config.margin.top+'px '+config.margin.right+'px '+config.margin.bottom+'px '+config.margin.left+'px !important');
 
-		if(this.config.letterSpacing > -0.1)
-			allCss.push('letter-spacing: '+this.config.letterSpacing+'em !important');
+		if(config.letterSpacing > -0.1)
+			allCss.push('letter-spacing: '+config.letterSpacing+'em !important');
 
-		if(this.config.wordSpacing > -0.4)
-			allCss.push('word-spacing: '+this.config.wordSpacing+'em !important');
+		if(config.wordSpacing > -0.4)
+			allCss.push('word-spacing: '+config.wordSpacing+'em !important');
 
-		if(this.config.lineHeight > 0.3)
-			bodyCss.push('line-height: '+this.config.lineHeight+'em !important');
+		if(config.lineHeight > 0.3)
+			bodyCss.push('line-height: '+config.lineHeight+'em !important');
 
-		if(this.config.forceLeftToRight)
+		if(config.forceLeftToRight)
 		{
 			bodyCss.push('direction: ltr !important');
 			bodyCss.push('writing-mode: horizontal-tb !important');
 		}
 
-		let horizontalMargin = (this.config.margin !== false ? this.config.margin.left : 0);
-		let verticalMargin = (this.config.margin !== false ? this.config.margin.top : 0);
+		let horizontalMargin = (config.margin !== false ? config.margin.left : 0);
+		let verticalMargin = (config.margin !== false ? config.margin.top : 0);
 
-		let pSpacing = (this.config.pSpacing !== false ? this.config.pSpacing : 0);
+		let pSpacing = (config.pSpacing !== false ? config.pSpacing : 0);
 
 		let css = `
 
 			body {
 				word-break: break-word;
 				column-fill: auto;
-				column-width: ${(this.config.width - horizontalMargin * 2)}px;
+				column-width: ${(config.width - horizontalMargin * 2)}px;
 				column-gap: 0px;
 				/*column-wrap: wrap;*/
-				width: ${(this.config.width - horizontalMargin * 2)}px;
-				height: ${(this.config.height - verticalMargin * 2)}px;
+				width: ${(config.width - horizontalMargin * 2)}px;
+				height: ${(config.height - verticalMargin * 2)}px;
 				`+(bodyCss.join('; '))+`
 			}
 
@@ -751,7 +757,7 @@ var ebook = function(book, config = {}) {
 			}
 
 			body:not(.opencomic-split-in-pages) * {
-				`+(this.config.textAlign ? 'text-align: '+this.config.textAlign+' !important;' : '')+`
+				`+(config.textAlign ? 'text-align: '+config.textAlign+' !important;' : '')+`
 			}
 
 			body * {
@@ -759,8 +765,8 @@ var ebook = function(book, config = {}) {
 			}
 
 			body p {
-				`+(this.config.pSpacing > -1 ? 'margin: '+this.config.pSpacing+'px 0px !important;' : '')+`
-				`+(this.config.pLineHeight > 0.3 ? 'line-height: '+this.config.pLineHeight+'em !important;' : '')+`
+				`+(config.pSpacing > -1 ? 'margin: '+config.pSpacing+'px 0px !important;' : '')+`
+				`+(config.pLineHeight > 0.3 ? 'line-height: '+config.pLineHeight+'em !important;' : '')+`
 			}
 
 			body img {
@@ -774,15 +780,15 @@ var ebook = function(book, config = {}) {
 			}
 
 			body a {
-				`+(this.config.colors && this.config.colors.links ? 'color: '+this.config.colors.links+' !important;' : '')+`
+				`+(config.colors && config.colors.links ? 'color: '+config.colors.links+' !important;' : '')+`
 			}
 
 			/* Fix justified content */
-			${(!this.config.textAlign ? `body:not(.opencomic-split-in-pages):not(.opencomic-last-page) *:has(> .last-opencomic-separate-words.last-opencomic-separate-words-justify) {
+			${(!config.textAlign ? `body:not(.opencomic-split-in-pages):not(.opencomic-last-page) *:has(> .last-opencomic-separate-words.last-opencomic-separate-words-justify) {
 				text-align-last: justify !important;
 			}` : ``)}
 
-			${(this.config.textAlign === 'justify' ? `body:not(.opencomic-split-in-pages):not(.opencomic-last-page) *:has(> .last-opencomic-separate-words) {
+			${(config.textAlign === 'justify' ? `body:not(.opencomic-split-in-pages):not(.opencomic-last-page) *:has(> .last-opencomic-separate-words) {
 				text-align-last: justify !important;
 			}` : ``)}
 

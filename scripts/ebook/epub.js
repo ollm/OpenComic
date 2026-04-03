@@ -468,7 +468,7 @@ var epub = function(path, config = {}) {
 		return;
 	}
 
-	this.epubPages = async function(config, callback = false) {
+	this.epubPages = async function(config, callback = false, fromCache = false) {
 
 		await this.openEpub();
 		let files = await this.readEpubFiles();
@@ -515,6 +515,19 @@ var epub = function(path, config = {}) {
 		if(chapters.length > 0)
 		{
 			this.ebook = ebook.load({chapters: chapters});
+
+			if(fromCache)
+			{
+				this.ebook.updateConfig(config);
+				this.ebook.chaptersPages = fromCache.chaptersPages;
+				this.ebook.chaptersPagesInfo = fromCache.chaptersPagesInfo;
+				this.ebook.pages = this.ebook.pagesToOnedimension(this.ebook.chaptersPages);
+				this.ebook.toc = fromCache.toc;
+				this.ebook.tocPages = fromCache.tocPages;
+
+				return {pages: this.ebook.pages, toc: fromCache.toc, landmarks: false};
+			}
+
 			let pages = await this.ebook.chaptersToPages(config, async function(index, data) {
 
 				if(callback) callback(chapters[index].name);
@@ -534,7 +547,7 @@ var epub = function(path, config = {}) {
 			return {pages: pages, toc: toc, landmarks: false/*landmarks*/};
 		}
 
-		return {pages: [], tox: []};
+		return {pages: [], toc: []};
 	}
 
 	this.fixedLayoutSize = function(html) {

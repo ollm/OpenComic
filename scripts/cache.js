@@ -316,48 +316,51 @@ function flushJsonMemory()
 	jsonMemory = {};
 }
 
-async function writeJson(name, json)
+async function writeJson(name, json, folder = false)
 {
+	folder = folder || cacheFolder;
 	setJsonInMemory(name, json);
 
 	let encoded, path;
 
 	if(zstd !== false)
 	{
-		path = p.join(cacheFolder, name+'.zstd');
+		path = p.join(folder, name+'.zstd');
 		encoded = await zstdEncoder.encode(Buffer.from(JSON.stringify(json)));
 	}
 	else
 	{
-		path = p.join(cacheFolder, name);
+		path = p.join(folder, name);
 		encoded = JSON.stringify(json);
 	}
 
 	fs.writeFile(path, encoded, function(){});
 }
 
-function writeJsonSync(name, json)
+function writeJsonSync(name, json, folder = false)
 {
+	folder = folder || cacheFolder;
 	setJsonInMemory(name, json);
 
 	let encoded, path;
 
 	if(zstd !== false)
 	{
-		path = p.join(cacheFolder, name+'.zstd');
+		path = p.join(folder, name+'.zstd');
 		encoded = zstdEncoder.encodeSync(Buffer.from(JSON.stringify(json)));
 	}
 	else
 	{
-		path = p.join(cacheFolder, name);
+		path = p.join(folder, name);
 		encoded = JSON.stringify(json);
 	}
 
 	fs.writeFileSync(path, encoded, function(){});
 }
 
-function readFile(name)
+function readFile(name, folder = false)
 {
+	folder = folder || cacheFolder;
 	let path = p.join(cacheFolder, name);
 
 	if(fs.existsSync(path))
@@ -366,14 +369,16 @@ function readFile(name)
 		return false;
 }
 
-function readJson(name)
+function readJson(name, folder = false)
 {
+	folder = folder || cacheFolder;
+
 	let json = readJsonInMemory(name);
 	if(json) return json;
 
 	if(zstd !== false)
 	{
-		const path = p.join(cacheFolder, name+'.zstd');
+		const path = p.join(folder, name+'.zstd');
 
 		if(fs.existsSync(path))
 		{
@@ -397,7 +402,7 @@ function readJson(name)
 	}
 	else
 	{
-		const path = p.join(cacheFolder, name);
+		const path = p.join(folder, name);
 
 		if(fs.existsSync(path))
 		{
@@ -430,7 +435,7 @@ function validateJson(name)
 		if(fs.existsSync(path))
 		{
 			let json;
-
+ 
 			try
 			{
 				json = fs.readFileSync(path);
@@ -500,9 +505,10 @@ function validateJson(name)
 	}
 }
 
-function existsFile(name)
+function existsFile(name, folder = false)
 {
-	let path = p.join(cacheFolder, name);
+	folder = folder || cacheFolder;
+	let path = p.join(folder, name);
 
 	if(fs.existsSync(path))
 		return true;
@@ -510,9 +516,10 @@ function existsFile(name)
 		return false;
 }
 
-function existsJson(name)
+function existsJson(name, folder = false)
 {
-	let path = p.join(cacheFolder, (zstd !== false) ? name+'.zstd' : name);
+	folder = folder || cacheFolder;
+	let path = p.join(folder, (zstd !== false) ? name+'.zstd' : name);
 
 	if(fs.existsSync(path))
 		return true;
@@ -520,9 +527,10 @@ function existsJson(name)
 		return false;
 }
 
-function deleteJson(name)
+function deleteJson(name, folder = false)
 {
-	let path = p.join(cacheFolder, (zstd !== false) ? name+'.zstd' : name);
+	folder = folder || cacheFolder;
+	let path = p.join(folder, (zstd !== false) ? name+'.zstd' : name);
 
 	if(fs.existsSync(path))
 	{

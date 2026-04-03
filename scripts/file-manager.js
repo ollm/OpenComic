@@ -1553,6 +1553,56 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.saveEbookPagesCache = async function(pages, config = {}) {
+
+		const _isServer = isServer(this.realPath);
+		const mtime = !_isServer ? fs.statSync(firstCompressedFile(this.realPath)).mtime.getTime() : 1;
+
+		const hash = sha1(this.sha+'-'+JSON.stringify(config));
+
+		const cacheFile = 'ebookPages-'+hash+'.json';
+		const folderPath = p.join(tempFolder, 'ebook-pages-cache');
+
+		if(!fs.existsSync(folderPath))
+			fs.mkdirSync(folderPath, {recursive: true});
+
+		const ebook = await this.ebook();
+
+		const chaptersPages = ebook.chaptersPages;
+		const chaptersPagesInfo = ebook.chaptersPagesInfo;
+		const tocPages = ebook.tocPages;
+
+		cache.writeJson(cacheFile, {mtime, toc: pages.toc, chaptersPages, chaptersPagesInfo, tocPages}, folderPath);
+
+	}
+
+	this.ebookPagesCache = async function(config = {}) {
+
+		if(this.config.cache)
+		{
+			const _isServer = isServer(this.realPath);
+			const mtime = !_isServer ? fs.statSync(firstCompressedFile(this.realPath)).mtime.getTime() : 1;
+
+			const hash = sha1(this.sha+'-'+JSON.stringify(config));
+
+			const cacheFile = 'ebookPages-'+hash+'.json';
+			const folderPath = p.join(tempFolder, 'ebook-pages-cache');
+
+			const json = cache.readJson(cacheFile, folderPath);
+
+			if(json && (json.mtime == mtime || _isServer))
+			{
+				const path = p.join(folderPath, cacheFile+(cache.zstd !== false ? '.zstd' : ''));
+				fileManager.setTmpUsage(path);
+
+				return json;
+			}
+		}
+
+		return false;
+
+	}
+
 	this.ebookPages = async function(config = {}) {
 
 		this.getFeatures();
@@ -2683,19 +2733,30 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		let totalFiles = files.length;
 		let progressIndex = 1;
 
-		if(epub.extracted)
-			this.setProgress(0.5);
+		let pages = await this.ebookPagesCache(config);
+
+		if(!pages)
+		{
+			if(epub.extracted)
+				this.setProgress(0.5);
+			else
+				this.setProgress(0);
+
+			pages = await epub.epubPages(config, function(){
+
+				// _this.setFileStatus(file, {extracted: true, width: _this.config.width});
+				_this.setProgress(epub.extracted ? (0.5 + progressIndex++ / totalFiles / 2) : (progressIndex++ / totalFiles));
+
+			});
+
+			await this.saveEbookPagesCache(pages, config);
+
+			this.setProgress(1);
+		}
 		else
-			this.setProgress(0);
-
-		let pages = await epub.epubPages(config, function(){
-
-			// _this.setFileStatus(file, {extracted: true, width: _this.config.width});
-			_this.setProgress(epub.extracted ? (0.5 + progressIndex++ / totalFiles / 2) : (progressIndex++ / totalFiles));
-
-		});
-
-		this.setProgress(1);
+		{
+			pages = await epub.epubPages(config, false, pages);
+		}
 
 		this.timeEnd('ebookPagesEpub: '+this.path);
 
