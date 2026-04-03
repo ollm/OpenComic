@@ -198,6 +198,7 @@
 			"increaseFontSize": "เพิ่มขนาดอักษร",
 			"decreaseFontSize": "ลดขนาดอักษร",
 			"fontFamily": "แบบอักษร",
+			"forceLeftToRight": "",
 			"useEbookFont": "ใช้แบบอักษรจากอีบุ๊ก",
 			"useEbookTheme": "ใช้ธีมจากอีบุ๊ก",
 			"useAppTheme": "ใช้ตามธีมแอปฯ",

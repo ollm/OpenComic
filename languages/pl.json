@@ -198,6 +198,7 @@
 			"increaseFontSize": "Zwiększ rozmiar czcionki",
 			"decreaseFontSize": "Zmniejsz rozmiar czcionki",
 			"fontFamily": "Krój czcionki",
+			"forceLeftToRight": "",
 			"useEbookFont": "Użyj czcionki eBooka",
 			"useEbookTheme": "Użyj motywu eBooka",
 			"useAppTheme": "Użyj motywu aplikacji",

@@ -198,6 +198,7 @@
 			"increaseFontSize": "",
 			"decreaseFontSize": "",
 			"fontFamily": "Typsnitt",
+			"forceLeftToRight": "",
 			"useEbookFont": "Använd e-bokens typsnitt",
 			"useEbookTheme": "Använd e-bokens tema",
 			"useAppTheme": "Använd appens tema",

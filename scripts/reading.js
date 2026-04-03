@@ -4556,6 +4556,7 @@ async function getEbookConfig(configReadingEbook = false)
 		fontSize: configReadingEbook.fontSize,
 		fontWeight: configReadingEbook.fontWeight,
 		italic: configReadingEbook.italic,
+		forceLeftToRight: configReadingEbook.forceLeftToRight,
 		textAlign: configReadingEbook.textAlign,
 		margin: {
 			top: verticalMargin,

@@ -198,6 +198,7 @@
 			"increaseFontSize": "글자 크게",
 			"decreaseFontSize": "글자 작게",
 			"fontFamily": "글꼴",
+			"forceLeftToRight": "",
 			"useEbookFont": "eBook 폰트 사용",
 			"useEbookTheme": "eBook 테마 사용",
 			"useAppTheme": "앱 테마 사용",

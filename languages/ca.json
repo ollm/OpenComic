@@ -198,6 +198,7 @@
 			"increaseFontSize": "Augmentar la mida de la font",
 			"decreaseFontSize": "Disminuir la mida de la font",
 			"fontFamily": "Família tipogràfica",
+			"forceLeftToRight": "Forçar la direcció de lectura d'esquerra a dreta",
 			"useEbookFont": "Utilitza la lletra de l'eBook",
 			"useEbookTheme": "Utilitza el tema de l'eBook",
 			"useAppTheme": "Utilitza el tema de l'app",

@@ -198,6 +198,7 @@
 			"increaseFontSize": "افزایش اندازه فونت",
 			"decreaseFontSize": "کاهش اندازه فونت",
 			"fontFamily": "نوع فونت",
+			"forceLeftToRight": "",
 			"useEbookFont": "استفاده از فونت eBook",
 			"useEbookTheme": "استفاده از پوسته eBook",
 			"useAppTheme": "استفاده از پوسته برنامه",

@@ -198,6 +198,7 @@
 			"increaseFontSize": "Збільшити розмір шрифту",
 			"decreaseFontSize": "Зменшити розмір шрифту",
 			"fontFamily": "Шрифт",
+			"forceLeftToRight": "",
 			"useEbookFont": "Використати шрифт електронної книги",
 			"useEbookTheme": "Використати тему електронної книги",
 			"useAppTheme": "Використати тему застосунку",

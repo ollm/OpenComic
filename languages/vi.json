@@ -198,6 +198,7 @@
 			"increaseFontSize": "",
 			"decreaseFontSize": "",
 			"fontFamily": "Phông chữ",
+			"forceLeftToRight": "",
 			"useEbookFont": "Dùng font của eBook",
 			"useEbookTheme": "Dùng chủ đề của eBook",
 			"useAppTheme": "Dùng chủ đề của ứng dụng",

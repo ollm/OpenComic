@@ -198,6 +198,7 @@
 			"increaseFontSize": "Schriftgröße erhöhen",
 			"decreaseFontSize": "Schriftgröße verringern",
 			"fontFamily": "Schriftart",
+			"forceLeftToRight": "",
 			"useEbookFont": "Die E-Book-Schriftart verwenden",
 			"useEbookTheme": "Das E-Book-Thema verwenden",
 			"useAppTheme": "Das App-Thema verwenden",

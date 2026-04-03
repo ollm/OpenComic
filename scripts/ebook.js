@@ -1,7 +1,7 @@
 const sanitizeHtml = require('sanitize-html'),
 	url = require('url');
 
-const DEBUG = true;
+const DEBUG = false;
 
 var ebook = function(book, config = {}) {
 
@@ -30,12 +30,14 @@ var ebook = function(book, config = {}) {
 		let _this = this;
 		let promises = [];
 
-		for(let i = 0, len = this.book.chapters.length; i < len; i++)
+		const chapters = this.book.chapters;
+
+		for(let i = 0, len = chapters.length; i < len; i++)
 		{
 			promises.push(new Promise(async function(resolve){
 
-				const chapter = _this.book.chapters[i];
-				let htmlString = _this.book.chapters[i].html;
+				const chapter = chapters[i];
+				let htmlString = chapters[i].html;
 
 				if(typeof htmlString !== 'string')
 				{
@@ -254,29 +256,32 @@ var ebook = function(book, config = {}) {
 
 	this.lastSetPage = 1;
 
-	this.setNodeInPage = function(page, node, index, deepClone = true, style = false) {
+	this.setNodeInPage = function(page, node, index, deepClone = true) {
 
 		this.lastSetPage = page;
 		const pageIndex = page - 1;
+		const chaptersPages = this._chaptersPages;
 
-		if(!this._chaptersPages[pageIndex])
+		let currentPage = chaptersPages[pageIndex];
+
+		if(!currentPage)
 		{
-			this._chaptersPages[pageIndex] = [];
-			let lastNode = false;
+			currentPage = chaptersPages[pageIndex] = [];
+			const parents = this.calculateAndSplitParents;
 
-			for(let i = 0, len = this.calculateAndSplitParents.length; i < len; i++)
+			for(let i = 0, len = parents.length; i < len; i++)
 			{
-				const node = this.calculateAndSplitParents[i].cloneNode(false);
-				node.style.textIndent = 'initial';
-				node.classList.remove('opencomic-separate-words');
+				const parentNode = parents[i].cloneNode(false);
+				parentNode.style.textIndent = 'initial';
 
-				this._chaptersPages[pageIndex].push({
+				if(parentNode.classList.contains('opencomic-separate-words'))
+					parentNode.classList.remove('opencomic-separate-words');
+
+				currentPage.push({
 					index: i,
-					node: node,
+					node: parentNode,
 				});
-
-				lastNode = node;
-			}
+ 			}
 		}
 
 		if(!node)
@@ -284,15 +289,7 @@ var ebook = function(book, config = {}) {
 
 		const clonedNode = node.cloneNode(deepClone);
 
-		if(style)
-		{
-			for(let key in style)
-			{
-				clonedNode.style.setProperty(key, style[key], 'important');
-			}
-		}
-
-		this._chaptersPages[pageIndex].push({
+		currentPage.push({
 			index: index,
 			node: clonedNode,
 		});
@@ -318,8 +315,6 @@ var ebook = function(book, config = {}) {
 				if(textContent.trim())
 				{
 					const pages = [];
-
-					// console.time('createRange');
 
 					const text = child.textContent;
 					const range = document.createRange();
@@ -356,9 +351,6 @@ var ebook = function(book, config = {}) {
 						lastRectCount = rects.length;
 					}
 
-					// console.timeEnd('createRange');
-					// console.time('createElements');
-
 					for(let page = 0, _len = pages.length; page < _len; page++)
 					{
 						const text = pages[page];
@@ -382,10 +374,7 @@ var ebook = function(book, config = {}) {
 
 								if(lastNode && _index === lastNode.index)
 								{
-									this.setNodeInPage(page, parent, _index + 1, false/*, {
-										'margin-top': '0px',
-										'padding-top': '0px',
-									}*/);
+									this.setNodeInPage(page, parent, _index + 1, false);
 
 									_index++;
 								}
@@ -399,8 +388,6 @@ var ebook = function(book, config = {}) {
 							currentPage = page;
 						}
 					}
-
-					// console.timeEnd('createElements');
 				}
 			}
 			else if(nodeType != Node.COMMENT_NODE) // Not process this nodes
@@ -441,20 +428,21 @@ var ebook = function(book, config = {}) {
 		this._chaptersPages = [];
 		this.calculateAndSplitParents = [];
 
-		let parent = iframe.contentDocument.body;
-		let childs = parent.childNodes;
-		let len = childs.length;
+		const parent = iframe.contentDocument.body;
+		const childs = parent.childNodes;
+		const len = childs.length;
 
 		await this._calculateAndSplit({parent, childs, len, fixedLayout: chapter.fixedLayout});
 
 		this.chapterIds = {};
 		this._chaptersPages = this._chaptersPages.filter(Boolean);
+		const chaptersPages = this._chaptersPages;
 
-		for(let i = 0, len = this._chaptersPages.length; i < len; i++)
+		for(let i = 0, len = chaptersPages.length; i < len; i++)
 		{
-			const pages = this._chaptersPages[i]; // || ;
+			const pages = chaptersPages[i]; // || ;
 
-			this._chaptersPages[i] = {
+			chaptersPages[i] = {
 				path: path,
 				ids: await this.getPageIds(pages),
 				html: await this.arrayBodyToHtml(iframe.contentDocument, pages, i, len),
@@ -720,6 +708,12 @@ var ebook = function(book, config = {}) {
 
 		if(this.config.lineHeight > 0.3)
 			bodyCss.push('line-height: '+this.config.lineHeight+'em !important');
+
+		if(this.config.forceLeftToRight)
+		{
+			bodyCss.push('direction: ltr !important');
+			bodyCss.push('writing-mode: horizontal-tb !important');
+		}
 
 		let horizontalMargin = (this.config.margin !== false ? this.config.margin.left : 0);
 		let verticalMargin = (this.config.margin !== false ? this.config.margin.top : 0);
@@ -989,19 +983,21 @@ var ebook = function(book, config = {}) {
 		let chaptersIdPage = [];
 		let index = 1;
 
-		for(let i = 0, len = this.chaptersPages.length; i < len; i++)
-		{
-			let pages = this.chaptersPages[i];
+		const chaptersPages = this.chaptersPages;
 
-			let ids = {'': index};
+		for(let i = 0, len = chaptersPages.length; i < len; i++)
+		{
+			const pages = chaptersPages[i];
+			const ids = {'': index};
 
 			for(let i2 = 0, len2 = pages.length; i2 < len2; i2++)
 			{
-				let page = pages[i2];
+				const page = pages[i2];
+				const idsArray = page.ids;
 
-				for(let i3 = 0, len3 = page.ids.length; i3 < len3; i3++)
+				for(let i3 = 0, len3 = idsArray.length; i3 < len3; i3++)
 				{
-					let id = page.ids[i3];
+					const id = idsArray[i3];
 
 					if(!ids[id])
 						ids[id] = index;
@@ -1013,17 +1009,17 @@ var ebook = function(book, config = {}) {
 			chaptersIdPage.push(ids);
 		}
 
-		let hrefPage = {};
+		const hrefPage = {};
 
 		for(let i = 0, len = this.book.chapters.length; i < len; i++)
 		{
-			let spine = this.book.chapters[i].spine;
-			let href = spine.href;
+			const spine = this.book.chapters[i].spine;
+			const href = spine.href;
 
 			for(let id in chaptersIdPage[i])
 			{
-				let page = chaptersIdPage[i][id];
-				let _href = href+(id ? '#'+id : '');
+				const page = chaptersIdPage[i][id];
+				const _href = href+(id ? '#'+id : '');
 
 				if(!hrefPage[_href])
 					hrefPage[_href] = page;
@@ -1032,10 +1028,10 @@ var ebook = function(book, config = {}) {
 
 		for(let href in hrefPage)
 		{
-			let page = hrefPage[href];
-			let sections = href.split('/'); // p.sep, check seperator in windows
+			const page = hrefPage[href];
+			const sections = href.split('/'); // p.sep, check seperator in windows
 
-			let len = sections.length;
+			const len = sections.length;
 			let _href = sections[len - 1];
 
 			if(!hrefPage[_href])
@@ -1146,8 +1142,8 @@ async function nextJobToRender(index = false, maxThreads = false)
 
 					averageJobTimes = [];
 
-					// For check performance only
-					console.log('Average Job Time: '+(averageJobTime / len));
+					if(len > 0)
+						console.log('Average Job Time: '+(averageJobTime / len));
 
 					closeAllRendersDelayed();
 				}

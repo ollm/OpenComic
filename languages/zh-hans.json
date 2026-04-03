@@ -198,6 +198,7 @@
 			"increaseFontSize": "增加字体大小",
 			"decreaseFontSize": "减小字体大小",
 			"fontFamily": "字体系列",
+			"forceLeftToRight": "",
 			"useEbookFont": "使用电子书字体",
 			"useEbookTheme": "使用电子书主题",
 			"useAppTheme": "使用应用程序主题",

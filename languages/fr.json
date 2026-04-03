@@ -198,6 +198,7 @@
 			"increaseFontSize": "Augmenter la taille de police",
 			"decreaseFontSize": "Diminuer la taille de police",
 			"fontFamily": "Famille de police",
+			"forceLeftToRight": "",
 			"useEbookFont": "Utiliser la police eBook",
 			"useEbookTheme": "Utiliser le thème eBook",
 			"useAppTheme": "Utiliser le thème de l’application",

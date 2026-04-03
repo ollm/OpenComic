@@ -21,7 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support for tabs [`d9f7fa0`](https://github.com/ollm/OpenComic/commit/d9f7fa048b743c918c44e077e0bae08705e7b8c0)
 - Option to extract document images (PDF and EPUB) [`56b0f4f`](https://github.com/ollm/OpenComic/commit/56b0f4fda8c4b174469a2088c95ab786810d59b1)
 - Support for fixed-layout EPUBs [`808c7f6`](https://github.com/ollm/OpenComic/commit/808c7f65eff7178790257d398c6bae818ebd8b17)
-- Support for right-to-left and vertical EPUBs
+- Support for right-to-left and vertical EPUBs [`08543d8`](https://github.com/ollm/OpenComic/commit/08543d8962fc341a8c78c4bda1a69870959d7fc4)
+- Option to force left-to-right reading direction in EPUBs
 
 ##### 🐛 Bug Fixes
 

@@ -198,6 +198,7 @@
 			"increaseFontSize": "تكبير الخط",
 			"decreaseFontSize": "تصغير الخط",
 			"fontFamily": "نوع الخط",
+			"forceLeftToRight": "",
 			"useEbookFont": "استخدم خط الكتاب الإلكتروني",
 			"useEbookTheme": "استخدم مظهر الكتاب الإلكتروني",
 			"useAppTheme": "استخدم مظهر البرنامج",

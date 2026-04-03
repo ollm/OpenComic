@@ -198,6 +198,7 @@
 			"increaseFontSize": "Yazı tipi boyutunu artır",
 			"decreaseFontSize": "Yazı tipi boyutunu azalt",
 			"fontFamily": "Yazı tipi ailesi",
+			"forceLeftToRight": "",
 			"useEbookFont": "E-kitap yazı tipini kullan",
 			"useEbookTheme": "E-kitap temasını kullan",
 			"useAppTheme": "Uygulama temasını kullan",

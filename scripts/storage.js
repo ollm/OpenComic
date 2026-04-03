@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 144; // Update this if readingPagesConfig is updated
+const changes = 145; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -85,6 +85,7 @@ const readingPagesConfig = {
 		ratio: 1.4,
 		fontSize: 20,
 		fontFamily: '',
+		forceLeftToRight: false,
 		textAlign: false,
 		italic: false,
 		fontWeight: 0,

@@ -198,6 +198,7 @@
 			"increaseFontSize": "フォントを大きく",
 			"decreaseFontSize": "フォントを小さく",
 			"fontFamily": "フォント ファミリ",
+			"forceLeftToRight": "",
 			"useEbookFont": "eBook 用フォントを使用",
 			"useEbookTheme": "eBook テーマを使用",
 			"useAppTheme": "アプリのテーマを使用",
