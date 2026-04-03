@@ -3,14 +3,14 @@
 		<div class="menu-simple-content">
 			<div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-selection-menu'); electronRemote.getCurrentWindow().webContents.copy();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-selection-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.copy();">
 					<i class="material-icon menu-simple-icon-first">content_copy</i>
 					<span>{{language.global.contextMenu.copy}}</span>
 				</div>
 
 				<div class="menu-simple-separator separator-remove"></div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-remove gamepad-item" onclick="events.desactiveMenu('#global-selection-menu'); electronRemote.getCurrentWindow().webContents.selectAll();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-selection-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.selectAll();">
 					<i class="material-icon menu-simple-icon-first">select_all</i>
 					{{language.global.contextMenu.selectAll}}
 				</div>
@@ -27,17 +27,17 @@
 		<div class="menu-simple-content">
 			<div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.cut();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.cut();">
 					<i class="material-icon menu-simple-icon-first">content_cut</i>
 					<span>{{language.global.contextMenu.cut}}</span>
 				</div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.copy();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.copy();">
 					<i class="material-icon menu-simple-icon-first">content_copy</i>
 					<span>{{language.global.contextMenu.copy}}</span>
 				</div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.paste();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.paste();">
 					<i class="material-icon menu-simple-icon-first">content_paste</i>
 					<span>{{language.global.contextMenu.paste}}</span>
 				</div>
@@ -51,12 +51,12 @@
 
 				<div class="menu-simple-separator separator-remove"></div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.undo();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.undo();">
 					<i class="material-icon menu-simple-icon-first">undo</i>
 					<span>{{language.global.contextMenu.undo}}</span>
 				</div>
 
-				<div class="menu-simple-element menu-simple-element-little context-menu-favorite gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.redo();">
+				<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="events.desactiveMenu('#global-input-menu'); currentContextMenuInput.focus(); electronRemote.getCurrentWindow().webContents.redo();">
 					<i class="material-icon menu-simple-icon-first">redo</i>
 					<span>{{language.global.contextMenu.redo}}</span>
 				</div>

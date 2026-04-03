@@ -44,6 +44,9 @@ function clickTapZone(event, button)
 	if(reading.abortClick(event) && button != 'rightClick' && button != 'middleClick')
 		return false;
 
+	if(reading.ebookHasSelection)
+		return false;
+
 	const contentRight = template._contentRight();
 	const rect = contentRight.getBoundingClientRect();
 

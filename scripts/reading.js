@@ -1081,6 +1081,24 @@ function goToPage(page)
 		goToFolder(page);
 }
 
+function goToEbookId(id, href)
+{
+	const hrefPage = _ebook.hrefPage;
+
+	if(hrefPage[href])
+		return goToPage(hrefPage[href]);
+
+	const chaptersIdPage = _ebook.chaptersIdPage;
+
+	for(const index in chaptersIdPage)
+	{
+		const ids = chaptersIdPage[index];
+
+		if(ids[id])
+			return goToPage(ids[id]);
+	}
+}
+
 var pageRangeHistory = [];
 
 function pageRange(page, end)
@@ -3137,6 +3155,9 @@ function disableOnScroll(disable = true)
 
 function setReadingDragScroll(dragScroll)
 {
+	if(readingDragScroll && readingDragScroll.start)
+		readingDragScroll.endResolve();
+
 	readingDragScroll = dragScroll;
 }
 
@@ -4792,6 +4813,7 @@ function applyMoveZoomWithMouse(pageX = false, pageY = false)
 
 // Events functions
 var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
+var ebookHasSelection = false;
 
 function pointermove(event)
 {
@@ -4952,7 +4974,7 @@ function pointermove(event)
 
 		if(!readingDragScroll.start)
 		{
-			if(Math.abs(pageY - readingDragScroll.pageY) > 16)
+			if(Math.abs(pageY - readingDragScroll.pageY) > 16 && !ebookHasSelection)
 			{
 				readingDragScroll.pageY = pageY;
 				readingDragScroll.start = true;
@@ -5205,7 +5227,7 @@ var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMous
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
 {
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false;
+	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
 
 	isLoaded = false;
 	magnifyingGlassPosition.mode = false;
@@ -5293,6 +5315,12 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 				var pageY = e.originalEvent.touches ? e.originalEvent.touches[0].pageY : (e.pageY ? e.pageY : e.clientY);
 
+				if(readingDragScroll.endPromise)
+					readingDragScroll.endResolve();
+
+				let endResolve = false;
+				const endPromise = new Promise(resolve => endResolve = resolve);
+
 				readingDragScroll = {
 					start: false,
 					pageY: pageY,
@@ -5302,6 +5330,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 						time: performance.now(),
 						pageY: pageY,
 					}],
+					endPromise,
+					endResolve,
 				};
 
 				content.stop(true);
@@ -5925,6 +5955,7 @@ module.exports = {
 	goToPage: goToPage,
 	goToImage: goToImage,
 	goToFolder: goToFolder,
+	goToEbookId: goToEbookId,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; calculateRealReadingDirection(v1); goToIndex(v1, v2, v3, v4)},
 	goToChapterProgress: goToChapterProgress,
 	setNextOpenChapterProgress: setNextOpenChapterProgress,
@@ -6006,6 +6037,7 @@ module.exports = {
 	imagesFullPosition: function(){return imagesFullPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
 	setReadingDragScroll: setReadingDragScroll,
+	get readingDragScroll(){return readingDragScroll},
 	scrollNextOrPrevComic: scrollNextOrPrevComic,
 	hideContent: hideContent,
 	hideContentLeft: hideContentLeft,
@@ -6021,6 +6053,8 @@ module.exports = {
 	readingFile: function(){return readingFile},
 	fastUpdateEbookPages: fastUpdateEbookPages,
 	generateEbookPagesDelayed: generateEbookPagesDelayed,
+	set ebookHasSelection(value){ebookHasSelection = value},
+	get ebookHasSelection(){return ebookHasSelection},
 	getConfig: getConfig,
 	isEbook: function(){return readingIsEbook},
 	isCanvas: function(){return readingIsCanvas},

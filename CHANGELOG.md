@@ -23,7 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support for fixed-layout EPUBs [`808c7f6`](https://github.com/ollm/OpenComic/commit/808c7f65eff7178790257d398c6bae818ebd8b17)
 - Support for right-to-left and vertical EPUBs [`08543d8`](https://github.com/ollm/OpenComic/commit/08543d8962fc341a8c78c4bda1a69870959d7fc4)
 - Option to force left-to-right reading direction in EPUBs [`ffb7afb`](https://github.com/ollm/OpenComic/commit/ffb7afb29bde92edeee4fbf90d8e31c53ae06c94)
-- Cache rendered EPUB files
+- Cache rendered EPUB files [`2813629`](https://github.com/ollm/OpenComic/commit/28136294ce5ba4c36fd5f2499fbc6b34b43b205e)
+- Support for text selection and clickable links in EPUBs
+
 
 ##### 🐛 Bug Fixes
 

@@ -1,6 +1,8 @@
 const sanitizeHtml = require('sanitize-html'),
 	url = require('url');
 
+const events = require('./ebook/events.mjs').default;
+
 const DEBUG = false;
 
 var ebook = function(book, config = {}) {
@@ -906,10 +908,12 @@ var ebook = function(book, config = {}) {
 		iframe.style.width = configSize ? this.config.width+'px' : '100%';
 		iframe.style.height = configSize ? this.config.height+'px' : '100%';
 		iframe.style.backgroundColor = this.config.colors && this.config.colors.background ? this.config.colors.background : 'white';
-		iframe.style.pointerEvents = 'none';
+		// iframe.style.pointerEvents = 'none';
 		iframe.sandbox = 'allow-same-origin';
 		iframe.srcdoc = html;
 		iframe.dataset.chapter = JSON.stringify(chapter);
+
+		events.listen(iframe);
 
 		return iframe;
 
@@ -980,13 +984,15 @@ var ebook = function(book, config = {}) {
 
 	this.toc = false;
 	this.tocPages = [];
+	this.chaptersIdPage = [];
+	this.hrefPage = {};
 
 	// This is slow, it should be optimized
 	this.generateTocWithPages = function(toc) {
 
 		this.tocPages = [];
 
-		let chaptersIdPage = [];
+		let chaptersIdPage = this.chaptersIdPage = [];
 		let index = 1;
 
 		const chaptersPages = this.chaptersPages;
@@ -1015,7 +1021,7 @@ var ebook = function(book, config = {}) {
 			chaptersIdPage.push(ids);
 		}
 
-		const hrefPage = {};
+		const hrefPage = this.hrefPage = {};
 
 		for(let i = 0, len = this.book.chapters.length; i < len; i++)
 		{
@@ -1051,6 +1057,9 @@ var ebook = function(book, config = {}) {
 					hrefPage[_href] = page;
 			}
 		}
+
+		this.hrefPage = hrefPage;
+		this.chaptersIdPage = chaptersIdPage;
 
 		return this.toc = this._generateTocWithPages(toc, hrefPage);
 

@@ -524,6 +524,8 @@ var epub = function(path, config = {}) {
 				this.ebook.pages = this.ebook.pagesToOnedimension(this.ebook.chaptersPages);
 				this.ebook.toc = fromCache.toc;
 				this.ebook.tocPages = fromCache.tocPages;
+				this.ebook.hrefPage = fromCache.hrefPage;
+				this.ebook.chaptersIdPage = fromCache.chaptersIdPage;
 
 				return {pages: this.ebook.pages, toc: fromCache.toc, landmarks: false};
 			}
