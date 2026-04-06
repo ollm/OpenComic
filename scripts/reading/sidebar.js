@@ -3,6 +3,10 @@ var images = false, comics = false, showed = {}, active = true, status = {}, fil
 function sizes(_images, _comics)
 {
 	if(file) file.destroy();
+
+	if(config.readingDisableThumbnails)
+		return;
+
 	file = fileManager.file(reading.readingCurrentPath(), {log: false});
 
 	images = _images;
@@ -162,7 +166,7 @@ function disableEvent(delay = 0)
 
 function scroll(event)
 {
-	if(!activeEvent || status.showed === status.all)
+	if(!activeEvent || status.showed === status.all || config.readingDisableThumbnails)
 		return;
 
 	const windowHeight = window.innerHeight;

@@ -164,11 +164,11 @@ function eventButton()
 	app.event(floatingActionButton, 'mouseleave', floatingActionButtonOut);
 }
 
-var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, showedHoverText = false, currentPageX, currentPageY;
+var eventHoverTimeout, eventHoverTimeoutThis, eventHoverTimeoutActive = false, showedHoverText = false, currentPageX, currentPageY, recentlyHiddenText = false, recentlyHiddenTextST = false;
 
 function hoverEnter(event)
 {
-	const hoverDelay = +this.dataset.hoverDelay || 300;
+	const hoverDelay = recentlyHiddenText ? 10 : (+this.dataset.hoverDelay || 300);
 
 	eventHoverTimeoutActive = hoverDelay;
 	eventHoverTimeoutThis = this;
@@ -678,6 +678,8 @@ function showHoverText()
 	if(!eventHoverTimeoutThis.checkVisibility({opacityProperty: true, visibilityProperty: true}))
 		return;
 
+	clearTimeout(recentlyHiddenTextST);
+
 	const parent = document.querySelector('.global-elements .hover');
 	const hover = document.querySelector('.global-elements .hover > div');
 	hover.innerHTML = eventHoverTimeoutThis.getAttribute('hover-text');
@@ -728,6 +730,14 @@ function hideHoverText()
 		$('.global-elements .hover.a').removeClass('a').addClass('d');
 
 		showedHoverText = false;
+		recentlyHiddenText = true;
+
+		clearTimeout(recentlyHiddenTextST);
+		recentlyHiddenTextST = setTimeout(function(){
+
+			recentlyHiddenText = false;
+
+		}, 100);
 	}
 }
 

@@ -297,6 +297,7 @@
 			"scrollWithMouse": "Défilement auto en déplaçant verticalement le curseur au milieu de l’écran (désactive le défilement par glisser-déposer)",
 			"goNextPrevChapterWithScroll": "Aller au chapitre suivant/précédent avec la molette (Lecture verticale)",
 			"turnPagesWithMouseWheel": "Tourner les pages avec la molette (Zoom uniquement avec la touche Ctrl enfoncée)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Sensibilité de la molette lors du zoom",
 			"rotateHorizontalsAnticlockwise": "Lors de la rotation des images horizontales, pivoter dans le sens anti-horaire",
 			"startReadingInFullScreen": "Démarrer la lecture en plein écran",

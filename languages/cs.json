@@ -297,6 +297,7 @@
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
 			"turnPagesWithMouseWheel": "",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",

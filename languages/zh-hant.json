@@ -297,6 +297,7 @@
 			"scrollWithMouse": "沿螢幕邊緣移動滑鼠可捲動(停用拖放捲動)",
 			"goNextPrevChapterWithScroll": "以滑鼠滾動切換至下一章/上一章(垂直閱讀)",
 			"turnPagesWithMouseWheel": "以滑鼠滾輪翻頁(僅按住 Ctrl 鍵時可縮放)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "縮放時滑鼠滾輪靈敏度",
 			"rotateHorizontalsAnticlockwise": "採逆時針方向旋轉水平圖像",
 			"startReadingInFullScreen": "啟動全螢幕閱讀",

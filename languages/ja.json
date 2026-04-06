@@ -297,6 +297,7 @@
 			"scrollWithMouse": "画面端でカーソルを移動してスクロール（ドラッグでのスクロールは無効化）",
 			"goNextPrevChapterWithScroll": "マウススクロールで次/前の章に移動（縦スクロール時）",
 			"turnPagesWithMouseWheel": "マウスホイールでページめくり（Ctrlキーを押しながらでズーム）",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "ズーム時のマウスホイール感度",
 			"rotateHorizontalsAnticlockwise": "横向き画像を回転するとき反時計回りにする",
 			"startReadingInFullScreen": "読書を全画面で開始",

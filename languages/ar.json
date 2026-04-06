@@ -297,6 +297,7 @@
 			"scrollWithMouse": "التصفح من خلال تحريك الماوس ناحية الحواف (يتم تعطيل التصفح بالسحب والإفلات)",
 			"goNextPrevChapterWithScroll": "الانتقال للفصل التالي/السابق باستخدام التصفح بالماوس (وضع القراءة العمودي)",
 			"turnPagesWithMouseWheel": "",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "حساسية عجلة الماوس عند التكبير",
 			"rotateHorizontalsAnticlockwise": "تدوير الصور الأفقية بعكس اتجاه عقارب الساعة",
 			"startReadingInFullScreen": "بدء القراءة في وضع كامل الشاشة",

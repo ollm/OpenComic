@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to force left-to-right reading direction in EPUBs [`ffb7afb`](https://github.com/ollm/OpenComic/commit/ffb7afb29bde92edeee4fbf90d8e31c53ae06c94)
 - Cache rendered EPUB files [`2813629`](https://github.com/ollm/OpenComic/commit/28136294ce5ba4c36fd5f2499fbc6b34b43b205e)
 - Support for text selection and clickable links in EPUBs [`f66e3a2`](https://github.com/ollm/OpenComic/commit/f66e3a24bce4da4ee236d92e19693ed1d2b533b0)
+- Option to disable thumbnails while reading and show filenames instead
 
 
 ##### 🐛 Bug Fixes
@@ -37,7 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Extract files when the file in it starts with the '-' character [`3806516`](https://github.com/ollm/OpenComic/commit/38065169d0a7583a7543154fad44351af221a23c)
 - Use reading sort for thumbnail/poster generation [`cca841e`](https://github.com/ollm/OpenComic/commit/cca841e3eacc88b60ca55d619a5f67beeef7f646)
 - Improve drag scrolling (Ignore right-click and add activation dead zone) [`2df49c4`](https://github.com/ollm/OpenComic/commit/2df49c44ce8d3970c92d2b8b1e832e560c868674)
-- Thumbnails are still generated in list view
+- Thumbnails are still generated in list view [`cf4a20a`](https://github.com/ollm/OpenComic/commit/cf4a20abf51b8869e4e6929d7819a12069329a9a)
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 

@@ -9,6 +9,8 @@ const domPoster = require(p.join(appDir, '.dist/dom/poster.js')),
 	history = require(p.join(appDir, '.dist/dom/history.js')),
 	scroll = require(p.join(appDir, '.dist/dom/scroll.js'));
 
+const diff = require(p.join(appDir, '.dist/diff.mjs')).default;
+
 /*Page - Index*/
 
 function orderBy(a, b, mode, key = false, key2 = false)
@@ -2964,6 +2966,18 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	if(isEbook)
 		comics = [];
+
+	if(config.readingDisableThumbnails) // Only used if thumbnails are disabled
+	{
+		const nameDiff = diff.list(comics.map((comic) => comic.name), ' - ');
+
+		comics = comics.map(function(comic, index){
+
+			comic.nameDiff = nameDiff[index];
+			return comic;
+
+		});
+	}
 
 	handlebarsContext.comics = comics;
 	handlebarsContext.previousComic = skipPreviousComic;

@@ -297,6 +297,7 @@
 			"scrollWithMouse": "Auto-scroll when vertically moving the cursor in the middle of the screen (Disables drag and drop scrolling)",
 			"goNextPrevChapterWithScroll": "Go next/previous chapter with mouse scroll (Vertical reading)",
 			"turnPagesWithMouseWheel": "Turn pages with mouse wheel (Zoom only with Ctrl key pressed)",
+			"disableThumbnails": "Disable thumbnails (Show filenames)",
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
 			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
 			"startReadingInFullScreen": "Start reading in full screen",

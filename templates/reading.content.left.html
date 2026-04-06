@@ -1,13 +1,19 @@
 <div class="reading-left-images" style="opacity: 0;">
 	{{#each comics}}
-	<div class="reading-left r-l-i{{index}}" onclick="{{#unless folder}}reading.goToImage({{index}}){{else}}reading.goToFolder({{index}}){{/unless}}">
-		<div class="reading-number">{{index}}</div>
+	<div class="reading-left r-l-i{{index}} hover-text" onclick="{{#unless folder}}reading.goToImage({{index}}){{else}}reading.goToFolder({{index}}){{/unless}}" hover-text="{{name}}" data-hover-delay="600" data-detect-overflow-disabled=".reading-images-name">
+		<div class="reading-number{{#if @root.config.readingDisableThumbnails}} compact{{/if}}">{{index}}</div>
 		{{#if folder}}
 		<i class="material-icon">folder</i>
 		{{else}}
-		<div class="reading-images">
-			<img class="sha-image-{{sha}} index-image-{{index}}" data-index="{{index}}">
-		</div>
+			{{#if @root.config.readingDisableThumbnails}}
+			<div class="reading-images-name body-medium">
+				{{nameDiff}}
+			</div>
+			{{else}}
+			<div class="reading-images">
+				<img class="sha-image-{{sha}} index-image-{{index}}" data-index="{{index}}">
+			</div>
+			{{/if}}
 		{{/if}}
 	</div>
 	{{/each}}

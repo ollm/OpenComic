@@ -297,6 +297,7 @@
 			"scrollWithMouse": "Przewijaj, przesuwając kursor wzdłuż krawędzi ekranu (wyłącza przewijanie przez przeciągnij i upuść)",
 			"goNextPrevChapterWithScroll": "Przechodź do następnego/poprzedniego rozdziału kółkiem myszy (czytanie pionowe)",
 			"turnPagesWithMouseWheel": "Przewracaj strony kółkiem myszy (powiększanie tylko z wciśniętym klawiszem Ctrl)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Czułość kółka myszy podczas powiększania",
 			"rotateHorizontalsAnticlockwise": "Obracając obrazy poziome, rób to w kierunku przeciwnym do ruchu wskazówek zegara",
 			"startReadingInFullScreen": "Rozpoczynaj czytanie w trybie pełnoekranowym",

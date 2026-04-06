@@ -297,6 +297,7 @@
 			"scrollWithMouse": "Ekranın kenarları boyunca fareyi hareket ettirerek kaydır (Sürükle ve bırak ile sayfa çevirmeyi devre dışı bırakır)",
 			"goNextPrevChapterWithScroll": "Fare kaydırması ile sonraki/önceki bölüme git (Dikey okuma modu)",
 			"turnPagesWithMouseWheel": "Fare tekerleği ile sayfaları çevir (Yalnızca Ctrl tuşu basılıyken yakınlaştırır)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Yakınlaştırma sırasında fare tekerleği hassasiyeti",
 			"rotateHorizontalsAnticlockwise": "Yatay resimleri döndürürken saat yönünün tersine çevir",
 			"startReadingInFullScreen": "Okumaya her zaman tam ekranda başla",

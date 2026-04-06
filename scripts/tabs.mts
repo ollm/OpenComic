@@ -531,6 +531,7 @@ function start(openLastActiveTab: boolean = false): void
 	});
 
 	app.event('.tabs-bar > div', 'mousewheel', dom.header.wheel);
+	showHoverText();
 
 }
 

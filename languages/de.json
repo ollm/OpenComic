@@ -297,6 +297,7 @@
 			"scrollWithMouse": "Scrollen durch Bewegen des Cursors an den Bildschirmrändern (Deaktiviert das Scrollen per Drag & Drop)",
 			"goNextPrevChapterWithScroll": "Zum nächsten/vorherigen Kapitel mit dem Mausrad scrollen (Vertikales Lesen)",
 			"turnPagesWithMouseWheel": "Seiten mit dem Mausrad umblättern (Zoom nur bei gedrückter Strg-Taste)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Mausrad-Empfindlichkeit beim Zoomen",
 			"rotateHorizontalsAnticlockwise": "Beim Drehen horizontaler Bilder gegen den Uhrzeigersinn drehen",
 			"startReadingInFullScreen": "Lesen im Vollbildmodus starten",

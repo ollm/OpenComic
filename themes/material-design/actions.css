@@ -280,6 +280,7 @@
 	left: 0px;
 	margin-left: -250px;
 	visibility: hidden;
+	pointer-events: none;
 }
 
 .hover.a

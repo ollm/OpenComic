@@ -130,6 +130,20 @@
 	opacity: 1;
 }
 
+.reading-images-name
+{
+	/*width: 80px;
+	margin-left: calc(100% - 80px);*/
+	width: 110px;
+	margin-left: calc(100% - 110px);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	font-size: 15px;
+	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
+}
+
 .reading-number
 {
 	width: calc(100% - 96px);
@@ -143,6 +157,11 @@
 	top: 50%;
 	margin-top: -9px;
 	transition: 0.2s color;
+}
+
+.reading-number.compact
+{
+	width: calc(100% - 126px);
 }
 
 .reading-body

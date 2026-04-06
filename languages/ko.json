@@ -297,6 +297,7 @@
 			"scrollWithMouse": "화면 가장자리에서 커서 움직이면 자동 스크롤 (드래그 스크롤 비활성화)",
 			"goNextPrevChapterWithScroll": "마우스 스크롤로 다음/이전 챕터 이동 (세로 스크롤 시)",
 			"turnPagesWithMouseWheel": "마우스 휠로 페이지 넘기기 (Ctrl 누른 상태에서만 줌)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "줌 상태에서의 마우스 휠 감도",
 			"rotateHorizontalsAnticlockwise": "가로 이미지 회전 시 반시계 방향으로 회전",
 			"startReadingInFullScreen": "읽기 시작 시 바로 전체 화면으로",

@@ -88,6 +88,7 @@
 		"7zip-bin-full": "^26.0.1",
 		"basic-ftp": "^5.2.0",
 		"bezier-js": "^6.1.4",
+		"diff": "^8.0.4",
 		"discord-rpc": "^4.0.1",
 		"electron-json-storage": "^4.6.0",
 		"electron-window-state": "^5.0.3",

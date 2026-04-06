@@ -297,6 +297,7 @@
 			"scrollWithMouse": "Desplazamiento automático al mover el puntero verticalmente en el centro de la pantalla (Desactiva desplazamiento mediante arrastrar y soltar)",
 			"goNextPrevChapterWithScroll": "Ir al capítulo siguiente/anterior con el desplazamiento del ratón (Lectura vertical)",
 			"turnPagesWithMouseWheel": "Pasar páginas con la rueda del ratón (Zoom solo con la tecla Ctrl presionada)",
+			"disableThumbnails": "Desactivar miniaturas (Mostrar nombres de los archivos)",
 			"mouseWheelSensitivityInZoom": "Sensibilidad de la rueda del ratón al hacer zoom",
 			"rotateHorizontalsAnticlockwise": "Al rotar imágenes horizontales hacerlo en sentido antihorario",
 			"startReadingInFullScreen": "Empezar la lectura en pantalla completa",

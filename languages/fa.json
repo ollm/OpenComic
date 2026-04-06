@@ -297,6 +297,7 @@
 			"scrollWithMouse": "اسکرول خودکار با حرکت عمودی نشانگر در وسط صفحه",
 			"goNextPrevChapterWithScroll": "رفتن به چپتر بعد/قبل با اسکرول ماوس (مطالعه عمودی)",
 			"turnPagesWithMouseWheel": "ورق‌زدن با چرخ ماوس (بزرگ‌نمایی فقط با Ctrl)",
+			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "حساسیت چرخ ماوس در بزرگ‌نمایی",
 			"rotateHorizontalsAnticlockwise": "چرخش تصویر افقی به‌صورت پادساعتگرد",
 			"startReadingInFullScreen": "شروع مطالعه در حالت تمام‌صفحه",

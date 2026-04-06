@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 145; // Update this if readingPagesConfig is updated
+const changes = 146; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -204,6 +204,7 @@ const storageDefault = {
 		readingMoveZoomWithMouse: false,
 		readingScrollWithMouse: false,
 		readingGoNextPrevChapterWithScroll: true,
+		readingDisableThumbnails: false,
 		readingStartReadingInFullScreen: false,
 		readingTrackingAtTheEnd: true,
 		readingTrackingAutoPrompt: false,
