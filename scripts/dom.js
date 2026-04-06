@@ -194,18 +194,23 @@ function translatePageName(name)
 
 function metadataPathName(file, force = false)
 {
-	if(fileManager.isOpds(file.path) || fileManager.isBase64(file.name))
+	const {name, path} = file;
+
+	if(fileManager.isOpds(path) || fileManager.isBase64(name))
 	{
-		return opds.pathName(file.name);
+		return opds.pathName(name);
 	}
 	else if(file.compressed || force)
 	{
-		let metadata = storage.getKey('compressedMetadata', file.path);
+		const metadata = storage.getKey('compressedMetadata', path);
 		if(metadata && metadata.title) return metadata.title;
 	}
 
-	const fileName = file.name.replace(/\.[^\.]*$/, '');
-	return config.showFileExtension || !fileName ? file.name : fileName;
+	const index = name.lastIndexOf('.');
+	const fileName = name.slice(0, index);
+	const ext = name.slice(index + 1);
+
+	return config.showFileExtension || !fileName || !compatible.open.has(ext) ? name : fileName;
 }
 
 async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsing, fromGoForwards)
