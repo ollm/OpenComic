@@ -675,16 +675,34 @@ function events()
 
 function showHoverText()
 {
-	if(!eventHoverTimeoutThis.checkVisibility({opacityProperty: true, visibilityProperty: true}))
+	const This = eventHoverTimeoutThis;
+
+
+	if(!This.checkVisibility({opacityProperty: true, visibilityProperty: true}))
 		return;
 
 	clearTimeout(recentlyHiddenTextST);
 
+	const [marginTop, marginRight, marginBottom, marginLeft] = This.dataset.hoverMargin ? This.dataset.hoverMargin.split(',').map(n => +n) : [0, 0, 0, 0];
+	const position = This.dataset.hoverPosition || 'bottom';
+	const detectOverflow = This.dataset.hoverDetectOverflow || false;
+
+	if(detectOverflow)
+	{
+		const element = This.querySelector(detectOverflow);
+
+		if(element && element.scrollWidth <= element.clientWidth)
+			return;
+	}
+
+	const innerHeight = window.innerHeight;
+	const innerWidth = window.innerWidth;
+
 	const parent = document.querySelector('.global-elements .hover');
 	const hover = document.querySelector('.global-elements .hover > div');
-	hover.innerHTML = eventHoverTimeoutThis.getAttribute('hover-text');
+	hover.innerHTML = This.getAttribute('hover-text');
 
-	const rect = eventHoverTimeoutThis.getBoundingClientRect();
+	const rect = This.getBoundingClientRect();
 	const hoverRect = hover.getBoundingClientRect();
 
 	let left = rect.left + (rect.width / 2);
@@ -692,18 +710,17 @@ function showHoverText()
 
 	if(left < (hoverRect.width / 2) + 8)
 		left = (hoverRect.width / 2) + 8;
-	else if(left + (hoverRect.width / 2) + 8 > window.innerWidth)
-		left = window.innerWidth - (hoverRect.width / 2) - 8;
+	else if(left + (hoverRect.width / 2) + 8 > innerWidth)
+		left = innerWidth - (hoverRect.width / 2) - 8;
 
-
-	if(top + 60 > window.innerHeight)
+	if(top + 60 > innerHeight || (position === 'top' && top > hoverRect.height + 16))
 	{
 		parent.classList.remove('d', 'd-i');
 		parent.classList.add('a-i');
 
 		parent.style.top = '';
-		parent.style.bottom = (window.innerHeight - rect.top)+'px';
-		parent.style.left = left+'px';
+		parent.style.bottom = ((innerHeight - rect.top) + marginBottom)+'px';
+		parent.style.left = (left + marginLeft)+'px';
 	}
 	else
 	{
@@ -711,8 +728,8 @@ function showHoverText()
 		parent.classList.add('a');
 
 		parent.style.bottom = '';
-		parent.style.top = top+'px';
-		parent.style.left = left+'px';
+		parent.style.top = (top + marginTop)+'px';
+		parent.style.left = (left + marginLeft)+'px';
 	}
 
 	showedHoverText = true;

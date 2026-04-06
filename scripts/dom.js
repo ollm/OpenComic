@@ -1153,6 +1153,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	reading.discord.update();
 	scroll.event();
 	tabs.update();
+	events.eventHover();
 }
 
 function loadIndexContentLeft(animation)
