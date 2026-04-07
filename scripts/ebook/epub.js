@@ -391,6 +391,20 @@ var epub = function(path, config = {}) {
 
 	this.chaptersHtml = {};
 
+	this.request = async function(path, type = 'xml') {
+
+		path = p.normalize(path.replace(/^file:/, ''));
+		const data = await fsp.readFile(path, 'utf8');
+
+		if(type === 'xml' || type === 'xhtml')
+		{
+			const parser = new DOMParser();
+			return parser.parseFromString(data, 'application/xml');
+		}
+
+		return data;
+	}
+
 	this.chapterHtml = async function(index) {
 
 		if(this.chaptersHtml[index]) return this.chaptersHtml[index];
@@ -398,7 +412,7 @@ var epub = function(path, config = {}) {
 		let section = this.epub.spine.get(index);
 
 		if(section)
-			return this.chaptersHtml[index] = {html: await section.load(), section: section};
+			return this.chaptersHtml[index] = {html: await section.load(this.request), section: section};
 		else
 			throw new Error('Epub section not exists');
 
@@ -408,28 +422,29 @@ var epub = function(path, config = {}) {
 
 	this.renderFiles = async function(files, config, callback = false) {
 
+		const self = this;
+
 		await this.openEpub();
 
 		const fixedLayout = this.epub.packaging?.metadata?.layout === 'pre-paginated';
-		const chapters = [];
 
-		for(let i = 0, len = files.length; i < len; i++)
-		{
-			const file = files[i];
+		let chapters = files.map(async function(file) {
 
 			if(file.name == 'cover.tbn')
 			{
-				await fsp.copyFile(this.removeFileScheme(this.epub.cover), file.path);
+				await fsp.copyFile(self.removeFileScheme(self.epub.cover), file.path);
 				if(callback) callback(file.name);
+
+				return null;
 			}
 			else
 			{
-				const index = this.getFileIndex(file.name);
+				const index = self.getFileIndex(file.name);
 
-				const chapter = await this.chapterHtml(index);
-				const dirname = p.dirname(this.removeFileScheme(chapter.section.url));
+				const chapter = await self.chapterHtml(index);
+				const dirname = p.dirname(self.removeFileScheme(chapter.section.url));
 
-				const spine = this.epub.spine.items[index] || {};
+				const spine = self.epub.spine.items[index] || {};
 
 				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') ?? false;
 				const chapterFixedLayout = fixedLayout || spineFixed;
@@ -441,17 +456,21 @@ var epub = function(path, config = {}) {
 				else if(spine.properties?.includes('rendition:page-spread-left') || spine.properties?.includes('page-spread-left'))
 					pageSpread = 'left';
 
-				chapters.push({
+				return {
 					name: file.name,
 					path: file.path,
 					html: chapter.html,
 					basePath: dirname,
 					fixedLayout: chapterFixedLayout,
-					...(chapterFixedLayout ? this.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
+					...(chapterFixedLayout ? self.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
 					pageSpread,
-				});
+				};
 			}
-		}
+
+		});
+
+		chapters = await Promise.all(chapters);
+		chapters = chapters.filter(chapter => chapter !== null);
 
 		if(chapters.length > 0)
 		{
@@ -470,24 +489,23 @@ var epub = function(path, config = {}) {
 
 	this.epubPages = async function(config, callback = false, fromCache = false) {
 
+		const self = this;
+
 		await this.openEpub();
 		let files = await this.readEpubFiles();
 
 		const fixedLayout = this.epub.packaging?.metadata?.layout === 'pre-paginated';
-		const chapters = [];
-
-		for(let i = 0, len = files.length; i < len; i++)
-		{
-			const file = files[i];
+		
+		let chapters = files.map(async function(file){
 
 			if(file != 'cover.tbn')
 			{
-				const index = this.getFileIndex(file);
+				const index = self.getFileIndex(file);
 
-				const chapter = await this.chapterHtml(index);
-				const dirname = p.dirname(this.removeFileScheme(chapter.section.url));
+				const chapter = await self.chapterHtml(index);
+				const dirname = p.dirname(self.removeFileScheme(chapter.section.url));
 
-				const spine = this.epub.spine.items[index] || {};
+				const spine = self.epub.spine.items[index] || {};
 
 				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') || spine.properties?.includes('layout-pre-paginated') || false;
 				const chapterFixedLayout = fixedLayout || spineFixed;
@@ -499,18 +517,24 @@ var epub = function(path, config = {}) {
 				else if(spine.properties?.includes('rendition:page-spread-left') || spine.properties?.includes('page-spread-left'))
 					pageSpread = 'left';
 
-				chapters.push({
+				return {
 					name: file,
 					html: chapter.html,
-					path: p.join(this.path, file),
+					path: p.join(self.path, file),
 					basePath: dirname,
 					spine: spine,
 					fixedLayout: chapterFixedLayout,
-					...(chapterFixedLayout ? this.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
+					...(chapterFixedLayout ? self.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
 					pageSpread,
-				});
+				};
 			}
-		}
+
+			return null;
+
+		});
+
+		chapters = await Promise.all(chapters);
+		chapters = chapters.filter(chapter => chapter !== null);
 
 		if(chapters.length > 0)
 		{
