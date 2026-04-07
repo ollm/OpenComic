@@ -767,7 +767,8 @@ var ebook = function(book, config = {}) {
 			}
 
 			body p {
-				`+(config.pSpacing > -1 ? 'margin: '+config.pSpacing+'px 0px !important;' : '')+`
+				`+(config.pSpacing > -1 ? 'margin-top: '+config.pSpacing+'px !important;' : '')+`
+				`+(config.pSpacing > -1 ? 'margin-bottom: '+config.pSpacing+'px !important;' : '')+`
 				`+(config.pLineHeight > 0.3 ? 'line-height: '+config.pLineHeight+'em !important;' : '')+`
 			}
 
@@ -864,8 +865,10 @@ var ebook = function(book, config = {}) {
 
 	this.resolvePath = function(path, basePath) {
 
-		if(/^file:/.test(path))
+		if(path.startsWith('file:'))
 			return this.removeFileScheme(path);
+		else if(path.startsWith('http://') || path.startsWith('https://') || path.startsWith('mailto:'))
+			return path;
 		else
 			return p.join(basePath, path);
 
@@ -1319,10 +1322,13 @@ async function createRender(callback)
 		show: true,
 		frame: true,*/
 
+		paintWhenInitiallyHidden: true,
+
 		webPreferences: {
 			contextIsolation: false,
 			nodeIntegration: true,
 			enableRemoteModule: false,
+			offscreen: true,
 		},
 	});
 

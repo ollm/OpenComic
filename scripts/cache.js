@@ -316,10 +316,10 @@ function flushJsonMemory()
 	jsonMemory = {};
 }
 
-async function writeJson(name, json, folder = false)
+async function writeJson(name, json, folder = false, memory = true)
 {
 	folder = folder || cacheFolder;
-	setJsonInMemory(name, json);
+	if(memory) setJsonInMemory(name, json);
 
 	let encoded, path;
 
@@ -337,10 +337,10 @@ async function writeJson(name, json, folder = false)
 	fs.writeFile(path, encoded, function(){});
 }
 
-function writeJsonSync(name, json, folder = false)
+function writeJsonSync(name, json, folder = false, memory = true)
 {
 	folder = folder || cacheFolder;
-	setJsonInMemory(name, json);
+	if(memory) setJsonInMemory(name, json);
 
 	let encoded, path;
 
@@ -369,12 +369,15 @@ function readFile(name, folder = false)
 		return false;
 }
 
-function readJson(name, folder = false)
+function readJson(name, folder = false, memory = true)
 {
 	folder = folder || cacheFolder;
 
-	let json = readJsonInMemory(name);
-	if(json) return json;
+	if(memory)
+	{
+		const json = readJsonInMemory(name);
+		if(json) return json;
+	}
 
 	if(zstd !== false)
 	{
@@ -384,8 +387,8 @@ function readJson(name, folder = false)
 		{
 			try
 			{
-				json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
-				setJsonInMemory(name, json);
+				const json = JSON.parse(zstdDecoder.decodeSync(fs.readFileSync(path)));
+				if(memory) setJsonInMemory(name, json);
 				return json;
 			}
 			catch(error) // Corrupted file, remove it
@@ -408,8 +411,8 @@ function readJson(name, folder = false)
 		{
 			try
 			{
-				json = JSON.parse(fs.readFileSync(path));
-				setJsonInMemory(name, json);
+				const json = JSON.parse(fs.readFileSync(path));
+				if(memory) setJsonInMemory(name, json);
 				return json;
 			}
 			catch(error) // Corrupted file, remove it

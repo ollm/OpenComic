@@ -460,6 +460,15 @@ function migrateDefaultModelsToOpenComicAiModels(data)
 	return data;
 }
 
+function removeEpubRenderCache()
+{
+	console.time('Migration: removeEpubRenderCache');
+
+	fse.emptyDirSync(p.join(tempFolder, 'ebook-pages-cache'));
+
+	console.timeEnd('Migration: removeEpubRenderCache');
+}
+
 function start(data)
 {
 	let changes = data.config.changes;
@@ -467,7 +476,7 @@ function start(data)
 	//if(changes < 75)
 	//	compressJsonCache();
 
-	if(changes < 77) // Fix ePub wrong filenames and clear cache
+	if(changes < 77) // Fix epub wrong filenames and clear cache
 		data = fixEpubWrongFilenames(data);
 	else if(changes < 79)
 		removeJsonCache();
@@ -511,6 +520,9 @@ function start(data)
 	if(changes < 143) // Change default models to OpenComic AI models
 		data = migrateDefaultModelsToOpenComicAiModels(data);
 
+	if(changes < 147) // Remove uncompatible epub cache (rendered cache)
+		removeEpubRenderCache();
+
 	data = opds.addNewDefaultCatalogs(data, changes);
 
 	return data;
@@ -520,4 +532,5 @@ module.exports = {
 	start: start,
 	compressJsonCache: compressJsonCache,
 	removeJsonCache: removeJsonCache,
+	removeEpubRenderCache,
 };

@@ -1574,7 +1574,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const hrefPage = ebook.hrefPage;
 		const chaptersIdPage = ebook.chaptersIdPage;
 
-		cache.writeJson(cacheFile, {mtime, toc: pages.toc, chaptersPages, chaptersPagesInfo, tocPages, hrefPage, chaptersIdPage}, folderPath);
+		cache.writeJson(cacheFile, {mtime, toc: pages.toc, chaptersPages, chaptersPagesInfo, tocPages, hrefPage, chaptersIdPage}, folderPath, false);
 
 	}
 
@@ -1590,7 +1590,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			const cacheFile = 'ebook-pages-'+hash+'.json';
 			const folderPath = p.join(tempFolder, 'ebook-pages-cache');
 
-			const json = cache.readJson(cacheFile, folderPath);
+			const json = cache.readJson(cacheFile, folderPath, false);
 
 			if(json && (json.mtime == mtime || _isServer))
 			{
