@@ -98,7 +98,7 @@
 		"foliate-js": "github:johnfactotum/foliate-js",
 		"font-list": "^2.0.2",
 		"fs-extra": "^11.3.3",
-		"handlebars": "^4.7.8",
+		"handlebars": "^4.7.9",
 		"heic-decode": "^2.1.0",
 		"image-size": "^2.0.2",
 		"jpegxr": "^0.3.0",
