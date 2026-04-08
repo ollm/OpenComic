@@ -1,4 +1,5 @@
 import tabs, {Tab, TabType} from '../tabs.mjs';
+import drag from './drag.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const dom: any;
@@ -127,6 +128,13 @@ function restore(openLastActiveTab: boolean = false): void {
 
 	if(openLastActiveTab)
 		tabs.goTab(tabs.activeTab!);
+
+	for(const tab of tabs.tabs)
+	{
+		drag.add(tab.id);
+	}
+
+	tabs.setTabWidth();
 
 }
 

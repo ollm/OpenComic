@@ -271,6 +271,9 @@ async function _switch(id: number): Promise<void>
 	const tab = get(id);
 	if(!tab) return;
 
+	if(onReading && !reading.isLoaded())
+		return;
+
 	if(tab.element.classList.contains('dragging'))
 		return;
 
@@ -559,6 +562,7 @@ export default {
 	set lastUsedTabs(val: number[]) {lastUsedTabs = val},
 
 	setTabPositions,
+	setTabWidth,
 	visibility,
 	start,
 	restore,
