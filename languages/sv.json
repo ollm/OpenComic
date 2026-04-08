@@ -371,6 +371,7 @@
 			"main": "Startbeteende",
 			"startInFullScreen": "Starta OpenComic i helskärmsläge",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "Starta direkt i den senaste läsningen",
 			"startOnlyFromLibrary": "Endast om den senaste läsningen är i biblioteket",
 			"startOnStartup": "Starta OpenComic vid uppstart"

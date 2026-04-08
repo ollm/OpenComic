@@ -371,6 +371,7 @@
 			"main": "Comportamento all'avvio",
 			"startInFullScreen": "Avvia OpenComic a schermo intero",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "Avvia direttamente in ultimo letto",
 			"startOnlyFromLibrary": "Solo se l'ultima lettura appartiene alla libreria",
 			"startOnStartup": "Avvia OpenComic all'avvio del sistema"

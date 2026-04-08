@@ -371,6 +371,7 @@
 			"main": "啟動行為",
 			"startInFullScreen": "全螢幕啟動 OpenComic",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "直接從上次閱讀開始",
 			"startOnlyFromLibrary": "僅當來自書庫的最後一次閱讀時",
 			"startOnStartup": "開機時自動執行 OpenComic"

@@ -371,6 +371,7 @@
 			"main": "Başlangıç davranışı",
 			"startInFullScreen": "Tam ekranda başlat",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "Direkt son okunandan başlat",
 			"startOnlyFromLibrary": "Yalnızca son okuma kütüphaneden ise",
 			"startOnStartup": "Sistem başlangıçta başlat"

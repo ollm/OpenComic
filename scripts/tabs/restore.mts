@@ -52,7 +52,7 @@ function save(throttle: boolean = true, updateActive: boolean = false): void {
 	set('tabs', {
 		idCounter,
 		lastUsedTabs,
-		list: list.length > 1 ? list : [],
+		list: list.length > 1 || config.showAlwaysTabsBar ? list : [],
 	});
 }
 
@@ -62,7 +62,7 @@ function restore(openLastActiveTab: boolean = false): void {
 		return;
 
 	const data = storage.get('tabs');
-	if(!data || !data.list || !data.list.length || data.list.length <= 1)
+	if(!data?.list?.length || (data.list.length === 1 && !config.showAlwaysTabsBar))
 		return;
 
 	let idCounter = data.idCounter;

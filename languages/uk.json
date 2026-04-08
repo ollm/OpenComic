@@ -371,6 +371,7 @@
 			"main": "Поведінка при запуску",
 			"startInFullScreen": "Запускати OpenComic у повноекранному режимі",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "Почати безпосередньо з останнього прочитаного",
 			"startOnlyFromLibrary": "Тільки якщо нещодавно прочитано є в бібліотеці",
 			"startOnStartup": "Запускати OpenComic під час запуску системи"

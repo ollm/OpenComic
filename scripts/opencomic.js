@@ -376,7 +376,9 @@ async function startApp()
 
 	if(toOpenFile && fs.existsSync(toOpenFile))
 	{
-		tabs.start(false);
+		console.log(!!toOpenFileMainPath);
+
+		tabs.start(false, !toOpenFileMainPath);
 
 		openComic(toOpenFile, false, toOpenFileMainPath);
 	}
@@ -451,7 +453,7 @@ async function startApp()
 			}
 		}
 
-		if(!config.restoreTabsFromLastSession || tabs.tabs.length <= 1)
+		if(!config.restoreTabsFromLastSession || !tabs?.tabs?.length || (tabs.tabs.length === 1 && !config.showAlwaysTabsBar))
 		{
 			if(lastReading && fs.existsSync(lastReading.mainPath))
 				dom.openComic(false, lastReading.path, lastReading.mainPath);

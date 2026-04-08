@@ -9,6 +9,7 @@ import {History, HistoryItem} from '@types';
 declare const p: any;
 declare const app: any;
 declare const dom: any;
+declare const config: any;
 declare const template: any;
 declare const compatible: any;
 declare const fileManager: any;
@@ -43,7 +44,7 @@ export interface Tab {
 let tabs: Tab[] = [];
 let idCounter = 0;
 
-function add(tab: Partial<Tab>, isComic = false): number
+function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = true): number
 {
 	const id = idCounter++;
 
@@ -68,7 +69,10 @@ function add(tab: Partial<Tab>, isComic = false): number
 			history: tab?.data?.history ?? dom.history.serialize(),
 			// firstLoad: ,
 		},
+		restored: !animation,
 	};
+
+	console.log(_tab);
 
 	const insertAfterTab = activeTab ? lastChildTab(activeTab.id, true) : false;
 	const insertAfter = insertAfterTab ? insertAfterTab.separator : null;
@@ -89,10 +93,10 @@ function add(tab: Partial<Tab>, isComic = false): number
 	tabs.push(_tab as Tab);
 
 	setTimeout(function() {
-		tabElement.classList.remove('opening');
+		// tabElement.classList.remove('opening');
 	}, 200);
 
-	visibility();
+	visibility(animation);
 	setTabWidth();
 	setTabPositions();
 
@@ -114,9 +118,9 @@ function getByPosition(position: number): Tab | undefined
 	return tabs.find(t => t.position === position);
 }
 
-function addCurrentTab()
+function addCurrentTab(animation: boolean = true)
 {
-	add({active: true});
+	add({active: true}, false, animation);
 	_update();
 }
 
@@ -407,7 +411,7 @@ function visibility(animation: boolean = true): void
 	let from = 0;
 	let to = 41;
 
-	if(tabs.length <= 1)
+	if(tabs.length <= 1 && !config.showAlwaysTabsBar)
 	{
 		diff = _app.classList.contains('visible-tabs-bar');
 		_app.classList.remove('visible-tabs-bar');
@@ -504,12 +508,13 @@ function showHoverText()
 	}, 200);
 }
 
-function start(openLastActiveTab: boolean = false): void
+function start(openLastActiveTab: boolean = false, _restore: boolean = true): void
 {
-	restore.restore(openLastActiveTab);
+	if(_restore)
+		restore.restore(openLastActiveTab);
 
 	if(tabs.length === 0)
-		addCurrentTab();
+		addCurrentTab(false);
 	else
 		_update();
 

@@ -19,7 +19,7 @@ function buildPattern(strings: string[]): RegExp | null
 			return '';
 
 		if(removed)
-			return '(.*?)';
+			return '(.*)';
 
 		return pregQuote(value, '/');
 
@@ -43,7 +43,7 @@ function list(strings: string[], separator: string = ' - '): string[]
 		{
 			const parts = match.slice(1);
 
-			return parts.join(separator);
+			return parts.join(separator) || string;
 		}
 
 		return string;

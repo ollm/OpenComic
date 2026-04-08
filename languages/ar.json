@@ -371,6 +371,7 @@
 			"main": "التصرف عند فتح البرنامج",
 			"startInFullScreen": "فتح البرنامج في وضع كامل الشاشة",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "الفتح مباشرة حيث انتهت القراءة الأخيرة",
 			"startOnlyFromLibrary": "فقط إذا كانت القراءة الأخيرة من المكتبة",
 			"startOnStartup": "تشغيل البرنامج مع بدء تشغيل النظام"

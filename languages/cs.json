@@ -371,6 +371,7 @@
 			"main": "",
 			"startInFullScreen": "",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "",
 			"startOnlyFromLibrary": "",
 			"startOnStartup": ""

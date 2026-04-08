@@ -1,7 +1,7 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
 
-const changes = 147; // Update this if readingPagesConfig is updated
+const changes = 148; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -230,6 +230,7 @@ const storageDefault = {
 		openFilesInNewTab: true,
 		openFilesInNewWindow: false,
 		startInFullScreen: false,
+		showAlwaysTabsBar: false,
 		restoreTabsFromLastSession: false,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,

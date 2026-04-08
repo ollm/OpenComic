@@ -371,6 +371,7 @@
 			"main": "시작 시 동작",
 			"startInFullScreen": "OpenComic을 전체 화면으로 시작",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "마지막으로 읽던 페이지부터 시작",
 			"startOnlyFromLibrary": "마지막으로 읽은 작품이 책장에 있을 때만",
 			"startOnStartup": "OS 부팅 시 OpenComic 자동 실행"

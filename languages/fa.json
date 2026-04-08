@@ -371,6 +371,7 @@
 			"main": "رفتار هنگام شروع",
 			"startInFullScreen": "شروع برنامه در حالت تمام‌صفحه",
 			"restoreTabsFromLastSession": "بازیابی زبانه‌های باز قبلی",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "شروع مستقیم از آخرین مطالعه",
 			"startOnlyFromLibrary": "فقط اگر آخرین مطالعه از کتابخانه باشد",
 			"startOnStartup": "اجرای برنامه هنگام روشن شدن سیستم"

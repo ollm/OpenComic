@@ -1589,6 +1589,19 @@ function set(key, value, save = true)
 
 	if(save)
 		storage.updateVar('config', key, value);
+
+	switch (key)
+	{
+		case 'restoreTabsFromLastSession':
+		case 'showAlwaysTabsBar': 
+
+			dom.query('.settings-body .start-in-continue-reading').class((config.restoreTabsFromLastSession && config.showAlwaysTabsBar), 'disable-pointer');
+
+			tabs.visibility();
+
+			break;
+	}
+
 }
 
 function setInit(key, value, save = true)

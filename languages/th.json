@@ -371,6 +371,7 @@
 			"main": "การกระทำเมื่อเริ่มต้น",
 			"startInFullScreen": "เปิด OpenComic แบบเต็มจอ",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "เปิดที่อ่านล่าสุดโดยตรง",
 			"startOnlyFromLibrary": "เฉพาะการอ่านล่าสุดจากห้องสมุด",
 			"startOnStartup": "เปิด OpenComic เมื่อเริ่มต้นระบบ"

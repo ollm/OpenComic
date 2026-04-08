@@ -371,6 +371,7 @@
 			"main": "Comportement au démarrage",
 			"startInFullScreen": "Démarrer OpenComic en plein écran",
 			"restoreTabsFromLastSession": "",
+			"showAlwaysTabsBar": "",
 			"startInContinueReading": "Démarrer directement sur la dernière lecture",
 			"startOnlyFromLibrary": "Uniquement si la dernière lecture provient de la bibliothèque",
 			"startOnStartup": "Lancer OpenComic au démarrage"
