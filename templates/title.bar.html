@@ -2,7 +2,7 @@
 	<img src="../images/logo.png">
 </div>
 {{#if titleBarMenu}}
-<div class="title-bar-menu label-medium">
+<div class="title-bar-menu label-medium" draggable="true">
 	{{#each titleBarMenu}}
 		<div class="title-bar-menu-{{@index}}" onclick="titleBar.clickMenu({{@index}})" onmouseenter="titleBar.enterMenu({{@index}});">{{label}}</div>
 	{{/each}}

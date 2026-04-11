@@ -20,6 +20,14 @@ interface SimpleEventOptions {
 	size?: number | (() => number);
 	multiple?: boolean;
 	speed?: boolean;
+	listener?: Listener;
+	callbackStart?: SimpleEventCallbackStart;
+}
+
+interface Listener {
+	start: string;
+	move: string;
+	end: string;
 }
 
 interface SpeedData {
@@ -36,7 +44,7 @@ interface CurrentState {
 	active?: boolean;
 }
 
-interface CallbackData {
+export interface CallbackData {
 	type: string;
 	diffX: number;
 	diffY: number;
@@ -47,10 +55,12 @@ interface CallbackData {
 }
 
 type SimpleEventCallback = (event: PointerEvent, data: CallbackData) => void;
+type SimpleEventCallbackStart = (event: PointerEvent) => void;
 
 export default class SimpleEvent {
 
 	element: HTMLElement | false = false;
+	lastEvent: PointerEvent | null = null;
 
 	// https://stackoverflow.com/questions/50391422/detect-that-given-element-has-been-removed-from-the-dom-without-sacrificing-perf
 	constructor(element: HTMLElement | string) {
@@ -69,6 +79,13 @@ export default class SimpleEvent {
 
 	options: SimpleEventOptions = {};
 	callback: SimpleEventCallback | false = false;
+	callbackStart: SimpleEventCallbackStart | false = false;
+
+	listener: Listener = {
+		start: 'pointerdown',
+		move: 'pointermove',
+		end: 'pointerup',
+	};
 
 	horizontal(options: SimpleEventOptions = {}, callback: SimpleEventCallback | false = false) {
 
@@ -81,10 +98,25 @@ export default class SimpleEvent {
 
 	}
 
+	all(options: SimpleEventOptions = {}, callback: SimpleEventCallback | false = false) {
+
+		this.on({
+			type: 'all',
+			touchAction: 'pan-y pan-x pinch-zoom',
+			speed: true,
+			...options,
+		}, callback);
+
+	}
+
 	on(options: SimpleEventOptions = {}, callback: SimpleEventCallback | false = false) {
 
-		app.event(this.element, 'pointerdown', this.down, {passive: true});
-		app.event(this.element, 'pointerup', this.up, {passive: true});
+		this.listener.start = options.listener?.start || 'pointerdown';
+		this.listener.move = options.listener?.move || 'pointermove';
+		this.listener.end = options.listener?.end || 'pointerup';
+
+		app.event(this.element, this.listener.start, this.down, {passive: true});
+		app.event(this.element, this.listener.end, this.up, {passive: true});
 
 		this.options = {
 			drag: true,
@@ -97,6 +129,8 @@ export default class SimpleEvent {
 		};
 
 		this.callback = callback;
+		this.callbackStart = options.callbackStart || false;
+
 		(this.element as HTMLElement).style.touchAction = options.touchAction || '';
 
 	}
@@ -105,12 +139,37 @@ export default class SimpleEvent {
 
 	};
 
+	initStartX: number | null = null;
+	initStartY: number | null = null;
+
+	set startX(x) {
+
+		if(this.#current.start && this.#current.start.x !== undefined)
+			this.#current.start.x = x;
+
+	}
+
+	set startY(y) {
+
+		if(this.#current.start && this.#current.start.y !== undefined)
+			this.#current.start.y = y;
+
+	}
+
+	x = 0;
+	y = 0;
+
 	down(event: PointerEvent) {
+
+		this.lastEvent = event;
 
 		if(this.#current.active) return;
 
-		const x = app.clientX(event);
-		const y = app.clientY(event);
+		const x = this.initStartX ?? app.clientX(event);
+		const y = this.initStartY ?? app.clientY(event);
+
+		this.x = x;
+		this.y = y;
 
 		this.#current = {
 			id: event.pointerId,
@@ -123,11 +182,15 @@ export default class SimpleEvent {
 		};
 
 		// this.element.onpointermove = this.move;
-		app.event(this.element, 'pointermove', this.move, {passive: false});
+		app.event(this.element, this.listener.move, this.move, {passive: false});
 		// this.element.setPointerCapture(event.pointerId);
+
+		if(this.callbackStart) this.callbackStart(event);
 	}
 
 	move(event: PointerEvent) {
+
+		this.lastEvent = event;
 
 		if(event.pointerId === this.#current.id)
 		{
@@ -154,9 +217,8 @@ export default class SimpleEvent {
 
 					if(!this.#current.active)
 					{
-						// this.element.onpointermove = null;
-						app.eventOff(this.element, 'pointermove', this.move, {passive: false});
-						(this.element as HTMLElement).releasePointerCapture(event.pointerId);
+						app.eventOff(this.element, this.listener.move, this.move, {passive: false});
+						if(event.pointerId !== undefined) (this.element as HTMLElement).releasePointerCapture(event.pointerId);
 					}
 					else
 					{
@@ -167,8 +229,7 @@ export default class SimpleEvent {
 
 						if(this.callback) this.callback(event, {type: 'start', diffX: 0, diffY: 0, speedX: 0, speedY: 0});
 						if(options.drag) (this.element as HTMLElement).style.cursor = 'grabbing';
-
-						(this.element as HTMLElement).setPointerCapture(event.pointerId);
+						if(event.pointerId !== undefined) (this.element as HTMLElement).setPointerCapture(event.pointerId);
 					}
 				}
 			}
@@ -180,6 +241,12 @@ export default class SimpleEvent {
 
 				const x = app.clientX(event);
 				const y = app.clientY(event);
+
+				// if(x === 0 && y === 0)
+				// 	return;
+
+				this.x = x;
+				this.y = y;
 
 				if(this.#current.speed!.length > 2)
 					this.#current.speed!.shift();
@@ -209,12 +276,14 @@ export default class SimpleEvent {
 
 	up(event: PointerEvent) {
 
+		this.lastEvent = event;
+
 		if(event.pointerId === this.#current.id || event.pointerType == 'mouse')
 		{
 			if(this.#current.active)
 			{
-				const x = app.clientX(event);
-				const y = app.clientY(event);
+				const x = app.clientX(event) ?? this.x;
+				const y = app.clientY(event) ?? this.y;
 
 				(this.element as HTMLElement).style.cursor = '';
 
@@ -232,11 +301,45 @@ export default class SimpleEvent {
 				if(this.callback) this.callback(event, data);
 			}
 
-			// this.element.onpointermove = null;
-			app.eventOff(this.element, 'pointermove', this.move, {passive: false});
-			(this.element as HTMLElement).releasePointerCapture(event.pointerId);
+			app.eventOff(this.element, this.listener.move, this.move, {passive: false});
+			if(event.pointerId !== undefined) (this.element as HTMLElement).releasePointerCapture(event.pointerId);
 			this.#current = {};
 		}
+
+	}
+
+	calculate(event: PointerEvent): CallbackData {
+
+		const x = app.clientX(event);
+		const y = app.clientY(event);
+
+		// if(x === 0 && y === 0)
+		// 	return;
+
+		this.x = x;
+		this.y = y;
+
+		if(this.#current.speed!.length > 2)
+			this.#current.speed!.shift();
+
+		this.#current.speed!.push({
+			time: performance.now(),
+			x: x,
+			y: y,
+		});
+
+		const data: CallbackData = {
+			type: 'move',
+			diffX: this.diff((x - this.#current.start!.x) + this.diffX),
+			diffY: this.diff((y - this.#current.start!.y) + this.diffY),
+			speedX: this.speedX(),
+			speedY: this.speedY(),
+		};
+
+		data.goToX = this.goTo(data, 'diffX');
+		data.goToY = this.goTo(data, 'diffY');
+
+		return data;
 
 	}
 

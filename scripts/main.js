@@ -122,6 +122,11 @@ function createWindow(options = {}) {
 
 	win.removeMenu();
 
+	const initData = {};
+
+	if(options.initHistory)
+		initData.history = options.initHistory;
+
 	const showWindow = function(message = '') {
 
 		if(!windowShowed)
@@ -129,11 +134,19 @@ function createWindow(options = {}) {
 			win.show();
 			windowShowed = true;
 
+			win.webContents.send('init-data', initData);
+
 			if(message)
 				console.log(message);
 		}
+		else
+		{
+			if(win && initData?.history)
+				win.webContents.send('init-data', initData);
+		}
 
 	}
+
 	win.once('ready-to-show', showWindow);
 
 	// https://github.com/electron/electron/issues/42409
@@ -153,13 +166,6 @@ function createWindow(options = {}) {
 
 	if(toOpenFile && !newWindow)
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
-
-	const initData = {};
-
-	if(options.initHistory)
-		initData.history = options.initHistory;
-
-	win.webContents.send('init-data', initData);
 
 	win.on('close',	function(event) {
 
@@ -191,6 +197,14 @@ function createWindow(options = {}) {
 		// when you should delete the corresponding element.
 		windows.delete(id);
 		win = null;
+		_windows();
+
+	});
+
+	win.webContents.on('did-reload', function() {
+
+		if(win && initData?.history)
+			win.webContents.send('init-data', initData);
 
 	});
 
@@ -228,6 +242,9 @@ function createWindow(options = {}) {
 
 	windows.set(id, win);
 	firstWindowCreated = true;
+
+	if(options.initHistory) // Open immediately
+		win.show();
 }
 
 let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
@@ -310,6 +327,40 @@ ipcMain.handle('move-to-trash', function(event, path) {
 ipcMain.handle('open-new-window', function(event, options = {}) {
 
 	createWindow(options)
+
+});
+
+ipcMain.handle('sync-windows', function(event, data = {}) {
+
+	for(const win of windows.values())
+	{
+		win.webContents.send('sync-windows', data);
+	}
+
+});
+
+function _windows()
+{
+	let firstWindow = true;
+
+	const data = {
+		type: 'windows',
+		key: '',
+		time: Date.now(),
+		num: windows.size,
+	};
+
+	for(const win of windows.values())
+	{
+		data.firstWindow = firstWindow;
+		win.webContents.send('sync-windows', data);
+		firstWindow = false;
+	}
+}
+
+ipcMain.handle('windows', function(event) {
+
+	_windows();
 
 });
 

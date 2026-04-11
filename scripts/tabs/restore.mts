@@ -132,9 +132,11 @@ function restore(openLastActiveTab: boolean = false): void {
 	for(const tab of tabs.tabs)
 	{
 		drag.add(tab.id);
+		tabs.setEvents(tab);
 	}
 
 	tabs.setTabWidth();
+	tabs.setTabPositions();
 
 }
 

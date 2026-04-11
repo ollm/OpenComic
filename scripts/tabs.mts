@@ -39,6 +39,10 @@ export interface Tab {
 	parents: number[];
 	data: TabData;
 	restored?: boolean;
+	dragOffset?: {
+		x: number;
+		y: number;
+	};
 }
 
 let tabs: Tab[] = [];
@@ -53,7 +57,7 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 
 	const icon = materialIcon && !isComic ? materialIcon.innerHTML : (isComic ? 'auto_stories' : 'indeterminate_question_box');
 
-	const activeTab = tabs.find(t => t.active);
+	const activeTab = getActive();
 	const parents = getTabParentsIds(activeTab, true);
 
 	const _tab: Partial<Tab> = {
@@ -72,17 +76,24 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 		restored: !animation,
 	};
 
-	console.log(_tab);
-
 	const insertAfterTab = activeTab ? lastChildTab(activeTab.id, true) : false;
-	const insertAfter = insertAfterTab ? insertAfterTab.separator : null;
+
+	if(insertAfterTab)
+	{
+		_tab.position = insertAfterTab.position + 1;
+		tabs.map(function(tab) {
+
+			if(tab.position > insertAfterTab.position)
+				tab.position++;
+
+			return tab;
+
+		});
+	}
 
 	handlebarsContext.tab = _tab;
 
-	if(insertAfter)
-		insertAfter.insertAdjacentHTML('afterend', template.load('tabs.bar.tab.html'));
-	else
-		document.querySelector('.tabs-bar > div > div')?.insertAdjacentHTML('beforeend', template.load('tabs.bar.tab.html'));
+	document.querySelector('.tabs-bar > div > div')?.insertAdjacentHTML('beforeend', template.load('tabs.bar.tab.html'));
 
 	const tabElement = document.querySelector(`.tabs-bar .tab--${id}`) as HTMLElement;
 	const tabSeparator = document.querySelector(`.tabs-bar .tab-separator--${id}`) as HTMLElement;
@@ -93,17 +104,20 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 	tabs.push(_tab as Tab);
 
 	setTimeout(function() {
-		// tabElement.classList.remove('opening');
+		tabElement.classList.remove('opening');
 	}, 200);
 
 	visibility(animation);
-	setTabWidth();
 	setTabPositions();
 
-	showHoverText();
+	window.requestAnimationFrame(function() {
+		setTabWidth();
+		setTabPositions();
+	});
 
 	events.eventHover();
 	drag.add(id);
+	setEvents(_tab as Tab);
 
 	return id;
 }
@@ -118,10 +132,15 @@ function getByPosition(position: number): Tab | undefined
 	return tabs.find(t => t.position === position);
 }
 
+function getActive(): Tab | undefined
+{
+	return tabs.find(t => t.active);
+}
+
 function addCurrentTab(animation: boolean = true)
 {
 	add({active: true}, false, animation);
-	_update();
+	update();
 }
 
 function getTabParentsIds(tab?: Tab, returnCurrent: boolean = false, depp: number = 0): number[]
@@ -214,7 +233,7 @@ function openTab(title: string, icon: string, historyList: HistoryItem[])
 	});
 }
 
-function update(id: number, tab: Partial<Tab>, retrieveData: boolean = true): void
+function updateData(id: number, tab: Partial<Tab>, retrieveData: boolean = true): void
 {
 	const _tab = get(id);
 	if(!_tab) return;
@@ -249,9 +268,9 @@ function update(id: number, tab: Partial<Tab>, retrieveData: boolean = true): vo
 	if(tab.data !== undefined) _tab.data = tab.data;
 }
 
-function _update(retrieveData: boolean = false): void
+function update(retrieveData: boolean = false): void
 {
-	const activeTab = tabs.find(t => t.active);
+	const activeTab = getActive();
 	if(!activeTab) return;
 
 	const contentLeft = template._contentLeft() as HTMLElement;
@@ -264,7 +283,7 @@ function _update(retrieveData: boolean = false): void
 
 	const type = onReading ? 'reading' : 'normal';
 
-	update(activeTab.id, {icon, title, type}, retrieveData);
+	updateData(activeTab.id, {icon, title, type}, retrieveData);
 	restore.save();
 }
 
@@ -284,15 +303,16 @@ async function _switch(id: number): Promise<void>
 	lastUsedTabs.push(id);
 	lastUsedTabs = lastUsedTabs.slice(-20);
 
-	const activeTab = tabs.find(t => t.active);
+	const activeTab = getActive();
 	if(activeTab && activeTab.id === id) return;
 
 	if(activeTab)
-		update(activeTab.id, {active: false});
+		updateData(activeTab.id, {active: false});
 
-	update(id, {active: true}, false);
+	updateData(id, {active: true}, false);
 	await goTab(tab);
 	restore.save();
+	setTabPositions();
 }
 
 let goTabST: NodeJS.Timeout | false = false;
@@ -336,13 +356,13 @@ function findLastUsedTab(): Tab | void
 	return;
 }
 
-async function close(id: number): Promise<void>
+async function close(id: number, force: boolean = false, animation: boolean = true): Promise<void>
 {
 	const tabIndex = tabs.findIndex(t => t.id === id);
 	if(tabIndex === -1) return;
 	const tab = tabs[tabIndex];
 
-	if(tab.element.classList.contains('dragging'))
+	if(tab.element.classList.contains('dragging') && !force)
 		return;
 
 	if(tabs.length <= 1)
@@ -365,12 +385,12 @@ async function close(id: number): Promise<void>
 	setTimeout(function() {
 
 		tab.element.remove();
-		tab.separator.remove();
-		setTabPositions();
 
-	}, 200);
+	}, animation ? 200 : 0);
 
 	visibility();
+	setTabPositions();
+
 }
 
 function middleClickOpen(event: MouseEvent, path: string, mainPath: string): void
@@ -458,54 +478,85 @@ function setTabWidth()
 	_app.style.setProperty('--tabs-bar-tab-width', tabWidth + 'px');
 }
 
-function setTabPositions()
+function hideSeparators(mainTab: Tab | undefined = undefined)
 {
-	const _tabs = document.querySelectorAll('.tabs-bar .tab') as NodeListOf<HTMLElement>;
+	const activeTab = getActive();
 
-	for(let p = 0, len = _tabs.length; p < len; p++)
+	// Hide prev and next separators
+	const hideSeparators: number[] = [
+		...(activeTab ? [activeTab.position, activeTab.position - 1] : []),
+		tabs[tabs.length - 1].position,
+	];
+
+	if(mainTab)
 	{
-		const _tab = _tabs[p];
-		const tabId = +_tab.dataset.id!;
-
-		const tab = get(tabId);
-		if(!tab) continue;
-
-		tab.position = p;
+		hideSeparators.push(mainTab.position);
+		hideSeparators.push(mainTab.position - 1);
 	}
 
+	for(const tab of tabs)
+	{
+		tab.separator.style.opacity = hideSeparators.includes(tab.position) ? '0' : '1';
+	}
+}
+
+interface SetTabPositionsOptions {
+	animation?: boolean;
+	tab?: Tab;
+}
+
+function setTabPositions({animation = true, tab = undefined}: SetTabPositionsOptions = {}): void
+{
 	tabs.sort((a, b) => a.position - b.position);
+	tabs = tabs.map(function(tab, index) {
+
+		tab.position = index;
+		return tab;
+
+	});
+
+	for(const tab of tabs)
+	{
+		tab.element.style.transition = animation ? 'transform 0.2s, width 0.2s' : '';
+		tab.element.style.transform = `translateX(calc((var(--tabs-bar-tab-width) + 6px) * ${tab.position}))`;
+	}
+
+	hideSeparators(tab);
 	restore.save();
+}
+
+function setEvents(tab: Tab): void
+{
+	tab.element.addEventListener('click', function() {
+
+		_switch(tab.id);
+
+	});
+
+	tab.element.addEventListener('mouseup', function(event) {
+
+		middleClickClose(event as MouseEvent, tab.id);
+
+	});
+
+	tab.element.addEventListener('pointerenter', function() {
+
+		hideSeparators(tab);
+
+	});
+
+	tab.element.addEventListener('pointerleave', function() {
+
+		hideSeparators();
+
+	});
+
 }
 
 function mouseLeave()
 {
+	setTabPositions();
 	setTabWidth();
-}
-
-let showHoverTextST: NodeJS.Timeout;
-
-function showHoverText()
-{
-	clearTimeout(showHoverTextST);
-
-	showHoverTextST = setTimeout(function() {
-
-		// Show hover text in tabs that are long
-		const tabs = document.querySelectorAll('.tabs-bar .tab') as NodeListOf<HTMLElement>;
-
-		for(const tab of tabs)
-		{
-			const tabTitle = tab.querySelector('.tab-title') as HTMLElement;
-
-			if(tabTitle.scrollWidth > tabTitle.clientWidth)
-				tab.classList.add('hover-text');
-			else
-				tab.classList.remove('hover-text');
-		}
-
-		events.eventHover();
-
-	}, 200);
 }
 
 function start(openLastActiveTab: boolean = false, _restore: boolean = true): void
@@ -516,7 +567,7 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 	if(tabs.length === 0)
 		addCurrentTab(false);
 	else
-		_update();
+		update();
 
 	let ST: NodeJS.Timeout;
 
@@ -539,7 +590,7 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 	});
 
 	app.event('.tabs-bar > div', 'mousewheel', dom.header.wheel);
-	showHoverText();
+	drag.start();
 
 }
 
@@ -550,14 +601,15 @@ export default {
 	openPath,
 	openTab,
 	goTab,
-	update: _update,
+	update,
+	updateData,
 	switch: _switch,
 	middleClickOpen,
 	middleClickClose,
 	close,
 	mouseLeave,
 	get tabWidth() {return currentTabWidth},
-	get activeTab(): Tab | undefined {return tabs.find(t => t.active)},
+	get activeTab(): Tab | undefined {return getActive()},
 
 	get tabs() {return tabs},
 	get idCounter() {return idCounter},
@@ -568,7 +620,9 @@ export default {
 
 	setTabPositions,
 	setTabWidth,
+	setEvents,
 	visibility,
 	start,
 	restore,
+	drag,
 };

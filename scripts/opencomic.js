@@ -99,7 +99,7 @@ var toOpenFile = toOpenFile || false, windowHasLoaded = false;
 
 electronRemote.app.on('open-file', function(event, path) {
 
-	if(storage.syncInstances.client)
+	if(!storage.syncWindows.firstWindow)
 		return;
 
 	if(config.openFilesInNewTab)
@@ -122,7 +122,7 @@ electronRemote.app.on('open-file', function(event, path) {
 
 electronRemote.app.on('open-url', function(event, url) {
 
-	if(storage.syncInstances.client)
+	if(!storage.syncWindows.firstWindow)
 		return;
 
 	handleOpenUrl(url);
@@ -137,7 +137,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 	if(argv.includes('--new-window'))
 		return;
 
-	if(storage.syncInstances.client)
+	if(!storage.syncWindows.firstWindow)
 		return;
 
 	const win = electronRemote.getCurrentWindow();
@@ -332,16 +332,33 @@ function getArgValue(argv, flag, defaultValue = null)
 	return arg.split('=')[1];
 }
 
+let initHistory = false;
+
 electron.ipcRenderer.on('init-data', function(event, data) {
 
 	if(data.history)
+	{
 		dom.history.load(data.history);
+		initHistory = data.history;
+
+		loadFromHistory();
+	}
 
 });
 
+let historyFromStartApp = false;
+
+async function loadFromHistory()
+{
+	if(historyFromStartApp && initHistory)
+	{
+		dom.history.load(initHistory);
+		await dom.history.goTo(initHistory.current, false);
+	}
+}
+
 async function startApp()
 {
-
 	if(config.checkReleases)
 		checkReleases.check();
 
@@ -360,6 +377,8 @@ async function startApp()
 	let toOpenFileMainPath = getArgValue(args, '--main-path', false);
 	toOpenFile = toOpenFile || getArgValue(args, '--path', false);
 
+	const _initHistory = getArgValue(args, '--init-history', false);
+
 	if(!toOpenFile)
 	{
 		for(let i = 1, len = electronRemote.process.argv.length; i < len; i++)
@@ -374,10 +393,14 @@ async function startApp()
 		}
 	}
 
-	if(toOpenFile && fs.existsSync(toOpenFile))
+	if(_initHistory)
 	{
-		console.log(!!toOpenFileMainPath);
-
+		historyFromStartApp = true;
+		tabs.start(false, false);
+		loadFromHistory();
+	}
+	else if(toOpenFile && fs.existsSync(toOpenFile))
+	{
 		tabs.start(false, !toOpenFileMainPath);
 
 		openComic(toOpenFile, false, toOpenFileMainPath);
@@ -530,10 +553,29 @@ function openNewWindow(args = [], options = {})
 	electron.ipcRenderer.invoke('open-new-window', options);
 }
 
-function openPathInNewWindow(path, mainPath = '')
+function openPathInNewWindow(path, mainPath = '', history = null)
 {
+	if(!history)
+	{
+		history = dom.history.serialize();
+
+		const file = p.basename(path);
+
+		const data = {
+			file: file,
+			indexLabel: {},
+			isComic: compatible.image(path),
+			mainPath: mainPath,
+			path: path,
+		};
+
+		history.current = data;
+		history.forwardHistory = [];
+		history.history = [...history.history, data];
+	}
+
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
-	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath], {initHistory: dom.history.serialize()});
+	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath, '--init-history=true'], {initHistory: history});
 }
 
 function openPathInNewTab(path, mainPath = '')

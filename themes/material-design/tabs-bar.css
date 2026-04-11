@@ -52,9 +52,11 @@
 	box-sizing: border-box;
 	transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
 
-	display: flex;
+	/*display: flex;
 	flex-direction: row;
-	flex-wrap: nowrap;
+	flex-wrap: nowrap;*/
+
+	position: relative;
 }
 
 .app.visible-tabs-bar .tabs-bar
@@ -76,18 +78,19 @@
 
 .tabs-bar .tab
 {
-	position: relative;
+	position: absolute;
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
 	align-items: center;
-	/*width: var(--tabs-bar-tab-width);*/
+	width: var(--tabs-bar-tab-width);
 	flex: 0 0 var(--tabs-bar-tab-width);
 	margin: 6px 0px 6px 6px;
 	cursor: pointer;
-	transition: 0.2s background-color, 0.2s color, flex 0.2s;
+	transition: 0.2s background-color, 0.2s color, width 0.2s;
 	border-radius: 8px;
-	overflow: hidden;
+	/*overflow: hidden;*/
+	height: 28px;
 }
 
 .tabs-bar .tab.dragging
@@ -105,25 +108,25 @@
 {
 	0%
 	{
-		flex: 0 0 0px;
+		width: 0px;
 		margin: 6px 0px 6px 0px;
 	}
 	100%
 	{
-		flex: 0 0 var(--tabs-bar-tab-width);
+		width: var(--tabs-bar-tab-width);
 		margin: 6px 0px 6px 6px;
 	}
 }
 
 .tabs-bar .tab.closing
 {
-	flex: 0 0 0px;
+	width: 0px;
 	margin: 6px -6px 6px 6px;
 	transition:
 		opacity 0.1s 0.1s,
 		margin 0.2s,
-		flex 0.2s;
-	/*opacity: 0;*/
+		width 0.2s !important;
+	opacity: 0;
 }
 
 .tabs-bar .tab:last-child
@@ -147,7 +150,7 @@
 	z-index: -1;
 }
 
-.tabs-bar .tab:hover:after
+.tabs-bar:not(.dragging-tabs) .tab:hover:after
 {
 	opacity: 1;
 }
@@ -187,7 +190,7 @@
 	color: var(--md-sys-color-on-secondary-container);
 }
 
-.tabs-bar .tab > div
+.tabs-bar .tab .tab-title
 {
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -238,12 +241,21 @@
 	background-color: var(--md-sys-color-outline-variant);
 	height: 18px;
 	width: 2px;
-	flex: 0 0 2px;
+	right: 0px;
 	border-radius: 2px;
 	margin: 11px -4px 11px 2px;
 	transition: 0.2s opacity, 0.2s background-color;
+	position: absolute;
 }
 
+.tabs-bar .tab.closing
+{
+	margin-left: -var(--tabs-bar-tab-width);
+	transition: margin 0.2s,
+	/*opacity: 0;*/
+}
+
+/*
 .tabs-bar .tab-separator:last-of-type,
 .tabs-bar .tab-separator:has(+ .tab:hover),
 .tabs-bar .tab-separator:has(+ .tab.active),
@@ -251,4 +263,4 @@
 .tabs-bar .tab.active + .tab-separator
 {
 	opacity: 0;
-}
+}*/

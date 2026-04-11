@@ -1,5 +1,5 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
-	syncInstances = require(p.join(appDir, '.dist/storage/sync-instances.js'));
+	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
 const changes = 148; // Update this if readingPagesConfig is updated
 
@@ -864,7 +864,7 @@ function setData(key, data)
 		if(syncIgnoreKeys.includes(key))
 			return;
 
-		syncInstances.storageUpdated(key);
+		syncWindows.storageUpdated(key);
 
 	});
 }
@@ -873,7 +873,6 @@ const storageKeys = Object.keys(storageDefault);
 
 async function start(callback)
 {
-	syncInstances.init();
 	ejs.setDataPath(storagePath);
 
 	let data = {};
@@ -979,7 +978,7 @@ function _config()
 
 function getDataFromDiskAsync(key, callback = false)
 {
-	if(syncIgnoreKeys.includes(key) || syncInstances.num === 1)
+	if(syncIgnoreKeys.includes(key) || syncWindows.num === 1)
 		return;
 
 	ejs.get(key, function(error, data) {
@@ -1006,7 +1005,7 @@ function getDataFromDiskAsync(key, callback = false)
 // Periodically get data from disk to keep it updated if multiple windows are open
 function getPeriodicallyFromDisk()
 {
-	if(syncInstances.num === 1) // Only one instance, no need to sync
+	if(syncWindows.num === 1) // Only one instance, no need to sync
 		return;
 
 	ejs.getMany(storageKeys, async function(error, data) {
@@ -1123,6 +1122,6 @@ module.exports = {
 	getDataFromDiskAsync,
 	updatedFromOtherInstance,
 	safe,
-	syncInstances,
+	syncWindows,
 	onChangeFromOtherInstance,
 };

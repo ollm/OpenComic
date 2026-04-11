@@ -67,12 +67,26 @@ function hideDropZone(event, force = false)
 
 function allowDrag(event)
 {
+	if(event.dataTransfer?.types.includes('application/x-opencomic-tab'))
+	{
+		tabs.drag.dragover(event);
+
+		return;
+	}
+
 	event.preventDefault();
 	event.dataTransfer.dropEffect = 'link';
 }
 
 function handleDrop(event)
 {
+	if(event.dataTransfer?.types.includes('application/x-opencomic-tab'))
+	{
+		tabs.drag.drop(event);
+
+		return;
+	}
+
 	event.preventDefault();
 
 	const firstPath = event.dataTransfer?.files?.[0] ? electron.webUtils.getPathForFile(event.dataTransfer.files[0]) : false;

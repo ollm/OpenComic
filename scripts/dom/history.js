@@ -51,7 +51,7 @@ function cleanCurrent()
 
 async function goTo(goTo = false, animation = true)
 {
-	if(!goTo) return;
+	// if(!goTo) return;
 
 	if(goTo.root)
 	{
@@ -82,6 +82,8 @@ async function goTo(goTo = false, animation = true)
 			await recentlyOpened.load(animation);
 		else
 			await dom.loadIndexPage(animation, false);
+
+		return;
 	}
 	else if(goTo)
 	{
@@ -94,7 +96,11 @@ async function goTo(goTo = false, animation = true)
 			else
 				await dom.loadIndexPage(animation, goTo.path, false, false, goTo.mainPath, false);
 		}
+
+		return;
 	}
+
+	await dom.loadIndexPage(animation, false);
 }
 
 function goBack()

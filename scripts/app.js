@@ -120,37 +120,31 @@ function invertedDPR(number) {
 
 }
 
-function pageY(e) {
+function pageY(event){
 
-	return e.touches ? e.touches[0].pageY : e.pageY;
-
-}
-
-function pageX(e) {
-
-	return e.touches ? e.touches[0].pageX : e.pageX;
+	const t0 = event.touches?.[0];
+	return t0?.pageY ?? event.pageY;
 
 }
 
-function clientY(e) {
+function pageX(event) {
 
-	if(e.touches && e.touches[0].clientY !== undefined)
-		return e.touches[0].clientY;
-	else if(e.clientY !== undefined)
-		return e.clientY;
-
-	return pageY(e);
+	const t0 = event.touches?.[0];
+	return t0?.pageX ?? event.pageX;
 
 }
 
-function clientX(e) {
+function clientY(event) {
 
-	if(e.touches && e.touches[0].clientX !== undefined)
-		return e.touches[0].clientX;
-	else if(e.clientX !== undefined)
-		return e.clientX;
+	const t0 = event.touches?.[0];
+	return t0?.clientY ?? event.clientY ?? pageY(event);
 
-	return pageX(e);
+}
+
+function clientX(event) {
+
+	const t0 = event.touches?.[0];
+	return t0?.clientX ?? event.clientX ?? pageX(event);
 
 }
 
@@ -503,6 +497,8 @@ function degIs(type, deg) {
 		horizontalFromLeft:        () => deg > 135 || deg < -135,
 
 		vertical:                  () => (deg > -135 && deg < -45) || (deg > 45 && deg < 135),
+
+		all:                       () => true,
 	};
 
 	return rules[type]?.() ?? false;

@@ -3,6 +3,7 @@ var visible = true;
 function start()
 {
 	document.querySelector('.title-bar').innerHTML = template.load('title.bar.html');
+	tabs.drag.add(-1, false, true);
 
 	app.event(window, 'mousedown touchstart', mousedown);
 }
@@ -74,6 +75,8 @@ function setMenu(_menu)
 
 	let titleBar = document.querySelector('.title-bar');
 	if(titleBar) titleBar.innerHTML = template.load('title.bar.html');
+
+	tabs.drag.add(-1, false, true);
 }
 
 function clickMenu(index)
