@@ -26,7 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Cache rendered EPUB files [`2813629`](https://github.com/ollm/OpenComic/commit/28136294ce5ba4c36fd5f2499fbc6b34b43b205e)
 - Support for text selection and clickable links in EPUBs [`f66e3a2`](https://github.com/ollm/OpenComic/commit/f66e3a24bce4da4ee236d92e19693ed1d2b533b0)
 - Option to disable thumbnails while reading and show filenames instead [`e3d3896`](https://github.com/ollm/OpenComic/commit/e3d3896e4ea410ab1f5baa54bb6eac371ed3612d)
-- Show tooltip for filenames that are not fully displayed
+- Show tooltip for filenames that are not fully displayed [`5422c18`](https://github.com/ollm/OpenComic/commit/5422c18c19566c00a9b5d6396b47e0b6dfec889b)
+- Drag tabs to open them in a new window or move them between windows [`5e84c65`](https://github.com/ollm/OpenComic/commit/5e84c650a11a6731de586528d0e5268d2de08bd2)
 
 
 ##### 🐛 Bug Fixes
