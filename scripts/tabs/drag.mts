@@ -254,7 +254,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 				}
 
 				const history = tab.data.history;
-				currentDetachedWindowId = await openPathInNewWindow(history.current.path, history.current.mainPath, history, {showInactive: true}) as number;
+				currentDetachedWindowId = await openPathInNewWindow(history.current.path, history.current.mainPath, history, {showInactive: false}) as number;
 
 				followScreenPoint(currentDetachedWindowId, tab);
 
@@ -322,6 +322,17 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			{
 				if(tabs.tabs.length === 0 || singleTab)
 					electronRemote.getCurrentWindow().close();
+
+				if(!fromDetaching)
+				{
+					if(useScreenPointTabs && currentDetachedWindowId && currentDetachedWindowId !== null)
+					{
+						const win = electronRemote.BrowserWindow.fromId(currentDetachedWindowId);
+						if(win) win.close();
+					}
+
+					currentDetachedWindowId = null;
+				}
 
 				return;
 			}
@@ -572,7 +583,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 	const win = electronRemote.BrowserWindow.fromId(winId);
 	if(!win) return;
 
-	win.showInactive();
+	win.show();
 
 	const currentWin = electronRemote.getCurrentWindow();
 	const [wx, wy] = currentWin.getPosition();
@@ -672,7 +683,7 @@ function attachedTab(tab: Tab, attached: boolean = false) {
 		if(attached)
 			win.hide();
 		else
-			win.showInactive();
+			win.show();
 	}
 
 }
