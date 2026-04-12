@@ -15,7 +15,35 @@ declare const openPathInNewWindow: any;
 declare const useScreenPointTabs: boolean;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-// getCursorScreenPoint
+interface WindowPos {
+	wx: number;
+	wy: number;
+};
+
+interface DragState {
+	active: boolean;
+};
+
+interface ScreenFollow {
+	active: boolean;
+	first: boolean;
+	pointerDown: boolean;
+	windowPos: WindowPos;
+};
+
+const dragState: DragState = {
+	active: false,
+};
+
+const screenFollow: ScreenFollow = {
+	active: false,
+	first: true,
+	pointerDown: false,
+	windowPos: {
+		wx: 0,
+		wy: 0,
+	},
+};
 
 function moveTabs(mainTab: Tab, goTo: number, animation: boolean = true) {
 
@@ -153,6 +181,8 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		tab.element.classList.add('dragging');
 		tabsBar.classList.add('dragging-tabs');
 
+		dragState.active = true;
+
 		if(!firstDragFromOtherWindow)
 		{
 			const rect = tab.element.getBoundingClientRect();
@@ -275,6 +305,12 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			dom.queryAll('.tab.dragging').removeClass('dragging');
 
 			syncWindows.endDragTab();
+
+			setTimeout(function() {
+
+				dragState.active = false;
+
+			}, 10);
 		}
 
 		if(detachedTab)
@@ -477,20 +513,18 @@ function dragleave(event: DragEvent) {
 
 }
 
-let pointerIsDown: boolean = false;
-
 function pointerdown() {
 
-	pointerIsDown = true;
+	screenFollow.pointerDown = true;
 
 }
 
 function pointerup(event: PointerEvent) {
 
-	if(followingScreenPoint && currentSimpleEvent)
+	if(screenFollow.active && currentSimpleEvent)
 		currentSimpleEvent.up(event);
 
-	pointerIsDown = false;
+	screenFollow.pointerDown = false;
 
 	syncWindows.forceStopFollowScreenPoint();
 
@@ -525,15 +559,12 @@ function eventFromScreenPoint(x: number, y: number, wx: number, wy: number) {
 	const event = fakeEvent(x, y, wx, wy);
 	currentSimpleEvent.move(event);
 
-	if(firstFollowingScreenPoint)
+	if(screenFollow.first)
 		syncWindows.startDragTab({x, y});
 	else
 		syncWindows.moveDragTab({x, y});
 
 }
-
-let followingScreenPoint: boolean = false;
-let firstFollowingScreenPoint: boolean = true;
 
 function followScreenPoint(winId: number, tab: Tab) {
 
@@ -559,33 +590,33 @@ function followScreenPoint(winId: number, tab: Tab) {
 
 			eventFromScreenPoint(cursor.x, cursor.y, wx, wy);
 
-			if(pointerIsDown)
+			if(screenFollow.pointerDown)
 			{
-				firstFollowingScreenPoint = false;
+				screenFollow.first = false;
 				loop();
 			}
 			else
 			{
 
-				followingScreenPoint = false;
-				firstFollowingScreenPoint = true;
+				screenFollow.active = false;
+				screenFollow.first = true;
 			}
 
 		});
 
 	};
 
-	followingScreenPoint = true;
+	screenFollow.active = true;
 	loop();
 
 }
 
 function forceStopFollowScreenPoint() {
 
-	if(followingScreenPoint && currentSimpleEvent?.lastEvent)
+	if(screenFollow.active && currentSimpleEvent?.lastEvent)
 		currentSimpleEvent.up(currentSimpleEvent.lastEvent);
 
-	pointerIsDown = false;
+	screenFollow.pointerDown = false;
 
 }
 
@@ -646,14 +677,12 @@ function attachedTab(tab: Tab, attached: boolean = false) {
 
 }
 
-let startDragTabPosition = {wx: 0, wy: 0};
-
 function startDragTab({x, y}) {
 
 	const currentWin = electronRemote.getCurrentWindow();
 	const [wx, wy] = currentWin.getPosition();
 
-	startDragTabPosition = {wx, wy};
+	screenFollow.windowPos = {wx, wy};
 	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent;
 	dragover(event, true);
 
@@ -661,7 +690,7 @@ function startDragTab({x, y}) {
 
 function moveDragTab({x, y}) {
 
-	const {wx, wy} = startDragTabPosition;
+	const {wx, wy} = screenFollow.windowPos;
 	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent;
 	dragover(event, true);
 
@@ -702,5 +731,6 @@ export default {
 	moveDragTab,
 	endDragTab,
 	forceStopFollowScreenPoint,
+	get state() {return dragState},
 	start,
 };

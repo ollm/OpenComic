@@ -529,7 +529,8 @@ function setEvents(tab: Tab): void
 {
 	tab.element.addEventListener('click', function() {
 
-		_switch(tab.id);
+		if(!drag.state.active)
+			_switch(tab.id);
 
 	});
 
@@ -550,7 +551,6 @@ function setEvents(tab: Tab): void
 		hideSeparators();
 
 	});
-
 }
 
 function mouseLeave()
