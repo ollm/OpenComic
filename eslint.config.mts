@@ -40,6 +40,7 @@ export default defineConfig([
 			'@stylistic/semi': ['error', 'always', {'omitLastInOneLineBlock': true, 'omitLastInOneLineClassBody': true}],
 			'@stylistic/block-spacing': ['error', 'never'],
 			'@stylistic/space-before-blocks': ['error', 'always'],
+			'@stylistic/multiline-ternary': ['error', 'never'],
 		},
 	}
 ]);

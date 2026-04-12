@@ -262,12 +262,12 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 	};
 
-	const end = async function(event: PointerEvent, data: CallbackData, goToX: number, detached: boolean = false) {
+	const end = async function(event: PointerEvent, data: CallbackData, goToX: number, fromDetaching: boolean = false) {
 
 		const tab = getTab();
 		if(!tab) return;
 
-		if(!detached)
+		if(!fromDetaching)
 		{
 			sendedTabToOtherWindows = false;
 			currentSimpleEvent = undefined;
@@ -319,7 +319,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		else if(tab.position - goToX < 0)
 			_goToX = tab.position;
 
-		if(detached && len > 1)
+		if(fromDetaching && len > 1)
 		{
 			tab.element.style.transition = 'opacity 0s';
 			tab.element.style.opacity = '0';
@@ -349,7 +349,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		tab.position = Math.min(Math.max(diff, 0), len - 1);
 		tabs.setTabPositions({animation: true, tab});
 
-		if(!detached)
+		if(!fromDetaching)
 		{
 			if(useScreenPointTabs && currentDetachedWindowId && currentDetachedWindowId !== null)
 			{
@@ -479,7 +479,7 @@ function dragleave(event: DragEvent) {
 
 let pointerIsDown: boolean = false;
 
-function pointerdown(event: PointerEvent) {
+function pointerdown() {
 
 	pointerIsDown = true;
 
@@ -573,7 +573,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 
 		});
 
-	}
+	};
 
 	followingScreenPoint = true;
 	loop();
@@ -632,7 +632,6 @@ let tabIsAttachedInOtherWindow = false;
 function attachedTab(tab: Tab, attached: boolean = false) {
 
 	tabIsAttachedInOtherWindow = attached;
-	const winId = electronRemote.getCurrentWindow().id as number;
 
 	if(currentDetachedWindowId && currentDetachedWindowId !== null)
 	{
@@ -655,7 +654,7 @@ function startDragTab({x, y}) {
 	const [wx, wy] = currentWin.getPosition();
 
 	startDragTabPosition = {wx, wy};
-	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent
+	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent;
 	dragover(event, true);
 
 }
@@ -663,7 +662,7 @@ function startDragTab({x, y}) {
 function moveDragTab({x, y}) {
 
 	const {wx, wy} = startDragTabPosition;
-	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent
+	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent;
 	dragover(event, true);
 
 }
