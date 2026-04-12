@@ -34,6 +34,7 @@ function createWindow(options = {}) {
 	let win = null;
 	let appClosing = false;
 	let windowShowed = false;
+	let sendInitData = false;
 
 	let gotSingleInstanceLock = app.requestSingleInstanceLock();
 	if(!gotSingleInstanceLock)
@@ -139,16 +140,19 @@ function createWindow(options = {}) {
 			windowShowed = true;
 
 			win.webContents.send('init-data', initData);
+			sendInitData = true;
 
 			if(message)
 				console.log(message);
 		}
 		else
 		{
-			if(win && initData?.history)
+			if(win && !sendInitData && initData?.history)
+			{
 				win.webContents.send('init-data', initData);
+				sendInitData = true;
+			}
 		}
-
 	}
 
 	win.once('ready-to-show', showWindow);
