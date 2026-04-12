@@ -54,7 +54,7 @@ function list(returnTrackingActive = false)
 
 		return {
 			...site,
-			logo: '../.dist/tracking/'+key+'/logo.png',
+			logo: '../scripts/tracking/'+key+'/logo.png',
 			script: p.join(tracking.scriptsPath(key), key+'.js'),
 			config: getSiteConfig(key),
 			auth: trackingSitesKeys[key] || {},

@@ -175,48 +175,27 @@ async function getComicData(siteId)
 	return {};
 }
 
-// Loging to site
 async function login()
 {
-	const url = await tracking.getRedirectResult(site.key, 'https://anilist.co/api/v2/oauth/authorize?client_id='+site.auth.clientId+'&redirect_uri=opencomic://tracking/anilist&response_type=code');
-	const code = url.searchParams.get('code') || url.searchParams.get('token');
-	
-	if(!code)
+	const url = await tracking.getRedirectResult(site.key, 'https://anilist.co/api/v2/oauth/authorize?client_id='+site.auth.clientId+'&response_type=token');
+	const hash = url.hash.startsWith('#') ? url.hash.slice(1) : url.hash;
+
+	const params = new URLSearchParams(hash);
+
+	const token = params.get('access_token') || app.extract(/access_token=([^#?&]*)/, hash);
+	const expiresIn = +(params.get('expires_in') || app.extract(/expires_in=([^#?&]*)/, hash));
+
+	if(!token)
 		return {valid: false};
 
-	const options = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json',
-		},
-		body: JSON.stringify({
-			grant_type: 'authorization_code',
-			client_id: site.auth.clientId,
-			client_secret: site.auth.clientSecret,
-			redirect_uri: 'opencomic://tracking/anilist', 
-			code: code,
-		})
-	};
-
-	try
-	{
-		const response = await fetch('https://anilist.co/api/v2/oauth/token', options);
-
-		if(response.status == 200)
-		{
-			const json = await response.json();
-			return {valid: true, token: json.access_token, refreshToken: json.refresh_token, expiresIn: json.expires_in};
-		}
-	}
-	catch(error) {}
-
-	return {valid: false};
+	return {valid: true, token: token, refreshToken: '', expiresIn: expiresIn};
 }
 
 // Refresh session token
 async function refreshToken()
 {
+	return {valid: false};
+
 	const options = {
 		method: 'POST',
 		headers: {
@@ -226,7 +205,6 @@ async function refreshToken()
 		body: JSON.stringify({
 			grant_type: 'refresh_token',
 			client_id: site.auth.clientId,
-			client_secret: site.auth.clientSecret,
 			refresh_token: site.config.session.refreshToken,
 		})
 	};

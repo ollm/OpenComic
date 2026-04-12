@@ -1093,6 +1093,21 @@ function scriptsPath(site = '')
 	return p.join(appDir, '.dist/tracking/'+site);
 }
 
+function base64UrlEncode(buffer)
+{
+	return buffer.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function pkce()
+{
+	const verifier = base64UrlEncode(crypto.randomBytes(32));
+
+	const hash = crypto.createHash('sha256').update(verifier).digest();
+	const challenge = base64UrlEncode(hash);
+
+	return {verifier, challenge};
+}
+
 function start()
 {
 	refreshTokens();
@@ -1130,5 +1145,6 @@ module.exports = {
 	activeAndDeactivateTrackingSite: activeAndDeactivateTrackingSite,
 	tracked: function(){return tracked},
 	handleOpenUrl: handleOpenUrl,
+	pkce: pkce,
 	start: start,
 };
