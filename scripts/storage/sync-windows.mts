@@ -69,9 +69,27 @@ function processData(data: any)
 
 			break;
 
+		case 'startDragTab':
+
+			tabs.drag.startDragTab(data.cursor);
+
+			break;
+
+		case 'moveDragTab':
+
+			tabs.drag.moveDragTab(data.cursor);
+
+			break;
+
 		case 'endDragTab':
 
 			tabs.drag.endDragTab();
+
+			break;
+
+		case 'forceStopFollowScreenPoint':
+
+			tabs.drag.forceStopFollowScreenPoint();
 
 			break;
 	}
@@ -102,10 +120,33 @@ function attachedTab(tab: Tab, attached: boolean)
 	});
 }
 
+function startDragTab(cursor)
+{
+	sendData({
+		type: 'startDragTab',
+		cursor: cursor,
+	});
+}
+
+function moveDragTab(cursor)
+{
+	sendData({
+		type: 'moveDragTab',
+		cursor: cursor,
+	});
+}
+
 function endDragTab()
 {
 	sendData({
 		type: 'endDragTab',
+	});
+}
+
+function forceStopFollowScreenPoint()
+{
+	sendData({
+		type: 'forceStopFollowScreenPoint',
 	});
 }
 
@@ -123,5 +164,8 @@ export default {
 	storageUpdated,
 	dragTab,
 	attachedTab,
+	startDragTab,
+	moveDragTab,
 	endDragTab,
+	forceStopFollowScreenPoint,
 };

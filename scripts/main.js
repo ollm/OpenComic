@@ -131,7 +131,11 @@ function createWindow(options = {}) {
 
 		if(!windowShowed)
 		{
-			win.show();
+			if(options.showInactive)
+				win.showInactive();
+			else
+				win.show();
+
 			windowShowed = true;
 
 			win.webContents.send('init-data', initData);
@@ -244,7 +248,16 @@ function createWindow(options = {}) {
 	firstWindowCreated = true;
 
 	if(options.initHistory) // Open immediately
-		win.show();
+	{
+		if(options.showInactive)
+			win.showInactive();
+		else
+			win.show();
+
+		windowShowed = true;
+	}
+
+	return win.id;
 }
 
 let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
@@ -326,7 +339,7 @@ ipcMain.handle('move-to-trash', function(event, path) {
 
 ipcMain.handle('open-new-window', function(event, options = {}) {
 
-	createWindow(options)
+	return createWindow(options)
 
 });
 

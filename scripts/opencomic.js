@@ -283,6 +283,8 @@ var tempFolder = settings.getTmpFolder();
 var macosMAS = false;
 
 macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
+const isWayland = process.platform === 'linux' && process.env.XDG_SESSION_TYPE === 'wayland';
+const useScreenPointTabs = !isWayland;
 
 //console.timeEnd('Require time 2');
 
@@ -307,6 +309,8 @@ async function start()
 		handlebarsContext.config = config;
 		handlebarsContext.installedFromStore = installedFromStore.check();
 		handlebarsContext.macosMAS = macosMAS;
+		handlebarsContext.isWayland = isWayland;
+		handlebarsContext.useScreenPointTabs = useScreenPointTabs;
 
 		if(config.zoomFactor != 1)
 			electron.webFrame.setZoomFactor(Math.round(config.zoomFactor * 100) / 100);
@@ -542,7 +546,7 @@ function openNewInstance(args = [])
 	child.unref();
 }
 
-function openNewWindow(args = [], options = {})
+async function openNewWindow(args = [], options = {})
 {
 	options = {
 		args,
@@ -550,10 +554,10 @@ function openNewWindow(args = [], options = {})
 	};
 
 	console.log('Opening new window with options:', options);
-	electron.ipcRenderer.invoke('open-new-window', options);
+	return await electron.ipcRenderer.invoke('open-new-window', options);
 }
 
-function openPathInNewWindow(path, mainPath = '', history = null)
+async function openPathInNewWindow(path, mainPath = '', history = null, options = {})
 {
 	if(!history)
 	{
@@ -575,7 +579,7 @@ function openPathInNewWindow(path, mainPath = '', history = null)
 	}
 
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
-	openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath, '--init-history=true'], {initHistory: history});
+	return await openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath, '--init-history=true'], {initHistory: history, ...options});
 }
 
 function openPathInNewTab(path, mainPath = '')

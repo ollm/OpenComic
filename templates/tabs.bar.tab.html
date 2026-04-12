@@ -1,4 +1,4 @@
-<div class="tab tab--{{tab.id}}{{#unless tab.restored}} opening{{/unless}} body-medium {{#if tab.active}} active{{/if}}" draggable="true" hover-text="{{tab.title}}" data-hover-delay="600" data-id="{{tab.id}}" data-hover-detect-overflow=".tab-title">
+<div class="tab tab--{{tab.id}}{{#unless tab.restored}} opening{{/unless}} body-medium {{#if tab.active}} active{{/if}}"{{#unless @root.useScreenPointTabs}} draggable="true"{{/unless}} hover-text="{{tab.title}}" data-hover-delay="600" data-id="{{tab.id}}" data-hover-detect-overflow=".tab-title">
 	<i class="icon-18 material-icon">{{tab.icon}}</i>
 	<div class="tab-title">{{tab.title}}</div>
 	<i class="icon-18 material-icon" onclick="tabs.close({{tab.id}}); event.stopPropagation();">close_small</i>
