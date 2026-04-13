@@ -122,8 +122,8 @@ electronRemote.app.on('open-file', function(event, path) {
 
 electronRemote.app.on('open-url', function(event, url) {
 
-	if(!storage.syncWindows.firstWindow)
-		return;
+	// if(!storage.syncWindows.firstWindow)
+	// 	return;
 
 	handleOpenUrl(url);
 
