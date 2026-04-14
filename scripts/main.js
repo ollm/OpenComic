@@ -37,29 +37,9 @@ function createWindow(options = {}) {
 	let sendInitData = false;
 
 	let gotSingleInstanceLock = app.requestSingleInstanceLock();
+
 	if(!gotSingleInstanceLock)
-	{
-		let _toOpenFile = false;
-
-		const len = args.length;
-		const last = args[len - 1];
-
-		if(/^opencomic:\/\//.test(last))
-			app.quit();
-
-		for(let i = 1; i < len; i++)
-		{
-			let arg = args[i];
-
-			if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.', '--new-window'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
-			{
-				_toOpenFile = arg;
-				break;
-			}
-		}
-
-		if(_toOpenFile && !newWindow) app.quit();
-	}
+		app.quit();
 
 	let mainWindowState = windowStateKeeper({
 		defaultWidth: 1100,

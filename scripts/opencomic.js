@@ -171,9 +171,11 @@ electronRemote.app.on('second-instance', function(event, argv) {
 			}
 
 			openComic(arg, true);
-			break;
+			return;
 		}
 	}
+
+	openEmptyNewWindow();
 
 });
 
@@ -351,6 +353,7 @@ electron.ipcRenderer.on('init-data', function(event, data) {
 });
 
 let historyFromStartApp = false;
+let emptyNewWindow = false;
 
 async function loadFromHistory()
 {
@@ -378,6 +381,7 @@ async function startApp()
 
 	const args = [...process.argv, ...electronRemote.process.argv];
 
+	emptyNewWindow = args.includes('--empty-new-window');
 	let toOpenFileMainPath = getArgValue(args, '--main-path', false);
 	toOpenFile = toOpenFile || getArgValue(args, '--path', false);
 
@@ -415,7 +419,7 @@ async function startApp()
 
 		let lastReading = false;
 
-		if(config.startInContinueReading)
+		if(config.startInContinueReading && !emptyNewWindow)
 		{
 			let readingProgress = relative.get('readingProgress');
 			let highest = 0;
@@ -480,7 +484,7 @@ async function startApp()
 			}
 		}
 
-		if(!config.restoreTabsFromLastSession || !tabs?.tabs?.length || (tabs.tabs.length === 1 && !config.showAlwaysTabsBar))
+		if(emptyNewWindow || !config.restoreTabsFromLastSession || !tabs?.tabs?.length || (tabs.tabs.length === 1 && !config.showAlwaysTabsBar))
 		{
 			if(lastReading && fs.existsSync(lastReading.mainPath))
 				dom.openComic(false, lastReading.path, lastReading.mainPath);
@@ -580,6 +584,12 @@ async function openPathInNewWindow(path, mainPath = '', history = null, options 
 
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
 	return await openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath, '--init-history=true'], {initHistory: history, ...options});
+}
+
+async function openEmptyNewWindow()
+{
+	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
+	return await openNewWindow(['--empty-new-window', '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height], {});
 }
 
 function openPathInNewTab(path, mainPath = '')

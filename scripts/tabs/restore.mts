@@ -7,6 +7,7 @@ declare const config: any;
 declare const storage: any;
 declare const template: any;
 declare const handlebarsContext: any;
+declare const emptyNewWindow: boolean;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 interface TabSaved {
@@ -58,7 +59,7 @@ function save(throttle: boolean = true, updateActive: boolean = false): void {
 
 function restore(openLastActiveTab: boolean = false): void {
 
-	if(!config.restoreTabsFromLastSession)
+	if(!config.restoreTabsFromLastSession || emptyNewWindow)
 		return;
 
 	const data = storage.get('tabs');
