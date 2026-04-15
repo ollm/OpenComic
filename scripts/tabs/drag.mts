@@ -226,7 +226,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 			sendAttachedTab(tab, false);
 
-			if(tabs.tabs.length === 1)
+			if(singleTab && tabs.tabs.length === 1 && !tabFromOtherWindowEvent)
 			{
 				if(useScreenPointTabs)
 				{
@@ -257,7 +257,6 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 				currentDetachedWindowId = await openPathInNewWindow(history.current.path, history.current.mainPath, history, {showInactive: false}) as number;
 
 				followScreenPoint(currentDetachedWindowId, tab);
-
 			}
 
 			return;
@@ -283,6 +282,8 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 				const win = electronRemote.BrowserWindow.fromId(currentDetachedWindowId);
 				if(win) win.hide();
 			}
+
+			electronRemote.getCurrentWindow().focus();
 		}
 
 		tab.element.style.transform = `translateX(calc(((var(--tabs-bar-tab-width) + 6px) * ${tab.position}) + ${data.diffX}px))`;
@@ -337,7 +338,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 				return;
 			}
 
-			if(tabs.tabs.length === 1)
+			if(singleTab)
 			{
 				electronRemote.getCurrentWindow().show();
 				detachedTab = false;
@@ -685,7 +686,6 @@ function attachedTab(tab: Tab, attached: boolean = false) {
 		else
 			win.show();
 	}
-
 }
 
 function startDragTab({x, y}) {

@@ -151,8 +151,8 @@ function setColors()
 {
 	let computedStyle = getComputedStyle(document.querySelector('.app'));
 
-	let symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant');
-	let backgroundColor = computedStyle.getPropertyValue('--md-sys-color-surface-container');
+	let symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#7F7F7F';
+	let backgroundColor = computedStyle.getPropertyValue('--md-sys-color-surface-container').trim() || '#7F7F7F';
 
 	let win = electronRemote.getCurrentWindow();
 	win.setBackgroundColor(backgroundColor);
@@ -163,7 +163,7 @@ function setColors()
 		height: 29,
 	};
 
-	if(process.platform == 'win32' || process.platform == 'win64')
+	if(process.platform == 'win32')
 	{
 		if(first)
 			win.setTitleBarOverlay(colors);
