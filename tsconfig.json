@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "CommonJS",
+		"module": "Node16",
 		"declaration": false,
 		"declarationMap": false,
 		"strict": true,
@@ -10,7 +10,7 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "node",
+		"moduleResolution": "node16",
 		"noImplicitAny": false, 
 		"resolveJsonModule": true,
 		"baseUrl": "./scripts",
