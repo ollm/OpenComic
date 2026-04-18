@@ -1237,7 +1237,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		for(let i = 0; i < len; i++)
 		{
-			if(files[i].name == 'ComicInfo.xml')
+			if(files[i].name == 'ComicInfo.xml' || files[i].name == 'MetronInfo.xml')
 			{
 				comicInfoFile = files[i];
 
@@ -1268,6 +1268,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			let xml = await fsp.readFile(realPath(comicInfoFile.path, -1));
 			let metadata = fastXmlParser.parse(xml);
+
+			if(comicInfoFile.name === 'MetronInfo.xml')
+				return this.readMetronInfo(metadata);
 
 			let comicInfo = metadata.ComicInfo || {};
 			let poster = false;
@@ -1387,6 +1390,167 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		}
 
 		return {};
+
+	}
+
+	this.readMetronInfo = function(metadata) {
+
+		const getString = function(object) {
+
+			if(!object)
+				return '';
+
+			if(typeof object === 'object' && object['#text'])
+				return object['#text'];
+
+			return object || '';
+
+		}
+
+		const getArray = function(object, key = '', extraKey = false) {
+
+			if(!object)
+				return [];
+
+			const array = [];
+
+			const data = getString(object[key]);
+
+			if(typeof data !== 'object')
+				return [data];
+
+			for(const i in data)
+			{
+				let value = getString(data[i]);
+
+				if(extraKey)
+					value = getString(value[extraKey]);
+
+				if(!value)
+					continue;
+
+				array.push(value);
+			}
+
+			return array;
+
+		}
+
+		const getRoles = function(metronInfo) {
+
+			const roles = {};
+
+			const set = function(key, value) {
+
+				if(!roles[key])
+					roles[key] = {role: key, name: []};
+
+				roles[key].name.push(value);
+				return;
+
+			}
+
+			const publisher = getString(metronInfo.Publisher?.Name) || '';
+			const imprint = getString(metronInfo.Publisher?.Imprint) || '';
+
+			if(publisher) set('Publisher', publisher);
+			if(imprint) set('Imprint', imprint);
+
+			const credits = metronInfo.Credits?.Credit || [];
+
+			for(const i in credits)
+			{
+				const creadit = metronInfo.Credits.Credit[i];
+				const name = getString(creadit.Creator);
+
+				if(!name)
+					continue;
+
+				const _roles = getArray(creadit.Roles, 'Role');
+
+				for(const role of _roles)
+				{
+					set(role, name);
+				}
+			}
+
+			return roles;
+		}
+
+		const metronInfo = metadata.MetronInfo || {};
+
+		const storeDate = metronInfo.StoreDate;
+		const [_storeDate, year, month, day] = storeDate.match(/(\d{4})-(\d{2})-(\d{2})/) || ['', 0, 0, 0];
+
+		const GTIN = (metronInfo.GTIN?.ISBN || metronInfo.GTIN?.UPC) ? Object.values(metronInfo.GTIN).filter(Boolean).join(', ') : '';
+
+		const roles = getRoles(metronInfo);
+		const contributor = Object.values(roles);
+
+		const test = {
+			title: getArray(metronInfo.Stories, 'Story').join(' - ') || '',
+			series: metronInfo.Series?.Name || '',
+			// localizedSeries: '',
+			// seriesGroup: '',
+
+			// poster: false,
+
+			bookNumber: metronInfo.Number || 0,
+			bookTotal: metronInfo.Series?.VolumeCount || 0,
+			volume: metronInfo.Series?.Volume || metronInfo.MangaVolume || 0,
+			pages: metronInfo.PageCount || 0,
+
+			storyArc: getArray(metronInfo.Arcs, 'Arc', 'Name'),
+			storyArcNumber: getArray(metronInfo.Arcs, 'Arc', 'Number'),
+
+			// alternateSeries: comicInfo.AlternateSeries || 0,
+			// alternateBookNumber: comicInfo.AlternateNumber || 0,
+			// alternateBookTotal: comicInfo.AlternateCount || 0,
+
+			// manga: (comicInfo.Manga == 'Yes' || comicInfo.Manga == 'YesAndRightToLeft') ? true : (comicInfo.Manga == 'No' ? false : null),
+
+			author: (roles.Writer?.name ?? []).map((name) => ({name})) || '',
+			// publisher: metronInfo.Publisher?.Name || '',
+			contributor: contributor || [],
+
+			/*author: comicInfo.Writer || '',
+			writer: comicInfo.Writer || '',
+			penciller: comicInfo.Penciller || '',
+			inker: comicInfo.Inker || '',
+			colorist: comicInfo.Colorist || '',
+			letterer: comicInfo.Letterer || '',
+			coverArtist: comicInfo.CoverArtist || '',
+			editor: comicInfo.Editor || '',
+			translator: comicInfo.Translator || '',
+			publisher: comicInfo.Publisher || '',
+			imprint: comicInfo.Imprint || '',*/
+
+			ageRating: metronInfo.AgeRating || '',
+			genre: getArray(metronInfo.Genres, 'Genre'),
+			tags: getArray(metronInfo.Tags, 'Tag'),
+			web: getArray(metronInfo.URLs, 'URL') || '',
+			description: metronInfo.Summary || '',
+
+			characters: getArray(metronInfo.Characters, 'Character'),
+			teams: getArray(metronInfo.Teams, 'Team'),
+			locations: getArray(metronInfo.Locations, 'Location'),
+			// mainCharacterOrTeam: '',
+
+			releaseDate: storeDate,
+			year: +year || 0,
+			month: +month || 0,
+			day: +day || 0,
+
+			language: metronInfo.Series?.['@_lang'] || '',
+			format: metronInfo.Series?.Format || '',
+			// scanInformation: '',
+			notes: metronInfo.Notes || '',
+			GTIN: GTIN || '',
+
+			metadata: metadata,
+		};
+
+		return test;
 
 	}
 

@@ -338,7 +338,7 @@ function parseValue(value, key)
 
 		case 'web':
 
-			value = parseUrl(value);
+			value = parseUrls(value);
 
 			break;
 
@@ -363,7 +363,7 @@ function parseValue(value, key)
 	}
 	else
 	{
-		return value;
+		return joinItems(value, false);
 	}
 }
 
@@ -412,6 +412,21 @@ function parseLanguage(lang)
 	}
 
 	return joinItems(langs);
+}
+
+function parseUrls(urls)
+{
+	if(typeof urls === 'string' || !Array.isArray(urls))
+		return parseUrl(urls);
+
+	const _urls = [];
+
+	for(const url of urls)
+	{
+		_urls.push(parseUrl(url));
+	}
+
+	return joinItems(_urls, false);
 }
 
 function parseUrl(url)
@@ -551,6 +566,9 @@ function parseContributor(metadata)
 
 function splitCommaSeparated(string)
 {
+	if(typeof string === 'object' && Array.isArray(string))
+		return string;
+
 	let data = string.split(',');
 
 	let _data = [];
@@ -568,6 +586,9 @@ function splitCommaSeparated(string)
 
 function joinItems(items, and = true)
 {
+	if(typeof items !== 'object' || !Array.isArray(items))
+		return items;
+
 	if(!and)
 		return items.join(', ');
 

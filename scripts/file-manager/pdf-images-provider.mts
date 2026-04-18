@@ -87,7 +87,7 @@ export default class PdfImagesProvider {
 
 			let streamDataStart = streamStart + STREAM.length;
 
-			console.log(streamDataStart);
+			// console.log(streamDataStart);
 
 			if(this.data[streamDataStart] === CR)
 				streamDataStart++;
@@ -95,8 +95,8 @@ export default class PdfImagesProvider {
 			if(this.data[streamDataStart] === LF)
 				streamDataStart++;
 
-			console.log(streamDataStart);
-			console.log('-------');
+			// console.log(streamDataStart);
+			// console.log('-------');
 
 			const streamEnd = this.data.indexOf(ENDSTREAM, streamStart);
 			if (streamEnd === -1) break;
@@ -131,7 +131,7 @@ export default class PdfImagesProvider {
 		const width = widthMatch ? parseInt(widthMatch[1]) : 0;
 		const height = heightMatch ? parseInt(heightMatch[1]) : 0;
 
-		console.log('imageData, width:', width, 'height:', height);
+		// console.log('imageData, width:', width, 'height:', height);
 
 		// if(width === 0 || height === 0) // Disable, Some PDF files have 0 size
 		//	return;
