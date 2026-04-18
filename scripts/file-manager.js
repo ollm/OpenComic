@@ -1487,7 +1487,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const roles = getRoles(metronInfo);
 		const contributor = Object.values(roles);
 
-		const test = {
+		// https://metron-project.github.io/docs/category/schemas
+		return {
 			title: getArray(metronInfo.Stories, 'Story').join(' - ') || '',
 			series: metronInfo.Series?.Name || '',
 			// localizedSeries: '',
@@ -1549,9 +1550,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			metadata: metadata,
 		};
-
-		return test;
-
 	}
 
 	this.callbackWhenFileExtracted = false;
