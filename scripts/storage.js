@@ -1,4 +1,5 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
+	driver = require(p.join(appDir, '.dist/storage/driver.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
 const changes = 148; // Update this if readingPagesConfig is updated
@@ -616,7 +617,7 @@ function purgeOldAtomic()
 		const path = p.join(storagePath, file);
 		const stats = fs.statSync(path);
 
-		if(/^[a-z]+\.json\.[0-9]+$/iu.test(file) && (now - stats.mtimeMs) > 86400000) // 24 hours
+		if((/^[a-z]+\.json\.[0-9]+$/iu.test(file) || /^[a-z]+\.json\.tmp-[a-z0-9]+$/iu.test(file)) && (now - stats.mtimeMs) > 86400000) // 24 hours
 		{
 			try
 			{
@@ -857,53 +858,23 @@ async function setThrottle(key, value)
 	}, 300, 3000);
 }
 
-function setData(key, data)
+async function setData(key, data)
 {
-	ejs.set(key, data, function(error) {
+	await driver.write(key, data, (syncWindows.num > 1) ? true : false); // If multiple windows, force write
 
-		if(syncIgnoreKeys.includes(key))
-			return;
+	if(syncIgnoreKeys.includes(key))
+		return;
 
-		syncWindows.storageUpdated(key);
-
-	});
+	syncWindows.storageUpdated(key);
 }
 
 const storageKeys = Object.keys(storageDefault);
 
 async function start(callback)
 {
-	ejs.setDataPath(storagePath);
+	driver.setPath(storagePath);
 
-	let data = {};
-	const promises = [];
-
-	for(const key of storageKeys)
-	{
-		promises.push(new Promise(async function(resolve) {
-
-			try
-			{
-				const json = await fsp.readFile(p.join(storagePath, key+'.json'), 'utf8');
-				const _data = JSON.parse(json) || {};
-				data[key] = _data;
-				resolve();
-			}
-			catch
-			{
-				ejs.get(key, function(_data) {
-
-					data[key] = _data;
-					resolve();
-
-				});
-			}
-
-		}));
-	}
-
-	await Promise.all(promises);
-
+	let data = await driver.readMany(storageKeys);
 	const setup = !data?.config?.appVersion; // Check if this is the first run
 
 	const _appVersion = data?.config?.appVersion || false;
@@ -935,7 +906,7 @@ async function start(callback)
 
 			const newData = updateStorageMD(baseData, storageDefault[key]);
 
-			ejs.set(key, newData, function(error){});
+			driver.write(key, newData, true);
 			storageJson[key] = newData;
 		}
 		else
@@ -953,7 +924,7 @@ async function start(callback)
 					newData.changes = changes;
 				}
 
-				ejs.set(key, newData, function(error){});
+				driver.write(key, newData, true);
 				storageJson[key] = newData;
 			}
 			else
@@ -976,55 +947,47 @@ function _config()
 	return config;
 }
 
-function getDataFromDiskAsync(key, callback = false)
+async function getDataFromDiskAsync(key, callback = false)
 {
 	if(syncIgnoreKeys.includes(key) || syncWindows.num === 1)
 		return;
 
-	ejs.get(key, function(error, data) {
+	const data = await driver.read(key);
 
-		if(error) return;
+	if(app.isDifferent(storageJson[key], data))
+	{
+		storageJson[key] = data;
+		setLastUpdate(key);
 
-		if(app.isDifferent(storageJson[key], data))
-		{
-			storageJson[key] = data;
-			setLastUpdate(key);
+		if(key === 'config')
+			storage.config();
 
-			if(key === 'config')
-				storage.config();
-
-			if(callback)
-				callback();
-		}
-
-	});
+		if(callback)
+			callback();
+	}
 
 	return;
 }
 
 // Periodically get data from disk to keep it updated if multiple windows are open
-function getPeriodicallyFromDisk()
+async function getPeriodicallyFromDisk()
 {
 	if(syncWindows.num === 1) // Only one instance, no need to sync
 		return;
 
-	ejs.getMany(storageKeys, async function(error, data) {
+	const data = await driver.readMany(storageKeys);
 
-		if(error) return;
-
-		for(const key of storageKeys)
+	for(const key of storageKeys)
+	{
+		if(app.isDifferent(storageJson[key], data[key]))
 		{
-			if(app.isDifferent(storageJson[key], data[key]))
-			{
-				storageJson[key] = data[key];
-				setLastUpdate(key);
+			storageJson[key] = data[key];
+			setLastUpdate(key);
 
-				if(key === 'config')
-					storage.config();
-			}
+			if(key === 'config')
+				storage.config();
 		}
-
-	});
+	}
 }
 
 setInterval(getPeriodicallyFromDisk, 60000); // Every 60 seconds
@@ -1122,6 +1085,7 @@ module.exports = {
 	getDataFromDiskAsync,
 	updatedFromOtherInstance,
 	safe,
+	driver,
 	syncWindows,
 	onChangeFromOtherInstance,
 };

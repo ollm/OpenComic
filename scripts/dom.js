@@ -210,7 +210,7 @@ function metadataPathName(file, force = false)
 	const fileName = name.slice(0, index);
 	const ext = name.slice(index + 1);
 
-	return config.showFileExtension || !fileName || !compatible.open.has(ext) ? name : fileName;
+	return config.showFileExtension || index === -1 || !fileName || !compatible.open.has(ext) ? name : fileName;
 }
 
 async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsing, fromGoForwards)
