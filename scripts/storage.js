@@ -1,5 +1,6 @@
 const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	driver = require(p.join(appDir, '.dist/storage/driver.mjs')).default,
+	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
 const changes = 148; // Update this if readingPagesConfig is updated
@@ -935,6 +936,9 @@ async function start(callback)
 	}
 
 	callback();
+
+	await app.sleep(500);
+	backup.save();
 }
 
 function _config()
@@ -1084,8 +1088,10 @@ module.exports = {
 	info,
 	getDataFromDiskAsync,
 	updatedFromOtherInstance,
+	storageKeys,
 	safe,
 	driver,
+	backup,
 	syncWindows,
 	onChangeFromOtherInstance,
 };
