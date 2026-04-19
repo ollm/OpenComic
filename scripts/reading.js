@@ -13,37 +13,6 @@ const render = require(p.join(appDir, '.dist/reading/render.js')),
 
 var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
-//Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
-function blankPage(index)
-{
-	if(!_config.readingAlignWithNextHorizontal)
-		return false;
-
-	var key = 0;
-
-	if(doublePage.active() && _config.readingDoNotApplyToHorizontals)
-	{
-		for(let i = index; i < (imagesNum + 1); i++)
-		{
-			if(typeof imagesDataClip[i] !== 'undefined')
-			{
-				if(imagesDataClip[i].aspectRatio > 1)
-				{
-					return key % 2;
-				}
-				else
-				{
-					key++;
-				}
-			}
-			else
-			{
-				key++;
-			}
-		}
-	}
-}
-
 function calculateImagesDataWithClip()
 {
 	imagesDataClip = {};
@@ -73,85 +42,153 @@ function calculateImagesDataWithClip()
 	return imagesDataClip;
 }
 
+//Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
+let nextHorizontalIndex = [];
+let useBlankPage = false;
+
+function precalculateBlankPage()
+{
+	useBlankPage = _config.readingAlignWithNextHorizontal && _config.readingDoNotApplyToHorizontals;
+	if(!useBlankPage) return false;
+
+	nextHorizontalIndex = new Array(imagesNum + 2).fill(null);
+
+	let next = null;
+
+	for(let i = imagesNum; i >= 1; i--)
+	{
+		const image = imagesDataClip[i];
+
+		if(image && image.aspectRatio > 1)
+			next = i;
+
+		nextHorizontalIndex[i] = next;
+	}
+} 
+
+function blankPage(index)
+{
+	if(!useBlankPage) return false;
+
+	const next = nextHorizontalIndex[index];
+	if(next === null) return false;
+
+	const distance = next - index;
+	return (distance % 2) === 1;
+}
+
+function shouldAddInitialBlank()
+{
+	if(!_config.readingBlankPage) return false;
+
+	if(!_config.readingDoNotApplyToHorizontals)
+		return true;
+
+	const first = imagesDataClip[1];
+	return first && first.aspectRatio <= 1;
+}
+
 //Calculates the distribution of the images depending on the user's configuration
 function calculateImagesDistribution()
 {
 	imagesDistribution = [];
 	indexNum = 0;
 
+	const createBlank = (width = 2) => ({index: false, folder: false, blank: true, width});
+	const createImage = (i, width) => ({index: i, folder: false, blank: false, width});
+	const createFolder = (i, width) => ({index: i, folder: true, blank: false, width});
+
+	const SINGLE = 1; // Used when the image is in single page group
+	const DOUBLE = 2; // Used when the image is in double page group
+
+	const len = (contentNum + 1);
+
 	if(doublePage.active())
 	{
-		var data = [];
+		const flushGroup = function() {
 
-		if(_config.readingBlankPage && (!_config.readingDoNotApplyToHorizontals || (typeof imagesDataClip[1] !== 'undefined' && imagesDataClip[1].aspectRatio <= 1)))
-			data.push({index: false, folder: false, blank: true, width: 2});
+			imagesDistribution.push(pageGroup);
+			pageGroup = [];
+			indexNum++;
 
-		for(let i = 1; i < (contentNum + 1); i++)
+		};
+
+		precalculateBlankPage();
+
+		let pageGroup = [];
+		let firstHorizontal = true;
+
+		if(shouldAddInitialBlank())
+			pageGroup.push(createBlank(2));
+
+		for(let i = 1; i < len; i++)
 		{
-			if(typeof imagesDataClip[i] !== 'undefined')
+			const image = imagesDataClip[i];
+
+			if(image)
 			{
-				if(_config.readingDoNotApplyToHorizontals && imagesDataClip[i].aspectRatio > 1)
+				const isHorizontal = image.aspectRatio > 1;
+				const skipDoublePage = _config.readingDoNotApplyToHorizontals && isHorizontal;
+
+				if(skipDoublePage)
 				{
-					if(data.length > 0)
+					if(pageGroup.length > 0)
 					{
-						data.push({index: false, folder: false, blank: true, width: 2});
-						imagesDistribution.push(data);
-						data = [];
-						indexNum++;
+						pageGroup.push(createBlank(DOUBLE));
+						flushGroup();
 					}
 
-					data.push({index: i, folder: false, blank: false, width: 1});
-					imagesDataClip[i].position = imagesData[i].position = indexNum;
-					imagesDistribution.push(data);
-					indexNum++;
-					data = [];
+					pageGroup.push(createImage(i, SINGLE));
+					image.position = imagesData[i].position = indexNum;
+					flushGroup();
+
+					firstHorizontal = false;
 				}
 				else
 				{
-					if(_config.readingDoNotApplyToHorizontals && data.length == 0 && blankPage(i))
-						data.push({index: false, folder: false, blank: true, width: 2});
+					if(_config.readingDoNotApplyToHorizontals && pageGroup.length === 0 && (!firstHorizontal || !_config.readingBlankPage) && blankPage(i))
+						pageGroup.push(createBlank(DOUBLE));
 
-					data.push({index: i, folder: false, blank: false, width: 2});
-					imagesDataClip[i].position = imagesData[i].position = indexNum;
+					pageGroup.push(createImage(i, DOUBLE));
+					image.position = imagesData[i].position = indexNum;
 				}
 			}
 			else
 			{
-				data.push({index: i, folder: true, blank: false, width: 2});
+				pageGroup.push(createFolder(i, DOUBLE));
 				foldersPosition[i] = indexNum;
 			}
 
-			if(data.length > 1)
-			{
-				imagesDistribution.push(data);
-				data = [];
-				indexNum++;
-			}
+			const isDoublePageReady = pageGroup.length > 1;
+
+			if(isDoublePageReady)
+				flushGroup();
 
 		}
 
-		if(data.length > 0)
+		if(pageGroup.length)
 		{
-			if(data.length == 1 && data[0].width == 2)
-				data.push({index: false, folder: false, blank: true, width: 2});
+			if(pageGroup.length === 1 && pageGroup[0].width == DOUBLE) // If the last page is a single page and not horizontal, add a blank page
+				pageGroup.push(createBlank(DOUBLE));
 
-			imagesDistribution.push(data);
-			indexNum++;
+			flushGroup();
 		}
 	}
 	else
 	{
-		for(let i = 1; i < (contentNum + 1); i++)
+		for(let i = 1; i < len; i++)
 		{
-			if(typeof imagesDataClip[i] !== 'undefined')
+			const image = imagesDataClip[i];
+
+			if(image)
 			{
-				imagesDistribution.push([{index: i, folder: false, blank: false, width: 1}]);
-				imagesDataClip[i].position = imagesData[i].position = indexNum;
+				imagesDistribution.push([createImage(i, SINGLE)]);
+				image.position = imagesData[i].position = indexNum;
 				indexNum++;
 			}
 			else
 			{
-				imagesDistribution.push([{index: i, folder: true, blank: false, width: 1}]);
+				imagesDistribution.push([createFolder(i, SINGLE)]);
 				foldersPosition[i] = indexNum;
 				indexNum++;
 			}
@@ -161,24 +198,11 @@ function calculateImagesDistribution()
 	if(_config.invisibleFirstBlankPage)
 	{
 		if(imagesDistribution[0])
-		{
-			for(let key2 in imagesDistribution[0])
-			{
-				if(imagesDistribution[0][key2].blank)
-					imagesDistribution[0].splice(key2, 1);
-			}		
-		}
+			imagesDistribution[0] = imagesDistribution[0].filter(item => !item.blank);
 	}
 	else if(_config.invisibleBlankPages)
 	{
-		for(let key in imagesDistribution)
-		{
-			for(let key2 in imagesDistribution[key])
-			{
-				if(imagesDistribution[key][key2].blank)
-					imagesDistribution[key].splice(key2, 1);
-			}		
-		}
+		imagesDistribution = imagesDistribution.map(distribution => distribution.filter(item => !item.blank));
 	}
 }
 
