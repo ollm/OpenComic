@@ -57,43 +57,80 @@ async function readMany(keys: string[]): Promise<Record<string, unknown | null>>
 
 // Write functions
 interface WriteState {
-	isWriting: boolean;
 	lastDataSha: string | null;
-	pendingData: unknown | null;
+	list: WriteStateList[];
+}
+
+interface WriteStateList {
+	data: unknown | null;
+	forceWrite: boolean;
+	waiters: (() => void)[];
 }
 
 const writeStates: Record<string, WriteState> = {};
 
-async function write(key: string, data: unknown, forceWrite: boolean = true): Promise<void>
+async function write(key: string, data: unknown, forceWrite = true): Promise<void>
 {
-	if(!writeStates[key]) writeStates[key] = {isWriting: false, lastDataSha: null, pendingData: null};
-	const state = writeStates[key];
+	const state = writeStates[key] ??= {
+		lastDataSha: null,
+		list: [],
+	};
 
-	if(state.isWriting)
+	const length = state.list.length;
+	const {promise, resolve} = Promise.withResolvers<void>();
+
+	if(length === 0 || length === 1)
 	{
-		state.pendingData = data;
-		return;
+		state.list.push({data, waiters: [resolve], forceWrite});
+	}
+	else
+	{
+		const list = state.list[1];
+
+		list.data = data;
+		list.waiters.push(resolve);
+		list.forceWrite = list.forceWrite || forceWrite;
 	}
 
-	state.isWriting = true;
+	// If already writing, just wait
+	if(length > 0)
+		return promise;
 
-	const json = JSON.stringify(data);
-	const sha = crypto.hash('sha1', json, 'hex');
+	processWrite(key, state);
+	return promise;
+}
 
-	if(state.lastDataSha !== sha || forceWrite)
+async function processWrite(key: string, state: WriteState): Promise<void>
+{
+	let item;
+
+	while((item = state.list[0]))
 	{
-		const file = getFile(key);
-		await writeFile(file, json, 'utf8');
-	}
+		const data = item.data;
 
-	state.isWriting = false;
-	state.lastDataSha = sha;
+		const json = JSON.stringify(data);
+		const sha = crypto.hash('sha1', json, 'hex');
 
-	if(state.pendingData)
-	{
-		const data = state.pendingData;
-		state.pendingData = null;
-		write(key, data);
+		if(state.lastDataSha !== sha || item.forceWrite)
+		{
+			try
+			{
+				const file = getFile(key);
+				await writeFile(file, json, 'utf8');
+				state.lastDataSha = sha;
+			}
+			catch (err)
+			{
+				console.error('Error writing file:', err);
+			}
+		}
+
+		for(const resolve of item.waiters)
+		{
+			resolve();
+		}
+
+		state.list.shift();
 	}
 }
 
