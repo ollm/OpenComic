@@ -43,7 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improve drag scrolling (Ignore right-click and add activation dead zone) [`2df49c4`](https://github.com/ollm/OpenComic/commit/2df49c44ce8d3970c92d2b8b1e832e560c868674)
 - Thumbnails are still generated in list view [`cf4a20a`](https://github.com/ollm/OpenComic/commit/cf4a20abf51b8869e4e6929d7819a12069329a9a)
 - Replace `electron-json-storage` with custom implementation to fix write hang issue [`e6fb35b`](https://github.com/ollm/OpenComic/commit/e6fb35bf919ced619667b9c7a2ab8208f8fd442e)
-- `Align with next horizontal` conflicts with `Blank page at the beginning`
+- `Align with next horizontal` conflicts with `Blank page at the beginning` [`0af09be`](https://github.com/ollm/OpenComic/commit/0af09be7501ad550c261faa24e5bbe8588465005)
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 

@@ -67,6 +67,8 @@
 		"build-mac-zip": "npm run prebuild && npm run prebuild-mac && env-cmd -f ./build/notarize.env -- electron-builder --mac zip && npm run postbuild",
 		"build-mac-dmg": "npm run prebuild && npm run prebuild-mac && env-cmd -f ./build/notarize.env -- electron-builder --mac dmg && env-cmd -f ./build/notarize.env -- electron-builder --arm64 --mac dmg && npm run postbuild",
 		"build-mac-pkg": "npm run prebuild && npm run prebuild-mac && env-cmd -f ./build/notarize.env -- electron-builder --mac pkg && env-cmd -f ./build/notarize.env -- electron-builder --arm64 --mac pkg && npm run postbuild",
+		"build-mac-dmg-nightly": "npm run prebuild && npm run prebuild-mac && electron-builder --mac dmg && npm run postbuild",
+		"build-mac-dmg-nightly-arm": "npm run prebuild && npm run prebuild-mac && electron-builder --arm64 --mac dmg && npm run postbuild",
 		"build-linux-arm": "npm run prebuild && electron-builder --arm64 --linux deb rpm AppImage 7z && npm run postbuild",
 		"build-deb-arm": "npm run prebuild && electron-builder --arm64 --linux deb && npm run postbuild",
 		"build-rpm-arm": "npm run prebuild && electron-builder --arm64 --linux rpm && npm run postbuild",
