@@ -1,6 +1,8 @@
 const hb = require('handlebars'),
 	fs = require('fs'),
-	p = require('path');
+	p = require('path'),
+	{execSync} = require('child_process');
+
 
 
 // Precompile templates
@@ -66,3 +68,22 @@ for(let _package in packageLock.packages)
 }
 
 fs.writeFileSync(p.join(__dirname, '../.dist/builded/package-lock.js'), 'module.exports = '+JSON.stringify(packageVersions)+';');
+
+let commit = '';
+
+try
+{
+	commit = execSync('git rev-parse HEAD').toString().trim();
+}
+catch(err)
+{
+	console.error('Error getting commit:', err);
+}
+
+const nightly = process.env.NIGHTLY;
+
+fs.writeFileSync(p.join(__dirname, '../.dist/nightly.js'), `module.exports = {
+	build: ${nightly ? 'true' : 'false'},
+	commit: '${commit}',
+	commit7: '${commit.substring(0, 7)}',
+};`);

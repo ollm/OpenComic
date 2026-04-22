@@ -136,8 +136,27 @@ body
 
 a
 {
-	color: #1976D2 !important;
+	color: #00629f !important;
     text-decoration: none !important;
+}
+
+code
+{
+	padding: 2px 6px;
+	margin: 0;
+	font-size: 85%;
+	white-space: break-spaces;
+	border-radius: 6px;
+	background-color: #e8f0f7;
+	/*color: var(--md-sys-color-on-surface);*/
+	transition: background-color 0.2s;
+	letter-spacing: 0.25px;
+}
+
+a > code
+{
+	text-decoration: underline !important;
+	color: #00629f;
 }
 
 </style>
@@ -149,8 +168,8 @@ a
 		</div>
 		<br>
 		<div class="about-header-text">
-			<div>{{language.appName}}</div>
-			<span>{{language.about.version}} {{config.appVersion}}</span>
+			<div>{{language.appName}}{{#if nightly.build}} Nightly{{/if}}</div>
+			<span>{{language.about.version}} {{config.appVersion}}{{#if nightly.build}} <a href="javascript:void(0);" onclick="shell.openExternal('https://github.com/ollm/OpenComic/commit/{{nightly.commit}}');"><code>{{nightly.commit7}}</code></a>{{/if}}</span>
 		</div>
 		<br>
 		<div class="about-text">

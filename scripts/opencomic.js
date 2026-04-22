@@ -249,6 +249,7 @@ if(folderPortable.check())
 
 const app = require(p.join(appDir, '.dist/app.js')),
 	installedFromStore = require(p.join(appDir, '.dist/installed-from-store.js')),
+	nightly = require(p.join(appDir, '.dist/nightly.js')),
 	relative = require(p.join(appDir, '.dist/relative.js')),
 	storage = require(p.join(appDir, '.dist/storage.js')),
 	compatible = require(p.join(appDir, '.dist/compatible.js')),
@@ -1087,6 +1088,7 @@ function showAboutWindow()
 
 	handlebarsContext.highlightDependencies = highlightDependencies;
 	handlebarsContext.dependencies = dependencies;
+	handlebarsContext.nightly = nightly;
 
 	about.removeMenu();
 	about.setMenuBarVisibility(false);

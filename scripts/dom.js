@@ -179,7 +179,7 @@ async function addProgressToDom(sha, progress, animation = true)
 	}
 }
 
-function setWindowTitle(title = 'OpenComic')
+function setWindowTitle(title = `OpenComic${nightly.build ? ' Nightly' : ''}`)
 {
 	let _title = document.querySelector('head title');
 	_title.innerText = title;
