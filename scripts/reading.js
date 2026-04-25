@@ -94,7 +94,7 @@ function calculateImagesDistribution()
 	imagesDistribution = [];
 	indexNum = 0;
 
-	let lastAspectRatio = doublePage.active() ? (Object.values(imagesDataClip).find((image) => image.aspectRatio <= 1).aspectRatio || 1) : 1;
+	let lastAspectRatio = doublePage.active() ? (Object.values(imagesDataClip).find((image) => image.aspectRatio <= 1)?.aspectRatio || 1) : 1;
 
 	const createBlank = (width, index = false, auto = true) => ({index, folder: false, blank: true, width, aspectRatio: lastAspectRatio, auto});
 	const createImage = (index, width) => ({index, folder: false, blank: false, width});
@@ -2578,8 +2578,10 @@ function fixBlurOnZoom(scale = 1, index = false)
 		width = Math.round(width * scale * window.devicePixelRatio);
 		height = Math.round(height * scale * window.devicePixelRatio);
 
-		width = (image?.rotated == 1 || image?.rotated == 2) ? height : width;
-		height = (image?.rotated == 1 || image?.rotated == 2) ? width : height;
+		const rotated = image?.rotated == 1 || image?.rotated == 2;
+
+		if(rotated)
+			[width, height] = [height, width];
 
 		img.style.width = (width / window.devicePixelRatio)+'px';
 		img.style.height = (height / window.devicePixelRatio)+'px';

@@ -29,8 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Show tooltip for filenames that are not fully displayed [`5422c18`](https://github.com/ollm/OpenComic/commit/5422c18c19566c00a9b5d6396b47e0b6dfec889b)
 - Drag tabs to open them in a new window or move them between windows [`5e84c65`](https://github.com/ollm/OpenComic/commit/5e84c650a11a6731de586528d0e5268d2de08bd2)
 - Add support for `MetronInfo.xml` [`cf2b875`](https://github.com/ollm/OpenComic/commit/cf2b875f2794109e95651fb30735caeff588f3af)
-- Add and remove blank pages in double page view
-
+- Add and remove blank pages in double page view [`471f464`](https://github.com/ollm/OpenComic/commit/471f46468060c61475b2e833d85270ebbce4ad1e)
 
 ##### 🐛 Bug Fixes
 
