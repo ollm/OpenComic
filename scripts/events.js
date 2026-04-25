@@ -677,7 +677,6 @@ function showHoverText()
 {
 	const This = eventHoverTimeoutThis;
 
-
 	if(!This.checkVisibility({opacityProperty: true, visibilityProperty: true}))
 		return;
 

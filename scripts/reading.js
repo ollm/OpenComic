@@ -2093,7 +2093,7 @@ function showPreviousComic(mode, animation = true, invert = false)
 var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
 
 function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false)
-{
+{	
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 
 	if(currentZoomIndex === false)
@@ -2373,6 +2373,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
 	}
+
+	setOriginalSize(scale);
 }
 
 function applyDiffScrolls(diff = 0)
@@ -2496,36 +2498,66 @@ function zoomMove(x = 0, y = 0, animation = false)
 	dragZoomEnd(true);
 }
 
+function setOriginalSize(currentScale)
+{
+	if(currentScale === 1 && _config.readingNotEnlargeMoreThanOriginalSize)
+		return;
+
+	const contentRight = template._contentRight();
+	const images = contentRight.querySelectorAll('.r-img oc-img');
+
+	for(let i = 0, len = images.length; i < len; i++)
+	{
+		const ocImg = images[i];
+		const img = ocImg.querySelector('img');
+
+		if(!img)
+			continue;
+
+		const index = +img.dataset.index;
+		const image = ai.size(imagesData[index]) || [];
+
+		const width = +ocImg.dataset.width;
+		const height = +ocImg.dataset.height;
+
+		const scale = ((image.width / width + image.height / height) / 2) / devicePixelRatio;
+
+		if(scale === currentScale)
+			img.classList.add('zoomOriginalSize');
+	}
+}
+
 // Reset zoom or show in original size if is current in 1 scale
 function resetZoom(animation = true, index = false, apply = true, center = true, delayed = false)
 {
-	var animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
-
 	if(currentScale == 1) // Show current image in original size
 	{
-		let _image = imagesDistribution[currentIndex - 1][0];
+		const _image = imagesDistribution[currentIndex - 1][0];
 		if(_image.folder || _image.blank) _image = imagesDistribution[currentIndex - 1][1] || false;
 
 		if(_image && !_image.folder && !_image.blank)
 		{
-			let image = ai.size(imagesData[_image.index]) || [];
-			let img = template._contentRight().querySelector('.r-img-i'+_image.index+' oc-img');
+			const contentRight = template._contentRight();
+
+			const image = ai.size(imagesData[_image.index]) || [];
+			const img = contentRight.querySelector('.r-img-i'+_image.index+' oc-img');
 
 			if(img)
 			{
 				if(zoomMoveData.active)
 					return;
 
-				let width = +img.dataset.width;
-				let height = +img.dataset.height;
+				const devicePixelRatio = window.devicePixelRatio;
 
-				currentScale = ((image.width / width + image.height / height) / 2) / window.devicePixelRatio;
+				const width = +img.dataset.width;
+				const height = +img.dataset.height;
+
+				currentScale = ((image.width / width + image.height / height) / 2) / devicePixelRatio;
 
 				if(apply)
 					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
-
-				let _img = img.querySelector('img');
-				if(_img) _img.classList.add('zoomOriginalSize');
+				else
+					setOriginalSize(currentScale);
 
 				return;
 			}
@@ -2579,9 +2611,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 		height = Math.round(height * scale * window.devicePixelRatio);
 
 		const rotated = image?.rotated == 1 || image?.rotated == 2;
-
-		if(rotated)
-			[width, height] = [height, width];
+		if(rotated) [width, height] = [height, width];
 
 		img.style.width = (width / window.devicePixelRatio)+'px';
 		img.style.height = (height / window.devicePixelRatio)+'px';
@@ -2602,6 +2632,10 @@ function fixBlurOnZoom(scale = 1, index = false)
 			for(let i = 0, len = images.length; i < len; i++)
 			{
 				const img = images[i];
+
+				if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
+					continue;
+
 				const image = imagesData[+img.dataset.index] || [];
 
 				const rect = img.getBoundingClientRect();
