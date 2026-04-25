@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "",
 			"copyImageMessage": "",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "",
 			"clearFileCacheSuccessfully": "",
 			"closeApp": "Đóng OpenComic"

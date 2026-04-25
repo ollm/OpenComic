@@ -207,6 +207,23 @@
 		<div class="menu-simple-content">
 			<div>
 
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-blank-page-left gamepad-item" onclick="reading.contextMenu.addBlankPage();">
+					<i class="material-icon menu-simple-icon-first">right_panel_open</i>
+					{{language.global.contextMenu.addBlankPageLeft}}
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-blank-page-right gamepad-item" onclick="reading.contextMenu.addBlankPage(true);">
+					<i class="material-icon menu-simple-icon-first">right_panel_close</i>
+					{{language.global.contextMenu.addBlankPageRight}}
+				</div>
+
+				<div class="menu-simple-element menu-simple-element-little reading-context-menu-blank-page-remove gamepad-item" onclick="reading.contextMenu.removeBlankPage();">
+					<i class="material-icon menu-simple-icon-first">remove</i>
+					{{language.global.contextMenu.removeBlankPage}}
+				</div>
+
+				<div class="menu-simple-separator separator-blank-page"></div>
+
 				<div class="menu-simple-element menu-simple-element-little reading-context-menu-set-as-poster gamepad-item" onclick="reading.contextMenu.setAsPoster();">
 					<i class="material-icon menu-simple-icon-first">add_photo_alternate</i>
 					{{language.global.contextMenu.setAsPoster}}

@@ -73,6 +73,9 @@
 			"saveImageMessage": "تصویر با موفقیت ذخیره شد",
 			"copyImage": "کپی تصویر در کلیپ‌بورد",
 			"copyImageMessage": "تصویر در کلیپ‌بورد کپی شد",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "پاک‌سازی کش",
 			"clearFileCacheSuccessfully": "کش با موفقیت پاک شد",
 			"closeApp": "بستن برنامه"

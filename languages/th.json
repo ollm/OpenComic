@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "คัดลอกรูปไปยังคลิปบอร์ด",
 			"copyImageMessage": "คัดลอกรูปไปยังคลิปบอร์ดแล้ว",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "ล้างไฟล์แคช",
 			"clearFileCacheSuccessfully": "ล้างไฟล์แคชออกเรียบร้อยแล้ว",
 			"closeApp": "ปิด OpenComic"

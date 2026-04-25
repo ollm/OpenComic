@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "Bild in die Zwischenablage kopieren",
 			"copyImageMessage": "Bild wurde in die Zwischenablage kopiert.",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "Datei-Cache leeren",
 			"clearFileCacheSuccessfully": "Datei-Cache wurde erfolgreich geleert.",
 			"closeApp": "OpenComic schließen"

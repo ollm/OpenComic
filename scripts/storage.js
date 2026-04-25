@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 148; // Update this if readingPagesConfig is updated
+const changes = 149; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -386,6 +386,11 @@ const storageDefault = {
 		wildcard: {
 			pages: 0,
 			lastAccess: 0,
+		},
+	},
+	customBlankPages: {
+		wildcard: {
+			wildcard: 0,
 		},
 	},
 	recentlyOpened: {
@@ -1072,6 +1077,8 @@ module.exports = {
 	lastUpdate: _lastUpdate,
 	updateVar: updateVar,
 	setVar: updateVar,
+	setKey: updateVar,
+	deleteKey: deleteVar,
 	deleteVar: deleteVar,
 	set: update,
 	setThrottle: setThrottle,

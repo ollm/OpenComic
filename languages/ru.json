@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "Копировать изображение в буфер обмена",
 			"copyImageMessage": "Изображение скопировано в буфер обмена",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "Очистить кэш файлов",
 			"clearFileCacheSuccessfully": "Кэш файлов успешно очищен",
 			"closeApp": "Закрыть OpenComic"

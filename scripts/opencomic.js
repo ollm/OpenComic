@@ -1415,6 +1415,13 @@ hb.registerHelper('htmlQuote', function(string) {
 
 });
 
+hb.registerHelper('int', function(string) {
+
+	return +string;
+
+});
+
+
 hb.registerHelper('configIsTrue', function(key, value) {
 
 	if(config[key] == value)

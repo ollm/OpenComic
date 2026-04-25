@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "이미지 복사",
 			"copyImageMessage": "이미지가 클립보드에 복사되었습니다",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "파일 캐시 지우기",
 			"clearFileCacheSuccessfully": "파일 캐시가 삭제되었습니다",
 			"closeApp": "OpenComic 종료"

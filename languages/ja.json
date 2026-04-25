@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "画像をクリップボードにコピー",
 			"copyImageMessage": "画像をクリップボードにコピーしました",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "ファイル キャッシュをクリア",
 			"clearFileCacheSuccessfully": "ファイル キャッシュをクリアしました",
 			"closeApp": "OpenComic を閉じる"

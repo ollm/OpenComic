@@ -73,6 +73,9 @@
 			"saveImageMessage": "Image has been saved successfully",
 			"copyImage": "Copy image to clipboard",
 			"copyImageMessage": "Image has been copied to clipboard",
+			"addBlankPageLeft": "Add blank page on the left",
+			"addBlankPageRight": "Add blank page on the right",
+			"removeBlankPage": "Remove blank page",
 			"clearFileCache": "Clear file cache",
 			"clearFileCacheSuccessfully": "File cache has been successfully cleared",
 			"closeApp": "Close OpenComic"

@@ -73,6 +73,9 @@
 			"saveImageMessage": "S'ha guardat correctament la imatge",
 			"copyImage": "Copia la imatge al porta-retalls",
 			"copyImageMessage": "S'ha copiat la imatge al porta-retalls",
+			"addBlankPageLeft": "Afegir pàgina en blanc a l'esquerra",
+			"addBlankPageRight": "Afegir pàgina en blanc a la dreta",
+			"removeBlankPage": "Eliminar pàgina en blanc",
 			"clearFileCache": "Netejar la memòria cau de l'arxiu",
 			"clearFileCacheSuccessfully": "S'ha netejat correctament la memòria cau de l'arxiu",
 			"closeApp": "Tancar OpenComic"

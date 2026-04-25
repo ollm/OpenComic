@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "複製圖片到剪貼簿",
 			"copyImageMessage": "圖片已成功複製",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "清除檔案快取",
 			"clearFileCacheSuccessfully": "檔案快取已成功清除",
 			"closeApp": "結束 OpenComic"

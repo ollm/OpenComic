@@ -1,10 +1,13 @@
 
-var elementFromPointIndex = false;
+let elementFromPointIndex = false;
+let blankPage = false;
 
 function show(event, gamepad = false)
 {
 	const validCoords = event && Number.isFinite(event.clientX) && Number.isFinite(event.clientY);
 	const elementFromPoint = !gamepad && validCoords ? document.elementFromPoint(event.clientX, event.clientY) : false;
+	const elementFromPointBlankPage = (elementFromPoint && elementFromPoint.classList.contains('blank-page')) ? true : false;
+
 	elementFromPointIndex = (elementFromPoint && elementFromPoint.tagName.toLowerCase() === 'img' && elementFromPoint.dataset.index) ? +elementFromPoint.dataset.index : false;
 
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
@@ -14,6 +17,29 @@ function show(event, gamepad = false)
 	{
 		const setAsPoster = /app\.asar\.unpacked/.test(reading.readingCurrentPath()) ? false : true;
 		dom.queryAll('.separator-set-as-poster, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: setAsPoster ? '' : 'none'});
+	}
+
+	// Blank pages
+	const addBlankPage = reading.doublePage.active();
+	dom.queryAll('.reading-context-menu-blank-page-left, .reading-context-menu-blank-page-right, .reading-context-menu-blank-page-remove, .separator-blank-page').css({display: addBlankPage ? '' : 'none'});
+
+	blankPage = false;
+
+	if(addBlankPage)
+	{
+		if(elementFromPointBlankPage)
+		{
+			const index = +elementFromPoint.dataset.index;
+			const auto = +elementFromPoint.dataset.auto;
+
+			blankPage = {index, auto};
+
+			dom.queryAll('.reading-context-menu-blank-page-remove').css({display: !auto ? '' : 'none'});
+		}
+		else
+		{
+			dom.queryAll('.reading-context-menu-blank-page-remove').css({display: 'none'});
+		}
 	}
 
 	if(gamepad)
@@ -55,9 +81,9 @@ function labels()
 	dom.labels.setLabels(vars.pathIsFolder ? vars.currentPath : fileManager.lastCompressedFile(vars.currentPath));
 }
 
-function getCurrentImage(onlyElementFromPoint = false)
+function getCurrentImage(onlyElementFromPoint = false, notElementFromPoint = false)
 {
-	if(elementFromPointIndex !== false)
+	if(elementFromPointIndex !== false && !notElementFromPoint)
 		return reading.getImage(elementFromPointIndex);
 
 	if(onlyElementFromPoint)
@@ -370,6 +396,57 @@ async function copyImageToClipboard()
 	});
 }
 
+function isRightImage(index)
+{
+	const imagesData = reading.imagesData();
+	const imagesDistribution = reading.imagesDistribution();
+
+	const position = imagesData[index]?.position;
+
+	return imagesDistribution[position]?.[0]?.index !== index;
+}
+
+function addBlankPage(right = false)
+{
+	const image = getCurrentImage(false, true);
+	if(!image) return;
+
+	const key = p.dirname(dom.history.path);
+	const customBlankPages = storage.getKey('customBlankPages', key) ?? {};
+
+	const index = image.index - (!right || isRightImage(image.index) ? 1 : 0);
+	const value = (customBlankPages[index] ?? 0) + 1;
+
+	customBlankPages[index] = value;
+	storage.setKey('customBlankPages', key, customBlankPages);
+
+	reading.reloadAnimated(false);
+}
+
+function removeBlankPage()
+{
+	if(blankPage === false) return;
+	if(blankPage.auto) return;
+
+	const key = p.dirname(dom.history.path);
+	const customBlankPages = storage.getKey('customBlankPages', key) ?? {};
+
+	const index = blankPage.index;
+	const value = (customBlankPages[index] ?? 0) - 1;
+
+	if(value <= 0)
+		delete customBlankPages[index];
+	else
+		customBlankPages[index] = value;
+
+	if(app.empty(customBlankPages))
+		storage.deleteKey('customBlankPages', key);
+	else
+		storage.setKey('customBlankPages', key, customBlankPages);
+
+	reading.reloadAnimated(false);
+}
+
 module.exports = {
 	show: show,
 	openFileLocation: openFileLocation,
@@ -382,4 +459,6 @@ module.exports = {
 	saveBookmarksImages: saveBookmarksImages,
 	saveAllBookmarksImages: saveAllBookmarksImages,
 	copyImageToClipboard: copyImageToClipboard,
+	addBlankPage: addBlankPage,
+	removeBlankPage: removeBlankPage,
 };

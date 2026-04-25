@@ -73,6 +73,9 @@
 			"saveImageMessage": "L’image a été enregistrée avec succès",
 			"copyImage": "Copier l’image dans le presse-papiers",
 			"copyImageMessage": "L’image a été copiée dans le presse-papiers",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "Vider le cache du fichier",
 			"clearFileCacheSuccessfully": "Le cache du fichier a été vidé avec succès",
 			"closeApp": "Fermer OpenComic"

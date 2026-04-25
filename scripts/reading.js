@@ -94,9 +94,11 @@ function calculateImagesDistribution()
 	imagesDistribution = [];
 	indexNum = 0;
 
-	const createBlank = (width = 2) => ({index: false, folder: false, blank: true, width});
-	const createImage = (i, width) => ({index: i, folder: false, blank: false, width});
-	const createFolder = (i, width) => ({index: i, folder: true, blank: false, width});
+	let lastAspectRatio = doublePage.active() ? (Object.values(imagesDataClip).find((image) => image.aspectRatio <= 1).aspectRatio || 1) : 1;
+
+	const createBlank = (width, index = false, auto = true) => ({index, folder: false, blank: true, width, aspectRatio: lastAspectRatio, auto});
+	const createImage = (index, width) => ({index, folder: false, blank: false, width});
+	const createFolder = (index, width) => ({index, folder: true, blank: false, width});
 
 	const SINGLE = 1; // Used when the image is in single page group
 	const DOUBLE = 2; // Used when the image is in double page group
@@ -113,13 +115,42 @@ function calculateImagesDistribution()
 
 		};
 
+		const customBlankPages = storage.getKey('customBlankPages', p.dirname(dom.history.path)) ?? {};
+
+		const customBlankPage = function(index) {
+
+			if(customBlankPages[index])
+			{
+				const pages = customBlankPages[index];
+
+				for(let i = 0; i < pages; i++)
+				{
+					pageGroup.push(createBlank(DOUBLE, index, false));
+					const isDoublePageReady = pageGroup.length > 1;
+
+					if(isDoublePageReady)
+						flushGroup();
+				}
+
+				return pages;
+			}
+
+			return 0;
+
+		}
+
 		precalculateBlankPage();
 
 		let pageGroup = [];
-		let firstHorizontal = true;
+		let blankPagesPrevHorizontal = 0;
 
-		if(shouldAddInitialBlank())
-			pageGroup.push(createBlank(2));
+		const initialBlank = shouldAddInitialBlank();
+
+		if(initialBlank)
+			pageGroup.push(createBlank(DOUBLE));
+
+		const firstBlankPages = customBlankPage(0);
+		blankPagesPrevHorizontal += (initialBlank ? 1 : 0) + firstBlankPages;
 
 		for(let i = 1; i < len; i++)
 		{
@@ -142,16 +173,19 @@ function calculateImagesDistribution()
 					image.position = imagesData[i].position = indexNum;
 					flushGroup();
 
-					firstHorizontal = false;
+					blankPagesPrevHorizontal = 0;
 				}
 				else
 				{
-					if(_config.readingDoNotApplyToHorizontals && pageGroup.length === 0 && (!firstHorizontal || !_config.readingBlankPage) && blankPage(i))
+					if(_config.readingDoNotApplyToHorizontals && pageGroup.length === 0 && !blankPagesPrevHorizontal && blankPage(i)) // Align with next horizontal if there is no previous blank page and the current page should be blank
 						pageGroup.push(createBlank(DOUBLE));
 
 					pageGroup.push(createImage(i, DOUBLE));
 					image.position = imagesData[i].position = indexNum;
 				}
+
+				if(!isHorizontal)
+					lastAspectRatio = image.aspectRatio;
 			}
 			else
 			{
@@ -163,6 +197,9 @@ function calculateImagesDistribution()
 
 			if(isDoublePageReady)
 				flushGroup();
+
+			const blankPages = customBlankPage(i);
+			blankPagesPrevHorizontal += blankPages;
 
 		}
 
@@ -299,22 +336,12 @@ function calcAspectRatio(first, second)
 	if(!first)
 		return false;
 
-	if(second)
-	{
-		if(first.folder)
-			first.aspectRatio = 1;
-		else if(first.blank)
-			first.aspectRatio = second.folder ? 1 : imagesDataClip[second.index].aspectRatio;
-		else
-			first.aspectRatio = imagesDataClip[first.index].aspectRatio;
-	}
+	if(first.folder)
+		first.aspectRatio = 1;
+	else if(second && first.blank)
+		first.aspectRatio = second.folder || second.blank ? (first.aspectRatio || 1) : (imagesDataClip[second.index]?.aspectRatio || first.aspectRatio || 1);
 	else
-	{
-		if(first.folder)
-			first.aspectRatio = 1;
-		else
-			first.aspectRatio = imagesDataClip[first.index].aspectRatio;
-	}
+		first.aspectRatio = imagesDataClip[first.index].aspectRatio;
 
 	return first;
 }
@@ -3246,10 +3273,7 @@ function changePagesView(mode, value, save)
 		let selectTab = document.querySelector('#reading-pages .tabs > div > div.active').dataset.name;
 		loadReadingPages(false, false, selectTab);
 
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 1) // Set the scroll mode
 	{
@@ -3263,10 +3287,7 @@ function changePagesView(mode, value, save)
 		else
 			template.globalElement('.reading-ajust-to-width, .reading-force-single-page').removeClass('disable-pointer');
 
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 2) // Sets the margin of the pages
 	{
@@ -3280,11 +3301,7 @@ function changePagesView(mode, value, save)
 	else if(mode == 3) // Set width adjustment
 	{
 		updateReadingPagesConfig('readingViewAdjustToWidth', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 4) // Set the speed of the animation when changing pages
 	{
@@ -3302,29 +3319,17 @@ function changePagesView(mode, value, save)
 			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').addClass('disable-pointer');
 
 		updateReadingPagesConfig('readingDoublePage', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 7) // Disables double-page reading in horizontal images
 	{
 		updateReadingPagesConfig('readingDoNotApplyToHorizontals', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 8) // Manga reading, invert the direction and double pages
 	{
 		updateReadingPagesConfig('readingManga', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 9) // Webtoon reading, scroll reading and adjust to width
 	{
@@ -3351,10 +3356,7 @@ function changePagesView(mode, value, save)
 			template.globalElement('.reading-view, .reading-reading-manga, .reading-double-page, .reading-margin-vertical').removeClass('disable-pointer');
 		}
 
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
@@ -3383,25 +3385,18 @@ function changePagesView(mode, value, save)
 	else if(mode == 12) // Add blank page at first
 	{
 		updateReadingPagesConfig('readingBlankPage', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 13) // Set width adjustment
 	{
 		updateReadingPagesConfig('readingHorizontalsMarginActive', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
 
 		if(value)
 			template.globalElement('.reading-horizontals-margin').removeClass('disable-pointer');
 		else
 			template.globalElement('.reading-horizontals-margin').addClass('disable-pointer');
 
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
@@ -3453,11 +3448,7 @@ function changePagesView(mode, value, save)
 	else if(mode == 18) // Do not enlarge images more than its original size
 	{
 		updateReadingPagesConfig('readingNotEnlargeMoreThanOriginalSize', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 20) // Force show single page in scroll mode
 	{
@@ -3473,11 +3464,7 @@ function changePagesView(mode, value, save)
 	else if(mode == 21) // Align double pages with the next horizontal image
 	{
 		updateReadingPagesConfig('readingAlignWithNextHorizontal', value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 19 || mode == 22) // Rotate images
 	{
@@ -3507,11 +3494,7 @@ function changePagesView(mode, value, save)
 		}
 
 		updateReadingPagesConfig(key, value);
-
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(false, imageIndex);
+		reading.reloadAnimated(false, imageIndex);
 	}
 	else if(mode == 23) // Extract images from document (PDF / EPUB)
 	{
@@ -3527,10 +3510,7 @@ function changePagesView(mode, value, save)
 		else
 			dom.queryAll('.reading-extract-document-images .switch').removeClass('a');
 
-		if(readingIsEbook) handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', true);
-
-		reading.reload(true, imageIndex);
+		reading.reloadAnimated(true, imageIndex);
 	}
 }
 
@@ -3542,10 +3522,10 @@ function reloadIndex()
 	if(readingManga())
 		newIndex = (indexNum - newIndex) - 1;
 
-	eachImagesDistribution(newIndex, ['image'], function(image) {
+	eachImagesDistribution(newIndex, ['image', 'blank'], function(image) {
 
-		if(!imageIndex)
-			imageIndex = image.index;
+		if(!imageIndex && image.index !== false)
+			imageIndex = image.index + (image.blank ? 1 : 0);
 
 	});
 
@@ -3553,6 +3533,14 @@ function reloadIndex()
 		imageIndex = currentIndex;
 
 	return imageIndex;
+}
+
+function reloadAnimated(full = false, imageIndex = false)
+{
+	if(readingIsEbook) handlebarsContext.loading = true;
+	template.loadContentRight('reading.content.right.html', true);
+
+	reading.reload(false, imageIndex);
 }
 
 function reload(full = false, imageIndex = false)
@@ -5968,6 +5956,8 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 module.exports = {
 	read: read,
 	reload: reload,
+	reloadAnimated: reloadAnimated,
+	reloadIndex: reloadIndex,
 	images: function(){return images},
 	imagesNum: function(){return imagesNum},
 	indexNum: function(){return indexNum},

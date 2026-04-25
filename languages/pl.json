@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "Kopiuj obraz do schowka",
 			"copyImageMessage": "Obraz został skopiowany do schowka",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "Wyczyść pamięć podręczną pliku",
 			"clearFileCacheSuccessfully": "Pamięć podręczna pliku została pomyślnie wyczyszczona",
 			"closeApp": "Zamknij OpenComic"

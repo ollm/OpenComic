@@ -73,6 +73,9 @@
 			"saveImageMessage": "La imagen ha sido guardada correctamente",
 			"copyImage": "Copiar imagen al portapapeles",
 			"copyImageMessage": "Se ha copiado la imagen al portapapeles",
+			"addBlankPageLeft": "Añadir página en blanco a la izquierda",
+			"addBlankPageRight": "Añadir página en blanco a la derecha",
+			"removeBlankPage": "Eliminar página en blanco",
 			"clearFileCache": "Limpiar caché del archivo",
 			"clearFileCacheSuccessfully": "Se ha limpiado la caché del archivo correctamente",
 			"closeApp": "Cerrar OpenComic"

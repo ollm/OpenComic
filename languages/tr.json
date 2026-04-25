@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "Görseli panoya kopyala",
 			"copyImageMessage": "Görsel panoya kopyalandı",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "Dosya önbelleğini temizle",
 			"clearFileCacheSuccessfully": "Dosya önbelleği başarıyla temizlendi",
 			"closeApp": "OpenComic'i kapat"

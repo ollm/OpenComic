@@ -73,6 +73,9 @@
 			"saveImageMessage": "",
 			"copyImage": "نسخ الصورة إلى الحافظة",
 			"copyImageMessage": "تم نسخ الصورة إلى الحافظة",
+			"addBlankPageLeft": "",
+			"addBlankPageRight": "",
+			"removeBlankPage": "",
 			"clearFileCache": "حذف الملفات المؤقتة",
 			"clearFileCacheSuccessfully": "تم حذف الملفات المؤقتة",
 			"closeApp": "إغلاق البرنامج"

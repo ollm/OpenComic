@@ -67,7 +67,7 @@ function empty(mixedVar)
 	{
 		for(key in mixedVar)
 		{
-			if (mixedVar.hasOwnProperty(key))
+			if(mixedVar.hasOwnProperty(key))
 			{
 				return false
 			}
