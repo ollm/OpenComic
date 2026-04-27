@@ -1,5 +1,3 @@
-import { folder } from "cache.js";
-
 type Page = boolean | 'languages' | 'theme' | 'settings';
 
 export interface Filter {
