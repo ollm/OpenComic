@@ -1,7 +1,8 @@
 const requestFileAccess = require(p.join(appDir, '.dist/file-manager/request-file-access.js')),
 	filePassword = require(p.join(appDir, '.dist/file-manager/file-password.js')),
 	diskType = require(p.join(appDir, '.dist/file-manager/disk-type.js')),
-	pdfImagesProvider = require(p.join(appDir, '.dist/file-manager/pdf-images-provider.mjs')).default;
+	pdfImagesProvider = require(p.join(appDir, '.dist/file-manager/pdf-images-provider.mjs')).default,
+	compressedStreamReader = require(p.join(appDir, '.dist/file-manager/compressed-stream-reader.mjs')).default;
 
 var un7z = false, bin7z = false, fastXmlParser = false, Minimatch = false;
 
@@ -22,6 +23,7 @@ var file = function(path, _config = false) {
 		sha: true,
 		only: false,
 		log: true,
+		progress: true,
 		extractDocumentImages: false,
 	};
 
@@ -208,7 +210,7 @@ var file = function(path, _config = false) {
 			opened = this.compressedOpened[path] = {
 				lastUsage: now,
 				mtimeMainCompressed: mtime,
-				compressed: fileManager.fileCompressed(path, _realPath, this.config.forceType, this.config.prefixes, {log: this.config.log}),
+				compressed: fileManager.fileCompressed(path, _realPath, this.config.forceType, this.config.prefixes, {log: this.config.log, progress: this.config.progress}),
 			};
 		}
 		else
@@ -836,7 +838,7 @@ var file = function(path, _config = false) {
 				filesToDecompressNum++;
 			}
 
-			if(_path !== file.path) // If it is different it is because it is not a compressed file
+			if(_path !== file.path) // If it's not different, it's because it's not a compressed file.
 				fileManager.setTmpUsage(_path);
 		}
 
@@ -1023,6 +1025,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		height: false, // Vector height
 		force: false, // Forces the extraction even if the file exists
 		log: true,
+		progress: true,
 	};
 
 	if(_config) this.config = this._config = {...this.config, ..._config};
@@ -1988,6 +1991,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(this.progress && this.progress.multiply)
 			progress = progress * this.progress.multiply;
 
+		if(!this.config.progress)
+			return;
+
 		const loading = document.querySelector('.content-right .content-right-'+index+' .loading.loading96');
 		events.loadingProgress(loading, progress);
 
@@ -2013,74 +2019,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.getOptimalTask = function(fileSize, status, optimalFileSize, maxItems, numThreads) {
-
-		if(!status.tasks[status.current])
-			status.tasks[status.current] = {size: 0, items: 0};
-
-		let current = status.current;
-		let task = status.tasks[current];
-
-		if(!status.fullSize)
-		{
-			task.size += fileSize;
-			task.items++;
-
-			if(task.size > optimalFileSize)
-				status.current++;
-
-			if(status.current >= numThreads)
-			{
-				status.fullSize = true;
-				status.current = 0;
-			}
-		}
-		else if(!status.full)
-		{
-			let full = true;
-
-			for(let t = status.current; t < numThreads; t++)
-			{
-				task = status.tasks[t];
-
-				if(task.items >= maxItems)
-					continue;
-
-				status.current = t;
-				full = false;
-
-				break;
-			}
-
-			current = status.current;
-			status.current++;
-
-			task.size += fileSize;
-			task.items++;
-
-			if(full)
-			{
-				status.full = true;
-				status.current = numThreads;
-			}
-			else if(status.current >= numThreads)
-			{
-				status.current = 0;
-			}
-		}
-		else
-		{
-			task.size += fileSize;
-			task.items++;
-
-			if(task.items >= maxItems)
-				status.current++;
-		}
-
-		return current;
-
-	}
-
 	this.stackBySize = function(only, optimalFileSize = 30, maxItems = 100) {
 
 		if(!only)
@@ -2103,7 +2041,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			const name = only[i];
 			const fileSize = fileSizes.get(p.join(this.path, name)) ?? (1024 * 100); // If the size is not known, it is considered to be 100KB.
 
-			const task = this.getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads);
+			const task = getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads);
 
 			if(!tasks[task]) tasks[task] = [];
 			tasks[task].push(name); 
@@ -3534,6 +3472,19 @@ function compressedMetadata(path = false)
 	return false;
 }
 
+function isExtracted(path)
+{
+	const _path = realPath(path, -1);
+
+	if(_path === path) // If it's not different, it's because it's not a compressed file.
+		return true;
+
+	if(fs.existsSync(_path))
+		return true;
+
+	return false;
+}
+
 function join()
 {
 	const string = p.join.apply(null, arguments);
@@ -3893,27 +3844,87 @@ function macosStopAccessingSecurityScopedResource()
 	}
 }
 
-// Code from https://github.com/sindresorhus/read-chunk 
-async function readChunk(filePath, {length, startPosition})
+function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads)
 {
-	const fileDescriptor = await fsp.open(filePath, 'r');
+	if(!status.tasks[status.current])
+		status.tasks[status.current] = {size: 0, items: 0};
+
+	let current = status.current;
+	let task = status.tasks[current];
+
+	if(!status.fullSize)
+	{
+		task.size += fileSize;
+		task.items++;
+
+		if(task.size > optimalFileSize)
+			status.current++;
+
+		if(status.current >= numThreads)
+		{
+			status.fullSize = true;
+			status.current = 0;
+		}
+	}
+	else if(!status.full)
+	{
+		let full = true;
+
+		for(let t = status.current; t < numThreads; t++)
+		{
+			task = status.tasks[t];
+
+			if(task.items >= maxItems)
+				continue;
+
+			status.current = t;
+			full = false;
+
+			break;
+		}
+
+		current = status.current;
+		status.current++;
+
+		task.size += fileSize;
+		task.items++;
+
+		if(full)
+		{
+			status.full = true;
+			status.current = numThreads;
+		}
+		else if(status.current >= numThreads)
+		{
+			status.current = 0;
+		}
+	}
+	else
+	{
+		task.size += fileSize;
+		task.items++;
+
+		if(task.items >= maxItems)
+			status.current++;
+	}
+
+	return current;
+
+}
+
+async function readChunk(filePath, {start, size})
+{
+	const fd = await fsp.open(filePath, 'r');
 
 	try
 	{
-		let {bytesRead, buffer} = await fileDescriptor.read({
-			buffer: new Uint8Array(length),
-			length,
-			position: startPosition,
-		});
-
-		if(bytesRead < length)
-			buffer = buffer.subarray(0, bytesRead);
-
+		const buffer = Buffer.alloc(size);
+		await fd.read(buffer, 0, size, start);
 		return buffer;
 	}
 	finally
 	{
-		await fileDescriptor?.close();
+		await fd?.close();
 	}
 }
 
@@ -4074,6 +4085,7 @@ module.exports = {
 	lastCompressedFile: lastCompressedFile,
 	containsCompressed: containsCompressed,
 	compressedMetadata: compressedMetadata,
+	isExtracted,
 	join: join,
 	normalize: normalize,
 	splitPath: splitPath,
@@ -4087,6 +4099,7 @@ module.exports = {
 	macosScopedResources: function(){return macosScopedResources},
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
+	getOptimalTask: getOptimalTask,
 	readChunk: readChunk,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,
@@ -4096,9 +4109,11 @@ module.exports = {
 	getBlob: getBlob,
 	revokeObjectURL: revokeObjectURL,
 	revokeAllObjectURL: revokeAllObjectURL,
+	originalName: function(name){return fileOriginalName.get(name) || name},
 	fileSizes: function(){return fileSizes},
 	requestFileAccess: requestFileAccess,
 	filePassword: filePassword,
 	diskType: diskType,
 	pdfImagesProvider: pdfImagesProvider,
+	compressedStreamReader: compressedStreamReader,
 }

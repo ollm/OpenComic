@@ -2860,8 +2860,6 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	let isEbook = false;
 	let compressedFile = fileManager.lastCompressedFile(path);
 
-	if(hasMusic) files.push(...hasMusic); // Only to make available
-
 	if(compressedFile)
 	{
 		let features = fileManager.fileCompressed(compressedFile);
@@ -2880,16 +2878,13 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		}
 		else
 		{
-			await file.makeAvailable(files);
+			await file.makeAvailable([{path: compressedFile}]); // Make avaiable only the compressed file
 		}
 	}
 	else if(fileManager.isServer(path))
 	{
-		await file.makeAvailable(files, false, true);
+		await file.makeAvailable([{path: path}]); // Make avaiable only the compressed file
 	}
-
-	if(hasMusic) // Remove now
-		files.splice(-hasMusic.length);
 
 	file.destroy();
 
