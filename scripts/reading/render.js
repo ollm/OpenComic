@@ -443,6 +443,12 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 
 			fileManager.macosStartAccessingSecurityScopedResource(src);
 
+			if(renderImages)
+			{
+				const file = fileManager.file(false, {log: false, progress: false});
+				await file.makeAvailable([{path}]);
+			}
+
 			if(compatible.image.convert(path)) // Convert unsupported images
 				src = await workers.convertImage(path, {priorize: true});
 

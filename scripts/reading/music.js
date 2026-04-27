@@ -46,12 +46,27 @@ async function has(files, findParent = false)
 	return false;
 }
 
+let makingAvailable = false;
+
 async function read(_audios, files)
 {
 	audios = process(_audios, files);
 
-	if(!audios)
+	if(audios)
+	{
+		const {promise, resolve} = Promise.withResolvers();
+		makingAvailable = promise;
+
+		const file = fileManager.file();
+		await file.makeAvailable(_audios);
+		file.destroy();
+
+		resolve();
+	}
+	else
+	{
 		pause();
+	}
 }
 
 function process(audios, files)
@@ -91,9 +106,12 @@ function process(audios, files)
 
 }
 
-function focusIndex(index)
+async function focusIndex(index)
 {
 	if(!audios || !audios.length) return;
+
+	if(makingAvailable)
+		await makingAvailable;
 
 	for(let i = 0, len = audios.length; i < len; i++)
 	{

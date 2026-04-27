@@ -1,3 +1,5 @@
+import { folder } from "cache.js";
+
 type Page = boolean | 'languages' | 'theme' | 'settings';
 
 export interface Filter {
@@ -36,4 +38,22 @@ export interface History {
 	forwardHistory: HistoryItem[];
 	history: HistoryItem[];
 	root: HistoryItem;
+}
+
+export interface File {
+	name: string;
+	path: string;
+	mainPath: string;
+	folder: boolean;
+	sha: string;
+}
+
+export interface Image extends File {
+	canvas: boolean;
+	ebook: boolean;
+	image: string;
+	size?: {
+		width: number;
+		height: number;
+	};
 }

@@ -285,7 +285,7 @@ Translate by [無情天](https://github.com/kofzhanganguo)
 
 Translate by [珩](https://github.com/inkiron) and [Sayoko123f](https://github.com/Sayoko123f)
 
-`92.3% | Remain 43 | Translated 518`
+`99.5% | Remain 3 | Translated 558`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hant.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hant.svg" /></a>
 

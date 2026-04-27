@@ -709,12 +709,16 @@ function disposeImages(data = false)
 		}
 	}
 
-	let rFlex = contentRight.querySelectorAll('.r-flex');
+
+	const isScroll = readingViewIs('scroll');
+	const rFlex = contentRight.querySelectorAll('.r-flex');
 
 	for(let i = 0, len = rFlex.length; i < len; i++)
 	{
-		rFlex[i].style.width = contentWidth+'px';
-		rFlex[i].style.height = !readingViewIs('scroll') ? contentHeight+'px' : '';
+		const flex = rFlex[i];
+
+		flex.style.width = contentWidth+'px';
+		flex.style.height = !isScroll ? contentHeight+'px' : '';
 	}
 }
 
@@ -5899,8 +5903,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		calculateView(true);
 
 		currentIndex = imagesData[currentIndex].position + 1;
-
-		var newIndex = currentIndex;
+		let newIndex = currentIndex;
 
 		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
@@ -5954,12 +5957,11 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		calculateView(true);
 
 		currentIndex = imagesData[currentIndex] ? (imagesData[currentIndex].position + 1) : currentIndex;
-
-		var newIndex = currentIndex;
+		let newIndex = currentIndex;
 
 		if(readingManga())
 			newIndex = (indexNum - newIndex) + 1;
-
+		
 		goToIndex(newIndex, false, end, end);
 
 		if(readingViewIs('scroll'))

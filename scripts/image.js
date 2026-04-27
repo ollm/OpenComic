@@ -1,4 +1,4 @@
-var sharp = false, imageSize = false, heic = false;
+var sharp = false, imageSize = false, imageSizeFromFile = false, heic = false;
 
 inChildFork = typeof inChildFork !== 'undefined' ? inChildFork : false;
 const useChildFork = (process.platform === 'linux' && !inChildFork) ? true : false;
@@ -317,13 +317,310 @@ async function metadata(path)
 
 var sizesCache = {};
 
+async function getBuffersFS(getImageBuffersFS)
+{
+	const promises = [];
+
+	for(const {i, ext, sha, path, compressedFile, name, size} of getImageBuffersFS)
+	{
+		promises.push((async function(){
+
+			let buffer;
+
+			try
+			{
+				const realPath = fileManager.realPath(path, -1);
+				buffer = await fileManager.readChunk(realPath, {start: 0, size: size});
+			}
+			catch(error)
+			{
+				return;
+			}
+
+			return buffer;
+
+		})());
+	}
+
+	return await Promise.all(promises);
+}
+
+async function getSizesFromBuffer(getImageBuffers, buffers)
+{
+	await loadSharp();
+
+	const Sharp = async function(buffer) {
+
+		const _metadata = useChildFork ? await childFork.metadata(buffer) : await metadata(buffer);
+
+		return {
+			width: _metadata.width,
+			height: _metadata.height,
+		};
+
+	}
+
+	const ImageSize = async function(buffer) {
+
+		if(imageSize === false)
+			imageSize = require('image-size').imageSize;
+
+		const dimensions = imageSize(buffer);
+
+		return {
+			width: dimensions.width,
+			height: dimensions.height,
+		};
+
+	}
+
+	const promises = [];
+
+	for(let i = 0, len = getImageBuffers.length; i < len; i++)
+	{
+		const {ext, sha, compressedFile, name, size} = getImageBuffers[i];
+		const buffer = buffers[i];
+
+		if(buffer)
+		{
+			promises.push(threads.job('getImageSizesFromBuffer', {useThreads: threads.ALL}, async function() {
+
+				let size = {
+					width: 0,
+					height: 0,
+				};
+
+				try
+				{
+					if(compatible.image.heic.has(ext))
+					{
+						if(heic === false)
+							heic = require('heic-decode');
+
+						const images = await heic.all({buffer});
+						const properties = images[0] || {width: 1, height: 1};
+						images.dispose();
+
+						size = {
+							width: properties.width,
+							height: properties.height,
+						};
+					}
+					else if(compatible.image.jp2.has(ext))
+					{
+						if(pdfjsDecoders === false)
+							await loadPdfjsDecoders();
+
+						const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
+
+						size = {
+							width: properties.width,
+							height: properties.height,
+						};
+					}
+					else if(compatible.image.jxl.has(ext))
+					{
+						if(JxlImage === false)
+							await loadJxlImage();
+
+						const jxlImage = new JxlImage();
+						jxlImage.feedBytes(buffer);
+				
+						if(!jxlImage.tryInit())
+							throw new Error('Partial image, no frame data');
+
+						size = {
+							width: jxlImage.width,
+							height: jxlImage.height,
+						};
+					}
+					else if(compatible.image.convert.has(ext))
+					{
+						size = await ImageSize(buffer);
+					}
+					else if(sharpSupportedFormat(image.image, ext))
+					{
+						try
+						{
+							size = await ImageSize(buffer);
+						}
+						catch(error)
+						{
+							size = await Sharp(buffer);
+						}
+					}
+				}
+				catch(error)
+				{
+					console.warn('Error reading buffer for', name, error);
+				}
+
+				if(size.width && size.height)
+					sizesCache[sha] = size;
+
+				return;
+
+			}));
+		}
+	}
+
+	await Promise.all(promises);
+
+}
+
 async function getSizes(images)
 {
 	await loadSharp();
 
+	const _Image = async function(image) {
+
+		const img = new Image();
+		img.src = image.image;
+		await img.decode();
+
+		return {
+			width: img.naturalWidth,
+			height: img.naturalHeight,
+		};
+
+	};
+
+	const Sharp = async function(image) {
+
+		try
+		{
+			fileManager.macosStartAccessingSecurityScopedResource(image.image);
+
+			const path = app.shortWindowsPath(image.image);
+			const _metadata = useChildFork ? await childFork.metadata(path) : await metadata(path);
+
+			return {
+				width: _metadata.width,
+				height: _metadata.height,
+			};
+		}
+		catch(error)
+		{
+			return await _Image(image);
+		}
+
+	}
+
+	const ImageSize = async function(image) {
+
+		if(imageSizeFromFile === false)
+			imageSizeFromFile = require('image-size/fromFile').imageSizeFromFile;
+
+		const dimensions = await imageSizeFromFile(path);
+
+		return {
+			width: dimensions.width,
+			height: dimensions.height,
+		};
+
+	}
+
 	const sizes = [];
 	const promises = [];
 	const len = images.length;
+
+	const shaMap = new Map();
+	const getImageBuffers = [];
+	const getImageBuffersFS = [];
+
+	for(let i = 0; i < len; i++)
+	{
+		const image = images[i];
+
+		if(!image.image || image.folder)
+			continue;
+
+		const path = image.path;
+
+		const sha = image.sha || sha1(path);
+		shaMap.set(path, sha);
+
+		if(sizesCache[sha])
+			continue;
+
+		const ext = app.extname(path);
+
+		let bufferSize = 0; // Size in bytes to read from the compressed file, enough to get the dimensions of the image without decompressing the whole file. The actual size needed may vary depending on the image format and its metadata structure.
+
+		/*if(compatible.image.heic.has(ext)) // To much buffer to read
+			bufferSize = 32768;
+		else */if(compatible.image.jpg.has(ext) || compatible.image.jp2.has(ext))
+			bufferSize = 8192;
+		else if(compatible.image.avif.has(ext))
+			bufferSize = 4096;
+		else if(compatible.image.jxl.has(ext))
+			bufferSize = 512;
+		else if(compatible.image.webp.has(ext))
+			bufferSize = 128;
+		else if(compatible.image.png.has(ext) || /*compatible.image.jxr.has(ext) ||*/ compatible.image.gif.has(ext))
+			bufferSize = 64;
+
+		if(!bufferSize)
+			continue;
+
+		const compressed = fileManager.lastCompressedFile(path);
+		const isExtracted = fileManager.isExtracted(path);
+
+		const data = {
+			sha,
+			ext,
+			path,
+			compressed: compressed,
+			name: p.basename(path),
+			size: bufferSize,
+		};
+
+		if(isExtracted)
+			getImageBuffersFS.push(data);
+		else if(compressed)
+			getImageBuffers.push(data);
+	}
+
+	console.time('getSizesFromBuffer');
+
+	await Promise.all([
+		(async () => {
+			const buffers = await fileManager.compressedStreamReader.getBuffers(getImageBuffers);
+			await getSizesFromBuffer(getImageBuffers, buffers);
+		})(),
+
+		(async () => {
+			const buffersFS = await getBuffersFS(getImageBuffersFS);
+			await getSizesFromBuffer(getImageBuffersFS, buffersFS);
+		})(),
+	]);
+
+	console.timeEnd('getSizesFromBuffer');
+
+	console.time('getSizes');
+
+	// Make available files that failed to read from compressed buffers
+	const makeAvailable = [];
+
+	for(let i = 0; i < len; i++)
+	{
+		const image = images[i];
+
+		if(!image.image || image.folder)
+			continue;
+
+		const sha = shaMap.get(image.path);
+
+		if(!sizesCache[sha])
+			makeAvailable.push(image);
+	}
+
+	if(makeAvailable.length)
+	{
+		const file = fileManager.file();
+		await file.makeAvailable(makeAvailable);
+		file.destroy();
+	}
 
 	for(let i = 0; i < len; i++)
 	{
@@ -334,7 +631,7 @@ async function getSizes(images)
 		if(!image.image || image.folder)
 			continue;
 
-		const sha = image.sha || sha1(image.path);
+		const sha = shaMap.get(image.path);
 
 		if(sizesCache[sha])
 		{
@@ -342,7 +639,7 @@ async function getSizes(images)
 			continue;
 		}
 
-		promises.push(threads.job('getImageSizes', {useThreads: 1}, async function() {
+		promises.push(threads.job('getImageSizes', {useThreads: threads.ALL}, async function() {
 
 			let size = {
 				width: 1,
@@ -351,12 +648,10 @@ async function getSizes(images)
 
 			try
 			{
-
 				const path = fileManager.realPath(image.path, -1);
-				const extension = app.extname(image.image);
-				const pathExtension = app.extname(path);
+				const ext = app.extname(path);
 
-				if(compatible.image.heic.has(pathExtension))
+				if(compatible.image.heic.has(ext))
 				{
 					if(heic === false)
 						heic = require('heic-decode');
@@ -371,7 +666,7 @@ async function getSizes(images)
 						height: properties.height,
 					};
 				}
-				else if(compatible.image.jp2.has(pathExtension))
+				else if(compatible.image.jp2.has(ext))
 				{
 					if(pdfjsDecoders === false)
 						await loadPdfjsDecoders();
@@ -384,7 +679,7 @@ async function getSizes(images)
 						height: properties.height,
 					};
 				}
-				else if(compatible.image.jxl.has(pathExtension))
+				else if(compatible.image.jxl.has(ext))
 				{
 					if(JxlImage === false)
 						await loadJxlImage();
@@ -402,19 +697,11 @@ async function getSizes(images)
 						height: jxlImage.height,
 					};
 				}
-				else if(compatible.image.convert.has(pathExtension))
+				else if(compatible.image.convert.has(ext))
 				{
-					if(imageSize === false)
-						imageSize = require('image-size/fromFile').imageSizeFromFile;
-
 					try
 					{
-						const dimensions = await imageSize(path);
-
-						size = {
-							width: dimensions.width,
-							height: dimensions.height,
-						};
+						size = await ImageSize(image);
 					}
 					catch(error)
 					{
@@ -427,42 +714,27 @@ async function getSizes(images)
 						};
 					}
 				}
-				else if(sharpSupportedFormat(image.image, extension))
+				else if(sharpSupportedFormat(image.image, ext))
 				{
-					try
+					if(process.platform === 'linux') // Sharp is slower in Linux due childFork usage
 					{
-						fileManager.macosStartAccessingSecurityScopedResource(image.image);
-
-						const path = app.shortWindowsPath(image.image);
-						const _metadata = useChildFork ? await childFork.metadata(path) : await metadata(path);
-
-						size = {
-							width: _metadata.width,
-							height: _metadata.height,
-						};
+						try
+						{
+							size = await ImageSize(image);
+						}
+						catch(error)
+						{
+							size = await Sharp(image);
+						}
 					}
-					catch(error)
+					else
 					{
-						const img = new Image();
-						img.src = image.image;
-						await img.decode();
-
-						size = {
-							width: img.naturalWidth,
-							height: img.naturalHeight,
-						};
+						size = await Sharp(image);
 					}
 				}
 				else
 				{
-					const img = new Image();
-					img.src = image.image;
-					await img.decode();
-
-					size = {
-						width: img.naturalWidth,
-						height: img.naturalHeight,
-					};
+					size = await _Image(image);
 				}
 			}
 			catch(error)
@@ -479,6 +751,8 @@ async function getSizes(images)
 	}
 
 	await Promise.all(promises);
+
+	console.timeEnd('getSizes');
 
 	return sizes;
 }

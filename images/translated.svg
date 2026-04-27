@@ -43,6 +43,6 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="376" transform="rotate(-90)">ZH-HANS</text>
 		<rect style="fill: #2eccaa;" height="131.3" width="6" rx="2" y="8.7" x="370" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="394" transform="rotate(-90)">ZH-HANT</text>
-		<rect style="fill: #2eccaa;" height="129.3" width="6" rx="2" y="10.7" x="388" />
+		<rect style="fill: #2eccaa;" height="139.3" width="6" rx="2" y="0.7" x="388" />
 	</g>
 </svg>

@@ -43,7 +43,7 @@ const readingPagesConfig = {
 		left: 0,
 		right: 0
 	},
-	readingDelayComicSkip: 1,
+	readingDelayComicSkip: 2,
 	readingDoublePage: false,
 	readingDoublePageShadow: {
 		active: false,
