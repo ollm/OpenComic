@@ -1240,12 +1240,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		for(let i = 0; i < len; i++)
 		{
-			if(files[i].name == 'ComicInfo.xml' || files[i].name == 'MetronInfo.xml')
-			{
+			// Prioritize MetronInfo.xml if exists, otherwise ComicInfo.xml
+			if((comicInfoFile === false || files[i].name == 'MetronInfo.xml') && (files[i].name == 'ComicInfo.xml' || files[i].name == 'MetronInfo.xml'))
 				comicInfoFile = files[i];
-
-				break;
-			}
 		}
 
 		if(comicInfoFile)
