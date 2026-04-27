@@ -2084,17 +2084,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.getOptimalThreads = function() {
-
-		const disk = diskType.check(this.realPath);
-
-		if(disk.hdd)
-			return {readKey: 'readUsingThreadsHDD', extractKey: 'extractUsingThreadsHDD', read: threads.SINGLE, extract: threads.SINGLE};
-		else
-			return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: threads.ALL, extract: threads.ALL};
-
-	}
-
 	// 7z
 	this._7z = false;
 
@@ -2120,7 +2109,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	this.read7z = async function(callback = false) {
 
 		const self = this;
-		const optimalThreads = this.getOptimalThreads();
+		const optimalThreads = getOptimalThreads(this.realPath);
 
 		return threads.job(optimalThreads.readKey, {useThreads: optimalThreads.read}, async function() {
 
@@ -2190,7 +2179,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	this.extract7z = async function() {
 
 		const self = this;
-		const optimalThreads = this.getOptimalThreads();
+		const optimalThreads = getOptimalThreads(this.realPath);
 
 		const only = [];
 		const extractName = {};
@@ -3841,6 +3830,16 @@ function macosStopAccessingSecurityScopedResource()
 	}
 }
 
+function getOptimalThreads(path = false)
+{
+	const disk = diskType.check(path);
+
+	if(disk.hdd)
+		return {readKey: 'readUsingThreadsHDD', extractKey: 'extractUsingThreadsHDD', read: threads.SINGLE, extract: threads.SINGLE};
+	else
+		return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: threads.ALL, extract: threads.ALL};
+}
+
 function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads)
 {
 	if(!status.tasks[status.current])
@@ -4096,6 +4095,7 @@ module.exports = {
 	macosScopedResources: function(){return macosScopedResources},
 	macosSecurityScopedBookmarks: macosSecurityScopedBookmarks,
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
+	getOptimalThreads: getOptimalThreads,
 	getOptimalTask: getOptimalTask,
 	readChunk: readChunk,
 	dirSize: dirSize,

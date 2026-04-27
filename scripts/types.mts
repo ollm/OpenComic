@@ -55,3 +55,10 @@ export interface Image extends File {
 		height: number;
 	};
 }
+
+export interface OptimalThreads {
+	readKey: string;
+	extractKey: string;
+	read: number;
+	extract: number;
+}

@@ -3,6 +3,8 @@ import {promisify} from 'node:util';
 import {path7zc} from '7zip-bin-full';
 import crypto from 'crypto';
 
+import {OptimalThreads} from '@types';
+
 const execAsync = promisify(exec);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -38,6 +40,14 @@ interface TasksStatus {
 	current: number;
 	fullSize: boolean;
 	full: boolean;
+}
+
+interface Group {
+	compressed: string;
+	realPath: string;
+	items: GetBuffers[];
+	indices: number[];
+	optimalThreads: OptimalThreads;
 }
 
 function splitBuffer(buffer: Buffer, delimiter: Buffer)
@@ -77,18 +87,18 @@ function generateDelimiter(): Delimiter
 	};
 }
 
-async function _getBuffers(list: GetBuffers[], compressed: string): Promise<Buffer[]>
+async function _getBuffers({compressed, realPath, items, optimalThreads}: Group): Promise<Buffer[]>
 {
 	const numThreads: number = threads.num();
-	const len = list.length;
+	const len = items.length;
 
 	if(!len)
 		return [];
 
-	list = list.map((item, index) => ({...item, index}));
+	items = items.map((item, index) => ({...item, index}));
 
 	const MAX_FILES = 100;
-	const OPTIMAL_FILES = 30;
+	const OPTIMAL_FILES = 50;
 	const FILE = 1;
 
 	const tasks: GetBuffers[][] = [];
@@ -105,7 +115,7 @@ async function _getBuffers(list: GetBuffers[], compressed: string): Promise<Buff
 		const task = fileManager.getOptimalTask(FILE, status, OPTIMAL_FILES, MAX_FILES, numThreads);
 
 		if(!tasks[task]) tasks[task] = [];
-		tasks[task].push(list[i]);
+		tasks[task].push(items[i]);
 	}
 
 	const delimiter = generateDelimiter();
@@ -115,7 +125,7 @@ async function _getBuffers(list: GetBuffers[], compressed: string): Promise<Buff
 	{
 		const higherSize = Math.max(...task.map(file => file.size));
 
-		promises.push(threads.job('7z-stream-reader', {useThreads: threads.ALL}, async function(): Promise<BufferWithIndex[]> {
+		promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
 
 			const files = task.map(function(file) {
 
@@ -131,7 +141,7 @@ async function _getBuffers(list: GetBuffers[], compressed: string): Promise<Buff
 
 			const filesList = files.map(file => quote(file.originalName)).join(' ');
 
-			const command = `${quote(bin7z)} x -so -slb${higherSize} -snf${quote(`${delimiter.name}{name}${delimiter.name}`)} -- ${quote(compressed)} ${filesList}`;
+			const command = `${quote(bin7z)} x -so -slb${higherSize} -snf${quote(`${delimiter.name}{name}${delimiter.name}`)} -- ${quote(realPath)} ${filesList}`;
 			const data = await execAsync(command, {encoding: 'buffer'});
 
 			const buffer = data.stdout;
@@ -163,28 +173,32 @@ async function _getBuffers(list: GetBuffers[], compressed: string): Promise<Buff
 		map.set(item.index, item.buffer);
 	}
 
-	return list.map(item => map.get(item.index!)!);
+	return items.map(item => map.get(item.index!)!);
 }
 
-async function getBuffers(list: GetBuffers[]): Promise<Buffer[]>
+async function getBuffers(items: GetBuffers[]): Promise<Buffer[]>
 {
-	const len = list.length;
+	const len = items.length;
 
 	if(!len)
 		return [];
 
 	// Group
-	const groups = new Map<string, {key: string; items: GetBuffers[]; indices: number[]}>();
+	const groups = new Map<string, Group>();
 
 	for(let i = 0; i < len; i++)
 	{
-		const item = list[i];
-		const key = item.compressed;
+		const item = items[i];
+		const compressed = item.compressed;
 
-		if(!groups.has(key))
-			groups.set(key, {key, items: [], indices: []});
+		if(!groups.has(compressed))
+		{
+			const realPath = fileManager.realPath(compressed, -1);
+			const optimalThreads = fileManager.getOptimalThreads(realPath) as OptimalThreads;
+			groups.set(compressed, {compressed, realPath, items: [], indices: [], optimalThreads});
+		}
 
-		const group = groups.get(key)!;
+		const group = groups.get(compressed)!;
 		group.items.push(item);
 		group.indices.push(i);
 	}
@@ -194,7 +208,7 @@ async function getBuffers(list: GetBuffers[]): Promise<Buffer[]>
 
 	const promises = Array.from(groups.values()).map(async function(group) {
 
-		const buffers = await _getBuffers(group.items, group.key);
+		const buffers = await _getBuffers(group);
 
 		for(let i = 0, len = buffers.length; i < len; i++)
 		{
