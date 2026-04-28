@@ -38,6 +38,10 @@ if(process.platform == 'darwin')
 	exists(darwin+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 	exists(darwin+'/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
+	// 7zipc
+	exists(darwin+'/7zip-bin-full/mac/arm64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	exists(darwin+'/7zip-bin-full/mac/x64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+
 	// OpenComicAI
 	exists(darwin+'/opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 	exists(darwin+'/opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);

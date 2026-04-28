@@ -36,6 +36,10 @@ if(process.platform == 'darwin')
 	exists('./node_modules/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
+	// 7zipc
+	exists('./node_modules/7zip-bin-full/mac/arm64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/mac/x64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+
 	// OpenComicAI
 	exists('./node_modules/opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
@@ -65,6 +69,12 @@ else if(process.platform == 'linux')
 	exists('./node_modules/7zip-bin-full/linux/ia32/7zz', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/7zip-bin-full/linux/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
 
+	// 7zip
+	exists('./node_modules/7zip-bin-full/linux/arm/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/linux/arm64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/linux/ia32/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/linux/x64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+
 	// OpenComicAI
 	exists('./node_modules/opencomic-ai-bin/linux/arm64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/opencomic-ai-bin/linux/arm64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
@@ -93,6 +103,12 @@ else if(process.platform == 'win32')
 	exists('./node_modules/7zip-bin-full/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/7zip-bin-full/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
 	exists('./node_modules/7zip-bin-full/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+
+	// 7zipc
+	exists('./node_modules/7zip-bin-full/win/x64/7zc/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/win/x64/7zc/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/win/arm64/7zc/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
+	exists('./node_modules/7zip-bin-full/win/arm64/7zc/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
 
 	// OpenComicAI
 	exists('./node_modules/opencomic-ai-bin/win/x64/realcugan/realcugan-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
