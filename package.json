@@ -98,7 +98,7 @@
 		"discord-rpc": "^4.0.1",
 		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
-		"fast-xml-parser": "^5.7.1",
+		"fast-xml-parser": "^5.7.2",
 		"file-type": "^22.0.1",
 		"foliate-js": "github:johnfactotum/foliate-js",
 		"font-list": "^2.0.2",
