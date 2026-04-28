@@ -71,7 +71,7 @@ function splitBuffer(buffer: Buffer, delimiter: Buffer)
 function quote(string: string): string
 {
 	if(process.platform === 'win32')
-		return `"${String(string).replace(/'/g, '""')}"`;
+		return `"${String(string).replace(/"/g, '""')}"`;
 
 	return `'${String(string).replace(/'/g, '\'\\\'\'')}'`;
 }
