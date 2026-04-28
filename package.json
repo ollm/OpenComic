@@ -42,6 +42,8 @@
 		"build-dist": "npm run build-linux-folder-portable && npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z flatpak && electron-builder --arm64 --linux deb rpm AppImage 7z flatpak && npm run postbuild",
 		"build-linux": "npm run prebuild && electron-builder --x64 --linux deb rpm AppImage 7z tar.gz && npm run postbuild",
 		"build-linux-folder-portable": "npm run prebuild && npm run prebuild-folder-portable && electron-builder --x64 --linux 7z && electron-builder --arm64 --linux 7z && npm run rename-folder-portable && npm run postbuild",
+		"build-linux-folder-portable-x64": "npm run prebuild && npm run prebuild-folder-portable && electron-builder --x64 --linux && npm run rename-folder-portable && npm run postbuild",
+		"build-linux-folder-portable-arm": "npm run prebuild && npm run prebuild-folder-portable && electron-builder --arm64 --linux 7z && npm run rename-folder-portable && npm run postbuild",
 		"build-deb": "npm run prebuild && electron-builder --x64 --linux deb && npm run postbuild",
 		"build-rpm": "npm run prebuild && electron-builder --x64 --linux rpm && npm run postbuild",
 		"build-snap": "npm run prebuild && electron-builder --x64 --linux snap && npm run postbuild",
