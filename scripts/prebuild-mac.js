@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-function change(path, search, replacement)
+function change(path, search, replacement, fix = false)
 {
 	if(!fs.existsSync(path))
-		throw new Error('Not exists! '+path+'\n');
+		throw new Error('Not exists! '+path+(fix ? '\n\nTry: '+fix : '')+'\n');
 
 	let buffer = fs.readFileSync(path);
 
@@ -27,18 +27,18 @@ const store = process.argv.includes('--store');
 if(store)
 {
 	// Sharp x64
-	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList', 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force');
 
 	// Sharp arm64
-	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', '_CTFontCopyDefaultCascadeList', 'DCTFontCopyDefaultCascadeList', 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force');
 }
 else
 {
 	// Sharp x64
-	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList', 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force');
 
 	// Sharp arm64
-	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList');
+	change('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList', 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force');
 }
 
 console.log('Runed tests: Ok');
