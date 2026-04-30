@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Add support for `MetronInfo.xml` [`cf2b875`](https://github.com/ollm/OpenComic/commit/cf2b875f2794109e95651fb30735caeff588f3af)
 - Add and remove blank pages in double page view [`471f464`](https://github.com/ollm/OpenComic/commit/471f46468060c61475b2e833d85270ebbce4ad1e)
 - Retrieve image dimensions from compressed files when possible for better performance [`fc1979b`](https://github.com/ollm/OpenComic/commit/fc1979ba1a6890f69d57933e7ff691d9051156f1)
+- Add option to sort files by modification date
 
 ##### 🐛 Bug Fixes
 

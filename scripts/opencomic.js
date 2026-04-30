@@ -1147,6 +1147,11 @@ function printMemoryUsage()
 	console.log(message);
 }
 
+function reload()
+{
+	electronRemote.getCurrentWindow().webContents.reload();
+}
+
 function escapeBackSlash(string)
 {
 	return (string || '').replace(/\\/g, '\\\\');

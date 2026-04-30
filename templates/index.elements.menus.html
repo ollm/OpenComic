@@ -9,6 +9,7 @@
 				<div class="menu-simple-element menu-simple-element-little sort-last-opened gamepad-item{{#compare page.sort '==' 'last-opened'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-opened', '{{page.name}}')">{{language.global.sort.lastOpened}}</div>
 				<div class="menu-simple-element menu-simple-element-little sort-last-reading gamepad-item{{#compare page.sort '==' 'last-reading'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-reading', '{{page.name}}')">{{language.global.sort.lastReading}}</div>
 				{{else compare page.name '==' 'browsing'}}
+				<div class="menu-simple-element menu-simple-element-little sort-last-modified gamepad-item{{#compare page.sort '==' 'last-modified'}} s{{/compare}}" onclick="dom.changeSort(1, 'last-modified', '{{page.name}}')">{{language.global.sort.lastModified}}</div>
 				<div class="menu-simple-text gamepad-item">
 					{{language.global.sort.foldersFirst}}
 					<div class="switch{{#if page.foldersFirst}} a{{/if}}" on="dom.changeSort(3, true, false)" off="dom.changeSort(3, false, false)">

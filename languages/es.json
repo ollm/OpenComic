@@ -17,9 +17,10 @@
 			"name": "Nombre",
 			"number": "Numérico",
 			"nameNumber": "Nombre/Numérico",
-			"lastAdd": "Último agregado",
+			"lastAdd": "Última adición",
 			"lastReading": "Última lectura",
-			"lastOpened": "Último abierto",
+			"lastOpened": "Última apertura",
+			"lastModified": "Última modificación",
 			"foldersFirst": "Carpetas primero",
 			"compressedFirst": "Comprimidos primero",
 			"invert": "Invertir"

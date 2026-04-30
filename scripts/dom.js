@@ -29,71 +29,83 @@ function orderBy(a, b, mode, key = false, key2 = false)
 		bValue = b[key];
 	}
 
-	if(mode != 'real-numeric')
+	if(mode !== 'real-numeric')
 	{
-		aValue = aValue.toLowerCase();
-		bValue = bValue.toLowerCase();
+		aValue = String(aValue).toLowerCase();
+		bValue = String(bValue).toLowerCase();
 	}
 
-	if(mode == 'simple')
+	switch(mode)
 	{
-		if(aValue > bValue) return 1;
-		if(aValue < bValue) return -1;
+		case 'simple': {
 
-		return 0;
-	}
-	else if(mode == 'real-numeric')
-	{
-		if(aValue > bValue) return 1;
-		if(aValue < bValue) return -1;
+			return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
 
-		return 0;
-	}
-	else if(mode == 'numeric')
-	{
-		let matchA = aValue.match(/([0-9]+)/g);
-		let matchB = bValue.match(/([0-9]+)/g);
-
-		if(!matchA) return 1;
-		if(!matchB) return -1;
-
-		for(let i = 0, len = Math.min(matchA.length, matchB.length); i < len; i++)
-		{
-			if(+matchA[i] > +matchB[i]) return 1;
-			if(+matchA[i] < +matchB[i]) return -1;
 		}
+		case 'real-numeric': {
 
-		if(matchA.length > matchB.length) return 1;
-		if(matchA.length < matchB.length) return -1;
+			return Number(aValue) - Number(bValue);
 
-		if(aValue > bValue) return 1;
-		if(aValue < bValue) return -1;
-
-		return 0;
-	}
-	else if(mode == 'simple-numeric')
-	{
-		let matchA = aValue.split(/([0-9]+)/);
-		let matchB = bValue.split(/([0-9]+)/);
-
-		if(!matchA) return 1;
-		if(!matchB) return -1;
-
-		for(let i = 0, len = Math.min(matchA.length, matchB.length); i < len; i++)
-		{
-			if(isNaN(matchA[i]) || isNaN(matchB[i]))
-			{
-				if(matchA[i] > matchB[i]) return 1;
-				if(matchA[i] < matchB[i]) return -1;
-			}
-			else
-			{
-				if(+matchA[i] > +matchB[i]) return 1;
-				if(+matchA[i] < +matchB[i]) return -1;
-			}
 		}
+		case 'numeric': {
 
-		return (matchA.length < matchB.length) ? 1 : -1;
+			const matchA = aValue.match(/([0-9]+)/g) || [];
+			const matchB = bValue.match(/([0-9]+)/g) || [];
+
+			const lenA = matchA.length;
+			const lenB = matchB.length;
+
+			const len = Math.min(lenA, lenB);
+
+			for(let i = 0; i < len; i++)
+			{
+				const a = matchA[i];
+				const b = matchB[i];
+
+				const diff = Number(a) - Number(b);
+				if(diff !== 0) return diff;
+			}
+
+			if(lenA !== lenB) return lenA - lenB;
+			return aValue === bValue ? 0 : (aValue < bValue ? -1 : 1);
+
+		}
+		case 'simple-numeric': {
+
+			/* // This is slower than the custom implementation below
+			return aValue.localeCompare(bValue, undefined, {
+				numeric: true,
+				sensitivity: 'base'
+			});
+			*/
+
+			const matchA = aValue.split(/(\d+)/);
+			const matchB = bValue.split(/(\d+)/);
+
+			const lenA = matchA.length;
+			const lenB = matchB.length;
+
+			const len = Math.min(lenA, lenB);
+
+			for(let i = 0; i < len; i++)
+			{
+				const a = matchA[i];
+				const b = matchB[i];
+
+				if(/^\d+$/.test(a) && /^\d+$/.test(b))
+				{
+					const diff = Number(a) - Number(b);
+					if(diff !== 0) return diff;
+				}
+				else
+				{
+					if(a !== b) return a < b ? -1 : 1;
+				}
+			}
+
+			return lenA - lenB;
+
+		}
 	}
 }
 
@@ -317,7 +329,7 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 		let first;
 
 		if(file.files)
-			file.files = fileManager.sort(file.files, {extraKey: 'Reading'});
+			file.files = await fileManager.sort(file.files, {extraKey: 'Reading'});
 
 		file.updateConfig({sort: {extraKey: 'Reading'}});
 

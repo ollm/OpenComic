@@ -19,7 +19,8 @@
 			"nameNumber": "Nom / Numèric",
 			"lastAdd": "Últim agregat",
 			"lastReading": "Última lectura",
-			"lastOpened": "Últim obert",
+			"lastOpened": "Última obertura",
+			"lastModified": "Última modificació",
 			"foldersFirst": "Carpetes primer",
 			"compressedFirst": "Comprimits primer",
 			"invert": "Invertir"

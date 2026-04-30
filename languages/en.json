@@ -17,9 +17,10 @@
 			"name": "Name",
 			"number": "Number",
 			"nameNumber": "Name / Number",
-			"lastAdd": "Last add",
+			"lastAdd": "Last added",
 			"lastReading": "Last reading",
 			"lastOpened": "Last opened",
+			"lastModified": "Last modified",
 			"foldersFirst": "Folders first",
 			"compressedFirst": "Compressed first",
 			"invert": "Invert"

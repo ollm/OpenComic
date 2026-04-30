@@ -107,7 +107,7 @@ var file = function(path, _config = false) {
 		}
 
 		if(this.config.sort)
-			files = sort(files, this.config.sort);
+			files = await sort(files, this.config.sort);
 
 		if(this.config.only && typeof this.config.only === 'number')
 			files = this.only(files);
@@ -3688,42 +3688,70 @@ function filtered(files, specialFiles = false, ignoreFiles = true)
 	return filtered;
 }
 
-function sort(files, options = {})
+async function sort(files, options = {})
 {
-	if(files)
+	if(!files)
+		return;
+
+	const extraKey = options?.extraKey ?? '';
+
+	const sort = config['sort'+extraKey];
+	const sortInvert = config['sortInvert'+extraKey];
+	const foldersFirst = config['foldersFirst'+extraKey];
+	const compressedFirst = config['compressedFirst'+extraKey];
+
+	let order = '';
+	let key = 'name';
+
+	if(sort === 'name')
+		order = 'simple';
+	else if(sort === 'numeric')
+		order = 'numeric';
+	else
+		order = 'simple-numeric';
+
+	if(sort === 'last-modified')
 	{
-		const extraKey = options?.extraKey ?? '';
+		order = 'real-numeric';
+		key = 'mtime';
 
-		const sort = config['sort'+extraKey];
-		const sortInvert = config['sortInvert'+extraKey];
-		const foldersFirst = config['foldersFirst'+extraKey];
-		const compressedFirst = config['compressedFirst'+extraKey];
+		files = await Promise.all(
+			files.map(async function(file) {
 
-		let order = '';
+				if(file.mtime || isServer(file.path) || isOpds(file.path))
+					return file;
 
-		if(sort == 'name')
-			order = 'simple';
-		else if(sort == 'numeric')
-			order = 'numeric';
-		else
-			order = 'simple-numeric';
+				const firstCompressed = firstCompressedFile(file.path);
 
-		files.sort(function (a, b) {
+				try
+				{
+					const stats = await fsp.stat(firstCompressed);
+					file.mtime = stats.mtimeMs;
+				}
+				catch
+				{
+					file.mtime = 0;
+				}
 
-			const aFirst = (foldersFirst && a.folder) || (compressedFirst && a.compressed);
-			const bFirst = (foldersFirst && b.folder) || (compressedFirst && b.compressed);
+				return file;
 
-			if(aFirst && !bFirst)
-				return -1; 
-
-			if(bFirst && !aFirst)
-				return 1;
-
-			return (sortInvert) ? -(dom.orderBy(a, b, order, 'name')) : dom.orderBy(a, b, order, 'name');
-		});
-
-		return files;
+			}),
+		);
 	}
+
+	files.sort(function (a, b) {
+
+		const aFirst = (foldersFirst && a.folder) || (compressedFirst && a.compressed);
+		const bFirst = (foldersFirst && b.folder) || (compressedFirst && b.compressed);
+
+		if(aFirst && !bFirst)
+			return -1; 
+
+		if(bFirst && !aFirst)
+			return 1;
+
+		return (sortInvert) ? -(dom.orderBy(a, b, order, key)) : dom.orderBy(a, b, order, key);
+	});
 
 	return files;
 }
