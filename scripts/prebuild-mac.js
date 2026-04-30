@@ -21,7 +21,7 @@ function change(path, search, replacement, fix = false)
 	fs.writeFileSync(path, buffer);
 }
 
-const FIX_ZSTD = 'npm install --force --prefix ./build/node-zstd-native-dependencies';
+const FIX_ZSTD = 'npm install --force --prefix ./build/node-zstd-native-dependencies && node scripts/zstd-copy-native.js';
 
 const FIX_SHARP = {
 	LINUX_X64: 'npm install @img/sharp-libvips-linuxmusl-x64 @img/sharp-libvips-linux-x64 @img/sharp-linuxmusl-x64 @img/sharp-linux-x64 --force',
