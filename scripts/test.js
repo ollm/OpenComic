@@ -18,7 +18,7 @@ function exists(path, permissions = false, fix = false)
 	}
 }
 
-const FIX_ZSTD = 'npm install --force --prefix ./node-zstd-native-dependencies';
+const FIX_ZSTD = 'npm install --force --prefix ./build/node-zstd-native-dependencies';
 
 const FIX_SHARP = {
 	LINUX_X64: 'npm install @img/sharp-libvips-linuxmusl-x64 @img/sharp-libvips-linux-x64 @img/sharp-linuxmusl-x64 @img/sharp-linux-x64 --force',
