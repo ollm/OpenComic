@@ -21,6 +21,7 @@
 			"lastReading": "最後閱讀時間",
 			"lastOpened": "上次打開",
 			"lastModified": "",
+			"shuffle": "",
 			"foldersFirst": "資料夾優先",
 			"compressedFirst": "壓縮檔優先",
 			"invert": "反轉排序"

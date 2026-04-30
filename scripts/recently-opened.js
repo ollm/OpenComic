@@ -30,25 +30,29 @@ async function load(animation = true, content = false)
 	let orderKey = 'name';
 	let orderKey2 = false;
 
-	if(sort == 'name')
+	if(sort === 'name')
 	{
 		order = 'simple';
 	}
-	else if(sort == 'numeric')
+	else if(sort === 'numeric')
 	{
 		order = 'numeric';
 	}
-	else if(sort == 'name-numeric')
+	else if(sort === 'name-numeric')
 	{
 		order = 'simple-numeric';
 	}
-	else if(sort == 'last-opened')
+	else if(sort === 'shuffle')
+	{
+		order = 'shuffle';
+	}
+	else if(sort === 'last-opened')
 	{
 		order = 'real-numeric';
 		orderKey = 'lastOpened';
 		sortInvert = !sortInvert;
 	}
-	else
+	else // last-reading
 	{
 		order = 'real-numeric';
 		orderKey = 'readingProgress';

@@ -45,7 +45,7 @@ Translate by [محمد أبو عويمر](https://github.com/vic2pal)
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 562`
+`100% | Remain 0 | Translated 563`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/ca.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/ca.svg" /></a>
 
@@ -81,7 +81,7 @@ Translate by [Hernesto Sanchez](https://github.com/herrsunchess) and [Mett-mit-Z
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 562`
+`100% | Remain 0 | Translated 563`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/en.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/en.svg" /></a>
 
@@ -93,7 +93,7 @@ Translate by [Oleguer Llopart](https://github.com/ollm)
 
 Translate by [Oleguer Llopart](https://github.com/ollm)
 
-`100% | Remain 0 | Translated 562`
+`100% | Remain 0 | Translated 563`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/es.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/es.svg" /></a>
 

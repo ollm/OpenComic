@@ -21,6 +21,7 @@
 			"lastReading": "Last reading",
 			"lastOpened": "Last opened",
 			"lastModified": "Last modified",
+			"shuffle": "Shuffle",
 			"foldersFirst": "Folders first",
 			"compressedFirst": "Compressed first",
 			"invert": "Invert"

@@ -7,7 +7,8 @@ const domPoster = require(p.join(appDir, '.dist/dom/poster.js')),
 	header = require(p.join(appDir, '.dist/dom/header.js')),
 	boxes = require(p.join(appDir, '.dist/dom/boxes.js')),
 	history = require(p.join(appDir, '.dist/dom/history.js')),
-	scroll = require(p.join(appDir, '.dist/dom/scroll.js'));
+	scroll = require(p.join(appDir, '.dist/dom/scroll.js')),
+	sort = require(p.join(appDir, '.dist/dom/sort.mjs')).default;
 
 const diff = require(p.join(appDir, '.dist/diff.mjs')).default;
 
@@ -104,6 +105,12 @@ function orderBy(a, b, mode, key = false, key2 = false)
 			}
 
 			return lenA - lenB;
+
+		}
+		case 'shuffle': {
+
+			const value = sort.compareShuffle(aValue, bValue);
+			return value;
 
 		}
 	}
@@ -743,13 +750,17 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 		{
 			order = 'simple-numeric';
 		}
+		else if(sort === 'shuffle')
+		{
+			order = 'shuffle';
+		}
 		else if(sort == 'last-add')
 		{
 			order = 'real-numeric';
 			orderKey = 'added';
 			sortInvert = !sortInvert;
 		}
-		else
+		else // last-reading
 		{
 			order = 'real-numeric';
 			orderKey = 'readingProgress';
@@ -2287,6 +2298,10 @@ function changeSort(type, mode, page)
 				sortAndView.sort = mode;
 				changed = true;
 			}
+			else if(mode === 'shuffle')
+			{
+				changed = true;
+			}
 		}
 		else if(type == 2)
 		{
@@ -2322,6 +2337,10 @@ function changeSort(type, mode, page)
 			{
 				storage.updateVar('config', 'sort'+extraKey, mode);
 				selectElement('.sort-'+mode);
+				changed = true;
+			}
+			else if(mode === 'shuffle')
+			{
 				changed = true;
 			}
 		}
@@ -3116,6 +3135,7 @@ module.exports = {
 	header: header,
 	history: history,
 	scroll: scroll,
+	sort: sort,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

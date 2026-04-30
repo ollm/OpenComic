@@ -3707,7 +3707,9 @@ async function sort(files, options = {})
 		order = 'simple';
 	else if(sort === 'numeric')
 		order = 'numeric';
-	else
+	else if(sort === 'shuffle')
+		order = 'shuffle';
+	else // name-numeric
 		order = 'simple-numeric';
 
 	if(sort === 'last-modified')
