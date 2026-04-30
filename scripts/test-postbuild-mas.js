@@ -18,6 +18,17 @@ function exists(path, permissions = false, fix = false)
 	}
 }
 
+const FIX_ZSTD = 'npm install --force --prefix ./node-zstd-native-dependencies';
+
+const FIX_SHARP = {
+	LINUX_X64: 'npm install @img/sharp-libvips-linuxmusl-x64 @img/sharp-libvips-linux-x64 @img/sharp-linuxmusl-x64 @img/sharp-linux-x64 --force',
+	LINUX_ARM64: 'npm install @img/sharp-libvips-linux-arm64 @img/sharp-libvips-linuxmusl-arm64 @img/sharp-linux-arm64 @img/sharp-linuxmusl-arm64 --force',
+	MACOSS_X64: 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force',
+	MACOSS_ARM64: 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force',
+	WIN32_X64: 'npm install --cpu=x64 --os=win32 sharp',
+	WIN32_ARM64: 'npm install --cpu=arm64 --os=win32 sharp',
+};
+
 const darwin = '/Applications/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
 
 if(process.platform == 'darwin')
@@ -27,12 +38,12 @@ if(process.platform == 'darwin')
 	exists(darwin+'/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
 
 	// Sharp x64
-	exists(darwin+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force');
-	exists(darwin+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.R_OK, 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force');
+	exists(darwin+'/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, FIX_SHARP.MACOSS_X64);
+	exists(darwin+'/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.R_OK, FIX_SHARP.MACOSS_X64);
 
 	// Sharp arm64
-	exists(darwin+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force');
-	exists(darwin+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.R_OK, 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force');
+	exists(darwin+'/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, FIX_SHARP.MACOSS_ARM64);
+	exists(darwin+'/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.R_OK, FIX_SHARP.MACOSS_ARM64);
 
 	// 7zip
 	exists(darwin+'/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);

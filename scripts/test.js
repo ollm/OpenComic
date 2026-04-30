@@ -18,19 +18,30 @@ function exists(path, permissions = false, fix = false)
 	}
 }
 
+const FIX_ZSTD = 'npm install --force --prefix ./node-zstd-native-dependencies';
+
+const FIX_SHARP = {
+	LINUX_X64: 'npm install @img/sharp-libvips-linuxmusl-x64 @img/sharp-libvips-linux-x64 @img/sharp-linuxmusl-x64 @img/sharp-linux-x64 --force',
+	LINUX_ARM64: 'npm install @img/sharp-libvips-linux-arm64 @img/sharp-libvips-linuxmusl-arm64 @img/sharp-linux-arm64 @img/sharp-linuxmusl-arm64 --force',
+	MACOSS_X64: 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force',
+	MACOSS_ARM64: 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force',
+	WIN32_X64: 'npm install --cpu=x64 --os=win32 sharp',
+	WIN32_ARM64: 'npm install --cpu=arm64 --os=win32 sharp',
+};
+
 if(process.platform == 'darwin')
 {
 	// Node ZSTD All
-	exists('./node_modules/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK);
-	exists('./node_modules/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK);
+	exists('./node_modules/@toondepauw/node-zstd-darwin-x64/node-zstd.darwin-x64.node', fs.constants.R_OK, FIX_ZSTD);
+	exists('./node_modules/@toondepauw/node-zstd-darwin-arm64/node-zstd.darwin-arm64.node', fs.constants.R_OK, FIX_ZSTD);
 
 	// Sharp x64
-	exists('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force');
-	exists('./node_modules/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.R_OK, 'npm install @img/sharp-darwin-x64 @img/sharp-libvips-darwin-x64 --force');
+	exists('./node_modules/@img/sharp-libvips-darwin-x64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, FIX_SHARP.MACOSS_X64);
+	exists('./node_modules/@img/sharp-darwin-x64/lib/sharp-darwin-x64.node', fs.constants.R_OK, FIX_SHARP.MACOSS_X64);
 
 	// Sharp arm64
-	exists('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force');
-	exists('./node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.R_OK, 'npm install @img/sharp-darwin-arm64 @img/sharp-libvips-darwin-arm64 --force');
+	exists('./node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.17.3.dylib', fs.constants.R_OK, FIX_SHARP.MACOSS_ARM64);
+	exists('./node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64.node', fs.constants.R_OK, FIX_SHARP.MACOSS_ARM64);
 
 	// 7zip
 	exists('./node_modules/7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
@@ -52,16 +63,16 @@ if(process.platform == 'darwin')
 else if(process.platform == 'linux')
 {	
 	// Node ZSTD All
-	exists('./node_modules/@toondepauw/node-zstd-linux-x64-gnu/node-zstd.linux-x64-gnu.node', fs.constants.R_OK);
-	exists('./node_modules/@toondepauw/node-zstd-linux-arm64-gnu/node-zstd.linux-arm64-gnu.node', fs.constants.R_OK);
+	exists('./node_modules/@toondepauw/node-zstd-linux-x64-gnu/node-zstd.linux-x64-gnu.node', fs.constants.R_OK, FIX_ZSTD);
+	exists('./node_modules/@toondepauw/node-zstd-linux-arm64-gnu/node-zstd.linux-arm64-gnu.node', fs.constants.R_OK, FIX_ZSTD);
 
 	// Sharp x64
-	exists('./node_modules/@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.8.17.3', fs.constants.R_OK, 'npm install @img/sharp-libvips-linuxmusl-x64 @img/sharp-libvips-linux-x64 @img/sharp-linuxmusl-x64 @img/sharp-linux-x64 --force');
-	exists('./node_modules/@img/sharp-linux-x64/lib/sharp-linux-x64.node', fs.constants.R_OK, 'npm install @img/sharp-libvips-linuxmusl-x64 @img/sharp-libvips-linux-x64 @img/sharp-linuxmusl-x64 @img/sharp-linux-x64 --force');
+	exists('./node_modules/@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.8.17.3', fs.constants.R_OK, FIX_SHARP.LINUX_X64);
+	exists('./node_modules/@img/sharp-linux-x64/lib/sharp-linux-x64.node', fs.constants.R_OK, FIX_SHARP.LINUX_X64);
 
 	// Sharp arm64
-	exists('./node_modules/@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.8.17.3', fs.constants.R_OK, 'npm install @img/sharp-libvips-linux-arm64 @img/sharp-libvips-linuxmusl-arm64 @img/sharp-linux-arm64 @img/sharp-linuxmusl-arm64 --force');
-	exists('./node_modules/@img/sharp-linux-arm64/lib/sharp-linux-arm64.node', fs.constants.R_OK, 'npm install @img/sharp-libvips-linux-arm64 @img/sharp-libvips-linuxmusl-arm64 @img/sharp-linux-arm64 @img/sharp-linuxmusl-arm64 --force');
+	exists('./node_modules/@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.8.17.3', fs.constants.R_OK, FIX_SHARP.LINUX_ARM64);
+	exists('./node_modules/@img/sharp-linux-arm64/lib/sharp-linux-arm64.node', fs.constants.R_OK, FIX_SHARP.LINUX_ARM64);
 
 	// 7zip
 	exists('./node_modules/7zip-bin-full/linux/arm/7zz', fs.constants.X_OK | fs.constants.R_OK);
@@ -86,7 +97,7 @@ else if(process.platform == 'linux')
 else if(process.platform == 'win32')
 {
 	// Node ZSTD All
-	exists('./node_modules/@toondepauw/node-zstd-win32-x64-msvc/node-zstd.win32-x64-msvc.node', fs.constants.R_OK);
+	exists('./node_modules/@toondepauw/node-zstd-win32-x64-msvc/node-zstd.win32-x64-msvc.node', fs.constants.R_OK, FIX_ZSTD);
 
 	// Sharp x64
 	exists('./node_modules/@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
@@ -94,9 +105,9 @@ else if(process.platform == 'win32')
 	exists('./node_modules/@img/sharp-win32-x64/lib/sharp-win32-x64.node', fs.constants.R_OK);
 
 	// Sharp arm64
-	exists('./node_modules/@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK, 'npm install --cpu=arm64 --os=win32 sharp');
-	exists('./node_modules/@img/sharp-win32-arm64/lib/libvips-cpp-8.17.3.dll', fs.constants.R_OK, 'npm install --cpu=arm64 --os=win32 sharp');
-	exists('./node_modules/@img/sharp-win32-arm64/lib/sharp-win32-arm64.node', fs.constants.R_OK, 'npm install --cpu=arm64 --os=win32 sharp');
+	exists('./node_modules/@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK, FIX_SHARP.WIN32_ARM64);
+	exists('./node_modules/@img/sharp-win32-arm64/lib/libvips-cpp-8.17.3.dll', fs.constants.R_OK, FIX_SHARP.WIN32_ARM64);
+	exists('./node_modules/@img/sharp-win32-arm64/lib/sharp-win32-arm64.node', fs.constants.R_OK, FIX_SHARP.WIN32_ARM64);
 
 	// 7zip
 	exists('./node_modules/7zip-bin-full/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
