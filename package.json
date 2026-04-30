@@ -265,7 +265,7 @@
 			"gatekeeperAssess": true,
 			"icon": "images/icon-mac.icns",
 			"category": "public.app-category.graphics-design",
-			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2025_07.provisionprofile",
+			"provisioningProfile": "build/OpenComic_Profile_2026_04_30.provisionprofile",
 			"minimumSystemVersion": "10.15.0"
 		},
 		"mas": {
@@ -273,7 +273,7 @@
 			"type": "distribution",
 			"entitlements": "build/entitlements.mas.plist",
 			"entitlementsInherit": "build/entitlements.mas.inherit.plist",
-			"provisioningProfile": "build/OpenComic_Provisioning_Profile_2025_07.provisionprofile",
+			"provisioningProfile": "build/OpenComic_Profile_2026_04_30.provisionprofile",
 			"mergeASARs": false,
 			"singleArchFiles": "*",
 			"x64ArchFiles": "*"
