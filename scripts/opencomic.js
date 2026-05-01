@@ -11,6 +11,18 @@ window.onerror = function(msg, url, linenumber) {
 
 let isFullScreen = false;
 
+function setFullScreenState(state)
+{
+	isFullScreen = state;
+	titleBar.setFullScreen(state);
+
+	reading.hideContent(state);
+	// win.setMenuBarVisibility(!state);
+
+	const appElement = document.querySelector('body .app');
+	if(appElement) appElement.classList.toggle('full-screen', state)
+}
+
 function fullScreen(force = null, win = false)
 {
 	if(win === false)
@@ -19,15 +31,24 @@ function fullScreen(force = null, win = false)
 	if(force === null)
 		force = !win.isFullScreen();
 
-	isFullScreen = force;
-	titleBar.setFullScreen(force);
-
-	reading.hideContent(force);
+	setFullScreenState(force);
 	win.setFullScreen(force);
-	// win.setMenuBarVisibility(!force);
+}
 
-	const appElement = document.querySelector('body .app');
-	if(appElement) appElement.classList.toggle('full-screen', force)
+function fullScreenEvents()
+{
+	const win = electronRemote.getCurrentWindow();
+
+	win.on('enter-full-screen', function() {
+		setFullScreenState(true);
+	});
+
+	win.on('leave-full-screen', function() {
+		setFullScreenState(false);
+	});
+
+	const state = win.isFullScreen();
+	setFullScreenState(state);
 }
 
 document.addEventListener('keydown', function(event) {
@@ -386,6 +407,7 @@ async function startApp()
 	if(config.checkReleases)
 		checkReleases.check();
 
+	fullScreenEvents();
 	loadContextMenu();
 
 	handlebarsContext.indexHeaderTitle = language.global.library;

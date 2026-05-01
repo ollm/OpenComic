@@ -233,6 +233,11 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			{
 				if(useScreenPointTabs)
 				{
+					tab.dragOffset = {
+						x: app.clientX(event),
+						y: app.clientY(event),
+					};
+
 					currentDetachedWindowId = electronRemote.getCurrentWindow().id as number;
 					followScreenPoint(currentDetachedWindowId, tab);
 					return;
