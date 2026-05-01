@@ -45,6 +45,8 @@ export interface Tab {
 	};
 }
 
+const MACOS = process.platform === 'darwin';
+
 let tabs: Tab[] = [];
 let idCounter = 0;
 
@@ -464,7 +466,7 @@ function setTabWidth()
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
 
-	const width = window.innerWidth;
+	const width = window.innerWidth - (MACOS ? 80 : 0);
 
 	const len = tabs.length;
 	let tabWidth = (width - (len * 6) - 6) / len;

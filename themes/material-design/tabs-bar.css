@@ -61,7 +61,8 @@
 
 .app.macos .tabs-bar
 {
-	padding-left: 86px;
+	padding-left: 80px;
+	-webkit-app-region: drag;
 }
 
 .app.visible-tabs-bar .tabs-bar
@@ -96,6 +97,7 @@
 	border-radius: 8px;
 	/*overflow: hidden;*/
 	height: 28px;
+	-webkit-app-region: no-drag;
 }
 
 .tabs-bar .tab.dragging

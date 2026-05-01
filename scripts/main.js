@@ -75,11 +75,11 @@ function createWindow(options = {}) {
 			nativeWindowOpen: false,
 			additionalArguments: options.args ?? [],
 		},
-		titleBarStyle: (process.platform == 'linux' && !configInit.forceLinuxHiddenTitleBar) ? 'native' : 'hidden',
+		titleBarStyle: (process.platform === 'linux' && !configInit.forceLinuxHiddenTitleBar) ? 'native' : 'hidden',
 		titleBarOverlay: {
 			color: '#242a3000',
 			symbolColor: '#c2c7cf',
-			height: 29,
+			height: (process.platform === 'darwin' ? 40 : 29),
 		},
 		trafficLightPosition: {x: 13, y: 13},
 		backgroundColor: '#242a30',

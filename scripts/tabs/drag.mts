@@ -45,6 +45,8 @@ const screenFollow: ScreenFollow = {
 	},
 };
 
+const MACOS = process.platform === 'darwin';
+
 function moveTabs(mainTab: Tab, goTo: number, animation: boolean = true) {
 
 	const _tabs = tabs.tabs;
@@ -286,7 +288,21 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			electronRemote.getCurrentWindow().focus();
 		}
 
-		tab.element.style.transform = `translateX(calc(((var(--tabs-bar-tab-width) + 6px) * ${tab.position}) + ${data.diffX}px))`;
+		// Calculate tab position with clamping to bounds
+		{
+			const tabWidth = tabs.tabWidth;
+			const gap = 6;
+			const containerWidth = window.innerWidth - (MACOS ? 80 : 0);
+
+			const baseX = (tabWidth + gap) * tab.position + data.diffX;
+
+			const minX = 0;
+			const maxX = containerWidth - tabWidth - gap * 2;
+
+			const clampedX = Math.max(minX, Math.min(baseX, maxX));
+
+			tab.element.style.transform = `translateX(${clampedX}px)`;
+		}
 
 		if(!detachedTab)
 			moveTabs(tab, goToX, !addedTab);
@@ -580,7 +596,7 @@ function eventFromScreenPoint(x: number, y: number, wx: number, wy: number) {
 
 function followScreenPoint(winId: number, tab: Tab) {
 
-	const offset = tab.dragOffset ?? {x: 110, y: 15};
+	const offset = tab.dragOffset ?? (MACOS ? {x: 110 + 80, y: 15} : {x: 110, y: 15});
 	const win = electronRemote.BrowserWindow.fromId(winId);
 	if(!win) return;
 
@@ -596,7 +612,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 			const cursor = electronRemote.screen.getCursorScreenPoint();
 
 			const x = cursor.x - offset.x;
-			const y = cursor.y - (config.showAlwaysTabsBar ? 50 : 15);
+			const y = cursor.y - (config.showAlwaysTabsBar ? (MACOS ? 80 + 50 : 50) : 15);
 
 			win.setBounds({x, y});
 
