@@ -618,7 +618,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 			const cursor = electronRemote.screen.getCursorScreenPoint();
 
 			const x = cursor.x - offset.x;
-			const y = cursor.y - (config.showAlwaysTabsBar ? (MACOS ? 0 : 50) : 0); // 15);
+			const y = cursor.y - (config.showAlwaysTabsBar ? offset.y : (offset.y <= 28 ? offset.y : 15));
 
 			win.setBounds({x, y});
 
