@@ -308,9 +308,23 @@ async function start()
 		config = storage.config();
 		_config = copy(config);
 
-		handlebarsContext.config = config;
+		if(process.platform == 'darwin')
+		{
+			// Show tabs bar always on macOS because of the empty space due to the traffic lights
+			config.showAlwaysTabsBar = true;
+		}
+
+		const OS_MAP = {
+			linux: 'linux',
+			win32: 'windows',
+			darwin: 'macos',
+		};
+
+		handlebarsContext.config = config;platform
 		handlebarsContext.installedFromStore = installedFromStore.check();
+		handlebarsContext.os = OS_MAP[process.platform] || process.platform;
 		handlebarsContext.macosMAS = macosMAS;
+		handlebarsContext.macos = process.platform == 'darwin';
 		handlebarsContext.isWayland = isWayland;
 		handlebarsContext.useScreenPointTabs = useScreenPointTabs;
 

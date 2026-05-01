@@ -59,6 +59,11 @@
 	position: relative;
 }
 
+.app.macos .tabs-bar
+{
+	padding-left: 86px;
+}
+
 .app.visible-tabs-bar .tabs-bar
 {
 	opacity: 1;

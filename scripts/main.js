@@ -81,7 +81,7 @@ function createWindow(options = {}) {
 			symbolColor: '#c2c7cf',
 			height: 29,
 		},
-		trafficLightPosition: {x: 10, y: 7},
+		trafficLightPosition: {x: 13, y: 13},
 		backgroundColor: '#242a30',
 	});
 

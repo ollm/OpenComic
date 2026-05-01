@@ -6,6 +6,9 @@ function start()
 	tabs.drag.add(-1, false, true);
 
 	app.event(window, 'mousedown touchstart', mousedown);
+
+	if(process.platform == 'darwin') // Now tabs bar has the space of the traffic lights
+		hide();
 }
 
 function mousedown(event)
@@ -16,6 +19,12 @@ function mousedown(event)
 
 function show()
 {
+	if(process.platform == 'darwin') // Now tabs bar has the space of the traffic lights
+	{
+		hide();
+		return;
+	}
+
 	visible = true;
 
 	let app = document.querySelector('.app');
