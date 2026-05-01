@@ -9,7 +9,7 @@ window.onerror = function(msg, url, linenumber) {
 
 }*/
 
-var isFullScreen = false;
+let isFullScreen = false;
 
 function fullScreen(force = null, win = false)
 {
@@ -25,6 +25,9 @@ function fullScreen(force = null, win = false)
 	reading.hideContent(force);
 	win.setFullScreen(force);
 	// win.setMenuBarVisibility(!force);
+
+	const appElement = document.querySelector('body .app');
+	if(appElement) appElement.classList.toggle('full-screen', force)
 }
 
 document.addEventListener('keydown', function(event) {

@@ -17,6 +17,7 @@ declare const reading: any;
 declare const events: any;
 declare const handlebarsContext: any;
 declare const onReading: boolean;
+declare const isFullScreen: boolean;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export type TabType = 'normal' | 'reading';
@@ -466,7 +467,7 @@ function setTabWidth()
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
 
-	const width = window.innerWidth - (MACOS ? 80 : 0);
+	const width = window.innerWidth - (MACOS && !isFullScreen ? 80 : 0);
 
 	const len = tabs.length;
 	let tabWidth = (width - (len * 6) - 6) / len;

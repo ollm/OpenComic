@@ -31,6 +31,7 @@
 	border-bottom: 1px solid var(--md-sys-color-surface-variant);
 	pointer-events: none;
 	opacity: 0;
+	-webkit-app-region: drag;
 }
 
 .tabs-bar > div
@@ -59,17 +60,15 @@
 	position: relative;
 }
 
-.app.macos .tabs-bar
+.app.macos:not(.full-screen) .tabs-bar
 {
 	padding-left: 80px;
-	-webkit-app-region: drag;
 }
 
 .app.visible-tabs-bar .tabs-bar
 {
 	opacity: 1;
 	pointer-events: auto;
-
 }
 
 .hide-tabs-bar .tabs-bar

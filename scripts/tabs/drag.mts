@@ -9,6 +9,7 @@ declare const config: any;
 declare const template: any;
 declare const reading: any;
 declare const onReading: boolean;
+declare const isFullScreen: boolean;
 declare const electronRemote: any;
 declare const handlebarsContext: any;
 declare const openPathInNewWindow: any;
@@ -292,7 +293,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		{
 			const tabWidth = tabs.tabWidth;
 			const gap = 6;
-			const containerWidth = window.innerWidth - (MACOS ? 80 : 0);
+			const containerWidth = window.innerWidth - (MACOS && !isFullScreen ? 80 : 0);
 
 			const baseX = (tabWidth + gap) * tab.position + data.diffX;
 
@@ -612,7 +613,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 			const cursor = electronRemote.screen.getCursorScreenPoint();
 
 			const x = cursor.x - offset.x;
-			const y = cursor.y - (config.showAlwaysTabsBar ? (MACOS ? 80 + 50 : 50) : 15);
+			const y = cursor.y - (config.showAlwaysTabsBar ? (MACOS ? 0 : 50) : 0); // 15);
 
 			win.setBounds({x, y});
 
