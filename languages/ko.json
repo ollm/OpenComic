@@ -320,6 +320,11 @@
 			"upscaling": "이미지 확대 시",
 			"upscalingDescription": "이미지 해상도를 높여야 할 때만 적용됩니다. PDF, EPUB, 애니메이션 이미지에는 적용되지 않습니다. 주의: 샤프 계열 방식은 확대 시 속도가 느려질 수 있습니다."
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "색상 프로필",
 			"force": "색상 프로필 강제 적용",

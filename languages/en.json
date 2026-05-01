@@ -320,6 +320,11 @@
 			"upscaling": "Upscaling an image",
 			"upscalingDescription": "This method will only be used when the image resolution needs to be enlarged, the interpolation method does not apply to PDF, EPUB or animated images. Warning: Sharp methods can be slow on upscaling"
 		},
+		"preload": {
+			"main": "Preload",
+			"imagesToPreload": "Number of images to preload",
+			"imagesToPreloadDescription": "Images are pre-rendered so they are ready when navigating forward (Interpolation and AI)"
+		},
 		"colorProfile": {
 			"main": "Color profile",
 			"force": "Force color profile",

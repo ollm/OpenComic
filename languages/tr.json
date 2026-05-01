@@ -320,6 +320,11 @@
 			"upscaling": "Resmi büyütme yöntemi",
 			"upscalingDescription": "Bu yöntem yalnızca resim çözünürlüğünün büyütülmesi gerektiğinde kullanılacaktır, enterpolasyon yöntemi PDF, EPUB veya animasyonlu resimlere uygulanmaz. Uyarı: Keskinliği artıran algoritmalar yavaş olabilir"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "Renk profili",
 			"force": "Renk profilini zorla",

@@ -320,6 +320,11 @@
 			"upscaling": "بزرگ‌سازی",
 			"upscalingDescription": "این روش فقط وقتی به کار می‌رود که لازم باشد وضوح تصویر بزرگ شود. این روش برای PDF، EPUB و تصاویر متحرک اعمال نمی‌شود. هشدار: روش‌های شارپ ممکن است هنگام بزرگ‌سازی کند باشند"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "پروفایل رنگ",
 			"force": "اجبار به استفاده",

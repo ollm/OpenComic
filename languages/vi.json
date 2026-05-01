@@ -320,6 +320,11 @@
 			"upscaling": "Upscale",
 			"upscalingDescription": "Chế độ này sẽ chỉ kích hoạt khi độ phân giải hình ảnh cần gia tăng, và không áp dụng với PDF, EPUB và ảnh động. Lưu ý: các chế độ \"bén\" (sharp) có thể làm chậm upscale"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "",
 			"force": "",

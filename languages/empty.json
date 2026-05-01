@@ -320,6 +320,11 @@
 			"upscaling": "",
 			"upscalingDescription": ""
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "",
 			"force": "",

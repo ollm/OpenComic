@@ -320,6 +320,11 @@
 			"upscaling": "Al aumentar la resolución de la imagen",
 			"upscalingDescription": "Este método solo se utilizará cuando sea necesario aumentar la resolución de la imagen, el método de interpolación no se aplica a PDF, EPUB ni a imágenes animadas. Advertencia: Los métodos Sharp pueden ser lentos al aumentar la resolución"
 		},
+		"preload": {
+			"main": "Precarga",
+			"imagesToPreload": "Número de imágenes a precargar",
+			"imagesToPreloadDescription": "Las imágenes se renderizan previamente para que estén listas al avanzar (Interpolación e IA)"
+		},
 		"colorProfile": {
 			"main": "Perfil de color",
 			"force": "Forzar perfil de color",

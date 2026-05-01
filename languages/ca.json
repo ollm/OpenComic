@@ -320,6 +320,11 @@
 			"upscaling": "A l'augmentar la resolució de la imatge",
 			"upscalingDescription": "Aquest mètode només s'utilitzarà quan calgui augmentar la resolució de la imatge, el mètode d'interpolació no s'aplica a PDF, EPUB ni a imatges animades. Advertència: Els mètodes Sharp poden ser lents a l'augmentar la resolució"
 		},
+		"preload": {
+			"main": "Precàrrega",
+			"imagesToPreload": "Nombre d'imatges a precarregar",
+			"imagesToPreloadDescription": "Les imatges es renderitzen prèviament perquè estiguin llestes en avançar (Interpolació i IA)"
+		},
 		"colorProfile": {
 			"main": "Perfil de color",
 			"force": "Forçar perfil de color",
@@ -576,7 +581,7 @@
 				"bookNumber": "Número del llibre",
 				"bookTotal": "Llibres totals",
 				"volume": "Volum",
-				"pages": "Pagines",
+				"pages": "Pàgines",
 				"alternateBookNumber": "Número del llibre (Alternatiu)",
 				"alternateBookTotal": "Llibres totals (Alternatiu)",
 				"releaseDate": "Data de llançament",

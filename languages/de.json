@@ -320,6 +320,11 @@
 			"upscaling": "Hochskalieren eines Bildes",
 			"upscalingDescription": "Diese Methode wird nur verwendet, wenn die Bildauflösung vergrößert werden muss. Die Interpolationsmethode gilt nicht für PDF, EPUB oder animierte Bilder. Warnung: Scharfe Methoden können beim Hochskalieren langsam sein."
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "Farbprofil",
 			"force": "Farbprofil erzwingen",

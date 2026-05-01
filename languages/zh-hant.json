@@ -320,6 +320,11 @@
 			"upscaling": "放大圖片",
 			"upscalingDescription": "此方法僅在需要提高圖片解析度時使用，不適用於 PDF 和 EPUB 或動態圖片。警告：銳化圖片在放大時可能會很慢"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "顏色設定",
 			"force": "強制顏色設定",

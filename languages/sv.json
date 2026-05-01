@@ -320,6 +320,11 @@
 			"upscaling": "Bilduppskalning",
 			"upscalingDescription": "Denna metod används endast när bildupplösningen behöver förstoras. Interpolationsmetoden gäller inte för PDF, EPUB eller animerade bilder. Varning! Metoder med skarp interpolering kan vara långsamma vid uppskalning"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "",
 			"force": "",

@@ -320,6 +320,11 @@
 			"upscaling": "Aumenta uma imagem",
 			"upscalingDescription": "Esse método apenas será usado quando a resolução da imagem precisar ser aumentada, o método de interpolação não se aplica a PDF, EPUB e imagens animadas"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "Perfil de cor",
 			"force": "Forçar perfil de cor",

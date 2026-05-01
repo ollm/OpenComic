@@ -320,6 +320,11 @@
 			"upscaling": "Agrandissement d’une image",
 			"upscalingDescription": "Cette méthode ne sera utilisée que lorsque la résolution de l’image doit être agrandie ; la méthode d’interpolation ne s’applique pas aux PDF, EPUB ou images animées. Attention : les méthodes « Sharp » peuvent être lentes en agrandissement"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "Profil de couleur",
 			"force": "Forcer le profil de couleur",

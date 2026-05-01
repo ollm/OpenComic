@@ -13,8 +13,6 @@ var file = false,
 	renderedMagnifyingGlass = {},
 	renderedObjectsURL = [],
 	renderedObjectsURLCache = {},
-	maxNext = 10,
-	maxPrev = 5,
 	currentIndex = 0,
 	scale = 1,
 	scaleMagnifyingGlass = false,
@@ -100,6 +98,22 @@ function getVisbleImages(doublePage = false)
 	return {prev: prev, next: next}; 
 }
 
+function imagesToPreload(doublePage = false)
+{
+	let prev = Math.round(config.readingImagesToPreload / 2);
+	let next = config.readingImagesToPreload;
+
+	if(doublePage && next < 4)
+		next *= 2;
+
+	if(doublePage && prev < 3)
+		prev = 3;
+
+	console.log({prev: prev, next: next});
+
+	return {prev: prev, next: next};
+}
+
 function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 {
 	if(!file && !renderImages) return;
@@ -115,6 +129,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 	doublePage = _doublePage;
 
 	const visbleImages = getVisbleImages(doublePage);
+	const {prev, next} = imagesToPreload(doublePage);
 
 	if(globalZoom)
 	{
@@ -126,7 +141,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 		sendToQueueST = setTimeout(function(){
 
 			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
-			setRenderQueue(maxPrev, maxNext);
+			setRenderQueue(prev, next);
 
 		}, 1000);
 	}
@@ -184,12 +199,14 @@ function resized(doublePage = false)
 	if(readingBody) readingBody.classList.remove('resizing');
 
 	const visbleImages = getVisbleImages(doublePage);
+	const {prev, next} = imagesToPreload(doublePage);
+
 	setRenderQueue(visbleImages.prev, visbleImages.next);
 
 	sendToQueueST = setTimeout(function(){
 
 		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
-		setRenderQueue(maxPrev, maxNext);
+		setRenderQueue(prev, next);
 
 	}, 400);
 }
@@ -213,7 +230,8 @@ async function focusIndex(index, doublePage = false)
 
 	currentIndex = index;
 
-	setRenderQueue(maxPrev, maxNext, false, false, (doublePage ? 2 : false));
+	const {prev, next} = imagesToPreload(doublePage);
+	setRenderQueue(prev, next, false, false, (doublePage ? 2 : false));
 
 	sendToQueueST = setTimeout(function(){
 

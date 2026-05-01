@@ -320,6 +320,11 @@
 			"upscaling": "Powiększanie obrazu",
 			"upscalingDescription": "Ta metoda będzie używana tylko wtedy, gdy rozdzielczość obrazu musi zostać powiększona. Metoda interpolacji nie dotyczy plików PDF, EPUB ani obrazów animowanych. Ostrzeżenie: ostre metody mogą być powolne przy powiększaniu."
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "Profil kolorów",
 			"force": "Wymuś profil kolorów",

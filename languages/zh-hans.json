@@ -320,6 +320,11 @@
 			"upscaling": "放大图像",
 			"upscalingDescription": "此方法仅在需要放大图像分辨率时使用，插值方法不适用于 PDF、EPUB 或动态图像。警告：锐利的方法在放大时可能会很慢"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "颜色配置",
 			"force": "强制颜色配置",

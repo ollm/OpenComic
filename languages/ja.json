@@ -320,6 +320,11 @@
 			"upscaling": "画像を拡大するとき",
 			"upscalingDescription": "画像解像度を上げる必要がある場合のみ適用されます。PDF, EPUB, アニメーション画像には適用されません。注意: シャープ系の方式は拡大時に動作が遅くなることがあります。"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "カラープロファイル",
 			"force": "カラープロファイルを強制する",

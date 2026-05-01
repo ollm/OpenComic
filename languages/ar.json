@@ -320,6 +320,11 @@
 			"upscaling": "تكبير الصورة",
 			"upscalingDescription": "يتم استخدام هذه الطريقة فقط عندما تكون هناك حاجة لتكبير دقة الصورة، ولا تُطبّق هذه الطريقة على ملفات PDF أو EPUB أو الصور المتحركة. تحذير: قد تكون طرق Sharp للتكبير بطيئة."
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "وضع اللون",
 			"force": "فرض وضع اللون",

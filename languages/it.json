@@ -320,6 +320,11 @@
 			"upscaling": "Upscaling di un'immagine",
 			"upscalingDescription": "Questo metodo verrà utilizzato solo quando la risoluzione dell'immagine va aumentata, il metodo di interpolazione non viene applicato a PDF, EPUB e immagini animate. Attenzione: Metodi sofisticati possono esser lenti nel upscaling"
 		},
+		"preload": {
+			"main": "",
+			"imagesToPreload": "",
+			"imagesToPreloadDescription": ""
+		},
 		"colorProfile": {
 			"main": "Profilo dei colori",
 			"force": "Forza profilo dei colori",
