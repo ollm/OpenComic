@@ -320,7 +320,7 @@ async function start()
 			darwin: 'macos',
 		};
 
-		handlebarsContext.config = config;platform
+		handlebarsContext.config = config;
 		handlebarsContext.installedFromStore = installedFromStore.check();
 		handlebarsContext.os = OS_MAP[process.platform] || process.platform;
 		handlebarsContext.macosMAS = macosMAS;
