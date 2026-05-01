@@ -109,7 +109,8 @@ function imagesToPreload(doublePage = false)
 	if(doublePage && prev < 3)
 		prev = 3;
 
-	console.log({prev: prev, next: next});
+	if(prev > 4) // Limit prev to 4 to avoid preloading too many prev images that the user may never see
+		prev = 4;
 
 	return {prev: prev, next: next};
 }

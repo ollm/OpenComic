@@ -211,7 +211,19 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		const clientY = app.clientY(event);
 		let addedTab = false;
 
-		if(clientX < 15 || clientX > window.innerWidth - 15 || clientY > 90 || clientY < 15 || ((fromTitleBar || singleTab) && useScreenPointTabs))
+		const bounds = MACOS ? {
+			left: 15 + 80,
+			right: window.innerWidth - 15,
+			top: 5,
+			bottom: 60,
+		} : {
+			left: 15,
+			right: window.innerWidth - 15,
+			top: 15,
+			bottom: 90,
+		};
+
+		if(clientX < bounds.left || clientX > bounds.right || clientY > bounds.bottom || clientY < bounds.top || ((fromTitleBar || singleTab) && useScreenPointTabs))
 		{
 			if(detachedTab) return;
 
