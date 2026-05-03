@@ -741,13 +741,14 @@ a:hover
 .app
 {
 	--title-and-tabs-bar-height: calc(var(--title-bar-height) + var(--tabs-bar-height));
+	--title-and-tabs-bar-height-always-visible: calc(var(--title-bar-height) + var(--tabs-bar-height-always-visible));
 }
 
 .bar-header
 {
 	height: 48px;
 	position: fixed;
-	top: var(--title-and-tabs-bar-height);
+	top: var(--title-and-tabs-bar-height-always-visible);
 	left: 0px;
 	width: 100%;
 	padding: 0px 50px;
@@ -757,11 +758,13 @@ a:hover
 	overflow: hidden;
 	transition: background-color 0.2s, transform 0.2s;
 	/*-webkit-app-region: drag;*/
+	padding-top: 4px;
+	margin-top: -4px;
 }
 
 .hide-bar-header .bar-header
 {
-	top: calc(-64px + var(--title-and-tabs-bar-height));
+	top: calc(var(--title-and-tabs-bar-height-always-visible) - 64px - var(--tabs-bar-height-always-visible));
 	box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.26);
 }
 
@@ -773,7 +776,7 @@ a:hover
 .bar-header > div
 {
 	position: absolute;
-	top: 0px;
+	top: 4px;
 	left: 0px;
 	height: 100%;
 	width: 100%;

@@ -5176,7 +5176,7 @@ function hideContentLeftAndHeader()
 
 		if(shownBarHeader && !document.querySelector('.menu-simple.a'))
 		{
-			dom.queryAll('.bar-header, .tabs-header').removeClass('show');
+			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
 		}
 

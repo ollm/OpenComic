@@ -2831,6 +2831,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	reading.setIsLoaded(false);
 	onReading = _onReading = true;
+	reading.hideContent(isFullScreen, true);
 
 	// Remove page param in epub files
 	path = path.replace(/\?page=\d+/, '');

@@ -24,10 +24,10 @@
 	top: var(--title-bar-height);
 	left: 0px;
 	width: 100%;
-	height: var(--tabs-bar-height);
+	height: var(--tabs-bar-height-always-visible);
 	box-sizing: border-box;
 	z-index: 11;
-	transition: opacity 0.2s, border-color 0.2s;
+	transition: opacity 0.2s, border-color 0.2s, transform 0.2s;
 	border-bottom: 1px solid var(--md-sys-color-surface-variant);
 	pointer-events: none;
 	opacity: 0;
@@ -37,7 +37,7 @@
 .tabs-bar > div
 {
 	width: 100%;
-	height: calc(var(--tabs-bar-height) - 1px);
+	height: calc(var(--tabs-bar-height-always-visible) - 1px);
 	box-sizing: border-box;
 	transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
 	background-color: var(--md-sys-color-surface-container);
@@ -49,7 +49,7 @@
 .tabs-bar > div > div
 {
 	width: 100%;
-	height: calc(var(--tabs-bar-height) - 1px);
+	height: calc(var(--tabs-bar-height-always-visible) - 1px);
 	box-sizing: border-box;
 	transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
 
@@ -73,12 +73,12 @@
 
 .hide-tabs-bar .tabs-bar
 {
-	top: calc(-64px);
+	top: calc(var(--title-bar-height) - 64px - var(--tabs-bar-height-always-visible));
 }
 
 .hide-tabs-bar .tabs-bar.show
 {
-	transform: translate(0px, 64px);
+	transform: translate(0px, calc(64px + var(--tabs-bar-height-always-visible)));
 }
 
 .tabs-bar .tab
