@@ -128,7 +128,7 @@
 		"@eslint/js": "^10.0.1",
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@types/electron": "^1.6.12",
-		"electron": "^41.3.0",
+		"electron": "^41.5.0",
 		"electron-builder": "^26.8.1",
 		"env-cmd": "^11.0.0",
 		"eslint": "^10.2.1",
