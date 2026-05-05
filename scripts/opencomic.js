@@ -271,6 +271,9 @@ if(folderPortable.check())
 	}
 }
 
+const isWayland = process.platform === 'linux' && process.env.XDG_SESSION_TYPE === 'wayland';
+const useScreenPointTabs = !isWayland;
+
 const app = require(p.join(appDir, '.dist/app.js')),
 	installedFromStore = require(p.join(appDir, '.dist/installed-from-store.js')),
 	nightly = require(p.join(appDir, '.dist/nightly.js')),
@@ -309,8 +312,6 @@ var tempFolder = settings.getTmpFolder();
 var macosMAS = false;
 
 macosMAS = (installedFromStore.check() && process.platform == 'darwin') ? true : false;
-const isWayland = process.platform === 'linux' && process.env.XDG_SESSION_TYPE === 'wayland';
-const useScreenPointTabs = !isWayland;
 
 //console.timeEnd('Require time 2');
 

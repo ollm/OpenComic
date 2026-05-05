@@ -21,8 +21,21 @@ interface WindowPos {
 	wy: number;
 };
 
+interface TabFromOtherWindow {
+	first: boolean;
+	event?: SimpleEvent;
+}
+
+type DragType = 'drag' | 'pointer' | 'screen-follow' | 'external-screen-follow';
+
 interface DragState {
+	type: DragType;
+	hasControl: boolean;
 	active: boolean;
+	simpleEvent?: SimpleEvent;
+	tabFromOtherWindow: TabFromOtherWindow;
+	attachedInOtherWindow: boolean;
+	detachedWindowId: number | null;
 };
 
 interface ScreenFollow {
@@ -30,10 +43,22 @@ interface ScreenFollow {
 	first: boolean;
 	pointerDown: boolean;
 	windowPos: WindowPos;
+	current: {
+		x: number;
+		y: number;
+	};
 };
 
 const dragState: DragState = {
+	type: 'drag',
+	hasControl: true,
 	active: false,
+	simpleEvent: undefined,
+	tabFromOtherWindow: {
+		first: true,
+	},
+	attachedInOtherWindow: false,
+	detachedWindowId: null,
 };
 
 const screenFollow: ScreenFollow = {
@@ -44,9 +69,14 @@ const screenFollow: ScreenFollow = {
 		wx: 0,
 		wy: 0,
 	},
+	current: {
+		x: 0,
+		y: 0,
+	},
 };
 
 const MACOS = process.platform === 'darwin';
+const USE_SCREEN_POINT_TABS = useScreenPointTabs;
 
 function moveTabs(mainTab: Tab, goTo: number, animation: boolean = true) {
 
@@ -123,9 +153,6 @@ function callbackStart(event: PointerEvent) {
 
 }
 
-let currentSimpleEvent: SimpleEvent | undefined;
-let currentDetachedWindowId: number | null = null;
-
 function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = false): SimpleEvent | undefined {
 
 	const tab = tabs.get(id);
@@ -156,7 +183,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 	};
 
-	const listener = useScreenPointTabs ? undefined : {
+	const listener = USE_SCREEN_POINT_TABS ? undefined : {
 		start: 'dragstart touchstart',
 		move: 'drag touchmove',
 		end: 'dragend touchend',
@@ -184,9 +211,11 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		tab.element.classList.add('dragging');
 		tabsBar.classList.add('dragging-tabs');
 
+		dragState.type = ['screen-follow', 'external-screen-follow'].includes(event.type) ? event.type as DragType : (event.type.startsWith('drag') ? 'drag' : 'pointer');
+		dragState.hasControl = event.type !== 'external-screen-follow' ? true : false;
 		dragState.active = true;
 
-		if(!firstDragFromOtherWindow)
+		if(!dragState.tabFromOtherWindow.first)
 		{
 			const rect = tab.element.getBoundingClientRect();
 
@@ -196,7 +225,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			};
 		}
 
-		singleTab = !tabFromOtherWindowEvent && tabs.tabs.length === 1 ? true : false;
+		singleTab = !dragState.tabFromOtherWindow.event && tabs.tabs.length === 1 ? true : false;
 
 	};
 
@@ -223,7 +252,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			bottom: 90,
 		};
 
-		if(clientX < bounds.left || clientX > bounds.right || clientY > bounds.bottom || clientY < bounds.top || ((fromTitleBar || singleTab) && useScreenPointTabs))
+		if(clientX < bounds.left || clientX > bounds.right || clientY > bounds.bottom || clientY < bounds.top || ((fromTitleBar || singleTab) && USE_SCREEN_POINT_TABS))
 		{
 			if(detachedTab) return;
 
@@ -236,26 +265,26 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 			await end(event, data, goToX, true);
 			detachedTab = true;
 
-			if(!tabFromOtherWindowEvent)
+			if(!dragState.tabFromOtherWindow.event)
 				sendTabToOtherWindows(tab);
 
 			sendAttachedTab(tab, false);
 
-			if(singleTab && tabs.tabs.length === 1 && !tabFromOtherWindowEvent)
+			if(singleTab && tabs.tabs.length === 1 && !dragState.tabFromOtherWindow.event)
 			{
-				if(useScreenPointTabs)
+				if(USE_SCREEN_POINT_TABS)
 				{
 					tab.dragOffset = {
 						x: app.clientX(event),
 						y: app.clientY(event),
 					};
 
-					currentDetachedWindowId = electronRemote.getCurrentWindow().id as number;
-					followScreenPoint(currentDetachedWindowId, tab);
+					dragState.detachedWindowId = electronRemote.getCurrentWindow().id as number;
+					followScreenPoint(dragState.detachedWindowId, tab);
 					return;
 				}
 
-				electronRemote.getCurrentWindow().hide();
+				electronRemote.getCurrentWindow().setOpacity(0);
 				tabs.tabs.pop();
 				return;
 			}
@@ -265,23 +294,23 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 			tabs.visibility();
 
-			if(useScreenPointTabs && !tabFromOtherWindowEvent)
+			if(USE_SCREEN_POINT_TABS && !dragState.tabFromOtherWindow.event)
 			{
-				if(currentDetachedWindowId !== null)
+				if(dragState.detachedWindowId !== null)
 				{
-					followScreenPoint(currentDetachedWindowId, tab);
+					followScreenPoint(dragState.detachedWindowId, tab);
 					return;
 				}
 
 				const history = tab.data.history;
-				currentDetachedWindowId = await openPathInNewWindow(history.current.path, history.current.mainPath, history, {showInactive: false}) as number;
+				dragState.detachedWindowId = await openPathInNewWindow(history.current.path, history.current.mainPath, history, {showInactive: false}) as number;
 
-				followScreenPoint(currentDetachedWindowId, tab);
+				followScreenPoint(dragState.detachedWindowId, tab);
 			}
 
 			return;
 		}
-		else if(detachedTab && !tabIsAttachedInOtherWindow && !singleTab)
+		else if(detachedTab && !dragState.attachedInOtherWindow && !singleTab)
 		{
 			addTabDrag(tab);
 			detachedTab = false;
@@ -297,10 +326,10 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 				goToX = data.goToX ?? 0;
 			}
 
-			if(currentDetachedWindowId && currentDetachedWindowId !== null)
+			if(dragState.detachedWindowId && dragState.detachedWindowId !== null)
 			{
-				const win = electronRemote.BrowserWindow.fromId(currentDetachedWindowId);
-				if(win) win.hide();
+				const win = electronRemote.BrowserWindow.fromId(dragState.detachedWindowId);
+				if(win) win.setOpacity(0);
 			}
 
 			electronRemote.getCurrentWindow().focus();
@@ -335,11 +364,17 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		if(!fromDetaching)
 		{
 			sendedTabToOtherWindows = false;
-			currentSimpleEvent = undefined;
+			dragState.simpleEvent = undefined;
 			tabsBar.classList.remove('dragging-tabs');
 			dom.queryAll('.tab.dragging').removeClass('dragging');
 
 			syncWindows.endDragTab();
+
+			if(screenFollow.active)
+			{
+				forceStopFollowScreenPoint();
+				syncWindows.forceStopFollowScreenPoint();
+			}
 
 			setTimeout(function() {
 
@@ -350,23 +385,23 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 		if(detachedTab)
 		{
-			if(tabFromOtherWindowEvent)
+			if(dragState.tabFromOtherWindow.event)
 				return;
 
-			if(tabIsAttachedInOtherWindow)
+			if(dragState.attachedInOtherWindow)
 			{
 				if(tabs.tabs.length === 0 || singleTab)
 					electronRemote.getCurrentWindow().close();
 
 				if(!fromDetaching)
 				{
-					if(useScreenPointTabs && currentDetachedWindowId && currentDetachedWindowId !== null)
+					if(USE_SCREEN_POINT_TABS && dragState.detachedWindowId && dragState.detachedWindowId !== null)
 					{
-						const win = electronRemote.BrowserWindow.fromId(currentDetachedWindowId);
+						const win = electronRemote.BrowserWindow.fromId(dragState.detachedWindowId);
 						if(win) win.close();
 					}
 
-					currentDetachedWindowId = null;
+					dragState.detachedWindowId = null;
 				}
 
 				return;
@@ -374,14 +409,19 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 			if(singleTab)
 			{
-				electronRemote.getCurrentWindow().show();
+				if(!tabs.tabs.includes(tab))
+					tabs.tabs.push(tab);
+
+				const win = electronRemote.getCurrentWindow();
+				win.setOpacity(1);
+				win.show();
 				detachedTab = false;
 				return;
 			}
 
-			currentDetachedWindowId = null;
+			dragState.detachedWindowId = null;
 
-			if(useScreenPointTabs)
+			if(USE_SCREEN_POINT_TABS)
 				return;
 
 			const history = tab.data.history;
@@ -433,13 +473,13 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 		if(!fromDetaching)
 		{
-			if(useScreenPointTabs && currentDetachedWindowId && currentDetachedWindowId !== null)
+			if(USE_SCREEN_POINT_TABS && dragState.detachedWindowId && dragState.detachedWindowId !== null)
 			{
-				const win = electronRemote.BrowserWindow.fromId(currentDetachedWindowId);
+				const win = electronRemote.BrowserWindow.fromId(dragState.detachedWindowId);
 				if(win) win.close();
 			}
 
-			currentDetachedWindowId = null;
+			dragState.detachedWindowId = null;
 		}
 
 	};
@@ -450,7 +490,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 	simpleEvent = new SimpleEvent(element);
 	simpleEvent.all({min: -999999999, max: 999999999, size: width, speed: false, multiple: true, listener, callbackStart, offset: 4}, async function(event, data) {
 
-		currentSimpleEvent = simpleEvent;
+		dragState.simpleEvent = simpleEvent;
 		const goToX = data.goToX ?? 0;
 
 		if(data.type === 'start')
@@ -509,7 +549,7 @@ function addTabDrag(tab: Tab, ghostTab: boolean = false): SimpleEvent | undefine
 	else
 		tabs.tabs.pop();
 
-	const event = currentSimpleEvent ?? simpleEvent;
+	const event = dragState.simpleEvent ?? simpleEvent;
 
 	if(event)
 	{
@@ -522,9 +562,6 @@ function addTabDrag(tab: Tab, ghostTab: boolean = false): SimpleEvent | undefine
 
 }
 
-let tabFromOtherWindowEvent: SimpleEvent | undefined;
-let firstDragFromOtherWindow = false;
-
 function dragover(event: DragEvent, force: boolean = false) {
 
 	if(!force && !event.dataTransfer?.types.includes('application/x-opencomic-tab'))
@@ -532,12 +569,12 @@ function dragover(event: DragEvent, force: boolean = false) {
 
 	event.preventDefault();
 
-	if(!tabFromOtherWindowEvent) return;
+	if(!dragState.tabFromOtherWindow.event) return;
 
-	if(firstDragFromOtherWindow) tabFromOtherWindowEvent.down(event as unknown as PointerEvent);
-	tabFromOtherWindowEvent.move(event as unknown as PointerEvent);
+	if(dragState.tabFromOtherWindow.first) dragState.tabFromOtherWindow.event.down(event as unknown as PointerEvent);
+	dragState.tabFromOtherWindow.event.move(event as unknown as PointerEvent);
 
-	firstDragFromOtherWindow = false;
+	dragState.tabFromOtherWindow.first = false;
 
 }
 
@@ -554,8 +591,8 @@ function dragleave(event: DragEvent) {
 
 	event.preventDefault();
 
-	if(!tabFromOtherWindowEvent) return;
-	tabFromOtherWindowEvent.move(event as unknown as PointerEvent);
+	if(!dragState.tabFromOtherWindow.event) return;
+	dragState.tabFromOtherWindow.event.move(event as unknown as PointerEvent);
 
 }
 
@@ -565,10 +602,17 @@ function pointerdown() {
 
 }
 
+function pointermove(event: PointerEvent) {
+
+	if(event.buttons === 0 && screenFollow.active)
+		pointerup(event);
+
+}
+
 function pointerup(event: PointerEvent) {
 
-	if(screenFollow.active && currentSimpleEvent)
-		currentSimpleEvent.up(event);
+	if(screenFollow.active && dragState.simpleEvent)
+		dragState.simpleEvent.up(event);
 
 	screenFollow.pointerDown = false;
 
@@ -576,19 +620,20 @@ function pointerup(event: PointerEvent) {
 
 }
 
-function fakeEvent(x: number, y: number, wx: number, wy: number) {
+function fakeEvent(type: string, x: number, y: number, wx: number, wy: number) {
 
 	const clientX = x - wx;
 	const clientY = y - wy;
 
 	const event = {
+		type: type,
 		clientX,
 		clientY,
 		pageX: clientX,
 		pageY: clientY,
 		screenX: x,
 		screenY: y,
-		pointerId: currentSimpleEvent?.lastEvent?.pointerId || undefined,
+		pointerId: dragState.simpleEvent?.lastEvent?.pointerId || undefined,
 		preventDefault: ()	=> {},
 		stopPropagation: ()	=> {},
 	};
@@ -599,11 +644,11 @@ function fakeEvent(x: number, y: number, wx: number, wy: number) {
 
 function eventFromScreenPoint(x: number, y: number, wx: number, wy: number) {
 
-	if(!currentSimpleEvent)
+	if(!dragState.simpleEvent)
 		return;
 
-	const event = fakeEvent(x, y, wx, wy);
-	currentSimpleEvent.move(event);
+	const event = fakeEvent('screen-follow', x, y, wx, wy);
+	dragState.simpleEvent.move(event);
 
 	if(screenFollow.first)
 		syncWindows.startDragTab({x, y});
@@ -618,10 +663,16 @@ function followScreenPoint(winId: number, tab: Tab) {
 	const win = electronRemote.BrowserWindow.fromId(winId);
 	if(!win) return;
 
+	win.setOpacity(1);
 	win.show();
 
 	const currentWin = electronRemote.getCurrentWindow();
 	const [wx, wy] = currentWin.getPosition();
+
+	screenFollow.current = {
+		x: 0,
+		y: 0,
+	};
 
 	const loop = function() {
 
@@ -632,9 +683,13 @@ function followScreenPoint(winId: number, tab: Tab) {
 			const x = cursor.x - offset.x;
 			const y = cursor.y - (config.showAlwaysTabsBar ? offset.y : (offset.y <= 28 ? offset.y : 15));
 
-			win.setBounds({x, y});
+			if(screenFollow.current.x !== cursor.x || screenFollow.current.y !== cursor.y)
+			{
+				win.setBounds({x, y});
+				eventFromScreenPoint(cursor.x, cursor.y, wx, wy);
+			}
 
-			eventFromScreenPoint(cursor.x, cursor.y, wx, wy);
+			screenFollow.current = cursor;
 
 			if(screenFollow.pointerDown)
 			{
@@ -643,9 +698,11 @@ function followScreenPoint(winId: number, tab: Tab) {
 			}
 			else
 			{
-
 				screenFollow.active = false;
 				screenFollow.first = true;
+
+				if(dragState.simpleEvent?.lastEvent)
+					dragState.simpleEvent.up(dragState.simpleEvent.lastEvent);
 			}
 
 		});
@@ -659,8 +716,8 @@ function followScreenPoint(winId: number, tab: Tab) {
 
 function forceStopFollowScreenPoint() {
 
-	if(screenFollow.active && currentSimpleEvent?.lastEvent)
-		currentSimpleEvent.up(currentSimpleEvent.lastEvent);
+	if(screenFollow.active && dragState.simpleEvent?.lastEvent)
+		dragState.simpleEvent.up(dragState.simpleEvent.lastEvent);
 
 	screenFollow.pointerDown = false;
 
@@ -673,10 +730,10 @@ function drop(event: DragEvent) {
 	const data = event.dataTransfer?.getData('application/x-opencomic-tab');
 	if(!data) return;
 
-	if(!tabFromOtherWindowEvent) return;
-	tabFromOtherWindowEvent.up(event as unknown as PointerEvent);
+	if(!dragState.tabFromOtherWindow.event) return;
+	dragState.tabFromOtherWindow.event.up(event as unknown as PointerEvent);
 
-	tabFromOtherWindowEvent = undefined;
+	dragState.tabFromOtherWindow.event = undefined;
 
 }
 
@@ -693,8 +750,8 @@ function sendTabToOtherWindows(tab: Tab) {
 
 function tabFromOtherWindow(tab: Tab) {
 
-	tabFromOtherWindowEvent = addTabDrag(tab, true);
-	firstDragFromOtherWindow = true;
+	dragState.tabFromOtherWindow.event = addTabDrag(tab, true);
+	dragState.tabFromOtherWindow.first = true;
 
 }
 
@@ -704,21 +761,19 @@ function sendAttachedTab(tab: Tab, attached: boolean = false) {
 
 }
 
-let tabIsAttachedInOtherWindow = false;
-
 function attachedTab(tab: Tab, attached: boolean = false) {
 
-	tabIsAttachedInOtherWindow = attached;
+	dragState.attachedInOtherWindow = attached;
 
-	if(currentDetachedWindowId && currentDetachedWindowId !== null)
+	if(dragState.detachedWindowId && dragState.detachedWindowId !== null)
 	{
-		const win = electronRemote.BrowserWindow.fromId(currentDetachedWindowId);
+		const win = electronRemote.BrowserWindow.fromId(dragState.detachedWindowId);
 		if(!win) return;
 
 		if(attached)
-			win.hide();
+			win.setOpacity(0);
 		else
-			win.show();
+			win.setOpacity(1);
 	}
 }
 
@@ -728,7 +783,7 @@ function startDragTab({x, y}) {
 	const [wx, wy] = currentWin.getPosition();
 
 	screenFollow.windowPos = {wx, wy};
-	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent;
+	const event = fakeEvent('external-screen-follow', x, y, wx, wy) as unknown as DragEvent;
 	dragover(event, true);
 
 }
@@ -736,17 +791,17 @@ function startDragTab({x, y}) {
 function moveDragTab({x, y}) {
 
 	const {wx, wy} = screenFollow.windowPos;
-	const event = fakeEvent(x, y, wx, wy) as unknown as DragEvent;
+	const event = fakeEvent('external-screen-follow', x, y, wx, wy) as unknown as DragEvent;
 	dragover(event, true);
 
 }
 
 function endDragTab() {
 
-	if(!tabFromOtherWindowEvent || !tabFromOtherWindowEvent.lastEvent) return;
-	tabFromOtherWindowEvent.up(tabFromOtherWindowEvent.lastEvent);
+	if(!dragState.tabFromOtherWindow.event || !dragState.tabFromOtherWindow.event.lastEvent) return;
+	dragState.tabFromOtherWindow.event.up(dragState.tabFromOtherWindow.event.lastEvent);
 
-	tabFromOtherWindowEvent = undefined;
+	dragState.tabFromOtherWindow.event = undefined;
 
 }
 
@@ -754,13 +809,14 @@ function start() {
 
 	app.event(document, 'dragend', function(event) {
 
-		if(currentSimpleEvent)
-			currentSimpleEvent.up(event as unknown as PointerEvent);
+		if(dragState.simpleEvent)
+			dragState.simpleEvent.up(event as unknown as PointerEvent);
 
 	});
 
 	app.event(window, 'dragleave', dragleave);
 	app.event(window, 'pointerdown', pointerdown);
+	app.event(window, 'pointermove', pointermove);
 	app.event(window, 'pointerup', pointerup);
 
 }

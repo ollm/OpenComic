@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 151; // Update this if readingPagesConfig is updated
+const changes = 152; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -279,6 +279,7 @@ const storageDefault = {
 	configInit: {
 		forceColorProfile: '',
 		forceLinuxHiddenTitleBar: false,
+		openDevTools: false,
 	},
 	readingShortcutPagesConfig: {
 		wildcard: {
@@ -959,7 +960,7 @@ function _config()
 
 async function getDataFromDiskAsync(key, callback = false)
 {
-	if(syncIgnoreKeys.includes(key) || syncWindows.num === 1)
+	if(syncIgnoreKeys.includes(key) || syncWindows.num === 1 || !driver.path)
 		return;
 
 	const data = await driver.read(key);

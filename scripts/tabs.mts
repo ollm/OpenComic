@@ -458,6 +458,15 @@ function visibility(animation: boolean = true): void
 		bezier: 'easeInBezier',
 		removeOnEnd: true,
 	});
+
+	animateCssVar({
+		name: 'tabs-bar-height-always-visible',
+		from: from,
+		to: to,
+		duration: 200,
+		bezier: 'easeInBezier',
+		removeOnEnd: true,
+	});
 }
 
 let currentTabWidth: number = 0;
