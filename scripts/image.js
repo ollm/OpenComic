@@ -1,4 +1,4 @@
-var sharp = false, imageSize = false, imageSizeFromFile = false, heic = false;
+let sharp = false, imageSize = false, imageSizeFromFile = false;
 
 inChildFork = typeof inChildFork !== 'undefined' ? inChildFork : false;
 const useChildFork = (process.platform === 'linux' && !inChildFork) ? true : false;
@@ -118,30 +118,33 @@ async function resizeToBlob(fromImage, config = {})
 
 	let _sharp = sharp(fromImage).keepIccProfile();
 
-	if(config.interpolator && !config.kernel)
+	if(config.width && config.height)
 	{
-		let imageWidth = config.imageWidth;
-		let imageHeight = config.imageHeight;
-
-		if(config.width < imageWidth)
+		if(config.interpolator && !config.kernel)
 		{
-			let m = Math.floor(imageWidth / config.width);
+			let imageWidth = config.imageWidth;
+			let imageHeight = config.imageHeight;
 
-			if(m >= 2)
+			if(config.width < imageWidth)
 			{
-				imageWidth = Math.round(imageWidth / m);
-				imageHeight = Math.round(imageHeight / m);
+				let m = Math.floor(imageWidth / config.width);
+
+				if(m >= 2)
+				{
+					imageWidth = Math.round(imageWidth / m);
+					imageHeight = Math.round(imageHeight / m);
+				}
 			}
+
+			if(imageWidth != config.imageWidth)
+				_sharp = _sharp.resize({kernel: 'cubic', width: imageWidth});
+
+			_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
 		}
-
-		if(imageWidth != config.imageWidth)
-			_sharp = _sharp.resize({kernel: 'cubic', width: imageWidth});
-
-		_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
-	}
-	else
-	{
-		_sharp = _sharp.resize(config);
+		else
+		{
+			_sharp = _sharp.resize(config);
+		}
 	}
 
 	try
@@ -168,6 +171,35 @@ async function resizeToBlob(fromImage, config = {})
 	}
 }
 
+async function toPng(fromImage, toImage, config = {})
+{
+	await loadSharp();
+
+	config = {
+		kernel: 'nearest',
+		compressionLevel: 2,
+		...config,
+	};
+
+	return new Promise(function(resolve, reject) {
+
+		const _sharp = sharp(fromImage);
+
+		if(config.removeAlpha)
+			_sharp.removeAlpha();
+
+		_sharp.keepIccProfile().png({compressionLevel: config.compressionLevel, force: true}).toFile(toImage, function(error) {
+
+			if(error)
+				reject(error);
+			else
+				resolve(toImage);
+
+		});
+
+	});
+}
+
 async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 {
 	await loadSharp();
@@ -185,10 +217,10 @@ async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 		if(config.removeAlpha)
 			_sharp.removeAlpha();
 
-		_sharp.keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({force: true, compressionLevel: config.compressionLevel}).toFile(toImage, function(error) {
+		_sharp.keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({compressionLevel: config.compressionLevel, force: true}).toFile(toImage, function(error) {
 		
 			if(error)
-				reject();
+				reject(error);
 			else
 				resolve(toImage);
 
@@ -214,7 +246,7 @@ async function rawToBuffer(fromBuffer, raw = {}, config = {})
 		if(config.removeAlpha)
 			_sharp.removeAlpha();
 
-		_sharp.keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({force: true, compressionLevel: config.compressionLevel}).toBuffer(function(error, buffer, info) {
+		_sharp.keepIccProfile().pipelineColourspace(raw.rgb16 ? 'rgb16' : 'srgb').toColourspace(raw.rgb16 ? 'rgb16' : 'srgb').png({compressionLevel: config.compressionLevel, force: true}).toBuffer(function(error, buffer, info) {
 		
 			if(error || !buffer)
 				reject(error);
@@ -392,59 +424,24 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 
 				try
 				{
-					if(compatible.image.heic.has(ext))
-					{
-						if(heic === false)
-							heic = require('heic-decode');
-
-						const images = await heic.all({buffer});
-						const properties = images[0] || {width: 1, height: 1};
-						images.dispose();
-
-						size = {
-							width: properties.width,
-							height: properties.height,
-						};
-					}
-					else if(compatible.image.jp2.has(ext))
-					{
-						if(pdfjsDecoders === false)
-							await loadPdfjsDecoders();
-
-						const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
-
-						size = {
-							width: properties.width,
-							height: properties.height,
-						};
-					}
-					else if(compatible.image.jxl.has(ext))
-					{
-						if(JxlImage === false)
-							await loadJxlImage();
-
-						const jxlImage = new JxlImage();
-						jxlImage.feedBytes(buffer);
-				
-						if(!jxlImage.tryInit())
-							throw new Error('Partial image, no frame data');
-
-						size = {
-							width: jxlImage.width,
-							height: jxlImage.height,
-						};
-					}
-					else if(compatible.image.convert.has(ext))
+					if(compatible.image.convert.has(ext))
 					{
 						size = await ImageSize(buffer);
 					}
 					else if(sharpSupportedFormat(image.image, ext))
 					{
-						try
+						if(process.platform === 'linux' && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
 						{
-							size = await ImageSize(buffer);
+							try
+							{
+								size = await ImageSize(buffer);
+							}
+							catch(error)
+							{
+								size = await Sharp(buffer);
+							}
 						}
-						catch(error)
+						else
 						{
 							size = await Sharp(buffer);
 						}
@@ -651,53 +648,7 @@ async function getSizes(images)
 				const path = fileManager.realPath(image.path, -1);
 				const ext = app.extname(path);
 
-				if(compatible.image.heic.has(ext))
-				{
-					if(heic === false)
-						heic = require('heic-decode');
-
-					const buffer = await fsp.readFile(path);
-					const images = await heic.all({buffer});
-					const properties = images[0] || {width: 1, height: 1};
-					images.dispose();
-
-					size = {
-						width: properties.width,
-						height: properties.height,
-					};
-				}
-				else if(compatible.image.jp2.has(ext))
-				{
-					if(pdfjsDecoders === false)
-						await loadPdfjsDecoders();
-
-					const buffer = await fsp.readFile(path);
-					const properties = pdfjsDecoders.JpxImage.parseImageProperties(buffer);
-
-					size = {
-						width: properties.width,
-						height: properties.height,
-					};
-				}
-				else if(compatible.image.jxl.has(ext))
-				{
-					if(JxlImage === false)
-						await loadJxlImage();
-
-					const buffer = await fsp.readFile(path);
-
-					const jxlImage = new JxlImage();
-					jxlImage.feedBytes(buffer);
-			
-					if(!jxlImage.tryInit())
-						throw new Error('Partial image, no frame data');
-
-					size = {
-						width: jxlImage.width,
-						height: jxlImage.height,
-					};
-				}
-				else if(compatible.image.convert.has(ext))
+				if(compatible.image.convert.has(ext))
 				{
 					try
 					{
@@ -716,7 +667,7 @@ async function getSizes(images)
 				}
 				else if(sharpSupportedFormat(image.image, ext))
 				{
-					if(process.platform === 'linux') // Sharp is slower in Linux due childFork usage
+					if(process.platform === 'linux' && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
 					{
 						try
 						{
@@ -761,6 +712,7 @@ module.exports = {
 	resize: resize,
 	_resize: _resize,
 	resizeToBlob: resizeToBlob,
+	toPng: toPng,
 	rawToPng: rawToPng,
 	rawToBuffer: rawToBuffer,
 	isAnimated: isAnimated,

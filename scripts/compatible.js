@@ -2,6 +2,7 @@ const compatible = {
 	image: {
 		all: {},
 		blob: { /* This image formats requires conversion to Blob to be displayed */ },
+		sharp: { /* This image formats requires sharp (custom build) to be displayed */ },
 		convert: { /* This image formats requires conversion to PNG to be displayed */ },
 		jpg: {
 			'jpg': 'image/jpeg',
@@ -138,6 +139,7 @@ const compatibleMime = {
 	image: {
 		all: {},
 		blob: { /* This image formats requires conversion to Blob to be displayed */ },
+		sharp: { /* This image formats requires sharp (custom build) to be displayed */ },
 		convert: { /* This image formats requires conversion to PNG to be displayed */ },
 		jpg: {
 			'image/jpeg': 'jpg',
@@ -318,11 +320,13 @@ compatible.image.all = [
 compatible.image.blob = [ // This image formats requires conversion to Blob to be displayed
 
 ];
-compatible.image.convert = [ // This image formats requires conversion to PNG to be displayed
-	...compatible.image.jxr,
+compatible.image.sharp = [ // This image formats requires sharp (custom build) to be displayed
 	...compatible.image.jp2,
 	...compatible.image.jxl,
 	...compatible.image.heic,	
+];
+compatible.image.convert = [ // This image formats requires conversion to PNG to be displayed
+	...compatible.image.jxr,
 ];
 
 // Join compressed
@@ -350,11 +354,14 @@ compatibleMime.image.all = [
 compatibleMime.image.blob = [ // This image formats requires conversion to Blob to be displayed
 
 ];
-compatibleMime.image.convert = [ // This image formats requires conversion to PNG to be displayed
-	...compatibleMime.image.jxr,
+compatibleMime.image.sharp = [ // This image formats requires sharp (custom build) to be displayed
 	...compatibleMime.image.jp2,
 	...compatibleMime.image.jxl,
 	...compatibleMime.image.heic,
+];
+compatibleMime.image.convert = [ // This image formats requires conversion to PNG to be displayed
+	...compatibleMime.image.jxr,
+
 ];
 
 // Join mime compressed

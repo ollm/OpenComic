@@ -1,5 +1,6 @@
 const OpenComicAI = require('opencomic-ai-bin');
 const sharp = require('sharp');
+const fsp = require('fs/promises');
 
 OpenComicAI.setDirname(asarToAsarUnpacked(OpenComicAI.__dirname));
 
@@ -51,17 +52,18 @@ function upscale(src, imageSize, options = {})
 					return;
 
 				const ext = app.extname(src);
-				let image = src, convertPath = false;
+				let imagePath = src, convertPath = false;
 
 				// Images that are not jpg, png or webp are not supported by RealESRGAN
 				if(!compatible.image.jpg.has(ext) && !compatible.image.png.has(ext) && !compatible.image.webp.has(ext))
 				{
 					convertPath = p.join(folderPath, imageSha+'.png');
-					await image.rawToPng(src, convertPath);
-					image = convertPath;
+					await fsp.mkdir(folderPath, {recursive: true});
+					await image.toPng(src, convertPath);
+					imagePath = convertPath;
 				}
 
-				await OpenComicAI.pipeline(image, path, [
+				await OpenComicAI.pipeline(imagePath, path, [
 					{
 						model: toUpscale.model,
 						scale: toUpscale.scale,
@@ -126,7 +128,7 @@ const downloading = {
 	},
 };
 
-function image(src, imageSize, options = {})
+function _image(src, imageSize, options = {})
 {
 	setModelsPath();
 
@@ -200,18 +202,19 @@ function image(src, imageSize, options = {})
 			}
 
 			const ext = app.extname(src);
-			let image = src, convertPath = false;
+			let imagePath = src, convertPath = false;
 
 			// Images that are not jpg, png or webp are not supported by OpenComicAI
 			if(!compatible.image.jpg.has(ext) && !compatible.image.png.has(ext) && !compatible.image.webp.has(ext))
 			{
 				convertPath = p.join(folderPath, imageSha+'.png');
-				await image.rawToPng(src, convertPath);
-				image = convertPath;
+				await fsp.mkdir(folderPath, {recursive: true});
+				await image.toPng(src, convertPath);
+				imagePath = convertPath;
 			}
 
 			OpenComicAI.keepIccProfile(sharp, 'rgb16');
-			await OpenComicAI.pipeline(image, path, _pipeline, options.progress || false, downloading);
+			await OpenComicAI.pipeline(imagePath, path, _pipeline, options.progress || false, downloading);
 
 			fileManager.setTmpUsage(path);
 
@@ -249,6 +252,6 @@ function clean(force = false)
 module.exports = {
 	upscale,
 	pipeline,
-	image,
+	image: _image,
 	clean,
 };

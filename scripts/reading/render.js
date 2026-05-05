@@ -557,14 +557,14 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						}
 						else
 						{
-							await srcToImage(src, img);
+							await srcToImage(src, img, key);
 						}
 					}
 					catch(error)
 					{
 						console.error(error);
 
-						await srcToImage(src, img);
+						await srcToImage(src, img, key);
 					}
 				}
 			}
@@ -610,17 +610,17 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						console.error(error);
 
-						await srcToImage(src, img);
+						await srcToImage(src, img, key);
 					}
 				}
 				else
 				{
-					await srcToImage(src, img);
+					await srcToImage(src, img, key);
 				}
 			}
 			else
 			{
-				await srcToImage(src, img);
+				await srcToImage(src, img, key);
 			}
 
 			if((onRender && onRender.num > 0) || _scale)
@@ -661,8 +661,39 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 	return;
 }
 
-async function srcToImage(src, img)
+async function srcToImage(src, img, key)
 {
+	const resizeToBlob = async function() {
+
+		if(!renderedObjectsURLCache[key])
+		{
+			const data = await image.resizeToBlob(src, {});
+
+			renderedObjectsURL.push({data: data, img: img, key, src});
+			renderedObjectsURLCache[key] = {blob: data.blob};
+		}
+
+		img.src = renderedObjectsURLCache[key].blob;
+		img.classList.add('blobRendered', 'blobRender');
+		img.style.imageRendering = '';
+
+		return true;
+
+	}
+
+	if(compatible.image.sharp(src) || (compatible.image.avif(src) && !(await image.isAnimated(src)))) // This image formats requires sharp (custom build) to be displayed, avif only for yuv422 support
+	{
+		try
+		{
+			await resizeToBlob();
+			return true;
+		}
+		catch(error)
+		{
+			console.error(error);
+		}
+	}
+
 	img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 	img.classList.remove('blobRendered', 'blobRender');
 	img.style.imageRendering = '';
