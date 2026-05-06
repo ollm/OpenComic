@@ -80,6 +80,7 @@ describe('Sharp', function() {
 
 	});
 
+	/*
 	// HEIC
 	it('HEIC', async function() {
 
@@ -139,5 +140,6 @@ describe('Sharp', function() {
 		assert.strictEqual(2048, metadata.height);
 
 	});
+	*/
 
 });

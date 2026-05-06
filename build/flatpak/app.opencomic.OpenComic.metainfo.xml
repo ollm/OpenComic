@@ -13,7 +13,7 @@
         <p>Comic and manga reader.</p>
         <p><em>Features</em></p>
         <ul>
-            <li>🌄 Support this image formats: <code>JPG</code>, <code>JP2</code>, <code>JXR</code>, <code>JXL</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>,  <code>HEIC</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
+            <li>🌄 Support this image formats: <code>JPG</code>, <code>JP2</code>, <code>JXR</code>, <code>JXL</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
             <li>📦 Support this compressed formats: <code>RAR</code>, <code>ZIP</code>, <code>7Z</code>, <code>TAR</code>, <code>LZH</code>, <code>ACE</code>, <code>CBR</code>, <code>CBZ</code>, <code>CBA</code>, <code>CB7</code>, <code>CBT</code></li>
             <li>📄 Support this documents/ebook formats: <code>PDF</code>, <code>EPUB</code> (Alpha)</li>
             <li>🎵 Support background music from folder: <code>MP3</code>, <code>M4A</code>, <code>WEBM</code>, <code>WEBA</code>, <code>OGG</code>, <code>OPUS</code>, <code>WAV</code>, <code>FLAC</code></li>
@@ -198,7 +198,7 @@
                     <li>Support for <code>JXR</code> image format</li>
                     <li>Support for <code>JXL</code> image format</li>
                     <li>Thumbnail generation speed has been improved</li>
-                    <li>Support for <code>HEIC</code> image format</li>
+                    <li>Support for <code>HEIF</code> image format</li>
                     <li>Option to apply configuration profile based on folder/file label</li>
                     <li>Option to disable <code>Align with next horizontal</code> when reading on double page</li>
                     <li>Option in setting to adjust gamepad sensitivity</li>
