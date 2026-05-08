@@ -17,6 +17,32 @@ const images = {
 	heic12yuv444: p.join(imagesDir, 'hato.12bpc.yuv444.heic'), // https://github.com/link-u/avif-sample-images // hato.16bpc.png converted with gimp
 };
 
+interface GetPixelColorOptions {
+	_sharp: sharp.Sharp;
+	x: number;
+	y: number;
+}
+
+interface PixelColor {
+	r: number;
+	g: number;
+	b: number;
+}
+
+async function getPixelColor({_sharp, x, y}: GetPixelColorOptions): Promise<PixelColor> {
+
+	const {data, info} = await _sharp.raw().toBuffer({resolveWithObject: true});
+
+	const idx = (y * info.width + x) * info.channels;
+
+	return {
+		r: data[idx],
+		g: data[idx + 1],
+		b: data[idx + 2],
+	};
+
+}
+
 describe('Sharp', function() {
 
 	// JXL
@@ -25,12 +51,19 @@ describe('Sharp', function() {
 		const _sharp = await sharp(images.jxl);
 		const metadata = await _sharp.metadata();
 
+		const pixelColor = await getPixelColor({_sharp, x: 10, y: 10});
+
 		assert.strictEqual('jxl', metadata.format);
 		assert.strictEqual('rgb16', metadata.space);
 		assert.strictEqual('image/jxl', metadata.mediaType);
 		assert.strictEqual(10, metadata.bitsPerSample);
 		assert.strictEqual(924, metadata.width);
 		assert.strictEqual(1386, metadata.height);
+
+		// Pixel colors
+		assert.strictEqual(23, pixelColor.r);
+		assert.strictEqual(62, pixelColor.g);
+		assert.strictEqual(144, pixelColor.b);
 
 	});
 
@@ -40,12 +73,19 @@ describe('Sharp', function() {
 		const _sharp = await sharp(images.avif);
 		const metadata = await _sharp.metadata();
 
+		const pixelColor = await getPixelColor({_sharp, x: 10, y: 10});
+
 		assert.strictEqual('heif', metadata.format);
 		assert.strictEqual('rgb16', metadata.space);
 		assert.strictEqual('image/avif', metadata.mediaType);
 		assert.strictEqual(12, metadata.bitsPerSample);
 		assert.strictEqual(3078, metadata.width);
-		assert.strictEqual(2049, metadata.height); // 2048, test fail
+		assert.strictEqual(2048, metadata.height);
+
+		// Pixel colors
+		assert.strictEqual(186, pixelColor.r);
+		assert.strictEqual(190, pixelColor.g);
+		assert.strictEqual(197, pixelColor.b);
 
 	});
 
@@ -55,6 +95,8 @@ describe('Sharp', function() {
 		const _sharp = await sharp(images.avif12yuv444);
 		const metadata = await _sharp.metadata();
 
+		const pixelColor = await getPixelColor({_sharp, x: 1000, y: 1000});
+
 		assert.strictEqual('heif', metadata.format);
 		assert.strictEqual('rgb16', metadata.space);
 		assert.strictEqual('image/avif', metadata.mediaType);
@@ -62,6 +104,11 @@ describe('Sharp', function() {
 		assert.strictEqual(12, metadata.bitsPerSample);
 		assert.strictEqual(2048, metadata.width);
 		assert.strictEqual(2048, metadata.height); // 2048, test fail
+
+		// Pixel colors
+		assert.strictEqual(255, pixelColor.r);
+		assert.strictEqual(238, pixelColor.g);
+		assert.strictEqual(170, pixelColor.b);
 
 	});
 
@@ -71,12 +118,19 @@ describe('Sharp', function() {
 		const _sharp = await sharp(images.jp2);
 		const metadata = await _sharp.metadata();
 
+		const pixelColor = await getPixelColor({_sharp, x: 10, y: 10});
+
 		assert.strictEqual('jp2', metadata.format);
 		assert.strictEqual('srgb', metadata.space);
 		assert.strictEqual('image/jp2', metadata.mediaType);
 		assert.strictEqual(8, metadata.bitsPerSample);
 		assert.strictEqual(2717, metadata.width);
 		assert.strictEqual(3701, metadata.height);
+
+		// Pixel colors
+		assert.strictEqual(234, pixelColor.r);
+		assert.strictEqual(226, pixelColor.g);
+		assert.strictEqual(220, pixelColor.b);
 
 	});
 
