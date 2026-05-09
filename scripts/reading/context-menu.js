@@ -62,8 +62,11 @@ function getVars()
 function openFileLocation()
 {
 	const vars = getVars();
+	const image = getCurrentImage();
 
-	if(vars.pathIsFolder)
+	if(image && !fileManager.containsCompressed(image.path))
+		electron.shell.showItemInFolder(image.path)
+	else if(vars.pathIsFolder)
 		electron.shell.openPath(vars.currentPath)
 	else
 		electron.shell.showItemInFolder(fileManager.firstCompressedFile(vars.currentPath))
