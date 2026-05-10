@@ -8,8 +8,8 @@ declare const dom: any;
 declare const config: any;
 declare const template: any;
 declare const reading: any;
+declare const titleBar: any;
 declare const onReading: boolean;
-declare const isFullScreen: boolean;
 declare const electronRemote: any;
 declare const handlebarsContext: any;
 declare const openPathInNewWindow: any;
@@ -153,25 +153,16 @@ function callbackStart(event: PointerEvent) {
 
 }
 
-function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = false): SimpleEvent | undefined {
+function add(id: number, _detachedTab: boolean = false): SimpleEvent | undefined {
 
 	const tab = tabs.get(id);
 	const tabsBar = document.querySelector('.tabs-bar') as HTMLElement;
-	const titleBar = fromTitleBar ? document.querySelector('.title-bar .title-bar-menu') as HTMLElement : null;
 
 	let prevDragging = false;
 	let detachedTab = _detachedTab;
 	let singleTab = false;
 
 	const getTab = function(): Tab | undefined {
-
-		if(titleBar)
-		{
-			if(tabs.tabs.length > 1)
-				return;
-
-			return tabs.getByPosition(0);
-		}
 
 		return tab;
 
@@ -240,19 +231,22 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 		const clientY = app.clientY(event);
 		let addedTab = false;
 
+		if(clientX === 0 && clientY === 0 && !USE_SCREEN_POINT_TABS) // This can occur in drag events when the cursor is still on the tab bar
+			return;
+
 		const bounds = MACOS ? {
 			left: 15 + 80,
 			right: window.innerWidth - 15,
 			top: 5,
 			bottom: 60,
 		} : {
-			left: 15,
-			right: window.innerWidth - 15,
-			top: 15,
-			bottom: 90,
+			left: 15 + titleBar.controls.left,
+			right: window.innerWidth - 15 + titleBar.controls.right,
+			top: 5,
+			bottom: 60,
 		};
 
-		if(clientX < bounds.left || clientX > bounds.right || clientY > bounds.bottom || clientY < bounds.top || ((fromTitleBar || singleTab) && USE_SCREEN_POINT_TABS))
+		if(clientX < bounds.left || clientX > bounds.right || clientY > bounds.bottom || clientY < bounds.top || (singleTab && USE_SCREEN_POINT_TABS))
 		{
 			if(detachedTab) return;
 
@@ -337,9 +331,11 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 		// Calculate tab position with clamping to bounds
 		{
+			const offset = tabs.offset;
+
 			const tabWidth = tabs.tabWidth;
 			const gap = 6;
-			const containerWidth = window.innerWidth - (MACOS && !isFullScreen ? 80 : 0);
+			const containerWidth = window.innerWidth - offset.titleBar - offset.current.controls - offset.newTab;
 
 			const baseX = (tabWidth + gap) * tab.position + data.diffX;
 
@@ -484,7 +480,7 @@ function add(id: number, _detachedTab: boolean = false, fromTitleBar: boolean = 
 
 	};
 
-	const element = fromTitleBar ? titleBar : tab?.element;
+	const element = tab?.element;
 	if(!element) return;
 
 	simpleEvent = new SimpleEvent(element);

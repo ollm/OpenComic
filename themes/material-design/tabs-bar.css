@@ -33,6 +33,7 @@
 	opacity: 0;
 	-webkit-app-region: drag;
 	background-color: var(--md-sys-color-surface-container);
+	padding-right: 40px;
 }
 
 .tabs-bar > div:not(.title-bar)
@@ -73,12 +74,22 @@
 
 .app.controls-left:not(.macos) .tabs-bar
 {
+	padding-left: calc(34px);
+}
+
+.app.controls-left:not(.macos):not(.full-screen) .tabs-bar
+{
 	padding-left: calc(34px + var(--controls-width));
 }
 
 .app.controls-right:not(.macos) .tabs-bar
 {
-	padding-right: var(--controls-width-and-margin);
+	padding-right: calc(40px);
+}
+
+.app.controls-right:not(.macos):not(.full-screen) .tabs-bar
+{
+	padding-right: calc(var(--controls-width-and-margin) + 40px);
 }
 
 .app.visible-tabs-bar .tabs-bar
@@ -275,6 +286,28 @@
 	margin-left: -var(--tabs-bar-tab-width);
 	transition: margin 0.2s,
 	/*opacity: 0;*/
+}
+
+.tabs-bar .new-tab
+{
+	position: absolute;
+	height: 28px;
+	width: 28px;
+	top: 6px;
+	cursor: pointer;
+	transition: 0.2s;
+	border-radius: 28px;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--md-sys-color-surface-container);
+	-webkit-app-region: no-drag;
+}
+
+.tabs-bar .new-tab:hover
+{
+	background-color: var(--md-sys-color-secondary-container);
 }
 
 /*

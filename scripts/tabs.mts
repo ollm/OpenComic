@@ -47,12 +47,24 @@ export interface Tab {
 	};
 }
 
+interface Offset {
+	titleBar: number;
+	controls: number;
+	newTab: number;
+	current: {
+		titleBar: number;
+		controls: number;
+		left: number;
+		right: number;
+	};
+}
+
 const MACOS = process.platform === 'darwin';
 
 let tabs: Tab[] = [];
 let idCounter = 0;
 
-function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = true): number
+function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = true, newTab: boolean = false): number
 {
 	const id = idCounter++;
 
@@ -71,7 +83,7 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 		icon: tab.icon || icon || 'book',
 		active: tab.active || false,
 		position: tabs.length,
-		parents: parents,
+		parents: newTab ? [] : parents,
 		data: {
 			scrollTop: 0,
 			history: tab?.data?.history ?? dom.history.serialize(),
@@ -82,7 +94,7 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 
 	const insertAfterTab = activeTab ? lastChildTab(activeTab.id, true) : false;
 
-	if(insertAfterTab)
+	if(insertAfterTab && !newTab)
 	{
 		_tab.position = insertAfterTab.position + 1;
 		tabs.map(function(tab) {
@@ -124,6 +136,12 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 	setEvents(_tab as Tab);
 
 	return id;
+}
+
+function _new()
+{
+	const id = dom.labels.middleClick({button: 1}, 'library', {}, true);
+	_switch(id);
 }
 
 function get(tabId: number): Tab | undefined
@@ -218,7 +236,7 @@ function openPath(path: string, mainPath: string)
 	});
 }
 
-function openTab(title: string, icon: string, historyList: HistoryItem[])
+function openTab(title: string, icon: string, historyList: HistoryItem[], newTab: boolean = false)
 {
 	if(tabs.length === 0)
 		addCurrentTab();
@@ -234,7 +252,7 @@ function openTab(title: string, icon: string, historyList: HistoryItem[])
 		title,
 		icon,
 		data: {history, scrollTop: 0},
-	});
+	}, false, true, newTab);
 }
 
 function updateData(id: number, tab: Partial<Tab>, retrieveData: boolean = true): void
@@ -472,17 +490,31 @@ function visibility(animation: boolean = true): void
 
 let currentTabWidth: number = 0;
 
+function getOffset(): Offset
+{
+	const _titleBar = MACOS ? 0 : 34;
+	const _controls = MACOS ? 80 : titleBar.controls.widthAndMargin;
+
+	return {
+		titleBar: _titleBar,
+		controls: _controls,
+		newTab: 40,
+		current: {
+			titleBar: _titleBar,
+			controls: !isFullScreen ? _controls : 0,
+			left: !isFullScreen ? titleBar.controls.left : 0,
+			right: !isFullScreen ? titleBar.controls.right : 0,
+		},
+	};
+}
+
 function setTabWidth()
 {
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
 
-	const offset = {
-		titleBar: MACOS ? 0 : 34,
-		controls: MACOS ? 80 : titleBar.controls.widthAndMargin,
-	};
-
-	const width = window.innerWidth - offset.titleBar - (!isFullScreen ? offset.controls : 0);
+	const offset = getOffset();
+	const width = window.innerWidth - offset.titleBar - offset.current.controls - offset.newTab;
 
 	const len = tabs.length;
 	let tabWidth = (width - (len * 6) - 6) / len;
@@ -503,7 +535,6 @@ function hideSeparators(mainTab: Tab | undefined = undefined)
 	// Hide prev and next separators
 	const hideSeparators: number[] = [
 		...(activeTab ? [activeTab.position, activeTab.position - 1] : []),
-		tabs[tabs.length - 1].position,
 	];
 
 	if(mainTab)
@@ -537,6 +568,15 @@ function setTabPositions({animation = true, tab = undefined}: SetTabPositionsOpt
 	{
 		tab.element.style.transition = animation ? 'transform 0.2s, width 0.2s' : '';
 		tab.element.style.transform = `translateX(calc((var(--tabs-bar-tab-width) + 6px) * ${tab.position}))`;
+	}
+
+	const newTab = document.querySelector('.tabs-bar .new-tab') as HTMLElement;
+
+	if(newTab)
+	{
+		const offset = getOffset();
+		const leftOffset = offset.titleBar + offset.current.right + offset.newTab;
+		newTab.style.transform = `translateX(min(calc(100vw - ${leftOffset}px), calc((var(--tabs-bar-tab-width) + 6px) * ${tabs.length} + 6px)))`;
 	}
 
 	hideSeparators(tab);
@@ -584,7 +624,7 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 
 	if(tabs.length === 0)
 		addCurrentTab(false);
-	else
+	else if(!_restore)
 		update();
 
 	let ST: NodeJS.Timeout;
@@ -597,6 +637,7 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 		if(!tabsBar) return;
 
 		tabsBar.classList.add('disable-transitions');
+		setTabPositions();
 		setTabWidth();
 
 		ST = setTimeout(function() {
@@ -614,6 +655,7 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 
 export default {
 	add,
+	new: _new,
 	get,
 	getByPosition,
 	openPath,
@@ -628,6 +670,7 @@ export default {
 	mouseLeave,
 	get tabWidth() {return currentTabWidth},
 	get activeTab(): Tab | undefined {return getActive()},
+	get offset() {return getOffset()},
 
 	get tabs() {return tabs},
 	get idCounter() {return idCounter},

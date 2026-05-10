@@ -4,13 +4,13 @@ const controls = {
 	position: 'right',
 	width: 0,
 	widthAndmargin: 0,
+	left: 0,
+	right: 0,
 };
 
 function start()
 {
 	document.querySelector('.tabs-bar > div').insertAdjacentHTML('afterend', template.load('title.bar.html'));
-	tabs.drag.add(-1, false, true);
-
 	app.event(window, 'mousedown touchstart', mousedown);
 
 	getControlsPosition();
@@ -37,6 +37,8 @@ function getControlsPosition()
 	controls.position = controlsOnLeft ? 'left' : 'right';
 	controls.width = controlsWidth;
 	controls.widthAndMargin = controlsWidth + MARGIN;
+	controls.right = !controlsOnLeft ? controlsWidth + MARGIN : 0;
+	controls.left = controlsOnLeft ? controlsWidth : 0;
 }
 
 function mousedown(event)
@@ -117,8 +119,6 @@ function setMenu(_menu)
 		titleBar.remove();
 		document.querySelector('.tabs-bar > div').insertAdjacentHTML('afterend', template.load('title.bar.html'));
 	}
-
-	tabs.drag.add(-1, false, true);
 }
 
 function clickIcon()
