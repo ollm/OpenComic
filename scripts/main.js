@@ -78,7 +78,7 @@ function createWindow(options = {}) {
 			nativeWindowOpen: false,
 			additionalArguments: options.args ?? [],
 		},
-		titleBarStyle: (process.platform === 'linux' && !configInit.forceLinuxHiddenTitleBar) ? 'native' : 'hidden',
+		titleBarStyle: 'hidden',
 		titleBarOverlay: {
 			color: '#242a3000',
 			symbolColor: '#c2c7cf',

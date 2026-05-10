@@ -278,7 +278,6 @@ const storageDefault = {
 	},
 	configInit: {
 		forceColorProfile: '',
-		forceLinuxHiddenTitleBar: false,
 		openDevTools: false,
 	},
 	readingShortcutPagesConfig: {
