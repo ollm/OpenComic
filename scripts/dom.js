@@ -2815,6 +2815,8 @@ var readingActive = false, skipNextComic = false, skipPreviousComic = false;
 
 async function openComic(animation = true, path = true, mainPath = true, end = false, fromGoBack = false, fromNextAndPrev = false)
 {
+	let contentRightIndex = template.contentRightIndex();
+
 	settings.purgeTemporaryFilesEveryTimes(10);
 	fileManager.revokeAllObjectURL();
 	reading.render.revokeAllObjectURL();
@@ -2879,7 +2881,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	if(!template._contentRight().querySelector('.loading'))
 	{
 		handlebarsContext.loading = true;
-		template.loadContentRight('reading.content.right.html', animation);
+		contentRightIndex = template.loadContentRight('reading.content.right.html', animation);
 		file.updateContentRightIndex();
 	}
 
@@ -2925,6 +2927,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	// The user has gone back before finishing loading
 	if(!onReading)
+		return;
+
+	// Avoid continue if another comic has been opened
+	if(contentRightIndex != template.contentRightIndex())
 		return;
 
 	if(!fromGoBack)

@@ -5318,6 +5318,8 @@ var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMous
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isCanvas = false, isEbook = false, imagePath = false)
 {
+	let contentRightIndex = template.contentRightIndex();
+
 	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
 
 	isLoaded = false;
@@ -5913,6 +5915,10 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		readingFileC = fileManager.fileCompressed(path);
 		await render.setFile(readingFileC, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false));
 
+		// Avoid continue if another comic has been opened
+		if(contentRightIndex != template.contentRightIndex())
+			return;
+
 		for(let i = 0; i < len; i++)
 		{
 			let image = _images[i];
@@ -5966,6 +5972,10 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		render.setFile(false, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false), 'images');
 
 		const sizes = await image.getSizes(_images);
+
+		// Avoid continue if another comic has been opened
+		if(contentRightIndex != template.contentRightIndex())
+			return;
 
 		for(let i = 0; i < len; i++)
 		{

@@ -49,6 +49,7 @@ function changeContentLeft(html, animation = true)
 function loadContentLeft(template, animation)
 {
 	changeContentLeft(loadTemplate(template), animation);
+	return contentLeftZindex - 1;
 }
 
 var contentRightZindex = 1;
@@ -94,6 +95,7 @@ function changeContentRight(html, animation = true, keepScroll = false)
 function loadContentRight(template, animation, keepScroll)
 {
 	changeContentRight(loadTemplate(template), animation, keepScroll);
+	return contentRightZindex - 1;
 }
 
 var headerZindex = 1;
