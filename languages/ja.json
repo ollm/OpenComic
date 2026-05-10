@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "その他のオプション",
 			"hideBarHeader": "ヘッダーバーを隠す",
+			"hideTabsBar": "",
 			"hideContentLeft": "サイドバーを隠す",
 			"showPageNumber": ""
 		},

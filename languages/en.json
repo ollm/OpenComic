@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "More options",
 			"hideBarHeader": "Hide header bar",
+			"hideTabsBar": "Hide tab bar",
 			"hideContentLeft": "Hide lateral bar",
 			"showPageNumber": "Show page number"
 		},
@@ -381,7 +382,7 @@
 			"main": "Startup behavior",
 			"startInFullScreen": "Start OpenComic in full screen",
 			"restoreTabsFromLastSession": "Restore tabs from last session",
-			"showAlwaysTabsBar": "Always show tabs bar",
+			"showAlwaysTabsBar": "Always show tab bar",
 			"startInContinueReading": "Start directly in last reading",
 			"startOnlyFromLibrary": "Only if last reading is from the library",
 			"startOnStartup": "Start OpenComic on startup"

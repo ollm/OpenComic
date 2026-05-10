@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Weitere Optionen",
 			"hideBarHeader": "Kopfleiste ausblenden",
+			"hideTabsBar": "",
 			"hideContentLeft": "Seitenleiste ausblenden",
 			"showPageNumber": "Seitenzahl anzeigen"
 		},

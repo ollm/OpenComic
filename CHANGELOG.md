@@ -36,7 +36,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Setting to configure number of preloaded images [`c04c7ab`](https://github.com/ollm/OpenComic/commit/c04c7ab48da2071b02ef54790499500f7c4ea20d)
 - Tab bar now uses traffic light area spacing [`7ababe4`](https://github.com/ollm/OpenComic/commit/7ababe461783f919380a0ef5c6be2fa846a51fbd)
 - Use custom `sharp` prebuilt binaries for native support of `JXL`, `JP2` and `HEIC` [`0a49e48`](https://github.com/ollm/OpenComic/commit/0a49e48d218f81a9dc9375da4f8981b55b2ea3d1)
-- Removed support for `HEIC` image format
+- Removed support for `HEIC` image format [`ddbbded`](https://github.com/ollm/OpenComic/commit/ddbbded615a31e097de06fe898cca9cc80807245)
+- Joined the title/menu bar with the tab bar
 
 ##### 🐛 Bug Fixes
 

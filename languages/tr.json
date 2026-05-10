@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Daha fazla seçenek",
 			"hideBarHeader": "Araç çubuğunu gizle",
+			"hideTabsBar": "",
 			"hideContentLeft": "Yan çubuğu gizle",
 			"showPageNumber": ""
 		},

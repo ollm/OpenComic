@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "مزيد من الخيارات",
 			"hideBarHeader": "إخفاء الشريط العلوي",
+			"hideTabsBar": "",
 			"hideContentLeft": "إخفاء الشريط الجانبي",
 			"showPageNumber": ""
 		},

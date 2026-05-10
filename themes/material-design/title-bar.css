@@ -1,6 +1,7 @@
 .app
 {
 	--title-bar-height: 30px;
+	--title-bar-height: 0px;
 }
 
 .app.hide-title-bar
@@ -8,21 +9,32 @@
 	--title-bar-height: 0px;
 }
 
+.app.show-title-bar-menu .bar-header,
+.app.show-title-bar-menu .content-left,
+.app.show-title-bar-menu .content-right,
+.app.show-title-bar-menu .tabs-bar > div:not(.title-bar)
+{
+	pointer-events: none;
+}
+
 .title-bar
 {
-	position: fixed;
+	position: absolute;
 	top: 0px;
 	left: 0px;
-	width: 100%;
-	height: 30px;
-	padding-top: 1px;
+	width: 40px;
+	height: 40px;
 	box-sizing: border-box;
 	z-index: 1000;
 	transition: 0.2s;
 	background-color: var(--md-sys-color-surface-container);
 	color: var(--md-sys-color-on-surface-variant);
-	border-bottom: 1px solid var(--md-sys-color-surface-variant);
 	-webkit-app-region: drag;
+}
+
+.app.controls-left:not(.macos) .title-bar
+{
+	left: var(--controls-width);
 }
 
 .hide-title-bar .title-bar
@@ -30,31 +42,69 @@
 	display: none;
 }
 
-.title-bar-logo
+.title-bar-icon
+{
+	height: 40px;
+	width: 40px;
+}
+
+.title-bar-icon > div
 {
 	height: 28px;
 	width: 28px;
-	float: left;
-	padding: 0px 0px 0px 1px;
-	display: none;
+	margin: 6px;
+	border-radius: 8px;
+	background-color: var(--md-sys-color-background);
+	transition: 0.2s;
+	-webkit-app-region: no-drag;
+	line-height: 28px;
+	text-align: center;
+	font-size: 19px;
+	font-size: 16px;
 }
 
-.title-bar-logo img
+.title-bar-icon:hover > div
 {
-	height: 16px;
-	margin: 6px;
+	background: var(--md-sys-color-secondary-container);
 }
 
 .title-bar-menu
 {
-	float: left;
-	height: 28px;
+	position: absolute;
+	top: 0px;
+	/*left: 36px;*/
+	left: 0px;
+	height: 40px;
 	/*padding: 3px 0px;*/
-	padding: 3px 4px;
+	padding: 9px 9px;
 	box-sizing: border-box;
-	display: flex;
 	-webkit-app-region: no-drag;
 	margin-left: env(titlebar-area-x);
+
+	transition: 0.2s;
+	display: none;
+	background-color: var(--md-sys-color-surface-container);
+}
+
+.title-bar-menu.show
+{
+	pointer-events: auto;
+	display: flex;
+}
+
+.title-bar-menu:before
+{
+	content: '';
+	display: block;
+	position: absolute;
+	overflow: hidden;
+	top: 0px;
+	width: 40px;
+	height: 100%;
+	z-index: -1;
+	pointer-events: none;
+	background: linear-gradient(90deg, var(--md-sys-color-surface-container) 10%, transparent 90%);
+	right: -40px;
 }
 
 .title-bar-menu.label-medium
@@ -95,7 +145,7 @@
 	border-radius: 8px;
 	padding: 4px;
 	-webkit-app-region: no-drag;
-	top: 26px;
+	top: 31px;
 	display: none;
 	box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.05);
 }

@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "更多选项",
 			"hideBarHeader": "隐藏标题栏",
+			"hideTabsBar": "",
 			"hideContentLeft": "隐藏左侧栏",
 			"showPageNumber": "显示页码"
 		},

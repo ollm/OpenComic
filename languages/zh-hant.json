@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "更多選項",
 			"hideBarHeader": "隱藏標題列",
+			"hideTabsBar": "",
 			"hideContentLeft": "隱藏左側選單",
 			"showPageNumber": "顯示頁碼"
 		},

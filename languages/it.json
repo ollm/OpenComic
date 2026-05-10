@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Opzioni ",
 			"hideBarHeader": "Nascondi barra superiore",
+			"hideTabsBar": "",
 			"hideContentLeft": "Nascondi barra laterale",
 			"showPageNumber": ""
 		},

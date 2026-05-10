@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Plus d’options",
 			"hideBarHeader": "Masquer la barre d’en-tête",
+			"hideTabsBar": "",
 			"hideContentLeft": "Masquer la barre latérale",
 			"showPageNumber": "Afficher le numéro de page"
 		},

@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Więcej opcji",
 			"hideBarHeader": "Ukryj pasek nagłówka",
+			"hideTabsBar": "",
 			"hideContentLeft": "Ukryj pasek boczny",
 			"showPageNumber": ""
 		},

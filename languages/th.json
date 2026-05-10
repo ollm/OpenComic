@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "ตัวเลือกเพิ่มเติม",
 			"hideBarHeader": "ซ่อนแถบส่วนบน",
+			"hideTabsBar": "",
 			"hideContentLeft": "ซ่อนแถบด้านข้าง",
 			"showPageNumber": ""
 		},

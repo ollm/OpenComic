@@ -3108,16 +3108,19 @@ function hideContent(fullScreen = false, first = false)
 	{
 		var _hideContentLeft = false;
 		var _hideBarHeader = false;
+		var _hideTabsBar = false;
 	}
 	else if(fullScreen)
 	{
 		var _hideContentLeft = config.readingHideContentLeftFullScreen;
 		var _hideBarHeader = config.readingHideBarHeaderFullScreen;
+		var _hideTabsBar = config.readingHideTabsBarFullScreen;
 	}
 	else
 	{
 		var _hideContentLeft = config.readingHideContentLeft;
 		var _hideBarHeader = config.readingHideBarHeader;
+		var _hideTabsBar = config.readingHideTabsBar;
 	}
 
 	clearTimeout(hideContentDisableTransitionsST);
@@ -3146,14 +3149,23 @@ function hideContent(fullScreen = false, first = false)
 
 	if(_hideBarHeader)
 	{
-		app.addClass('hide-bar-header hide-tabs-bar');
+		app.addClass('hide-bar-header');
 		hiddenBarHeader = true;
 	}
 	else
 	{
-		app.removeClass('hide-bar-header hide-tabs-bar');
+		app.removeClass('hide-bar-header');
 		$('.bar-header, .tabs-bar').removeClass('show');
 		hiddenBarHeader = false;
+	}
+
+	if(_hideTabsBar && (_hideBarHeader || fullScreen))
+	{
+		app.addClass('hide-tabs-bar');
+	}
+	else
+	{
+		app.removeClass('hide-tabs-bar');
 	}
 
 	dom.this(template._contentRight()).find('.reading-progress').class(fullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
@@ -3166,10 +3178,24 @@ function hideBarHeader(value = null)
 {
 	if(value === null) value = !(isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader);
 
+	dom.query('.menu-simple-hide-tabs-bar').class((!value && !isFullScreen), 'disable-pointer');
+
 	if(isFullScreen)
 		storage.updateVar('config', 'readingHideBarHeaderFullScreen', value);
 	else
 		storage.updateVar('config', 'readingHideBarHeader', value);
+
+	hideContent(isFullScreen);
+}
+
+function hideTabsBar(value = null)
+{
+	if(value === null) value = !(isFullScreen ? config.readingHideTabsBarFullScreen : config.readingHideTabsBar);
+
+	if(isFullScreen)
+		storage.updateVar('config', 'readingHideTabsBarFullScreen', value);
+	else
+		storage.updateVar('config', 'readingHideTabsBar', value);
 
 	hideContent(isFullScreen);
 }
@@ -3202,6 +3228,7 @@ function loadReadingMoreOptions()
 {
 	handlebarsContext.hideContent = {
 		barHeader: isFullScreen ? config.readingHideBarHeaderFullScreen : config.readingHideBarHeader,
+		tabsBar: isFullScreen ? config.readingHideTabsBarFullScreen : config.readingHideTabsBar,
 		contentLeft: isFullScreen ? config.readingHideContentLeftFullScreen : config.readingHideContentLeft,
 		showPageNumber: isFullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber,
 		isFullScreen: isFullScreen,
@@ -5058,6 +5085,16 @@ function pointermove(event)
 					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
 					reading.setShownBarHeader(true);
 
+					const tabsBar = document.querySelector('.tabs-bar');
+					tabsBar.style.webkitAppRegion = 'no-drag';
+
+					setTimeout(function() {
+
+						// Force reflow
+						tabsBar.style.webkitAppRegion = '';
+
+					}, 200);
+
 				}, 300);
 
 				hideContentRunningST = true;
@@ -5089,7 +5126,7 @@ function pointermove(event)
 			contentLeftRect = template._contentLeft().getBoundingClientRect();
 		}
 
-		if(shownBarHeader && pageY > barHeaderRect.height + titleBar.height() + 48 && !document.querySelector('.menu-simple.a'))
+		if(shownBarHeader && pageY > barHeaderRect.height + tabs.height + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
 		{
 			clearTimeout(hideContentST);
 
@@ -5174,7 +5211,7 @@ function hideContentLeftAndHeader()
 		clearTimeout(hideContentST);
 		hideContentRunningST = false;
 
-		if(shownBarHeader && !document.querySelector('.menu-simple.a'))
+		if(shownBarHeader && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
 		{
 			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
@@ -5192,6 +5229,8 @@ function pointerleave()
 {
 	if(!onReading || !isLoaded)
 		return;
+
+	return; // This have some errors
 
 	hideContentLeftAndHeader();
 }
@@ -6094,6 +6133,7 @@ module.exports = {
 	hideContent: hideContent,
 	hideContentLeft: hideContentLeft,
 	hideBarHeader: hideBarHeader,
+	hideTabsBar: hideTabsBar,
 	showPageNumber: showPageNumber,
 	setShownContentLeft: function(value){shownContentLeft = value},
 	setShownBarHeader: function(value){shownBarHeader = value},

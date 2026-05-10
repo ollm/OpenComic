@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "기타 옵션",
 			"hideBarHeader": "상단 헤더바 숨기기",
+			"hideTabsBar": "",
 			"hideContentLeft": "좌측 사이드바 숨기기",
 			"showPageNumber": ""
 		},

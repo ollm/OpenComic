@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Thêm tùy chọn",
 			"hideBarHeader": "Ẩn thanh công cụ",
+			"hideTabsBar": "",
 			"hideContentLeft": "Ẩn danh sách trang",
 			"showPageNumber": ""
 		},

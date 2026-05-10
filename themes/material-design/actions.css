@@ -480,12 +480,12 @@
 
 .menu-simple-header
 {
-	max-height: calc(100vh - 72px - var(--title-and-tabs-bar-height));
+	max-height: calc(100vh - 72px - var(--title-and-tabs-bar-height-always-visible));
 }
 
 .menu-simple-header .menu-simple-content
 {
-	max-height: calc(100vh - 88px - var(--title-and-tabs-bar-height));
+	max-height: calc(100vh - 88px - var(--title-and-tabs-bar-height-always-visible));
 }
 
 .menu-simple.a

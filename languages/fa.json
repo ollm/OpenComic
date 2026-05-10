@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "گزینه‌های بیشتر",
 			"hideBarHeader": "مخفی کردن نوار بالا",
+			"hideTabsBar": "",
 			"hideContentLeft": "مخفی کردن نوار کناری",
 			"showPageNumber": "نمایش شماره صفحه"
 		},

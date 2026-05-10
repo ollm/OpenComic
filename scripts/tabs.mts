@@ -11,6 +11,7 @@ declare const app: any;
 declare const dom: any;
 declare const config: any;
 declare const template: any;
+declare const titleBar: any;
 declare const compatible: any;
 declare const fileManager: any;
 declare const reading: any;
@@ -476,7 +477,12 @@ function setTabWidth()
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
 
-	const width = window.innerWidth - (MACOS && !isFullScreen ? 80 : 0);
+	const offset = {
+		titleBar: MACOS ? 0 : 34,
+		controls: MACOS ? 80 : titleBar.controls.widthAndMargin,
+	};
+
+	const width = window.innerWidth - offset.titleBar - (!isFullScreen ? offset.controls : 0);
 
 	const len = tabs.length;
 	let tabWidth = (width - (len * 6) - 6) / len;
@@ -629,6 +635,7 @@ export default {
 	set tabs(val: Tab[]) {tabs = val},
 	set idCounter(val: number) {idCounter = val},
 	set lastUsedTabs(val: number[]) {lastUsedTabs = val},
+	height: 40,
 
 	setTabPositions,
 	setTabWidth,

@@ -32,9 +32,10 @@
 	pointer-events: none;
 	opacity: 0;
 	-webkit-app-region: drag;
+	background-color: var(--md-sys-color-surface-container);
 }
 
-.tabs-bar > div
+.tabs-bar > div:not(.title-bar)
 {
 	width: 100%;
 	height: calc(var(--tabs-bar-height-always-visible) - 1px);
@@ -46,7 +47,7 @@
 	overflow-y: hidden;
 }
 
-.tabs-bar > div > div
+.tabs-bar > div:not(.title-bar) > div
 {
 	width: 100%;
 	height: calc(var(--tabs-bar-height-always-visible) - 1px);
@@ -63,6 +64,21 @@
 .app.macos:not(.full-screen) .tabs-bar
 {
 	padding-left: 80px;
+}
+
+.app:not(.macos) .tabs-bar
+{
+	padding-left: 34px;
+}
+
+.app.controls-left:not(.macos) .tabs-bar
+{
+	padding-left: calc(34px + var(--controls-width));
+}
+
+.app.controls-right:not(.macos) .tabs-bar
+{
+	padding-right: var(--controls-width-and-margin);
 }
 
 .app.visible-tabs-bar .tabs-bar

@@ -82,7 +82,7 @@ function createWindow(options = {}) {
 		titleBarOverlay: {
 			color: '#242a3000',
 			symbolColor: '#c2c7cf',
-			height: (process.platform === 'darwin' ? 40 : 29),
+			height: 40,
 		},
 		trafficLightPosition: {x: 13, y: 13},
 		backgroundColor: '#242a30',

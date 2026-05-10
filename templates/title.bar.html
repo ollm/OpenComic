@@ -1,25 +1,28 @@
-<div class="title-bar-logo">
-	<img src="../images/logo.png">
-</div>
-{{#if titleBarMenu}}
-<div class="title-bar-menu label-medium"{{#unless useScreenPointTabs}} draggable="true"{{/unless}}>
-	{{#each titleBarMenu}}
-		<div class="title-bar-menu-{{@index}}" onclick="titleBar.clickMenu({{@index}})" onmouseenter="titleBar.enterMenu({{@index}});">{{label}}</div>
-	{{/each}}
-</div>
+<div class="title-bar">
+	<div class="title-bar-icon" onclick="titleBar.clickIcon()">
+		<div class="icon-18 material-icon" data-dehaze-or="keyboard_arrow_right">dehaze</div>
+	</div>
 
-<div class="title-bar-menus label-medium">
-	{{#each titleBarMenu}}
-		<div class="title-bar-menus-{{@index}} elevation-1">
-			{{#each submenu}}
-				{{#compare type '==' 'separator'}}
-				<div class="separator"></div>
-				{{else}}
-				<div {{#unless enabled}}class="disable-pointer"{{/unless}} onclick="titleBar.clickSubMenu({{@../index}}, {{@index}})">{{label}}{{#if shortcut}}<span>{{shortcut}}</span>{{/if}}</div>
-				{{/compare}}
-			{{/each}}
-		</div>
-	{{/each}}
-</div>
+	{{#if titleBarMenu}}
+	<div class="title-bar-menu label-medium"{{#unless useScreenPointTabs}} draggable="true"{{/unless}}>
+		{{#each titleBarMenu}}
+			<div class="title-bar-menu-{{@index}}" onclick="titleBar.clickMenu({{@index}})" onmouseenter="titleBar.enterMenu({{@index}});">{{label}}</div>
+		{{/each}}
+	</div>
 
-{{/if}}
+	<div class="title-bar-menus label-medium">
+		{{#each titleBarMenu}}
+			<div class="title-bar-menus-{{@index}} elevation-1">
+				{{#each submenu}}
+					{{#compare type '==' 'separator'}}
+					<div class="separator"></div>
+					{{else}}
+					<div {{#unless enabled}}class="disable-pointer"{{/unless}} onclick="titleBar.clickSubMenu({{@../index}}, {{@index}})">{{label}}{{#if shortcut}}<span>{{shortcut}}</span>{{/if}}</div>
+					{{/compare}}
+				{{/each}}
+			</div>
+		{{/each}}
+	</div>
+
+	{{/if}}
+</div>

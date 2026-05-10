@@ -762,6 +762,11 @@ a:hover
 	margin-top: -4px;
 }
 
+.app.hide-tabs-bar:not(.hide-bar-header) .bar-header
+{
+	top: var(--title-bar-height);
+}
+
 .hide-bar-header .bar-header
 {
 	top: calc(var(--title-and-tabs-bar-height-always-visible) - 64px - var(--tabs-bar-height-always-visible));

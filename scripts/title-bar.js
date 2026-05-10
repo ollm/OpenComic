@@ -1,19 +1,47 @@
-var visible = true;
+let visible = true;
+
+const controls = {
+	position: 'right',
+	width: 0,
+	widthAndmargin: 0,
+};
 
 function start()
 {
-	document.querySelector('.title-bar').innerHTML = template.load('title.bar.html');
+	document.querySelector('.tabs-bar > div').insertAdjacentHTML('afterend', template.load('title.bar.html'));
 	tabs.drag.add(-1, false, true);
 
 	app.event(window, 'mousedown touchstart', mousedown);
+
+	getControlsPosition();
 
 	if(process.platform == 'darwin') // Now tabs bar has the space of the traffic lights
 		hide();
 }
 
+function getControlsPosition()
+{
+	const rect = navigator.windowControlsOverlay.getTitlebarAreaRect();
+
+	const MARGIN = 60; // Add some margin to have some area to click and drag the window
+
+	const controlsOnLeft = rect.left > 0;
+	const controlsWidth = controlsOnLeft ? rect.left : (window.innerWidth - rect.right);
+
+	const app = document.querySelector('.app');
+
+	app.style.setProperty('--controls-width', controlsWidth+'px');
+	app.style.setProperty('--controls-width-and-margin', (controlsWidth + MARGIN)+'px');
+	app.classList.add(controlsOnLeft ? 'controls-left' : 'controls-right');
+
+	controls.position = controlsOnLeft ? 'left' : 'right';
+	controls.width = controlsWidth;
+	controls.widthAndMargin = controlsWidth + MARGIN;
+}
+
 function mousedown(event)
 {
-	if(activeMenu !== false && !event.target.closest('.title-bar-menus, .title-bar-menu'))
+	if(activeMenu !== false && !event.target.closest('.title-bar-menus, .title-bar-menu, .title-bar-icon'))
 		hideMenu(activeMenu);
 }
 
@@ -41,7 +69,7 @@ function hide()
 
 function height()
 {
-	return visible ? 30 : 0;
+	return 0; // visible ? 30 : 0;
 }
 
 var menu = false, activeMenu = false;
@@ -82,10 +110,37 @@ function setMenu(_menu)
 
 	handlebarsContext.titleBarMenu = menu;
 
-	let titleBar = document.querySelector('.title-bar');
-	if(titleBar) titleBar.innerHTML = template.load('title.bar.html');
+	const titleBar = document.querySelector('.title-bar');
+
+	if(titleBar)
+	{
+		titleBar.remove();
+		document.querySelector('.tabs-bar > div').insertAdjacentHTML('afterend', template.load('title.bar.html'));
+	}
 
 	tabs.drag.add(-1, false, true);
+}
+
+function clickIcon()
+{
+	showMenuBar();
+	clickMenu(0);
+}
+
+function showMenuBar()
+{
+	const menu = document.querySelector('.title-bar-menu');
+	const app = document.querySelector('.app');
+	menu.classList.add('show');
+	app.classList.add('show-title-bar-menu');
+}
+
+function hideMenuBar()
+{
+	const menu = document.querySelector('.title-bar-menu');
+	const app = document.querySelector('.app');
+	menu.classList.remove('show');
+	app.classList.remove('show-title-bar-menu');
 }
 
 function clickMenu(index)
@@ -101,7 +156,7 @@ function clickMenu(index)
 
 			_menu.classList.add('active');
 			_menus.style.display = 'block';
-			_menus.style.left = (_menu.getBoundingClientRect().left)+'px';
+			_menus.style.left = (_menu.offsetLeft)+'px';
 		
 			dom.query('.bar-header').css({
 				webkitAppRegion: 'no-drag',
@@ -140,6 +195,8 @@ function hideMenu(index, fromEnter = false)
 			dom.query('.bar-header').css({
 				webkitAppRegion: '',
 			});
+
+			hideMenuBar();
 		}
 	}
 }
@@ -218,14 +275,14 @@ function animateSetTitleBarOverlay(win)
 
 function setFullScreen(fullscreen = false)
 {
-	if(fullscreen)
+	/*if(fullscreen)
 	{
 		hide();
 	}
 	else
 	{
 		show();
-	}
+	}*/
 }
 
 module.exports = {
@@ -233,10 +290,12 @@ module.exports = {
 	show: show,
 	hide: hide,
 	height: height,
+	clickIcon,
 	clickMenu: clickMenu,
 	enterMenu: enterMenu,
 	clickSubMenu: clickSubMenu,
 	setMenu: setMenu,
 	setColors: setColors,
 	setFullScreen: setFullScreen,
+	get controls() {return controls},
 };

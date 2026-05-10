@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Дополнительные параметры",
 			"hideBarHeader": "Скрыть верхнюю панель",
+			"hideTabsBar": "",
 			"hideContentLeft": "Скрыть боковую панель",
 			"showPageNumber": "Показывать номер страницы"
 		},

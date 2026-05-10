@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Більше опцій",
 			"hideBarHeader": "Приховати верхню панель",
+			"hideTabsBar": "",
 			"hideContentLeft": "Приховати бічну панель",
 			"showPageNumber": "Показати номер сторінки"
 		},

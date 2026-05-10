@@ -20,7 +20,9 @@ function setFullScreenState(state)
 	// win.setMenuBarVisibility(!state);
 
 	const appElement = document.querySelector('body .app');
-	if(appElement) appElement.classList.toggle('full-screen', state)
+	if(appElement) appElement.classList.toggle('full-screen', state);
+
+	handlebarsContext.isFullScreen = isFullScreen;
 }
 
 function fullScreen(force = null, win = false)
@@ -333,11 +335,8 @@ async function start()
 		config = storage.config();
 		_config = copy(config);
 
-		if(process.platform == 'darwin')
-		{
-			// Show tabs bar always on macOS because of the empty space due to the traffic lights
-			config.showAlwaysTabsBar = true;
-		}
+		// Show tabs bar always on all devices
+		config.showAlwaysTabsBar = true;
 
 		const OS_MAP = {
 			linux: 'linux',

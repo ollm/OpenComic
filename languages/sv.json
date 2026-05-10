@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Fler alternativ",
 			"hideBarHeader": "Dölj titelrad",
+			"hideTabsBar": "",
 			"hideContentLeft": "Dölj vänster sidofält",
 			"showPageNumber": ""
 		},

@@ -282,6 +282,7 @@
 		"moreOptions": {
 			"main": "Více nastavení",
 			"hideBarHeader": "Skrýt vrchní panel",
+			"hideTabsBar": "",
 			"hideContentLeft": "Skrýt postranní panel",
 			"showPageNumber": ""
 		},
