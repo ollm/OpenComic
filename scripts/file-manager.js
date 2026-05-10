@@ -1108,10 +1108,11 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				config[key] = this._config[key];
 		}
 
+		const only = config.only || this.config._only;
 		this.config = config;
 
-		if(config.only)
-			this.updateConfigOnly(config.only);
+		if(only)
+			this.updateConfigOnly(only);
 
 	}
 
@@ -1589,8 +1590,11 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(this.features.progress)
 			this.setProgress(0);
+	
+		const result = await this.extractCurrent();
+		await this.rejectAllWhenExtractFile(); // Reject all posible stuck promises
 
-		return this.extractCurrent();
+		return result;
 	}
 
 	this.extractCurrent = async function() {
@@ -1965,6 +1969,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	}
 
 	this.rejectAllWhenExtractFile = function() {
+
+		if(!this.config._only)
+			return;
 
 		for(let i = 0, len = this.config._only.length; i < len; i++)
 		{

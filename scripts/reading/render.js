@@ -514,6 +514,9 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			const imageSize = aiPath ? reading.ai.size(imageData) : imageData;
 			_config.kernel = _config.width > imageSize.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
 
+			// Remove prev rendered blobRendered and blobRender classes to avoid pixelated intermediate images
+			img.classList.remove('blobRendered', 'blobRender');
+
 			if(renderCanvas)
 			{
 				if(_config.width > config.renderMaxWidth)
@@ -557,14 +560,14 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						}
 						else
 						{
-							await srcToImage(src, img, key);
+							await srcToImage(src, img, key, queueIndex);
 						}
 					}
 					catch(error)
 					{
 						console.error(error);
 
-						await srcToImage(src, img, key);
+						await srcToImage(src, img, key, queueIndex);
 					}
 				}
 			}
@@ -610,17 +613,17 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						console.error(error);
 
-						await srcToImage(src, img, key);
+						await srcToImage(src, img, key, queueIndex);
 					}
 				}
 				else
 				{
-					await srcToImage(src, img, key);
+					await srcToImage(src, img, key, queueIndex);
 				}
 			}
 			else
 			{
-				await srcToImage(src, img, key);
+				await srcToImage(src, img, key, queueIndex);
 			}
 
 			if((onRender && onRender.num > 0) || _scale)
@@ -661,7 +664,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 	return;
 }
 
-async function srcToImage(src, img, key)
+async function srcToImage(src, img, key, queueIndex)
 {
 	const resizeToBlob = async function() {
 
@@ -673,8 +676,10 @@ async function srcToImage(src, img, key)
 			renderedObjectsURLCache[key] = {blob: data.blob};
 		}
 
+		if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+
 		img.src = renderedObjectsURLCache[key].blob;
-		img.classList.add('blobRendered', 'blobRender');
+		img.classList.remove('blobRendered', 'blobRender');
 		img.style.imageRendering = '';
 
 		return true;
@@ -693,6 +698,8 @@ async function srcToImage(src, img, key)
 			console.error(error);
 		}
 	}
+
+	if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
 
 	img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 	img.classList.remove('blobRendered', 'blobRender');

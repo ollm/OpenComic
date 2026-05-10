@@ -36,7 +36,7 @@ var ebook = function(book, config = {}) {
 
 		for(let i = 0, len = chapters.length; i < len; i++)
 		{
-			promises.push(new Promise(async function(resolve){
+			promises.push(new Promise(async function(resolve, reject) {
 
 				const chapter = chapters[i];
 				let htmlString = chapters[i].html;
@@ -66,8 +66,15 @@ var ebook = function(book, config = {}) {
 
 				addToQueue(async function(data){
 
-					if(callback) await callback(i, data);
-					resolve(data);
+					try
+					{
+						if(callback) await callback(i, data);
+						resolve(data);
+					}
+					catch(error)
+					{
+						reject(error);
+					}
 
 				}, len, 'split-in-pages', _this.config, htmlString, chapter.basePath, chapter.path, _chapter);
 
@@ -95,7 +102,7 @@ var ebook = function(book, config = {}) {
 		{
 			const chapter = _this.book.chapters[i];
 
-			promises.push(new Promise(function(resolve){
+			promises.push(new Promise(function(resolve, reject) {
 
 				let htmlString = _this.book.chapters[i].html;
 
@@ -122,8 +129,15 @@ var ebook = function(book, config = {}) {
 
 				addToQueue(async function(data){
 
-					if(callback) await callback(i, data);
-					resolve(data);
+					try
+					{
+						if(callback) await callback(i, data);
+						resolve(data);
+					}
+					catch(error)
+					{
+						reject(error);
+					}
 
 				}, len, 'render-page', {..._this.config, ..._config}, htmlString, _this.book.chapters[i].basePath, false, _chapter);
 
@@ -1252,9 +1266,18 @@ async function jobEndedRenderedPage(event, index, pages)
 	let height = Math.round(job.config.imageWidth / job.config.width * job.config.height);
 
 	renders[index].render.setSize(width, height, false);
-	let image = await renders[index].render.capturePage({x: 0, y: 0, width: width, height: height}, {stayHidden: true});
 
-	await renders[index].job.callback(image);
+	try
+	{
+		const image = await renders[index].render.capturePage({x: 0, y: 0, width: width, height: height}, {stayHidden: true});
+		await renders[index].job.callback(image);
+	}
+	catch(error)
+	{
+		console.error(error);
+		await renders[index].job.callback(false);
+	}
+
 	renders[index].job = false;
 	nextJobToRender(index);
 }

@@ -476,12 +476,19 @@ var epub = function(path, config = {}) {
 		{
 			this.ebook = ebook.load({chapters: chapters});
 
-			await this.ebook.chaptersImages({...this.renderFileConfig, ...{imageWidth: config.width}}, async function(index, image) {
+			try
+			{
+				await this.ebook.chaptersImages({...this.renderFileConfig, ...{imageWidth: config.width}}, async function(index, image) {
 
-				await fsp.writeFile(chapters[index].path, image.toJPEG(100));
-				if(callback) callback(chapters[index].name);
+					await fsp.writeFile(chapters[index].path, image.toJPEG(100));
+					if(callback) callback(chapters[index].name);
 
-			});
+				});
+			}
+			catch(error)
+			{
+				console.error(error);
+			}
 		}
 
 		return;

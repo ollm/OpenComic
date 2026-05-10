@@ -65,7 +65,7 @@ async function processTheImageQueue(img = false)
 
 async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 {
-	threads.job('cache', {useThreads: 1}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
+	threads.job('cache', {useThreads: threads.ALL}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
 }
 
 function stopQueue()
@@ -213,7 +213,7 @@ function returnThumbnailsImages(images, callback, file = false)
 
 	if(toGenerateThumbnails.length > 0 && file)
 	{
-		threads.job('cacheMakeAvailable', {useThreads: 0.01, delay: 50}, async function() {
+		threads.job('cacheMakeAvailable', {useThreads: threads.SINGLE, delay: 50}, async function() {
 
 			await file.makeAvailable(toGenerateThumbnails, function(image) {
 
