@@ -97,7 +97,6 @@
 		"bezier-js": "^6.1.4",
 		"diff": "^9.0.0",
 		"discord-rpc": "^4.0.1",
-		"electron-window-state": "^5.0.3",
 		"epubjs": "^0.3.93",
 		"fast-xml-parser": "^5.7.3",
 		"file-type": "^22.0.1",

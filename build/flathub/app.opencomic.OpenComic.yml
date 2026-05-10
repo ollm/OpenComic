@@ -1,9 +1,9 @@
 app-id: app.opencomic.OpenComic
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 base: org.electronjs.Electron2.BaseApp
-base-version: '24.08'
+base-version: '25.08'
 command: run.sh
 separate-locales: false
 finish-args:

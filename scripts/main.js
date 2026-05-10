@@ -1,10 +1,10 @@
 const {app, ipcMain, BrowserWindow, screen, Menu, nativeImage, shell} = require('electron');
 const fs = require('fs');
-const path = require('path');
+const p = require('path');
 const url = require('url');
 const crypto = require('crypto');
-const windowStateKeeper = require('electron-window-state');
-const folderPortable = require(path.join(__dirname, 'folder-portable.js'));
+const windowStateKeeper = require('./main/window-state.mjs').default;
+const folderPortable = require(p.join(__dirname, 'folder-portable.js'));
 
 require('@electron/remote/main').initialize();
 //remoteMain.enable(window.webContents);
@@ -41,20 +41,23 @@ function createWindow(options = {}) {
 	if(!gotSingleInstanceLock)
 		app.quit();
 
-	let mainWindowState = windowStateKeeper({
-		defaultWidth: 1100,
-		defaultHeight: 640,
-		fullScreen: false,
+	const workAreaSize = screen.getPrimaryDisplay().workAreaSize;
+
+	const windowState = windowStateKeeper({
+		path: p.join(storagePath, 'windowState.json'),
+		defaultWidth: Math.min(1100, workAreaSize.width),
+		defaultHeight: Math.min(640, workAreaSize.height),
+		defaultFullScreen: false,
 	});
 
-	let image = nativeImage.createFromPath(path.join(__dirname, '../images/logo.png'));
+	let image = nativeImage.createFromPath(p.join(__dirname, '../images/logo.png'));
 
-	const windowOffset = (newWindow && !mainWindowState.isMaximized && !mainWindowState.isFullScreen ? 24 : 0);
+	const windowOffset = (newWindow && !windowState.isMaximized && !windowState.isFullScreen ? 24 : 0);
 
-	const x = windowOffset ? +getArgValue(args, '--window-x', mainWindowState.x) : mainWindowState.x;
-	const y = windowOffset ? +getArgValue(args, '--window-y', mainWindowState.y) : mainWindowState.y;
-	const width = windowOffset ? +getArgValue(args, '--window-width', mainWindowState.width) : mainWindowState.width;
-	const height = windowOffset ? +getArgValue(args, '--window-height', mainWindowState.height) : mainWindowState.height;
+	const x = windowOffset ? +getArgValue(args, '--window-x', windowState.x) : windowState.x;
+	const y = windowOffset ? +getArgValue(args, '--window-y', windowState.y) : windowState.y;
+	const width = windowOffset ? +getArgValue(args, '--window-width', windowState.width) : windowState.width;
+	const height = windowOffset ? +getArgValue(args, '--window-height', windowState.height) : windowState.height;
 
 	win = new BrowserWindow({
 		show: false,
@@ -143,7 +146,7 @@ function createWindow(options = {}) {
 
 	// and load the index.html of the app.
 	win.loadURL(url.format({
-		pathname: path.join(__dirname, '../templates/index.html'),
+		pathname: p.join(__dirname, '../templates/index.html'),
 		protocol: 'file:',
 		slashes: true
 	}));
@@ -226,7 +229,7 @@ function createWindow(options = {}) {
 	}, 100);
 
 	if(gotSingleInstanceLock && !newWindow)
-		mainWindowState.manage(win);
+		windowState.manage(win);
 
 	windows.set(id, win);
 	firstWindowCreated = true;
@@ -244,7 +247,7 @@ function createWindow(options = {}) {
 	return win.id;
 }
 
-let configInitFile = path.join(app.getPath('userData'), 'storage', 'configInit.json');
+let storagePath = p.join(app.getPath('userData'), 'storage');
 
 if(folderPortable.check())
 {
@@ -252,19 +255,20 @@ if(folderPortable.check())
 
 	if(executableDir)
 	{
-		configInitFile = path.join(executableDir, 'opencomic', 'storage', 'configInit.json');
+		storagePath = p.join(executableDir, 'opencomic', 'storage');
 	}
 	else
 	{
-		const outsidePath = path.join(__dirname, '../../../../', 'opencomic');
+		const outsidePath = p.join(__dirname, '../../../../', 'opencomic');
 
 		if(fs.existsSync(outsidePath))
-			configInitFile = path.join(outsidePath, 'storage', 'configInit.json');
+			storagePath = p.join(outsidePath, 'storage');
 		else
-			configInitFile = path.join(__dirname, '../../../', 'storage', 'configInit.json');
+			storagePath = p.join(__dirname, '../../../', 'storage');
 	}
 }
 
+const configInitFile = p.join(storagePath, 'configInit.json');
 const configInit = fs.existsSync(configInitFile) ? JSON.parse(fs.readFileSync(configInitFile, 'utf8')) : {};
 
 if(configInit.forceColorProfile)
