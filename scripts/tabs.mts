@@ -498,7 +498,7 @@ function getOffset(): Offset
 	return {
 		titleBar: _titleBar,
 		controls: _controls,
-		newTab: 40,
+		newTab: 34,
 		current: {
 			titleBar: _titleBar,
 			controls: !isFullScreen ? _controls : 0,

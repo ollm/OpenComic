@@ -33,7 +33,7 @@
 	opacity: 0;
 	-webkit-app-region: drag;
 	background-color: var(--md-sys-color-surface-container);
-	padding-right: 40px;
+	padding-right: 34px;
 }
 
 .tabs-bar > div:not(.title-bar)
@@ -84,12 +84,12 @@
 
 .app.controls-right:not(.macos) .tabs-bar
 {
-	padding-right: calc(40px);
+	padding-right: calc(34px);
 }
 
 .app.controls-right:not(.macos):not(.full-screen) .tabs-bar
 {
-	padding-right: calc(var(--controls-width-and-margin) + 40px);
+	padding-right: calc(var(--controls-width-and-margin) + 34px);
 }
 
 .app.visible-tabs-bar .tabs-bar
