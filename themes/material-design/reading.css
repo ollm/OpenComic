@@ -19,6 +19,7 @@
 	box-sizing: border-box;
 	font-size: 0px;
 	border-radius: 0px 16px 16px 0px;
+	transition: 0.2s;
 }
 
 .reading-left.transition

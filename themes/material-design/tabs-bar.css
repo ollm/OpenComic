@@ -34,6 +34,7 @@
 	-webkit-app-region: drag;
 	background-color: var(--md-sys-color-surface-container);
 	padding-right: 34px;
+	transition: 0.2s;
 }
 
 .tabs-bar > div:not(.title-bar)

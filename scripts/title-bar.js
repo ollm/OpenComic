@@ -226,7 +226,7 @@ function setColors()
 	colors = {
 		color: backgroundColor+'00', // Add transparency
 		symbolColor: symbolColor,
-		height: 29,
+		height: 40,
 	};
 
 	if(process.platform == 'win32')
@@ -253,7 +253,7 @@ function _animateSetTitleBarOverlay(win)
 	win.setTitleBarOverlay({
 		color: colors.color,
 		symbolColor: elapsed >= 200 ? colors.symbolColor : symbolColor,
-		height: 29,
+		height: 40,
 	});
 
 	if(elapsed < 200)
