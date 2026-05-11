@@ -55,7 +55,7 @@ const dragState: DragState = {
 	active: false,
 	simpleEvent: undefined,
 	tabFromOtherWindow: {
-		first: true,
+		first: false,
 	},
 	attachedInOtherWindow: false,
 	detachedWindowId: null,
@@ -211,7 +211,7 @@ function add(id: number, _detachedTab: boolean = false): SimpleEvent | undefined
 			const rect = tab.element.getBoundingClientRect();
 
 			tab.dragOffset = {
-				x: app.clientX(event) - rect.left,
+				x: app.clientX(event) - rect.left + tabs.offset.titleBar,
 				y: app.clientY(event) - rect.top,
 			};
 		}
@@ -549,7 +549,7 @@ function addTabDrag(tab: Tab, ghostTab: boolean = false): SimpleEvent | undefine
 
 	if(event)
 	{
-		const startX = (tabs.tabWidth + 6) * currentLen + (tab.dragOffset?.x ?? 0);
+		const startX = (tabs.tabWidth + 6) * currentLen + (tab.dragOffset?.x ?? (tabs.offset.titleBar + 60));
 		event.startX = startX;
 		event.initStartX = startX;
 	}
@@ -767,9 +767,14 @@ function attachedTab(tab: Tab, attached: boolean = false) {
 		if(!win) return;
 
 		if(attached)
+		{
 			win.setOpacity(0);
+		}
 		else
+		{
 			win.setOpacity(1);
+			win.show();
+		}
 	}
 }
 

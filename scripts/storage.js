@@ -236,7 +236,7 @@ const storageDefault = {
 		openFilesInNewWindow: false,
 		startInFullScreen: false,
 		showAlwaysTabsBar: false,
-		restoreTabsFromLastSession: false,
+		restoreTabsFromLastSession: true,
 		startInContinueReading: false,
 		startOnlyFromLibrary: true,
 		startOnStartup: false,
