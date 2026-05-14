@@ -439,10 +439,11 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			let img = ocImg.querySelector('img');
 			if(!img) return;
 
+			let estimated = +ocImg.dataset.estimated;
 			let originalWidth = +ocImg.dataset.width;
 			let originalHeight = +ocImg.dataset.height;
 
-			if(isNaN(originalWidth) || isNaN(originalHeight)) return;
+			if(isNaN(originalWidth) || isNaN(originalHeight) || estimated) return;
 
 			if(magnifyingGlass)
 				_scale = scale * scaleMagnifyingGlass;
@@ -560,14 +561,16 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						}
 						else
 						{
-							await srcToImage(src, img, key, queueIndex);
+							const success = await srcToImage(src, img, key, queueIndex);
+							if(!success) return;
 						}
 					}
 					catch(error)
 					{
 						console.error(error);
 
-						await srcToImage(src, img, key, queueIndex);
+						const success = await srcToImage(src, img, key, queueIndex);
+						if(!success) return;
 					}
 				}
 			}
@@ -613,17 +616,20 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						console.error(error);
 
-						await srcToImage(src, img, key, queueIndex);
+						const success = await srcToImage(src, img, key, queueIndex);
+						if(!success) return;
 					}
 				}
 				else
 				{
-					await srcToImage(src, img, key, queueIndex);
+					const success = await srcToImage(src, img, key, queueIndex);
+					if(!success) return;
 				}
 			}
 			else
 			{
-				await srcToImage(src, img, key, queueIndex);
+				const success = await srcToImage(src, img, key, queueIndex);
+				if(!success) return;
 			}
 
 			if((onRender && onRender.num > 0) || _scale)
@@ -690,12 +696,12 @@ async function srcToImage(src, img, key, queueIndex)
 	{
 		try
 		{
-			await resizeToBlob();
-			return true;
+			return await resizeToBlob();
 		}
 		catch(error)
 		{
 			console.error(error);
+			return;
 		}
 	}
 

@@ -2595,7 +2595,8 @@ a:hover
 	animation-name: show-in;
 	animation-duration: 0.2s;
 	animation-fill-mode: forwards;
-	animation-delay: 0.1s;
+	/*animation-delay: 0.1s;*/
+	animation-delay: 0.3s;
 }
 
 .loading.align

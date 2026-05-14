@@ -1998,6 +1998,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		if(!this.config.progress)
 			return;
 
+		console.error('setProgress', progress);
+
 		const loading = document.querySelector('.content-right .content-right-'+index+' .loading.loading96');
 		events.loadingProgress(loading, progress);
 

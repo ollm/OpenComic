@@ -553,9 +553,9 @@ async function startApp()
 
 		if(onReading && reading.isLoaded() && !reading.isEbook())
 		{
-			reading.disposeImages();
-			reading.calculateView();
-			reading.stayInLine();
+			reading.view.disposeImages();
+			reading.view.calculateView();
+			reading.view.stayInLine.recalculate();
 		}
 
 	});

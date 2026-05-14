@@ -465,6 +465,17 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 
 }
 
+function getSizeFromCache(image)
+{
+	const path = image.path;
+	const sha = image.sha || sha1(path);
+
+	if(sizesCache[sha])
+		return sizesCache[sha];
+
+	return null;
+}
+
 async function getSizes(images)
 {
 	await loadSharp();
@@ -547,7 +558,7 @@ async function getSizes(images)
 		/*if(compatible.image.heic.has(ext)) // To much buffer to read
 			bufferSize = 32768;
 		else */if(compatible.image.jpg.has(ext) || compatible.image.jp2.has(ext))
-			bufferSize = 8192;
+			bufferSize = 8192 * 2;
 		else if(compatible.image.avif.has(ext))
 			bufferSize = 4096;
 		else if(compatible.image.jxl.has(ext))
@@ -585,7 +596,6 @@ async function getSizes(images)
 			const buffers = await fileManager.compressedStreamReader.getBuffers(getImageBuffers);
 			await getSizesFromBuffer(getImageBuffers, buffers);
 		})(),
-
 		(async () => {
 			const buffersFS = await getBuffersFS(getImageBuffersFS);
 			await getSizesFromBuffer(getImageBuffersFS, buffersFS);
@@ -614,7 +624,7 @@ async function getSizes(images)
 
 	if(makeAvailable.length)
 	{
-		const file = fileManager.file();
+		const file = fileManager.file(false, {log: false, progress: false});
 		await file.makeAvailable(makeAvailable);
 		file.destroy();
 	}
@@ -720,4 +730,5 @@ module.exports = {
 	loadImage: loadImage,
 	metadata: metadata,
 	getSizes: getSizes,
+	getSizeFromCache,
 };

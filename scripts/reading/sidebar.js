@@ -7,7 +7,7 @@ function sizes(_images, _comics)
 	if(config.readingDisableThumbnails)
 		return;
 
-	file = fileManager.file(reading.readingCurrentPath(), {log: false});
+	file = fileManager.file(reading.readingCurrentPath(), {log: false, progress: false});
 
 	images = _images;
 	comics = _comics;
@@ -139,6 +139,7 @@ async function goToImage(index)
 		{
 			img.src = thumbnail.path;
 			img.parentElement.classList.add('show');
+			img.style.height = '';
 		}
 		else
 		{

@@ -1,11 +1,8 @@
-import {exec} from 'child_process';
-import {promisify} from 'node:util';
+import {spawn} from 'child_process';
 import {path7zc} from '7zip-bin-full';
 import crypto from 'crypto';
 
 import {OptimalThreads} from '@types';
-
-const execAsync = promisify(exec);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const threads: any;
@@ -31,7 +28,6 @@ interface BufferWithIndex {
 
 interface Delimiter {
 	name: string;
-	quote: string;
 	buffer: Buffer;
 }
 
@@ -68,23 +64,35 @@ function splitBuffer(buffer: Buffer, delimiter: Buffer)
 	return parts;
 }
 
-function quote(string: string): string
-{
-	if(process.platform === 'win32')
-		return `"${String(string).replace(/"/g, '""')}"`;
-
-	return `'${String(string).replace(/'/g, '\'\\\'\'')}'`;
-}
-
 function generateDelimiter(): Delimiter
 {
 	const delimiter = crypto.randomUUID();
 
 	return {
 		name: delimiter,
-		quote: quote(delimiter),
 		buffer: Buffer.from(delimiter),
 	};
+}
+
+function spawnAsync(command: string, args: string[]): Promise<Buffer>
+{
+	return new Promise(function(resolve, reject) {
+
+		const proc = spawn(command, args);
+		const chunks: Buffer[] = [];
+
+		proc.stdout.on('data', (chunk: Buffer) => chunks.push(chunk));
+		proc.on('error', reject);
+		proc.on('close', function(code) {
+
+			if(code !== 0)
+				reject(new Error(`Process exited with code ${code}`));
+			else
+				resolve(Buffer.concat(chunks));
+
+		});
+
+	});
 }
 
 async function _getBuffers({compressed, realPath, items, optimalThreads}: Group): Promise<Buffer[]>
@@ -139,12 +147,8 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 
 			});
 
-			const filesList = files.map(file => quote(file.originalName)).join(' ');
-
-			const command = `${quote(bin7z)} x -so -slb${higherSize} -snf${quote(`${delimiter.name}{name}${delimiter.name}`)} -- ${quote(realPath)} ${filesList}`;
-			const data = await execAsync(command, {encoding: 'buffer'});
-
-			const buffer = data.stdout;
+			const args = ['x', '-so', `-slb${higherSize}`, `-snf${delimiter.name}{name}${delimiter.name}`, '--', realPath, ...files.map(file => file.originalName)];
+			const buffer = await spawnAsync(bin7z, args);
 			const split = splitBuffer(buffer, delimiter.buffer);
 			split.shift(); // First split is empty because of the delimiter at the start
 

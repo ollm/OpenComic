@@ -322,6 +322,23 @@ oc-img .ai-loading circle
 	-webkit-user-drag: none;
 }
 
+.reading-body .r-img > oc-img > img:not([src]), .reading-lens .r-img > oc-img > img:not([src])
+{
+	opacity: 0;
+}
+
+.reading-body .r-img > oc-img:has(img:not([src]))::before, .reading-lens .r-img > oc-img:has(img:not([src]))::before
+{
+	content: '';
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: white;
+	z-index: 1;
+}
+
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.pixelated,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.originalSize:not(.zoomed),/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/
 .reading-body:not(.zooming):not(.resizing) .r-img > oc-img > *.zoomOriginalSize,/* .reading-lens:not(.zooming) .r-img > oc-img > *.pixelated,*/

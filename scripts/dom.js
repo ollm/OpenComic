@@ -1184,8 +1184,11 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	events.eventHover();
 }
 
-function loadIndexContentLeft(animation)
+function loadIndexContentLeft(animation, onlyIfIsNotLoaded = false)
 {
+	if(onlyIfIsNotLoaded && template._contentLeft().querySelector('.menu-item-library'))
+		return;
+
 	// Master folders
 	let masterFolders = relative.get('masterFolders');
 
@@ -1873,6 +1876,7 @@ function loadRecentlyOpened(animation = true)
 
 function loadLanguagePage(animation = true)
 {
+	loadIndexContentLeft(animation, true);
 	indexPathControl(false, false, false, false, false, 'languages');
 	selectMenuItem('language');
 
@@ -1940,6 +1944,7 @@ function changeLanguage(lan)
 
 function loadSettingsPage(animation = true)
 {
+	loadIndexContentLeft(animation, true);
 	indexPathControl(false, false, false, false, false, 'settings');
 	selectMenuItem('settings');
 
@@ -1970,6 +1975,7 @@ function loadSettingsPage(animation = true)
 
 function loadThemePage(animation = true)
 {
+	loadIndexContentLeft(animation, true);
 	indexPathControl(false, false, false, false, false, 'themes');
 	selectMenuItem('theme');
 
@@ -2997,7 +3003,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	for(let i = 0, len = comics.length; i < len; i++)
 	{
-		comics[i].index = i + 1;
+		comics[i].index = i + 1; // Page?
 
 		if(comics[i].path == imagePath)
 			indexStart = comics[i].index;

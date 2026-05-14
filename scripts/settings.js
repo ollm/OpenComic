@@ -1428,6 +1428,7 @@ let activeTab = false;
 
 async function setTabState(data)
 {
+	if(!data) return;
 	activeTab = data.activeTab;
 }
 

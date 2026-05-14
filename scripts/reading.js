@@ -8,242 +8,12 @@ const render = require(p.join(appDir, '.dist/reading/render.js')),
 	sidebar = require(p.join(appDir, '.dist/reading/sidebar.js')),
 	discord = require(p.join(appDir, '.dist/reading/discord.js')),
 	progress = require(p.join(appDir, '.dist/reading/progress.js')),
-	doublePage = require(p.join(appDir, '.dist/reading/double-page.js'));
+	doublePage = require(p.join(appDir, '.dist/reading/double-page.js')),
+	view = require(p.join(appDir, '.dist/reading/view.mjs')).default;
 
+var items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, foldersPosition = {}, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
-var images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesPosition = {}, imagesFullPosition = {}, prevImagesFullPosition = {}, foldersPosition = {}, indexNum = 0, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
-
-function calculateImagesDataWithClip()
-{
-	imagesDataClip = {};
-
-	let imageClip = readingImageClip();
-	let clipVertical = (imageClip.top + imageClip.bottom) / 100;
-	let clipHorizontal = (imageClip.left + imageClip.right) / 100;
-
-	if(clipVertical === 0 && clipHorizontal === 0)
-		return imagesDataClip = imagesData;
-
-	for(let i = 1; i < (contentNum + 1); i++)
-	{
-		if(typeof imagesData[i] !== 'undefined')
-		{
-			let width = Math.round(imagesData[i].width * (1 - clipHorizontal));
-			let height = Math.round(imagesData[i].height * (1 - clipVertical));
-
-			imagesDataClip[i] = {
-				width: width,
-				height: height,
-				aspectRatio: (width / height),
-			};
-		}
-	}
-
-	return imagesDataClip;
-}
-
-//Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
-let nextHorizontalIndex = [];
-let useBlankPage = false;
-
-function precalculateBlankPage()
-{
-	useBlankPage = _config.readingAlignWithNextHorizontal && _config.readingDoNotApplyToHorizontals;
-	if(!useBlankPage) return false;
-
-	nextHorizontalIndex = new Array(imagesNum + 2).fill(null);
-
-	let next = null;
-
-	for(let i = imagesNum; i >= 1; i--)
-	{
-		const image = imagesDataClip[i];
-
-		if(image && image.aspectRatio > 1)
-			next = i;
-
-		nextHorizontalIndex[i] = next;
-	}
-} 
-
-function blankPage(index)
-{
-	if(!useBlankPage) return false;
-
-	const next = nextHorizontalIndex[index];
-	if(next === null) return false;
-
-	const distance = next - index;
-	return (distance % 2) === 1;
-}
-
-function shouldAddInitialBlank()
-{
-	if(!_config.readingBlankPage) return false;
-
-	if(!_config.readingDoNotApplyToHorizontals)
-		return true;
-
-	const first = imagesDataClip[1];
-	return first && first.aspectRatio <= 1;
-}
-
-//Calculates the distribution of the images depending on the user's configuration
-function calculateImagesDistribution()
-{
-	imagesDistribution = [];
-	indexNum = 0;
-
-	let lastAspectRatio = doublePage.active() ? (Object.values(imagesDataClip).find((image) => image.aspectRatio <= 1)?.aspectRatio || 1) : 1;
-
-	const createBlank = (width, index = false, auto = true) => ({index, folder: false, blank: true, width, aspectRatio: lastAspectRatio, auto});
-	const createImage = (index, width) => ({index, folder: false, blank: false, width});
-	const createFolder = (index, width) => ({index, folder: true, blank: false, width});
-
-	const SINGLE = 1; // Used when the image is in single page group
-	const DOUBLE = 2; // Used when the image is in double page group
-
-	const len = (contentNum + 1);
-
-	if(doublePage.active())
-	{
-		const flushGroup = function() {
-
-			imagesDistribution.push(pageGroup);
-			pageGroup = [];
-			indexNum++;
-
-		};
-
-		const customBlankPages = storage.getKey('customBlankPages', p.dirname(dom.history.path)) ?? {};
-
-		const customBlankPage = function(index) {
-
-			if(customBlankPages[index])
-			{
-				const pages = customBlankPages[index];
-
-				for(let i = 0; i < pages; i++)
-				{
-					pageGroup.push(createBlank(DOUBLE, index, false));
-					const isDoublePageReady = pageGroup.length > 1;
-
-					if(isDoublePageReady)
-						flushGroup();
-				}
-
-				return pages;
-			}
-
-			return 0;
-
-		}
-
-		precalculateBlankPage();
-
-		let pageGroup = [];
-		let blankPagesPrevHorizontal = 0;
-
-		const initialBlank = shouldAddInitialBlank();
-
-		if(initialBlank)
-			pageGroup.push(createBlank(DOUBLE));
-
-		const firstBlankPages = customBlankPage(0);
-		blankPagesPrevHorizontal += (initialBlank ? 1 : 0) + firstBlankPages;
-
-		for(let i = 1; i < len; i++)
-		{
-			const image = imagesDataClip[i];
-
-			if(image)
-			{
-				const isHorizontal = image.aspectRatio > 1;
-				const skipDoublePage = _config.readingDoNotApplyToHorizontals && isHorizontal;
-
-				if(skipDoublePage)
-				{
-					if(pageGroup.length > 0)
-					{
-						pageGroup.push(createBlank(DOUBLE));
-						flushGroup();
-					}
-
-					pageGroup.push(createImage(i, SINGLE));
-					image.position = imagesData[i].position = indexNum;
-					flushGroup();
-
-					blankPagesPrevHorizontal = 0;
-				}
-				else
-				{
-					if(_config.readingDoNotApplyToHorizontals && pageGroup.length === 0 && !blankPagesPrevHorizontal && blankPage(i)) // Align with next horizontal if there is no previous blank page and the current page should be blank
-						pageGroup.push(createBlank(DOUBLE));
-
-					pageGroup.push(createImage(i, DOUBLE));
-					image.position = imagesData[i].position = indexNum;
-				}
-
-				if(!isHorizontal)
-					lastAspectRatio = image.aspectRatio;
-			}
-			else
-			{
-				pageGroup.push(createFolder(i, DOUBLE));
-				foldersPosition[i] = indexNum;
-			}
-
-			const isDoublePageReady = pageGroup.length > 1;
-
-			if(isDoublePageReady)
-				flushGroup();
-
-			const blankPages = customBlankPage(i);
-			blankPagesPrevHorizontal += blankPages;
-
-		}
-
-		if(pageGroup.length)
-		{
-			if(pageGroup.length === 1 && pageGroup[0].width == DOUBLE) // If the last page is a single page and not horizontal, add a blank page
-				pageGroup.push(createBlank(DOUBLE));
-
-			flushGroup();
-		}
-	}
-	else
-	{
-		for(let i = 1; i < len; i++)
-		{
-			const image = imagesDataClip[i];
-
-			if(image)
-			{
-				imagesDistribution.push([createImage(i, SINGLE)]);
-				image.position = imagesData[i].position = indexNum;
-				indexNum++;
-			}
-			else
-			{
-				imagesDistribution.push([createFolder(i, SINGLE)]);
-				foldersPosition[i] = indexNum;
-				indexNum++;
-			}
-		}
-	}
-
-	if(_config.invisibleFirstBlankPage)
-	{
-		if(imagesDistribution[0])
-			imagesDistribution[0] = imagesDistribution[0].filter(item => !item.blank);
-	}
-	else if(_config.invisibleBlankPages)
-	{
-		imagesDistribution = imagesDistribution.map(distribution => distribution.filter(item => !item.blank));
-	}
-}
-
-var currentComics = [];
+let currentComics = [];
 
 function setCurrentComics(comics)
 {
@@ -273,633 +43,6 @@ function applyMangaReading(distribution)
 	return _distribution;
 }
 
-// Add images distribution to html
-function addHtmlImages()
-{
-	calculateImagesDataWithClip();
-	calculateImagesDistribution();
-
-	let _imagesDistribution = applyMangaReading(imagesDistribution);
-
-	let folderImages = [];
-
-	for(let key1 in _imagesDistribution)
-	{
-		let distribution = [];
-
-		for(let key2 in _imagesDistribution[key1])
-		{
-			let image = _imagesDistribution[key1][key2];
-
-			image.key1 = key1;
-			image.key2 = key2;
-
-			if(!image.folder && !image.blank)
-			{
-				image.name = currentComics[image.index].name;
-				image.path = currentComics[image.index].path;
-				image.image = currentComics[image.index].image;
-			}
-			else if(image.folder)
-			{
-				image.name = currentComics[image.index].name;
-				image.path = currentComics[image.index].path;
-				image.image = currentComics[image.index].image;
-				image.mainPath = currentComics[image.index].mainPath;
-				image.fristImage = currentComics[image.index].fristImage;
-			}
-
-			if(readingIsCanvas)
-				image.canvas = true;
-			else if(readingIsEbook)
-				image.ebook = true;
-
-			distribution.push(image);
-		}
-
-		folderImages.push({key1: key1, distribution: distribution});
-	}
-
-	handlebarsContext.folderImages = folderImages;
-
-	let html = template.load('reading.content.right.images.html');
-
-	let contentRight = template._contentRight();
-
-	dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).html(html);
-
-}
-
-//Calculates the size and position of the images
-function calcAspectRatio(first, second)
-{
-	if(!first)
-		return false;
-
-	if(first.folder)
-		first.aspectRatio = 1;
-	else if(second && first.blank)
-		first.aspectRatio = second.folder || second.blank ? (first.aspectRatio || 1) : (imagesDataClip[second.index]?.aspectRatio || first.aspectRatio || 1);
-	else
-		first.aspectRatio = imagesDataClip[first.index].aspectRatio;
-
-	return first;
-}
-
-function disposeImages(data = false)
-{
-	let _margin = readingMargin(data);
-
-	let margin = _margin.margin;
-	let marginHorizontal = _margin.left;
-	let marginVertical = _margin.top;
-	let marginHorizontalsHorizontal = readingHorizontalsMargin(data).left;
-
-	const forceSinglePage = (_config.readingForceSinglePage && !_config.readingWebtoon) ? true : false;
-
-	let contentRight = template._contentRight();
-	let rect = contentRight.firstElementChild.getBoundingClientRect();
-
-	let contentHeight = rect.height;
-	let contentWidth = rect.width;
-
-	if(readingViewIs('scroll'))
-		contentWidth = contentRight.querySelector('.reading-body').getBoundingClientRect().width;
-
-	//Width 0
-	let contentWidth0 = contentWidth - (marginHorizontal * 2);
-	let aspectRatio0 = contentWidth0 / (contentHeight - marginVertical * 2);
-
-	//Width horizontals 0
-	let contentWidthHorizontals0 = contentWidth - (marginHorizontalsHorizontal * 2);
-	let aspectRatioHorizontals0 = contentWidthHorizontals0 / (contentHeight - marginVertical * 2);
-
-	let _imagesDistribution = applyMangaReading(imagesDistribution);
-
-	let imageClip = readingImageClip();
-
-	let clipTop = imageClip.top / 100;
-	let clipBottom = imageClip.bottom / 100;
-	let clipVertical = clipTop + clipBottom;
-	let clipLeft = imageClip.left / 100;
-	let clipRight = imageClip.right / 100;
-	let clipHorizontal = clipLeft + clipRight;
-
-	let allImages = contentRight.querySelectorAll('.r-img');
-
-	let imageElements = {};
-
-	for(let i = 0, len = allImages.length; i < len; i++)
-	{
-		let image = allImages[i];
-
-		let key1 = +image.dataset.key1;
-		let key2 = +image.dataset.key2;
-
-		if(!imageElements[key1]) imageElements[key1] = {};
-		if(!imageElements[key1][key2]) imageElements[key1][key2] = [];
-
-		imageElements[key1][key2].push(image.firstElementChild);
-	}
-
-	let readingNotEnlargeMoreThanOriginalSize = _config.readingNotEnlargeMoreThanOriginalSize ? true : false;
-	
-	for(let key1 in _imagesDistribution)
-	{
-		if(!imageElements[key1])
-			continue;
-
-		let image0 = imageElements[key1][0] || false;
-		let image1 = imageElements[key1][1] || false;
-
-		let first = _imagesDistribution[key1][0];
-		let second = _imagesDistribution[key1][1];
-
-		first = calcAspectRatio(first, second);
-		second = calcAspectRatio(second, first);
-
-		if(second)
-		{
-			let imageHeight0, imageWidth0, marginLeft0, marginTop0, imageHeight1, imageWidth1, marginLeft1, marginTop1;
-
-			let imageHeight = imageHeight0 = imageHeight1 = (contentHeight - marginVertical * 2);
-
-			imageWidth0 = imageHeight0 * first.aspectRatio;
-			imageWidth1 = imageHeight1 * second.aspectRatio;
-
-			let joinWidth = imageWidth0 + imageWidth1 + marginHorizontal;
-
-			if(joinWidth < contentWidth0 && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
-			{
-				marginLeft0 = contentWidth / 2 - (imageWidth0 + imageWidth1 + marginHorizontal) / 2;
-				marginLeft1 = marginHorizontal;
-				marginTop0 = marginTop1 = marginVertical;
-			}
-			else
-			{
-				imageWidth0 = (first.aspectRatio / (first.aspectRatio + second.aspectRatio)) * (contentWidth0 - marginHorizontal);
-				imageWidth1 = (second.aspectRatio / (second.aspectRatio + first.aspectRatio)) * (contentWidth0 - marginHorizontal);
-
-				let imageHeight = imageHeight0 = imageHeight1 = imageWidth0 / first.aspectRatio;
-
-				marginLeft0 = marginLeft1 = marginHorizontal;
-				marginTop0 = marginTop1 = contentHeight / 2 - imageHeight / 2;
-			}
-
-			if(readingViewIs('scroll') && !forceSinglePage)
-				marginTop0 = marginTop1 = marginVertical;
-
-			let imgHeight0 = (clipVertical > 0 ? (imageHeight0 / (1 - clipVertical)) : imageHeight0);
-			let imgWidth0 = (clipHorizontal > 0 ? (imageWidth0 / (1 - clipHorizontal)) : imageWidth0);
-
-			if(image0)
-			{
-				let size = ai.size(imagesData[first.index]);
-				let originalSize = false;
-
-				if(readingNotEnlargeMoreThanOriginalSize)
-				{
-					let dpr = window.devicePixelRatio;
-					let sizeClip = ai.size(imagesDataClip[first.index]);
-
-					if(size && (imgWidth0 * dpr > size.width || imgHeight0 * dpr > size.height))
-					{
-						marginLeft0 += (imgWidth0 - size.width / dpr);
-						if(!readingViewIs('scroll')) marginTop0 += (imgHeight0 - size.height / dpr) / 2;
-
-						imgWidth0 = size.width / dpr;
-						imgHeight0 = size.height / dpr;
-
-						imageWidth0 = sizeClip.width / dpr;
-						imageHeight0 = sizeClip.height / dpr;
-
-						originalSize = true;
-					}
-				}
-
-				for(let i = 0, len = image0.length; i < len; i++)
-				{
-					let image = image0[i];
-
-					image.style.height = app.roundDPR(imageHeight0)+'px';
-					image.style.width = app.roundDPR(imageWidth0)+'px';
-					image.style.marginLeft = app.roundDPR(marginLeft0)+'px';
-					image.style.marginTop = app.roundDPR(marginTop0)+'px';
-					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
-					image.style.marginRight = '0px';
-
-					image.dataset.height = imgHeight0;
-					image.dataset.width = imgWidth0;
-					image.dataset.left = app.roundDPR(marginLeft0);
-					image.dataset.top = app.roundDPR(marginTop0);
-
-					let img = image.firstElementChild;
-
-					if(img)
-					{
-						img.style.marginTop = -app.roundDPR(imgHeight0 * clipTop)+'px';
-						img.style.marginLeft = -app.roundDPR(imgWidth0 * clipLeft)+'px';
-
-						if(size?.rotated == 1 || size?.rotated == 2)
-						{
-							img.style.height = app.roundDPR(imgWidth0)+'px';
-							img.style.width = app.roundDPR(imgHeight0)+'px';
-						}
-						else
-						{
-							img.style.height = app.roundDPR(imgHeight0)+'px';
-							img.style.width = app.roundDPR(imgWidth0)+'px';
-						}
-
-						img.style.transform = size?.rotated ? rotateImage(size.rotated) : '';
-
-						if(originalSize)
-							img.classList.add('originalSize');
-						else
-							img.classList.remove('originalSize');
-					}
-				}
-			}
-
-			let imgHeight1 = (clipVertical > 0 ? (imageHeight1 / (1 - clipVertical)) : imageHeight1);
-			let imgWidth1 = (clipHorizontal > 0 ? (imageWidth1 / (1 - clipHorizontal)) : imageWidth1);
-
-			if(image1)
-			{
-				let size = ai.size(imagesData[second.index]);
-				let originalSize = false;
-
-				if(readingNotEnlargeMoreThanOriginalSize)
-				{
-					let dpr = window.devicePixelRatio;
-					let sizeClip = ai.size(imagesDataClip[second.index]);
-
-					if(size && (imgWidth1 * dpr > size.width || imgHeight1 * dpr > size.height))
-					{
-						marginLeft1 += 0;
-						if(!readingViewIs('scroll')) marginTop1 += (imgHeight1 - size.height / dpr) / 2;
-
-						imgWidth1 = size.width / dpr;
-						imgHeight1 = size.height / dpr;
-
-						imageWidth1 = sizeClip.width / dpr;
-						imageHeight1 = sizeClip.height / dpr;
-
-						originalSize = true;
-					}
-				}
-
-				for(let i = 0, len = image1.length; i < len; i++)
-				{
-					let image = image1[i];
-
-					image.style.height = app.roundDPR(imageHeight1)+'px';
-					image.style.width = app.roundDPR(imageWidth1)+'px';
-					image.style.marginLeft = app.roundDPR(marginLeft1)+'px';
-					image.style.marginTop = app.roundDPR(marginTop1)+'px';
-					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
-					image.style.marginRight = '0px';
-
-					image.dataset.height = imgHeight1;
-					image.dataset.width = imgWidth1;
-					image.dataset.left = app.roundDPR(marginLeft1);
-					image.dataset.top = app.roundDPR(marginTop1);
-
-					let img = image.firstElementChild;
-
-					if(img)
-					{
-						img.style.marginTop = -app.roundDPR(imgHeight1 * clipTop)+'px';
-						img.style.marginLeft = -app.roundDPR(imgWidth1 * clipLeft)+'px';
-
-						if(size?.rotated == 1 || size?.rotated == 2)
-						{
-							img.style.height = app.roundDPR(imgWidth1)+'px';
-							img.style.width = app.roundDPR(imgHeight1)+'px';
-						}
-						else
-						{
-							img.style.height = app.roundDPR(imgHeight1)+'px';
-							img.style.width = app.roundDPR(imgWidth1)+'px';
-						}
-
-						img.style.transform = size?.rotated ? rotateImage(size.rotated) : '';
-
-						if(originalSize)
-							img.classList.add('originalSize');
-						else
-							img.classList.remove('originalSize');
-					}
-				}
-			}
-		}
-		else
-		{
-			let imageHeight, imageWidth, marginLeft, marginTop;
-
-			if(_config.readingHorizontalsMarginActive && first.aspectRatio > 1)
-			{
-				if(aspectRatioHorizontals0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
-				{
-					imageHeight = (contentHeight - marginVertical * 2);
-					imageWidth = imageHeight * first.aspectRatio;
-					marginLeft = contentWidth / 2 - imageWidth / 2;
-					marginTop = marginVertical;
-				}
-				else
-				{
-					imageWidth = (contentWidth - marginHorizontalsHorizontal * 2);
-					imageHeight = imageWidth / first.aspectRatio;
-					marginLeft = marginHorizontalsHorizontal;
-					marginTop = contentHeight / 2 - imageHeight / 2;
-				}
-			}
-			else
-			{
-				if(aspectRatio0 > first.aspectRatio && !(readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)))
-				{
-					imageHeight = (contentHeight - marginVertical * 2);
-					imageWidth = imageHeight * first.aspectRatio;
-					marginLeft = contentWidth / 2 - imageWidth / 2;
-					marginTop = marginVertical;
-				}
-				else
-				{
-					imageWidth = (contentWidth - marginHorizontal * 2);
-					imageHeight = imageWidth / first.aspectRatio;
-					marginLeft = marginHorizontal;
-					marginTop = contentHeight / 2 - imageHeight / 2;
-				}
-			}
-
-			if(readingViewIs('scroll') && !forceSinglePage)
-				marginTop = marginVertical;
-
-			let imgHeight = (clipVertical > 0 ? (imageHeight / (1 - clipVertical)) : imageHeight);
-			let imgWidth = (clipHorizontal > 0 ? (imageWidth / (1 - clipHorizontal)) : imageWidth);
-
-			if(image0)
-			{
-				let size = ai.size(imagesData[first.index]);
-				let originalSize = false;
-
-				if(readingNotEnlargeMoreThanOriginalSize)
-				{
-					let dpr = window.devicePixelRatio;
-					let sizeClip = ai.size(imagesDataClip[first.index]);
-
-					if(size && (imgWidth * dpr > size.width || imgHeight * dpr > size.height))
-					{
-						marginLeft += (imgWidth - size.width / dpr) / 2;
-						if(!readingViewIs('scroll')) marginTop += (imgHeight - size.height / dpr) / 2;
-
-						imgWidth = size.width / dpr;
-						imgHeight = size.height / dpr;
-
-						imageWidth = sizeClip.width / dpr;
-						imageHeight = sizeClip.height / dpr;
-
-						originalSize = true;
-					}
-				}
-
-				for(let i = 0, len = image0.length; i < len; i++)
-				{
-					let image = image0[i];
-
-					image.style.height = app.roundDPR(imageHeight)+'px';
-					image.style.width = app.roundDPR(imageWidth)+'px';
-					image.style.marginLeft = app.roundDPR(marginLeft)+'px';
-					image.style.marginTop = app.roundDPR(marginTop)+'px';
-					image.style.marginBottom = app.roundDPR((readingViewIs('scroll') && ((+key1) + 1) == indexNum) ? marginVertical : 0)+'px';
-					image.style.marginRight = '0px';
-
-					image.dataset.height = imgHeight;
-					image.dataset.width = imgWidth;
-					image.dataset.left = app.roundDPR(marginLeft);
-					image.dataset.top = app.roundDPR(marginTop);
-
-					let img = image.firstElementChild;
-
-					if(img)
-					{
-						img.style.marginTop = -app.roundDPR(imgHeight * clipTop)+'px';
-						img.style.marginLeft = -app.roundDPR(imgWidth * clipLeft)+'px';
-
-						if(size?.rotated == 1 || size?.rotated == 2)
-						{
-							img.style.height = app.roundDPR(imgWidth)+'px';
-							img.style.width = app.roundDPR(imgHeight)+'px';
-						}
-						else
-						{
-							img.style.height = app.roundDPR(imgHeight)+'px';
-							img.style.width = app.roundDPR(imgWidth)+'px';
-						}
-
-						img.style.transform = size?.rotated ? rotateImage(size.rotated) : '';
-
-						if(originalSize)
-							img.classList.add('originalSize');
-						else
-							img.classList.remove('originalSize');
-					}
-				}
-			}
-		}
-	}
-
-
-	const isScroll = readingViewIs('scroll');
-	const rFlex = contentRight.querySelectorAll('.r-flex');
-
-	for(let i = 0, len = rFlex.length; i < len; i++)
-	{
-		const flex = rFlex[i];
-
-		flex.style.width = contentWidth+'px';
-		flex.style.height = !isScroll ? contentHeight+'px' : '';
-	}
-}
-
-var rightSize = {}; // Right content size
-
-function calculateView(first = false)
-{
-	let contentRight = template._contentRight();
-
-	let content = contentRight.firstElementChild;
-	let rect = content.getBoundingClientRect();
-
-	rightSize = {
-		height: rect.height,
-		width: rect.width,
-		top: rect.top,
-		left: rect.left,
-		// readingRect: content.querySelector('.reading-body').getBoundingClientRect(),
-		scrollHeight: content.scrollHeight,
-	};
-
-	if(readingViewIs('compact'))
-	{
-		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
-			width: rect.width+'px',
-			height: rect.height+'px',
-			flexDirection: '',
-		}).addClass('compact', readingView());
-	}
-	else if(readingViewIs('slide'))
-	{
-		dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
-			width: (rect.width * indexNum)+'px',
-			height: rect.height+'px',
-			flexDirection: '',
-		}).removeClass('compact', 'fade', 'rough-page-turn', 'smooth-page-turn');
-	}
-	else if(readingViewIs('scroll'))
-	{
-		dom.this(contentRight).find('.reading-body > div').css({
-			width: '100%',
-			flexDirection: 'column',
-		}).removeClass('compact', 'fade', 'rough-page-turn', 'smooth-page-turn');
-
-		dom.this(contentRight).find('.reading-lens > div > div').css({
-			width: rect.width+'px',
-			flexDirection: 'column',
-		}).removeClass('compact', 'fade', 'rough-page-turn', 'smooth-page-turn');
-
-		rect = content.getBoundingClientRect();
-
-		rightSize = {
-			height: rect.height,
-			width: rect.width,
-			top: rect.top,
-			left: rect.left,
-			// readingRect: content.querySelector('.reading-body').getBoundingClientRect(),
-			scrollHeight: content.scrollHeight,
-		};
-	}
-
-	if(readingViewIs('scroll'))
-	{
-		prevImagesFullPosition = imagesFullPosition;
-
-		imagesPosition = [];
-		imagesFullPosition = [];
-
-		const scale = config.readingGlobalZoom ? scalePrevData.scale : 1;
-		const margin = readingMargin();
-
-		const scrollTop = content.scrollTop - rect.top;
-
-		for(let key1 in imagesDistribution)
-		{
-			if(typeof imagesPosition[key1] === 'undefined') imagesPosition[key1] = [];
-			if(typeof imagesFullPosition[key1] === 'undefined') imagesFullPosition[key1] = [];
-
-			for(let key2 in imagesDistribution[key1])
-			{
-				const image = contentRight.querySelector('.image-position'+key1+'-'+key2);
-				let top = 0, height = 0;
-
-				if(image)
-				{
-					const ocImg = image.querySelector('oc-img');
-
-					if(ocImg)
-					{
-						const rect = ocImg.getBoundingClientRect();
-
-						top = rect.top;
-						height = rect.height;
-					}
-					else
-					{
-						const rect = image.getBoundingClientRect();
-
-						top = rect.top + (margin.top * scale);
-						height = rect.height - ((margin.top) * scale);
-					}
-				}
-
-				imagesPosition[key1][key2] = (top + (height / 2)) + scrollTop;
-				imagesFullPosition[key1][key2] = {
-					top: top + scrollTop,
-					center: imagesPosition[key1][key2],
-					bottom: top + height + scrollTop,
-					height: height,
-				};
-			}
-		}
-
-		if(first)
-			prevImagesFullPosition = imagesFullPosition;
-	}
-}
-
-var previousScrollTop = 0, previousScrollHeight = 0, previousContentHeight = 0, stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
-
-function getPreviusContentSize()
-{
-	if(!readingViewIs('scroll')) return;
-
-	let contentRight = template._contentRight();
-	let content = contentRight.firstElementChild;
-	let rect = content.getBoundingClientRect();
-
-	previousContentHeight = rect.height;
-	previousScrollHeight = content.scrollHeight;
-	previousScrollTop = content.scrollTop;
-}
-
-function stayInLine(resize = false)
-{
-	if(readingViewIs('compact'))
-	{
-		if(currentIndex < 1 && dom.previousComic())
-			showPreviousComic(1, false);
-		else if(currentIndex > contentNum && dom.nextComic())
-			showNextComic(1, false);
-		else
-			pageTransitions.goToIndex(currentIndex, false);
-	}
-	else if(readingViewIs('slide'))
-	{
-		if(currentIndex < 1 && dom.previousComic())
-			showPreviousComic(1, false);
-		else if(currentIndex > contentNum && dom.nextComic())
-			showNextComic(1, false);
-		else
-			goToIndex(currentIndex, false, currentPageVisibility);
-	}
-	else if(readingViewIs('scroll'))
-	{
-		let contentRight = template._contentRight();
-		let content = contentRight.firstElementChild;
-		let rect = content.getBoundingClientRect();
-		let position = imagesFullPosition[currentIndex-1][0];
-
-		disableOnScroll(true);
-
-		if(stayInLineData.scrollTop === false)
-			stayInLineData = {scrollTop: previousScrollTop, scrollHeight: previousScrollHeight, height: previousContentHeight, position: prevImagesFullPosition[currentIndex-1][0], setTimeout: false};
-
-		clearTimeout(stayInLineData.setTimeout);
-		stayInLineData.setTimeout = setTimeout(function(){
-
-			stayInLineData = {scrollTop: false, scrollHeight: false, heigth: false, position: {}, setTimeout: false};
-
-			disableOnScroll(false);
-
-		}, 400);
-
-		let percent = ((stayInLineData.scrollTop + stayInLineData.height / 2) - stayInLineData.position.top) / stayInLineData.position.height;
-
-		let scrollTop = position.top + (percent * position.height) - (rect.height / 2);
-		content.scrollTop = rect.height > stayInLineData.height ? app.ceilDPR(scrollTop) : app.floorDPR(scrollTop);
-	}
-}
-
 let prevChangeHeaderButtons = {};
 
 function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
@@ -927,7 +70,7 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 		}
 	}
 
-	if((scrollInEnd === null || scrollInEnd) && currentIndex == indexNum && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
+	if((scrollInEnd === null || scrollInEnd) && currentIndex == view.distribution.total && !((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
 		if(readingManga())
 		{
@@ -1099,7 +242,7 @@ function goToImage(imageIndex, disableSave = false)
 		let newIndex = imagesData[imageIndex].position + 1;
 
 		if(readingManga())
-			newIndex = (indexNum - newIndex) + 1;
+			newIndex = (view.distribution.total - newIndex) + 1;
 
 		calculateRealReadingDirection(newIndex);
 
@@ -1118,7 +261,7 @@ function goToFolder(folderIndex)
 		let newIndex = foldersPosition[folderIndex] + 1;
 
 		if(readingManga())
-			newIndex = (indexNum - newIndex) + 1;
+			newIndex = (view.distribution.total - newIndex) + 1;
 
 		calculateRealReadingDirection(newIndex);
 
@@ -1443,7 +586,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	let newIndex = (eIndex - 1);
 
 	if(readingManga())
-		newIndex = (indexNum - newIndex) - 1;
+		newIndex = (view.distribution.total - newIndex) - 1;
 
 	if(updateCurrentIndex)
 		currentIndex = index;
@@ -1475,7 +618,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	eachImagesDistribution(newIndex, ['image', 'folder'], function(image){
 
-		if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
+		if(!isBookmarkTrue && imagesData[image.index] && isBookmark(p.normalize(imagesData[image.index].path)))
 			isBookmarkTrue = true;
 
 	});
@@ -1519,7 +662,7 @@ function goToChapterProgress(chapterIndex, chapterProgress, animation = true)
 			index = Math.ceil(index / 2);
 
 		if(readingManga())
-			index = (indexNum - closest.page.index);
+			index = (view.distribution.total - closest.page.index);
 
 		reading.goToIndex(index, animation);
 	}
@@ -1538,7 +681,7 @@ function goNext()
 	{
 		showPreviousComic(2, true);
 	}
-	else if(nextIndex <= indexNum || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
+	else if(nextIndex <= view.distribution.total || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
 		if(_config.readingWebtoon)
 			goScrollPercent(70, true);
@@ -1547,11 +690,11 @@ function goNext()
 
 		music.soundEffect.page();
 	}
-	else if(currentIndex == indexNum && dom.nextComic() && !readingManga())
+	else if(currentIndex == view.distribution.total && dom.nextComic() && !readingManga())
 	{
 		showNextComic(1, true);
 	}
-	else if(currentIndex == indexNum && dom.previousComic() && readingManga())
+	else if(currentIndex == view.distribution.total && dom.previousComic() && readingManga())
 	{
 		showNextComic(1, true, true);
 	}
@@ -1566,7 +709,7 @@ function goPrevious()
 
 	readingDirection = realReadingDirection = false;
 
-	if(currentIndex > indexNum)
+	if(currentIndex > view.distribution.total)
 	{
 		showNextComic(2, true);
 	}
@@ -1597,7 +740,7 @@ function goStart(force = false)
 		const hasComic = readingManga() ? dom.nextComic() : dom.previousComic();
 		progress.activeSave();
 
-		if((currentIndex > indexNum || (currentIndex - 1 == 0 && hasComic)) && (!maxPageVisibility || currentPageVisibility == 0))
+		if((currentIndex > view.distribution.total || (currentIndex - 1 == 0 && hasComic)) && (!maxPageVisibility || currentPageVisibility == 0))
 		{
 			goPrevious();
 
@@ -1643,7 +786,7 @@ function goEnd(force = false)
 		const hasComic = readingManga() ? dom.previousComic() : dom.nextComic();
 		progress.activeSave();
 
-		if((currentIndex < 1 || (currentIndex == indexNum && hasComic)) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
+		if((currentIndex < 1 || (currentIndex == view.distribution.total && hasComic)) && (!maxPageVisibility || maxPageVisibility == currentPageVisibility))
 		{
 			goNext();
 
@@ -1654,7 +797,7 @@ function goEnd(force = false)
 			readingDirection = false;
 			realReadingDirection = true;
 
-			goToIndex(indexNum, true, true, true);
+			goToIndex(view.distribution.total, true, true, true);
 
 			return true;
 		}
@@ -1703,7 +846,7 @@ function scrollNextOrPrevComic(prev = false, delay = false)
 
 	scrollNextOrPrevComicDelayed = false;
 
-	if(prev && (scrollInStart || currentIndex == indexNum + 1))
+	if(prev && (scrollInStart || currentIndex == view.distribution.total + 1))
 	{
 		if(currentIndex != 0)
 			reading.goPrev();
@@ -1712,7 +855,7 @@ function scrollNextOrPrevComic(prev = false, delay = false)
 	}
 	else if(!prev && (scrollInEnd || currentIndex == 0))
 	{	
-		if(currentIndex != indexNum + 1)
+		if(currentIndex != view.distribution.total + 1)
 			reading.goNext();
 
 		return true;
@@ -1731,8 +874,8 @@ function onScroll(event)
 
 		let center = 0;
 
-		let availableScroll = rightSize.scrollHeight - rightSize.height;
-		let centerOffset = (availableScroll < rightSize.height ? availableScroll : rightSize.height) / 2;
+		let availableScroll = view.rightSize.scrollHeight - view.rightSize.height;
+		let centerOffset = (availableScroll < view.rightSize.height ? availableScroll : view.rightSize.height) / 2;
 
 		if(scrollTop < centerOffset)
 			center = scrollTop + (centerOffset * (scrollTop / centerOffset));
@@ -1745,12 +888,12 @@ function onScroll(event)
 		let closest = false;
 
 		toBreak:
-		for(let key1 in imagesFullPosition)
+		for(let key1 = 0, len = view.imagesFullPosition.length; key1 < len; key1++)
 		{
-			for(let key2 in imagesFullPosition[key1])
-			{
-				let position = imagesFullPosition[key1][key2];
+			const group = view.imagesFullPosition[key1];
 
+			for(const position of group)
+			{
 				if(position.top < center && position.bottom > center)
 				{
 					selIndex = +key1;
@@ -1769,17 +912,17 @@ function onScroll(event)
 			}
 		}
 
-		let imgHeight = imagesFullPosition[selIndex][0].bottom - imagesFullPosition[selIndex][0].top + (readingMargin().top * 2);
+		let imgHeight = view.imagesFullPosition[selIndex][0].bottom - view.imagesFullPosition[selIndex][0].top + (readingMargin().top * 2);
 
-		let pageVisibility = Math.floor(imgHeight / rightSize.height);
+		let pageVisibility = Math.floor(imgHeight / view.rightSize.height);
 
 		maxPageVisibility = pageVisibility;
 
-		let contentHeightRes = pageVisibility > 0 ? ((rightSize.height * pageVisibility) - imgHeight) / pageVisibility : 0;
+		let contentHeightRes = pageVisibility > 0 ? ((view.rightSize.height * pageVisibility) - imgHeight) / pageVisibility : 0;
 
-		const scrollPart = ((rightSize.height - contentHeightRes) - rightSize.height / pageVisibility);
+		const scrollPart = ((view.rightSize.height - contentHeightRes) - view.rightSize.height / pageVisibility);
 
-		currentPageVisibility = Math.round((scrollTop - (imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
+		currentPageVisibility = Math.round((scrollTop - (view.imagesFullPosition[selIndex][0].top - readingMargin().top)) / scrollPart);
 		if(currentPageVisibility < 0) currentPageVisibility = 0;
 
 		if(currentIndex != selIndex + 1)
@@ -1791,7 +934,7 @@ function onScroll(event)
 
 			eachImagesDistribution(selIndex, ['image'], function(image){
 
-				if(!isBookmarkTrue && images[image.index] && isBookmark(p.normalize(images[image.index].path)))
+				if(!isBookmarkTrue && imagesData[image.index] && isBookmark(p.normalize(imagesData[image.index].path)))
 					isBookmarkTrue = true;
 
 			});
@@ -1815,7 +958,7 @@ function onScroll(event)
 			}
 		}
 
-		previousScrollTop = scrollTop;
+		view.stayInLine.previousScrollTop = scrollTop;
 
 		scrollInStart = scrollTop <= 1 ? true : false;
 		scrollInEnd = scrollTop >= availableScroll - 1 ? true : false;
@@ -1944,7 +1087,7 @@ function showNextComic(mode, animation = true, invert = false)
 					'transform-origin': '0px center',
 					'transition': 'transform '+((animation) ? transition : 0)+'s, background-color 0.2s, box-shadow 0.2s',
 					'transition-property': 'transform',
-					'transform': 'scale('+scale+') translate(-'+(contentWidth * (readingViewIs('slide') ? (indexNum - 1) : 0))+'px, 0px)',
+					'transform': 'scale('+scale+') translate(-'+(contentWidth * (readingViewIs('slide') ? (view.distribution.total - 1) : 0))+'px, 0px)',
 				});
 			}
 
@@ -1956,7 +1099,7 @@ function showNextComic(mode, animation = true, invert = false)
 		else
 			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
 
-		currentIndex = indexNum + 1;
+		currentIndex = view.distribution.total + 1;
 	}
 	else
 	{
@@ -1983,12 +1126,12 @@ function showNextComic(mode, animation = true, invert = false)
 
 			template.contentRight('.reading-body > div').css({
 				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
-				'transform': 'scale(1) translate(-'+(contentWidth * (readingViewIs('slide') ? (indexNum - 1) : 0))+'px, 0px)',
+				'transform': 'scale(1) translate(-'+(contentWidth * (readingViewIs('slide') ? (view.distribution.total - 1) : 0))+'px, 0px)',
 			});
 		}
 
 		showComicSkip = setTimeout(function(){showComicSkip = false}, _config.readingViewSpeed * 1000);
-		currentIndex = indexNum;
+		currentIndex = view.distribution.total;
 	}
 }
 
@@ -2114,7 +1257,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			{
 				currentZoomIndex = (currentIndex - 2);
 			}
-			else if(currentRect.top + currentRect.height < currentPageXY.y && currentIndex <= indexNum)
+			else if(currentRect.top + currentRect.height < currentPageXY.y && currentIndex <= view.distribution.total)
 			{
 				currentZoomIndex = currentIndex;
 			}
@@ -2536,8 +1679,8 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 {
 	if(currentScale == 1) // Show current image in original size
 	{
-		const _image = imagesDistribution[currentIndex - 1][0];
-		if(_image.folder || _image.blank) _image = imagesDistribution[currentIndex - 1][1] || false;
+		const _image = view.distribution.distribution[currentIndex - 1][0];
+		if(_image.folder || _image.blank) _image = view.distribution.distribution[currentIndex - 1][1] || false;
 
 		if(_image && !_image.folder && !_image.blank)
 		{
@@ -3066,7 +2209,7 @@ function magnifyingGlassControl(mode, event = false, lensData = false)
 		contentRight.style.cursor = '';
 	}
 
-	//calculateView();
+	//view.calculateView();
 }
 
 async function resized()
@@ -3085,10 +2228,10 @@ async function resized()
 	{
 		if(!readingIsEbook)
 		{
-			disposeImages();
+			view.disposeImages();
 			zoomScrollHeight();
-			calculateView();
-			stayInLine(true);
+			view.calculateView();
+			view.stayInLine.recalculate(true);
 		}
 
 		render.resized(doublePage.active());
@@ -3097,7 +2240,7 @@ async function resized()
 		hideMouseInFullscreen();
 	}
 
-	// getPreviusContentSize();
+	// view.stayInLine.getPreviusContentSize();
 }
 
 var hiddenContentLeft = false, hiddenBarHeader = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
@@ -3268,7 +2411,7 @@ var activeOnScroll = true;
 function disableOnScroll(disable = true)
 {
 	activeOnScroll = !disable;
-	if(!disable) getPreviusContentSize();
+	if(!disable) view.stayInLine.getPreviusContentSize();
 }
 
 function setReadingDragScroll(dragScroll)
@@ -3333,6 +2476,14 @@ function changePagesView(mode, value, save)
 	if(currentScale != 1)
 		reading.resetZoom(true, false, false);
 
+	const updateView = function(disposeImages) {
+
+		view.disposeImages(disposeImages);
+		view.calculateView();
+		view.stayInLine.recalculate();
+
+	}
+
 	const imageIndex = reloadIndex();
 
 	if(mode == 0)
@@ -3358,9 +2509,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 2) // Sets the margin of the pages
 	{
-		disposeImages({margin: value});
-		calculateView();
-		stayInLine();
+		updateView({margin: value});
 
 		if(save) updateReadingPagesConfig('readingMargin', {margin: value, top: value, bottom: value, left: value, right: value});
 		updateEbook(save);
@@ -3427,9 +2576,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 10) // Set horizontal margin of the pages
 	{
-		disposeImages({left: value, right: value});
-		calculateView();
-		stayInLine();
+		updateView({left: value, right: value});
 
 		render.resized(doublePage.active());
 
@@ -3440,9 +2587,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 11) // Set vertical margin of the pages
 	{
-		disposeImages({top: value, bottom: value});
-		calculateView();
-		stayInLine();
+		updateView({top: value, bottom: value});
 
 		render.resized(doublePage.active());
 
@@ -3467,9 +2612,7 @@ function changePagesView(mode, value, save)
 	}
 	else if(mode == 14) // Set horizontal margin of the horizontals pages
 	{
-		disposeImages({horizontalsLeft: value, horizontalsRight: value});
-		calculateView();
-		stayInLine();
+		updateView({horizontalsLeft: value, horizontalsRight: value});
 
 		render.resized(doublePage.active());
 
@@ -3478,9 +2621,9 @@ function changePagesView(mode, value, save)
 	}
 	/*else if(mode == 15) // Set vertical margin of the horizontals pages
 	{
-		disposeImages({horizontalsTop: value, horizontalsBottom: value});
-		calculateView();
-		stayInLine();
+		view.disposeImages({horizontalsTop: value, horizontalsBottom: value});
+		view.calculateView();
+		view.stayInLine.recalculate();
 
 		if(save) updateReadingPagesConfig('readingHorizontalsMargin', {margin: _config.readingHorizontalsMargin.margin, top: value, bottom: value, left: _config.readingHorizontalsMargin.left, right: _config.readingHorizontalsMargin.right});
 	}*/
@@ -3490,10 +2633,8 @@ function changePagesView(mode, value, save)
 
 		if(readingIsEbook) return;
 
-		addHtmlImages();
-		disposeImages();
-		calculateView();
-		stayInLine();
+		view.distribution.htmlItems();
+		updateView();
 
 		render.resized(doublePage.active());
 		filters.cleanIsBlackAndWhiteCurrent();
@@ -3504,10 +2645,8 @@ function changePagesView(mode, value, save)
 
 		if(readingIsEbook) return;
 
-		addHtmlImages();
-		disposeImages();
-		calculateView();
-		stayInLine();
+		view.distribution.htmlItems();
+		updateView();
 
 		render.resized(doublePage.active());
 		filters.cleanIsBlackAndWhiteCurrent();
@@ -3521,9 +2660,7 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingForceSinglePage', value);
 
-		disposeImages();
-		calculateView();
-		stayInLine();
+		updateView();
 
 		render.resized(doublePage.active());
 		// updateEbook(true);
@@ -3587,7 +2724,7 @@ function reloadIndex()
 	let newIndex = (currentIndex - 1);
 
 	if(readingManga())
-		newIndex = (indexNum - newIndex) - 1;
+		newIndex = (view.distribution.total - newIndex) - 1;
 
 	eachImagesDistribution(newIndex, ['image', 'blank'], function(image) {
 
@@ -3616,7 +2753,7 @@ function reload(full = false, imageIndex = false)
 
 	if(full)
 	{
-		dom.openComic(true, (images[imageIndex]?.path || dom.history.path), dom.history.mainPath, false, false, false, true);
+		dom.openComic(true, (imagesData[imageIndex]?.path || dom.history.path), dom.history.mainPath, false, false, false, true);
 	}
 	else
 	{
@@ -3742,14 +2879,14 @@ function createAndDeleteBookmark(index = false)
 		let newIndex = (currentIndex - 1);
 
 		if(readingManga())
-			newIndex = (indexNum - newIndex) - 1;
+			newIndex = (view.distribution.total - newIndex) - 1;
 
 		eachImagesDistribution(newIndex, ['image'], function(image){
 
 			if(!imageIndex)
 				imageIndex = image.index;
 
-			if(isBookmark(p.normalize(images[image.index].path)))
+			if(isBookmark(p.normalize(imagesData[image.index].path)))
 			{
 				if(imageBookmark)
 				{
@@ -3771,7 +2908,7 @@ function createAndDeleteBookmark(index = false)
 	if(currentIndex <= contentNum && currentIndex > 0 && imageIndex)
 	{
 		const bookmarks = getBookmarks();
-		let path = p.normalize(images[imageIndex].path);
+		let path = p.normalize(imagesData[imageIndex].path);
 
 		let progress = 0;
 		let chapterProgress = 0;
@@ -4414,14 +3551,16 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	if(contains && contains.indexOf('blank') !== -1)
 		blank = true;
 
-	if(typeof imagesDistribution[index] !== 'undefined')
+	const distribution = view.distribution.distribution;
+
+	if(distribution[index])
 	{
 		each:
-		for(let key in imagesDistribution[index])
+		for(const item of distribution[index])
 		{
-			if(!contains || (img && !imagesDistribution[index][key].folder && !imagesDistribution[index][key].blank) || (folder && imagesDistribution[index][key].folder) || (blank && imagesDistribution[index][key].blank))	
+			if(!contains || (img && !item.folder && !item.blank) || (folder && item.folder) || (blank && item.blank))	
 			{
-				callback(imagesDistribution[index][key]);
+				callback(item);
 
 				if(onlyFirstMeet)
 					break each;
@@ -4439,10 +3578,10 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 
 function getImage(index = 0)
 {
-	if(images[index])
-		return images[index];
+	if(imagesData[index])
+		return imagesData[index];
 
-	return images[Object.keys(images)[0]];
+	return imagesData[Object.keys(imagesData)[0]];
 }
 
 function getImageByPosition(position = 0, subindex = 0)
@@ -4451,11 +3590,11 @@ function getImageByPosition(position = 0, subindex = 0)
 	let _images = [];
 	let _subindex = 0;
 
-	for(let key in images)
+	for(let key in imagesData)
 	{
 		if(position === false || position == imagesData[key].position)
 		{
-			image = images[key];
+			image = imagesData[key];
 			_images.push(image);
 
 			if(_subindex === subindex)
@@ -4466,17 +3605,17 @@ function getImageByPosition(position = 0, subindex = 0)
 	}
 
 	if(subindex === false)
-		return _images.length ? _images : ([image] || [images[Object.keys(images)[0]]]);
+		return _images.length ? _images : ([image] || [imagesData[Object.keys(images)[0]]]);
 
-	return image || images[Object.keys(images)[0]];
+	return image || imagesData[Object.keys(imagesData)[0]];
 }
 
 function getImageByName(name = '')
 {
-	for(let key in images)
+	for(let key in imagesData)
 	{
-		if(p.basename(images[key].path) === name)
-			return images[key];
+		if(p.basename(imagesData[key].path) === name)
+			return imagesData[key];
 	}
 
 	return false;
@@ -4696,9 +3835,9 @@ async function fastUpdateEbookPages(readingEbook = false, resize = false)
 
 	if(resize)
 	{
-		disposeImages();
-		calculateView();
-		stayInLine();
+		view.disposeImages();
+		view.calculateView();
+		view.stayInLine.recalculate();
 	}
 
 	if(_ebook)
@@ -4727,16 +3866,16 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		return;
 	}
-	else if(!nextOpenChapterProgress && imagesDistribution && imagesDistribution[0] && !imagePath)
+	else if(!nextOpenChapterProgress && view.distribution.distribution && view.distribution.distribution[0] && !imagePath)
 	{
-		const _doublePage = imagesDistribution[0].length > 1 ? true : false;
+		const _doublePage = view.distribution.distribution[0].length > 1 ? true : false;
 
 		let index = currentIndex;
 
 		if(_doublePage && !doublePage.active())
 			index = Math.ceil(index / 2);
 
-		let imageIndex = imagesDistribution[index - 1][0].index;
+		let imageIndex = view.distribution.distribution[index - 1][0].index;
 		let page = _ebook.pages[imageIndex - 1];
 
 		let chapterIndex = page.chapterIndex;
@@ -4757,7 +3896,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 	}
 	else if(!generateEbookPagesCancel && onReading)
 	{
-		images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
+		items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, pageRangeHistory = [];
 
 		let comics = [];
 
@@ -4767,7 +3906,6 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			let index = i + 1;
 			let path = page.path+'?page='+i;
 
-			images[index] = {index: index, path: path};
 			imagesPath[path] = index;
 
 			const chapter = page.chapter;
@@ -4775,7 +3913,8 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			const width = chapter.fixedLayout ? chapter.width : ebookConfig.width;
 			const height = chapter.fixedLayout ? chapter.height : ebookConfig.height;
 
-			imagesData[index] = {width, height, aspectRatio: (width / height), name: page.name, fixedLayout: chapter.fixedLayout};
+			imagesData[index] = Object.assign(page, {path, index, width, height, aspectRatio: (width / height), name: page.name, fixedLayout: chapter.fixedLayout, canvas: false, ebook: true, folder: false});
+			items.push(imagesData[index]);
 
 			comics.push({
 				index: i + 1,
@@ -4805,9 +3944,10 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		imagesNum = contentNum = ebookPages.pages.length;
 
-		addHtmlImages();
-		disposeImages();
-		calculateView(first);
+		view.start();
+		view.distribution.htmlItems();
+		view.disposeImages();
+		view.calculateView(first);
 
 		handlebarsContext.ebookLandmarks = ebookPages.landmarks;
 		handlebarsContext.ebookToc = ebookPages.toc;
@@ -4832,7 +3972,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		let newIndex = currentIndex;
 
 		if(readingManga())
-			newIndex = (indexNum - newIndex) + 1;
+			newIndex = (view.distribution.total - newIndex) + 1;
 
 		if(nextOpenChapterProgress)
 			goToChapterProgress(nextOpenChapterProgress.chapterIndex, nextOpenChapterProgress.chapterProgress, false);
@@ -4840,7 +3980,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 			goToIndex(newIndex, false, end, end);
 
 		if(readingViewIs('scroll'))
-			getPreviusContentSize();
+			view.stayInLine.getPreviusContentSize();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
@@ -4855,14 +3995,14 @@ function currentImagePosition()
 	let index = currentIndex - 1;
 
 	if(readingManga())
-		index = (indexNum - index) - 1;
+		index = (view.distribution.total - index) - 1;
 
 	return index;
 }
 
 function currentImagePage()
 {
-	return imagesDistribution?.[currentImagePosition()]?.[0]?.index || 0;
+	return view.distribution.distribution?.[currentImagePosition()]?.[0]?.index || 0;
 }
 
 function currentImageIndex()
@@ -5320,7 +4460,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 {
 	let contentRightIndex = template.contentRightIndex();
 
-	images = {}, imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, previousScrollTop = 0, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
+	items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
 
 	isLoaded = false;
 	magnifyingGlassPosition.mode = false;
@@ -5908,6 +5048,9 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		dom.this(contentRight).find('.loading').remove();
 		dom.this(contentRight).find('.reading-body').css({opacity: 1});
 
+		if(!isCanvas && !isEbook)
+			view.getAllSizes(template.contentRightIndex());
+
 	});
 
 	if(isCanvas)
@@ -5927,15 +5070,16 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 			let height = +image.size.height;
 			let path = image.path;
 
-			images[index] = {index: index, path: path};
 			imagesPath[path] = index;
 
 			const rotated = (width > height) ? _config.readingRotateHorizontals : _config.readingRotate;
 
 			if(rotated == 1 || rotated == 2)
-				imagesData[index] = {width: height, height: width, aspectRatio: (height / width), rotated: rotated, name: image.name};
+				imagesData[index] = Object.assign(image, {width: height, height: width, aspectRatio: (height / width), rotated: rotated, name: image.name});
 			else
-				imagesData[index] = {width: width, height: height, aspectRatio: (width / height), rotated: rotated, name: image.name};
+				imagesData[index] = Object.assign(image, {width: width, height: height, aspectRatio: (width / height), rotated: rotated, name: image.name});
+
+			items.push(imagesData[index]);
 		}
 
 		sidebar.sizes(imagesData, currentComics);
@@ -5943,20 +5087,21 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
 
-		addHtmlImages();
-		disposeImages();
-		calculateView(true);
+		view.start();
+		view.distribution.htmlItems();
+		view.disposeImages();
+		view.calculateView(true);
 
 		currentIndex = imagesData[currentIndex].position + 1;
 		let newIndex = currentIndex;
 
 		if(readingManga())
-			newIndex = (indexNum - newIndex) + 1;
+			newIndex = (view.distribution.total - newIndex) + 1;
 
 		goToIndex(newIndex, false, end, end);
 
 		if(readingViewIs('scroll'))
-			getPreviusContentSize();
+			view.stayInLine.getPreviusContentSize();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
@@ -5971,7 +5116,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 	{
 		render.setFile(false, (config.readingMagnifyingGlass ? config.readingMagnifyingGlassZoom : false), 'images');
 
-		const sizes = await image.getSizes(_images);
+		const sizes = await view.getRequiredSizes(currentIndex, _images);
 
 		// Avoid continue if another comic has been opened
 		if(contentRightIndex != template.contentRightIndex())
@@ -5980,19 +5125,24 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		for(let i = 0; i < len; i++)
 		{
 			const image = _images[i];
-			const size = sizes[i];
+			const size = sizes[i] || {width: 1, height: 1};
 
-			if(size)
+			if(!image.folder)
 			{
 				const rotated = (size.width > size.height) ? _config.readingRotateHorizontals : _config.readingRotate;
 
 				if(rotated == 1 || rotated == 2)
-					imagesData[image.index] = {width: size.height, height: size.width, aspectRatio: (size.height / size.width), rotated: rotated};
+					imagesData[image.index] = Object.assign(image, {width: size.height, height: size.width, aspectRatio: (size.height / size.width), rotated: rotated});
 				else
-					imagesData[image.index] = {width: size.width, height: size.height, aspectRatio: (size.width / size.height), rotated: rotated};
+					imagesData[image.index] = Object.assign(image, {width: size.width, height: size.height, aspectRatio: (size.width / size.height), rotated: rotated});
 
-				images[image.index] = {index: image.index, path: image.path};
 				imagesPath[image.path] = image.index;
+				items.push(imagesData[image.index]);
+			}
+			else
+			{
+				const _image = Object.assign(image, {width: 1, height: 1, aspectRatio: 1, rotated: false});
+				items.push(_image);
 			}
 		}
 
@@ -6001,20 +5151,21 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
 
-		addHtmlImages();
-		disposeImages();
-		calculateView(true);
+		view.start();
+		view.distribution.htmlItems();
+		view.disposeImages();
+		view.calculateView(true);
 
 		currentIndex = imagesData[currentIndex] ? (imagesData[currentIndex].position + 1) : currentIndex;
 		let newIndex = currentIndex;
 
 		if(readingManga())
-			newIndex = (indexNum - newIndex) + 1;
-		
+			newIndex = (view.distribution.total - newIndex) + 1;
+
 		goToIndex(newIndex, false, end, end);
 
 		if(readingViewIs('scroll'))
-			getPreviusContentSize();
+			view.stayInLine.getPreviusContentSize();
 
 		setTimeout(function(){onScroll.call(template._contentRight().firstElementChild)}, 500);
 
@@ -6045,13 +5196,14 @@ module.exports = {
 	reload: reload,
 	reloadAnimated: reloadAnimated,
 	reloadIndex: reloadIndex,
-	images: function(){return images},
 	imagesNum: function(){return imagesNum},
-	indexNum: function(){return indexNum},
+	indexNum: function(){return view.distribution.total},
 	contentNum: function(){return contentNum},
 	imagesNumLoad: imagesNumLoad,
+	get items(){return items},
 	imagesData: function(){return imagesData},
 	imagesDataClip: function(){return imagesDataClip},
+	imageClip: readingImageClip,
 	scalePrevData: function(){return scalePrevData},
 	goToPage: goToPage,
 	goToImage: goToImage,
@@ -6067,6 +5219,8 @@ module.exports = {
 	goNext: goNext,
 	goEnd: goEnd,
 	goNextComic: goNextComic,
+	showPreviousComic: showPreviousComic,
+	showNextComic: showNextComic,
 	pageRange: pageRange,
 	goBackPageRangeHistory: goBackPageRangeHistory,
 	goPageDialog: goPageDialog,
@@ -6088,14 +5242,11 @@ module.exports = {
 	changePagesView: changePagesView,
 	change: change,
 	magnifyingGlassControl: magnifyingGlassControl,
-	addHtmlImages: addHtmlImages,
-	disposeImages: disposeImages,
-	calculateView: calculateView,
-	stayInLine: stayInLine,
 	setCurrentComics: setCurrentComics,
 	currentComics: function(){return currentComics},
 	readingView: readingView,
 	readingViewIs: readingViewIs,
+	viewIs: readingViewIs,
 	readingDirection: function(){return readingDirection},
 	realReadingDirection: function(){return realReadingDirection},
 	disableOnScroll: disableOnScroll,
@@ -6128,14 +5279,13 @@ module.exports = {
 	purgeGlobalReadingPagesConfig: purgeGlobalReadingPagesConfig,
 	updateConfigLabels: updateConfigLabels,
 	onReading: function(){return onReading},
-	calculateImagesDistribution: calculateImagesDistribution,
-	imagesDistribution: function(){return imagesDistribution},
+	imagesDistribution: function(){return view.distribution.distribution},
 	applyMangaReading: applyMangaReading,
 	haveZoom: function(){return haveZoom},
 	getTabState: getTabState,
 	setTabState: setTabState,
-	imagesPosition: function(){return imagesPosition},
-	imagesFullPosition: function(){return imagesFullPosition},
+	imagesPosition: function(){return view.imagesPosition},
+	imagesFullPosition: function(){return view.imagesFullPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
 	setReadingDragScroll: setReadingDragScroll,
 	get readingDragScroll(){return readingDragScroll},
@@ -6149,7 +5299,7 @@ module.exports = {
 	setShownBarHeader: function(value){shownBarHeader = value},
 	loadReadingMoreOptions: loadReadingMoreOptions,
 	currentScale: function(){return currentScale},
-	rightSize: function(){return rightSize},
+	rightSize: function(){return view.rightSize},
 	zoomingIn: function(){return zoomingIn},
 	updateReadingPagesConfig: updateReadingPagesConfig,
 	readingFile: function(){return readingFile},
@@ -6165,6 +5315,7 @@ module.exports = {
 	isLoaded: function(value){return isLoaded},
 	manga: readingManga,
 	margin: readingMargin,
+	horizontalsMargin: readingHorizontalsMargin,
 	isLoad: isLoad,
 	onLoad: onLoad,
 	ebook: readingEbook,
@@ -6178,5 +5329,6 @@ module.exports = {
 	discord: discord,
 	progress: progress,
 	doublePage: doublePage,
+	view: view,
 	ai: ai,
 };

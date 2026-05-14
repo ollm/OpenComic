@@ -1,11 +1,14 @@
 //Load template
 
-function loadTemplate(file)
+function loadTemplate(file, context = false)
 {
+	if(context === false)
+		context = handlebarsContext;
+
 	if(templates.templatesCacheTheme[config.theme] && templates.templatesCacheTheme[config.theme][file])
-		return templates.templatesCacheTheme[config.theme][file](handlebarsContext);
+		return templates.templatesCacheTheme[config.theme][file](context);
 	else if(templates.templatesCache[file])
-		return templates.templatesCache[file](handlebarsContext);
+		return templates.templatesCache[file](context);
 }
 
 function loadTemplateQuery(querySelector, file)

@@ -60,10 +60,12 @@ async function goTo(goTo = false, animation = true)
 			switch(goTo.page)
 			{
 				case 'language':
+				case 'languages':
 					dom.loadLanguagePage(animation);
 					break;
 
 				case 'theme':
+				case 'themes':
 					dom.loadThemePage(animation);
 					break;
 

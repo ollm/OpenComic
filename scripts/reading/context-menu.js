@@ -149,17 +149,16 @@ function saveImage()
 
 function saveAllImages(position = false, image = false, _return = false)
 {
-	const images = reading.images();
 	const imagesData = reading.imagesData();
 
 	const toSave = [];
 	let highestPage = 0;
 
-	for(let key in images)
+	for(let key in imagesData)
 	{
 		if(!image)
 		{
-			const path = images[key].path;
+			const path = imagesData[key].path;
 
 			if(position === false || position == imagesData[key].position)
 				toSave.push({path: path, page: key});

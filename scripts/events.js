@@ -2,34 +2,25 @@ var buttonCancel, buttonPulsed;
 
 function eventsTab(activeTab = false)
 {
-	/*if(activeTab)
-	{
-		let tabsContent = dom.query('.tabs-content .tabs-'+activeTab);
-		console.log(tabsContent._this)
-		tabsContent.addClass('active');
-		tabsContent.siblings('.active').removeClass('active');
-
-		let tabs = dom.query('.tabs > div > div[data-name="'+activeTab+'"]');
-		tabs.addClass('active');
-		tabs.siblings('.active').removeClass('active');
-	}*/
-
 	app.event('.tabs:not(.not-tab-events) > div > div', 'click', _eventsTab, {capture: false});
 
-	let tabs = document.querySelectorAll('.tabs > div > div');
+	const tabs = document.querySelectorAll('.tabs > div > div');
 
 	for(let i = 0, len = tabs.length; i < len; i++)
 	{
 		tabs[i].dataset.index = i;
 	}
 
-	let tabsContent = document.querySelectorAll('.tabs-content > .active');
+	const tabsContent = document.querySelectorAll('.tabs-content > .active');
 
-	for(let i = 0, len = tabsContent.length; i < len; i++)
+	for(const tab of tabsContent)
 	{
-		tabsContent[i].parentElement.style.height = tabsContent[i].getBoundingClientRect().height+'px';
-	}
+		if(tab.classList.contains('precalculated-height'))
+			continue;
 
+		tab.classList.add('precalculated-height');
+		tab.parentElement.style.height = tab.getBoundingClientRect().height+'px';
+	}
 }
 
 var eventsTabST = false;
