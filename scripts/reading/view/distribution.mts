@@ -1,14 +1,12 @@
 import p from 'path';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare const app: any;
+// declare const app: any;
 declare const dom: any;
-declare const image: any;
 declare const _config: any;
 declare const reading: any;
 declare const storage: any;
 declare const template: any;
-declare const handlebarsContext: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 type GroupType = 'single' | 'double';
@@ -364,15 +362,15 @@ export default class Distribution
 		for(let i = 0, len = distribution.length; i < len; i++)
 		{
 			const newGroup = distribution[i];
-			const prevGroup = this.currentDistribution[i] || [];
+			const prevGroup = this.currentDistribution[i] ?? [];
 
-			const maxLen = Math.max(newGroup.length, prevGroup.length);
 			const compareGroup: Compare = {key1: i, items: []};
+			const maxLen = Math.max(newGroup.length, prevGroup.length);
 
 			for(let j = 0; j < maxLen; j++)
 			{
-				newGroup[j].key1 = i;
-				newGroup[j].key2 = j;
+				if(newGroup[j]) newGroup[j].key1 = i;
+				if(newGroup[j]) newGroup[j].key2 = j;
 
 				compareGroup.items.push({
 					prev: prevGroup[j] || null,

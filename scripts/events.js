@@ -15,8 +15,8 @@ function eventsTab(activeTab = false)
 
 	for(const tab of tabsContent)
 	{
-		if(tab.classList.contains('precalculated-height'))
-			continue;
+		// if(tab.classList.contains('precalculated-height'))
+		// 	continue;
 
 		tab.classList.add('precalculated-height');
 		tab.parentElement.style.height = tab.getBoundingClientRect().height+'px';

@@ -25,13 +25,16 @@ function getControlsPosition()
 
 	const MARGIN = 60; // Add some margin to have some area to click and drag the window
 
-	const controlsOnLeft = rect.left > 0;
-	const controlsWidth = controlsOnLeft ? rect.left : (window.innerWidth - rect.right);
+	const rightWidth = window.innerWidth - rect.right;
+
+	const controlsOnLeft = rect.left >= rightWidth;
+	const controlsWidth = controlsOnLeft ? rect.left : rightWidth;
 
 	const app = document.querySelector('.app');
 
 	app.style.setProperty('--controls-width', controlsWidth+'px');
 	app.style.setProperty('--controls-width-and-margin', (controlsWidth + MARGIN)+'px');
+	app.classList.remove('controls-left', 'controls-right');
 	app.classList.add(controlsOnLeft ? 'controls-left' : 'controls-right');
 
 	controls.position = controlsOnLeft ? 'left' : 'right';
