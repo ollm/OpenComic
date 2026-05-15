@@ -183,6 +183,9 @@ function requiredImages(index: number)
 		end = current + extraSingle;
 	}
 
+	if(start < 0)
+		start = 0;
+
 	return {start, end};
 }
 
@@ -221,17 +224,21 @@ async function getAllSizes(contentRightIndex: number)
 		item.aspectRatio = size.width / size.height;
 	}
 
+	if(!distribution)
+		return;
+
 	if(!diff)
 	{
+		distribution.htmlItems();
 		disposeImages();
+		calculateView();
+
+		reading.sidebar.sizes(reading.imagesData(), reading.currentComics());
 		return;
 	}
 
 	// Avoid continue if another comic has been opened
 	if(contentRightIndex != template.contentRightIndex())
-		return;
-
-	if(!distribution)
 		return;
 
 	distribution.htmlItems();
@@ -250,8 +257,15 @@ async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 	fetchedAllSizes = false;
 	const contentRightIndex = template.contentRightIndex();
 
-	const {start, end} = requiredImages(index);
-	const required = items.slice(start, end + 1);
+	let {start, end} = requiredImages(index);
+	let required = items.slice(start, end + 1);
+
+	if(!required.length)
+	{
+		start = 0;
+		end = items.length;
+		required = items;
+	}
 
 	console.time('getRequiredSizes');
 	const sizes = await image.getSizes(required);

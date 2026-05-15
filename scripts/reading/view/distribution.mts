@@ -117,8 +117,6 @@ export default class Distribution
 		});
 	}
 
-	// image.getSizeFromCache(path)
-
 	// Calculates whether to add a blank image (If the reading is in double page and do not apply to the horizontals)
 	precalculateBlankPage() {
 
@@ -130,11 +128,11 @@ export default class Distribution
 
 		let next: number | null = null;
 
-		for(let i = len; i >= 0; i--)
+		for(let i = len - 1; i >= 0; i--)
 		{
-			const image = this.items[i];
+			const item = this.items[i];
 
-			if(image && image.aspectRatio > 1)
+			if(item && item.aspectRatio > 1)
 				next = i;
 
 			this.nextHorizontalIndex[i] = next;
@@ -244,8 +242,9 @@ export default class Distribution
 			const firstBlankPages = customBlankPage(0);
 			blankPagesPrevHorizontal += (initialBlank ? 1 : 0) + firstBlankPages;
 
-			for(const item of this.items)
+			for(let i = 0, len = this.items.length; i < len; i++)
 			{
+				const item = this.items[i];
 				const clip = item.clip || item;
 
 				if(item.image)
@@ -269,7 +268,7 @@ export default class Distribution
 					}
 					else
 					{
-						if(_config.readingDoNotApplyToHorizontals && pageGroup.length === 0 && !blankPagesPrevHorizontal && this.blankPage(item.index)) // Align with next horizontal if there is no previous blank page and the current page should be blank
+						if(_config.readingDoNotApplyToHorizontals && pageGroup.length === 0 && !blankPagesPrevHorizontal && this.blankPage(i)) // Align with next horizontal if there is no previous blank page and the current page should be blank
 							pageGroup.push(createBlank(DOUBLE, item.index));
 
 						pageGroup.push(createImage(item, DOUBLE));
