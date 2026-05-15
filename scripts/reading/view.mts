@@ -9,6 +9,7 @@ declare const config: any;
 declare const reading: any;
 declare const _config: any;
 declare const template: any;
+declare const fileManager: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export interface RightSize {
@@ -154,7 +155,7 @@ function calculateView(first: boolean = false)
 	}
 }
 
-function requiredImages(index: number)
+function requiredImages(index: number, extra: boolean = true)
 {
 	const current = index - 1;
 
@@ -162,8 +163,8 @@ function requiredImages(index: number)
 	const isDoublePage = reading.doublePage.active();
 	const ignoreDoublePage = _config.readingDoNotApplyToHorizontals;
 
-	const extraSingle = 1; // Render previous and next image
-	const extraDouble = 2; // Render previous and next double pages
+	const extraSingle = extra ? 1 : 0; // Render previous and next image
+	const extraDouble = extra ? 2 : 0; // Render previous and next double pages
 
 	let start = 0;
 	let end;
@@ -257,7 +258,7 @@ async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 	fetchedAllSizes = false;
 	const contentRightIndex = template.contentRightIndex();
 
-	let {start, end} = requiredImages(index);
+	let {start, end} = requiredImages(index, true);
 	let required = items.slice(start, end + 1);
 
 	if(!required.length)
@@ -265,6 +266,15 @@ async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 		start = 0;
 		end = items.length;
 		required = items;
+	}
+
+	if(required.length < 10)
+	{
+		console.time('getRequiredSizes - makeAvailable');
+		const file = fileManager.file(false, {log: false, progress: false});
+		await file.makeAvailable(required);
+		file.destroy();
+		console.timeEnd('getRequiredSizes - makeAvailable');
 	}
 
 	console.time('getRequiredSizes');

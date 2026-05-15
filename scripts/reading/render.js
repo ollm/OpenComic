@@ -467,6 +467,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			{
 				const file = fileManager.file(false, {log: false, progress: false});
 				await file.makeAvailable([{path}]);
+				file.destroy();
 			}
 
 			if(compatible.image.convert(path)) // Convert unsupported images
