@@ -1,4 +1,4 @@
-import view from '../view.mjs';
+import view, {viewSize} from '../view.mjs';
 import {Item} from './distribution.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -88,26 +88,28 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 	const type = item.groupType;
 	const index = item.key2 as number;
 
+	const itemAspectRatio = item.calcAspectRatio ?? item.aspectRatio;
+
 	const isDouble = type === 'double';
-	const isHorizontalMargin = !isDouble && _config.readingHorizontalsMarginActive && item.aspectRatio > 1;
+	const isHorizontalMargin = !isDouble && _config.readingHorizontalsMarginActive && itemAspectRatio > 1;
 	const forceSinglePage = _config.readingForceSinglePage && !_config.readingWebtoon;
 
 	const aspectRatio = isHorizontalMargin ? cSizes.horizontals.aspectRatio : cSizes.aspectRatio;
 	const marginHorizontal = isHorizontalMargin ? cSizes.horizontals.horizontal : cSizes.horizontal;
 
-	const fitHeight = (((isDouble && join.sum < cSizes.width) || (!isDouble && aspectRatio > item.aspectRatio)) && !(isScroll && (_config.readingViewAdjustToWidth || _config.readingWebtoon)));
+	const fitHeight = (((isDouble && join.sum < cSizes.width) || (!isDouble && aspectRatio > itemAspectRatio)) && !(isScroll && (_config.readingViewAdjustToWidth || _config.readingWebtoon)));
 
 	const calcWidth = () => {
 
 		if(fitHeight)
-			return cSizes.height * item.aspectRatio;
+			return cSizes.height * itemAspectRatio;
 
 		if(isDouble)
 		{
-			const width = cSizes.height * item.aspectRatio;
+			const width = cSizes.height * itemAspectRatio;
 			const restAspectRatio = (join.width - width) / cSizes.height;
 
-			return (item.aspectRatio / (item.aspectRatio + restAspectRatio)) * (cSizes.width - cSizes.horizontal);
+			return (itemAspectRatio / (itemAspectRatio + restAspectRatio)) * (cSizes.width - cSizes.horizontal);
 		}
 
 		return cSizes.width;
@@ -116,7 +118,7 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 
 	const calcHeight = () => {
 
-		return width / item.aspectRatio;
+		return width / itemAspectRatio;
 
 	};
 
@@ -284,6 +286,15 @@ function applySizes(item: Item, cSizes: CalcSizes, sizes: Sizes, clip: Clip, las
 
 	};
 
+	item.rendered = {
+		height,
+		width,
+		top,
+		bottom: marginBottom,
+		left,
+		right: 0,
+	};
+
 	if(item.element?.firstElementChild) apply(item.element.firstElementChild as HTMLDivElement);
 	if(item.elementLens?.firstElementChild) apply(item.elementLens.firstElementChild as HTMLDivElement);
 
@@ -298,15 +309,9 @@ export default function disposeImages(data: Margin | boolean = false)
 	const marginHorizontalsHorizontal = reading.horizontalsMargin(data).left;
 
 	const contentRight = template._contentRight() as HTMLDivElement;
-	const rect = contentRight.firstElementChild!.getBoundingClientRect();
-
-	let contentWidth = rect.width;
-	const contentHeight = rect.height;
 
 	const isScroll = reading.viewIs('scroll') as boolean;
-
-	if(isScroll)
-		contentWidth = contentRight.querySelector('.reading-body')!.getBoundingClientRect().width;
+	const {width: contentWidth, height: contentHeight} = viewSize(isScroll);
 
 	const width = contentWidth - (marginHorizontal * 2);
 	const widthHorizontal = contentWidth - (marginHorizontalsHorizontal * 2);

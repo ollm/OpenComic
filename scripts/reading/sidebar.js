@@ -43,18 +43,62 @@ function imageSize(image)
 		return {width: image.width, height: image.height};
 }
 
+let positions = {};
+let scrollHeight = 0;
+
 function calculateScrollPositions(contentLeft, imgs)
 {
-	const scrollTop = contentLeft.firstElementChild.scrollTop;
+	positions = {};
+	const result = images;
+	const round = app.roundDPR;
+	const items = reading.items;
 
-	for(let i = 0, len = imgs.length; i < len; i++)
+	let top = 0;
+
+	for(const item of items)
 	{
-		const img = imgs[i];
-		const index = img.dataset.index;
+		if(result[item.index]) result[item.index].top = top + 16; // 16 is the padding of the image
 
-		const top = img.getBoundingClientRect().top + scrollTop;
-		images[img.dataset.index].top = top;
+		if(item.folder)
+		{
+			top += 56; // Height of folders in sidebar
+			continue;
+		}
+
+		const size = imageSize(item);
+		const height = round(80 * size.height / size.width) + 34; // 34 is the sum of padding (16px) and image border (1px)
+
+		positions[item.index] = {
+			top: top,
+			height: height,
+		};
+
+		top += height;
 	}
+
+	scrollHeight = top;
+}
+
+function disableThumbnailsHeight(end = false)
+{
+	const items = end ? reading.items.slice(0, end) : reading.items;
+	return items.reduce((sum, item) => sum + (item.folder ? 56 : 52), 0); // 56 for folders and 52 for images
+}
+
+function calcScrollHeight()
+{
+	if(config.readingDisableThumbnails)
+		return disableThumbnailsHeight();
+
+	return scrollHeight;
+}
+
+function getPosition(page = 0)
+{
+	if(config.readingDisableThumbnails)
+		return {top: disableThumbnailsHeight(page - 1), height: images[page] ? 52 : 56};
+
+	return positions[page] || {top: 0, height: 0};
 }
 
 function filterShowed(images)
@@ -139,7 +183,7 @@ async function goToImage(index)
 		{
 			img.src = thumbnail.path;
 			img.parentElement.classList.add('show');
-			img.style.height = '';
+			// img.style.height = '';
 		}
 		else
 		{
@@ -196,4 +240,6 @@ module.exports = {
 	sizes,
 	goToImage,
 	disableEvent,
+	getPosition,
+	get scrollHeight() {return calcScrollHeight()},
 };

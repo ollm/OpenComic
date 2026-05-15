@@ -11,7 +11,7 @@ const render = require(p.join(appDir, '.dist/reading/render.js')),
 	doublePage = require(p.join(appDir, '.dist/reading/double-page.js')),
 	view = require(p.join(appDir, '.dist/reading/view.mjs')).default;
 
-var items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, foldersPosition = {}, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
+var items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
 let currentComics = [];
 
@@ -175,32 +175,35 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 
 	if(leftItem)
 	{
-		let rectItem = leftItem.getBoundingClientRect();
-		let rectScroll = leftScroll.getBoundingClientRect();
+		let scrollTop = 0;
+		let scrollHeight = 0;
+		const leftSize = view.leftSize(false);
 
-		let scrollTop = (((rectItem.top + leftScroll.scrollTop) - rectScroll.top) + (rectItem.height / 2)) - (rectScroll.height / 2);
-		let scrollHeight = leftScroll.scrollHeight;
+		if(readingIsEbook)
+		{
+			const rectItem = leftItem.getBoundingClientRect();
 
-		if(scrollTop > 0 && scrollTop < (scrollHeight - rectScroll.height))
-		{
-			if(animation)
-				$(leftScroll).stop(true).animate({scrollTop: scrollTop+'px'}, animationDurationMS);
-			else
-				leftScroll.scrollTop = scrollTop;
-		}
-		else if(scrollTop > 0)
-		{
-			if(animation)
-				$(leftScroll).stop(true).animate({scrollTop: (scrollHeight - rectScroll.height)+'px'}, animationDurationMS);
-			else
-				leftScroll.scrollTop = (scrollHeight - rectScroll.height);
+			scrollTop = (((rectItem.top + leftScroll.scrollTop) - leftSize.top) + (rectItem.height / 2)) - (leftSize.height / 2);
+			scrollHeight = leftScroll.scrollHeight;
 		}
 		else
 		{
-			if(animation)
-				$(leftScroll).stop(true).animate({scrollTop: '0px'}, animationDurationMS);
-			else
-				leftScroll.scrollTop = 0;
+			const position = sidebar.getPosition(leftItem.dataset.page);
+
+			scrollTop = (position.top + (position.height / 2)) - (leftSize.height / 2);
+			scrollHeight = sidebar.scrollHeight;
+		}
+
+		const maxScrollTop = scrollHeight - leftSize.height;
+		const targetScrollTop = Math.max(0, Math.min(scrollTop, maxScrollTop));
+
+		if(animation)
+		{
+			$(leftScroll).stop(true).animate({scrollTop: targetScrollTop}, animationDurationMS);
+		}
+		else
+		{
+			leftScroll.scrollTop = targetScrollTop;
 		}
 
 		sidebar.disableEvent(animationDurationMS + 50);
@@ -232,51 +235,32 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 //Go to a specific comic image
 function goToImage(imageIndex, disableSave = false)
 {
-	if(typeof imagesData[imageIndex] !== 'undefined')
-	{
-		if(!disableSave)
-			progress.activeSave();
-
-		readingDirection = true;
-
-		let newIndex = imagesData[imageIndex].position + 1;
-
-		if(readingManga())
-			newIndex = (view.distribution.total - newIndex) + 1;
-
-		calculateRealReadingDirection(newIndex);
-
-		goToIndex(newIndex);
-		goToImageCL(imageIndex, true)
-	}
+	goToPage(imageIndex, disableSave);
 }
 
 //Go to a specific comic folder
 function goToFolder(folderIndex)
 {
-	if(typeof foldersPosition[folderIndex] !== 'undefined')
-	{
-		readingDirection = true;
-
-		let newIndex = foldersPosition[folderIndex] + 1;
-
-		if(readingManga())
-			newIndex = (view.distribution.total - newIndex) + 1;
-
-		calculateRealReadingDirection(newIndex);
-
-		goToIndex(newIndex);
-		goToImageCL(folderIndex, true)
-	}
+	goToPage(folderIndex);
 }
 
 //Go to a specific page
-function goToPage(page)
+function goToPage(page, disableSave = false)
 {
-	if(typeof imagesData[page] !== 'undefined')
-		goToImage(page);
-	else
-		goToFolder(page);
+	const item = items.find(item => item.index == page);
+	if(!item) return;
+
+	readingDirection = true;
+
+	let newIndex = item.position + 1;
+
+	if(readingManga())
+		newIndex = (view.distribution.total - newIndex) + 1;
+
+	calculateRealReadingDirection(newIndex);
+
+	goToIndex(newIndex);
+	goToImageCL(page, true)
 }
 
 function goToEbookId(id, href)
@@ -442,10 +426,9 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	if(currentScale != 1 && animation && !(config.readingGlobalZoom && readingViewIs('scroll')))
 		reading.resetZoom(true, false, true, true, (config.readingGlobalZoomSlide && !readingViewIs('scroll')));
 
-	let content = template._contentRight().firstElementChild;
-	let rect = content.getBoundingClientRect();
-	let contentWidth = rect.width;
-	let contentHeight = rect.height;
+	const content = template._contentRight().firstElementChild;
+	const viewSize = view.viewSize();
+	const {width: contentWidth, height: contentHeight} = viewSize;
 
 	let updateCurrentIndex = true;
 
@@ -550,7 +533,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	else if(readingViewIs('scroll'))
 	{
 		let largerImage = returnLargerImage(eIndex-1);
-		let scrollTop = (largerImage.top - rect.top) + content.scrollTop;
+		let scrollTop = (largerImage.top - viewSize.top) + content.scrollTop;
 
 		let scrollSum = 0;
 
@@ -1379,7 +1362,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 				scalePrevData.tranY = translateY;
 
-				calculateView();
+				view.calculateView();
 				disableOnScroll(false);
 
 				originalRect2 = false;
@@ -2245,70 +2228,82 @@ async function resized()
 
 var hiddenContentLeft = false, hiddenBarHeader = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
 
+function getHideContent(fullScreen = undefined)
+{
+	fullScreen = fullScreen ?? isFullScreen;
+
+	let _hideContentLeft = false;
+	let _hideBarHeader = false;
+	let _hideTabsBar = false;
+
+	if(onReading && fullScreen)
+	{
+		_hideContentLeft = config.readingHideContentLeftFullScreen;
+		_hideBarHeader = config.readingHideBarHeaderFullScreen;
+		_hideTabsBar = config.readingHideTabsBarFullScreen;
+	}
+	else if(onReading)
+	{
+		_hideContentLeft = config.readingHideContentLeft;
+		_hideBarHeader = config.readingHideBarHeader;
+		_hideTabsBar = config.readingHideTabsBar;
+	}
+
+	return {
+		hideContentLeft: _hideContentLeft,
+		hideBarHeader: _hideBarHeader,
+		hideTabsBar: _hideTabsBar && (_hideBarHeader || fullScreen),
+	};
+}
+
 function hideContent(fullScreen = false, first = false)
 {
-	if(!onReading)
-	{
-		var _hideContentLeft = false;
-		var _hideBarHeader = false;
-		var _hideTabsBar = false;
-	}
-	else if(fullScreen)
-	{
-		var _hideContentLeft = config.readingHideContentLeftFullScreen;
-		var _hideBarHeader = config.readingHideBarHeaderFullScreen;
-		var _hideTabsBar = config.readingHideTabsBarFullScreen;
-	}
-	else
-	{
-		var _hideContentLeft = config.readingHideContentLeft;
-		var _hideBarHeader = config.readingHideBarHeader;
-		var _hideTabsBar = config.readingHideTabsBar;
-	}
+	const {hideContentLeft: _hideContentLeft, hideBarHeader: _hideBarHeader, hideTabsBar: _hideTabsBar} = getHideContent(fullScreen);
 
 	clearTimeout(hideContentDisableTransitionsST);
 
-	$('.bar-header, .content-left, .tabs-bar').css('transition', '0s');
+	const bars = dom.queryAll('.bar-header, .content-left, .tabs-bar');
+	bars.css({transition: '0s'});
 
-	hideContentDisableTransitionsST = setTimeout(function(){
+	hideContentDisableTransitionsST = setTimeout(function() {
 
-		$('.bar-header, .content-left, .tabs-bar').css('transition', '');
+		bars.css({transition: ''});
 
-	});
+	}, 10);
 
-	var app = $('.app');
+	const app = document.querySelector('.app');
 
 	if(_hideContentLeft)
 	{
-		app.addClass('hide-content-left');
+		app.classList.add('hide-content-left');
 		hiddenContentLeft = true;
 	}
 	else
 	{
-		app.removeClass('hide-content-left');
-		$('.content-left').removeClass('show');
+		app.classList.remove('hide-content-left');
+		dom.query('.content-left').removeClass('show');
 		hiddenContentLeft = false;
 	}
 
 	if(_hideBarHeader)
 	{
-		app.addClass('hide-bar-header');
+		app.classList.add('hide-bar-header');
 		hiddenBarHeader = true;
 	}
 	else
 	{
-		app.removeClass('hide-bar-header');
-		$('.bar-header, .tabs-bar').removeClass('show');
+		app.classList.remove('hide-bar-header');
+		dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 		hiddenBarHeader = false;
 	}
 
-	if(_hideTabsBar && (_hideBarHeader || fullScreen))
+	if(_hideTabsBar)
 	{
-		app.addClass('hide-tabs-bar');
+		app.classList.add('hide-tabs-bar');
 	}
 	else
 	{
-		app.removeClass('hide-tabs-bar');
+		app.classList.remove('hide-tabs-bar');
 	}
 
 	dom.this(template._contentRight()).find('.reading-progress').class(fullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
@@ -4460,7 +4455,7 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 {
 	let contentRightIndex = template.contentRightIndex();
 
-	items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, foldersPosition = {}, currentScale = 1, currentZoomIndex = false, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
+	items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, currentScale = 1, currentZoomIndex = false, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
 
 	isLoaded = false;
 	magnifyingGlassPosition.mode = false;
@@ -5049,7 +5044,11 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		dom.this(contentRight).find('.reading-body').css({opacity: 1});
 
 		if(!isCanvas && !isEbook)
-			view.getAllSizes(template.contentRightIndex());
+		{
+			setTimeout(function(){
+				view.getAllSizes(template.contentRightIndex());
+			}, 20);	
+		}
 
 	});
 
@@ -5290,6 +5289,7 @@ module.exports = {
 	setReadingDragScroll: setReadingDragScroll,
 	get readingDragScroll(){return readingDragScroll},
 	scrollNextOrPrevComic: scrollNextOrPrevComic,
+	getHideContent: getHideContent,
 	hideContent: hideContent,
 	hideContentLeft: hideContentLeft,
 	hideBarHeader: hideBarHeader,

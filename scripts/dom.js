@@ -3014,7 +3014,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	if(config.readingDisableThumbnails) // Only used if thumbnails are disabled
 	{
-		const nameDiff = diff.list(comics.map((comic) => comic.name), ' - ');
+		const nameDiff = diff.list(comics.map((comic) => !comic.folder ? comic.name : ''), ' - ');
 
 		comics = comics.map(function(comic, index){
 

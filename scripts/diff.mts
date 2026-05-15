@@ -6,6 +6,8 @@ declare const pregQuote: any;
 
 function buildPattern(strings: string[]): RegExp | null
 {
+	strings = strings.filter(Boolean);
+
 	if(!strings.length)
 		return null;
 
@@ -43,7 +45,7 @@ function list(strings: string[], separator: string = ' - '): string[]
 		{
 			const parts = match.slice(1);
 
-			return parts.join(separator) || string;
+			return parts.filter(Boolean).join(separator) || string;
 		}
 
 		return string;

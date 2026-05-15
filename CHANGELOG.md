@@ -38,7 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Use custom `sharp` prebuilt binaries for native support of `JXL`, `JP2` and `HEIC` [`0a49e48`](https://github.com/ollm/OpenComic/commit/0a49e48d218f81a9dc9375da4f8981b55b2ea3d1)
 - Removed support for `HEIC` image format [`ddbbded`](https://github.com/ollm/OpenComic/commit/ddbbded615a31e097de06fe898cca9cc80807245)
 - Joined the title/menu bar with the tab bar [`fea2b30`](https://github.com/ollm/OpenComic/commit/fea2b3076c685dfdf36bccc842579f1dfa3a6a3d)
-- Remove need to load all image sizes before rendering the page for better performance
+- Remove need to load all image sizes before rendering the page for better performance [`721a028`](https://github.com/ollm/OpenComic/commit/721a0280bcd870996aefe438bab285726cde37bb)
 
 ##### 🐛 Bug Fixes
 

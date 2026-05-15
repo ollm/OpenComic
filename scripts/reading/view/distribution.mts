@@ -33,6 +33,14 @@ export interface Item {
 		height: number;
 		aspectRatio: number;
 	};
+	rendered?: {
+		width: number;
+		height: number;
+		top: number;
+		bottom: number;
+		left: number;
+		right: number;
+	};
 	aspectRatio: number;
 	calcAspectRatio?: number;
 	auto?: boolean; // If the blank page is automatically added by the distribution or if it's a custom blank page added by the user

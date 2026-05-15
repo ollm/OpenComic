@@ -27,6 +27,65 @@ export interface FullPosition {
 	height: number;
 }
 
+export function viewSize(isScroll: boolean = false)
+{
+	let width = window.innerWidth;
+	let height = window.innerHeight;
+	let top = 0;
+	let left = 0;
+
+	const {hideContentLeft, hideBarHeader, hideTabsBar} = reading.getHideContent();
+
+	if(isScroll)
+		width -= 12;
+
+	if(!hideContentLeft)
+		left = 192; // content left width
+
+	if(!hideBarHeader)
+		top += 48; // header height
+
+	if(!hideTabsBar)
+		top += 41; // tabs bar height
+
+	width -= left;
+	height -= top;
+
+	return {
+		width,
+		height,
+		left,
+		top,
+	};
+}
+
+export function leftSize(range: boolean = true)
+{
+	let height = window.innerHeight;
+	let top = 0;
+
+	const {hideContentLeft, hideBarHeader, hideTabsBar} = reading.getHideContent();
+
+	if(!hideBarHeader)
+		top += 48; // header height
+
+	if(!hideTabsBar)
+		top += 41; // tabs bar height
+
+	if(hideContentLeft)
+		top = 0;
+
+	height -= top;
+	if(!range) height -= 66; // range height
+
+	return {
+		width: 192,
+		height,
+		left: 0,
+		top,
+	};
+}
+
 let rightSize: RightSize; // Right content size
 
 let imagesPosition: number[][];
@@ -38,21 +97,21 @@ function calculateView(first: boolean = false)
 	if(!distribution) return;
 
 	const contentRight = template._contentRight() as HTMLDivElement;
-	const content = contentRight.firstElementChild!;
-	let rect = content.getBoundingClientRect();
+
+	const isCompact = reading.viewIs('compact');
+	const isSlide = reading.viewIs('slide');
+	const isScroll = reading.viewIs('scroll');
+	const removeClasses = ['compact', 'fade', 'rough-page-turn', 'smooth-page-turn'];
+
+	const rect = viewSize(isScroll);
 
 	rightSize = {
 		height: rect.height,
 		width: rect.width,
 		top: rect.top,
 		left: rect.left,
-		scrollHeight: content.scrollHeight,
+		scrollHeight: rect.height,
 	};
-
-	const isCompact = reading.viewIs('compact');
-	const isSlide = reading.viewIs('slide');
-	const isScroll = reading.viewIs('scroll');
-	const removeClasses = ['compact', 'fade', 'rough-page-turn', 'smooth-page-turn'];
 
 	if(isCompact || isSlide)
 	{
@@ -85,73 +144,58 @@ function calculateView(first: boolean = false)
 			flexDirection: 'column',
 		}).removeClass(...removeClasses);
 
-		rect = content.getBoundingClientRect();
-
-		rightSize = {
-			height: rect.height,
-			width: rect.width,
-			top: rect.top,
-			left: rect.left,
-			scrollHeight: content.scrollHeight,
-		};
-	}
-
-	if(reading.viewIs('scroll'))
-	{
+		// Calculate images full position
 		prevImagesFullPosition = imagesFullPosition;
 
 		imagesPosition = [];
 		imagesFullPosition = [];
 
 		const scale = config.readingGlobalZoom ? reading.scalePrevData().scale : 1;
-		const margin = reading.margin();
-
-		const scrollTop = content.scrollTop - rect.top;
+		let scrollHeight = 0;
 
 		for(let i = 0, len = distribution.distribution.length; i < len; i++)
 		{
 			const group = distribution.distribution[i];
 
-			if(typeof imagesPosition[i] === 'undefined') imagesPosition[i] = [];
-			if(typeof imagesFullPosition[i] === 'undefined') imagesFullPosition[i] = [];
+			if(!imagesPosition[i]) imagesPosition[i] = [];
+			if(!imagesFullPosition[i]) imagesFullPosition[i] = [];
+
+			let maxHeight = 0;
 
 			for(let j = 0, len2 = group.length; j < len2; j++)
 			{
-				const image = contentRight.querySelector(`.image-position${i}-${j}`);
-				let top = 0, height = 0;
+				const item = group[j];
+				const rendered = item.rendered!;
 
-				if(image)
-				{
-					const ocImg = image.querySelector('oc-img');
+				const sumHeight = (rendered.height + rendered.top + rendered.bottom) * scale;
+				if(maxHeight < sumHeight) maxHeight = sumHeight;
 
-					if(ocImg)
-					{
-						const rect = ocImg.getBoundingClientRect();
+				const height = rendered.height * scale;
 
-						top = rect.top;
-						height = rect.height;
-					}
-					else
-					{
-						const rect = image.getBoundingClientRect();
-
-						top = rect.top + (margin.top * scale);
-						height = rect.height - ((margin.top) * scale);
-					}
-				}
-
-				imagesPosition[i][j] = (top + (height / 2)) + scrollTop;
-				imagesFullPosition[i][j] = {
-					top: top + scrollTop,
-					center: imagesPosition[i][j],
-					bottom: top + height + scrollTop,
+				const position = {
+					top: scrollHeight,
+					center: scrollHeight + height / 2,
+					bottom: scrollHeight + height,
 					height: height,
 				};
+
+				imagesPosition[i][j] = position.center;
+				imagesFullPosition[i][j] = position;
 			}
+
+			scrollHeight += maxHeight;
 		}
 
 		if(first)
 			prevImagesFullPosition = imagesFullPosition;
+
+		rightSize = {
+			height: rect.height,
+			width: rect.width,
+			top: rect.top,
+			left: rect.left,
+			scrollHeight,
+		};
 	}
 }
 
@@ -219,6 +263,9 @@ async function getAllSizes(contentRightIndex: number)
 		if(item.width !== size.width || item.height !== size.height)
 			diff = true;
 
+		if(item.folder)
+			continue;
+
 		item.width = size.width;
 		item.height = size.height;
 		item.estimated = false;
@@ -253,13 +300,13 @@ async function getAllSizes(contentRightIndex: number)
 
 async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 {
-	console.log('--- Load only required sizes ---');
-
 	fetchedAllSizes = false;
 	const contentRightIndex = template.contentRightIndex();
 
 	let {start, end} = requiredImages(index, true);
 	let required = items.slice(start, end + 1);
+
+	console.log(`--- Load only required sizes (${required.length}) ---`);
 
 	if(!required.length)
 	{
@@ -270,11 +317,11 @@ async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 
 	if(required.length < 10)
 	{
-		console.time('getRequiredSizes - makeAvailable');
+		console.time('makeAvailable');
 		const file = fileManager.file(false, {log: false, progress: false});
 		await file.makeAvailable(required);
 		file.destroy();
-		console.timeEnd('getRequiredSizes - makeAvailable');
+		console.timeEnd('makeAvailable');
 	}
 
 	console.time('getRequiredSizes');
@@ -300,6 +347,9 @@ async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 				estimated = false;
 			}
 		}
+
+		if(item.folder)
+			continue;
 
 		item.width = size.width;
 		item.height = size.height;
@@ -327,6 +377,8 @@ function start()
 }
 
 export default {
+	viewSize,
+	leftSize,
 	requiredImages,
 	getRequiredSizes,
 	getAllSizes,
