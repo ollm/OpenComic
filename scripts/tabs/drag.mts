@@ -677,6 +677,8 @@ function followScreenPoint(winId: number, tab: Tab) {
 		y: 0,
 	};
 
+	const bounds = win.getBounds();
+
 	const loop = function() {
 
 		window.requestAnimationFrame(function() {
@@ -688,7 +690,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 
 			if(screenFollow.current.x !== cursor.x || screenFollow.current.y !== cursor.y)
 			{
-				win.setBounds({x, y});
+				win.setBounds({...bounds, x, y});
 				eventFromScreenPoint(cursor.x, cursor.y, wx, wy);
 			}
 
