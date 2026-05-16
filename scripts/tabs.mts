@@ -611,8 +611,11 @@ function setEvents(tab: Tab): void
 	});
 }
 
-function mouseLeave()
+function mouseLeave(event)
 {
+	const clientY = app.clientY(event);
+	if(clientY > 6 && clientY < 32) return;
+
 	setTabPositions();
 	setTabWidth();
 }
