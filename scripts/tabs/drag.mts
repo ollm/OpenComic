@@ -339,12 +339,19 @@ function add(id: number, _detachedTab: boolean = false): SimpleEvent | undefined
 
 			const baseX = (tabWidth + gap) * tab.position + data.diffX;
 
+			const maxWidth = containerWidth - tabWidth - gap * 2;
+			const currentWidth = ((tabWidth + gap) * tabs.tabs.length - gap) - tabWidth;
+
 			const minX = 0;
-			const maxX = containerWidth - tabWidth - gap * 2;
+			const maxX = Math.min(currentWidth, maxWidth);
 
 			const clampedX = Math.max(minX, Math.min(baseX, maxX));
 
+			tab.element.style.zIndex = '20';
+			tab.element.style.transition = '';
 			tab.element.style.transform = `translateX(${clampedX}px)`;
+			tab.element.classList.add('dragging');
+			tabsBar.classList.add('dragging-tabs');
 		}
 
 		if(!detachedTab)
