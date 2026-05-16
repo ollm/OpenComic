@@ -39,7 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Removed support for `HEIC` image format [`ddbbded`](https://github.com/ollm/OpenComic/commit/ddbbded615a31e097de06fe898cca9cc80807245)
 - Joined the title/menu bar with the tab bar [`fea2b30`](https://github.com/ollm/OpenComic/commit/fea2b3076c685dfdf36bccc842579f1dfa3a6a3d)
 - Remove need to load all image sizes before rendering the page for better performance [`721a028`](https://github.com/ollm/OpenComic/commit/721a0280bcd870996aefe438bab285726cde37bb)
-- Moved `Animation speed` and `Delay in changing comics` to settings page
+- Moved `Delay in changing comics` to settings page
 
 ##### 🐛 Bug Fixes
 

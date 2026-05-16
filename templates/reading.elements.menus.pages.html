@@ -581,6 +581,20 @@
 				</div>
 			</div>
 
+			<div class="menu-simple-separator-min"></div>
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+				<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0.3">undo</i><span>{{normalizeNumber _config.readingViewSpeed "0.05"}}</span>s</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input  type="range" max="4" min="0" step="0.05" value="{{_config.readingViewSpeed}}" onrange="reading.changePagesView(4, \{{value}}, \{{toEnd}})">
+				</div>
+			</div>
 		</div>
 
 		<div class="tabs-filters{{#compare readingPagesTab '==' 'filters'}} active{{/compare}}">
