@@ -1918,6 +1918,7 @@ function loadLanguagePage(animation = true)
 	floatingActionButton(false);
 
 	events.events();
+	shortcuts.register('browse');
 	gamepad.updateBrowsableItems('languagesPage');
 	tabs.update();
 
@@ -1956,6 +1957,7 @@ function loadSettingsPage(animation = true)
 
 	generateAppMenu();
 
+	shortcuts.register('browse');
 	settings.start();
 
 	template.loadContentRight('settings.content.right.html', animation);
@@ -1992,6 +1994,7 @@ function loadThemePage(animation = true)
 	template.loadGlobalElement('general.elements.menus.html', 'menus');
 	floatingActionButton(false);
 
+	shortcuts.register('browse');
 	theme.start();
 
 	if(readingActive)

@@ -149,6 +149,34 @@
 			</div>
 
 			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+				<div class="simple-slider-text">{{language.reading.pages.readingDelaySkip}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="2">undo</i><span>{{normalizeNumber config.readingDelayComicSkip "0.1"}}</span>s</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="10" min="0" step="0.1" value="{{config.readingDelayComicSkip}}" onrange="settings.set('readingDelayComicSkip', \{{value}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+				<div class="simple-slider-text">{{language.reading.pages.animationSpeed}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0.3">undo</i><span>{{normalizeNumber config.readingViewSpeed "0.05"}}</span>s</div></div>
+				<div class="range">
+					<div class="range-position">
+						<span class="range-line" style="width: 100%"></span>
+						<span class="range-steps"></span>
+						<div>
+							<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+						</div>
+					</div>
+					<input type="range" max="4" min="0" step="0.05" value="{{config.readingViewSpeed}}" onrange="settings.set('readingViewSpeed', \{{value}})">
+				</div>
+			</div>
+
+			<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
 				<div class="simple-slider-text">{{language.settings.reading.maxMargin}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="800" style="right: 70px;">undo</i><span>{{config.readingMaxMargin}}</span>px</div></div>
 				<div class="range">
 					<div class="range-position">

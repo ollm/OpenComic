@@ -127,7 +127,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		music.focusIndex(index);
 	}
 
-	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
+	let animationDurationMS = ((animation) ? config.readingViewSpeed : 0) * 1000;
 	let contentLeft = template._contentLeft();
 
 	let leftScroll = contentLeft.firstElementChild;
@@ -154,7 +154,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		if(leftItem)
 		{
 			leftItem.classList.add('s');
-			if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
+			if(animation && config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
 		}
 	}
 	else
@@ -169,7 +169,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		if(leftItem)
 		{
 			leftItem.classList.add('s');
-			if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
+			if(animation && config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
 		}
 	}
 
@@ -384,7 +384,7 @@ function goScrollPercent(screenPercent = 50, animation = true)
 {
 	if(_config.readingWebtoon || readingViewIs('scroll'))
 	{
-		let animationDurationMS = (animation ? _config.readingViewSpeed : 0) * 1000;
+		let animationDurationMS = (animation ? config.readingViewSpeed : 0) * 1000;
 
 		const content = template._contentRight().firstElementChild;
 		const rect = content.getBoundingClientRect();
@@ -418,7 +418,7 @@ function goScrollPercent(screenPercent = 50, animation = true)
 //Go to a specific comic index
 function goToIndex(index, animation = true, nextPrevious = false, end = false)
 {
-	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
+	let animationDurationS = ((animation) ? config.readingViewSpeed : 0);
 	let animationDurationMS = animationDurationS * 1000;
 
 	let _currentScale = currentScale;
@@ -751,13 +751,13 @@ function goPrevComic()
 	
 	if(hasComic)
 	{
-		let speed = _config.readingViewSpeed;
-		_config.readingViewSpeed = 0;
+		let speed = config.readingViewSpeed;
+		config.readingViewSpeed = 0;
 
 		let double = goStart();
 		if(double) goStart();
 
-		_config.readingViewSpeed = speed;
+		config.readingViewSpeed = speed;
 	}
 }
 
@@ -797,13 +797,13 @@ function goNextComic()
 
 	if(hasComic)
 	{
-		let speed = _config.readingViewSpeed;
-		_config.readingViewSpeed = 0;
+		let speed = config.readingViewSpeed;
+		config.readingViewSpeed = 0;
 
 		let double = goEnd();
 		if(double) goEnd();
 
-		_config.readingViewSpeed = speed;
+		config.readingViewSpeed = speed;
 	}
 }
 
@@ -1031,9 +1031,9 @@ function showNextComic(mode, animation = true, invert = false)
 
 	if(mode == 1)
 	{
-		var transition = _config.readingViewSpeed < _config.readingDelayComicSkip ? _config.readingViewSpeed : _config.readingDelayComicSkip;
+		var transition = config.readingViewSpeed < config.readingDelayComicSkip ? config.readingViewSpeed : config.readingDelayComicSkip;
 
-		if(_config.readingDelayComicSkip != 0)
+		if(config.readingDelayComicSkip != 0)
 		{
 			if(readingViewIs('scroll'))
 			{
@@ -1074,13 +1074,13 @@ function showNextComic(mode, animation = true, invert = false)
 				});
 			}
 
-			skip.find('circle').css('animation-duration', _config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
+			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', config.readingDelayComicSkip * 1000);
 
 		currentIndex = view.distribution.total + 1;
 	}
@@ -1089,31 +1089,31 @@ function showNextComic(mode, animation = true, invert = false)
 		if(readingViewIs('scroll'))
 		{
 			var skip = template.contentRight('.reading-skip-bottom').css({
-				'transition': _config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 				'opacity': 0,
 			});
 
 			template.contentRight('.reading-body').css({
-				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
 		else
 		{
 			var skip = template.contentRight('.reading-skip-right').css({
-				'transition': _config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 				'opacity': 0,
 			});
 
 			template.contentRight('.reading-body > div').css({
-				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(-'+(contentWidth * (readingViewIs('slide') ? (view.distribution.total - 1) : 0))+'px, 0px)',
 			});
 		}
 
-		showComicSkip = setTimeout(function(){showComicSkip = false}, _config.readingViewSpeed * 1000);
+		showComicSkip = setTimeout(function(){showComicSkip = false}, config.readingViewSpeed * 1000);
 		currentIndex = view.distribution.total;
 	}
 }
@@ -1129,9 +1129,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 	if(mode == 1)
 	{
-		var transition = _config.readingViewSpeed < _config.readingDelayComicSkip ? _config.readingViewSpeed : _config.readingDelayComicSkip;
+		var transition = config.readingViewSpeed < config.readingDelayComicSkip ? config.readingViewSpeed : config.readingDelayComicSkip;
 
-		if(_config.readingDelayComicSkip != 0)
+		if(config.readingDelayComicSkip != 0)
 		{
 			if(readingViewIs('scroll'))
 			{
@@ -1172,13 +1172,13 @@ function showPreviousComic(mode, animation = true, invert = false)
 				});
 			}
 
-			skip.find('circle').css('animation-duration', _config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
+			skip.find('circle').css('animation-duration', config.readingDelayComicSkip+'s').removeClass('a').delay(10).queue(function(next){$(this).addClass('a');next();});
 		}
 
 		if(invert)
-			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.nextComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", false, false, true);', config.readingDelayComicSkip * 1000);
 		else
-			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', _config.readingDelayComicSkip * 1000);
+			showComicSkip = setTimeout('reading.progress.save(); reading.setFromSkip(); dom.openComic(true, "'+escapeQuotes(escapeBackSlash(dom.previousComic()), 'doubles')+'", "'+escapeQuotes(escapeBackSlash(dom.history.mainPath), 'doubles')+'", true, false, true);', config.readingDelayComicSkip * 1000);
 
 		currentIndex = 0;
 	}
@@ -1189,13 +1189,13 @@ function showPreviousComic(mode, animation = true, invert = false)
 			var skip = template.contentRight('.reading-skip-top');
 
 			skip.css({
-				'transition': _config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 				'opacity': 0,
 			});
 
 			template.contentRight('.reading-body').css({
-				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
@@ -1204,18 +1204,18 @@ function showPreviousComic(mode, animation = true, invert = false)
 			var skip = template.contentRight('.reading-skip-left');
 
 			skip.css({
-				'transition': _config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'translate(0px, 0px)',
 				'opacity': 0,
 			});
 
 			template.contentRight('.reading-body').css({
-				'transition': 'transform '+_config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
+				'transition': 'transform '+config.readingViewSpeed+'s, background-color 0.2s, box-shadow 0.2s',
 				'transform': 'scale(1) translate(0px, 0px)',
 			});
 		}
 
-		showComicSkip = setTimeout(function(){showComicSkip = false}, _config.readingViewSpeed * 1000);
+		showComicSkip = setTimeout(function(){showComicSkip = false}, config.readingViewSpeed * 1000);
 		currentIndex = 1;
 	}
 }
@@ -1224,7 +1224,10 @@ var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0,
 
 function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false)
 {	
-	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
+	if((!onReading && !_onReading) || !isLoaded)
+		return;
+
+	let animationDurationS = ((animation) ? config.readingViewSpeed : 0);
 
 	if(currentZoomIndex === false)
 	{
@@ -1446,7 +1449,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 						zIndex: scale == 1 ? 1 : 3,
 					});
 
-				}, _config.readingViewSpeed * 1000);
+				}, config.readingViewSpeed * 1000);
 			}
 			else
 			{
@@ -1865,7 +1868,7 @@ function dragZoom(dx, dy, animation = false)
 
 function applyZoom(x, y, animation)
 {
-	const transition = app.scrollTransition('dragZoom', animation ? _config.readingViewSpeed : 0);
+	const transition = app.scrollTransition('dragZoom', animation ? config.readingViewSpeed : 0);
 	const withLimits = notCrossZoomLimits(x, y);
 
 	const diff = {
@@ -2513,14 +2516,6 @@ function changePagesView(mode, value, save)
 	{
 		updateReadingPagesConfig('readingViewAdjustToWidth', value);
 		reading.reloadAnimated(false, imageIndex);
-	}
-	else if(mode == 4) // Set the speed of the animation when changing pages
-	{
-		if(save) updateReadingPagesConfig('readingViewSpeed', value);
-	}
-	else if(mode == 5) // Set the delay when skip from comic
-	{
-		if(save) updateReadingPagesConfig('readingDelayComicSkip', value);
 	}
 	else if(mode == 6) // Set the reading to double page
 	{
