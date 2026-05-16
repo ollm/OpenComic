@@ -377,6 +377,11 @@ async function getBuffersFS(getImageBuffersFS)
 	return await Promise.all(promises);
 }
 
+function getWithImageSize(ext)
+{
+	return compatible.image.png.has(ext) || compatible.image.gif.has(ext) || compatible.image.webp.has(ext)
+}
+
 async function getSizesFromBuffer(getImageBuffers, buffers)
 {
 	await loadSharp();
@@ -430,7 +435,7 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 					}
 					else if(sharpSupportedFormat(image.image, ext))
 					{
-						if(process.platform === 'linux' && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
+						if((process.platform === 'linux' || getWithImageSize(ext)) && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
 						{
 							try
 							{
@@ -677,7 +682,7 @@ async function getSizes(images)
 				}
 				else if(sharpSupportedFormat(image.image, ext))
 				{
-					if(process.platform === 'linux' && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
+					if((process.platform === 'linux' || getWithImageSize(ext)) && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
 					{
 						try
 						{
