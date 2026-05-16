@@ -4344,7 +4344,7 @@ function hideMouseInFullscreen(event = false, hide = false)
 
 function showHideHeader()
 {
-	const show = document.querySelector('.menu-simple.a, .title-bar-menu.show, .tabs-bar-hover');
+	const show = document.querySelector('.tabs-bar-hover'); // document.querySelector('.menu-simple.a, .title-bar-menu.show, .tabs-bar-hover');
 	dom.queryAll('.bar-header, .tabs-bar').class(show, 'show');
 }
 
