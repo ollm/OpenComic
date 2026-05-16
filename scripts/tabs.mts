@@ -378,6 +378,31 @@ function findLastUsedTab(): Tab | void
 	return;
 }
 
+function findSiblingTab(currentTab: Tab, tabIndex: number): Tab | void
+{
+	const parents = currentTab.parents;
+	let parentTab: Tab | undefined;
+
+	const _tabs: Tab[] = [...tabs.slice(tabIndex), ...tabs.slice(0, tabIndex).reverse()];
+
+	for(const parent of parents)
+	{
+		for(const tab of _tabs)
+		{
+			if(tab.id === currentTab.id) continue;
+
+			if(tab.parents.includes(parent))
+				return tab;
+
+			if(tab.id === parent && !parentTab)
+				parentTab = tab;
+		}
+
+		if(parentTab)
+			return parentTab;
+	}
+}
+
 async function close(id: number, force: boolean = false, animation: boolean = true): Promise<void>
 {
 	const tabIndex = tabs.findIndex(t => t.id === id);
@@ -394,10 +419,10 @@ async function close(id: number, force: boolean = false, animation: boolean = tr
 
 	if(tab.active)
 	{
-		const lastusedTab = findLastUsedTab();
+		const switchTab = findSiblingTab(tab, tabIndex) ?? findLastUsedTab();
 
-		if(lastusedTab)
-			await _switch(lastusedTab.id);
+		if(switchTab)
+			await _switch(switchTab.id);
 		else
 			await _switch(tabs[0]?.id);
 	}
