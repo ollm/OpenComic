@@ -636,7 +636,7 @@ function setEvents(tab: Tab): void
 	});
 }
 
-function mouseEnter(event)
+function mouseEnter()
 {
 	const tabsBar = document.querySelector('.tabs-bar') as HTMLElement;
 	if(tabsBar) tabsBar.classList.add('tabs-bar-hover');
