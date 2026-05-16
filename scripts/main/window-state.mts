@@ -83,8 +83,8 @@ function windowState(options: Options): State
 			height: options.defaultHeight || 600,
 			isMaximized: options.defaultMaximize || false,
 			isFullScreen: options.defaultFullScreen || false,
-			x: 0,
-			y: 0,
+			x: displayBounds.x,
+			y: displayBounds.y,
 			displayBounds,
 		};
 	}
@@ -109,14 +109,19 @@ function windowState(options: Options): State
 
 	function ensureWindowVisibleOnSomeDisplay()
 	{
-		const points: Point[] = [];
-		points.push(newPoint(state.x, state.y));
-		points.push(newPoint(state.x + state.width, state.y));
+		const winRect = {
+			x: state.x,
+			y: state.y,
+			width: state.width,
+			height: state.height,
+		};
 
-		const visible = points.some(function(point: Point) {
-			return screen.getAllDisplays().some(function(display) {
-				return pointWithinBounds(newPoint(point.x, point.y), display.workArea);
-			});
+		const visible = screen.getAllDisplays().some(function(display) {
+			const area = display.workArea;
+			const intersectsX = winRect.x < area.x + area.width && winRect.x + winRect.width > area.x;
+			const intersectsY = winRect.y < area.y + area.height && winRect.y + winRect.height > area.y;
+
+			return intersectsX && intersectsY;
 		});
 
 		if(!visible)
@@ -151,17 +156,14 @@ function windowState(options: Options): State
 		{
 			state.isMaximized = win.isMaximized();
 			state.isFullScreen = win.isFullScreen();
-			const winBounds = win.getBounds();
+			const winBounds = isNormal(win) ? win.getBounds() : win.getNormalBounds();
 
-			if(isNormal(win))
-			{
-				state.x = winBounds.x;
-				state.y = winBounds.y;
-				state.width = winBounds.width;
-				state.height = winBounds.height;
-				state.displayBounds = screen.getDisplayMatching(winBounds).bounds;
-				// state.scale = screen.getDisplayMatching(winBounds).scaleFactor;
-			}
+			state.x = winBounds.x;
+			state.y = winBounds.y;
+			state.width = winBounds.width;
+			state.height = winBounds.height;
+			state.displayBounds = screen.getDisplayMatching(winBounds).bounds;
+			// state.scale = screen.getDisplayMatching(winBounds).scaleFactor;
 		}
 		catch (error)
 		{
