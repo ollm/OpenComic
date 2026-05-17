@@ -13,11 +13,12 @@
 		"moduleResolution": "node16",
 		"noImplicitAny": false, 
 		"resolveJsonModule": true,
-		"baseUrl": "./scripts",
 		"paths": {
-			"@types": ["../scripts/types.mts"],
+			"@types": ["./scripts/types.mts"],
+			"*": ["./scripts/*"],
 		},
-		"outDir": ".dist"
+		"outDir": "./.dist",
+		"rootDir": "./scripts"
 	},
 	"include": [
 		"./scripts/**/*",

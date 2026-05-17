@@ -3,11 +3,11 @@
 	"version": "1.0.0",
 	"license": "MIT",
 	"dependencies": {
-		"@toondepauw/node-zstd-linux-arm64-gnu": "*",
-		"@toondepauw/node-zstd-linux-arm64-musl": "*",
-		"@toondepauw/node-zstd-linux-x64-gnu": "*",
-		"@toondepauw/node-zstd-linux-x64-musl": "*",
-		"@toondepauw/node-zstd-darwin-arm64": "*",
-		"@toondepauw/node-zstd-darwin-x64": "*"
+		"@toondepauw/node-zstd-linux-arm64-gnu": "^2.0.0",
+		"@toondepauw/node-zstd-linux-arm64-musl": "^2.0.0",
+		"@toondepauw/node-zstd-linux-x64-gnu": "^2.0.0",
+		"@toondepauw/node-zstd-linux-x64-musl": "^2.0.0",
+		"@toondepauw/node-zstd-darwin-arm64": "^2.0.0",
+		"@toondepauw/node-zstd-darwin-x64": "^2.0.0"
 	}
 }
