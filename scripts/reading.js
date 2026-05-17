@@ -2237,7 +2237,7 @@ let hideWindowButtonsAnimating = false;
 function hideWindowButtons(hide = false, animation = false)
 {
 	const win = electronRemote.getCurrentWindow();
-	const date = Date.now();
+	const date = Date.now() - (1000 / 60); // Start in prev frame to avoid delay
 
 	const fullHide = hiddenBarHeader && hideTabsBar;
 	hide = fullHide && hide;
