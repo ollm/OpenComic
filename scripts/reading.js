@@ -2229,7 +2229,16 @@ async function resized()
 	// view.stayInLine.getPreviusContentSize();
 }
 
-var hiddenContentLeft = false, hiddenBarHeader = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
+var hiddenContentLeft = false, hiddenBarHeader = false, hideTabsBar = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
+
+function hideHeaderButtons(hide = false)
+{
+	const fullHide = hiddenBarHeader && hideTabsBar;
+
+	electronRemote.getCurrentWindow().setTitleBarOverlay({
+		height: fullHide && hide ? 1 : 40,
+	});
+}
 
 function getHideContent(fullScreen = undefined)
 {
@@ -2302,10 +2311,12 @@ function hideContent(fullScreen = false, first = false)
 	if(_hideTabsBar)
 	{
 		app.classList.add('hide-tabs-bar');
+		hideTabsBar = true;
 	}
 	else
 	{
 		app.classList.remove('hide-tabs-bar');
+		hideTabsBar = false;
 	}
 
 	showHideHeader();
@@ -4222,6 +4233,7 @@ function pointermove(event)
 
 					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
 					reading.setShownBarHeader(true);
+					hideHeaderButtons(false);
 
 					const tabsBar = document.querySelector('.tabs-bar');
 					tabsBar.style.webkitAppRegion = 'no-drag';
@@ -4270,6 +4282,7 @@ function pointermove(event)
 
 			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
+			hideHeaderButtons(true);
 
 			hideContentRunningST = false;
 		}
@@ -4346,6 +4359,7 @@ function showHideHeader()
 {
 	const show = document.querySelector('.tabs-bar-hover'); // document.querySelector('.menu-simple.a, .title-bar-menu.show, .tabs-bar-hover');
 	dom.queryAll('.bar-header, .tabs-bar').class(show, 'show');
+	hideHeaderButtons(!show);
 }
 
 function hideContentLeftAndHeader()
@@ -4359,6 +4373,7 @@ function hideContentLeftAndHeader()
 		{
 			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
+			hideHeaderButtons(true);
 		}
 
 		if(shownContentLeft)
