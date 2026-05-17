@@ -1,4 +1,4 @@
-import animateCssVar from './animate-css-var.mjs';
+import animate from './animate.mjs';
 import drag from './tabs/drag.mjs';
 import state from './tabs/state.mjs';
 import restore from './tabs/restore.mjs';
@@ -506,7 +506,7 @@ function visibility(animation: boolean = true): void
 	if(!diff || !animation)
 		return;
 
-	animateCssVar({
+	animate.cssVar({
 		name: 'tabs-bar-height',
 		from: from,
 		to: to,
@@ -515,7 +515,7 @@ function visibility(animation: boolean = true): void
 		removeOnEnd: true,
 	});
 
-	animateCssVar({
+	animate.cssVar({
 		name: 'tabs-bar-height-always-visible',
 		from: from,
 		to: to,

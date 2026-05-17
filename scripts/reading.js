@@ -9,7 +9,8 @@ const render = require(p.join(appDir, '.dist/reading/render.js')),
 	discord = require(p.join(appDir, '.dist/reading/discord.js')),
 	progress = require(p.join(appDir, '.dist/reading/progress.js')),
 	doublePage = require(p.join(appDir, '.dist/reading/double-page.js')),
-	view = require(p.join(appDir, '.dist/reading/view.mjs')).default;
+	view = require(p.join(appDir, '.dist/reading/view.mjs')).default,
+	animate = require(p.join(appDir, '.dist/animate.mjs')).default;
 
 var items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
@@ -2231,9 +2232,9 @@ async function resized()
 
 var hiddenContentLeft = false, hiddenBarHeader = false, hideTabsBar = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
 
-let hideHeaderButtonsAnimating = false;
+let hideWindowButtonsAnimating = false;
 
-function hideHeaderButtons(hide = false, animation = false)
+function hideWindowButtons(hide = false, animation = false)
 {
 	const win = electronRemote.getCurrentWindow();
 	const date = Date.now();
@@ -2241,38 +2242,45 @@ function hideHeaderButtons(hide = false, animation = false)
 	const fullHide = hiddenBarHeader && hideTabsBar;
 	hide = fullHide && hide;
 
-	const animate = function() {
+	const _animate = function() {
 
 		const duration = 180;
 		const elapsed = Date.now() - date;
 		const progress = Math.min(elapsed / duration, 1);
 
-		setHeaderButtons(win, hide ? (1 - progress) : progress);
+		const value = animate.value({
+			progress,
+			from: 0,
+			to: 1,
+			bezier: 'easeInBezier',
+		});
+
+		setWindowButtons(win, hide ? (1 - value) : value);
 
 		if(elapsed < duration)
 		{
-			window.requestAnimationFrame(animate);
+			window.requestAnimationFrame(_animate);
 		}
 		else
 		{
-			setHeaderButtons(win, hide ? 0 : 1);
-			hideHeaderButtonsAnimating = false;
+			setWindowButtons(win, hide ? 0 : 1);
+			hideWindowButtonsAnimating = false;
 		}
 	}
 
 	if(animation)
 	{
-		if(hideHeaderButtonsAnimating) return;
-		hideHeaderButtonsAnimating = true;
-		animate();
+		if(hideWindowButtonsAnimating) return;
+		hideWindowButtonsAnimating = true;
+		_animate();
 	}
 	else
 	{
-		setHeaderButtons(win, hide ? 0 : 1);
+		setWindowButtons(win, hide ? 0 : 1);
 	}
 }
 
-function setHeaderButtons(win, progress = 0)
+function setWindowButtons(win, progress = 0)
 {
 	const calculate = function(from, to) {
 
@@ -2291,7 +2299,7 @@ function setHeaderButtons(win, progress = 0)
 	else
 	{
 		win.setTitleBarOverlay({
-			height: calculate(-65, 40),
+			height: calculate(-65, 40) || -1, // Avoid 0 because shows the buttons
 		});
 	}
 }
@@ -4289,7 +4297,7 @@ function pointermove(event)
 
 					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
 					reading.setShownBarHeader(true);
-					hideHeaderButtons(false, true);
+					hideWindowButtons(false, true);
 
 					const tabsBar = document.querySelector('.tabs-bar');
 					tabsBar.style.webkitAppRegion = 'no-drag';
@@ -4338,7 +4346,7 @@ function pointermove(event)
 
 			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
-			hideHeaderButtons(true, true);
+			hideWindowButtons(true, true);
 
 			hideContentRunningST = false;
 		}
@@ -4415,7 +4423,7 @@ function showHideHeader()
 {
 	const show = document.querySelector('.tabs-bar-hover'); // document.querySelector('.menu-simple.a, .title-bar-menu.show, .tabs-bar-hover');
 	dom.queryAll('.bar-header, .tabs-bar').class(show, 'show');
-	hideHeaderButtons(!show);
+	hideWindowButtons(!show);
 }
 
 function hideContentLeftAndHeader()
@@ -4429,7 +4437,7 @@ function hideContentLeftAndHeader()
 		{
 			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
-			hideHeaderButtons(true);
+			hideWindowButtons(true);
 		}
 
 		if(shownContentLeft)

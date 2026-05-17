@@ -4,6 +4,13 @@ const beziers = {
 	easeInBezier: new Bezier(0, 0, 0.4, 0, 1, 1, 1, 1),
 };
 
+export interface Animate {
+	progress: number;
+	from: number;
+	to: number;
+	bezier?: string;
+}
+
 export interface AnimateCssVar {
 	name: string;
 	from: number;
@@ -14,8 +21,15 @@ export interface AnimateCssVar {
 	removeOnEnd?: boolean;
 }
 
-export default function animateCssVar({name, from, to, unit = 'px', duration = 300, bezier = 'easeInBezier', removeOnEnd}: AnimateCssVar) {
+function animate({progress, from, to, bezier = 'easeInBezier'}: Animate): number
+{
+	const mBezier = beziers[bezier].get(progress).y;
 
+	return from + (to - from) * mBezier;
+}
+
+function cssVar({name, from, to, unit = 'px', duration = 300, bezier = 'easeInBezier', removeOnEnd}: AnimateCssVar)
+{
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
 
@@ -27,9 +41,9 @@ export default function animateCssVar({name, from, to, unit = 'px', duration = 3
 		const elapsed = now - start;
 
 		const m = Math.min(elapsed / duration, 1);
-		const mBezier = beziers[bezier].get(m).y;
+		const value = animate({progress: m, from, to, bezier});
 
-		_app.style.setProperty(`--${name}`, String(from + (to - from) * mBezier) + unit);
+		_app.style.setProperty(`--${name}`, String(value) + unit);
 
 		if(elapsed < duration)
 		{
@@ -43,5 +57,9 @@ export default function animateCssVar({name, from, to, unit = 'px', duration = 3
 	};
 
 	set();
-
 }
+
+export default {
+	value: animate,
+	cssVar,
+};
