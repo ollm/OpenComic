@@ -1,6 +1,7 @@
 import {Bezier} from 'bezier-js';
 
 const beziers = {
+	ease: new Bezier(0, 0, 0.25, 0.1, 0.25, 1, 1, 1),
 	easeInBezier: new Bezier(0, 0, 0.4, 0, 1, 1, 1, 1),
 };
 

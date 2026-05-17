@@ -2244,7 +2244,7 @@ function hideWindowButtons(hide = false, animation = false)
 
 	const _animate = function() {
 
-		const duration = 180;
+		const duration = 200;
 		const elapsed = Date.now() - date;
 		const progress = Math.min(elapsed / duration, 1);
 
@@ -2252,7 +2252,7 @@ function hideWindowButtons(hide = false, animation = false)
 			progress,
 			from: 0,
 			to: 1,
-			bezier: 'easeInBezier',
+			bezier: 'ease',
 		});
 
 		setWindowButtons(win, hide ? (1 - value) : value);
