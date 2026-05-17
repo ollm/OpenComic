@@ -2233,11 +2233,23 @@ var hiddenContentLeft = false, hiddenBarHeader = false, hideTabsBar = false, hid
 
 function hideHeaderButtons(hide = false)
 {
+	const win = electronRemote.getCurrentWindow();
 	const fullHide = hiddenBarHeader && hideTabsBar;
+	hide = fullHide && hide;
 
-	electronRemote.getCurrentWindow().setTitleBarOverlay({
-		height: fullHide && hide ? 1 : 40,
-	});
+	if(process.platform == 'darwin')
+	{
+		win.setWindowButtonPosition({
+			x: 13,
+			y: hide ? -20 : 13
+		});
+	}
+	else
+	{
+		win.setTitleBarOverlay({
+			height: hide ? 1 : 40,
+		});
+	}
 }
 
 function getHideContent(fullScreen = undefined)
