@@ -2230,7 +2230,7 @@ async function resized()
 	// view.stayInLine.getPreviusContentSize();
 }
 
-var hiddenContentLeft = false, hiddenBarHeader = false, hideTabsBar = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
+var hiddenContentLeft = false, hiddenBarHeader = false, hiddenTabsBar = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
 
 let hideWindowButtonsAnimating = false;
 
@@ -2239,8 +2239,12 @@ function hideWindowButtons(hide = false, animation = false)
 	const win = electronRemote.getCurrentWindow();
 	const date = Date.now() - (1000 / 120); // Start in prev frame to avoid delay
 
-	const fullHide = hiddenBarHeader && hideTabsBar;
+	const fullHide = hiddenBarHeader && hiddenTabsBar;
 	hide = fullHide && hide;
+
+	const computedStyle = getComputedStyle(document.querySelector('.app'));
+	const symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#7F7F7F';
+	const color = app.hexToRgb(symbolColor);
 
 	const _animate = function() {
 
@@ -2255,7 +2259,7 @@ function hideWindowButtons(hide = false, animation = false)
 			bezier: 'ease',
 		});
 
-		setWindowButtons(win, hide ? (1 - value) : value);
+		setWindowButtons(win, hide ? (1 - value) : value, color);
 
 		if(elapsed < duration)
 		{
@@ -2263,12 +2267,12 @@ function hideWindowButtons(hide = false, animation = false)
 		}
 		else
 		{
-			setWindowButtons(win, hide ? 0 : 1);
+			setWindowButtons(win, hide ? 0 : 1, color);
 			hideWindowButtonsAnimating = false;
 		}
 	}
 
-	if(animation)
+	if(animation && fullHide)
 	{
 		if(hideWindowButtonsAnimating) return;
 		hideWindowButtonsAnimating = true;
@@ -2276,11 +2280,11 @@ function hideWindowButtons(hide = false, animation = false)
 	}
 	else
 	{
-		setWindowButtons(win, hide ? 0 : 1);
+		setWindowButtons(win, hide ? 0 : 1, color);
 	}
 }
 
-function setWindowButtons(win, progress = 0)
+function setWindowButtons(win, progress = 0, color = {r: 0, g: 0, b: 0})
 {
 	const calculate = function(from, to) {
 
@@ -2298,9 +2302,16 @@ function setWindowButtons(win, progress = 0)
 	}
 	else
 	{
-		win.setTitleBarOverlay({
-			height: calculate(-65, 40) || -1, // Avoid 0 because shows the buttons
-		});
+		const min = process.platform == 'win32' ? 24 : -65;
+
+		const overlay = {
+			height: calculate(min, 40) || -1, // Avoid 0 because shows the buttons in Linux
+		};
+
+		if(process.platform == 'win32')
+			overlay.symbolColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${calculate(0, 1)})`;
+
+		win.setTitleBarOverlay(overlay);
 	}
 }
 
@@ -2375,12 +2386,12 @@ function hideContent(fullScreen = false, first = false)
 	if(_hideTabsBar)
 	{
 		app.classList.add('hide-tabs-bar');
-		hideTabsBar = true;
+		hiddenTabsBar = true;
 	}
 	else
 	{
 		app.classList.remove('hide-tabs-bar');
-		hideTabsBar = false;
+		hiddenTabsBar = false;
 	}
 
 	showHideHeader();
