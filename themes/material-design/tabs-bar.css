@@ -141,7 +141,7 @@
 	will-change: width;
 }
 
-.tabs-bar .tab.dragging
+.tabs-bar .tab.dragging .tab-content
 {
 	background-color: var(--md-sys-color-surface-container);
 	background-color: var(--md-sys-color-surface-container-highest);
