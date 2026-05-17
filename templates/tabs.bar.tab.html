@@ -1,6 +1,12 @@
 <div class="tab tab--{{tab.id}} hover-text{{#unless tab.restored}} opening{{/unless}} body-medium {{#if tab.active}} active{{/if}}"{{#unless @root.useScreenPointTabs}} draggable="true"{{/unless}} hover-text="{{tab.title}}" data-hover-delay="600" data-id="{{tab.id}}" data-hover-detect-overflow=".tab-title">
-	<i class="icon-18 material-icon">{{tab.icon}}</i>
-	<div class="tab-title">{{tab.title}}</div>
-	<i class="icon-18 material-icon" onclick="tabs.close({{tab.id}}); event.stopPropagation();">close_small</i>
-	<div class="tab-separator tab-separator--{{tab.id}}"></div>
+	<div class="tab-content">
+		<i class="icon-18 material-icon">{{tab.icon}}</i>
+		<div class="tab-title">{{tab.title}}</div>
+		<i class="icon-18 material-icon" onclick="tabs.close({{tab.id}}); event.stopPropagation();">close_small</i>
+	</div>
+	<div class="tab-separator tab-separator--{{tab.id}}">
+		<svg class="separator" viewBox="0 0 2 18">
+			<rect x="0" y="0" width="2" height="18" rx="1" ry="1" />
+		</svg>
+	</div>
 </div>

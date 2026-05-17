@@ -60,6 +60,7 @@ interface Offset {
 }
 
 const MACOS = process.platform === 'darwin';
+const ANIMATION_SPEED = 1; // Only to debug animation transitions
 
 let tabs: Tab[] = [];
 let idCounter = 0;
@@ -121,7 +122,7 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 
 	setTimeout(function() {
 		tabElement.classList.remove('opening');
-	}, 200);
+	}, 200 / ANIMATION_SPEED);
 
 	visibility(animation);
 	setTabPositions();
@@ -415,6 +416,9 @@ async function close(id: number, force: boolean = false, animation: boolean = tr
 	if(tabs.length <= 1)
 		return;
 
+	const lastTab = tabs[tabs.length - 1];
+	const isLastTab = tab.id === lastTab.id;
+
 	tabs.splice(tabIndex, 1);
 
 	if(tab.active)
@@ -433,10 +437,18 @@ async function close(id: number, force: boolean = false, animation: boolean = tr
 
 		tab.element.remove();
 
-	}, animation ? 200 : 0);
+		const scrollBar = document.querySelector('.tabs-bar .small-scrollbar');
+		if(!scrollBar) return;
+
+		scrollBar.classList.remove('scroll-fade-x');
+		scrollBar.getBoundingClientRect();
+		scrollBar.classList.add('scroll-fade-x');
+
+	}, animation ? 200 / ANIMATION_SPEED : 0);
 
 	visibility();
 	setTabPositions();
+	if(isLastTab) setTabWidth(true);
 
 }
 
@@ -533,7 +545,7 @@ function getOffset(): Offset
 	};
 }
 
-function setTabWidth()
+function setTabWidth(fromCloseLastTab: boolean = false): void
 {
 	const _app = document.querySelector('.app') as HTMLElement;
 	if(!_app) return;
@@ -541,8 +553,14 @@ function setTabWidth()
 	const offset = getOffset();
 	const width = window.innerWidth - offset.titleBar - offset.current.controls - offset.newTab;
 
-	const len = tabs.length;
-	let tabWidth = (width - (len * 6) - 6) / len;
+	const gap = 6;
+	const count = tabs.length;
+
+	const resizeTolastTab = ((count + 1) * currentTabWidth + gap) / count;
+	let tabWidth = (width - (count * gap) - gap) / count;
+
+	if(fromCloseLastTab && resizeTolastTab < tabWidth)
+		tabWidth = resizeTolastTab;
 
 	if(tabWidth > 220)
 		tabWidth = 220;
@@ -636,11 +654,8 @@ function setEvents(tab: Tab): void
 	});
 }
 
-function mouseLeave(event)
+function mouseLeave()
 {
-	const clientY = app.clientY(event);
-	if(clientY > 6 && clientY < 32) return;
-
 	setTabPositions();
 	setTabWidth();
 }
