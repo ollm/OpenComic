@@ -28,7 +28,13 @@ function getControlsPosition()
 	const rightWidth = window.innerWidth - rect.right;
 
 	const controlsOnLeft = rect.left >= rightWidth;
-	const controlsWidth = controlsOnLeft ? rect.left : rightWidth;
+	let controlsWidth = controlsOnLeft ? rect.left : rightWidth;
+
+	if(controlsWidth > 400)
+	{
+		console.error(window.innerWidth, rect);
+		controlsWidth = 138;
+	}
 
 	const app = document.querySelector('.app');
 
