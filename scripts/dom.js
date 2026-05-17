@@ -634,7 +634,6 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	workers.clean('convertImage');
 
 	scroll.reset();
-	reading.hideContent();
 	reading.music.pause();
 
 	setWindowTitle();
@@ -1175,6 +1174,8 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	{
 		selectMenuItem(dom.labels.menuItemSelector(root.indexLabel.has ? root.indexLabel : _indexLabel));
 	}
+
+	reading.hideContent();
 
 	shortcuts.register(isOpds || _indexLabel.opds ? 'opds' : 'browse');
 	gamepad.updateBrowsableItems(path ? sha1(path) : 'library');
@@ -2842,7 +2843,6 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	reading.setIsLoaded(false);
 	onReading = _onReading = true;
-	reading.hideContent(isFullScreen, true);
 
 	// Remove page param in epub files
 	path = path.replace(/\?page=\d+/, '');
@@ -2898,6 +2898,8 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	template.loadHeader('reading.header.html', animation);
 	template.loadContentLeft('reading.content.left.html', animation);
 	tabs.update();
+
+	reading.hideContent(isFullScreen, true);
 
 	let isCanvas = false;
 	let isEbook = false;

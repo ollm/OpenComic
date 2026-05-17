@@ -2296,7 +2296,6 @@ function hideContent(fullScreen = false, first = false)
 	else
 	{
 		app.classList.remove('hide-bar-header');
-		dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 		hiddenBarHeader = false;
 	}
 
@@ -2309,6 +2308,7 @@ function hideContent(fullScreen = false, first = false)
 		app.classList.remove('hide-tabs-bar');
 	}
 
+	showHideHeader();
 	dom.this(template._contentRight()).find('.reading-progress').class(fullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
 
 	if(!first && onReading)
@@ -4340,6 +4340,12 @@ function hideMouseInFullscreen(event = false, hide = false)
 
 		status.hidden = false;
 	}
+}
+
+function showHideHeader()
+{
+	const show = document.querySelector('.tabs-bar-hover'); // document.querySelector('.menu-simple.a, .title-bar-menu.show, .tabs-bar-hover');
+	dom.queryAll('.bar-header, .tabs-bar').class(show, 'show');
 }
 
 function hideContentLeftAndHeader()

@@ -654,8 +654,17 @@ function setEvents(tab: Tab): void
 	});
 }
 
+function mouseEnter()
+{
+	const tabsBar = document.querySelector('.tabs-bar') as HTMLElement;
+	if(tabsBar) tabsBar.classList.add('tabs-bar-hover');
+}
+
 function mouseLeave()
 {
+	const tabsBar = document.querySelector('.tabs-bar') as HTMLElement;
+	if(tabsBar) tabsBar.classList.remove('tabs-bar-hover');
+
 	setTabPositions();
 	setTabWidth();
 }
@@ -690,6 +699,9 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 		}, 100);
 
 	});
+
+	app.event('.tabs-bar', 'mouseenter', mouseEnter);
+	app.event('.tabs-bar', 'mouseleave', mouseLeave);
 
 	app.event('.tabs-bar > div', 'mousewheel', dom.header.wheel);
 	drag.start();

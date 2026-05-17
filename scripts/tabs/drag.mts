@@ -237,12 +237,12 @@ function add(id: number, _detachedTab: boolean = false): SimpleEvent | undefined
 		const bounds = MACOS ? {
 			left: 15 + 80,
 			right: window.innerWidth - 15,
-			top: 5,
+			top: 0,
 			bottom: 80,
 		} : {
 			left: 15 + titleBar.controls.left,
 			right: window.innerWidth - 15 + titleBar.controls.right,
-			top: 5,
+			top: 0,
 			bottom: 80,
 		};
 
@@ -677,6 +677,8 @@ function followScreenPoint(winId: number, tab: Tab) {
 		y: 0,
 	};
 
+	const bounds = win.getBounds();
+
 	const loop = function() {
 
 		window.requestAnimationFrame(function() {
@@ -688,7 +690,7 @@ function followScreenPoint(winId: number, tab: Tab) {
 
 			if(screenFollow.current.x !== cursor.x || screenFollow.current.y !== cursor.y)
 			{
-				win.setBounds({x, y});
+				win.setBounds({...bounds, x, y});
 				eventFromScreenPoint(cursor.x, cursor.y, wx, wy);
 			}
 
