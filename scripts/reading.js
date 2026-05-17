@@ -2231,23 +2231,67 @@ async function resized()
 
 var hiddenContentLeft = false, hiddenBarHeader = false, hideTabsBar = false, hideContentDisableTransitionsST = false, hideContentST = false, hideContentRunningST = false, shownContentLeft = false, shownBarHeader = false;
 
-function hideHeaderButtons(hide = false)
+let hideHeaderButtonsAnimating = false;
+
+function hideHeaderButtons(hide = false, animation = false)
 {
 	const win = electronRemote.getCurrentWindow();
+	const date = Date.now();
+
 	const fullHide = hiddenBarHeader && hideTabsBar;
 	hide = fullHide && hide;
+
+	const animate = function() {
+
+		const duration = 180;
+		const elapsed = Date.now() - date;
+		const progress = Math.min(elapsed / duration, 1);
+
+		setHeaderButtons(win, hide ? (1 - progress) : progress);
+
+		if(elapsed < duration)
+		{
+			window.requestAnimationFrame(animate);
+		}
+		else
+		{
+			setHeaderButtons(win, hide ? 0 : 1);
+			hideHeaderButtonsAnimating = false;
+		}
+	}
+
+	if(animation)
+	{
+		if(hideHeaderButtonsAnimating) return;
+		hideHeaderButtonsAnimating = true;
+		animate();
+	}
+	else
+	{
+		setHeaderButtons(win, hide ? 0 : 1);
+	}
+}
+
+function setHeaderButtons(win, progress = 0)
+{
+	const calculate = function(from, to) {
+
+		const value = Math.round(from + ((to - from) * progress));
+		return Math.max(from, Math.min(to, value));
+
+	}
 
 	if(process.platform == 'darwin')
 	{
 		win.setWindowButtonPosition({
 			x: 13,
-			y: hide ? -20 : 13
+			y: calculate(-92, 13),
 		});
 	}
 	else
 	{
 		win.setTitleBarOverlay({
-			height: hide ? 1 : 40,
+			height: calculate(-65, 40),
 		});
 	}
 }
@@ -4245,7 +4289,7 @@ function pointermove(event)
 
 					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
 					reading.setShownBarHeader(true);
-					hideHeaderButtons(false);
+					hideHeaderButtons(false, true);
 
 					const tabsBar = document.querySelector('.tabs-bar');
 					tabsBar.style.webkitAppRegion = 'no-drag';
@@ -4269,7 +4313,7 @@ function pointermove(event)
 				hideContentST = setTimeout(function(){
 
 					dom.query('.content-left').addClass('show');
-					reading.setShownContentLeft(true);
+					reading.setShownContentLeft(true, true);
 
 				}, 300);
 
@@ -4294,7 +4338,7 @@ function pointermove(event)
 
 			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
 			reading.setShownBarHeader(false);
-			hideHeaderButtons(true);
+			hideHeaderButtons(true, true);
 
 			hideContentRunningST = false;
 		}
