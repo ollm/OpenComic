@@ -134,6 +134,8 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 	let leftScroll = contentLeft.firstElementChild;
 	let leftItem;
 
+	const _animation = animation && _config.readingViewSpeed > 0.2;
+
 	if(readingIsEbook)
 	{
 		let currentPage = index;
@@ -146,31 +148,33 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		}
 
 		leftItem = contentLeft.querySelector('.reading-toc-page-'+closest+' .reading-toc-title');
+		const titles = dom.this(contentLeft).find('.reading-toc-title.s', true);
 
-		if(animation)
-			dom.this(contentLeft).find('.reading-toc-title.s', true).removeClass('s');
+		if(_animation)
+			titles.removeClass('s');
 		else
-			dom.this(contentLeft).find('.reading-toc-title.s', true).removeClass('s', 'transition');
+			titles.removeClass('s', 'transition');
 
 		if(leftItem)
 		{
 			leftItem.classList.add('s');
-			if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
+			if(_animation) leftItem.classList.add('transition');
 		}
 	}
 	else
 	{
 		leftItem = contentLeft.querySelector('.r-l-i'+index);
+		const titles = dom.this(contentLeft).find('.reading-left.s', true);
 
-		if(animation)
-			dom.this(contentLeft).find('.reading-left.s', true).removeClass('s');
+		if(_animation)
+			titles.removeClass('s');
 		else
-			dom.this(contentLeft).find('.reading-left.s', true).removeClass('s', 'transition');
+			titles.removeClass('s', 'transition');
 
 		if(leftItem)
 		{
 			leftItem.classList.add('s');
-			if(animation && _config.readingViewSpeed > 0.2) leftItem.classList.add('transition');
+			if(_animation) leftItem.classList.add('transition');
 		}
 	}
 
@@ -4311,7 +4315,7 @@ function pointermove(event)
 					hideWindowButtons(false, true);
 
 					const tabsBar = document.querySelector('.tabs-bar');
-					tabsBar.style.webkitAppRegion = 'no-drag';
+					tabsBar.style.webkitAppRegion = 'drag';
 
 					setTimeout(function() {
 

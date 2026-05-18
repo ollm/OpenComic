@@ -2428,9 +2428,14 @@ function selectElement(element)
 
 //Enable/Disable night mode
 
+let nightModeTransitionST = false;
+
 function nightMode(force = null)
 {
+	clearTimeout(nightModeTransitionST);
 	let _app = document.querySelector('.app');
+
+	_app.classList.add('night-mode-transition');
 
 	if((force === null && _app.classList.contains('night-mode')) || force === false)
 	{
@@ -2448,8 +2453,13 @@ function nightMode(force = null)
 	}
 
 	nightModeConfig(_app);
-
 	titleBar.setColors();
+
+	nightModeTransitionST = setTimeout(function() {
+
+		_app.classList.remove('night-mode-transition');
+
+	}, 210);
 }
 
 function nightModeConfig(_app = false)
