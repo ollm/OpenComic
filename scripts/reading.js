@@ -3954,7 +3954,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		return;
 	}
-	else if(!nextOpenChapterProgress && view.distribution.distribution && view.distribution.distribution[0] && !imagePath)
+	else if(!nextOpenChapterProgress && view.distribution?.distribution?.length && !imagePath)
 	{
 		const _doublePage = view.distribution.distribution[0].length > 1 ? true : false;
 
