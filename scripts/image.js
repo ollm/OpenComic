@@ -49,7 +49,7 @@ async function _resize(fromImage, toImage, config = {}, deep = 0)
 
 	try
 	{
-		await sharp(fromImage, options).flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage);
+		await sharp(fromImage, options).rotate().flatten({background: {r: 255, g: 255, b: 255}}).jpeg({quality: config.quality}).resize(config).toFile(toImage);
 
 		return toImage;
 	}
@@ -116,7 +116,7 @@ async function resizeToBlob(fromImage, config = {})
 		return {blob: url, info, size: blob.size};
 	}
 
-	let _sharp = sharp(fromImage).keepIccProfile();
+	let _sharp = sharp(fromImage).rotate().keepIccProfile();
 
 	if(config.width && config.height)
 	{
@@ -183,7 +183,7 @@ async function toPng(fromImage, toImage, config = {})
 
 	return new Promise(function(resolve, reject) {
 
-		const _sharp = sharp(fromImage);
+		const _sharp = sharp(fromImage).rotate();
 
 		if(config.removeAlpha)
 			_sharp.removeAlpha();
@@ -212,7 +212,7 @@ async function rawToPng(fromBuffer, toImage, raw = {}, config = {})
 
 	return new Promise(function(resolve, reject) {
 
-		const _sharp = sharp(fromBuffer, {raw: raw});
+		const _sharp = sharp(fromBuffer, {raw: raw}).rotate();
 
 		if(config.removeAlpha)
 			_sharp.removeAlpha();
@@ -241,7 +241,7 @@ async function rawToBuffer(fromBuffer, raw = {}, config = {})
 
 	return new Promise(function(resolve, reject) {
 
-		const _sharp = sharp(fromBuffer, {raw: raw});
+		const _sharp = sharp(fromBuffer, {raw: raw}).rotate();
 
 		if(config.removeAlpha)
 			_sharp.removeAlpha();
@@ -379,7 +379,26 @@ async function getBuffersFS(getImageBuffersFS)
 
 function getWithImageSize(ext)
 {
-	return compatible.image.png.has(ext) || compatible.image.gif.has(ext) || compatible.image.webp.has(ext)
+	return compatible.image.jpg.has(ext) || compatible.image.png.has(ext) || compatible.image.gif.has(ext) || compatible.image.webp.has(ext)
+}
+
+function applyOrientation(metadata)
+{
+	if(metadata.orientation)
+	{
+		if(metadata.orientation >= 5 && metadata.orientation <= 8)
+		{
+			return {
+				width: metadata.height,
+				height: metadata.width,
+			};
+		}
+	}
+
+	return {
+		width: metadata.width,
+		height: metadata.height,
+	};
 }
 
 async function getSizesFromBuffer(getImageBuffers, buffers)
@@ -389,11 +408,7 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 	const Sharp = async function(buffer) {
 
 		const _metadata = useChildFork ? await childFork.metadata(buffer) : await metadata(buffer);
-
-		return {
-			width: _metadata.width,
-			height: _metadata.height,
-		};
+		return applyOrientation(_metadata);
 
 	}
 
@@ -403,11 +418,7 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 			imageSize = require('image-size').imageSize;
 
 		const dimensions = imageSize(buffer);
-
-		return {
-			width: dimensions.width,
-			height: dimensions.height,
-		};
+		return applyOrientation(dimensions);
 
 	}
 
@@ -443,7 +454,10 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 							}
 							catch(error)
 							{
-								size = await Sharp(buffer);
+								if(!compatible.image.jpg.has(ext))
+									size = await Sharp(buffer);
+								else
+									throw error;
 							}
 						}
 						else
@@ -507,10 +521,7 @@ async function getSizes(images)
 			const path = app.shortWindowsPath(image.image);
 			const _metadata = useChildFork ? await childFork.metadata(path) : await metadata(path);
 
-			return {
-				width: _metadata.width,
-				height: _metadata.height,
-			};
+			return applyOrientation(_metadata);
 		}
 		catch(error)
 		{
@@ -525,11 +536,7 @@ async function getSizes(images)
 			imageSizeFromFile = require('image-size/fromFile').imageSizeFromFile;
 
 		const dimensions = await imageSizeFromFile(path);
-
-		return {
-			width: dimensions.width,
-			height: dimensions.height,
-		};
+		return applyOrientation(dimensions);
 
 	}
 
