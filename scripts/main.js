@@ -153,7 +153,7 @@ function createWindow(options = {}) {
 
 	// Open the DevTools.
 	if(configInit.openDevTools)
-		win.webContents.openDevTools()
+		win.webContents.openDevTools();
 
 	if(toOpenFile && !newWindow)
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);

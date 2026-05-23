@@ -16,6 +16,7 @@ body
 	box-sizing: border-box;
 	text-align: center;
 	overflow: auto;
+	user-select: none;
 }
 
 .about::before
@@ -73,13 +74,27 @@ body
 {
 	display: block;
 	font-size: 14px;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	word-wrap: normal;
 	color: rgba(0, 0, 0, 0.6);
 	height: 20px;
 	line-height: 22px;
+	position: relative;
+}
+
+.about-header-text i
+{
+	font-size: 16px;
+	position: absolute;
+	right: -22px;
+	top: 0px;
+	cursor: pointer;
+	transition: 0.1s;
+	border-radius: 4px;
+	padding: 2px 1px 2px 2px;
+}
+
+.about-header-text i:hover
+{
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .about-text
@@ -184,7 +199,7 @@ a > code
 		<br>
 		<div class="about-header-text">
 			<div>{{language.appName}}{{#if nightly.build}} Nightly{{/if}}</div>
-			<span>{{language.about.version}} {{config.appVersion}}{{#if nightly.build}} <a href="javascript:void(0);" onclick="shell.openExternal('https://github.com/ollm/OpenComic/commit/{{nightly.commit}}');"><code>{{nightly.commit7}}</code></a>{{/if}}</span>
+			<span>{{language.about.version}} {{config.appVersion}}{{#if nightly.build}} <a href="javascript:void(0);" onclick="shell.openExternal('https://github.com/ollm/OpenComic/commit/{{nightly.commit}}');"><code>{{nightly.commit7}}</code></a>{{/if}}<i class="material-icon menu-simple-icon-first" onclick="clipboard.writeText('{{language.about.version}} {{config.appVersion}}{{#if nightly.build}} {{nightly.commit7}}{{/if}}')">content_copy</i></span>
 		</div>
 		<br>
 		<div class="about-text">

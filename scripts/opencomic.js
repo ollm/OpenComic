@@ -1140,6 +1140,8 @@ function showAboutWindow()
 		slashes: true
 	}));
 
+	// about.webContents.openDevTools();
+
 	about.once('ready-to-show', function() {
 	
 		about.webContents.executeJavaScript('document.querySelector(\'body\').innerHTML = `'+template.load('about.body.html')+'`;', false).then(function(){
