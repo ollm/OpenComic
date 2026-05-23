@@ -1269,6 +1269,14 @@ async function jobEndedRenderedPage(event, index, pages)
 
 	try
 	{
+		await renders[index].render.webContents.executeJavaScript(`
+			new Promise(resolve => {
+				requestAnimationFrame(() => {
+					requestAnimationFrame(resolve);
+				});
+			});
+		`);
+
 		const image = await renders[index].render.capturePage({x: 0, y: 0, width: width, height: height}, {stayHidden: true});
 		await renders[index].job.callback(image);
 	}
