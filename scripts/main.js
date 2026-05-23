@@ -47,7 +47,7 @@ function createWindow(options = {}) {
 		path: p.join(storagePath, 'windowState.json'),
 		defaultWidth: Math.min(1100, workAreaSize.width),
 		defaultHeight: Math.min(640, workAreaSize.height),
-		defaultFullScreen: false,
+		fullScreen: false,
 	});
 
 	let image = nativeImage.createFromPath(p.join(__dirname, '../images/logo.png'));
