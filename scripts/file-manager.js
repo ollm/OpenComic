@@ -3703,9 +3703,9 @@ async function sort(files, options = {})
 	const extraKey = options?.extraKey ?? '';
 
 	const sort = config['sort'+extraKey];
-	const sortInvert = config['sortInvert'+extraKey];
 	const foldersFirst = config['foldersFirst'+extraKey];
 	const compressedFirst = config['compressedFirst'+extraKey];
+	let sortInvert = config['sortInvert'+extraKey];
 
 	let order = '';
 	let key = 'name';
@@ -3723,6 +3723,7 @@ async function sort(files, options = {})
 	{
 		order = 'real-numeric';
 		key = 'mtime';
+		sortInvert = !sortInvert;
 
 		files = await Promise.all(
 			files.map(async function(file) {
