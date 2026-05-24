@@ -196,7 +196,7 @@ const storageDefault = {
 		readingMagnifyingGlassRadius: 4,
 		readingHideContentLeft: false,
 		readingHideBarHeader: false,
-		readingHideTabsBar: true,
+		readingHideTabsBar: false,
 		readingShowPageNumber: false,
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
