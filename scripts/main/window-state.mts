@@ -154,8 +154,8 @@ function windowState(options: Options): State
 		// Don't throw an error when window was closed
 		try
 		{
-			state.isMaximized = win.isMaximized();
 			state.isFullScreen = win.isFullScreen();
+			state.isMaximized = state.isFullScreen ? state.isMaximized : win.isMaximized();
 			const winBounds = isNormal(win) ? win.getBounds() : win.getNormalBounds();
 
 			state.x = winBounds.x;
