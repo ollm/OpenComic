@@ -304,6 +304,7 @@ oc-img .ai-loading circle
 	border-radius: 12px;
 	object-fit: cover;
 	box-sizing: border-box;
+	transform: translate(0.001px, 0.001px);
 }
 
 .reading-body .r-img > oc-img, .reading-lens .r-img > oc-img, .reading-body .r-img.blank > div, .reading-lens .r-img.blank > div/*, .reading-body .r-folder, .reading-lens .r-folder*/

@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 154; // Update this if readingPagesConfig is updated
+const changes = 155; // Update this if readingPagesConfig is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -112,7 +112,7 @@ const readingPagesConfig = {
 		},
 		upscale: {
 			active: false,
-			model: 'realcugan', // opencomic-ai-upscale-lite
+			model: 'opencomic-ai-upscale-lite',
 			maxMegapixels: 1.5,
 			scale: 4,
 			noise: 0,

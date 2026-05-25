@@ -427,8 +427,8 @@ function migrateDefaultModelsToOpenComicAiModels(data)
 		if(data.config.readingAi.descreen?.model)
 			data.config.readingAi.descreen.model = 'opencomic-ai-descreen-hard-lite';
 
-		// if(data.config.readingAi.upscale?.model)
-		//	data.config.readingAi.upscale.model = 'opencomic-ai-upscale-lite';
+		if(data.config.readingAi.upscale?.model)
+			data.config.readingAi.upscale.model = 'opencomic-ai-upscale-lite';
 
 		for(let key in data.readingShortcutPagesConfig)
 		{
@@ -438,8 +438,8 @@ function migrateDefaultModelsToOpenComicAiModels(data)
 			if(data.readingShortcutPagesConfig[key]?.readingAi?.descreen?.model)
 				data.readingShortcutPagesConfig[key].readingAi.descreen.model = 'opencomic-ai-descreen-hard-lite';
 
-			// if(data.readingShortcutPagesConfig[key]?.readingAi?.upscale?.model)
-			//	data.readingShortcutPagesConfig[key].readingAi.upscale.model = 'opencomic-ai-upscale-lite';
+			if(data.readingShortcutPagesConfig[key]?.readingAi?.upscale?.model)
+				data.readingShortcutPagesConfig[key].readingAi.upscale.model = 'opencomic-ai-upscale-lite';
 		}
 
 		for(let key in data.readingPagesConfig)
@@ -450,8 +450,8 @@ function migrateDefaultModelsToOpenComicAiModels(data)
 			if(data.readingPagesConfig[key]?.readingAi?.descreen?.model)
 				data.readingPagesConfig[key].readingAi.descreen.model = 'opencomic-ai-descreen-hard-lite';
 
-			// if(data.readingPagesConfig[key]?.readingAi?.upscale?.model)
-			//	data.readingPagesConfig[key].readingAi.upscale.model = 'opencomic-ai-upscale-lite';
+			if(data.readingPagesConfig[key]?.readingAi?.upscale?.model)
+				data.readingPagesConfig[key].readingAi.upscale.model = 'opencomic-ai-upscale-lite';
 		}
 	}
 
@@ -517,11 +517,11 @@ function start(data)
 	if(changes < 141) // OPDS download files
 		data = migrateOpdsDownloadFiles(data);
 
-	if(changes < 143) // Change default models to OpenComic AI models
-		data = migrateDefaultModelsToOpenComicAiModels(data);
-
 	if(changes < 147) // Remove uncompatible epub cache (rendered cache)
 		removeEpubRenderCache();
+
+	if(changes < 155) // Change default models to OpenComic AI models
+		data = migrateDefaultModelsToOpenComicAiModels(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

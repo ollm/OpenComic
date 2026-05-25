@@ -829,7 +829,7 @@ var file = function(path, _config = false) {
 					if(!filesToDecompress[compressedFile]) filesToDecompress[compressedFile] = [];
 					filesToDecompress[compressedFile].push(file.path);
 				}
-				else
+				else if(compressedFile)
 				{
 					if(!filesToDecompress[compressedFile]) filesToDecompress[compressedFile] = [];
 					filesToDecompress[compressedFile].push(removePathPart(file.path, compressedFile));
