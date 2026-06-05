@@ -42,15 +42,21 @@ function setLastCheckedRelease(name)
 
 function versionIsHigher(lowest, highest)
 {
-	let l = lowest.replace(/^[a-z]+/iu, '').split(/[.-]/);
-	let h = highest.replace(/^[a-z]+/iu, '').split(/[.-]/);
+	const l = lowest.replace(/^[a-z]+/iu, '').split(/[.-]/);
+	const h = highest.replace(/^[a-z]+/iu, '').split(/[.-]/);
 
-	for(let key in l)
+	const maxLength = Math.max(l.length, h.length);
+
+	for(let i = 0; i < maxLength; i++)
 	{
-		if(l[key] > h[key] || (h[key] === undefined && !isNaN(l[key])))
-			break;
-		else if(h[key] === undefined || l[key] < h[key])
+		const lv = parseInt(l[i] ?? 0, 10);
+		const hv = parseInt(h[i] ?? 0, 10);
+
+		if(hv > lv)
 			return true;
+
+		if(hv < lv)
+			return false;
 	}
 
 	return false;
