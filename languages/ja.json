@@ -20,10 +20,10 @@
 			"lastAdd": "最近追加した順",
 			"lastReading": "最近読んだ順",
 			"lastOpened": "最近開いた順",
-			"lastModified": "",
-			"shuffle": "",
+			"lastModified": "最終更新日順",
+			"shuffle": "シャッフル",
 			"foldersFirst": "フォルダーを先に表示",
-			"compressedFirst": "",
+			"compressedFirst": "圧縮ファイルを先に表示",
 			"invert": "並びを反転"
 		},
 		"view": {
@@ -31,14 +31,14 @@
 			"module": "グリッド",
 			"list": "リスト",
 			"moduleSize": "グリッドのサイズ",
-			"fadeCompleted": "",
-			"progressBar": "",
-			"progressPages": "",
-			"progressPercent": ""
+			"fadeCompleted": "読了済みを薄く表示",
+			"progressBar": "進捗バーを表示",
+			"progressPages": "ページ数を表示",
+			"progressPercent": "パーセンテージを表示"
 		},
 		"filter": {
-			"onlyRoot": "",
-			"requireAllLabels": ""
+			"onlyRoot": "ルート フォルダーのみ",
+			"requireAllLabels": "選択したすべてのラベルが必要"
 		},
 		"contextMenu": {
 			"undo": "元に戻す",
@@ -52,10 +52,10 @@
 			"deletePermanently": "完全に削除",
 			"deletePermanentlyConfirm": "このファイルを完全に削除しますか? この操作は取り消せません。",
 			"favorite": "お気に入りに追加",
-			"openInNewTab": "",
-			"openInNewWindow": "",
-			"markAsRead": "",
-			"markAsUnread": "",
+			"openInNewTab": "新しいタブで開く",
+			"openInNewWindow": "新しいウィンドウで開く",
+			"markAsRead": "既読にする",
+			"markAsUnread": "未読にする",
 			"openFileLocation": "ファイルの場所を開く",
 			"openFolderLocation": "フォルダーの場所を開く",
 			"aboutFile": "このファイルについて",
@@ -72,22 +72,22 @@
 			"saveBookmarksImages": "現在のブックマーク画像を保存",
 			"saveAllBookmarksImages": "すべてのブックマーク画像を保存",
 			"saveImagesMessage": "画像を保存しました",
-			"saveImageMessage": "",
+			"saveImageMessage": "画像を保存しました",
 			"copyImage": "画像をクリップボードにコピー",
 			"copyImageMessage": "画像をクリップボードにコピーしました",
-			"addBlankPageLeft": "",
-			"addBlankPageRight": "",
-			"removeBlankPage": "",
+			"addBlankPageLeft": "左に空白ページを追加",
+			"addBlankPageRight": "右に空白ページを追加",
+			"removeBlankPage": "空白ページを削除",
 			"clearFileCache": "ファイル キャッシュをクリア",
 			"clearFileCacheSuccessfully": "ファイル キャッシュをクリアしました",
 			"closeApp": "OpenComic を閉じる"
 		},
 		"speed": {
-			"veryFast": "",
-			"fast": "",
-			"medium": "",
-			"slow": "",
-			"verySlow": ""
+			"veryFast": "非常に速い",
+			"fast": "速い",
+			"medium": "普通",
+			"slow": "遅い",
+			"verySlow": "非常に遅い"
 		},
 		"back": "戻る",
 		"goBack": "前のページへ戻る",
@@ -100,7 +100,7 @@
 		"retry": "再試行",
 		"search": "検索",
 		"filterCurrentPage": "現在のページでフィルター",
-		"pickAtRandom": "",
+		"pickAtRandom": "ランダムに選ぶ",
 		"language": "言語",
 		"settings": "設定",
 		"theme": "テーマ",
@@ -140,13 +140,13 @@
 		"pages": {
 			"main": "ページ設定",
 			"pageLayout": "ページ レイアウト",
-			"pageLayoutShort": "",
+			"pageLayoutShort": "ページ",
 			"ebookLayout": "eBook レイアウト",
-			"ebookLayoutShort": "",
+			"ebookLayoutShort": "eBook",
 			"colorFilters": "カラー フィルター",
-			"colorFiltersShort": "",
-			"aiTools": "",
-			"aiToolsShort": "",
+			"colorFiltersShort": "フィルター",
+			"aiTools": "AI ツール",
+			"aiToolsShort": "AI",
 			"slide": "スライド リーダー",
 			"scroll": "縦スクロール",
 			"roughPageTurn": "ページめくり（ラフ）",
@@ -154,18 +154,18 @@
 			"fade": "フェード",
 			"adjustToWidth": "幅に合わせる",
 			"notEnlargeMoreThanOriginalSize": "元のサイズ以上には拡大しない",
-			"rotate": "",
+			"rotate": "回転",
 			"rotateHorizontals": "横向き画像を回転",
-			"rotateLeft": "",
-			"rotateRight": "",
-			"rotateUpsideDown": "",
+			"rotateLeft": "左に回転",
+			"rotateRight": "右に回転",
+			"rotateUpsideDown": "180度回転",
 			"forceSinglePage": "1ページのみ表示",
 			"margin": "余白",
 			"marginHorizontal": "左右の余白",
 			"marginVertical": "上下の余白",
 			"differentMarginInHorizontals": "横向き画像には別の余白を適用",
-			"increaseHorizontalMargin": "",
-			"decreaseHorizontalMargin": "",
+			"increaseHorizontalMargin": "左右の余白を広げる",
+			"decreaseHorizontalMargin": "左右の余白を狭める",
 			"doublePage": "見開き表示",
 			"doNotApplyToHorizontals": "横向き画像には適用しない",
 			"alignWithNextHorizontal": "次の横向き画像とそろえる",
@@ -203,7 +203,7 @@
 			"increaseFontSize": "フォントを大きく",
 			"decreaseFontSize": "フォントを小さく",
 			"fontFamily": "フォント ファミリ",
-			"forceLeftToRight": "",
+			"forceLeftToRight": "左から右への読み方向を強制",
 			"useEbookFont": "eBook 用フォントを使用",
 			"useEbookTheme": "eBook テーマを使用",
 			"useAppTheme": "アプリのテーマを使用",
@@ -227,16 +227,16 @@
 			"background": "背景",
 			"perspective": "パース",
 			"angle": "角度",
-			"aiArtifactRemoval": "",
-			"aiDescreen": "",
-			"aiUpscale": "",
-			"aiModel": "",
-			"downloadingAiModel": "",
-			"maxMegapixels": "",
-			"autoScale": "",
-			"scale": "",
-			"noiseReduction": "",
-			"extractDocumentImages": ""
+			"aiArtifactRemoval": "AI アーティファクト除去",
+			"aiDescreen": "AI デスクリーン",
+			"aiUpscale": "AI アップスケール",
+			"aiModel": "モデル",
+			"downloadingAiModel": "AI モデルをダウンロード中",
+			"maxMegapixels": "入力画像の最大解像度（メガピクセル）",
+			"autoScale": "自動スケール",
+			"scale": "スケール",
+			"noiseReduction": "ノイズ除去",
+			"extractDocumentImages": "ドキュメントの画像を抽出"
 		},
 		"magnifyingGlass": {
 			"main": "拡大鏡",
@@ -273,18 +273,18 @@
 		},
 		"doublePage": {
 			"shadow": {
-				"main": "",
-				"size": "",
-				"opacity": "",
-				"displacement": ""
+				"main": "ページ間の影効果",
+				"size": "サイズ",
+				"opacity": "不透明度",
+				"displacement": "影のずれ"
 			}
 		},
 		"moreOptions": {
 			"main": "その他のオプション",
 			"hideBarHeader": "ヘッダーバーを隠す",
-			"hideTabsBar": "",
+			"hideTabsBar": "タブバーを隠す",
 			"hideContentLeft": "サイドバーを隠す",
-			"showPageNumber": ""
+			"showPageNumber": "ページ番号を表示"
 		},
 		"viewBookmarks": "ブックマークを表示",
 		"addBookmark": "ブックマークを追加",
@@ -303,14 +303,14 @@
 			"scrollWithMouse": "画面端でカーソルを移動してスクロール（ドラッグでのスクロールは無効化）",
 			"goNextPrevChapterWithScroll": "マウススクロールで次/前の章に移動（縦スクロール時）",
 			"turnPagesWithMouseWheel": "マウスホイールでページめくり（Ctrlキーを押しながらでズーム）",
-			"disableThumbnails": "",
+			"disableThumbnails": "サムネイルを無効化（ファイル名を表示）",
 			"mouseWheelSensitivityInZoom": "ズーム時のマウスホイール感度",
 			"rotateHorizontalsAnticlockwise": "横向き画像を回転するとき反時計回りにする",
 			"startReadingInFullScreen": "読書を全画面で開始",
 			"trackingAtTheEnd": "章/巻の最後でサイト連携を更新",
-			"trackingAutoPrompt": "",
-			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"trackingAutoPrompt": "自動でサイト連携を確認",
+			"trackingAutoPromptFavorites": "自動でサイト連携を確認（お気に入りサイトのみ）",
+			"discordRcp": "Discord Rich Presence"
 		},
 		"imageInterpolation": {
 			"main": "画像の補間",
@@ -322,9 +322,9 @@
 			"upscalingDescription": "画像解像度を上げる必要がある場合のみ適用されます。PDF, EPUB, アニメーション画像には適用されません。注意: シャープ系の方式は拡大時に動作が遅くなることがあります。"
 		},
 		"preload": {
-			"main": "",
-			"imagesToPreload": "",
-			"imagesToPreloadDescription": ""
+			"main": "プリロード",
+			"imagesToPreload": "プリロードする画像の枚数",
+			"imagesToPreloadDescription": "画像を事前にレンダリングし、次に進む際にすぐ表示できるようにします（補間および AI）"
 		},
 		"colorProfile": {
 			"main": "カラープロファイル",
@@ -338,19 +338,19 @@
 			"files": "ナビゲーション（ファイル）",
 			"ignoreSingleFoldersLibrary": "単一フォルダーを無視（自動で開く）",
 			"ignoreFilesRegex": {
-				"title": "",
-				"description": "",
-				"dialogTitle": "",
-				"dialogDescription": "",
+				"title": "正規表現またはファイルパターンに一致するファイルやフォルダーを無視",
+				"description": "一部のファイルやフォルダーを隠したい場合に便利です",
+				"dialogTitle": "ファイルやフォルダーを無視",
+				"dialogDescription": "一部のファイルやフォルダーを隠したい場合に便利です。正規表現またはファイルパターンを使用できます。例:",
 				"examples": {
-					"poster": "",
-					"miscellaneousFiles": "",
-					"unixHidden": ""
+					"poster": "ポスターとカバー",
+					"miscellaneousFiles": "その他のファイル",
+					"unixHidden": "Unix の隠しパス"
 				},
-				"regexPattern": "",
-				"addRegex": "",
-				"noRegex": "",
-				"invalidRegex": ""
+				"regexPattern": "正規表現またはファイルパターン",
+				"addRegex": "正規表現またはファイルパターンを追加",
+				"noRegex": "正規表現やファイルパターンがありません",
+				"invalidRegex": "正規表現またはファイルパターンが無効です"
 			},
 			"openingBehaviorFolder": "フォルダーを開くときの挙動",
 			"openingBehaviorFolderDescription": "ナビゲーション中、フォルダーを開いた際の動作を設定します",
@@ -367,9 +367,9 @@
 			"showFullPathLibrary": "ライブラリ内のコミックを開く際、フルパスを表示",
 			"showFullPathOpened": "ファイルやフォルダーを開く際、フルパスを表示",
 			"showLibraryPath": "ヘッダーのパスにライブラリ/お気に入り/ラベル等を表示",
-			"showFileExtension": "",
-			"openFilesInNewTab": "",
-			"openFilesInNewWindow": "",
+			"showFileExtension": "ファイル一覧に拡張子を表示",
+			"openFilesInNewTab": "ファイルを新しいタブで開く（OpenComic 外から開いたファイルにのみ適用）",
+			"openFilesInNewWindow": "ファイルを新しいウィンドウで開く（OpenComic 外から開いたファイルにのみ適用）",
 			"recentlyOpenedItems": "最近開いたファイルの保存数"
 		},
 		"saveImages": {
@@ -381,8 +381,8 @@
 		"startupBehavior": {
 			"main": "起動時の動作",
 			"startInFullScreen": "OpenComic を全画面で起動",
-			"restoreTabsFromLastSession": "",
-			"showAlwaysTabsBar": "",
+			"restoreTabsFromLastSession": "前回のセッションのタブを復元",
+			"showAlwaysTabsBar": "タブバーを常に表示",
 			"startInContinueReading": "最後に読んでいたページから開始",
 			"startOnlyFromLibrary": "最後に読んだコミックがライブラリ内の場合のみ",
 			"startOnStartup": "OS 起動時に OpenComic を起動"
@@ -428,8 +428,8 @@
 		},
 		"tapZones": {
 			"main": "タップ領域",
-			"disable": "",
-			"invertInManga": "",
+			"disable": "タップ領域を無効化",
+			"invertInManga": "読む時にタップ領域を反転",
 			"leftClick": "左クリック",
 			"rightClick": "右クリック",
 			"middleClick": "ホイールクリック"
@@ -459,7 +459,7 @@
 		},
 		"storage": {
 			"main": "ストレージ",
-			"useCustomCacheAndTmpFolder": "",
+			"useCustomCacheAndTmpFolder": "キャッシュと一時ファイルにカスタムフォルダーを使用（既存のファイルは新しい場所へコピーされます）",
 			"cache": "キャッシュ",
 			"cacheDescription": "サムネイルや圧縮ファイルのインデックスをここに保存します。容量が大きい場合やエラーがある場合以外は削除を推奨しません。",
 			"cacheMaxSize": "キャッシュの最大サイズ",
@@ -509,19 +509,19 @@
 		"help": {
 			"main": "ヘルプ",
 			"about": "OpenComic について",
-			"guides": "",
+			"guides": "ガイド",
 			"funding": "支援・寄付",
 			"bug": "バグを報告"
 		}
 	},
 	"dialog": {
 		"auth": {
-			"loginTo": "",
-			"filePass": "",
-			"rememberPass": "",
-			"manualLogin": "",
-			"sessionExpired": "",
-			"loginAgain": ""
+			"loginTo": "{{siteName}} にログイン",
+			"filePass": "このファイルにはパスワードが必要です",
+			"rememberPass": "パスワードを記憶する",
+			"manualLogin": "手動でログイン",
+			"sessionExpired": "{{siteName}} のセッションが期限切れになりました",
+			"loginAgain": "{{siteName}} に再度ログインしますか?"
 		},
 		"tracking": {
 			"getTokenHeader": "{{siteName}} にトークンでサインイン",
@@ -536,7 +536,7 @@
 			"setChapterNumber": "どの章までマークするか",
 			"setVolumeNumber": "どの巻までマークするか",
 			"activate": "連携を有効にする",
-			"wantToTrack": ""
+			"wantToTrack": "サイト連携しますか?"
 		},
 		"pages": {
 			"readingConfigNewHeader": "新しい設定を作成",
@@ -563,7 +563,7 @@
 			"add": "カタログを追加",
 			"delete": "カタログを削除",
 			"confirmDelete": "このカタログを削除してよろしいですか?",
-			"downloadAuto": "",
+			"downloadAuto": "OPDS カタログからファイルを自動ダウンロード",
 			"showOnLeft": "ナビゲーション ドロワーに表示",
 			"downloadTitle": "OPDS フォルダー",
 			"downloadDescription": "OPDS 経由でダウンロードしたファイルを保存するフォルダー",
@@ -634,7 +634,7 @@
 				"creatorTool": "作成ツール",
 				"notes": "メモ",
 				"GTIN": "GTIN",
-				"ISBN": ""
+				"ISBN": "ISBN"
 			}
 		},
 		"requestFileAccess": {
@@ -651,9 +651,9 @@
 		"ok": "OK",
 		"on": "オン",
 		"off": "オフ",
-		"yes": "",
-		"no": "",
-		"edit": "",
+		"yes": "はい",
+		"no": "いいえ",
+		"edit": "編集",
 		"save": "保存",
 		"undo": "元に戻す",
 		"dismiss": "閉じる",
@@ -667,7 +667,7 @@
 		"change": "変更",
 		"apply": "適用",
 		"close": "閉じる",
-		"login": ""
+		"login": "ログイン"
 	},
 	"error": {
 		"uncompress": {
