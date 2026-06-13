@@ -29,6 +29,10 @@ interface PixelColor {
 	b: number;
 }
 
+interface SharpMetadata extends sharp.Metadata {
+	mediaType?: string;
+}
+
 async function getPixelColor({_sharp, x, y}: GetPixelColorOptions): Promise<PixelColor> {
 
 	const {data, info} = await _sharp.raw().toBuffer({resolveWithObject: true});
@@ -49,7 +53,7 @@ describe('Sharp', function() {
 	it('JXL', async function() {
 
 		const _sharp = await sharp(images.jxl);
-		const metadata = await _sharp.metadata();
+		const metadata = await _sharp.metadata() as SharpMetadata;
 
 		const pixelColor = await getPixelColor({_sharp, x: 10, y: 10});
 
@@ -71,7 +75,7 @@ describe('Sharp', function() {
 	it('AVIF', async function() {
 
 		const _sharp = await sharp(images.avif);
-		const metadata = await _sharp.metadata();
+		const metadata = await _sharp.metadata() as SharpMetadata;
 
 		const pixelColor = await getPixelColor({_sharp, x: 10, y: 10});
 
@@ -93,7 +97,7 @@ describe('Sharp', function() {
 	it('AVIF 12bpc yuv444', async function() {
 
 		const _sharp = await sharp(images.avif12yuv444);
-		const metadata = await _sharp.metadata();
+		const metadata = await _sharp.metadata() as SharpMetadata;
 
 		const pixelColor = await getPixelColor({_sharp, x: 1000, y: 1000});
 
@@ -116,7 +120,7 @@ describe('Sharp', function() {
 	it('JP2', async function() {
 
 		const _sharp = await sharp(images.jp2);
-		const metadata = await _sharp.metadata();
+		const metadata = await _sharp.metadata() as SharpMetadata;
 
 		const pixelColor = await getPixelColor({_sharp, x: 10, y: 10});
 
@@ -143,7 +147,7 @@ describe('Sharp', function() {
 
 		assert.strictEqual('heif', metadata.format);
 		assert.strictEqual('srgb', metadata.space);
-		assert.strictEqual('image/heic', metadata.mediaType);
+		assert.strictEqual('image/heic', metadata.mediaType!);
 		assert.strictEqual(8, metadata.bitsPerSample);
 		assert.strictEqual(3024, metadata.width);
 		assert.strictEqual(4032, metadata.height);
@@ -158,7 +162,7 @@ describe('Sharp', function() {
 
 		assert.strictEqual('heif', metadata.format);
 		assert.strictEqual('rgb16', metadata.space);
-		assert.strictEqual('image/heic', metadata.mediaType);
+		assert.strictEqual('image/heic', metadata.mediaType!);
 		assert.strictEqual(10, metadata.bitsPerSample);
 		assert.strictEqual(3078, metadata.width);
 		assert.strictEqual(2048, metadata.height);
@@ -173,7 +177,7 @@ describe('Sharp', function() {
 
 		assert.strictEqual('heif', metadata.format);
 		assert.strictEqual('rgb16', metadata.space);
-		assert.strictEqual('image/heic', metadata.mediaType);
+		assert.strictEqual('image/heic', metadata.mediaType!);
 		assert.strictEqual(12, metadata.bitsPerSample);
 		assert.strictEqual(3078, metadata.width);
 		assert.strictEqual(2048, metadata.height);
@@ -188,7 +192,7 @@ describe('Sharp', function() {
 
 		assert.strictEqual('heif', metadata.format);
 		assert.strictEqual('rgb16', metadata.space);
-		assert.strictEqual('image/heic', metadata.mediaType);
+		assert.strictEqual('image/heic', metadata.mediaType!);
 		assert.strictEqual(12, metadata.bitsPerSample);
 		assert.strictEqual(3078, metadata.width);
 		assert.strictEqual(2048, metadata.height);

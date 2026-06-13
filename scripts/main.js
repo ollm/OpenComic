@@ -159,20 +159,39 @@ function createWindow(options = {}) {
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
 
 	win.on('close', function(event) {
-		if(!appClosing) {
+
+		if(!appClosing)
+		{
 			appClosing = true;
 			event.preventDefault();
-			win.webContents.executeJavaScript('const saved = reading.progress.save(); tabs.restore.save(false, true); settings.purgeTemporaryFiles(); cache.purge(); ebook.closeAllRenders(); workers.closeAllWorkers(); storage.backup.save(); storage.purgeOldAtomic(); saved;', false)
-				.then(function() {
-					win.hide();
-					setTimeout(function() {
-						win.close();
-					}, 500);
-				})
-				.catch(function(err) {
-					console.error('Error during cleanup:', err);
+
+			const js = `
+				const saved = reading.progress.save();
+				tabs.restore.save(false, true);
+				settings.purgeTemporaryFiles();
+				cache.purge();
+				ebook.closeAllRenders();
+				workers.closeAllWorkers();
+				storage.backup.save();
+				storage.purgeOldAtomic();
+				saved;
+			`;
+
+			win.webContents.executeJavaScript(js, false).then(function() {
+
+				win.hide();
+
+				// Wait for it to save
+				setTimeout(function() {
 					win.close();
-				});
+				}, 500);
+
+			}).catch(function(error) {
+
+				console.error('Error during cleanup:', error);
+				win.close();
+
+			});
 		}
 	});
 

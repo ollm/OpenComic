@@ -2948,7 +2948,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 	this.destroy = function() {
 
 		if(this.tar) this.tar.destroy();
-		if(this.pdf) this.pdf.destroy();
+		if(this.pdf) this.pdf.loadingTask.destroy();
 		if(this.epub) this.epub.destroy();
 
 		delete this.zip;
