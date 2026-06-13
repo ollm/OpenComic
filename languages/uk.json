@@ -20,8 +20,8 @@
 			"lastAdd": "Нещодавно додані",
 			"lastReading": "Нещодавно прочитані",
 			"lastOpened": "Нещодавно відкриті",
-			"lastModified": "",
-			"shuffle": "",
+			"lastModified": "Останнє оновлення",
+			"shuffle": "Перемішати",
 			"foldersFirst": "Спочатку каталоги",
 			"compressedFirst": "Спочатку архіви",
 			"invert": "Зворотній порядок"
@@ -52,7 +52,7 @@
 			"deletePermanently": "Видалити назавжди",
 			"deletePermanentlyConfirm": "Ви дійсно хочете назавжди видалити цей файл? Цю дію неможливо скасувати.",
 			"favorite": "Обране",
-			"openInNewTab": "",
+			"openInNewTab": "Відкрити в новій вкладці",
 			"openInNewWindow": "Відкрити в новому вікні",
 			"markAsRead": "Позначити як прочитане",
 			"markAsUnread": "Позначити як непрочитане",
@@ -75,9 +75,9 @@
 			"saveImageMessage": "Зображення успішно збережено",
 			"copyImage": "Копіювати зображення в буфер обміну",
 			"copyImageMessage": "Зображення скопійовано в буфер обміну",
-			"addBlankPageLeft": "",
-			"addBlankPageRight": "",
-			"removeBlankPage": "",
+			"addBlankPageLeft": "Додати порожню сторінку ліворуч",
+			"addBlankPageRight": "Додати порожню сторінку праворуч",
+			"removeBlankPage": "Видалити порожню сторінку",
 			"clearFileCache": "Очистити кеш файлу",
 			"clearFileCacheSuccessfully": "Кеш успішно очищено",
 			"closeApp": "Закрити OpenComic"
@@ -203,7 +203,7 @@
 			"increaseFontSize": "Збільшити розмір шрифту",
 			"decreaseFontSize": "Зменшити розмір шрифту",
 			"fontFamily": "Шрифт",
-			"forceLeftToRight": "",
+			"forceLeftToRight": "Примусовий напрямок читання зліва направо",
 			"useEbookFont": "Використати шрифт електронної книги",
 			"useEbookTheme": "Використати тему електронної книги",
 			"useAppTheme": "Використати тему застосунку",
@@ -236,7 +236,7 @@
 			"autoScale": "Автоматичне масштабування",
 			"scale": "Масштабування",
 			"noiseReduction": "Зниження шуму",
-			"extractDocumentImages": ""
+			"extractDocumentImages": "Витягнути зображення документа"
 		},
 		"magnifyingGlass": {
 			"main": "Збільшувальне скло",
@@ -282,7 +282,7 @@
 		"moreOptions": {
 			"main": "Більше опцій",
 			"hideBarHeader": "Приховати верхню панель",
-			"hideTabsBar": "",
+			"hideTabsBar": "Приховати панель вкладок",
 			"hideContentLeft": "Приховати бічну панель",
 			"showPageNumber": "Показати номер сторінки"
 		},
@@ -303,7 +303,7 @@
 			"scrollWithMouse": "Прокручування за допомогою руху курсору по центру екрана (Вимикає прокрутку за допомогою перетягування)",
 			"goNextPrevChapterWithScroll": "Перейти до наступного/попереднього розділу за допомогою миші (Вертикальне читання)",
 			"turnPagesWithMouseWheel": "Перегортати сторінки за допомогою коліщатка миші (Масштабування тільки при натиснутій клавіші Ctrl)",
-			"disableThumbnails": "",
+			"disableThumbnails": "Вимкнути мініатюри (показати імена файлів)",
 			"mouseWheelSensitivityInZoom": "Чутливість коліщатка миші під час масштабування",
 			"rotateHorizontalsAnticlockwise": "Обертання горизонтальних зображень проти годинникової стрілки.",
 			"startReadingInFullScreen": "Почати читання в повноекранному режимі",
@@ -322,9 +322,9 @@
 			"upscalingDescription": "Цей метод використовується тільки тоді, коли необхідно збільшити роздільну здатність зображення. Метод інтерполяції не застосовується до PDF, EPUB та анімованих зображень. Попередження: методи Sharp можуть бути повільними при збільшенні роздільної здатності."
 		},
 		"preload": {
-			"main": "",
-			"imagesToPreload": "",
-			"imagesToPreloadDescription": ""
+			"main": "Попереднє завантаження",
+			"imagesToPreload": "Кількість зображень для попереднього завантаження",
+			"imagesToPreloadDescription": "Зображення попередньо обробляються, щоб бути готовими до переходу на наступну сторінку (інтерполяція та штучний інтелект)"
 		},
 		"colorProfile": {
 			"main": "Колірний профіль",
@@ -368,8 +368,8 @@
 			"showFullPathOpened": "Показати повний шлях при відкритті файлу або каталогу",
 			"showLibraryPath": "Показати бібліотеку, вибране, мітки тощо в шляху заголовка",
 			"showFileExtension": "Показати розширення файлів у списку файлів",
-			"openFilesInNewTab": "",
-			"openFilesInNewWindow": "Відкривати файли в новому вікні (застосовується тільки до файлів, відкритих ззовні OpenComic)",
+			"openFilesInNewTab": "Відкривати файли в новій вкладці (застосовується тільки до файлів, відкритих поза програмою OpenComic)",
+			"openFilesInNewWindow": "Відкривати файли в новому вікні (застосовується тільки до файлів, відкритих поза програмою OpenComic)",
 			"recentlyOpenedItems": "Кількість елементів для збереження у списку нещодавно відкритих"
 		},
 		"saveImages": {
@@ -381,8 +381,8 @@
 		"startupBehavior": {
 			"main": "Поведінка при запуску",
 			"startInFullScreen": "Запускати OpenComic у повноекранному режимі",
-			"restoreTabsFromLastSession": "",
-			"showAlwaysTabsBar": "",
+			"restoreTabsFromLastSession": "Відновити вкладки з останньої сесії",
+			"showAlwaysTabsBar": "Always show tab bar",
 			"startInContinueReading": "Почати безпосередньо з останнього прочитаного",
 			"startOnlyFromLibrary": "Тільки якщо нещодавно прочитано є в бібліотеці",
 			"startOnStartup": "Запускати OpenComic під час запуску системи"
