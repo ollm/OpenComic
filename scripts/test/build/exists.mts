@@ -86,5 +86,5 @@ export const fix = {
 };
 
 export const versions = {
-	libvips: '8.18.2',
+	libvips: '8.18.3',
 };
