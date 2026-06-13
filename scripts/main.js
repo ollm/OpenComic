@@ -158,26 +158,22 @@ function createWindow(options = {}) {
 	if(toOpenFile && !newWindow)
 		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
 
-	win.on('close',	function(event) {
-
-		if(!appClosing)
-		{
+	win.on('close', function(event) {
+		if(!appClosing) {
 			appClosing = true;
-
-			win.webContents.executeJavaScript('const saved = reading.progress.save(); tabs.restore.save(false, true); settings.purgeTemporaryFiles(); cache.purge(); ebook.closeAllRenders(); workers.closeAllWorkers(); storage.backup.save(); storage.purgeOldAtomic(); saved;', false).then(function(value) {
-
-				win.hide();
-
-				// Wait for it to save
-				setTimeout(function(win){
-					win.close();
-				}, 500, win);
-
-			});
-
 			event.preventDefault();
+			win.webContents.executeJavaScript('const saved = reading.progress.save(); tabs.restore.save(false, true); settings.purgeTemporaryFiles(); cache.purge(); ebook.closeAllRenders(); workers.closeAllWorkers(); storage.backup.save(); storage.purgeOldAtomic(); saved;', false)
+				.then(function() {
+					win.hide();
+					setTimeout(function() {
+						win.close();
+					}, 500);
+				})
+				.catch(function(err) {
+					console.error('Error during cleanup:', err);
+					win.close();
+				});
 		}
-
 	});
 
 	// Emitted when the window is closed.
