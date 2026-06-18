@@ -21,10 +21,22 @@ export interface RightSize {
 }
 
 export interface FullPosition {
+	i: number;
+	j: number;
 	top: number;
 	center: number;
 	bottom: number;
+	left: number;
 	height: number;
+	width: number;
+	original: {
+		top: number;
+		center: number;
+		bottom: number;
+		left: number;
+		height: number;
+		width: number;
+	};
 }
 
 export function viewSize(isScroll: boolean = false)
@@ -88,6 +100,7 @@ export function leftSize(range: boolean = true)
 
 let rightSize: RightSize; // Right content size
 
+let pagesPosition: FullPosition[];
 let imagesPosition: number[][];
 let imagesFullPosition: FullPosition[][];
 let prevImagesFullPosition: FullPosition[][];
@@ -147,6 +160,7 @@ function calculateView(first: boolean = false)
 		// Calculate images full position
 		prevImagesFullPosition = imagesFullPosition;
 
+		pagesPosition = [];
 		imagesPosition = [];
 		imagesFullPosition = [];
 
@@ -161,6 +175,7 @@ function calculateView(first: boolean = false)
 			if(!imagesFullPosition[i]) imagesFullPosition[i] = [];
 
 			let maxHeight = 0;
+			let left = 0;
 
 			for(let j = 0, len2 = group.length; j < len2; j++)
 			{
@@ -173,14 +188,33 @@ function calculateView(first: boolean = false)
 				const height = rendered.height * scale;
 
 				const position = {
+					i,
+					j,
 					top: scrollHeight,
 					center: scrollHeight + height / 2,
 					bottom: scrollHeight + height,
-					height: height,
+					left: (rendered.left + left) * scale,
+					height,
+					width: rendered.width * scale,
+				} satisfies Omit<FullPosition, 'original'>;
+
+				const fullPosition: FullPosition = {
+					...position,
+					original: {
+						top: position.top / scale,
+						center: position.center / scale,
+						bottom: position.bottom / scale,
+						left: position.left / scale,
+						height: position.height / scale,
+						width: position.width / scale,
+					},
 				};
 
-				imagesPosition[i][j] = position.center;
-				imagesFullPosition[i][j] = position;
+				pagesPosition[item.index] = fullPosition;
+				imagesPosition[i][j] = fullPosition.center;
+				imagesFullPosition[i][j] = fullPosition;
+
+				left += rendered.left + rendered.width;
 			}
 
 			scrollHeight += maxHeight;
@@ -205,7 +239,6 @@ function requiredImages(index: number, extra: boolean = true)
 
 	const isScroll = reading.viewIs('scroll');
 	const isDoublePage = reading.doublePage.active();
-	const ignoreDoublePage = _config.readingDoNotApplyToHorizontals;
 
 	const extraSingle = extra ? 1 : 0; // Render previous and next image
 	const extraDouble = extra ? 2 : 0; // Render previous and next double pages
@@ -213,9 +246,12 @@ function requiredImages(index: number, extra: boolean = true)
 	let start = 0;
 	let end;
 
-	if(isScroll || (isDoublePage && ignoreDoublePage))
+	if(isScroll || (isDoublePage && _config.readingDoNotApplyToHorizontals))
 	{
-		end = current + (isDoublePage ? 3 + extraDouble : 1 + extraSingle);
+		if(isDoublePage && _config.readingDoNotApplyToHorizontals && _config.readingAlignWithNextHorizontal)
+			end = 9999999;
+		else
+			end = current + (isDoublePage ? 3 + extraDouble : 1 + extraSingle);
 	}
 	else if(isDoublePage)
 	{
@@ -258,7 +294,19 @@ async function getAllSizes(contentRightIndex: number)
 	for(let i = 0, len = items.length; i < len; i++)
 	{
 		const item = items[i];
-		const size = sizes[i];
+		let size = sizes[i];
+
+		if(!size)
+			continue;
+
+		const rotated = (size.width > size.height) ? _config.readingRotateHorizontals : _config.readingRotate;
+		size.rotated = rotated;
+
+		if(rotated == 1 || rotated == 2)
+		{
+			const {width, height} = size;
+			size = {...size, width: height, height: width};
+		}
 
 		if(item.width !== size.width || item.height !== size.height)
 			diff = true;
@@ -288,6 +336,8 @@ async function getAllSizes(contentRightIndex: number)
 	// Avoid continue if another comic has been opened
 	if(contentRightIndex != template.contentRightIndex())
 		return;
+
+	// reading.render.resetRendered();
 
 	distribution.htmlItems();
 	disposeImages();
@@ -388,6 +438,7 @@ export default {
 	start,
 	get distribution() {return distribution},
 	get rightSize() {return rightSize},
+	get pagesPosition() {return pagesPosition},
 	get imagesPosition() {return imagesPosition},
 	get imagesFullPosition() {return imagesFullPosition},
 	get prevImagesFullPosition() {return prevImagesFullPosition},
