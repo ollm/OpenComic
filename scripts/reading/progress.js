@@ -304,12 +304,12 @@ async function read(path)
 	const readingProgress = storage.get('readingProgress');
 	const paths = await findReadingProgressPaths(path, true);
 
-	for(let key of paths)
+	for(let path of paths)
 	{
-		key = relative.path(key);
+		const key = relative.path(path);
 
 		const progress = readingProgress[key];
-		const pages = await countPages(key);
+		const pages = await countPages(path);
 
 		readingProgress[key] = {
 			...progress,
@@ -332,9 +332,9 @@ async function unread(path)
 	const readingProgress = storage.get('readingProgress');
 	const paths = await findReadingProgressPaths(path, false);
 
-	for(let key of paths)
+	for(let path of paths)
 	{
-		key = relative.path(key);
+		const key = relative.path(path);
 		const progress = readingProgress[key];
 
 		progress.page = 0;
