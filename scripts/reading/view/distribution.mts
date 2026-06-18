@@ -337,8 +337,8 @@ export default class Distribution
 
 	applyMangaReading(distribution: Item[][]): Item[][] {
 
-		const _distribution = app.copy(distribution);
-		// const _distribution = distribution;
+		// const _distribution = app.copy(distribution);
+		const _distribution = [...distribution];
 
 		if(_config.readingManga)
 		{
