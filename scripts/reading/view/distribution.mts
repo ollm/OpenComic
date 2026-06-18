@@ -1,7 +1,6 @@
 import p from 'path';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-declare const app: any;
 declare const dom: any;
 declare const _config: any;
 declare const reading: any;
@@ -337,7 +336,6 @@ export default class Distribution
 
 	applyMangaReading(distribution: Item[][]): Item[][] {
 
-		// const _distribution = app.copy(distribution);
 		const _distribution = [...distribution];
 
 		if(_config.readingManga)
