@@ -82,6 +82,13 @@ catch(err)
 
 const nightly = process.env.NIGHTLY;
 
+console.log('Set Nightly');
+console.log({
+	build: nightly,
+	commit: commit,
+	commit7: commit.substring(0, 7),
+});
+
 fs.writeFileSync(p.join(__dirname, '../.dist/nightly.js'), `module.exports = {
 	build: ${nightly ? 'true' : 'false'},
 	commit: '${commit}',
