@@ -403,15 +403,6 @@ function applyOrientation(metadata)
 
 async function getSizesFromBuffer(getImageBuffers, buffers)
 {
-	await loadSharp();
-
-	const Sharp = async function(buffer) {
-
-		const _metadata = useChildFork ? await childFork.metadata(buffer) : await metadata(buffer);
-		return applyOrientation(_metadata);
-
-	}
-
 	const ImageSize = async function(buffer) {
 
 		if(imageSize === false)
@@ -440,30 +431,9 @@ async function getSizesFromBuffer(getImageBuffers, buffers)
 
 				try
 				{
-					if(compatible.image.convert.has(ext))
+					if(!compatible.image.jxl.has(ext))
 					{
 						size = await ImageSize(buffer);
-					}
-					else if(sharpSupportedFormat(image.image, ext))
-					{
-						if((process.platform === 'linux' || getWithImageSize(ext)) && !compatible.image.jxl.has(ext)) // Sharp is slower in Linux due childFork usage
-						{
-							try
-							{
-								size = await ImageSize(buffer);
-							}
-							catch(error)
-							{
-								if(!compatible.image.jpg.has(ext))
-									size = await Sharp(buffer);
-								else
-									throw error;
-							}
-						}
-						else
-						{
-							size = await Sharp(buffer);
-						}
 					}
 				}
 				catch(error)
