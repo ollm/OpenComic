@@ -429,6 +429,7 @@
 		"tapZones": {
 			"main": "Tap zones",
 			"disable": "Disable tap zones",
+			"middleClickAutoScrollInCenterTapZone": "Middle-click auto-scroll in center zone (Vertical reading)",
 			"invertInManga": "Invert tap zones in manga reading",
 			"leftClick": "Left click",
 			"rightClick": "Right click",

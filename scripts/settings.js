@@ -1564,7 +1564,7 @@ function set(key, value, save = true)
 
 		case 'disableTapZones': 
 
-			dom.queryAll('.settings-body .settings-tap-zones, .settings-body .settings-invert-tap-zones-in-manga').class(value, 'disable-pointer');
+			dom.queryAll('.settings-body .settings-tap-zones, .settings-body .settings-invert-tap-zones-in-manga, .settings-body .settings-middle-click-auto-scroll-in-center-tap-zone').class(value, 'disable-pointer');
 
 			break;
 

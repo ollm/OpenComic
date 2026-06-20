@@ -429,6 +429,7 @@
 		"tapZones": {
 			"main": "Zones de toc",
 			"disable": "Desactiva les zones de toc",
+			"middleClickAutoScrollInCenterTapZone": "Desplaçament automàtic amb clic central a la zona central (Lectura vertical)",
 			"invertInManga": "Inverteix les zones de toc en la lectura de manga",
 			"leftClick": "Clic esquerre",
 			"rightClick": "Clic dret",

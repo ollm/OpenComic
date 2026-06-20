@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Joined the title/menu bar with the tab bar [`fea2b30`](https://github.com/ollm/OpenComic/commit/fea2b3076c685dfdf36bccc842579f1dfa3a6a3d)
 - Remove need to load all image sizes before rendering the page for better performance [`721a028`](https://github.com/ollm/OpenComic/commit/721a0280bcd870996aefe438bab285726cde37bb)
 - Moved `Delay in changing comics` to settings page [`ad8a167`](https://github.com/ollm/OpenComic/commit/ad8a167ace6178e94b6274651efddcabf41515fc)
+- Middle click auto-scroll in center tap zone (Windows only)
 
 ##### 🐛 Bug Fixes
 

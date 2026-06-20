@@ -10,6 +10,8 @@ async function loadShoShoObject()
 {
 	if(shosho) return;
 
+	const contentRight = document.querySelector('.content-right');
+
 	shosho = new ShoSho({
 		capture: true,
 		target: document,
@@ -17,13 +19,29 @@ async function loadShoShoObject()
 
 	shoshoMouse = new ShoSho({
 		capture: true,
-		target: document.querySelector('.content-right'),
+		target: contentRight,
 	});
 
 	mouseWheel = new MouseWheel({
 		capture: true,
-		target: document.querySelector('.content-right'),
+		target: contentRight,
 	});
+
+	contentRight.addEventListener('mousedown', function(event) {
+
+		const buttons = {
+			0: 'leftClick',
+			1: 'middleClick',
+			2: 'rightClick',
+		};
+
+		const button = buttons[event.button] ?? 'middleClick';
+		const action = getTapZoneAction(event, button);
+
+		if(event.button === 1 && !inputIsFocused() && action && !config.disableTapZones) // Middle mouse button
+			event.preventDefault();
+
+	}, true);
 
 	return true;
 }
@@ -36,17 +54,8 @@ function inputIsFocused()
 	return false;
 }
 
-function clickTapZone(event, button)
+function getTapZoneAction(event, button)
 {
-	if(config.disableTapZones)
-		return false;
-
-	if(reading.abortClick(event) && button != 'rightClick' && button != 'middleClick')
-		return false;
-
-	if(reading.ebookHasSelection)
-		return false;
-
 	const contentRight = template._contentRight();
 	const rect = contentRight.getBoundingClientRect();
 
@@ -65,10 +74,30 @@ function clickTapZone(event, button)
 	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
 	const horizontal = (pageX > 0.66666 ? 'right' : (pageX > 0.33333 ? 'center' : 'left'));
 
-	const action = shortcuts[currentlyRegistered].tapZones[vertical][horizontal][button];
+	if(vertical === 'center' && horizontal === 'center' && config.middleClickAutoScrollInCenterTapZone && reading.viewIs('scroll'))
+		return false;
 
-	if(shortcuts[currentlyRegistered].actions[action])
-		shortcuts[currentlyRegistered].actions[action].function(event);
+	const action = shortcuts?.[currentlyRegistered]?.tapZones?.[vertical]?.[horizontal]?.[button];
+	return action !== 'disabled' ? shortcuts?.[currentlyRegistered]?.actions?.[action] : false;
+}
+
+function clickTapZone(event, button)
+{
+	if(config.disableTapZones)
+		return false;
+
+	if(reading.abortClick(event) && button != 'rightClick' && button != 'middleClick')
+		return false;
+
+	if(reading.ebookHasSelection)
+		return false;
+
+	const action = getTapZoneAction(event, button);
+
+	if(action)
+		action.function(event);
+	else
+		return false;
 
 	return true;
 }
@@ -830,8 +859,6 @@ function loadShortcuts()
 						if(margin > config.readingMaxMargin)
 							margin = config.readingMaxMargin;
 
-						console.log('increaseHorizontalMargin', margin);
-
 						reading.changePagesView(10, margin, true);
 
 						return true;
@@ -845,8 +872,6 @@ function loadShortcuts()
 
 						if(margin < 0)
 							margin = 0;
-
-						console.log('decreaseHorizontalMargin', margin);
 
 						reading.changePagesView(10, margin, true);
 
@@ -1429,13 +1454,6 @@ function pause()
 
 	}, 50);
 }
-
-window.addEventListener('mousedown', function(event) {
-
-	if(event.button === 1 && !inputIsFocused()) // Middle mouse button
-		event.preventDefault();
-
-}, true);
 
 module.exports = {
 	register: register,
