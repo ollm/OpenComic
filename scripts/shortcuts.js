@@ -74,7 +74,7 @@ function getTapZoneAction(event, button)
 	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
 	const horizontal = (pageX > 0.66666 ? 'right' : (pageX > 0.33333 ? 'center' : 'left'));
 
-	if(process.platform == 'win32' && button === 'middleClick' && vertical === 'center' && horizontal === 'center' && config.middleClickAutoScrollInCenterTapZone && reading.viewIs('scroll'))
+	if(process.platform == 'win32' && button === 'middleClick' && (config.middleClickAutoScrollInAllTapZones || (vertical === 'center' && horizontal === 'center' && config.middleClickAutoScrollInCenterTapZone)) && reading.viewIs('scroll'))
 		return false;
 
 	const action = shortcuts?.[currentlyRegistered]?.tapZones?.[vertical]?.[horizontal]?.[button];
