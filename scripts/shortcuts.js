@@ -38,7 +38,9 @@ async function loadShoShoObject()
 		const button = buttons[event.button] ?? 'middleClick';
 		const action = getTapZoneAction(event, button);
 
-		if(event.button === 1 && !inputIsFocused() && action && !config.disableTapZones) // Middle mouse button
+		const hasMousedown = (event.target.closest('*[onmousedown]') || event.target.hasAttribute('onmousedown')) ? true : false;
+
+		if(event.button === 1 && !inputIsFocused() && ((action && !config.disableTapZones) || hasMousedown)) // Middle mouse button
 			event.preventDefault();
 
 	}, true);
