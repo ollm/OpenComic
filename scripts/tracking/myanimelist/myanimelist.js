@@ -116,7 +116,9 @@ async function login()
 {
 	const challenge = crypto.hash('sha512', crypto.randomUUID(), 'hex');
 	const url = await tracking.getRedirectResult(site.key, 'https://myanimelist.net/v1/oauth2/authorize?response_type=code&client_id='+site.auth.clientId+'&code_challenge='+challenge+'&redirect_uri=opencomic://tracking/myanimelist&response_type=code');
-	const code = url.searchParams.get('code') || url.searchParams.get('token');
+	const code = url.searchParams.get('code') || url.searchParams.get('token'); // Token param is from getTokenDialog
+
+	console.log(url, code);
 
 	if(!code)
 		return {valid: false};

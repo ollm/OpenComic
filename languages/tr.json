@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "Slayt Okuyucu",
 			"scroll": "Dikey Okuyucu",
+			"panels": "",
 			"roughPageTurn": "Sayfa çevirme",
 			"smoothPageTurn": "Yumuşak sayfa çevirme",
 			"fade": "Solma",
@@ -277,6 +278,30 @@
 				"size": "",
 				"opacity": "",
 				"displacement": ""
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "Dokunma bölgeleri",
 			"disable": "",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "",
 			"leftClick": "Sol tıklama",
 			"rightClick": "Sağ tıklama",

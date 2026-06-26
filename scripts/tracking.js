@@ -520,7 +520,7 @@ async function getTokenDialog(site = '', done = false)
 	if(done)
 	{
 		const token = $('.input-token').val();
-		const url = !/^(?:https?|opencomic):\/\//.test(token) ? 'opencomic://tracking/'+(!/=/.test(token) ? 'token=' : '')+token : token;
+		const url = !/^(?:https?|opencomic):\/\//.test(token) ? 'opencomic://tracking/?'+(!/=/.test(token) ? 'token=' : '')+token : token;
 
 		tracking.handleOpenUrl(new URL(url));
 	}

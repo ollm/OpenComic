@@ -149,6 +149,7 @@
 			"aiToolsShort": "IA",
 			"slide": "Lectura horizontal",
 			"scroll": "Lectura vertical",
+			"panels": "Lectura guiada",
 			"roughPageTurn": "Pasar página",
 			"smoothPageTurn": "Pasar página suavemente",
 			"fade": "Desvanecerse",
@@ -277,6 +278,30 @@
 				"size": "Tamaño",
 				"opacity": "Opacidad",
 				"displacement": "Desplazamiento de la sombra"
+			}
+		},
+		"panels": {
+			"focus": "Enfocar",
+			"hide": "Ocultar",
+			"immersive": "Inmersivo",
+			"maxZoom": "Zoom máximo",
+			"panels": "Paneles",
+			"focusTo": {
+				"prevPanels": "Enfocar en los paneles anteriores",
+				"nextPanels": "Enfocar en los paneles siguientes"
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "Mostrar página completa antes del primer panel",
+				"afterLastPanel": "Mostrar página completa después del último panel"
+			},
+			"hideEffect": "Efecto al ocultar",
+			"white": "Blanco",
+			"black": "Negro",
+			"blur": "Desenfocar",
+			"expandPanel": "Expandir panel",
+			"visibility": {
+				"prevPanels": "Paneles anteriores visibles",
+				"nextPanels": "Paneles siguientes visibles"
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,7 @@
 		"tapZones": {
 			"main": "Zonas de toque",
 			"disable": "Desactivar zonas de toque",
+			"middleClickAutoScrollInAllTapZones": "Desplazamiento automático con clic central en todas las zonas (Lectura vertical)",
 			"middleClickAutoScrollInCenterTapZone": "Desplazamiento automático con clic central en la zona central (Lectura vertical)",
 			"invertInManga": "Invertir las zonas de toque en la lectura de manga",
 			"leftClick": "Clic izquierdo",

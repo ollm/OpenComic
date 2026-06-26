@@ -149,6 +149,7 @@
 			"aiToolsShort": "AI",
 			"slide": "Горизонтальне читання",
 			"scroll": "Вертикальне читання",
+			"panels": "",
 			"roughPageTurn": "Перегортання сторінок",
 			"smoothPageTurn": "Плавне перегортання сторінок",
 			"fade": "Затухання",
@@ -277,6 +278,30 @@
 				"size": "Розмір",
 				"opacity": "Непрозорість",
 				"displacement": "Зміщення тіні"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "Зони дотику",
 			"disable": "Вимкнути сенсорні зони",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "Інвертування зон дотику під час читання манги",
 			"leftClick": "Лівий клік",
 			"rightClick": "Правий клік",

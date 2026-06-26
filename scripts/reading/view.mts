@@ -297,7 +297,12 @@ async function getAllSizes(contentRightIndex: number)
 		let size = sizes[i];
 
 		if(!size)
+		{
+			if(!item.folder && !item.blank)
+				console.error(`Size not found for item ${item.index}`, item, sizes, items);
+
 			continue;
+		}
 
 		const rotated = (size.width > size.height) ? _config.readingRotateHorizontals : _config.readingRotate;
 		size.rotated = rotated;

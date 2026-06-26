@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 157; // Update this if readingPagesConfig is updated
+const changes = 158; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingConfigName: '',
@@ -14,6 +14,30 @@ const readingPagesConfig = {
 		},
 		smoothPageTurn: {
 			angle: 30,
+		},
+		panels: {
+			model: '',
+			type: 'focus', // focus, hide and immersive
+			maxZoom: {
+				active: true,
+				value: 2,
+			},
+			margin: 100,
+			focus: {
+				prevPanels: 0, // Keep focus on the previous panel
+				nextPanels: 0,
+			},
+			showFullPage: {
+				beforeFirstPanel: false,
+				afterLastPanel: false,
+			},
+			// Only in hide mode
+			hideEffect: 'black',
+			expandPanel: 0,
+			visibility: {
+				prevPanels: -1, // -1 = all
+				nextPanels: 0,
+			},
 		},
 	},
 	readingViewSpeed: 0.3,

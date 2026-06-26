@@ -1,5 +1,34 @@
 type Page = boolean | 'languages' | 'theme' | 'settings';
 
+export type ReadingView = 'slide' | 'scroll' | 'panels' | 'rough-page-turn' | 'smooth-page-turn';
+export type PanelsType = 'focus' | 'hide' | 'immersive';
+
+export interface PanelsConfig {
+	model: string;
+	type: PanelsType;
+	maxZoom: {
+		active: boolean;
+		value: number;
+	};
+	margin: 100;
+	focus: {
+		prevPanels: number; // Keep focus on the previous panel
+		nextPanels: number;
+	};
+	showFullPage: {
+		beforeFirstPanel: boolean;
+		afterLastPanel: boolean;
+	};
+	// Only in hide mode and immersive mode
+	hideEffect: 'blur' | 'black' | 'white';
+	expandPanel: number;
+	// Only in hide mode
+	visibility: {
+		prevPanels: number; // -1 = all
+		nextPanels: number;
+	};
+};
+
 export interface Filter {
 	onlyRoot?: boolean;
 	favorites?: boolean;
@@ -61,4 +90,11 @@ export interface OptimalThreads {
 	extractKey: string;
 	read: number;
 	extract: number;
+}
+
+export type PointA = [number, number];
+
+export interface Point {
+	x: number;
+	y: number;
 }

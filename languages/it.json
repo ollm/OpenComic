@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "Slide",
 			"scroll": "Scorrimento verticale",
+			"panels": "",
 			"roughPageTurn": "Giramento pagina",
 			"smoothPageTurn": "Giramento pagina lisco",
 			"fade": "Svanimento pagina",
@@ -277,6 +278,30 @@
 				"size": "",
 				"opacity": "",
 				"displacement": ""
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "Tap zone",
 			"disable": "",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "",
 			"leftClick": "Click sinistro",
 			"rightClick": "Click destro",

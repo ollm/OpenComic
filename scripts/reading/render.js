@@ -23,6 +23,8 @@ async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'canv
 {
 	if(file) file.destroy();
 
+	reading.panels.reset();
+
 	renderType = _renderType;
 
 	renderImages = (renderType == 'images') ? true : false;
@@ -65,6 +67,12 @@ async function reset(_scaleMagnifyingGlass = false)
 		revokeAllObjectURL();
 
 	return;
+}
+
+async function resetRendered()
+{
+	rendered = {};
+	renderedMagnifyingGlass = {};
 }
 
 function setImagesData(_imagesData)
@@ -473,6 +481,8 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 			if(compatible.image.convert(path)) // Convert unsupported images
 				src = await workers.convertImage(path, {priorize: true});
 
+			reading.panels.getPanels(src, index);
+
 			const aiPath = ai.image(src, imageData, {
 				run: runAi,
 				start: function() {
@@ -515,6 +525,9 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 
 			const imageSize = aiPath ? reading.ai.size(imageData) : imageData;
 			_config.kernel = _config.width > imageSize.width ? config.readingImageInterpolationMethodUpscaling : config.readingImageInterpolationMethodDownscaling;
+
+			const imageWidth = rotated90 ? imageSize.height : imageSize.width;
+			const imageHeight = rotated90 ? imageSize.width : imageSize.height;
 
 			// Remove prev rendered blobRendered and blobRender classes to avoid pixelated intermediate images
 			img.classList.remove('blobRendered', 'blobRender');
@@ -575,7 +588,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					}
 				}
 			}
-			else if(_config.width !== imageSize.width && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
+			else if(_config.width !== imageWidth && _config.kernel && _config.kernel != 'chromium' && !magnifyingGlass)
 			{
 				if(cssMethods[_config.kernel])
 				{
@@ -593,8 +606,8 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 				{
 					if(affineInterpolationMethods[_config.kernel])
 					{
-						_config.imageWidth = rotated90 ? imageSize.height : imageSize.width;
-						_config.imageHeight = rotated90 ? imageSize.width : imageSize.height;
+						_config.imageWidth = imageWidth;
+						_config.imageHeight = imageHeight;
 						_config.interpolator = affineInterpolationMethods[_config.kernel];
 
 						_config.kernel = false;
@@ -762,6 +775,7 @@ function createObserver()
 module.exports = {
 	setFile: setFile,
 	reset: reset,
+	resetRendered: resetRendered,
 	setImagesData: setImagesData,
 	setMagnifyingGlassStatus: setMagnifyingGlassStatus,
 	setScale: setScale,

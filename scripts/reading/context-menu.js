@@ -1,14 +1,12 @@
 
-let elementFromPointIndex = false;
 let blankPage = false;
 
 function show(event, gamepad = false)
 {
-	const validCoords = event && Number.isFinite(event.clientX) && Number.isFinite(event.clientY);
-	const elementFromPoint = !gamepad && validCoords ? document.elementFromPoint(event.clientX, event.clientY) : false;
-	const elementFromPointBlankPage = (elementFromPoint && elementFromPoint.classList.contains('blank-page')) ? true : false;
+	if(gamepad)
+		shortcuts.calcEventFromPoint(false);
 
-	elementFromPointIndex = (elementFromPoint && elementFromPoint.tagName.toLowerCase() === 'img' && elementFromPoint.dataset.index) ? +elementFromPoint.dataset.index : false;
+	const elementFromPoint = shortcuts.elementFromPoint;
 
 	const saveImages = (reading.isCanvas() || reading.isEbook()) ? false : true;
 	dom.queryAll('.separator-set-as-poster, .reading-context-menu-copy-image, .separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
@@ -27,10 +25,10 @@ function show(event, gamepad = false)
 
 	if(addBlankPage)
 	{
-		if(elementFromPointBlankPage)
+		if(elementFromPoint.blankPage)
 		{
-			const index = +elementFromPoint.dataset.index;
-			const auto = +elementFromPoint.dataset.auto;
+			const index = +elementFromPoint.element.dataset.index;
+			const auto = +elementFromPoint.element.dataset.auto;
 
 			blankPage = {index, auto};
 
@@ -84,15 +82,17 @@ function labels()
 	dom.labels.setLabels(vars.pathIsFolder ? vars.currentPath : fileManager.lastCompressedFile(vars.currentPath));
 }
 
-function getCurrentImage(onlyElementFromPoint = false, notElementFromPoint = false)
+function getCurrentImage(onlyElementFromPoint = false, notElementFromPoint = false, subindex = 0)
 {
-	if(elementFromPointIndex !== false && !notElementFromPoint)
-		return reading.getImage(elementFromPointIndex);
+	const imageIndex = shortcuts.elementFromPoint.imageIndex;
+
+	if(imageIndex !== false && !notElementFromPoint)
+		return reading.getImage(imageIndex);
 
 	if(onlyElementFromPoint)
 		return false;
 
-	const image = reading.getImageByPosition(reading.currentImagePosition(), 0);
+	const image = reading.getImageByPosition(reading.currentImagePosition(), subindex);
 	return image || false;
 }
 
@@ -463,4 +463,5 @@ module.exports = {
 	copyImageToClipboard: copyImageToClipboard,
 	addBlankPage: addBlankPage,
 	removeBlankPage: removeBlankPage,
+	getCurrentImage,
 };

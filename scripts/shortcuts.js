@@ -54,6 +54,38 @@ function inputIsFocused()
 	return false;
 }
 
+let elementFromPoint = {
+	element: false,
+	imageIndex: false,
+	blankPage: false,
+};
+
+function calcEventFromPoint(event = false)
+{
+	if(event === false)
+	{
+		elementFromPoint = {
+			element: false,
+			imageIndex: false,
+			blankPage: false,
+		};
+
+		return;
+	}
+
+	const validCoords = event && Number.isFinite(event.clientX) && Number.isFinite(event.clientY);
+	const element = validCoords ? document.elementFromPoint(event.clientX, event.clientY) : false;
+	const blankPage = (element && element.classList.contains('blank-page')) ? true : false;
+
+	const imageIndex = (element && element.tagName.toLowerCase() === 'img' && element.dataset.index) ? +element.dataset.index : false;
+
+	elementFromPoint = {
+		element,
+		imageIndex,
+		blankPage,
+	};
+}
+
 function getTapZoneAction(event, button)
 {
 	const contentRight = template._contentRight();
@@ -70,6 +102,8 @@ function getTapZoneAction(event, button)
 
 	if(config.invertTapZonesInManga && reading.manga())
 		pageX = 1 - pageX;
+
+	calcEventFromPoint(event);
 
 	const vertical = (pageY > 0.66666 ? 'bottom' : (pageY > 0.33333 ? 'center' : 'top'));
 	const horizontal = (pageX > 0.66666 ? 'right' : (pageX > 0.33333 ? 'center' : 'left'));
@@ -1469,4 +1503,5 @@ module.exports = {
 	play: play,
 	pause: pause,
 	inputIsFocused: inputIsFocused,
+	get elementFromPoint() {return elementFromPoint;},
 };

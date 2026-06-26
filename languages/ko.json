@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "슬라이드 보기",
 			"scroll": "스크롤 보기",
+			"panels": "",
 			"roughPageTurn": "책장 넘기기(거칠게)",
 			"smoothPageTurn": "책장 넘기기(부드럽게)",
 			"fade": "페이드",
@@ -277,6 +278,30 @@
 				"size": "그림자 너비",
 				"opacity": "그림자 투명도",
 				"displacement": "그림자 위치 조정"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "탭 영역",
 			"disable": "비활성화",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "만화(우->좌) 읽기 시 반전",
 			"leftClick": "왼쪽 탭",
 			"rightClick": "오른쪽 탭",

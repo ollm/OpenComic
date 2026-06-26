@@ -97,6 +97,7 @@
 		"bezier-js": "^6.1.4",
 		"diff": "^9.0.0",
 		"discord-rpc": "^4.0.1",
+		"dot-prop": "^10.1.0",
 		"epubjs": "^0.3.93",
 		"fast-xml-parser": "^5.8.0",
 		"file-type": "^22.0.1",

@@ -149,6 +149,7 @@
 			"aiToolsShort": "AI",
 			"slide": "水平閱讀",
 			"scroll": "垂直閱讀",
+			"panels": "",
 			"roughPageTurn": "翻頁",
 			"smoothPageTurn": "平滑翻頁",
 			"fade": "淡出",
@@ -277,6 +278,30 @@
 				"size": "大小",
 				"opacity": "不透明度",
 				"displacement": "位移"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "點擊區域",
 			"disable": "禁用點擊區域",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "在閱讀漫畫時反轉點擊區域",
 			"leftClick": "左鍵點擊",
 			"rightClick": "右鍵點擊",

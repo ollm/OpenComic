@@ -56,7 +56,16 @@ function recalculate()
 	const currentIndex = reading.currentIndex();
 	const contentNum = reading.contentNum();
 
-	if(reading.viewIs('compact'))
+	if(reading.viewIs('panels'))
+	{
+		if(currentIndex < 1 && dom.previousComic())
+			reading.showPreviousComic(1, false);
+		else if(currentIndex > contentNum && dom.nextComic())
+			reading.showNextComic(1, false);
+		else
+			reading.panels.updateCurrent();
+	}
+	else if(reading.viewIs('compact'))
 	{
 		if(currentIndex < 1 && dom.previousComic())
 			reading.showPreviousComic(1, false);

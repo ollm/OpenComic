@@ -149,6 +149,7 @@
 			"aiToolsShort": "AI",
 			"slide": "Slide Reader",
 			"scroll": "Vertical Reader",
+			"panels": "Guided View",
 			"roughPageTurn": "Page turn",
 			"smoothPageTurn": "Smooth page turn",
 			"fade": "Fade",
@@ -277,6 +278,30 @@
 				"size": "Size",
 				"opacity": "Opacity",
 				"displacement": "Shadow displacement"
+			}
+		},
+		"panels": {
+			"focus": "Focus",
+			"hide": "Hide",
+			"immersive": "Immersive",
+			"maxZoom": "Max zoom",
+			"panels": "Panels",
+			"focusTo": {
+				"prevPanels": "Focus on previous panels",
+				"nextPanels": "Focus on next panels"
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "Show full page before the first panel",
+				"afterLastPanel": "Show full page after the last panel"
+			},
+			"hideEffect": "Hide effect",
+			"white": "White",
+			"black": "Black",
+			"blur": "Blur",
+			"expandPanel": "Expand panel",
+			"visibility": {
+				"prevPanels": "Visible previous panels",
+				"nextPanels": "Visible next panels"
 			}
 		},
 		"moreOptions": {

@@ -1148,7 +1148,8 @@
 	position: relative;
 	height: 100%;
 	max-height: calc(100vh - 32px - var(--title-and-tabs-bar-height));
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	animation-name: expand-in-clip-path-center;
 	animation-duration: 0.4s;
 	animation-fill-mode: forwards;
@@ -2838,7 +2839,7 @@ table tbody td.lh0
 
 .chip-big
 {
-	padding: 9px 12px 9px 0px;
+	padding: 9px 12px 9px 12px;
 }
 
 .chip-big.chip-icon-left

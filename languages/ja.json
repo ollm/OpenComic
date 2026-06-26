@@ -149,6 +149,7 @@
 			"aiToolsShort": "AI",
 			"slide": "スライド リーダー",
 			"scroll": "縦スクロール",
+			"panels": "",
 			"roughPageTurn": "ページめくり（ラフ）",
 			"smoothPageTurn": "ページめくり（スムーズ）",
 			"fade": "フェード",
@@ -277,6 +278,30 @@
 				"size": "サイズ",
 				"opacity": "不透明度",
 				"displacement": "影のずれ"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "タップ領域",
 			"disable": "タップ領域を無効化",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "読む時にタップ領域を反転",
 			"leftClick": "左クリック",
 			"rightClick": "右クリック",

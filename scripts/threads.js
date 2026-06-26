@@ -56,6 +56,7 @@ function getQueue(key)
 	if(!queues[key])
 	{
 		queues[key] = {
+			id: 0,
 			stop: false,
 			list: [],
 			keys: new Set(),
@@ -204,6 +205,12 @@ function getThread(key = 'default', thread = 0)
 	return threadsList[key][thread];
 }
 
+function getId(key = 'default')
+{
+	const queue = getQueue(key);
+	return queue.id;
+}
+
 function stop(key = 'default')
 {
 	const queue = getQueue(key);
@@ -220,6 +227,7 @@ function resume(key = 'default')
 function clean(key = 'default')
 {
 	const queue = getQueue(key);
+	queue.id++;
 	queue.list = [];
 	queue.keys = new Set();
 }
@@ -287,6 +295,7 @@ function sumStats()
 }
 
 module.exports = {
+	id: getId,
 	num: num,
 	job: job,
 	stop: stop,

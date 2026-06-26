@@ -10,7 +10,9 @@ const render = require(p.join(appDir, '.dist/reading/render.js')),
 	progress = require(p.join(appDir, '.dist/reading/progress.js')),
 	doublePage = require(p.join(appDir, '.dist/reading/double-page.js')),
 	view = require(p.join(appDir, '.dist/reading/view.mjs')).default,
+	panels = require(p.join(appDir, '.dist/reading/panels.mjs')).default,
 	animate = require(p.join(appDir, '.dist/animate.mjs')).default;
+
 
 var items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = 1, imagesDistribution = [], currentPageXY = {x: 0, y: 0}, currentMousePosition = {pageX: 0, pageY: 0}, currentPage = 0;
 
@@ -24,24 +26,6 @@ function setCurrentComics(comics)
 	{
 		currentComics[comics[key].index] = comics[key];
 	}
-}
-
-function applyMangaReading(distribution)
-{
-	const _distribution = JSON.parse(JSON.stringify(distribution));
-
-	if(_config.readingManga)
-	{
-		if(!readingViewIs('scroll'))
-			_distribution.reverse();
-
-		for(let i = 0, len = _distribution.length; i < len; i++)
-		{
-			_distribution[i].reverse();
-		}
-	}
-
-	return _distribution;
 }
 
 let prevChangeHeaderButtons = {};
@@ -126,6 +110,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		render.focusIndex(index, doublePage.active());
 		filters.focusIndex(index);
 		music.focusIndex(index);
+		panels.focusPage(index, fromScroll); // Use idnex as page
 	}
 
 	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
@@ -661,6 +646,12 @@ function goNext()
 {
 	progress.activeSave();
 
+	if(readingViewIs('panels'))
+	{
+		if(panels.goNext())
+			return;
+	}
+
 	var nextIndex = currentIndex + 1;
 
 	readingDirection = realReadingDirection = true;
@@ -692,6 +683,12 @@ function goNext()
 function goPrevious()
 {
 	progress.activeSave();
+
+	if(readingViewIs('panels'))
+	{
+		if(panels.goPrev())
+			return;
+	}
 
 	var previousIndex = currentIndex - 1;
 
@@ -1225,9 +1222,9 @@ function showPreviousComic(mode, animation = true, invert = false)
 	}
 }
 
-var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
+var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0, extra: {tranX: false, tranY: false}}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
 
-function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false)
+function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false, {force = false, tranX = false, tranY = false, crossZoomLimits = false} = {})
 {	
 	if((!onReading && !_onReading) || !isLoaded)
 		return;
@@ -1261,8 +1258,10 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 	let scrollTop = 0, translateX = 0, translateY = 0;
 
-	if(scale != scalePrevData.scale)
+	if(scale != scalePrevData.scale || tranX != scalePrevData.extra?.tranX || tranY != scalePrevData.extra?.tranY || force)
 	{
+		scalePrevData.extra = {tranX: tranX, tranY: tranY};
+
 		if(scale == 1)
 			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.originalSize).html('aspect_ratio');
 		else
@@ -1301,17 +1300,20 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			let scaleOffset = 1 / scale;
 
-			let pageX = currentPageXY.x - originalRect2.left;
-			let pageY = currentPageXY.y - originalRectReadingBody.top;
+			let _pageX = currentPageXY.x - originalRect2.left;
+			let _pageY = currentPageXY.y - originalRectReadingBody.top;
 
-			let addX = (0.5 - (pageX / originalRect2.width)) * originalRect2.width;
-			let addY = pageY;
+			let addX = (0.5 - (_pageX / originalRect2.width)) * originalRect2.width;
+			let addY = _pageY;
 
 			if(center)
 			{
 				addX = 0;
 				addY = originalRectReadingBody.height / 2;
 			}
+
+			// if(pageX !== false) addX = pageX;
+			// if(pageY !== false) addY = pageY;
 
 			translateX = (scalePrevData.tranX / scalePrevData.scale * scale) + (addX / scalePrevData.scale * (scale - scalePrevData.scale));
 
@@ -1338,7 +1340,10 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				haveZoom = true;
 			}
 
-			let withLimits = notCrossZoomLimits(translateX, translateY, scale);
+			if(tranX !== false) translateX = tranX;
+			if(tranY !== false) translateY = tranY + scrollTop;
+
+			let withLimits = notCrossZoomLimits(translateX, translateY, scale, crossZoomLimits);
 			translateX = withLimits.x;
 
 			dom.this(contentRight).find('.reading-body > div, .reading-lens > div > div', true).css({
@@ -1404,11 +1409,11 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(!zoomOut)
 			{
-				let pageX = currentPageXY.x - originalRect.left;
-				let pageY = currentPageXY.y - originalRect.top;
+				let _pageX = currentPageXY.x - originalRect.left;
+				let _pageY = currentPageXY.y - originalRect.top;
 
-				let addX = (0.5 - (pageX / originalRect.width)) * originalRect.width;
-				let addY = (0.5 - (pageY / originalRect.height)) * originalRect.height;
+				let addX = (0.5 - (_pageX / originalRect.width)) * originalRect.width;
+				let addY = (0.5 - (_pageY / originalRect.height)) * originalRect.height;
 
 				if(center)
 				{
@@ -1436,7 +1441,10 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				haveZoom = true;
 			}
 
-			let withLimits = notCrossZoomLimits(translateX, translateY, scale);
+			if(tranX !== false) translateX = tranX;
+			if(tranY !== false) translateY = tranY;
+
+			let withLimits = notCrossZoomLimits(translateX, translateY, scale, crossZoomLimits);
 
 			translateX = withLimits.x;
 			translateY = withLimits.y;
@@ -1507,6 +1515,10 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			scale: scale,
 			_scale: scalePrevData._scale,
 			scrollTop: scrollTop,
+			extra: {
+				tranX: tranX,
+				tranY: tranY,
+			},
 		};
 
 		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
@@ -1652,6 +1664,8 @@ function setOriginalSize(currentScale)
 		if(!img)
 			continue;
 
+		const devicePixelRatio = window.devicePixelRatio;
+
 		const index = +img.dataset.index;
 		const image = ai.size(imagesData[index]) || [];
 
@@ -1670,14 +1684,14 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 {
 	if(currentScale == 1) // Show current image in original size
 	{
-		const _image = view.distribution.distribution[currentIndex - 1][0];
-		if(_image.folder || _image.blank) _image = view.distribution.distribution[currentIndex - 1][1] || false;
+		let _image = contextMenu.getCurrentImage(false, false);
+		if(_image.folder || _image.blank) _image = contextMenu.getCurrentImage(false, false, 1) || false;
 
 		if(_image && !_image.folder && !_image.blank)
 		{
 			const contentRight = template._contentRight();
 
-			const image = ai.size(imagesData[_image.index]) || [];
+			const image = ai.size(_image) || [];
 			const img = contentRight.querySelector('.r-img-i'+_image.index+' oc-img');
 
 			if(img)
@@ -1755,7 +1769,7 @@ function fixBlurOnZoom(scale = 1, index = false)
 		img.style.height = (height / window.devicePixelRatio)+'px';
 
 		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
-			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.001, 0.001);
+			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.011, 0.011);
 		else
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
 	}
@@ -1831,7 +1845,7 @@ function getIndexImagesSize(index)
 	};
 }
 
-function notCrossZoomLimits(x, y, scale = false)
+function notCrossZoomLimits(x, y, scale = false, crossZoomLimits = false)
 {
 	scale = scale !== false ? scale : scalePrevData.scale;
 
@@ -1848,6 +1862,9 @@ function notCrossZoomLimits(x, y, scale = false)
 
 	let maxY = (indexSize.height * 0.5 * scale - originalRect.height * 0.5) - (minDiff < 0 ? minDiff : 0);
 	let minY = (indexSize.height * -0.5 * scale - originalRect.height * -0.5) - (maxDiff > 0 ? maxDiff + readingMargin().top : 0);
+
+	if(crossZoomLimits)
+		return {x: x, y: y, maxX: maxX, maxY: maxY, height: indexSize.height, width: indexSize.width};
 
 	if(maxY < 0) maxY = 0;
 	if(minY > 0) minY = 0;
@@ -1871,10 +1888,10 @@ function dragZoom(dx, dy, animation = false)
 	return applyZoom(scalePrevData.tranX2 + dx, scalePrevData.tranY2 + dy, animation);
 }
 
-function applyZoom(x, y, animation)
+function applyZoom(x, y, animation, crossZoomLimits = false)
 {
 	const transition = app.scrollTransition('dragZoom', animation ? _config.readingViewSpeed : 0);
-	const withLimits = notCrossZoomLimits(x, y);
+	const withLimits = notCrossZoomLimits(x, y, crossZoomLimits);
 
 	const diff = {
 		x: x - withLimits.x,
@@ -2472,10 +2489,10 @@ function loadReadingMoreOptions()
 
 function readingViewIs(value)
 {
-	if(value == 'scroll' && _config.readingWebtoon)
+	if(value == 'scroll' && (_config.readingWebtoon || _config.readingView == 'panels'))
 		return true;
 
-	if((_config.readingView == value || (value == 'compact' && _config.readingView != 'scroll' && _config.readingView != 'slide')) && !_config.readingWebtoon)
+	if((_config.readingView == value || (value == 'compact' && _config.readingView != 'scroll' && _config.readingView != 'slide' && _config.readingView != 'panels')) && !_config.readingWebtoon)
 		return true;
 
 	return false;
@@ -5339,6 +5356,7 @@ module.exports = {
 	dragZoom: dragZoom,
 	fixBlurOnZoom: fixBlurOnZoom,
 	applyScale: applyScale,
+	applyZoom: applyZoom,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
 	changePagesView: changePagesView,
@@ -5382,7 +5400,6 @@ module.exports = {
 	updateConfigLabels: updateConfigLabels,
 	onReading: function(){return onReading},
 	imagesDistribution: function(){return view.distribution.distribution},
-	applyMangaReading: applyMangaReading,
 	haveZoom: function(){return haveZoom},
 	getTabState: getTabState,
 	setTabState: setTabState,
@@ -5427,6 +5444,7 @@ module.exports = {
 	music: music,
 	contextMenu: contextMenu,
 	pageTransitions: pageTransitions,
+	panels: panels,
 	render: render,
 	sidebar: sidebar,
 	discord: discord,

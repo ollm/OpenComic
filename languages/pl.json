@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "Czytnik Slajdów",
 			"scroll": "Czytnik Pionowy",
+			"panels": "",
 			"roughPageTurn": "Przewracanie stron",
 			"smoothPageTurn": "Płynne przewracanie stron",
 			"fade": "Zanikanie",
@@ -277,6 +278,30 @@
 				"size": "",
 				"opacity": "",
 				"displacement": ""
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "Strefy dotyku",
 			"disable": "Wyłącz strefy dotyku",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "",
 			"leftClick": "Lewy przycisk myszy",
 			"rightClick": "Prawy przycisk myszy",

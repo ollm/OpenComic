@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "Чтение с прокруткой",
 			"scroll": "Вертикальное чтение",
+			"panels": "",
 			"roughPageTurn": "Перелистывание",
 			"smoothPageTurn": "Плавное перелистывание",
 			"fade": "Затухание",
@@ -277,6 +278,30 @@
 				"size": "Размер",
 				"opacity": "Прозрачность",
 				"displacement": "Смещение тени"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "Зоны нажатия",
 			"disable": "Отключить зоны нажатия",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "Инвертировать зоны нажатия при чтении манги",
 			"leftClick": "Левый клик",
 			"rightClick": "Правый клик",

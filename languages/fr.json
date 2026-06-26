@@ -149,6 +149,7 @@
 			"aiToolsShort": "IA",
 			"slide": "Lecteur en diapos",
 			"scroll": "Lecteur vertical",
+			"panels": "",
 			"roughPageTurn": "Changement de page",
 			"smoothPageTurn": "Changement de page fluide",
 			"fade": "Fondu",
@@ -277,6 +278,30 @@
 				"size": "Taille",
 				"opacity": "Opacité",
 				"displacement": "Décalage de l’ombre"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "Zones de toucher",
 			"disable": "Désactiver les zones de toucher",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "Inverser les zones de toucher en lecture manga",
 			"leftClick": "Clic gauche",
 			"rightClick": "Clic droit",

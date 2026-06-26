@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "横向阅读",
 			"scroll": "垂直阅读",
+			"panels": "",
 			"roughPageTurn": "翻页",
 			"smoothPageTurn": "平滑翻页",
 			"fade": "淡出",
@@ -277,6 +278,30 @@
 				"size": "大小",
 				"opacity": "不透明度",
 				"displacement": "阴影位移"
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "点击区域",
 			"disable": "禁用点击区域",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "在阅读漫画时反转点击区域",
 			"leftClick": "左键单击",
 			"rightClick": "右键单击",

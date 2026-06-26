@@ -149,6 +149,7 @@
 			"aiToolsShort": "",
 			"slide": "القراءة الأفقية",
 			"scroll": "القراءة العمودية",
+			"panels": "",
 			"roughPageTurn": "تقليب الصفحات",
 			"smoothPageTurn": "تقليب الصفحات الناعم",
 			"fade": "التلاشي",
@@ -277,6 +278,30 @@
 				"size": "",
 				"opacity": "",
 				"displacement": ""
+			}
+		},
+		"panels": {
+			"focus": "",
+			"hide": "",
+			"immersive": "",
+			"maxZoom": "",
+			"panels": "",
+			"focusTo": {
+				"prevPanels": "",
+				"nextPanels": ""
+			},
+			"showFullPage": {
+				"beforeFirstPanel": "",
+				"afterLastPanel": ""
+			},
+			"hideEffect": "",
+			"white": "",
+			"black": "",
+			"blur": "",
+			"expandPanel": "",
+			"visibility": {
+				"prevPanels": "",
+				"nextPanels": ""
 			}
 		},
 		"moreOptions": {
@@ -429,6 +454,8 @@
 		"tapZones": {
 			"main": "نطاق النقر",
 			"disable": "",
+			"middleClickAutoScrollInAllTapZones": "",
+			"middleClickAutoScrollInCenterTapZone": "",
 			"invertInManga": "",
 			"leftClick": "زر الماوس الأيسر",
 			"rightClick": "زر الماوس الأيمن",
