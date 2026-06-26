@@ -42,7 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Moved `Delay in changing comics` to settings page [`ad8a167`](https://github.com/ollm/OpenComic/commit/ad8a167ace6178e94b6274651efddcabf41515fc)
 - Middle click auto-scroll in center tap zone (Windows only) [`0bd24e5`](https://github.com/ollm/OpenComic/commit/0bd24e5716a4a4bced30945c04cc8caf4232cd9d)
 - Implement `Guided View` support [`868ec61`](https://github.com/ollm/OpenComic/commit/868ec61aaf8297cbab5a27f5d54ddfdc1a4685cc)
-- Open folder shortcut
+- Open folder shortcut [`a93aa2b`](https://github.com/ollm/OpenComic/commit/a93aa2b4db678b6832ac436560def46175050c1e)
 
 ##### 🐛 Bug Fixes
 

@@ -306,6 +306,7 @@ function loadShortcuts()
 				'end',
 				'prevComic',
 				'nextComic',
+				'openFolder',
 				'magnifyingGlass',
 				'createAndDeleteBookmark',
 				'pageLayout',
@@ -314,6 +315,7 @@ function loadShortcuts()
 				'roughPageTurn',
 				'smoothPageTurn',
 				'fade',
+				'panels',
 				'readingManga',
 				'readingWebtoon',
 				'doublePage',
@@ -325,6 +327,9 @@ function loadShortcuts()
 				'rotateHorizontals',
 				'increaseHorizontalMargin',
 				'decreaseHorizontalMargin',
+				'panelsFocus',
+				'panelsHide',
+				'panelsImmersive',
 				'ebookLayout',
 				'increaseFontSize',
 				'decreaseFontSize',
@@ -383,6 +388,9 @@ function loadShortcuts()
 						'rotateHorizontals',
 						'increaseHorizontalMargin',
 						'decreaseHorizontalMargin',
+						'panelsFocus',
+						'panelsHide',
+						'panelsImmersive',
 					],
 				},
 				{
@@ -783,6 +791,18 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				panels: {
+					name: language.reading.pages.panels,
+					function: function(){
+
+						if(_config.readingWebtoon) reading.changePagesView(9, false, false);
+						reading.changePagesView(1, 'panels', false);
+
+						shortcutSnackbar(language.reading.pages.panels);
+
+						return true;
+					},
+				},
 				readingManga: {
 					name: language.reading.pages.readingManga,
 					function: function(){
@@ -922,6 +942,36 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				panelsFocus: {
+					name: language.reading.pages.panels+' ('+language.reading.panels.focus+')',
+					function: function(){
+
+						reading.panels.change('type', 'focus'),
+						shortcutSnackbar(language.reading.pages.panels+' ('+language.reading.panels.focus+')');
+
+						return true;
+					},
+				},
+				panelsHide: {
+					name: language.reading.pages.panels+' ('+language.reading.panels.hide+')',
+					function: function(){
+
+						reading.panels.change('type', 'hide');
+						shortcutSnackbar(language.reading.pages.panels+' ('+language.reading.panels.hide+')');
+
+						return true;
+					},
+				},
+				panelsImmersive: {
+					name: language.reading.pages.panels+' ('+language.reading.panels.immersive+')',
+					function: function(){
+
+						reading.panels.change('type', 'immersive');
+						shortcutSnackbar(language.reading.pages.panels+' ('+language.reading.panels.immersive+')');
+
+						return true;
+					},
+				},
 				ebookLayout: {
 					name: language.reading.pages.ebookLayout,
 					function: function(){
@@ -1037,6 +1087,7 @@ function loadShortcuts()
 				'Ctrl+3': 'roughPageTurn',
 				'Ctrl+4': 'smoothPageTurn',
 				'Ctrl+5': 'fade',
+				'Ctrl+6': 'panels',
 				'Ctrl+M': 'readingManga',
 				'Ctrl+W': 'readingWebtoon',
 				'Ctrl+D': 'doublePage',
@@ -1048,6 +1099,10 @@ function loadShortcuts()
 				'Shift+R': 'rotateHorizontals',
 				'Ctrl+.': 'increaseHorizontalMargin',
 				'Ctrl+,': 'decreaseHorizontalMargin',
+				'Shift+F': 'panelsFocus',
+				'Shift+H': 'panelsHide',
+				'Shift+I': 'panelsImmersive',
+				'Shift+G': 'panelsImmersive',
 				'Shift+E': 'ebookLayout',
 				'Shift+2': 'increaseFontSize',
 				'Shift+.': 'increaseFontSize',
