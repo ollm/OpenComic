@@ -114,9 +114,9 @@
 	position: absolute;
 	width: var(--tabs-bar-tab-width);
 	flex: 0 0 var(--tabs-bar-tab-width);
-	margin: 6px 0px 6px 0px;
+	margin: 0px 0px 6px 0px;
+	padding-top: 6px;
 	padding-left: 6px;
-	cursor: pointer;
 	transition: 0.2s background-color, 0.2s color;
 	/*overflow: hidden;*/
 	height: 28px;
@@ -133,7 +133,6 @@
 	align-items: center;
 	width: var(--tabs-bar-tab-width);
 	flex: 0 0 var(--tabs-bar-tab-width);
-	cursor: pointer;
 	transition: 0.2s background-color, 0.2s color, width 0.2s;
 	border-radius: 8px;
 	overflow: hidden;
@@ -224,7 +223,7 @@
 	z-index: -1;
 }
 
-.tabs-bar:not(.dragging-tabs) .tab .tab-content:hover:after
+.tabs-bar:not(.dragging-tabs) .tab:hover .tab-content:after
 {
 	opacity: 1;
 }
@@ -315,7 +314,7 @@
 	right: 0px;
 	transition: 0.2s opacity;
 	position: absolute;
-	top: 0px;
+	top: 6px;
 	transform: translate(2px, 5px);
 }
 
