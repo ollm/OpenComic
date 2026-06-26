@@ -16,6 +16,7 @@ async function searchComic(title)
 		page: 1,
 		perPage: 10,
 		fields: 'title,main_picture,authors{first_name,last_name}', // 'title,main_picture,authors{first_name,last_name},synopsis',
+		nsfw: true,
 	});
 
 	const options = {
