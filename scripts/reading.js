@@ -4337,8 +4337,8 @@ function pointermove(event)
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 	{
 		const areas = {
-			left: isFullScreen ? 24: 192,
-			top: isFullScreen ? 24: 96,
+			left: isFullScreen ? 12: 192,
+			top: isFullScreen ? 12: 96,
 		};
 
 		if(pageY < areas.top)
