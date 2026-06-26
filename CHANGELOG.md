@@ -42,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Moved `Delay in changing comics` to settings page [`ad8a167`](https://github.com/ollm/OpenComic/commit/ad8a167ace6178e94b6274651efddcabf41515fc)
 - Middle click auto-scroll in center tap zone (Windows only) [`0bd24e5`](https://github.com/ollm/OpenComic/commit/0bd24e5716a4a4bced30945c04cc8caf4232cd9d)
 - Implement `Guided View` support [`868ec61`](https://github.com/ollm/OpenComic/commit/868ec61aaf8297cbab5a27f5d54ddfdc1a4685cc)
+- Open folder shortcut
 
 ##### 🐛 Bug Fixes
 
@@ -56,6 +57,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Thumbnails are still generated in list view [`cf4a20a`](https://github.com/ollm/OpenComic/commit/cf4a20abf51b8869e4e6929d7819a12069329a9a)
 - Replace `electron-json-storage` with custom implementation to fix write hang issue [`e6fb35b`](https://github.com/ollm/OpenComic/commit/e6fb35bf919ced619667b9c7a2ab8208f8fd442e)
 - `Align with next horizontal` conflicts with `Blank page at the beginning` [`0af09be`](https://github.com/ollm/OpenComic/commit/0af09be7501ad550c261faa24e5bbe8588465005)
+- Support searching for NSFW manga on MyAnimeList [`b59fdfe`](https://github.com/ollm/OpenComic/commit/b59fdfe337836584080b5d65cc6e58e3a53fbd1e)
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 

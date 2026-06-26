@@ -234,6 +234,24 @@ function goToFolder(folderIndex)
 	goToPage(folderIndex);
 }
 
+function openFolder()
+{
+	if(!onReading) return;
+
+	const distribution = reading.view.distribution.currentDistribution[reading.currentImagePosition()];
+
+	for(const item of distribution)
+	{
+		if(item.folder)
+		{
+			reading.progress.save();
+			dom.openComic(true, item.fristImage, item.mainPath)
+
+			break;
+		}
+	}
+}
+
 //Go to a specific page
 function goToPage(page, disableSave = false)
 {
@@ -5327,6 +5345,7 @@ module.exports = {
 	goToEbookId: goToEbookId,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; calculateRealReadingDirection(v1); goToIndex(v1, v2, v3, v4)},
 	goToChapterProgress: goToChapterProgress,
+	openFolder: openFolder,
 	setNextOpenChapterProgress: setNextOpenChapterProgress,
 	goStart: goStart,
 	goPrevious: goPrevious,

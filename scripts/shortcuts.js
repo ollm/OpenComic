@@ -358,6 +358,7 @@ function loadShortcuts()
 						'end',
 						'prevComic',
 						'nextComic',
+						'openFolder',
 						'magnifyingGlass',
 						'createAndDeleteBookmark',
 					],
@@ -690,6 +691,13 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				openFolder: {
+					name: language.menu.file.openFolder,
+					function: function(){
+						reading.openFolder();
+						return true;
+					},
+				},
 				gamepadMenu: {
 					name: language.settings.shortcuts.gamepadMenu,
 					function: function(){
@@ -1014,6 +1022,7 @@ function loadShortcuts()
 				'Ctrl+Left': 'prevComic',
 				'Ctrl+Down': 'nextComic',
 				'Ctrl+Right': 'nextComic',
+				'Enter': 'openFolder',
 				'M': 'magnifyingGlass',
 				'B': 'hideBarHeader',
 				'H': 'hideBarHeader',
