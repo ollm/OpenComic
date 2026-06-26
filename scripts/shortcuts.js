@@ -27,21 +27,27 @@ async function loadShoShoObject()
 		target: contentRight,
 	});
 
-	contentRight.addEventListener('mousedown', function(event) {
+	window.addEventListener('mousedown', function(event) {
 
-		const buttons = {
-			0: 'leftClick',
-			1: 'middleClick',
-			2: 'rightClick',
-		};
+		if(event.button === 1 && !inputIsFocused()) // Middle mouse button
+		{
+			const buttons = {
+				0: 'leftClick',
+				1: 'middleClick',
+				2: 'rightClick',
+			};
 
-		const button = buttons[event.button] ?? 'middleClick';
-		const action = getTapZoneAction(event, button);
+			const inContentRight = (event.target.closest('.content-right') || event.target.classList.contains('content-right')) ? true : false;
+			const hasMousedown = (event.target.closest('*[onmousedown]') || event.target.hasAttribute('onmousedown')) ? true : false;
 
-		const hasMousedown = (event.target.closest('*[onmousedown]') || event.target.hasAttribute('onmousedown')) ? true : false;
+			const button = buttons[event.button] ?? 'middleClick';
+			const action = getTapZoneAction(event, button);
 
-		if(event.button === 1 && !inputIsFocused() && ((action && !config.disableTapZones) || hasMousedown)) // Middle mouse button
-			event.preventDefault();
+			if(hasMousedown)
+				event.preventDefault();
+			else if(inContentRight && action && !config.disableTapZones)
+				event.preventDefault();
+		}
 
 	}, true);
 
