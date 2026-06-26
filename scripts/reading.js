@@ -1312,9 +1312,6 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				addY = originalRectReadingBody.height / 2;
 			}
 
-			// if(pageX !== false) addX = pageX;
-			// if(pageY !== false) addY = pageY;
-
 			translateX = (scalePrevData.tranX / scalePrevData.scale * scale) + (addX / scalePrevData.scale * (scale - scalePrevData.scale));
 
 			if(zoomOut)
