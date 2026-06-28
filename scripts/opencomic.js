@@ -633,8 +633,17 @@ async function openEmptyNewWindow()
 
 function openPathInNewTab(path, mainPath = '')
 {
-	const tabId = tabs.openPath(path, mainPath);
-	tabs.switch(tabId);
+	const tab = tabs.getByPath(path);
+
+	if(tab)
+	{
+		tabs.switch(tab.id);
+	}
+	else
+	{
+		const tabId = tabs.openPath(path, mainPath);
+		tabs.switch(tabId);
+	}
 }
 
 var currentContextMenuInput = false;

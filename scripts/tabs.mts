@@ -155,6 +155,25 @@ function getByPosition(position: number): Tab | undefined
 	return tabs.find(t => t.position === position);
 }
 
+function getByPath(path: string): Tab | undefined
+{
+	const tab = tabs.find(t => t.data.history.current.path === path);
+
+	if(tab)
+		return tab;
+
+	return tabs.find((t) => {
+
+		const current = t.data.history.current;
+
+		if(current.file && p.dirname(current.path) === path)
+			return true;
+
+		return false;
+
+	});
+}
+
 function getActive(): Tab | undefined
 {
 	return tabs.find(t => t.active);
@@ -717,6 +736,7 @@ export default {
 	new: _new,
 	get,
 	getByPosition,
+	getByPath,
 	openPath,
 	openTab,
 	goTab,
