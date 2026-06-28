@@ -185,7 +185,7 @@
 .tabs-bar .tab.closing
 {
 	width: 0px;
-	margin: 6px -6px 6px 0px;
+	margin: 0px -6px 6px 0px;
 	padding-left: 0px;
 	transition:
 		opacity 0.1s 0.1s,
