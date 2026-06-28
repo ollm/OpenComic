@@ -1,6 +1,6 @@
 import {describe, it} from 'node:test';
 import assert from 'node:assert';
-import sharp from 'sharp';
+import sharp, {Sharp, Metadata as SharpMetadata} from 'sharp';
 import p from 'node:path';
 
 const ___dirname = typeof __dirname !== 'undefined' ? __dirname : import.meta.dirname;
@@ -18,7 +18,7 @@ const images = {
 };
 
 interface GetPixelColorOptions {
-	_sharp: sharp.Sharp;
+	_sharp: Sharp;
 	x: number;
 	y: number;
 }
@@ -27,10 +27,6 @@ interface PixelColor {
 	r: number;
 	g: number;
 	b: number;
-}
-
-interface SharpMetadata extends sharp.Metadata {
-	mediaType?: string;
 }
 
 async function getPixelColor({_sharp, x, y}: GetPixelColorOptions): Promise<PixelColor> {
