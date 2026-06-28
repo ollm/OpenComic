@@ -4463,14 +4463,14 @@ function hideMouseInFullscreen(event = false, hide = false)
 
 		clearTimeout(status.st);
 
-		if(!isFullScreen || !onReading)
+		if(/*!isFullScreen || */!onReading)
 			return;
 
 		status.st = setTimeout(function() {
 
 			hideMouseInFullscreen(event, true);
 
-		}, 2000);
+		}, isFullScreen ? 2000 : 2000);
 
 		status.hidden = false;
 	}
