@@ -166,24 +166,28 @@ function addCurrentTab(animation: boolean = true)
 	update();
 }
 
-function getTabParentsIds(tab?: Tab, returnCurrent: boolean = false, depp: number = 0): number[]
+function getTabParentsIds(tab?: Tab, returnCurrent: boolean = false, visited = new Set<number>()): number[]
 {
-	if(!tab)
+	if(!tab || visited.has(tab.id))
 		return [];
+
+	visited.add(tab.id);
 
 	const parents = returnCurrent ? [tab.id] : [];
 
 	for(const parentId of tab.parents)
 	{
+		if(visited.has(parentId))
+			continue;
+
 		parents.push(parentId);
 		const parentTab = get(parentId);
 
-		if(parentTab && depp < 10)
-			parents.push(...getTabParentsIds(parentTab, false, depp + 1));
+		if(parentTab)
+			parents.push(...getTabParentsIds(parentTab, false, visited));
 	}
 
 	return parents;
-
 }
 
 function lastChildTab(parent: number, consecutive: boolean = true): Tab | undefined
