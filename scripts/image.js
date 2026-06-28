@@ -573,16 +573,23 @@ async function getSizes(images)
 
 	console.time('getSizesFromBuffer');
 
-	await Promise.all([
-		(async () => {
-			const buffers = await fileManager.compressedStreamReader.getBuffers(getImageBuffers);
-			await getSizesFromBuffer(getImageBuffers, buffers);
-		})(),
-		(async () => {
-			const buffersFS = await getBuffersFS(getImageBuffersFS);
-			await getSizesFromBuffer(getImageBuffersFS, buffersFS);
-		})(),
-	]);
+	try
+	{
+		await Promise.all([
+			(async () => {
+				const buffers = await fileManager.compressedStreamReader.getBuffers(getImageBuffers);
+				await getSizesFromBuffer(getImageBuffers, buffers);
+			})(),
+			(async () => {
+				const buffersFS = await getBuffersFS(getImageBuffersFS);
+				await getSizesFromBuffer(getImageBuffersFS, buffersFS);
+			})(),
+		]);
+	}
+	catch(error)
+	{
+		console.error(error);
+	}
 
 	console.timeEnd('getSizesFromBuffer');
 
