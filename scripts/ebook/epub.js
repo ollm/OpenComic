@@ -393,7 +393,7 @@ var epub = function(path, config = {}) {
 
 	this.request = async function(path, type = 'xml') {
 
-		path = p.normalize(path.replace(/^file:/, ''));
+		path = p.normalize(process.platform === 'win32' ? path.replace(/^file:[/\\]*/, '') : path.replace(/^file:/, ''));
 		const data = await fsp.readFile(path, 'utf8');
 
 		if(type === 'xml' || type === 'xhtml')
