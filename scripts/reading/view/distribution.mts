@@ -82,6 +82,13 @@ export default class Distribution
 
 	}
 
+	update(/* items: Item[] */) {
+
+		// console.log(items);
+		this.items = reading.items as Item[]; // Object.values(items);
+
+	}
+
 	items: Item[] = [];
 
 	distribution: Item[][] = [];
@@ -196,8 +203,8 @@ export default class Distribution
 		let lastAspectRatio = doublePage ? (this.items.find(item => item.image && item.aspectRatio <= 1)?.aspectRatio || 1) : 1;
 
 		const createBlank = (groupType: GroupType, index: number, auto: boolean = true) => ({...this.blank, index, blank: true, groupType, aspectRatio: lastAspectRatio, auto});
-		const createImage = (item: Item, groupType: GroupType) => ({...item, blank: false, groupType});
-		const createFolder = (item: Item, groupType: GroupType) => ({...item, blank: false, groupType});
+		const createImage = (item: Item, groupType: GroupType) => (Object.assign(item, {blank: false, groupType}));
+		const createFolder = (item: Item, groupType: GroupType) => (Object.assign(item, {blank: false, groupType}));
 
 		const SINGLE = 'single'; // Used when the image is in single page group
 		const DOUBLE = 'double'; // Used when the image is in double page group
@@ -352,6 +359,13 @@ export default class Distribution
 		return _distribution;
 	}
 
+	calculate() {
+
+		this.calculateImagesDataWithClip();
+		this.calculateImagesDistribution();
+
+	}
+
 	currentDistribution: Item[][] = [];
 
 	htmlItems() {
@@ -504,14 +518,6 @@ export default class Distribution
 		if(readingLens) setElements(readingLens, 'elementLens');
 
 		return compare;
-
-	}
-
-	calculate() {
-
-	}
-
-	update() {
 
 	}
 }

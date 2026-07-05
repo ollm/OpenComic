@@ -3955,6 +3955,7 @@ async function fastUpdateEbookPages(readingEbook = false, resize = false)
 
 	if(resize)
 	{
+		view.distribution.calculate();
 		view.disposeImages();
 		view.calculateView();
 		view.stayInLine.recalculate();
@@ -4064,7 +4065,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 
 		imagesNum = contentNum = ebookPages.pages.length;
 
-		view.start();
+		view.start(first);
 		view.distribution.htmlItems();
 		view.disposeImages();
 		view.calculateView(first);

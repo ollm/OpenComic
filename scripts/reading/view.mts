@@ -425,10 +425,14 @@ async function getRequiredSizes(index: number, items: Item[]): Promise<Item[]>
 
 let distribution: Distribution | null = null;
 
-function start()
+function start(first = true)
 {
 	stayInLine.reset();
-	distribution = new Distribution();
+
+	if(first)
+		distribution = new Distribution();
+	else if(distribution)
+		distribution.update();
 }
 
 export default {
