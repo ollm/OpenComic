@@ -596,10 +596,12 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		if(animation)
 		{
+			const offset = !readingManga() ? 99999 : -99999;
+
 			if(config.readingMoveZoomWithMouse)
 				applyMoveZoomWithMouse();
 			else
-				zoomMove(0, readingDirection ? 99999 : -99999);
+				zoomMove(0, readingDirection ? offset : -offset);
 		}
 	}
 
