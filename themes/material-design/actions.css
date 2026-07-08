@@ -3486,10 +3486,11 @@ a > code
 
 .compact-actions-name
 {
-	display: flex;
 	align-items: center;
 	flex: 1;
 	height: 64px;
+	line-height: 64px;
+	padding-right: 12px;
 
 	text-overflow: ellipsis;
 	overflow: hidden;
