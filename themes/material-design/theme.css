@@ -1192,6 +1192,16 @@ a:hover
 	margin: 8px 0px;
 }
 
+.separator-2.contrast
+{
+	border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.separator-2.dashed
+{
+	border-top-style: dashed;
+}
+
 .bar-buttons-separator
 {
 	float: right;

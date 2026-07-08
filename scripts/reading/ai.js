@@ -262,11 +262,10 @@ function loadModels(key)
 		});
 	}
 
-	handlebarsContext.menu = {
-		items: items,
-	};
-
-	document.querySelector('#reading-ai-'+queryKey+'-models .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
+	events.menuSimple(items, {
+		width: 552,
+		query: '#reading-ai-'+queryKey+'-models',
+	});
 }
 
 function processContext()

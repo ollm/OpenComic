@@ -585,7 +585,7 @@ function rangeClipPath(range, moveToTop = false)
 	let menu = range.closest('.menu');
 	let toClipPath = range.closest('.menu-simple, .dialog');
 
-	if(toClipPath && !toClipPath.dataset.clipPath)
+	if(toClipPath && !toClipPath.dataset.clipPath && !range.classList.contains('not-clip-path'))
 	{
 		let menuGamepad = menu ? menu.classList.contains('menu-gamepad') : false;
 
@@ -838,6 +838,20 @@ function select(This)
 {
 	dom.this(This).parents('.menu-simple').find('.menu-simple-element.s', true).removeClass('s');
 	This.classList.add('s');
+}
+
+function menuSimple(items, {width = false, query = '#menu-simple-element'} = {})
+{
+	const menu = document.querySelector(`${query} .menu-simple`);
+	if(!menu) return;
+
+	const content = menu.querySelector('.menu-simple-content');
+	if(!content) return;
+
+	handlebarsContext.menu = {items};
+
+	menu.style.width = width ? `${width}px` : '354px';
+	content.innerHTML = template.load('menu.simple.element.html');
 }
 
 var fromGamepadMenu = false;
@@ -1485,6 +1499,7 @@ module.exports = {
 	hideHoverText: hideHoverText,
 	showSelect: showSelect,
 	hideSelect: hideSelect,
+	menuSimple: menuSimple,
 	select: select,
 	activeMenu: activeMenu,
 	activeContextMenu: activeContextMenu,

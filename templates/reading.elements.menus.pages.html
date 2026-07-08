@@ -3,7 +3,7 @@
 
 		<div class="menu-simple-element menu-simple-element-little gamepad-item">
 			<i class="material-icon menu-simple-icon-first" onclick="reading.loadReadingPages(false, false, document.querySelector('#reading-pages .tabs > div > div.active').dataset.name); reading.changePagesView(0);">arrow_back</i>
-			<span>{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingConfigName}}{{/compare}}</span>
+			<span>{{#compare _config.key '===' 0}}{{readingGlobalConfigName}}{{else}}{{_config.readingPresetName}}{{/compare}}</span>
 			{{#compare _config.key '!==' 0}}<i class="material-icon menu-simple-icon" onclick="reading.removeReadingShortcutPagesConfig({{_config.key}});">delete</i>{{/compare}}
 			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfigName({{_config.key}});">edit</i>
 		</div>
@@ -12,7 +12,7 @@
 		<div class="menu-simple-separator"></div>
 		<div class="reading-labels">
 			<div class="menu-simple-text reading-labels-title">
-				<span>{{language.dialog.pages.readingConfigApplyToLabels}}</span>
+				<span>{{language.dialog.pages.readingPresetApplyToLabels}}</span>
 			</div>
 			<div class="menu-simple-text menu-grey reading-labels-empty"{{#if _config.labels}} style="display: none;"{{/if}}>
 				<span>{{language.dialog.labels.empty}}</span>
@@ -37,14 +37,14 @@
 		{{#each readingShortcutPagesConfig}}
 		<div class="menu-simple-element menu-simple-element-little reading-shortcut-pages-config reading-shortcut-pages-config-{{key}} gamepad-item" onclick="reading.setReadingShortcutPagesConfig({{key}});">
 			<i class="material-icon menu-simple-icon-first">palette</i>
-			<span>{{readingConfigName}}</span>
+			<span>{{readingPresetName}}</span>
 			<i class="material-icon menu-simple-element-icon-select{{#compare @root._config.key '===' key}} active{{/compare}}">check</i>
 			<i class="material-icon menu-simple-icon-last" onclick="reading.editReadingShortcutPagesConfig(event, {{key}});">edit</i>
 		</div>
 		{{/each}}
 		<div class="menu-simple-element menu-simple-element-little gamepad-item" onclick="reading.newReadingShortcutPagesConfig();">
 			<i class="material-icon menu-simple-icon-first">add</i>
-			<span>{{language.reading.pages.readingConfigNew}}</span>
+			<span>{{language.reading.pages.readingPresetNew}}</span>
 		</div>
 	{{/if}}
 	<div class="menu-simple-separator"></div>
@@ -341,6 +341,14 @@
 					<div></div><i class="material-icon" onclick="">contract</i> <span>{{language.reading.pages.scroll}}</span>
 				</div>
 
+				<div class="chip chip-big label-large chip-icon-left chip-icon-right reading-view-panels gamepad-item{{#compare _config.readingView '==' 'panels'}} active{{/compare}}" onclick="reading.changePagesView(1, 'panels', false)">
+					<div></div><i class="material-icon" onclick="">space_dashboard</i> <span>{{language.reading.pages.panels}}</span> <i class="material-icon right" onclick="reading.panels.configDialog(event)">settings</i>
+				</div>
+
+				<div class="chip chip-big label-large chip-icon-left reading-view-fade gamepad-item{{#compare _config.readingView '==' 'fade'}} active{{/compare}}" onclick="reading.changePagesView(1, 'fade', false)">
+					<div></div><i class="material-icon" onclick="">transition_fade</i> <span>{{language.reading.pages.fade}}</span>
+				</div>
+
 				<div class="chip chip-big label-large chip-icon-left chip-icon-right reading-view-rough-page-turn gamepad-item{{#compare _config.readingView '==' 'rough-page-turn'}} active{{/compare}}" onclick="reading.changePagesView(1, 'rough-page-turn', false)">
 					<div></div><i class="material-icon" onclick="">import_contacts</i> <span>{{language.reading.pages.roughPageTurn}} ({{language.global.beta}})</span> <i class="material-icon right" onclick="reading.pageTransitions.configDialog(event, 'roughPageTurn')">settings</i>
 				</div>
@@ -349,13 +357,9 @@
 					<div></div><i class="material-icon" onclick="">auto_stories</i> <span>{{language.reading.pages.smoothPageTurn}} ({{language.global.alpha}})</span> <i class="material-icon right" onclick="reading.pageTransitions.configDialog(event, 'smoothPageTurn')">settings</i>
 				</div>
 
-				<div class="chip chip-big label-large chip-icon-left reading-view-fade gamepad-item{{#compare _config.readingView '==' 'fade'}} active{{/compare}}" onclick="reading.changePagesView(1, 'fade', false)">
-					<div></div><i class="material-icon" onclick="">transition_fade</i> <span>{{language.reading.pages.fade}}</span>
-				</div>
-
 			</div>
 
-			<div class="menu-simple-text reading-page-sound-effect gamepad-item">
+			<div class="menu-simple-text reading-page-sound-effect gamepad-item" style="margin-top: 3px;">
 				{{language.reading.music.pageSoundEffect}}
 				<div class="switch{{#if _config.readingSoundEffect.page.play}} a{{/if}}" on="reading.music.soundEffect.change('page', 'play', true)" off="reading.music.soundEffect.change('page', 'play', false)">
 					<div></div>

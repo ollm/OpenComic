@@ -2990,7 +2990,7 @@ function isBookmark(path, _return = false)
 }
 
 //Create and delete bookmarks
-function createAndDeleteBookmark(index = false)
+function createAndDeleteBookmark(index = false, force = null)
 {
 	let imageIndex = false;
 
@@ -3053,6 +3053,14 @@ function createAndDeleteBookmark(index = false)
 
 	
 		let i = isBookmark(path, true);
+
+		if(force !== null)
+		{
+			if(force && i !== false)
+				return;
+			else if(!force && i === false)
+				return;
+		}
 
 		if(i !== false)
 		{
@@ -3353,7 +3361,7 @@ function loadReadingPages(key = false, edit = false, tab = 'page-layout')
 
 	handlebarsContext.readingPagesTab = tab;
 
-	handlebarsContext.readingGlobalConfigName = config.readingConfigName ? config.readingConfigName : language.reading.pages.readingGlobal;
+	handlebarsContext.readingGlobalConfigName = config.readingPresetName ? config.readingPresetName : language.reading.pages.readingGlobal;
 
 	handlebarsContext.readingShortcutPagesConfig = storage.get('readingShortcutPagesConfig');
 
@@ -3447,7 +3455,7 @@ function editReadingShortcutPagesConfigName(key = 0, save = false)
 		{
 			if(key === 0)
 			{
-				storage.updateVar('config', 'readingConfigName', name);
+				storage.updateVar('config', 'readingPresetName', name);
 			}
 			else
 			{			
@@ -3455,7 +3463,7 @@ function editReadingShortcutPagesConfigName(key = 0, save = false)
 
 				if(readingShortcutPagesConfig)
 				{			
-					readingShortcutPagesConfig['readingConfigName'] = name;
+					readingShortcutPagesConfig['readingPresetName'] = name;
 
 					storage.updateVar('readingShortcutPagesConfig', key, readingShortcutPagesConfig);
 
@@ -3471,17 +3479,17 @@ function editReadingShortcutPagesConfigName(key = 0, save = false)
 	{
 		if(key === 0)
 		{
-			handlebarsContext.readingShortcutConfigName = config.readingConfigName ? config.readingConfigName : language.reading.pages.readingGlobal;
+			handlebarsContext.readingShortcutConfigName = config.readingPresetName ? config.readingPresetName : language.reading.pages.readingGlobal;
 		}
 		else
 		{
 			var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', key);
 
-			handlebarsContext.readingShortcutConfigName = readingShortcutPagesConfig ? readingShortcutPagesConfig.readingConfigName : '';
+			handlebarsContext.readingShortcutConfigName = readingShortcutPagesConfig ? readingShortcutPagesConfig.readingPresetName : '';
 		}
 
 		events.dialog({
-			header: language.dialog.pages.readingConfigEditHeader,
+			header: language.dialog.pages.readingPresetEditHeader,
 			width: 400,
 			height: false,
 			content: template.load('dialog.pages.reading.config.html'),
@@ -3539,7 +3547,7 @@ function newReadingShortcutPagesConfig(save = false)
 			readingShortcutPagesConfig[newKey] = {
 				...storage.readingPagesConfig,
 				key: newKey,
-				readingConfigName: name,
+				readingPresetName: name,
 				labels: [],
 			};
 
@@ -3555,7 +3563,7 @@ function newReadingShortcutPagesConfig(save = false)
 		handlebarsContext.readingShortcutConfigName = '';
 
 		events.dialog({
-			header: language.dialog.pages.readingConfigNewHeader,
+			header: language.dialog.pages.readingPresetNewHeader,
 			width: 400,
 			height: false,
 			content: template.load('dialog.pages.reading.config.html'),
@@ -3609,10 +3617,10 @@ function removeReadingShortcutPagesConfig(key, confirm = false)
 		handlebarsContext.readingShortcutConfigName = '';
 
 		events.dialog({
-			header: language.dialog.pages.readingConfigRemoveHeader,
+			header: language.dialog.pages.readingPresetRemoveHeader,
 			width: 400,
 			height: false,
-			content: language.dialog.pages.readingConfigRemove,
+			content: language.dialog.pages.readingPresetRemove,
 			buttons: [
 				{
 					text: language.buttons.cancel,
@@ -5402,6 +5410,7 @@ module.exports = {
 	activeOnScroll: function(){return activeOnScroll},
 	setFromSkip: setFromSkip,
 	createAndDeleteBookmark: createAndDeleteBookmark,
+	currentPageIsBookmark: currentPageIsBookmark,
 	deleteBookmark: deleteBookmark,
 	hideMouseInFullscreen: hideMouseInFullscreen,
 	currentIndex: function(){return currentIndex},

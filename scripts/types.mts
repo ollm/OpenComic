@@ -98,3 +98,33 @@ export interface Point {
 	x: number;
 	y: number;
 }
+
+export interface MacroAction {
+	name?: string;
+	action: string;
+	targetState: boolean;
+	delay: number;
+	forzable?: boolean;
+}
+
+export interface Macro {
+	id: string;
+	name: string;
+	toggleMode: boolean;
+	actions: MacroAction[];
+}
+
+export interface MenuItem {
+	key?: string;
+	name?: string;
+	text?: string;
+	function?: string;
+	paddingLeft?: boolean;
+	disabled?: boolean;
+	select?: boolean;
+}
+
+export interface Preset {
+	key: string | number;
+	name: string;
+}

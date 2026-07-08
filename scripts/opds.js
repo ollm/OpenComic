@@ -562,11 +562,7 @@ function downloadOrSelect(type, index = false)
 			});
 		}
 
-		handlebarsContext.menu = {
-			items: items,
-		};
-
-		document.querySelector('#menu-simple-element .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
+		events.menuSimple(items);
 
 		const button = document.querySelector('.file-info-odps-button-'+type);
 		events.showSelect(button, 'menu-simple-element', true, false);

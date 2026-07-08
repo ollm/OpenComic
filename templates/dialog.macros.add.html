@@ -1,0 +1,71 @@
+{{language.settings.macros.description}}
+<br><br>
+<div class="input macro-name">
+	<div>
+		<div class="inputBorder">
+			<div class="left"></div>
+			<div class="right"></div>
+			<div class="top">
+				<div></div>
+				<span></span> 
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div class="placeholder">{{language.settings.macros.name}}</div>
+		<input type="text" value="{{macro.name}}" class="input-name">
+	</div>
+</div>
+
+<div class="menu-simple-text gamepad-item">
+	{{language.settings.macros.toggleMode}}
+	<div class="switch{{#if macro.toggleMode}} a{{/if}}" on="settings.macros.set('toggleMode', true)" off="settings.macros.set('toggleMode', false)">
+		<div></div>
+		<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+	</div>
+</div>
+
+<div class="separator-2 contrast dashed"></div>
+
+<div class="macros-actions">
+	{{> dialog.macros.list.html}}
+</div>
+
+<div class="separator-2 contrast dashed"></div>
+
+<div class="menu-simple-text settings-macros-target-state gamepad-item">
+	{{language.settings.macros.targetState}}
+	<div class="switch a" on="settings.macros.set('targetState', true)" off="settings.macros.set('targetState', false)">
+		<div></div>
+		<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+	</div>
+</div>
+
+<div class="select body-large gamepad-item macro-action" onclick="settings.macros.getActions(); events.showSelect(this, 'menu-simple-element', true);" style="padding-left: 0px; padding-right: 0px;">
+	<div>
+		<div class="select-border">
+			<div class="bottom"><div></div></div>
+		</div>
+		<div class="text" style="opacity: 1;"></div>
+		<div class="placeholder">{{language.settings.shortcuts.action}}</div>
+		<i class="material-icon">arrow_drop_down</i>
+	</div>
+</div>
+
+<div style="padding-left: 0px; padding-right: 0px;" class="simple-slider gamepad-item not-clip-path" data-margin="0,24,0,24" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+	<div class="simple-slider-text">{{language.settings.macros.delay}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0">undo</i><span>0.0</span>s</div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="5" min="0" step="0.1" value="0" onrange="settings.macros.set('delay', \{{value}})">
+	</div>
+</div>
+<br>
+<div class="simple-button filled-tonal gamepad-item" onclick="settings.macros.addAction();">
+	<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.settings.macros.addAction}}</div>
+</div>
+<cb></cb>

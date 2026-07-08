@@ -1,0 +1,44 @@
+{{#if macro.actions}}
+	{{#each macro.actions}}
+	<div class="compact-actions no-padding{{#if @last}} last{{/if}}" data-margin="60,3,0,0">
+
+		<div class="compact-actions-name">
+			<span>{{name}}</span>
+		</div>
+
+		{{#if forzable}}
+		<div class="compact-actions-button">
+			<div class="switch{{#if targetState}} a{{/if}}" on="settings.macros.set('targetState', true, {{@key}})" off="settings.macros.set('targetState', false, {{@key}})">
+				<div></div>
+				<svg viewBox="0 0 52 32"><path d="M 8,0 C 3.58,0 0,3.58 0,8 0,12.42 3.58,16 8,16 8,16 8,16 8,16 12.42,16 16,12.42 16,8 16,3.58 12.42,0 8,0 8,0 8,0 8,0 Z"></path></svg>
+			</div>
+		</div>
+		{{/if}}
+
+		<div class="simple-slider gamepad-item not-clip-path" style="width: 60%;" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)">
+			<div class="simple-slider-text">{{@root.language.settings.macros.delay}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0">undo</i><span>{{normalizeNumber delay "0.1"}}</span>s</div></div>
+			<div class="range">
+				<div class="range-position">
+					<span class="range-line" style="width: 100%"></span>
+					<span class="range-steps"></span>
+					<div>
+						<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+					</div>
+				</div>
+				<input type="range" max="5" min="0" step="0.1" value="{{delay}}" onrange="settings.macros.set('delay', \{{value}}, {{@key}})">
+			</div>
+		</div>
+
+		<div class="compact-actions-buttons">
+			<i class="material-icon{{#if @first}} disable-pointer{{/if}}" onclick="settings.macros.up({{@key}});">keyboard_arrow_up</i>
+			<i class="material-icon" onclick="settings.macros.remove({{@key}});">close</i>
+			<i class="material-icon{{#if @last}} disable-pointer{{/if}}" onclick="settings.macros.down({{@key}});">keyboard_arrow_down</i>
+		</div>
+
+	</div>
+	{{/each}}
+{{else}}
+<div class="menu-simple-text menu-grey settings-servers-empty">
+	<span>{{language.settings.macros.emptyActions}}</span>
+</div>
+{{/if}}

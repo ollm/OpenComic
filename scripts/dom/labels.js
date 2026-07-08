@@ -960,10 +960,10 @@ function applyShortcutPageConfigToAll(label = '', apply = false)
 	else
 	{
 		events.dialog({
-			header: language.dialog.pages.readingConfigApplyToAllLabel,
+			header: language.dialog.pages.readingPresetApplyToAllLabel,
 			width: 400,
 			height: false,
-			content: language.dialog.pages.readingConfigApplyToAllLabelDescription,
+			content: language.dialog.pages.readingPresetApplyToAllLabelDescription,
 			buttons: [
 				{
 					text: language.buttons.cancel,

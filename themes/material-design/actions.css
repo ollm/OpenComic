@@ -2503,6 +2503,16 @@ table.full tbody tr td:first-child
 	cursor: pointer;
 }
 
+table.macro tbody tr td:first-child
+{
+	cursor: pointer;
+}
+
+table.none tbody tr td
+{
+	cursor: initial;
+}
+
 table.withoutThead tbody tr:first-child td
 {
 	border-top: 0px;
@@ -2531,16 +2541,20 @@ table tbody td:before
 	z-index: 1;
 }
 
-table tbody td:not(:first-child):hover:before,
-table.full tbody td:hover:before
+table:not(.none) tbody td:not(:first-child):hover:before,
+table:not(.none).full tbody td:hover:before,
+table:not(.none).macro tbody td:hover:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-2);
 }
 
-table tbody td:not(:first-child):active:before,
-table tbody td:not(:first-child).gamepad-highlight:before,
-table.full tbody td:active:before,
-table.full tbody td.gamepad-highlight:before
+
+table:not(.none) tbody td:not(:first-child):active:before,
+table:not(.none) tbody td:not(:first-child).gamepad-highlight:before,
+table:not(.none).full tbody td:active:before,
+table:not(.none).full tbody td.gamepad-highlight:before,
+table:not(.none).macro tbody td:active:before,
+table:not(.none).macro tbody td.gamepad-highlight:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-4);
 }
@@ -3449,4 +3463,51 @@ a > code
 {
 	user-select: text;
 	cursor: text;
+}
+
+/* Compact Actions */
+.compact-actions
+{
+	display: flex;
+	padding: 0px 24px;
+	margin: 16px 0px -10px 0px;
+	position: relative;
+}
+
+.compact-actions.no-padding
+{
+	padding: 0px 0px;
+}
+
+.compact-actions.last
+{
+	margin: 16px 0px 2px 0px;
+}
+
+.compact-actions-name
+{
+	display: flex;
+	align-items: center;
+	flex: 1;
+	height: 64px;
+
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+}
+
+.compact-actions-button
+{
+	display: flex;
+	align-items: center;
+	height: 64px;
+}
+
+.compact-actions-buttons
+{
+	width: 24px;
+	cursor: pointer;
+	margin-top: -7px;
+	margin-bottom: -3px;
 }

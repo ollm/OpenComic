@@ -1,4 +1,6 @@
-const MouseWheel = require(p.join(appDir, '.dist/shortcuts/mouse-wheel.js'));
+const MouseWheel = require(p.join(appDir, '.dist/shortcuts/mouse-wheel.js')),
+	macros = require(p.join(appDir, '.dist/shortcuts/macros.mjs')).default,
+	presets = require(p.join(appDir, '.dist/reading/presets.mjs')).default;
 
 var shosho = false;
 var shoshoMouse = false;
@@ -172,6 +174,15 @@ const mangaInvert =  new Set([
 
 function loadShortcuts()
 {
+	const shortcutsReading = function(conf, lang, force) {
+
+		if(force === null) force = !config[conf];
+		settings.set(conf, force);
+		shortcutSnackbar(language.settings.reading[lang], force);
+		reading.reloadAnimated(true);
+
+	}
+
 	shortcuts = {
 		browse: {
 			actionsOrder: [
@@ -358,8 +369,29 @@ function loadShortcuts()
 				'goForwards',
 				'contextMenu',
 				'gamepadMenu',
+
+				// Settings
+				'globalZoomSlide',
+				'globalZoom',
+				'moveZoomWithMouse',
+				'scrollWithMouse',
+				'goNextPrevChapterWithScroll',
+				'turnPagesWithMouseWheel',
 			],
 			actionsGroups: [
+				{
+					name: language.settings.macros.main,
+					macro: true,
+					items: [
+
+					],
+				},
+				{
+					name: language.reading.pages.presets,
+					items: [
+
+					],
+				},
 				{
 					name: language.settings.general,
 					items: [
@@ -449,6 +481,17 @@ function loadShortcuts()
 					items: [
 						'contextMenu',
 						'gamepadMenu',
+					],
+				},
+				{
+					name: language.settings.reading.main,
+					items: [
+						'globalZoomSlide',
+						'globalZoom',
+						'moveZoomWithMouse',
+						'scrollWithMouse',
+						'goNextPrevChapterWithScroll',
+						'turnPagesWithMouseWheel',
 					],
 				},
 			],
@@ -589,31 +632,42 @@ function loadShortcuts()
 				},
 				magnifyingGlass: {
 					name: language.reading.magnifyingGlass.main,
-					function: function(event, gamepad = false){
+					function: function(event, gamepad = false, force = null){
+						if(force !== null && force === config.readingMagnifyingGlass) return true;
 						reading.activeMagnifyingGlass(null, !!gamepad);
 						return true;
 					},
+					state: () => config.readingMagnifyingGlass,
+					forzable: true,
 				},
 				hideBarHeader: {
 					name: language.reading.moreOptions.hideBarHeader,
-					function: function(){
+					function: function(event, gamepad, force = null){
+						if(force !== null && force === reading.getHideContent().hideBarHeader) return true;
 						reading.hideBarHeader();
 						return true;
 					},
+					state: () => reading.getHideContent().hideBarHeader,
+					forzable: true,
 				},
 				hideContentLeft: {
 					name: language.reading.moreOptions.hideContentLeft,
-					function: function(){
+					function: function(event, gamepad, force = null){
+						if(force !== null && force === reading.getHideContent().hideContentLeft) return true;
 						reading.hideContentLeft();
 						return true;
 					},
+					state: () => reading.getHideContent().hideContentLeft,
+					forzable: true,
 				},
 				createAndDeleteBookmark: {
 					name: language.reading.addBookmark,
-					function: function(){
-						reading.createAndDeleteBookmark();
+					function: function(event, gamepad, force = null){
+						reading.createAndDeleteBookmark(false, force);
 						return true;
 					},
+					state: () => reading.currentPageIsBookmark(),
+					forzable: true,
 				},
 				zoomIn: {
 					name: language.menu.view.zoomIn,
@@ -686,10 +740,12 @@ function loadShortcuts()
 				},
 				fullscreen: {
 					name: language.menu.view.toggleFullScreen,
-					function: function(){
-						fullScreen();
+					function: function(event, gamepad, force = null){
+						fullScreen(force);
 						return true;
 					},
+					state: () => isFullScreen,
+					forzable: true,
 				},
 				goBack: {
 					name: language.global.goBack,
@@ -811,7 +867,9 @@ function loadShortcuts()
 				},
 				readingManga: {
 					name: language.reading.pages.readingManga,
-					function: function(){
+					function: function(event, gamepad = false, force = null){
+
+						if(force !== null && force === _config.readingManga) return true;
 
 						if(!_config.readingWebtoon)
 						{
@@ -821,21 +879,27 @@ function loadShortcuts()
 
 						return true;
 					},
+					state: () => _config.readingManga,
+					forzable: true,
 				},
 				readingWebtoon: {
 					name: language.reading.pages.readingWebtoon,
-					function: function(){
+					function: function(event, gamepad = false, force = null){
 
 						reading.changePagesView(9, !_config.readingWebtoon, false);
 						shortcutSnackbar(language.reading.pages.readingWebtoon, _config.readingWebtoon);
 
 						return true;
 					},
+					state: () => _config.readingWebtoon,
+					forzable: true,
 				},
 				doublePage: {
 					name: language.reading.pages.doublePage,
-					function: function(){
-
+					function: function(event, gamepad = false, force = null){
+						
+						if(force !== null && force === _config.readingDoublePage) return true;
+						
 						if(!_config.readingWebtoon)
 						{
 							reading.changePagesView(6, !_config.readingDoublePage, false);
@@ -844,10 +908,14 @@ function loadShortcuts()
 
 						return true;
 					},
+					state: () => _config.readingDoublePage,
+					forzable: true,
 				},
 				doNotApplyToHorizontals: {
 					name: language.reading.pages.doNotApplyToHorizontals+' ('+language.reading.pages.doublePage+')',
-					function: function(){
+					function: function(event, gamepad = false, force = null){
+
+						if(force !== null && force === _config.readingDoNotApplyToHorizontals) return true;
 
 						if(!_config.readingWebtoon && _config.readingDoublePage)
 						{
@@ -857,10 +925,14 @@ function loadShortcuts()
 
 						return true;
 					},
+					state: () => _config.readingDoNotApplyToHorizontals,
+					forzable: true,
 				},
 				blankPage: {
 					name: language.reading.pages.blankPage+' ('+language.reading.pages.doublePage+')',
-					function: function(){
+					function: function(event, gamepad = false, force = null){
+
+						if(force !== null && force === _config.readingBlankPage) return true;
 
 						if(!_config.readingWebtoon && _config.readingDoublePage)
 						{
@@ -870,10 +942,14 @@ function loadShortcuts()
 
 						return true;
 					},
+					state: () => _config.readingBlankPage,
+					forzable: true,
 				},
 				adjustToWidth: {
 					name: language.reading.pages.adjustToWidth+' ('+language.reading.pages.scroll+')',
-					function: function(){
+					function: function(event, gamepad = false, force = null){
+
+						if(force !== null && force === _config.readingViewAdjustToWidth) return true;
 
 						if(reading.readingViewIs('scroll') && !_config.readingWebtoon)
 						{
@@ -883,16 +959,22 @@ function loadShortcuts()
 
 						return true;
 					},
+					state: () => _config.readingViewAdjustToWidth,
+					forzable: true,
 				},
 				notEnlargeMoreThanOriginalSize: {
 					name: language.reading.pages.notEnlargeMoreThanOriginalSize,
-					function: function(){
+					function: function(event, gamepad = false, force = null){
+
+						if(force !== null && force === _config.readingNotEnlargeMoreThanOriginalSize) return true;
 
 						reading.changePagesView(18, !_config.readingNotEnlargeMoreThanOriginalSize, false);
 						shortcutSnackbar(language.reading.pages.notEnlargeMoreThanOriginalSize, _config.readingNotEnlargeMoreThanOriginalSize);
 
 						return true;
 					},
+					state: () => _config.readingNotEnlargeMoreThanOriginalSize,
+					forzable: true,
 				},
 				rotate: {
 					name: language.reading.pages.rotate,
@@ -909,10 +991,12 @@ function loadShortcuts()
 				},
 				rotateHorizontals: {
 					name: language.reading.pages.rotateHorizontals,
-					function: function(){
+					function: function(event){
 
 						const _rotate = [2, 0, 3, 1];
 						const rotate = _rotate[_config.readingRotateHorizontals];
+
+						if(force !== null)
 
 						reading.changePagesView(19, rotate, false);
 						shortcutSnackbar(language.reading.pages.rotateHorizontals, _config.readingRotateHorizontals);
@@ -1038,7 +1122,71 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				// Settings
+				globalZoomSlide: {
+					name: language.settings.reading.globalZoomSlide,
+					function: function(event, gamepad = false, force = null) {
 
+						shortcutsReading('readingGlobalZoomSlide', 'globalZoomSlide', force);
+
+					},
+					state: () => config.readingGlobalZoomSlide,
+					forzable: true,
+				},
+				globalZoom: {
+					name: language.settings.reading.globalZoom,
+					function: function(event, gamepad = false, force = null) {
+
+						shortcutsReading('readingGlobalZoom', 'globalZoom', force);
+
+					},
+					state: () => config.readingGlobalZoom,
+					forzable: true,
+				},
+				moveZoomWithMouse: {
+					name: language.settings.reading.moveZoomWithMouse,
+					function: function(event, gamepad = false, force = null) {
+
+						shortcutsReading('readingMoveZoomWithMouse', 'moveZoomWithMouse', force);
+
+					},
+					state: () => config.readingMoveZoomWithMouse,
+					forzable: true,
+				},
+				scrollWithMouse: {
+					name: language.settings.reading.scrollWithMouse,
+					function: function(event, gamepad = false, force = null) {
+
+						shortcutsReading('readingScrollWithMouse', 'scrollWithMouse', force);
+
+					},
+					state: () => config.readingScrollWithMouse,
+					forzable: true,
+				},
+				goNextPrevChapterWithScroll: {
+					name: language.settings.reading.goNextPrevChapterWithScroll,
+					function: function(event, gamepad = false, force = null) {
+
+						shortcutsReading('readingGoNextPrevChapterWithScroll', 'goNextPrevChapterWithScroll', force);
+
+					},
+					state: () => config.readingGoNextPrevChapterWithScroll,
+					forzable: true,
+				},
+				turnPagesWithMouseWheel: {
+					name: language.settings.reading.turnPagesWithMouseWheel,
+					function: function(event, gamepad = false, force = null) {
+
+						if(force === null) force = !settings.getTurnPagesWithMouseWheelShortcut();
+						settings.setTurnPagesWithMouseWheelShortcut(force, false);
+						shortcutSnackbar(language.settings.reading.turnPagesWithMouseWheel, force);
+						reading.reloadAnimated(true);
+					},
+					state: () => settings.getTurnPagesWithMouseWheelShortcut(),
+					forzable: true,
+				},
+
+				// Mouse
 				leftClick: {
 					name: '',
 					function: function(event){
@@ -1138,6 +1286,7 @@ function loadShortcuts()
 				'Alt+MouseUp': 'prev',
 				'Alt+MouseDown': 'next',
 				'Ctrl+RightClick': 'contextMenu',
+				'Alt+1': 'preset-0',
 			},
 			_shortcutsForce: {
 				'LeftClick': 'leftClick',
@@ -1219,6 +1368,38 @@ function loadShortcuts()
 				'Xbox': 'gamepadMenu',
 			},
 		},
+	}
+
+	// Macros
+	const _macros = storage.get('macros') || {};
+	shortcuts.reading.actionsGroups[0].items = Object.keys(_macros);
+
+	for(const key in _macros)
+	{
+		shortcuts.reading.actions[key] = {
+			name: _macros[key].name,
+			function: function(event, gamepad, force = null, fromMacro = false, deep = 0){
+				macros.run(key, force, fromMacro, deep);
+				return true;
+			},
+			state: () => macros.state(key).state,
+			forzable: true,
+		};
+	}
+
+	// Presets
+	const _presets = presets.list();
+	shortcuts.reading.actionsGroups[1].items = Object.keys(_presets);
+
+	for(const key in _presets)
+	{
+		shortcuts.reading.actions[key] = {
+			name: _presets[key].name,
+			function: function(event, gamepad, force = null, fromMacro = false){
+				presets.set(key);
+				return true;
+			},
+		};
 	}
 
 	// Load here from saved
@@ -1305,6 +1486,7 @@ async function register(section = 'reading', force = false)
 			if(inputIsFocused() || (section === 'reading' && !reading.isLoaded()))
 				return false;
 
+			macros.cancel();
 			return action.function(event);
 
 		}

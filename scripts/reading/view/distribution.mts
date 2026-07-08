@@ -68,6 +68,11 @@ interface Compare {
 	}[];
 }
 
+interface Orfes {
+	element: HTMLDivElement;
+	elementLens: HTMLDivElement;
+}
+
 interface Group {
 	key1: number;
 	items: Item[];
@@ -373,6 +378,26 @@ export default class Distribution
 		this.calculateImagesDataWithClip();
 		this.calculateImagesDistribution();
 
+		const contentRight = template._contentRight() as HTMLDivElement;
+
+		const bodyElements = contentRight.querySelectorAll('.reading-body > div .r-flex');
+		const lensElements = contentRight.querySelectorAll('.reading-lens > div > div .r-flex');
+
+		const orfes: Record<number, Orfes> = {};
+
+		for(let i = 0, len = bodyElements.length; i < len; i++)
+		{
+			const body = bodyElements[i] as HTMLDivElement;
+			const lens = lensElements[i] as HTMLDivElement;
+
+			const key1 = +body.dataset.key1!;
+
+			orfes[key1] = {
+				element: body,
+				elementLens: lens,
+			};
+		}
+
 		const distribution: Item[][] = this.applyMangaReading(this.distribution);
 
 		// Compare difference between the new distribution and the previous distribution to apply only the necessary changes to the DOM
@@ -400,12 +425,15 @@ export default class Distribution
 				{
 					compareGroup.element = prevGroup[j].group!.element;
 					compareGroup.elementLens = prevGroup[j].group!.elementLens;
+
+					delete orfes[i];
 				}
 			}
 
 			compare.push(compareGroup);
 		}
 
+		// Remove the elements that are no longer in the distribution
 		const toRemove = this.currentDistribution.filter((group, i) => !distribution[i]);
 
 		for(const group of toRemove)
@@ -415,6 +443,15 @@ export default class Distribution
 				if(item.group?.element) item.group.element.remove();
 				if(item.group?.elementLens) item.group.elementLens.remove();
 			}
+		}
+
+		// Remove orphaned elements that are no longer in the distribution
+		for(const key in orfes)
+		{
+			const orphan = orfes[key];
+
+			if(orphan.element) orphan.element.remove();
+			if(orphan.elementLens) orphan.elementLens.remove();
 		}
 
 		this.currentDistribution = distribution;
@@ -455,8 +492,6 @@ export default class Distribution
 		console.log('toAdd', toAdd.length);
 
 		// Add base html
-		const contentRight = template._contentRight() as HTMLDivElement;
-
 		if(!contentRight.querySelector('.reading-transitions'))
 		{
 			const html = template.load('reading.content.right.transitions.html');

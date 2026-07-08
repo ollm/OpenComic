@@ -1,3 +1,5 @@
+const macros = require(p.join(appDir, '.dist/settings/macros.mjs')).default;
+
 function start()
 {
 	const configInit = storage.get('configInit');
@@ -513,7 +515,7 @@ function removeServer(key, confirm = false)
 					function: 'events.closeDialog();',
 				},
 				{
-					text: language.buttons.remove,
+					text: language.buttons.delete,
 					function: 'events.closeDialog(); settings.removeServer('+key+', true);',
 				}
 			],
@@ -800,6 +802,7 @@ function generateShortcutsTable(highlightItem = false)
 
 		actionsGroups.push({
 			name: group.name,
+			macro: group.macro,
 			shortcuts: actions,
 		});
 	}
@@ -845,7 +848,7 @@ function generateShortcutsTable(highlightItem = false)
 	generateTapZonesTable(list);
 }
 
-var recording= false;
+var recording = false;
 
 function changeShortcut(action, current, This)
 {
@@ -1023,30 +1026,40 @@ function setTapZone(button, action)
 function getTapZoneActions(button)
 {
 	const list = shortcuts.shortcuts();
-	const actions = [
-		{
-			key: 'disabled',
-			name: language.settings.imageInterpolation.disabled,
-			select: (currentTapZone.tapZone[button].action == 'disabled' ? true : false),
-		},
-	];
+	const items = [];
 
-	for(let key in list.reading.actionsOrder)
+	for(const group of list.reading.actionsGroups)
 	{
-		const action = list.reading.actionsOrder[key];
-		const data = list.reading.actions[action];
-
-		actions.push({
-			key: action,
-			name: data.name.replace(/\<br\s*\/?\>/, ' | '),
-			select: (currentTapZone.tapZone[button].action == action ? true : false),
+		items.push({
+			text: group.name,
 		});
+
+		if(!group.items.length && group.macro)
+		{
+			items.push({
+				name: language.settings.macros.empty,
+				paddingLeft: true,
+				disabled: true,
+			});
+
+			continue;
+		}
+
+		for(const action of group.items)
+		{
+			const data = list.reading.actions[action];
+
+			items.push({
+				key: action,
+				name: data.name.replace(/<br\s*\/?>/, ' | '),
+				paddingLeft: true,
+				function: `settings.setTapZone('${button}', '${action}');`,
+				select: (currentTapZone.tapZone[button].action == action ? true : false),
+			});
+		}
 	}
 
-	handlebarsContext.tapZoneButton = button;
-	handlebarsContext.tapZoneActions = actions;
-
-	document.querySelector('#settings-tap-zone .menu-simple-content').innerHTML = template.load('settings.elements.menus.tap.zone.html');
+	events.menuSimple(items);
 }
 
 function restoreTapZones()
@@ -1304,11 +1317,7 @@ function getOpeningBehavior(folder = false)
 		item.paddingLeft = true;
 	}
 
-	handlebarsContext.menu = {
-		items: items,
-	};
-
-	document.querySelector('#menu-simple-element .menu-simple-content').innerHTML = template.load('menu.simple.element.html');
+	events.menuSimple(items);
 }
 
 function getOpeningBehaviorName(key = '')
@@ -1707,6 +1716,7 @@ module.exports = {
 	setStartOnStartup: setStartOnStartup,
 	setCheckReleases: setCheckReleases,
 	setCheckPreReleases: setCheckPreReleases,
+	getTurnPagesWithMouseWheelShortcut: getTurnPagesWithMouseWheelShortcut,
 	setTurnPagesWithMouseWheelShortcut: setTurnPagesWithMouseWheelShortcut,
 	changeShortcut: changeShortcut,
 	removeShortcut: removeShortcut,
@@ -1744,4 +1754,5 @@ module.exports = {
 	setTabState,
 	getTmpFolder,
 	getCacheFolder,
+	macros,
 };

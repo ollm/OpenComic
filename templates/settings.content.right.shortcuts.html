@@ -51,7 +51,7 @@
 </div>
 
 {{#each shortcutsGroups}}
-<table class="body-large">
+<table class="body-large{{#if macro}} {{#if shortcuts}}macro{{else}}none{{/if}}{{/if}}">
 	{{#if name}}
 	<div class="menu-simple-text" style="margin-top: 18px; margin-bottom: -18px;">
 		<span>{{name}}</span>
@@ -73,7 +73,7 @@
 	<tbody>
 		{{#each shortcuts}}
 		<tr>
-			<td>{{{name}}}</td>
+			<td{{#if ../macro}} onclick="settings.macros.edit('{{action}}')"{{/if}}>{{{name}}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key1}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key1}}')">{{key1}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key2}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key2}}')">{{key2}}</td>
 			<td onclick="settings.changeShortcut('{{action}}', '{{key3}}', this)" oncontextmenu="settings.removeShortcut('{{action}}', '{{key3}}')">{{key3}}</td>
@@ -82,9 +82,26 @@
 			<td class="gamepad-item lh0{{#if @first}} gamepad-to-hightlight{{/if}}" onclick="settings.changeButton('{{action}}', '{{gamepad1_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad1_}}')">{{#if gamepad1}}<span class="gamepad-image gamepad-image-{{gamepad1}}">{{/if}}</td>
 			<td class="gamepad-item lh0" onclick="settings.changeButton('{{action}}', '{{gamepad2_}}', this)" oncontextmenu="settings.removeButton('{{action}}', '{{gamepad2_}}')">{{#if gamepad2}}<span class="gamepad-image gamepad-image-{{gamepad2}}">{{/if}}</td>
 		</tr>
+		{{else if macro}}
+		<tr class="menu-grey">
+			<td>{{../language.settings.macros.empty}}</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
 		{{/each}}
 	</tbody>
 </table>
+{{#if macro}}
+<div class="simple-button filled-tonal gamepad-item settings-add-macro left" onclick="settings.macros.add();">
+	<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{../language.settings.macros.add}}</div>
+</div>
+<cb></cb>
+{{/if}}
 {{else}}
 <table class="body-large">
 	<thead>

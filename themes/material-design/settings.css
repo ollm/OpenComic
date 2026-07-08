@@ -45,6 +45,13 @@
 	margin: 32px 24px 6px 0px;
 }
 
+.settings-shortcuts-table .simple-button.left,
+.settings-tap-zones-table .simple-button.left
+{
+	float: left;
+	margin: 32px 0px 6px 24px;
+}
+
 .settings-master-folders,
 .settings-servers,
 .settings-ignore-files
