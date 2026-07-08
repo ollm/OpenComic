@@ -2863,10 +2863,14 @@ function reloadIndex()
 
 function reloadAnimated(full = false, imageIndex = false)
 {
-	if(readingIsEbook) handlebarsContext.loading = true;
-	template.loadContentRight('reading.content.right.html', true);
+	app.setThrottle('readingReloadAnimated', function() {
 
-	reading.reload(false, imageIndex);
+		if(readingIsEbook) handlebarsContext.loading = true;
+		template.loadContentRight('reading.content.right.html', true);
+
+		reading.reload(false, imageIndex);
+
+	}, 10, 20);
 }
 
 function reload(full = false, imageIndex = false)
