@@ -1,5 +1,4 @@
 import {Macro, MenuItem} from '@types';
-import { fromImageColors } from 'reading/filters.js';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const app: any;
