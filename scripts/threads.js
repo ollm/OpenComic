@@ -196,13 +196,7 @@ async function afterThreads(keys = [])
 	for(const key of keys)
 	{
 		if(threadsList[key]?.some(thread => thread && thread.busy))
-		{
-			try
-			{
-				await endPromises[key]?.promise;
-			}
-			catch(error){}
-		}
+			await endPromises[key]?.promise?.catch(() => {});
 	}
 }
 
@@ -214,15 +208,13 @@ async function hasBlockingJob(key = 'default')
 	{
 		const thread = threads.shift();
 
+		if(!thread.busy || !thread.currentJob.options.blocking)
+			continue;
+
+		await thread.currentJob.promise?.promise?.catch(() => {});
+
 		if(thread.busy && thread.currentJob.options.blocking)
-		{
-			try
-			{
-				await thread.currentJob.promise.promise;
-			}
-			catch(error){}
 			threads.push(thread);
-		}
 	}
 
 	return;
