@@ -22,11 +22,11 @@ async function goToIndex(index, animation)
 
 	const readingDirection = reading.realReadingDirection();
 
-	queue.add('pageTransitions', async function(index, animation, readingDirection) {
+	threads.job('pageTransitions', {useThreads: threads.SINGLE}, async function(index, animation, readingDirection) {
 
 		if(prevDirection !== null && prevDirection != readingDirection && waitTransition)
 		{
-			purgeQueue(readingDirection);
+			purgeThreads(readingDirection);
 			await waitTransition;
 		}
 
@@ -130,18 +130,15 @@ async function touchmove(event, touchevents)
 }
 
 
-function purgeQueue()
+function purgeThreads()
 {
-	const _queue = queue.get('pageTransitions');
+	const list = threads.get('pageTransitions');
+	const newList = [];
 
-	let newQueue = [];
+	const last = list.pop();
+	if(last) newList.push(last);
 
-	const last = _queue.pop();
-
-	if(last)
-		newQueue.push(last);
-
-	queue.set('pageTransitions', newQueue);
+	threads.set('pageTransitions', newList);
 }
 
 var zIndex = 1, zIndexST = false, changedDirection;

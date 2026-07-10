@@ -262,6 +262,18 @@ function clean(key = 'default', increaseId = true)
 	queue.keys = new Set();
 }
 
+function get(key = 'default')
+{
+	const queue = getQueue(key);
+	return queue.list;
+}
+
+function set(key = 'default', list = [])
+{
+	const queue = getQueue(key);
+	queue.list = list;
+}
+
 const endPromises = {};
 
 function setEndPromise(key = 'default')
@@ -347,6 +359,8 @@ module.exports = {
 	resume: resume,
 	clean: clean,
 	end: end,
+	get: get,
+	set: set,
 	stats: getStats,
 	sumStats: sumStats,
 	SINGLE: 0.000001,
