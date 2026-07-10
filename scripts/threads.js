@@ -23,6 +23,9 @@ async function job(key = 'default', options = {}, callback = false)
 	if(options.delay)
 		await app.sleep(options.delay);
 
+	if(typeof endPromises[key] === 'undefined')
+		setEndPromise(key);
+
 	const _arguments = [];
 
 	for(let i = 3, len = arguments.length; i < len; i++)
@@ -30,15 +33,7 @@ async function job(key = 'default', options = {}, callback = false)
 		_arguments.push(arguments[i]);
 	}
 
-	let resolve = false;
-	let reject = false;
-
-	const promise = new Promise(function(_resolve, _reject) {
-
-		resolve = _resolve;
-		reject = _reject;
-
-	});
+	const {promise, resolve, reject} = Promise.withResolvers();
 
 	const _promise = {
 		promise: promise,
@@ -81,7 +76,7 @@ function addToQueue(key, options, callback, _arguments, promise)
 		queue.keys.add(options.key);
 	}
 
-	if(options.priorize)
+	if(options.priorize || options.blocking)
 	{
 		queue.list.unshift({
 			options: options,
@@ -133,7 +128,9 @@ function processJob(key = 'default', _thread = 0)
 
 	if(!queue.list.length)
 	{
-		checkEnd(key);
+		if(!threadsList[key]?.some(thread => thread && thread.busy))
+			checkEnd(key);
+
 		return null;
 	}
 
@@ -158,6 +155,12 @@ function processJob(key = 'default', _thread = 0)
 async function startJob(thread)
 {
 	const currentJob = thread.currentJob;
+
+	if(currentJob.options.afterThreads)
+		await afterThreads(currentJob.options.afterThreads);
+
+	if(!currentJob.options.blocking)
+		await hasBlockingJob(thread.key);
 
 	try
 	{
@@ -188,9 +191,36 @@ async function startJob(thread)
 
 }
 
+async function afterThreads(keys = [])
+{
+	for(const key of keys)
+	{
+		if(threadsList[key]?.some(thread => thread && thread.busy))
+			await endPromises[key]?.promise;
+	}
+}
+
+async function hasBlockingJob(key = 'default')
+{
+	const threads = threadsList[key]?.filter(thread => thread && thread.busy && thread.currentJob.options.blocking) || [];
+
+	while(threads.length)
+	{
+		const thread = threads.shift();
+
+		if(thread.busy && thread.currentJob.options.blocking)
+		{
+			await thread.currentJob.promise.promise;
+			threads.push(thread);
+		}
+	}
+
+	return;
+}
+
 function getThread(key = 'default', thread = 0)
 {
-	if(!threadsList[key]) threadsList[key] = {};
+	if(!threadsList[key]) threadsList[key] = new Array(num()).fill(false);
 
 	if(threadsList[key][thread])
 		return threadsList[key][thread];
@@ -224,12 +254,24 @@ function resume(key = 'default')
 	processQueue(key);
 }
 
-function clean(key = 'default')
+function clean(key = 'default', increaseId = true)
 {
 	const queue = getQueue(key);
-	queue.id++;
+	if(increaseId) queue.id++;
 	queue.list = [];
 	queue.keys = new Set();
+}
+
+const endPromises = {};
+
+function setEndPromise(key = 'default')
+{
+	const {promise, resolve} = Promise.withResolvers();
+
+	endPromises[key] = {
+		promise: promise,
+		resolve: resolve,
+	};
 }
 
 function checkEnd(key = 'default')
@@ -241,6 +283,9 @@ function checkEnd(key = 'default')
 		queue.onEnd();
 		queue.onEnd = false;
 	}
+
+	endPromises[key]?.resolve();
+	setEndPromise(key);
 }
 
 function end(key, callback)
@@ -255,7 +300,7 @@ function getStats(key = false)
 
 	for(let key in queues)
 	{
-		const list = Object.values(threadsList[key] ?? {});
+		const list = threadsList[key]?.filter(thread => thread) || [];
 
 		_stats[key] = {
 			key: key,

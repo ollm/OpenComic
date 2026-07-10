@@ -153,21 +153,18 @@ function getImages(index, up = true)
 
 async function goToImage(index)
 {
-	const images = filterShowed([
-		...getImages(index, true),
-		...getImages(index + 1, false),
-	]);
+	const images = filterShowed(app.interleave(
+		getImages(index, true),
+		getImages(index + 1, false),
+	));
 
 	const len = images.length;
 
 	if(len === 0)
 		return;
 
-	const thumbnails = cache.returnThumbnailsImages(images, function(data) {
-
-		dom.addImageToDom(data.sha, data.path);
-
-	}, file);
+	const thumbnails = cache.returnThumbnailsImages(images, function(data) {}, false);
+	const imagesToGenerate = [];
 
 	const contentLeft = template._contentLeft();
 
@@ -190,8 +187,19 @@ async function goToImage(index)
 			img.addEventListener('load', function(){
 				this.parentElement.classList.add('show');
 			});
+
+			imagesToGenerate.push(image);
 		}
 	}
+
+	if(imagesToGenerate.length === 0)
+		return;
+
+	cache.returnThumbnailsImages(imagesToGenerate, function(data) {
+
+		dom.addImageToDom(data.sha, data.path);
+
+	}, file);
 }
 
 var disableEventST = false;

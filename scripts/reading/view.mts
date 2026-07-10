@@ -335,6 +335,7 @@ async function getAllSizes(contentRightIndex: number)
 		calculateView();
 
 		reading.sidebar.sizes(reading.imagesData(), reading.currentComics());
+		reading.render.focusIndex(null, reading.doublePage.active());
 		return;
 	}
 
@@ -350,6 +351,7 @@ async function getAllSizes(contentRightIndex: number)
 	stayInLine.recalculate();
 
 	reading.sidebar.sizes(reading.imagesData(), reading.currentComics());
+	reading.render.focusIndex(null, reading.doublePage.active());
 
 }
 

@@ -85,10 +85,10 @@ function setMagnifyingGlassStatus(active = false, doublePage = false)
 	scaleMagnifyingGlass = active;
 
 	if(active)
-		setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+		setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
 }
 
-var sendToQueueST = false;
+var setRenderST = false;
 
 function getVisbleImages(doublePage = false)
 {
@@ -128,9 +128,9 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 	if(!file && !renderImages) return;
 	if(renderEbook) return;
 
-	clearTimeout(sendToQueueST);
+	clearTimeout(setRenderST);
 
-	queue.clean('readingRender');
+	threads.clean('readingRender');
 	ai.clean();
 
 	scale = _scale;
@@ -145,22 +145,22 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 		rendered = {};
 		renderedMagnifyingGlass = {};
 
-		setRenderQueue(visbleImages.prev, visbleImages.next);
+		setRender(visbleImages.prev, visbleImages.next);
 
-		sendToQueueST = setTimeout(function(){
+		setRenderST = setTimeout(function(){
 
-			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
-			setRenderQueue(prev, next);
+			if(scaleMagnifyingGlass) setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
+			setRender(prev, next);
 
 		}, 1000);
 	}
 	else
 	{
-		setRenderQueue(visbleImages.prev, visbleImages.next, _scale);
+		setRender(visbleImages.prev, visbleImages.next, _scale);
 
-		sendToQueueST = setTimeout(function(){
+		setRenderST = setTimeout(function(){
 
-			if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
+			if(scaleMagnifyingGlass) setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, _scale * scaleMagnifyingGlass, true);
 
 		}, 500);
 	}
@@ -171,17 +171,17 @@ function setScaleMagnifyingGlass(_scale = 1, doublePage = false)
 	if(!file || !scaleMagnifyingGlass) return;
 	if(renderEbook) return;
 
-	clearTimeout(sendToQueueST);
+	clearTimeout(setRenderST);
 
-	queue.clean('readingRender');
+	threads.clean('readingRender');
 	ai.clean();
 
 	renderedMagnifyingGlass = {};
 	scaleMagnifyingGlass = _scale;
 
-	sendToQueueST = setTimeout(function(){
+	setRenderST = setTimeout(function(){
 
-		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, scale * scaleMagnifyingGlass, true);
+		if(scaleMagnifyingGlass) setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, scale * scaleMagnifyingGlass, true);
 
 	}, 500);
 }
@@ -194,9 +194,9 @@ function resized(doublePage = false)
 	let readingBody = template._contentRight().querySelector('.reading-body');
 	if(readingBody) readingBody.classList.add('resizing');
 
-	clearTimeout(sendToQueueST);
+	clearTimeout(setRenderST);
 
-	queue.clean('readingRender');
+	threads.clean('readingRender');
 	ai.clean();
 
 	if(renderImages)
@@ -210,12 +210,12 @@ function resized(doublePage = false)
 	const visbleImages = getVisbleImages(doublePage);
 	const {prev, next} = imagesToPreload(doublePage);
 
-	setRenderQueue(visbleImages.prev, visbleImages.next);
+	setRender(visbleImages.prev, visbleImages.next);
 
-	sendToQueueST = setTimeout(function(){
+	setRenderST = setTimeout(function(){
 
-		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
-		setRenderQueue(prev, next);
+		if(scaleMagnifyingGlass) setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+		setRender(prev, next);
 
 	}, 400);
 }
@@ -228,23 +228,24 @@ async function setEbookConfigChanged(ebookConfig)
 		ebook.updateConfig(ebookConfig);
 }
 
-async function focusIndex(index, doublePage = false)
+async function focusIndex(index = null, doublePage = false)
 {
 	if(!file && !renderImages) return;
 
-	clearTimeout(sendToQueueST);
+	clearTimeout(setRenderST);
 
-	queue.clean('readingRender');
+	threads.clean('readingRender', false);
 	ai.clean();
 
-	currentIndex = index;
+	if(index !== null)
+		currentIndex = index;
 
 	const {prev, next} = imagesToPreload(doublePage);
-	setRenderQueue(prev, next, false, false, (doublePage ? 2 : false));
+	setRender(prev, next, false, false, (doublePage ? 2 : false));
 
-	sendToQueueST = setTimeout(function(){
+	setRenderST = setTimeout(function(){
 
-		if(scaleMagnifyingGlass) setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
+		if(scaleMagnifyingGlass) setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true);
 
 	}, 100);
 }
@@ -296,15 +297,31 @@ function reRenderImage(index, runAi = false)
 	renderedMagnifyingGlass[index] = false;
 	rendered[index] = false;
 
-	setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, false, false, runAi);
+	setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, false, false, false, runAi);
 
 	if(scaleMagnifyingGlass)
-		setRenderQueue(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true, false, runAi);
+		setRender(doublePage ? 3 : 2, doublePage ? 4 : 2, false, true, false, runAi);
 }
 
-async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass = false, prioritizeNext = false, runAi = true)
+async function setRender(prev = 1, next = 1, scale = false, magnifyingGlass = false, prioritizeNext = false, runAi = true)
 {
 	//console.time('readingRender');
+
+	const blocking = function(index, next = false) {
+
+		if(index === 0 || (doublePage && index === 1 && next))
+			return true;
+
+		if(!onRender)
+			return false;
+
+		if(onRender.blocking >= onRender.num)
+			return false;
+
+		onRender.blocking++;
+		return true;
+
+	}
 
 	let _rendered = magnifyingGlass ? renderedMagnifyingGlass : rendered;
 
@@ -325,11 +342,11 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 			}
 			else
 			{
-				queue.add('readingRender', async function(queueIndex) {
+				threads.job('readingRender', {useThreads: threads.ALL, blocking: blocking(i, true)}, async function(id) {
 
-					return render(nextI, scale, magnifyingGlass, queueIndex, runAi);
+					return render(nextI, scale, magnifyingGlass, id, runAi);
 
-				}, queue.index('readingRender'));
+				}, threads.id('readingRender'));
 			}
 		}
 
@@ -346,17 +363,17 @@ async function setRenderQueue(prev = 1, next = 1, scale = false, magnifyingGlass
 				}
 				else
 				{
-					queue.add('readingRender', async function(queueIndex) {
+					threads.job('readingRender', {useThreads: threads.ALL, blocking: blocking(i)}, async function(id) {
 
-						return render(prevI, scale, magnifyingGlass, queueIndex, runAi);
+						return render(prevI, scale, magnifyingGlass, id, runAi);
 
-					}, queue.index('readingRender'));
+					}, threads.id('readingRender'));
 				}
 			}
 		}
 	}
 
-	queue.end('readingRender', function() {
+	threads.end('readingRender', function() {
 
 		//console.timeEnd('readingRender');
 
@@ -367,16 +384,17 @@ var onRender = false;
 
 async function setOnRender(num = 1, callback = false)
 {
-	queue.clean('readingRender');
+	threads.clean('readingRender');
 	ai.clean();
 
 	onRender = {
 		num: num,
 		callback: callback,
+		blocking: 0,
 	};
 }
 
-async function render(index, _scale = false, magnifyingGlass = false, queueIndex = 0, runAi = true)
+async function render(index, _scale = false, magnifyingGlass = false, threadsId = 0, runAi = true)
 {
 	let imageData = imagesData[index] || false;
 
@@ -564,7 +582,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 							renderedObjectsURL.push({data: data, img: img, key, src});
 							renderedObjectsURLCache[key] = data;
 
-							if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+							if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
 							img.src = data.blob;
 							img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
@@ -575,7 +593,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						}
 						else
 						{
-							const success = await srcToImage(src, img, key, queueIndex);
+							const success = await srcToImage(src, img, key, threadsId);
 							if(!success) return;
 						}
 					}
@@ -583,7 +601,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						console.error(error);
 
-						const success = await srcToImage(src, img, key, queueIndex);
+						const success = await srcToImage(src, img, key, threadsId);
 						if(!success) return;
 					}
 				}
@@ -620,7 +638,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 						renderedObjectsURL.push({data: data, img: img, key, src});
 						renderedObjectsURLCache[key] = {blob: data.blob};
 
-						if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+						if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
 						img.src = data.blob;
 						img.classList.add('blobRendered', 'blobRender');
@@ -630,19 +648,19 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 					{
 						console.error(error);
 
-						const success = await srcToImage(src, img, key, queueIndex);
+						const success = await srcToImage(src, img, key, threadsId);
 						if(!success) return;
 					}
 				}
 				else
 				{
-					const success = await srcToImage(src, img, key, queueIndex);
+					const success = await srcToImage(src, img, key, threadsId);
 					if(!success) return;
 				}
 			}
 			else
 			{
-				const success = await srcToImage(src, img, key, queueIndex);
+				const success = await srcToImage(src, img, key, threadsId);
 				if(!success) return;
 			}
 
@@ -684,7 +702,7 @@ async function render(index, _scale = false, magnifyingGlass = false, queueIndex
 	return;
 }
 
-async function srcToImage(src, img, key, queueIndex)
+async function srcToImage(src, img, key, threadsId)
 {
 	const resizeToBlob = async function() {
 
@@ -696,7 +714,7 @@ async function srcToImage(src, img, key, queueIndex)
 			renderedObjectsURLCache[key] = {blob: data.blob};
 		}
 
-		if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+		if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
 		img.src = renderedObjectsURLCache[key].blob;
 		img.classList.remove('blobRendered', 'blobRender');
@@ -719,7 +737,7 @@ async function srcToImage(src, img, key, queueIndex)
 		}
 	}
 
-	if(queueIndex !== queue.index('readingRender')) return; // Return if the queue is different
+	if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
 	img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
 	img.classList.remove('blobRendered', 'blobRender');

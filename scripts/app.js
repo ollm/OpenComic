@@ -522,6 +522,25 @@ function text(string) {
 
 }
 
+function interleave(a1, a2) {
+
+	const array = [];
+
+	const len1 = a1.length;
+	const len2 = a2.length;
+
+	const len = Math.max(len1, len2);
+
+	for(let i = 0; i < len; i++)
+	{
+		if(i < len1) array.push(a1[i]);
+		if(i < len2) array.push(a2[i]);
+	}
+
+	return array;
+
+}
+
 module.exports = {
 	event: event,
 	eventOff: eventOff,
@@ -563,4 +582,5 @@ module.exports = {
 	returnDeg: returnDeg,
 	degIs: degIs,
 	hexToRgb: hexToRgb,
+	interleave: interleave,
 };

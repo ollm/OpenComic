@@ -44,6 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Implement `Guided View` support [`868ec61`](https://github.com/ollm/OpenComic/commit/868ec61aaf8297cbab5a27f5d54ddfdc1a4685cc)
 - Open folder shortcut [`a93aa2b`](https://github.com/ollm/OpenComic/commit/a93aa2b4db678b6832ac436560def46175050c1e)
 - Support for shortcuts macros [`d5f819a`](https://github.com/ollm/OpenComic/commit/d5f819a57b5c88440a35cb46addaeacb9257db12)
+- Improved loading of high resolution images
 
 ##### 🐛 Bug Fixes
 
