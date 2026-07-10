@@ -173,6 +173,7 @@
 		"appId": "org.opencomic.app",
 		"productName": "OpenComic",
 		"executableName": "opencomic",
+		"desktopName": "org.opencomic.app.desktop",
 		"asar": true,
 		"publish": null,
 		"toolsets": {
@@ -306,6 +307,7 @@
 			"x64ArchFiles": "*"
 		},
 		"linux": {
+			"syncDesktopName": true,
 			"target": [
 				"AppImage",
 				"deb",

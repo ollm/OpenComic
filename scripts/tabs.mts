@@ -323,7 +323,6 @@ function update(retrieveData: boolean = false): void
 	const materialIcon = contentLeft.querySelector('.menu-item.active .material-icon');
 
 	const icon = materialIcon && !onReading ? materialIcon.innerHTML : (onReading ? 'auto_stories' : 'indeterminate_question_box');
-	console.error(icon, materialIcon, contentLeft);
 
 	const barHeader = template._barHeader();
 	const title = (barHeader.querySelector('.bar-title-a:last-child') ?? barHeader.querySelector('.bar-title'))?.innerHTML.trim() || 'Untitled';
