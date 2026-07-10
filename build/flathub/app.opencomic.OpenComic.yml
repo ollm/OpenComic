@@ -13,6 +13,10 @@ finish-args:
   - --device=dri
   - --share=network
   - --share=ipc
+  # should fix controler navigation
+  - --filesystem=/run/udev:ro
+  # should fix discord rich presence
+  - --filesystem=xdg-run/app/com.discordapp.Discord:create
   - --filesystem=home
   - --filesystem=/media
   - --filesystem=/run/media

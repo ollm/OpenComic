@@ -566,7 +566,7 @@ function reload(fromSetOfflineMode = false, animation = true)
 {
 	if(onReading)
 		reading.reload(true);
-	else if(handlebarsContext.page.key == 'recently-opened')
+	else if(handlebarsContext.page?.key == 'recently-opened')
 		recentlyOpened.reload(animation);
 	else
 		reloadIndex(fromSetOfflineMode, animation);
