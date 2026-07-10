@@ -19,7 +19,6 @@ async function load(animation = true, content = false)
 
 	template.loadContentRight('index.content.right.loading.html', animation);
 	template.loadHeader('recently.opened.header.html', animation);
-	tabs.update();
 
 	let now = Date.now();
 
@@ -142,6 +141,7 @@ async function load(animation = true, content = false)
 	gamepad.updateBrowsableItems('recently-opened');
 
 	events.events();
+	tabs.update();
 }
 
 function set(mainPath)

@@ -2940,7 +2940,7 @@ function currentPageIsBookmark()
 //Check if a path is a bookmarks
 function isBookmark(path, _return = false)
 {
-	path = p.relative(dom.history.mainPath, path);
+	path = p.relative(dom.history.mainPath || '', path);
 	let i = false;
 
 	const bookmarks = getBookmarks();
