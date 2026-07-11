@@ -10,7 +10,7 @@
 	--reading-background-color: var(--md-sys-color-background-dark);
 }
 
-.app.night-mode-black-background.light-mode-black-background-on-reading
+.app.night-mode-black-background.light-mode-black-background-on-reading .content-right
 {
 	--reading-background-color: #000000;
 }
