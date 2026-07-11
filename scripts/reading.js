@@ -545,7 +545,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		let scrollSum = 0;
 
-		if((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && pageVisibilityIndex !== false)
+		if((_config.readingViewAdjustToWidth || _config.readingWebtoon) && pageVisibilityIndex !== false)
 		{
 			imgHeight = largerImage.height + readingMargin().top;
 
@@ -5369,6 +5369,7 @@ module.exports = {
 	goToFolder: goToFolder,
 	goToEbookId: goToEbookId,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; calculateRealReadingDirection(v1); goToIndex(v1, v2, v3, v4)},
+	goScrollPercent: goScrollPercent,
 	goToChapterProgress: goToChapterProgress,
 	openFolder: openFolder,
 	setNextOpenChapterProgress: setNextOpenChapterProgress,

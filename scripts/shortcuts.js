@@ -552,7 +552,16 @@ function loadShortcuts()
 						else if(!reading.zoomingIn())
 						{
 							reading.disableOnScroll(false);
-							if(reading.scrollNextOrPrevComic(true)) return true;
+
+							if(reading.scrollNextOrPrevComic(true))
+							{
+								return true;
+							}
+							else if(reading.readingViewIs('scroll'))
+							{
+								reading.goScrollPercent(-30, true);
+								return true;
+							}
 						}
 
 						return false;
@@ -576,7 +585,16 @@ function loadShortcuts()
 						else if(!reading.zoomingIn())
 						{
 							reading.disableOnScroll(false);
-							if(reading.scrollNextOrPrevComic(false)) return true;
+
+							if(reading.scrollNextOrPrevComic(false))
+							{
+								return true;
+							}
+							else if(reading.readingViewIs('scroll'))
+							{
+								reading.goScrollPercent(30, true);
+								return true;
+							}
 						}
 
 						return false;
