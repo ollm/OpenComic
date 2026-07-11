@@ -354,7 +354,7 @@
 .menu-simple
 {
 	position: fixed;
-	border-radius: 4px;
+	border-radius: 8px;
 	opacity: 0;
 	z-index: 12;
 	display: none;
@@ -375,7 +375,7 @@
 	background-color: var(--md-sys-color-surface-container);
 	z-index: -1;
 	position: absolute;
-	border-radius: 4px;
+	border-radius: 8px;
 	top: 0px;
 	left: 0px;
 	box-shadow: var(--md-sys-elevation-level2);
@@ -694,15 +694,35 @@
 	padding: 4px 24px;
 }
 
+.menu-simple-element-compact
+{
+	padding: 0px 24px;
+	height: 36px;
+	line-height: 36px;
+}
+
+.menu-simple-element-compact i.menu-simple-icon-first
+{
+	padding: 6px 12px 6px 0px;
+}
+
 .menu-simple-element-medium
 {
 	padding: 8px 24px;
 }
 
 .menu-gamepad .menu-simple-element-medium,
-.menu-gamepad .menu-simple-element-little
+.menu-gamepad .menu-simple-element-little,
+.menu-gamepad .menu-simple-element-compact
 {
 	padding: 0px 24px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.menu-gamepad .menu-simple-element-compact i.menu-simple-icon-first
+{
+	padding: 8px 12px 8px 0px;
 }
 
 .menu-simple-element-padding-left
