@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Переключать ночной/дневной режим вместе с ОС",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "Использовать чёрный фон в ночном режиме",
 			"nightModeWhiteBlankPage": "Показывать пустые страницы белыми в ночном режиме",
 			"colors": {

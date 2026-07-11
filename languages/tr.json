@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "İşletim sisteminin aydınlık/karanlık moduna uyum sağla",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "Gece modunda arka planı siyah göster",
 			"nightModeWhiteBlankPage": "Gece modunda boş sayfaları beyaz göster",
 			"colors": {

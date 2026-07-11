@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Muda para modo escuro/claro quando o SO faz",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "Usa preto como fundo em modo escuro",
 			"nightModeWhiteBlankPage": "Usa páginas brancas em modo escuro",
 			"colors": {

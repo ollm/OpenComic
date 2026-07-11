@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "OS が切り替えたときナイト/ライトモードを連動",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "ナイトモード時に背景色を黒にする",
 			"nightModeWhiteBlankPage": "ナイトモードでも空白ページは白色を表示",
 			"colors": {

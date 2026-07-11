@@ -1,5 +1,25 @@
 /* Reading - Start */
 
+.content-right
+{
+	--reading-background-color: var(--md-sys-color-background);
+}
+
+.app.light-mode-black-background-on-reading .content-right
+{
+	--reading-background-color: var(--md-sys-color-background-dark);
+}
+
+.app.night-mode-black-background.light-mode-black-background-on-reading
+{
+	--reading-background-color: #000000;
+}
+
+.light-mode-black-background-on-reading .content-right > div:has(.reading-content)
+{
+	background-color: var(--reading-background-color);
+}
+
 .reading-header-loading
 {
 	pointer-events: none;
@@ -109,7 +129,7 @@
 	width: 80px;
 	margin-left: calc(100% - 80px);
 	border-radius: 7px;
-	background-color: var(--md-sys-color-background);
+	background-color: var(--reading-background-color);
 	text-align: center;
 }
 
@@ -215,7 +235,7 @@
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	background-color: var(--md-sys-color-background);
+	background-color: var(--reading-background-color);
 	transition: background-color 0.2s;
 	z-index: 0;
 	content-visibility: hidden;
@@ -311,7 +331,7 @@ oc-img .ai-loading circle
 {
 	transition: background-color 0.2s;
 	box-shadow: var(--md-sys-elevation-level2);
-	/*background-color: var(--md-sys-color-background);*/
+	/*background-color: var(--reading-background-color);*/
 	display: flex;
 	position: relative;
 	overflow: hidden;
@@ -358,7 +378,7 @@ oc-img .ai-loading circle
 	height: 100%;
 	position: relative;
 	z-index: 2;
-	background-color: var(--md-sys-color-background);
+	background-color: var(--reading-background-color);
 }
 
 .night-mode-white-blank-page .reading-body .r-img.blank > div > *, .night-mode-white-blank-page .reading-lens .r-img.blank > div > *
@@ -427,7 +447,7 @@ oc-img .ai-loading circle
 	height: 160px;
 	top: 0px;
 	left: 0px;
-	background-color: var(--md-sys-color-background);
+	background-color: var(--reading-background-color);
 	overflow: hidden;
 	opacity: 0;
 	z-index: 3;
@@ -981,7 +1001,7 @@ oc-img .ai-loading circle
 	z-index: -1;
 	content-visibility: hidden;
 	/*pointer-events: none;*/
-	background-color: var(--md-sys-color-background);
+	background-color: var(--reading-background-color);
 	display: flex;
 	transition: 0.3s background-color;
 }
@@ -1023,7 +1043,7 @@ oc-img .ai-loading circle
 	height: 100%;
 	position: relative;
 	overflow: hidden;
-	background-color: var(--md-sys-color-background);
+	background-color: var(--reading-background-color);
 }
 
 .reading-transitions-center > div

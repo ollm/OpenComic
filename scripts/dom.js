@@ -2466,6 +2466,11 @@ function nightModeConfig(_app = false)
 {
 	_app = _app || document.querySelector('.app');
 
+	if(config.lightModeBlackBackgroundOnReading)
+		_app.classList.add('light-mode-black-background-on-reading');
+	else
+		_app.classList.remove('light-mode-black-background-on-reading');
+
 	if(config.nightModeBlackBackground)
 		_app.classList.add('night-mode-black-background');
 	else

@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Canviar al mode nit/clar quan el sistema operatiu ho faci",
+			"lightModeBlackBackgroundOnReading": "Mostra el fons negre en llegir en mode clar",
 			"nightModeBlackBackground": "Utilitzar el color negre com a fons en el mode nit",
 			"nightModeWhiteBlankPage": "Mostra les pàgines en blanc de color blanc en el mode nit",
 			"colors": {

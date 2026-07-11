@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Växla mellan nattläge och ljust läge när operativsystemet gör det",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "",
 			"nightModeWhiteBlankPage": "",
 			"colors": {

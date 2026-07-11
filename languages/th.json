@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "สลับโหมดกลางวัน/กลางคืนตามระบบ",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "ใช้สีดำเป็นพื้นหลังเมื่อใช้โหมดกลางคืน",
 			"nightModeWhiteBlankPage": "แสดงหน้าว่างสีขาวในโหมดกลางคืน",
 			"colors": {

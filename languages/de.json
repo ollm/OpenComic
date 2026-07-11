@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Zum Nacht-/Tagmodus wechseln, wenn das Betriebssystem dies tut",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "Schwarz als Hintergrund im Nachtmodus verwenden",
 			"nightModeWhiteBlankPage": "Leere Seiten im Nachtmodus weiß anzeigen",
 			"colors": {

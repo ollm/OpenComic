@@ -2944,22 +2944,26 @@ a:hover
 	background-color: rgba(0, 0, 0, 0.03);
 }
 
-.night-mode ::-webkit-scrollbar-thumb
+.night-mode ::-webkit-scrollbar-thumb,
+.light-mode-black-background-on-reading .content-right > div:has(.reading-content) ::-webkit-scrollbar-thumb
 {
 	background-color: rgba(255, 255, 255, 0.12);
 }
 
-.night-mode ::-webkit-scrollbar-thumb:hover
+.night-mode ::-webkit-scrollbar-thumb:hover,
+.light-mode-black-background-on-reading .content-right > div:has(.reading-content) ::-webkit-scrollbar-thumb:hover
 {
 	background-color: rgba(255, 255, 255, 0.2);
 }
 
-.night-mode ::-webkit-scrollbar-thumb:active
+.night-mode ::-webkit-scrollbar-thumb:active,
+.light-mode-black-background-on-reading .content-right > div:has(.reading-content) ::-webkit-scrollbar-thumb:active
 {
 	background-color: rgba(255, 255, 255, 0.3);
 }
 
-.night-mode ::-webkit-scrollbar-thumb:window-inactive
+.night-mode ::-webkit-scrollbar-thumb:window-inactive,
+.light-mode-black-background-on-reading .content-right > div:has(.reading-content) ::-webkit-scrollbar-thumb:window-inactive
 {
 	background-color: rgba(255, 255, 255, 0.06);
 }

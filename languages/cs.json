@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "",
 			"nightModeWhiteBlankPage": "",
 			"colors": {

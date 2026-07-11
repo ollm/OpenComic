@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "當作業系統執行此操作時切換到夜間/明亮模式",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "夜間模式中使用黑色背景",
 			"nightModeWhiteBlankPage": "夜間模式中空白頁面顯示為白色",
 			"colors": {

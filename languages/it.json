@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Cambia a tema scuro/chiaro quando il sistema operativo lo fa",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "Utilizza il nero come sfondo con il tema scuro",
 			"nightModeWhiteBlankPage": "Mostra pagine vuote come bianche con il tema scuro",
 			"colors": {

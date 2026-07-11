@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "OS가 다크/라이트 모드를 바꿀 때 연동",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "다크 모드일 때 배경을 완전 검정으로",
 			"nightModeWhiteBlankPage": "다크 모드에서도 빈 페이지는 흰색으로 표시",
 			"colors": {

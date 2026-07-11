@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Przełączaj na tryb nocny/dzienny, gdy robi to system operacyjny",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "Użyj czarnego tła w trybie nocnym",
 			"nightModeWhiteBlankPage": "Pokazuj puste strony na biało w trybie nocnym",
 			"colors": {

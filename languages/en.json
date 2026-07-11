@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "Switch to night/light mode when the OS does it",
+			"lightModeBlackBackgroundOnReading": "Show black background when reading in light mode",
 			"nightModeBlackBackground": "Use black as background in night mode",
 			"nightModeWhiteBlankPage": "Show blank pages white in night mode",
 			"colors": {

@@ -415,6 +415,7 @@
 		},
 		"theme": {
 			"systemNightMode": "هماهنگ با حالت روشن/تاریک سیستم",
+			"lightModeBlackBackgroundOnReading": "",
 			"nightModeBlackBackground": "استفاده از پس‌زمینه مشکی در حالت شب",
 			"nightModeWhiteBlankPage": "نمایش صفحات خالی سفید در حالت شب",
 			"colors": {
