@@ -972,6 +972,7 @@ function setImagesPath(_imagesPath = false, mainPath = false)
 		return;
 	}
 
+	if(file) file.destroy();
 	file = fileManager.file(mainPath);
 
 	isBlackAndWhiteCurrent = {};

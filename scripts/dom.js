@@ -3048,6 +3048,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	handlebarsContext.previousComic = skipPreviousComic;
 	handlebarsContext.nextComic = skipNextComic;
 	reading.setCurrentComics(comics);
+	reading.sidebar.context();
 
 	handlebarsContext.loading = true;
 

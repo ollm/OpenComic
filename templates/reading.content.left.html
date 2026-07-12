@@ -1,5 +1,5 @@
 <div class="reading-left-images" style="opacity: 0;">
-	{{#each comics}}
+	{{#each comicsSidebar}}
 	<div class="reading-left r-l-i{{index}} hover-text" onclick="reading.goToPage({{index}})" data-page="{{index}}" hover-text="{{name}}" data-hover-delay="600" data-detect-overflow-disabled=".reading-images-name">
 		<div class="reading-number{{#if @root.config.readingDisableThumbnails}} compact{{/if}}">{{index}}</div>
 		{{#if folder}}

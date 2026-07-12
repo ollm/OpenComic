@@ -35,6 +35,25 @@ function sizes(_images, _comics)
 	event(contentLeft);
 }
 
+function context()
+{
+	const comics = handlebarsContext.comics.map(function(image){
+
+		image = {
+			...image,
+			type: 'sidebar',
+			forceSize: 80,
+		};
+
+		image.sha = cache.imageSizeSha(image);
+
+		return image;
+
+	});
+
+	handlebarsContext.comicsSidebar = comics;
+}
+
 function imageSize(image)
 {
 	if(image.rotated === 1 || image.rotated === 2)
@@ -145,6 +164,7 @@ function getImages(index, up = true)
 		const size = imageSize(image);
 
 		height += app.roundDPR(80 * size.height / size.width) + 34;
+
 		_images.push({...image, ...comic});
 	}
 
@@ -156,7 +176,19 @@ async function goToImage(index)
 	const images = filterShowed(app.interleave(
 		getImages(index, true),
 		getImages(index + 1, false),
-	));
+	)).map(function(image){
+
+		image = {
+			...image,
+			type: 'sidebar',
+			forceSize: 80,
+		};
+
+		image.sha = cache.imageSizeSha(image);
+
+		return image;
+
+	});
 
 	const len = images.length;
 
@@ -246,6 +278,7 @@ function event(contentLeft)
 
 module.exports = {
 	sizes,
+	context,
 	goToImage,
 	disableEvent,
 	getPosition,

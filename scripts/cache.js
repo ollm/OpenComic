@@ -25,14 +25,19 @@ var cacheFolder = settings.getCacheFolder();
 
 async function processTheImageQueue(img = false)
 {
-	let sha = img.sha;
+	const sha = img.sha;
 
-	let realPath = fileManager.realPath(img.file);
-	let toImage = p.join(cacheFolder, sha+'.jpg');
+	const realPath = fileManager.realPath(img.file);
+	const toImage = p.join(cacheFolder, sha+'.jpg');
 
-	let fit = {
+	const fits = {
 		poster: 'cover',
+		sidebar: 'outside',
 	};
+
+	const autoHeight = {
+		sidebar: true,
+	}; 
 
 	const ratios = getRatios();
 	const forceSize = img.forceSize || 150;
@@ -40,9 +45,15 @@ async function processTheImageQueue(img = false)
 	if(compatible.image.convert(img.file)) // Convert unsupported images
 		await workers.convertImage(img.file, {useThreads: 0.3/*0.4*/});
 
+	const fit = img.type ? fits[img.type] : 'inside';
+	let height = Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5));
+
+	if(img.type && autoHeight[img.type])
+		height = undefined;
+
 	return new Promise(function(resolve, reject) {
 
-		image.resize(realPath, toImage, {width: img.size, height: Math.round(img.size * (img.type ? ratios[img.type][forceSize] : 1.5)), quality: 95, fit: img.type ? fit[img.type] : 'inside'}).then(function(){
+		image.resize(realPath, toImage, {width: img.size, height, quality: 95, fit}).then(function(){
 
 			if(typeof data[sha] === 'undefined') data[sha] = {lastAccess: app.time()};
 			data[sha].size = img.size;
@@ -92,13 +103,6 @@ function getSizes()
 	if(sizesCache[devicePixelRatio]) return sizesCache[devicePixelRatio];
 
 	return sizesCache[devicePixelRatio] = {
-		list: [
-			100,
-			150,
-			200,
-			250,
-			300,
-		],
 		image: {
 			100: Math.round(devicePixelRatio * 100),
 			150: Math.round(devicePixelRatio * 150),
@@ -112,6 +116,9 @@ function getSizes()
 			200: Math.round(devicePixelRatio * 196),
 			250: Math.round(devicePixelRatio * 246),
 			300: Math.round(devicePixelRatio * 296),
+		},
+		sidebar: {
+			80: Math.round(devicePixelRatio * 80),
 		},
 	};
 }
@@ -132,6 +139,9 @@ function getRatios()
 			200: 1.51020,
 			250: 1.50813,
 			300: 1.50675,
+		},
+		sidebar: {
+			80: 1,
 		},
 	};
 }
@@ -585,20 +595,16 @@ async function deleteInCache(path)
 	const sizes = getSizes();
 	const variants = [];
 
-	for(let i = 0, len = sizes.list.length; i < len; i++)
+	for(const type in sizes)
 	{
-		const size = sizes.list[i];
-
-		variants.push({
-			path: path,
-			forceSize: size,
-		});
-
-		variants.push({
-			path: path,
-			type: 'poster',
-			forceSize: size,
-		});
+		for(const size in sizes[type])
+		{
+			variants.push({
+				path,
+				forceSize: size,
+				...(type === 'image' ? {} : {type}),
+			});
+		}
 	}
 
 	for(let i = 0, len = variants.length; i < len; i++)

@@ -332,7 +332,7 @@ async function start()
 	storage.start(function() {
 
 		config = storage.config();
-		_config = copy(config);
+		_config = app.copy(config);
 
 		// Show tabs bar always on all devices
 		config.showAlwaysTabsBar = true;
@@ -784,11 +784,6 @@ async function loadWebdav()
 }
 
 /*Global functions*/
-
-function copy(data)
-{
-	return JSON.parse(JSON.stringify(data));
-}
 
 function inArray(string, array)
 {
