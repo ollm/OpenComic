@@ -204,7 +204,7 @@
 			"!node_modules/opencomic-ai-bin/+(linux|win|mac)/**",
 			"node_modules/opencomic-ai-bin/${os}/${arch}",
 			"!node_modules/onnxruntime-node/bin/napi-v6/+(linux|win32|darwin)/**",
-			"disableThisForNow/node_modules/onnxruntime-node/bin/napi-v6/${platform}/${arch}",
+			"node_modules/onnxruntime-node/bin/napi-v6/${platform}/${arch}",
 			"!node_modules/7zip-bin-full/+(linux|win|mac)/**",
 			"node_modules/7zip-bin-full/${os}/${arch}",
 			"!node_modules/pdfjs-dist/",
