@@ -377,6 +377,7 @@ function loadShortcuts()
 				'scrollWithMouse',
 				'goNextPrevChapterWithScroll',
 				'turnPagesWithMouseWheel',
+				'autodetectWebtoon',
 			],
 			actionsGroups: [
 				{
@@ -492,6 +493,7 @@ function loadShortcuts()
 						'scrollWithMouse',
 						'goNextPrevChapterWithScroll',
 						'turnPagesWithMouseWheel',
+						'autodetectWebtoon',
 					],
 				},
 			],
@@ -1201,6 +1203,16 @@ function loadShortcuts()
 						reading.reloadAnimated(true);
 					},
 					state: () => settings.getTurnPagesWithMouseWheelShortcut(),
+					forzable: true,
+				},
+				autodetectWebtoon: {
+					name: language.settings.reading.autodetectWebtoon,
+					function: function(event, gamepad = false, force = null) {
+
+						shortcutsReading('readingAutodetectWebtoon', 'autodetectWebtoon', force);
+
+					},
+					state: () => config.readingAutodetectWebtoon,
 					forzable: true,
 				},
 

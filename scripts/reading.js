@@ -2558,13 +2558,13 @@ function updateReadingPagesConfig(key, value)
 				var readingShortcutPagesConfig = storage.getKey('readingShortcutPagesConfig', readingPagesConfig.configKey);
 
 				if(readingShortcutPagesConfig)
-					readingPagesConfig = copy(readingShortcutPagesConfig);
+					readingPagesConfig = app.copy(readingShortcutPagesConfig);
 				else
-					readingPagesConfig = copy(config);
+					readingPagesConfig = app.copy(config);
 			}
 			else
 			{
-				readingPagesConfig = copy(config);
+				readingPagesConfig = app.copy(config);
 			}
 		}
 
@@ -3219,12 +3219,26 @@ function loadBookmarks(bookmarksChild = false)
 	dom.query(!bookmarksChild ? '#collections-bookmark .menu-simple' : '#collections-bookmark .menu-simple > div').html(template.load('reading.elements.menus.collections.bookmarks.html'));
 }
 
+function autodetectWebtoon()
+{
+	if(/(?:webtoon|web-toon|웹툰|ウェブトゥーン|条漫|條漫|纵漫|縱漫|縦読み(?:マンガ|漫画))/iu.test(dom.history.path || ''))
+		return true;
+
+	for(const item of items)
+	{
+		if(item.aspectRatio && item.aspectRatio < 0.5)
+			return true;
+	}
+
+	return false;
+}
+
 var currentReadingConfigKey = false;
 
 function getConfig(path = false, mainPath = '', key = false, _copy = false, parents = false)
 {
 	// TODO: Copy just in case
-	let configData = _copy ? copy(config) : config;
+	let configData = _copy ? app.copy(config) : config;
 
 	if(key === false)
 	{
@@ -3274,6 +3288,15 @@ function getConfig(path = false, mainPath = '', key = false, _copy = false, pare
 		configData.key = 0;
 	}
 
+	if(!configData.readingWebtoon && config.readingAutodetectWebtoon && key === 0)
+	{
+		if(autodetectWebtoon())
+		{
+			configData.readingWebtoon = true;
+			configData.key = false;
+		}
+	}
+
 	return configData;
 }
 
@@ -3281,7 +3304,7 @@ function loadReadingConfig(key = false)
 {
 	currentReadingConfigKey = key;
 
-	_config = copy(getConfig(false, dom.history.mainPath, key, true));
+	_config = app.copy(getConfig(false, dom.history.mainPath, key, true));
 	handlebarsContext._config = _config;
 }
 
@@ -5246,6 +5269,9 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
 
+		if(config.readingAutodetectWebtoon)
+			loadReadingConfig(currentReadingConfigKey);
+
 		view.start();
 		view.distribution.htmlItems();
 		view.disposeImages();
@@ -5309,6 +5335,9 @@ async function read(path, index = 1, end = false, isCanvas = false, isEbook = fa
 
 		render.setImagesData(imagesData);
 		filters.setImagesPath(imagesPath, readingCurrentPath);
+
+		if(config.readingAutodetectWebtoon)
+			loadReadingConfig(currentReadingConfigKey);
 
 		view.start();
 		view.distribution.htmlItems();
