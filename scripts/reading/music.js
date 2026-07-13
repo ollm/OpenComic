@@ -73,24 +73,59 @@ function process(audios, files)
 {
 	if(!audios || !audios.length) return false;
 
-	const find = function(filename, files) {
+	const findExact = function(name) {
 
-		if (!filename) return false;
+		name = name.replace(/bgm[^\p{L}\p{N}]*/iug, '');
 
-		return files.find(file => p.parse(file.name).name === filename) || false;
+		let split = name.split('-');
+
+		if(split.length === 1)
+			split = name.split(/[^\p{L}\p{N}]+/u);
+
+		const filenamePlay = split[0] || '';
+		const filenameStop = split[1] || '';
+
+		const filePlay = files.find(file => p.parse(file.name).name === filenamePlay) || false;
+		const fileStop = files.find(file => p.parse(file.name).name === filenameStop) || false;
+
+		return {filenamePlay, filenameStop, filePlay, fileStop};
+
+	};
+
+	const find = function(name) {
+
+		const [, playNumber, stopNumber] = name.match(/bgm[^\p{L}\p{N}]*([0-9]+)[^\p{L}\p{N}]+([0-9]+)/iu) || [];
+
+		const findFileByNumber = function(number) {
+
+			if (!number) return false;
+
+			const regex = new RegExp(
+				`(?:^|[^\\p{L}\\p{N}])${number}(?:[^\\p{L}\\p{N}]|$)`,
+				'u'
+			);
+
+			return files.find(file => regex.test(file.name)) || false;
+		}
+
+		const filePlay = findFileByNumber(playNumber);
+		const fileStop = findFileByNumber(stopNumber);
+
+		const filenamePlay = filePlay ? p.parse(filePlay.name).name : '';
+		const filenameStop = fileStop ? p.parse(fileStop.name).name : '';
+
+		return {filenamePlay, filenameStop, filePlay, fileStop};
 
 	};
 
 	return audios.map(function(file) {
 
-		const name = p.parse(file.name).name.replace(/bgm[\s\-_]*/iug, '');
-		const split = name.split('-');
+		const name = p.parse(file.name).name;
 
-		const filenamePlay = split[0] || '';
-		const filenameStop = split[1] || '';
+		let {filenamePlay, filenameStop, filePlay, fileStop} = findExact(name);
 
-		const filePlay = find(filenamePlay, files);
-		const fileStop = find(filenameStop, files);
+		if(!filePlay && !fileStop)
+			({filenamePlay, filenameStop, filePlay, fileStop} = find(name));
 
 		return {
 			indexPlay: 0,
