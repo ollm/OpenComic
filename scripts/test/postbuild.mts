@@ -3,7 +3,7 @@ import fs from 'fs';
 import {exists, existsRegex, fix, versions} from './build/exists.mjs';
 
 const darwin = './dist/mac/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
-const darwinArm = './dist/mac-arm/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
+const darwinArm = './dist/mac-arm64/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
 const darwinMas = './dist/mas-universal/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
 const linux = './dist/linux-unpacked/resources/app.asar.unpacked/node_modules';
 const linuxArm = './dist/linux-arm64-unpacked/resources/app.asar.unpacked/node_modules';
