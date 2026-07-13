@@ -16,7 +16,7 @@ if(process.platform == 'darwin')
 
 	// Sharp arm64
 	exists(BASE, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
-	existsRegex(BASE, '@img/sharp-darwin-arm64/lib/', /^sharp-darwin-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
+	existsRegex(BASE, '@img/sharp-darwin-arm64/lib/', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
 	// 7zip
 	exists(BASE, '7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
@@ -43,7 +43,7 @@ else if(process.platform == 'linux')
 
 	// Sharp x64
 	exists(BASE, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_X64);
-	existsRegex(BASE, '@img/sharp-linux-x64/lib/', /^sharp-linux-x64(?:-[0-9.]+)?\.node/, fs.constants.R_OK, fix.sharp.LINUX_X64);
+	existsRegex(BASE, '@img/sharp-linux-x64/lib/', /^sharp-linux-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_X64);
 
 	// Sharp arm64
 	exists(BASE, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
