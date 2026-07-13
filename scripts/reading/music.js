@@ -98,14 +98,11 @@ function process(audios, files)
 
 		const findFileByNumber = function(number) {
 
-			if (!number) return false;
+			if(!number) return false;
 
-			const regex = new RegExp(
-				`(?:^|[^\\p{L}\\p{N}])${number}(?:[^\\p{L}\\p{N}]|$)`,
-				'u'
-			);
-
+			const regex = new RegExp(`(?:^|[^\\p{L}\\p{N}])${number}(?:[^\\p{L}\\p{N}]|$)`, 'u');
 			return files.find(file => regex.test(file.name)) || false;
+
 		}
 
 		const filePlay = findFileByNumber(playNumber);
