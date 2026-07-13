@@ -77,7 +77,7 @@ export const fix = {
 	ZSTD: 'npm install --no-save --force --prefix ./build/node-zstd-native-dependencies && node scripts/zstd-copy-native.js',
 	sharp: {
 		LINUX_X64: 'npm install --no-save @img-custom/sharp-libvips-linuxmusl-x64 @img-custom/sharp-libvips-linux-x64 @img-custom/sharp-linuxmusl-x64 @img-custom/sharp-linux-x64 --force && node scripts/sharp-copy-custom.js',
-		LINUX_ARM64: 'npm install --no-save @img-custom/sharp-libvips-linux-arm64 @img-custom/sharp-libvips-linuxmusl-arm64 @img-custom/sharp-linux-arm64 @img-custom/sharp-linuxmusl-arm64 --force && node scripts/sharp-copy-custom.js ',
+		LINUX_ARM64: 'npm install --no-save @img-custom/sharp-libvips-linux-arm64 @img-custom/sharp-libvips-linuxmusl-arm64 @img-custom/sharp-linux-arm64 @img-custom/sharp-linuxmusl-arm64 --force && node scripts/sharp-copy-custom.js',
 		MACOSS_X64: 'npm install --no-save @img-custom/sharp-darwin-x64 @img-custom/sharp-libvips-darwin-x64 --force && node scripts/sharp-copy-custom.js',
 		MACOSS_ARM64: 'npm install --no-save @img-custom/sharp-darwin-arm64 @img-custom/sharp-libvips-darwin-arm64 --force && node scripts/sharp-copy-custom.js',
 		WIN32_X64: 'npm install --no-save --cpu=x64 --os=win32 sharp',
