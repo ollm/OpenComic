@@ -173,7 +173,9 @@ async function focusIndex(index)
 	{
 		for(const audio of audios)
 		{
-			if(audio.indexStop === 0 && audio.indexPlay === 0)
+			const {indexPlay, indexStop} = audio;
+
+			if(indexPlay === 0 && (indexStop === 0 || (indexStop && index <= indexStop)))
 			{
 				path = audio.file.path;
 				break;
@@ -274,4 +276,5 @@ module.exports = {
 	focusIndex: focusIndex,
 	loadMenu: loadMenu,
 	soundEffect: soundEffect,
+	get audios() {return audios},
 };
