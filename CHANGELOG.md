@@ -45,7 +45,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Open folder shortcut [`a93aa2b`](https://github.com/ollm/OpenComic/commit/a93aa2b4db678b6832ac436560def46175050c1e)
 - Support for shortcuts macros [`d5f819a`](https://github.com/ollm/OpenComic/commit/d5f819a57b5c88440a35cb46addaeacb9257db12)
 - Improved loading of high resolution images [`f78a1d5`](https://github.com/ollm/OpenComic/commit/f78a1d5f39483fb19a68a89e352823dae169a277)
-- Option to automatically detect Webtoons
+- Option to automatically detect Webtoons [`fc27a5e`](https://github.com/ollm/OpenComic/commit/fc27a5ee3162902d6ed26d0431c67b9c211dcf52)
+- Support AudioManga SFX and OST effects [`9595169`](https://github.com/ollm/OpenComic/commit/9595169a6e498213dbc633472e60066d906d3c15)
 
 ##### 🐛 Bug Fixes
 
