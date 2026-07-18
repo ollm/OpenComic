@@ -264,6 +264,7 @@
 		"music": {
 			"main": "Müzik",
 			"volume": "Ses seviyesi",
+			"sfx": "",
 			"pageSoundEffect": "Sayfa çevirme ses efekti",
 			"adaptToAnimationSpeed": "Animasyon hızına uyum sağla",
 			"soundEffect": {

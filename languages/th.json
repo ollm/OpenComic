@@ -264,6 +264,7 @@
 		"music": {
 			"main": "เพลง",
 			"volume": "ระดับเสียง",
+			"sfx": "",
 			"pageSoundEffect": "เอฟเฟกต์เสียงพลิกหน้า",
 			"adaptToAnimationSpeed": "ปรับให้เข้ากับความเร็วการเคลื่อนไหว",
 			"soundEffect": {

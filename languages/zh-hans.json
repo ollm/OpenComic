@@ -264,6 +264,7 @@
 		"music": {
 			"main": "音乐",
 			"volume": "卷",
+			"sfx": "",
 			"pageSoundEffect": "翻页音效",
 			"adaptToAnimationSpeed": "适应动画速度",
 			"soundEffect": {

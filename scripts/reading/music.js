@@ -1,21 +1,33 @@
-const soundEffect = require(p.join(appDir, '.dist/reading/music/sound-effect.js'));
+const {setProperty} = require('dot-prop');
 
-let audios = false, audio = false;
+const soundEffect = require(p.join(appDir, '.dist/reading/music/sound-effect.js')),
+	sfx = require(p.join(appDir, '.dist/reading/music/sfx.mjs')).default;
+
+let basePath = false;
+let music = false, musicFiles = false;
+
+const BGM = new Set(['music.json', 'bgm.json', 'ost.json']);
+const SFX = new Set(['sfx.json']);
+const MUSIC = new Set([...BGM, ...SFX]);
 
 async function has(files, findParent = false)
 {
-	const audios = [];
+	basePath = findParent;
+	const musicFiles = [];
 
 	for(let i = 0, len = files.length; i < len; i++)
 	{
 		let _file = files[i];
 
 		if(compatible.audio(_file.name))
-			audios.push(_file);
+			musicFiles.push(_file);
+
+		if(MUSIC.has(_file.name.toLowerCase()))
+			musicFiles.push(_file);
 	}
 
-	if(audios.length)
-		return audios;
+	if(musicFiles.length)
+		return musicFiles;
 
 	if(findParent)
 	{
@@ -48,30 +60,154 @@ async function has(files, findParent = false)
 
 let makingAvailable = false;
 
-async function read(_audios, files)
+async function read(musicFiles, files)
 {
-	audios = process(_audios, files);
+	const {promise, resolve} = Promise.withResolvers();
+	makingAvailable = promise;
 
-	if(audios)
+	music = await processMusic(musicFiles);
+	process(music, files);
+
+	if(music?.files?.length)
 	{
-		const {promise, resolve} = Promise.withResolvers();
-		makingAvailable = promise;
-
 		const file = fileManager.file();
-		await file.makeAvailable(_audios);
+		await file.makeAvailable(music.files);
 		file.destroy();
-
-		resolve();
 	}
 	else
 	{
 		pause();
 	}
+
+	resolve();
 }
 
-function process(audios, files)
+async function processMusic(audios)
 {
-	if(!audios || !audios.length) return false;
+	const jsonFiles = audios.filter(file => MUSIC.has(file.name.toLowerCase()));
+	const audioFiles = audios.filter(file => compatible.audio(file.name));
+
+	if(jsonFiles.length)
+	{
+		const file = fileManager.file();
+		await file.makeAvailable(jsonFiles);
+		file.destroy();
+	}
+
+	const music = {
+		bgm: [], // bgm and ost are the same
+		sfx: [],
+		files: [],
+	};
+
+	for(const file of jsonFiles)
+	{
+		const realPath = fileManager.realPath(file.path);
+
+		try
+		{
+			const json = JSON.parse(fs.readFileSync(realPath));
+
+			if(Array.isArray(json))
+			{
+				if(BGM.has(file.name.toLowerCase()))
+					music.bgm.push(...json);
+				else
+					music.sfx.push(...json);
+			}
+			else
+			{
+				if(json.bgm)
+					music.bgm.push(...json.bgm);
+
+				if(json.ost)
+					music.bgm.push(...json.ost);
+
+				if(json.sfx)
+					music.sfx.push(...json.sfx);
+			}
+		}
+		catch(error)
+		{
+			console.error(error);
+		}
+	}
+
+	const isset = new Set();
+
+	const files = function(files = []) {
+
+		for(const file of files)
+		{
+			if(!file || !file.path) continue;
+			const path = file.path;
+
+			const fullPath = p.resolve(basePath || '', path);
+			const name = p.basename(fullPath);
+
+			file._path = path;
+			file.path = fullPath;
+			file.name = name;
+
+			if(isset.has(file.path)) continue;
+			isset.add(file.path);
+
+			music.files.push({
+				compressed: false,
+				folder: false,
+				name: name,
+				path: fullPath,
+				sha: sha1(fullPath),
+			});
+		}
+
+	} 
+
+	files(music.bgm);
+	files(music.sfx);
+
+	// Only add audio files if no bgm is defined in music.json, etc
+	if(!music.bgm.length)
+	{
+		for(const file of audioFiles)
+		{
+			const path = file.path;
+
+			if(isset.has(path)) continue;
+			isset.add(path);
+
+			music.bgm.push(file);
+			music.files.push(file);
+		}
+	}
+
+	sfx.set(music.sfx);
+
+	return music;
+}
+
+function process(music, files)
+{
+	if(!music?.files?.length) return false;
+
+	/*
+	const findPage = function(page) {
+
+		const image = reading.getImage(Math.round(page), false);
+
+		console.log('findPage', image);
+		console.log(`reading.getImage(Math.round(${page}), false)`);
+
+		return image ? {
+			file: image,
+			filename: image.name,
+		} : {
+			file: false,
+			filename: '',
+		}
+
+	}
+	*/
 
 	const findExact = function(name) {
 
@@ -82,13 +218,13 @@ function process(audios, files)
 		if(split.length === 1)
 			split = name.split(/[^\p{L}\p{N}]+/u);
 
-		const filenamePlay = split[0] || '';
-		const filenameStop = split[1] || '';
+		const filenameStart = split[0] || '';
+		const filenameEnd = split[1] || '';
 
-		const filePlay = files.find(file => p.parse(file.name).name === filenamePlay) || false;
-		const fileStop = files.find(file => p.parse(file.name).name === filenameStop) || false;
+		const fileStart = files.find(file => p.parse(file.name).name === filenameStart) || false;
+		const fileEnd = files.find(file => p.parse(file.name).name === filenameEnd) || false;
 
-		return {filenamePlay, filenameStop, filePlay, fileStop};
+		return {filenameStart, filenameEnd, fileStart, fileEnd};
 
 	};
 
@@ -105,90 +241,125 @@ function process(audios, files)
 
 		}
 
-		const filePlay = findFileByNumber(playNumber);
-		const fileStop = findFileByNumber(stopNumber);
+		const fileStart = findFileByNumber(playNumber);
+		const fileEnd = findFileByNumber(stopNumber);
 
-		const filenamePlay = filePlay ? p.parse(filePlay.name).name : '';
-		const filenameStop = fileStop ? p.parse(fileStop.name).name : '';
+		const filenameStart = fileStart ? p.parse(fileStart.name).name : '';
+		const filenameEnd = fileEnd ? p.parse(fileEnd.name).name : '';
 
-		return {filenamePlay, filenameStop, filePlay, fileStop};
+		return {filenameStart, filenameEnd, fileStart, fileEnd};
 
 	};
 
-	return audios.map(function(file) {
-
+	for(const file of music.bgm)
+	{
 		const name = p.parse(file.name).name;
 
-		let {filenamePlay, filenameStop, filePlay, fileStop} = findExact(name);
+		let {startPage, endPage} = file;
 
-		if(!filePlay && !fileStop)
-			({filenamePlay, filenameStop, filePlay, fileStop} = find(name));
+		let filenameStart = '';
+		let filenameEnd = '';
+		let fileStart = false;
+		let fileEnd = false;
 
-		return {
-			indexPlay: 0,
-			indexStop: 0,
-			filenamePlay,
-			filenameStop,
-			filePlay,
-			fileStop,
+		/*
+		if(startPage !== undefined)
+			({filename: filenameStart, file: fileStart} = findPage(startPage))
+
+		if(endPage !== undefined)
+			({filename: filenameEnd, file: fileEnd} = findPage(endPage))
+		*/
+
+		if(startPage === undefined && endPage === undefined && !fileStart && !fileEnd)
+			({filenameStart, filenameEnd, fileStart, fileEnd} = findExact(name))
+
+		if(startPage === undefined && endPage === undefined && !fileStart && !fileEnd)
+			({filenameStart, filenameEnd, fileStart, fileEnd} = find(name));
+
+		Object.assign(file, {
+			startPage,
+			endPage,
+			filenameStart,
+			filenameEnd,
+			fileStart,
+			fileEnd,
 			file,
-		};
-
-	});
-
+		});
+	}
 }
 
-async function focusIndex(index)
+function getPages(index = false)
 {
-	if(!audios || !audios.length) return;
+	const pages = index !== false ? [index] : (reading.view.distribution.currentDistribution[reading.currentImagePosition()] ?? []).map((item) => item.index).filter((index) => index !== undefined && index !== false && index !== null);
+	return pages;
+}
+
+async function focusIndex(index = false)
+{
+	if(!music?.bgm?.length) return false;
 
 	if(makingAvailable)
 		await makingAvailable;
 
-	for(let i = 0, len = audios.length; i < len; i++)
-	{
-		const audio = audios[i];
+	const pages = getPages(index);
+	sfx.render(pages);
 
-		audio.indexPlay = audio.filePlay ? (reading.getImageByName(audio.filePlay.name)?.index ?? 0) : 0;
-		audio.indexStop = audio.fileStop ? (reading.getImageByName(audio.fileStop.name)?.index ?? 0) : 0;
+	for(const audio of music.bgm)
+	{
+		if(audio.startPage === undefined) audio.startPage = audio.fileStart ? (reading.getImageByName(audio.fileStart.name)?.index ?? 0) : 0;
+		if(audio.endPage === undefined) audio.endPage = audio.fileEnd ? (reading.getImageByName(audio.fileEnd.name)?.index ?? 0) : 0;
 	}
 
+	const bgm = [...music.bgm].sort((a, b) => (a.startPage || 0) - (b.startPage || 0)).reverse();
 	let path = false;
 
-	for(let i = audios.length - 1; i >= 0; i--)
+	const roundedBgm = bgm.map(audio => ({
+		...audio,
+		start: audio.startPage === false ? false : Math.round(audio.startPage),
+		end: audio.endPage === false ? false : Math.round(audio.endPage),
+	})).filter(audio => (fs.existsSync(fileManager.realPath(audio.file.path))));
+
+	toBreak:
+	for(const page of pages)
 	{
-		const {indexPlay, indexStop, file} = audios[i];
-
-		if(indexStop && index > indexStop)
-			continue;
-
-		if(indexPlay && index > indexPlay)
+		for(const {start, end, file} of roundedBgm)
 		{
-			path = file.path;
-			break;
-		}
-	}
+			if(end !== false && end > 0 && page > end)
+				continue;
 
-	if(!path)
-	{
-		for(const audio of audios)
-		{
-			const {indexPlay, indexStop} = audio;
-
-			if(indexPlay === 0 && (indexStop === 0 || (indexStop && index <= indexStop)))
+			if(start !== false && start > 0 && page >= start)
 			{
-				path = audio.file.path;
-				break;
+				path = file.path;
+				break toBreak;
+			}
+		}
+
+		if(!path)
+		{
+			for(const {start, end, file} of roundedBgm)
+			{
+				if((start === false || start <= 0) && (end <= 0 || (end !== false && end > 0 && page <= end)))
+				{
+					path = file.path;
+					break toBreak;
+				}
 			}
 		}
 	}
 
-	if(audios && path)
+	if(bgm && path)
 	{
+		const hasCurrent = !!current;
+
 		generate(path);
 
 		if(config.readingMusic.play)
-			play();
+		{
+			if(hasCurrent)
+				playDelay(config.readingMusic.fade * 1000 * 0.666);
+			else
+				play();
+		}
 	}
 	else
 	{
@@ -197,69 +368,225 @@ async function focusIndex(index)
 
 }
 
-let currentPath = false;
+let current = false;
 
 function generate(path)
 {
-	if(currentPath === path) return;
+	const realPath = fileManager.realPath(path);
+	if(current?.path === realPath) return;
 
-	let globalElement = template._globalElement();
+	const fade = config.readingMusic.fade * 1000;
 
-	audio = globalElement.querySelector('.reading-music');
+	if(current)
+		current.pauseFade(fade, true);
 
-	if(!audio)
-	{
-		audio = document.createElement('audio');
-		audio.className = 'reading-music';
-		audio.autoplay = false;
-		audio.controls = false;
-		audio.loop = true;
-		audio.style.display = 'none';
-		audio.volume = config.readingMusic.volume;
-		globalElement.appendChild(audio);
-	}
-
-	audio.src = fileManager.realPath(path);
-	currentPath = path;
+	current = sound(realPath, {
+		volume: config.readingMusic.volume,
+		loop: true,
+		fadeIn: fade,
+		fadeOut: fade,
+	});
 }
 
 function play()
 {
+	const audio = current?.audio;
+
 	if(!audio || !audio.paused) return;
 	audio.play();
 }
 
+async function playDelay(delay = 0)
+{
+	await app.sleep(delay);
+	play();
+}
+
 function pause()
 {
+	const audio = current?.audio;
+
 	if(!audio || audio.paused) return;
 	audio.pause();
 }
 
-function volume(volume, save = false)
+function destroy()
 {
-	volume /= 100;
+	if(!current) return;
 
-	config.readingMusic.volume = volume;
-	if(save) storage.setVar('config', 'readingMusic', config.readingMusic);
-
-	if(!audio) return;
-	audio.volume = volume;
+	current.destroy();
+	current = false;
 }
 
-function setPlay(_play = true)
+let audioContext = null;
+
+function sound(path, options = {})
 {
-	config.readingMusic.play = _play;
+	let audio = new Audio(path);
+
+	const context = audioContext = audioContext || new AudioContext();
+	const source = context.createMediaElementSource(audio);
+	const gain = context.createGain();
+
+	source.connect(gain);
+	gain.connect(context.destination);
+
+	const volume = options.volume || 1;
+	audio.volume = volume;
+
+	const play = function() {
+
+		audio.play();
+
+		if(options.fadeOut)
+		{
+			const scheduleFade = function() {
+
+				const remaining = (audio.duration - audio.currentTime) * 1000 - options.fadeOut;
+
+				if(remaining > 0)
+				{
+					setTimeout(function() {
+
+						pauseFade(options.fadeOut);
+
+					}, remaining);
+				}
+				else
+				{
+					pauseFade(options.fadeOut + remaining);
+				}
+			};
+
+			if(Number.isNaN(audio.duration))
+				audio.addEventListener('loadedmetadata', scheduleFade, {once: true});
+			else
+				scheduleFade();
+		}
+	}
+
+	const playFade = async function(duration = 1000) {
+
+		await context.resume();
+
+		gain.gain.setValueAtTime(0, context.currentTime);
+		gain.gain.linearRampToValueAtTime(volume, context.currentTime + duration / 1000);
+
+		play();
+	}
+
+	const pauseFade = async function(duration = 1000, _destroy = false) {
+
+		await context.resume();
+
+		const now = context.currentTime;
+
+		gain.gain.cancelScheduledValues(now);
+		gain.gain.setValueAtTime(volume, now);
+		gain.gain.linearRampToValueAtTime(0, now + duration / 1000);
+
+		await app.sleep(duration);
+
+		audio.pause();
+
+		if(_destroy)
+			destroy();
+
+	}
+
+	const destroy = function() {
+
+		source.disconnect();
+		gain.disconnect();
+
+		audio.src = '';
+		audio.load();
+
+	}
+
+	if(options.loop)
+	{
+		audio.loop = true;
+	}
+	else
+	{
+		audio.onended = function(){destroy()}
+	}
+
+	if(options.play)
+	{
+		if(options.fadeIn)
+			playFade(options.fadeIn);
+		else
+			play();
+	}
+
+	return {
+		audio,
+		context,
+		gain,
+		play,
+		playFade,
+		pauseFade,
+		destroy,
+		path,
+	};
+}
+
+function change(key, value)
+{
+	console.log(key);
+	const audio = current?.audio;
+
+	switch(key)
+	{
+		case 'volume':
+		case 'sfx.volume':
+
+			console.log(audio);
+
+			value /= 100;
+
+			if(audio)
+				audio.volume = value;
+
+			break;
+
+		case 'play':
+
+			if(value)
+				play();
+			else
+				pause();
+
+			break;
+	}
+
+	setProperty(config.readingMusic, key, value);
 	storage.setVar('config', 'readingMusic', config.readingMusic);
 
-	if(_play)
-		play();
-	else
-		pause();
+	switch(key)
+	{
+		case 'sfx.active':
+
+			if(value)
+			{
+				const pages = getPages();
+				sfx.render(pages);
+			}
+			else
+			{
+				sfx.remove();
+			}
+
+			break;
+	}
 }
 
 function loadMenu()
 {
 	handlebarsContext.volumePercent = Math.round(config.readingMusic.volume * 100);
+	handlebarsContext.volumeSfxPercent = Math.round(config.readingMusic.sfx.volume * 100);
 
 	dom.query('#reading-music .menu-simple').html(template.load('reading.elements.menus.music.html'));
 
@@ -271,10 +598,13 @@ module.exports = {
 	read: read,
 	play: play,
 	pause: pause,
-	volume: volume,
-	setPlay: setPlay,
+	destroy: destroy,
 	focusIndex: focusIndex,
 	loadMenu: loadMenu,
+	sound: sound,
+	sfx: sfx,
 	soundEffect: soundEffect,
-	get audios() {return audios},
+	change,
+	get audios() {return music},
+	get music() {return music},
 };

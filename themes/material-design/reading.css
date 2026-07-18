@@ -1297,3 +1297,13 @@ oc-img .ai-loading circle
 	background-color: transparent;
 	backdrop-filter: blur(6px);
 }
+
+
+
+
+oc-sfx
+{
+	position: absolute !important;
+	background-color: transparent !important;
+	cursor: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2232px%22%20width%3D%2232px%22%20viewBox%3D%220%20-960%20960%20960%22%3E%3Cpath%20fill%3D%22black%22%20stroke%3D%22white%22%20stroke-width%3D%2220%22%20d%3D%22M127-167q-47-47-47-113t47-113q47-47%20113-47%2023%200%2042.5%205.5T320-418v-342l480-80v480q0%2066-47%20113t-113%2047q-66%200-113-47t-47-113q0-66%2047-113t113-47q23%200%2042.5%205.5T720-498v-165l-320%2063v320q0%2066-47%20113t-113%2047q-66%200-113-47Z%22%2F%3E%3C%2Fsvg%3E') 16 16, pointer;
+}

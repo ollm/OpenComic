@@ -264,6 +264,7 @@
 		"music": {
 			"main": "الموسيقى",
 			"volume": "الصوت",
+			"sfx": "",
 			"pageSoundEffect": "تأثيرات صوتية لتقليب الصفحة",
 			"adaptToAnimationSpeed": "ملائمة مع سرعة الرسوميات",
 			"soundEffect": {

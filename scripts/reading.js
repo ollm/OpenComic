@@ -109,7 +109,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 	{
 		render.focusIndex(index, doublePage.active());
 		filters.focusIndex(index);
-		music.focusIndex(index);
+		music.focusIndex();
 		panels.focusPage(index, fromScroll); // Use idnex as page
 	}
 
@@ -3733,10 +3733,13 @@ function eachImagesDistribution(index, contains, callback, first = false, notFou
 	}
 }
 
-function getImage(index = 0)
+function getImage(index = 0, fallback = true)
 {
 	if(imagesData[index])
 		return imagesData[index];
+
+	if(!fallback)
+		return false;
 
 	return imagesData[Object.keys(imagesData)[0]];
 }

@@ -136,6 +136,11 @@ function clickTapZone(event, button)
 	if(reading.ebookHasSelection)
 		return false;
 
+	const sfxElement = (event.target.closest('oc-sfx') || event.target.tagName.toLowerCase() === 'oc-sfx') ? true : false;
+
+	if(sfxElement)
+		return false;
+
 	const action = getTapZoneAction(event, button);
 
 	if(action)

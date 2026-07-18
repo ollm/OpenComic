@@ -405,6 +405,8 @@ function focusFullPage(page: number, animation: boolean = true)
 
 function focusPanel(box: Box, panel: number, page: number, animation: boolean = true)
 {
+	const animationDuration = ((animation) ? _config.readingViewSpeed * 1000 : 0);
+
 	// Page position
 	const position = view.pagesPosition[page];
 	const original = position.original;
@@ -543,7 +545,7 @@ function focusPanel(box: Box, panel: number, page: number, animation: boolean = 
 	const tranX = baseX + (availableX * -goToX);
 	let tranY = baseY + (availableY * goToY);
 
-	// TODO: Limitate tranY to min scroll and max scroll, and tranX to min and max scroll
+	// TODO: Limitate tranY to min scroll and max scroll
 	if(tranY < 0) tranY = 0;
 
 	reading.applyScale(animation, scale, false, false, false, {
@@ -552,6 +554,28 @@ function focusPanel(box: Box, panel: number, page: number, animation: boolean = 
 		tranY: -(tranY * scale),
 		crossZoomLimits: true, // TODO: Use this or not?
 	});
+
+	// Play SFX sound
+	setTimeout(function() {
+
+		const side = Math.max(original.width, original.height);
+		const normalizeX = side / original.width;
+		const normalizeY = side / original.height;
+
+		const [x1, y1, x2, y2] = box.box;
+		const top = (y1 / box.height) * 100 * normalizeY;
+		const left = (x1 / box.width) * 100 * normalizeX;
+		const right = (x2 / box.width) * 100 * normalizeX;
+		const bottom = (y2 / box.height) * 100 * normalizeY;
+
+		reading.music.sfx.playBox(page, {
+			top,
+			left,
+			width: right - left,
+			height: bottom - top,
+		});
+
+	}, animationDuration + 150);
 }
 
 function applyHideMasks(box: Box, panel: number, page: number, animation: boolean = true): void

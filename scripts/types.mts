@@ -128,3 +128,10 @@ export interface Preset {
 	key: string | number;
 	name: string;
 }
+
+export interface Box {
+	top: number;
+	left: number;
+	width: number;
+	height: number;
+}

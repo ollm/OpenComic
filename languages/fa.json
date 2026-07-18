@@ -264,6 +264,7 @@
 		"music": {
 			"main": "صدا",
 			"volume": "بلندی صدا",
+			"sfx": "",
 			"pageSoundEffect": "صدای ورق‌زدن صفحه",
 			"adaptToAnimationSpeed": "هماهنگ با سرعت انیمیشن",
 			"soundEffect": {

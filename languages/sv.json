@@ -264,6 +264,7 @@
 		"music": {
 			"main": "Musik",
 			"volume": "Volym",
+			"sfx": "",
 			"pageSoundEffect": "",
 			"adaptToAnimationSpeed": "",
 			"soundEffect": {

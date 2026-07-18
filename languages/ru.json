@@ -264,6 +264,7 @@
 		"music": {
 			"main": "Музыка",
 			"volume": "Громкость",
+			"sfx": "",
 			"pageSoundEffect": "Звуковое сопровождение перелистывания",
 			"adaptToAnimationSpeed": "Адаптировать под скорость анимации",
 			"soundEffect": {

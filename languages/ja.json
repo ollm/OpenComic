@@ -264,6 +264,7 @@
 		"music": {
 			"main": "音楽",
 			"volume": "音量",
+			"sfx": "",
 			"pageSoundEffect": "ページめくり効果音",
 			"adaptToAnimationSpeed": "アニメーション速度に合わせる",
 			"soundEffect": {

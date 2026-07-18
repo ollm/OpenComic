@@ -634,7 +634,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	workers.clean('convertImage');
 
 	scroll.reset();
-	reading.music.pause();
+	reading.music.destroy();
 
 	setWindowTitle();
 

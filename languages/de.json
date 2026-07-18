@@ -264,6 +264,7 @@
 		"music": {
 			"main": "Musik",
 			"volume": "Lautstärke",
+			"sfx": "",
 			"pageSoundEffect": "Soundeffekt beim Umblättern",
 			"adaptToAnimationSpeed": "An die Animationsgeschwindigkeit anpassen",
 			"soundEffect": {

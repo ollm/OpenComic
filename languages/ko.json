@@ -264,6 +264,7 @@
 		"music": {
 			"main": "음악",
 			"volume": "볼륨",
+			"sfx": "",
 			"pageSoundEffect": "페이지 넘김 소리",
 			"adaptToAnimationSpeed": "애니메이션 속도에 맞추기",
 			"soundEffect": {

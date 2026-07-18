@@ -264,6 +264,7 @@
 		"music": {
 			"main": "Música",
 			"volume": "Volumen",
+			"sfx": "Efectos de sonido",
 			"pageSoundEffect": "Efecto de sonido al pasar la página",
 			"adaptToAnimationSpeed": "Adaptar a la velocidad de la animación",
 			"soundEffect": {

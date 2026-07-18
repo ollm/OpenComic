@@ -3060,7 +3060,7 @@ function globalWhenExtractFileReject(path)
 	{
 		const globalExtracting = extractingPromises[path];
 		delete extractingPromises[path];
-		globalExtracting.reject();
+		globalExtracting.reject('Unable to extract the file: '+path);
 	}
 }
 

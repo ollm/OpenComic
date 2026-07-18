@@ -264,6 +264,7 @@
 		"music": {
 			"main": "Музика",
 			"volume": "Гучність",
+			"sfx": "",
 			"pageSoundEffect": "Звуковий ефект перегортання сторінок",
 			"adaptToAnimationSpeed": "Адаптуватися до швидкості анімації",
 			"soundEffect": {
