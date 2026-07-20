@@ -193,25 +193,6 @@ function process(music, files)
 {
 	if(!music?.files?.length) return false;
 
-	/*
-	const findPage = function(page) {
-
-		const image = reading.getImage(Math.round(page), false);
-
-		console.log('findPage', image);
-		console.log(`reading.getImage(Math.round(${page}), false)`);
-
-		return image ? {
-			file: image,
-			filename: image.name,
-		} : {
-			file: false,
-			filename: '',
-		}
-
-	}
-	*/
-
 	const findExact = function(name) {
 
 		name = name.replace(/bgm[^\p{L}\p{N}]*/iug, '');
@@ -264,14 +245,6 @@ function process(music, files)
 		let filenameEnd = '';
 		let fileStart = false;
 		let fileEnd = false;
-
-		/*
-		if(startPage !== undefined)
-			({filename: filenameStart, file: fileStart} = findPage(startPage))
-
-		if(endPage !== undefined)
-			({filename: filenameEnd, file: fileEnd} = findPage(endPage))
-		*/
 
 		if(startPage === undefined && endPage === undefined && !fileStart && !fileEnd)
 			({filenameStart, filenameEnd, fileStart, fileEnd} = findExact(name))
@@ -364,9 +337,10 @@ async function focusIndex(index = false)
 				play();
 		}
 	}
-	else
+	else if(current)
 	{
-		pause();
+		current.pauseFade(config.readingMusic.fade * 1000, true);
+		current = false;
 	}
 
 }
@@ -396,7 +370,7 @@ function play()
 	const audio = current?.audio;
 
 	if(!audio || !audio.paused) return;
-	audio.play();
+	current.playFade(config.readingMusic.fade * 1000);
 }
 
 async function playDelay(delay = 0)
@@ -538,15 +512,12 @@ function sound(path, options = {})
 
 function change(key, value)
 {
-	console.log(key);
 	const audio = current?.audio;
 
 	switch(key)
 	{
 		case 'volume':
 		case 'sfx.volume':
-
-			console.log(audio);
 
 			value /= 100;
 
