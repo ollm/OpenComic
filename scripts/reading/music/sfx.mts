@@ -1,5 +1,5 @@
 import {Box} from '@types';
-import {Item} from '../view/distribution.mjs'
+import {Item} from '../view/distribution.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const dom: any;

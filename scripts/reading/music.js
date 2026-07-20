@@ -84,6 +84,9 @@ async function read(musicFiles, files)
 
 async function processMusic(audios)
 {
+	if(!audios)
+		return false;
+
 	const jsonFiles = audios.filter(file => MUSIC.has(file.name.toLowerCase()));
 	const audioFiles = audios.filter(file => compatible.audio(file.name));
 
