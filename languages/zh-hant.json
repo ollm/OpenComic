@@ -20,8 +20,8 @@
 			"lastAdd": "最後新增時間",
 			"lastReading": "最後閱讀時間",
 			"lastOpened": "上次打開",
-			"lastModified": "",
-			"shuffle": "",
+			"lastModified": "上次修改時間",
+			"shuffle": "隨機排序",
 			"foldersFirst": "資料夾優先",
 			"compressedFirst": "壓縮檔優先",
 			"invert": "反轉排序"
@@ -75,9 +75,9 @@
 			"saveImageMessage": "圖片已成功儲存",
 			"copyImage": "複製圖片到剪貼簿",
 			"copyImageMessage": "圖片已成功複製",
-			"addBlankPageLeft": "",
-			"addBlankPageRight": "",
-			"removeBlankPage": "",
+			"addBlankPageLeft": "在左側新增空白頁",
+			"addBlankPageRight": "在右側新增空白頁",
+			"removeBlankPage": "移除空白頁",
 			"clearFileCache": "清除檔案快取",
 			"clearFileCacheSuccessfully": "檔案快取已成功清除",
 			"closeApp": "結束 OpenComic"
@@ -149,7 +149,7 @@
 			"aiToolsShort": "AI",
 			"slide": "水平閱讀",
 			"scroll": "垂直閱讀",
-			"panels": "",
+			"panels": "導覽檢視",
 			"roughPageTurn": "翻頁",
 			"smoothPageTurn": "平滑翻頁",
 			"fade": "淡出",
@@ -195,7 +195,7 @@
 			"saveAsPreset": "保存為預設",
 			"addColor": "新增顏色",
 			"fromImage": "從圖片中獲取",
-			"presets": "",
+			"presets": "預設",
 			"savedPresets": "已保存的預設",
 			"multipleTonePresets": "多色調預設",
 			"oneTonePresets": "單色調預設",
@@ -264,7 +264,7 @@
 		"music": {
 			"main": "音樂",
 			"volume": "音量",
-			"sfx": "",
+			"sfx": "音效",
 			"pageSoundEffect": "翻頁音效",
 			"adaptToAnimationSpeed": "適應動畫速度",
 			"soundEffect": {
@@ -283,33 +283,33 @@
 			}
 		},
 		"panels": {
-			"focus": "",
-			"hide": "",
-			"immersive": "",
-			"maxZoom": "",
-			"panels": "",
+			"focus": "聚焦",
+			"hide": "隱藏",
+			"immersive": "沉浸式",
+			"maxZoom": "最大縮放",
+			"panels": "分格",
 			"focusTo": {
-				"prevPanels": "",
-				"nextPanels": ""
+				"prevPanels": "聚焦於上一個分格",
+				"nextPanels": "聚焦於下一個分格"
 			},
 			"showFullPage": {
-				"beforeFirstPanel": "",
-				"afterLastPanel": ""
+				"beforeFirstPanel": "在第一個分格前顯示完整頁面",
+				"afterLastPanel": "在最後一個分格後顯示完整頁面"
 			},
-			"hideEffect": "",
-			"white": "",
-			"black": "",
-			"blur": "",
-			"expandPanel": "",
+			"hideEffect": "隱藏效果",
+			"white": "白底",
+			"black": "黑底",
+			"blur": "模糊",
+			"expandPanel": "展開分格",
 			"visibility": {
-				"prevPanels": "",
-				"nextPanels": ""
-			}
+				"prevPanels": "顯示上一個分格",
+				"nextPanels": "顯示下一個分格"
+		}
 		},
 		"moreOptions": {
 			"main": "更多選項",
 			"hideBarHeader": "隱藏標題列",
-			"hideTabsBar": "",
+			"hideTabsBar": "隱藏標籤欄",
 			"hideContentLeft": "隱藏左側選單",
 			"showPageNumber": "顯示頁碼"
 		},
@@ -349,9 +349,9 @@
 			"upscalingDescription": "此方法僅在需要提高圖片解析度時使用，不適用於 PDF 和 EPUB 或動態圖片。警告：銳化圖片在放大時可能會很慢"
 		},
 		"preload": {
-			"main": "",
-			"imagesToPreload": "",
-			"imagesToPreloadDescription": ""
+			"main": "預載",
+			"imagesToPreload": "預載圖片數量",
+			"imagesToPreloadDescription": "圖片會預先渲染，以便在向前瀏覽時即可使用（補影格與 AI）"
 		},
 		"colorProfile": {
 			"main": "顏色設定",
@@ -416,7 +416,7 @@
 		},
 		"theme": {
 			"systemNightMode": "當作業系統執行此操作時切換到夜間/明亮模式",
-			"lightModeBlackBackgroundOnReading": "",
+			"lightModeBlackBackgroundOnReading": "明亮模式中閱讀時顯示黑色背景",
 			"nightModeBlackBackground": "夜間模式中使用黑色背景",
 			"nightModeWhiteBlankPage": "夜間模式中空白頁面顯示為白色",
 			"colors": {
@@ -432,18 +432,18 @@
 			"checkPreReleases": "顯示預覽版本(beta/alpha)"
 		},
 		"macros": {
-			"main": "",
-			"add": "",
-			"addAction": "",
-			"empty": "",
-			"emptyActions": "",
-			"name": "",
-			"toggleMode": "",
-			"targetState": "",
-			"delay": "",
-			"description": "",
-			"deleteMacro": "",
-			"confirmDelete": ""
+			"main": "巨集",
+			"add": "新增巨集",
+			"addAction": "新增動作",
+			"empty": "無巨集",
+			"emptyActions": "無動作",
+			"name": "巨集名稱",
+			"toggleMode": "切換模式",
+			"targetState": "目標狀態",
+			"delay": "動作延遲時間",
+			"description": "透過巨集，您可以使用單一快捷鍵觸發多個動作，並可在動作之間設定延遲時間",
+			"deleteMacro": "刪除巨集",
+			"confirmDelete": "確定要刪除此巨集嗎？"
 		},
 		"shortcuts": {
 			"main": "快捷鍵",
@@ -471,8 +471,8 @@
 		"tapZones": {
 			"main": "點擊區域",
 			"disable": "禁用點擊區域",
-			"middleClickAutoScrollInAllTapZones": "",
-			"middleClickAutoScrollInCenterTapZone": "",
+			"middleClickAutoScrollInAllTapZones": "在所有點擊區域內皆可使用滑鼠中鍵自動捲動（垂直閱讀）",
+			"middleClickAutoScrollInCenterTapZone": "僅在中央點擊區域內可使用滑鼠中鍵自動捲動（垂直閱讀）",
 			"invertInManga": "在閱讀漫畫時反轉點擊區域",
 			"leftClick": "左鍵點擊",
 			"rightClick": "右鍵點擊",
@@ -700,7 +700,7 @@
 		"save": "儲存",
 		"undo": "復原",
 		"dismiss": "忽略",
-		"delete": "",
+		"delete": "刪除",
 		"remove": "刪除",
 		"download": "下載",
 		"buy": "購買",
