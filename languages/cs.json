@@ -330,6 +330,7 @@
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
 			"turnPagesWithMouseWheel": "",
+			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",

@@ -330,6 +330,7 @@
 			"scrollWithMouse": "Bläddra genom att flytta muspekaren längs skärmens kanter (inaktiverar dra och släpp-rullning)",
 			"goNextPrevChapterWithScroll": "Gå till nästa/förra kapitlet med musrullning (vertikal bläddring)",
 			"turnPagesWithMouseWheel": "",
+			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",

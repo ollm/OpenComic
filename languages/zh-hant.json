@@ -304,7 +304,7 @@
 			"visibility": {
 				"prevPanels": "顯示上一個分格",
 				"nextPanels": "顯示下一個分格"
-		}
+			}
 		},
 		"moreOptions": {
 			"main": "更多選項",
@@ -330,6 +330,7 @@
 			"scrollWithMouse": "當游標位於螢幕中央垂直移動時自動滾動 (停用拖放滾動)",
 			"goNextPrevChapterWithScroll": "以滑鼠滾動切換至下一章/上一章(垂直閱讀)",
 			"turnPagesWithMouseWheel": "以滑鼠滾輪翻頁(僅按住 Ctrl 鍵時可縮放)",
+			"autodetectWebtoon": "",
 			"disableThumbnails": "停用縮圖 (顯示檔名)",
 			"mouseWheelSensitivityInZoom": "縮放時滑鼠滾輪靈敏度",
 			"rotateHorizontalsAnticlockwise": "採逆時針方向旋轉水平圖像",

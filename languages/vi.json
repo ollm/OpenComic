@@ -330,6 +330,7 @@
 			"scrollWithMouse": "Cuộn khi di chuyển con trỏ theo viền màn hình (tắt cuộn bằng đúp chuột)",
 			"goNextPrevChapterWithScroll": "",
 			"turnPagesWithMouseWheel": "",
+			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"rotateHorizontalsAnticlockwise": "",
