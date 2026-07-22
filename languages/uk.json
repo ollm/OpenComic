@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "Вимкнути мініатюри (показати імена файлів)",
 			"mouseWheelSensitivityInZoom": "Чутливість коліщатка миші під час масштабування",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "Обертання горизонтальних зображень проти годинникової стрілки.",
 			"startReadingInFullScreen": "Почати читання в повноекранному режимі",
 			"trackingAtTheEnd": "Відстеження в кінці розділу/тому",

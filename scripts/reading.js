@@ -1637,22 +1637,22 @@ function zoomOut(animation = true, center = false, delta = false)
 	applyScale(animation, currentScale, center, true);
 }
 
-function zoomUp(delta = 20, animation = false)
+function zoomUp(delta = config.zoomMoveStep, animation = false)
 {
 	zoomMove(0, delta, animation);
 }
 
-function zoomDown(delta = 20, animation = false)
+function zoomDown(delta = config.zoomMoveStep, animation = false)
 {
 	zoomMove(0, -delta, animation);
 }
 
-function zoomLeft(delta = 20, animation = false)
+function zoomLeft(delta = config.zoomMoveStep, animation = false)
 {
 	zoomMove(-delta, 0, animation);
 }
 
-function zoomRight(delta = 20, animation = false)
+function zoomRight(delta = config.zoomMoveStep, animation = false)
 {
 	zoomMove(delta, 0, animation);
 }

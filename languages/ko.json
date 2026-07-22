@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "줌 상태에서의 마우스 휠 감도",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "가로 이미지 회전 시 반시계 방향으로 회전",
 			"startReadingInFullScreen": "읽기 시작 시 바로 전체 화면으로",
 			"trackingAtTheEnd": "챕터/권 끝까지 읽으면 사이트 연동 자동 업데이트",

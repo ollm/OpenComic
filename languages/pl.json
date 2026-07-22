@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Czułość kółka myszy podczas powiększania",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "Obracając obrazy poziome, rób to w kierunku przeciwnym do ruchu wskazówek zegara",
 			"startReadingInFullScreen": "Rozpoczynaj czytanie w trybie pełnoekranowym",
 			"trackingAtTheEnd": "Śledzenie na końcu rozdziału/tomu",

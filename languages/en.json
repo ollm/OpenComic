@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "Auto-detect webtoon",
 			"disableThumbnails": "Disable thumbnails (Show filenames)",
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
+			"zoomMoveStep": "Zoom move speed",
 			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
 			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume",

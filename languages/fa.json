@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "حساسیت چرخ ماوس در بزرگ‌نمایی",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "چرخش تصویر افقی به‌صورت پادساعتگرد",
 			"startReadingInFullScreen": "شروع مطالعه در حالت تمام‌صفحه",
 			"trackingAtTheEnd": "همگام‌سازی در پایان چپتر/جلد",

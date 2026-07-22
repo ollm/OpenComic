@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Sensibilité de la molette lors du zoom",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "Lors de la rotation des images horizontales, pivoter dans le sens anti-horaire",
 			"startReadingInFullScreen": "Démarrer la lecture en plein écran",
 			"trackingAtTheEnd": "Suivi à la fin du chapitre/volume",

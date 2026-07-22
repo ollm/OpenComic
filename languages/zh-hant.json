@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "停用縮圖 (顯示檔名)",
 			"mouseWheelSensitivityInZoom": "縮放時滑鼠滾輪靈敏度",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "採逆時針方向旋轉水平圖像",
 			"startReadingInFullScreen": "啟動全螢幕閱讀",
 			"trackingAtTheEnd": "追蹤章節/卷末進度",

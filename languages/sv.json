@@ -333,6 +333,7 @@
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
+			"zoomMoveStep": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
 			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",
