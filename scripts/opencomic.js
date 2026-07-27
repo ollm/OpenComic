@@ -359,11 +359,11 @@ async function start()
 		template.loadInQuery('body', 'body.html');
 		theme.systemNightMode();
 
+		titleBar.start();
 
 		appBaseLoadedResolve();
 		startApp();
 
-		titleBar.start();
 		titleBar.setColors();
 
 	});
