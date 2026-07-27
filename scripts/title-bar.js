@@ -245,6 +245,10 @@ function setColors()
 		else
 			animateSetTitleBarOverlay(win);
 	}
+	else if(process.platform == 'linux')
+	{
+		win.setTitleBarOverlay(colors);
+	}
 
 	first = false;
 }
