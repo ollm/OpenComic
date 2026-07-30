@@ -1978,6 +1978,9 @@ async function setTabState(data)
 	{
 		await onLoadPromise.promise;
 
+		if(_config.readingView == 'panels')
+			return;
+
 		applyScale(false, scaleData.scale, true, (scaleData.scale < 1) ? true : false);
 		applyZoom(scaleData.tranX, scaleData.tranY, false);
 

@@ -325,7 +325,7 @@ function update(retrieveData: boolean = false): void
 	const icon = materialIcon && !onReading ? materialIcon.innerHTML : (onReading ? 'auto_stories' : 'indeterminate_question_box');
 
 	const barHeader = template._barHeader();
-	const title = (barHeader.querySelector('.bar-title-a:last-child') ?? barHeader.querySelector('.bar-title'))?.innerHTML.trim() || 'Untitled';
+	const title = (barHeader.querySelector('.bar-title-a:last-child') ?? barHeader.querySelector('.bar-title'))?.innerText.trim() || 'Untitled';
 
 	const type = onReading ? 'reading' : 'normal';
 
