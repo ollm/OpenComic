@@ -37,7 +37,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="322" transform="rotate(-90)">TR</text>
 		<rect style="fill: #2eccaa;" height="112.8" width="6" rx="2" y="27.2" x="316" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="340" transform="rotate(-90)">UK</text>
-		<rect style="fill: #2eccaa;" height="131.4" width="6" rx="2" y="8.6" x="334" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="334" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="358" transform="rotate(-90)">VI</text>
 		<rect style="fill: #f1cc09;" height="68.7" width="6" rx="2" y="71.3" x="352" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="376" transform="rotate(-90)">ZH-HANS</text>
