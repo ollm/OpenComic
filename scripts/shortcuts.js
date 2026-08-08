@@ -1794,5 +1794,6 @@ module.exports = {
 	play: play,
 	pause: pause,
 	inputIsFocused: inputIsFocused,
+	calcEventFromPoint: calcEventFromPoint,
 	get elementFromPoint() {return elementFromPoint;},
 };

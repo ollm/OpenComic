@@ -111,6 +111,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		filters.focusIndex(index);
 		music.focusIndex();
 		panels.focusPage(index, fromScroll); // Use idnex as page
+		shortcuts.calcEventFromPoint(false);
 	}
 
 	let animationDurationMS = ((animation) ? _config.readingViewSpeed : 0) * 1000;
