@@ -39,16 +39,13 @@ interface State {
 	resetStateToDefault: () => void;
 }
 
-interface Point {
-	x: number;
-	y: number;
-}
-
 function windowState(options: Options): State
 {
 	let state;
 	let winRef: Electron.BrowserWindow | undefined;
 	let stateChangeTimer: NodeJS.Timeout;
+	let appliedBounds: Electron.Rectangle | null = null;
+	let desiredBounds: Electron.Rectangle | null = null;
 	const eventHandlingDelay = 100;
 
 	options = {
@@ -86,24 +83,6 @@ function windowState(options: Options): State
 			x: displayBounds.x,
 			y: displayBounds.y,
 			displayBounds,
-		};
-	}
-
-	function pointWithinBounds(point: Point, bounds: Electron.Rectangle)
-	{
-		return (
-			point.x >= bounds.x
-			&& point.y >= bounds.y
-			&& point.x < bounds.x + bounds.width
-			&& point.y < bounds.y + bounds.height
-		);
-	}
-
-	function newPoint(x, y): Point
-	{
-		return {
-			x,
-			y,
 		};
 	}
 
@@ -158,10 +137,19 @@ function windowState(options: Options): State
 			state.isMaximized = state.isFullScreen ? state.isMaximized : win.isMaximized();
 			const winBounds = isNormal(win) ? win.getBounds() : win.getNormalBounds();
 
-			state.x = winBounds.x;
-			state.y = winBounds.y;
-			state.width = winBounds.width;
-			state.height = winBounds.height;
+			// If the window has not been moved or resized, store the bounds that were requested
+			// instead of the ones reported back, otherwise the DIP rounding error that Chromium
+			// introduces on fractional scale factors is written to disk and grows on every launch
+			const saveBounds = (desiredBounds && appliedBounds
+				&& winBounds.x === appliedBounds.x
+				&& winBounds.y === appliedBounds.y
+				&& winBounds.width === appliedBounds.width
+				&& winBounds.height === appliedBounds.height) ? desiredBounds : winBounds;
+
+			state.x = saveBounds.x;
+			state.y = saveBounds.y;
+			state.width = saveBounds.width;
+			state.height = saveBounds.height;
 			state.displayBounds = screen.getDisplayMatching(winBounds).bounds;
 			// state.scale = screen.getDisplayMatching(winBounds).scaleFactor;
 		}
@@ -210,6 +198,16 @@ function windowState(options: Options): State
 
 	function manage(win: Electron.BrowserWindow)
 	{
+		// Apply the restored bounds explicitly and remember what Chromium reports back, so that
+		// updateState() can tell an untouched window apart from one the user actually resized.
+		// This has to run before maximize/setFullScreen so the normal bounds are seeded as well
+		if(hasBounds())
+		{
+			desiredBounds = {x: state.x, y: state.y, width: state.width, height: state.height};
+			win.setBounds(desiredBounds);
+			appliedBounds = win.getBounds();
+		}
+
 		if(options.fullScreen && state.isFullScreen)
 			win.setFullScreen(true);
 		else if(options.maximize && state.isMaximized)
@@ -233,42 +231,6 @@ function windowState(options: Options): State
 			winRef.removeListener('closed', closedHandler);
 			winRef = undefined;
 		}
-	}
-
-	function pointOnWhichDisplay(point: Point)
-	{
-		return screen.getAllDisplays().find(function(display: Electron.Display) {
-			return pointWithinBounds(point, display.bounds);
-		});
-	}
-
-	function calcScale()
-	{
-		if(state.x == undefined || state.y == undefined)
-		{
-			console.log('state x or y is undefined');
-			return 1;
-		}
-
-		let point = newPoint(state.x, state.y);
-		let display = pointOnWhichDisplay(point);
-
-		if(display)
-		{
-			console.log(`"left top point: ${screen.getPrimaryDisplay().scaleFactor} / ${display.scaleFactor}"`);
-			return screen.getPrimaryDisplay().scaleFactor / display.scaleFactor;
-		}
-
-		point = newPoint(state.x + state.width, state.y);
-		display = pointOnWhichDisplay(point);
-
-		if(display)
-		{
-			console.log(`"right top point: ${screen.getPrimaryDisplay().scaleFactor} / ${display.scaleFactor}"`);
-			return screen.getPrimaryDisplay().scaleFactor / display.scaleFactor;
-		}
-
-		return 1;
 	}
 
 	// Load previous state
@@ -296,12 +258,6 @@ function windowState(options: Options): State
 		isFullScreen: options.defaultFullScreen || false,
 		...state,
 	};
-
-	// Calculate screen scale
-	state.scale = calcScale();
-	console.log(`scale: ${state.scale}`);
-	state.width = Math.floor(state.width * state.scale);
-	state.height = Math.floor(state.height * state.scale);
 
 	return {
 		get x() {return state.x},
