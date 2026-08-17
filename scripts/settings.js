@@ -1026,7 +1026,13 @@ function setTapZone(button, action)
 function getTapZoneActions(button)
 {
 	const list = shortcuts.shortcuts();
-	const items = [];
+
+	const items = [{
+		key: 'disabled',
+		name: language.settings.imageInterpolation.disabled,
+		function: `settings.setTapZone('${button}', 'disabled');`,
+		select: (currentTapZone.tapZone[button].action == 'disabled' ? true : false),
+	}];
 
 	for(const group of list.reading.actionsGroups)
 	{
