@@ -2033,6 +2033,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const numThreads = threads.num();
 		const tasks = [];
 
+		const maxArgLength = getMaxArgLength();
+
 		const status = {
 			tasks: {},
 			current: 0,
@@ -2044,8 +2046,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		{
 			const name = only[i];
 			const fileSize = fileSizes.get(p.join(this.path, name)) ?? (1024 * 100); // If the size is not known, it is considered to be 100KB.
+			const argLength = Buffer.byteLength(name, 'utf8') + 3; // + quotes/separator overhead
 
-			const task = getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads);
+			const task = getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads, argLength, maxArgLength);
 
 			if(!tasks[task]) tasks[task] = [];
 			tasks[task].push(name); 
@@ -3878,20 +3881,38 @@ function getOptimalThreads(path = false)
 		return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: threads.ALL, extract: threads.ALL};
 }
 
-function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads)
+// Max length (In characters/bytes) supported for a single command line, with a safety margin
+function getMaxArgLength()
+{
+	if(process.platform === 'win32')
+		return 32767 * 0.7; // CreateProcess command line limit is 32767 characters
+	else if(process.platform === 'darwin')
+		return 256 * 1024 * 0.5; // macOS ARG_MAX is usually around 256KB
+	else
+		return 2 * 1024 * 1024 * 0.5; // Linux ARG_MAX is usually around 2MB
+}
+
+function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads, argLength = 0, maxArgLength = Infinity)
 {
 	if(!status.tasks[status.current])
-		status.tasks[status.current] = {size: 0, items: 0};
+		status.tasks[status.current] = {size: 0, items: 0, chars: 0};
 
 	let current = status.current;
 	let task = status.tasks[current];
+
+	const tooManyChars = function(_task) {
+
+		return argLength && (_task.chars + argLength) > maxArgLength;
+
+	}
 
 	if(!status.fullSize)
 	{
 		task.size += fileSize;
 		task.items++;
+		task.chars += argLength;
 
-		if(task.size > optimalFileSize)
+		if(task.size > optimalFileSize || tooManyChars(task))
 			status.current++;
 
 		if(status.current >= numThreads)
@@ -3908,7 +3929,7 @@ function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads)
 		{
 			task = status.tasks[t];
 
-			if(task.items >= maxItems)
+			if(task.items >= maxItems || tooManyChars(task))
 				continue;
 
 			status.current = t;
@@ -3922,6 +3943,7 @@ function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads)
 
 		task.size += fileSize;
 		task.items++;
+		task.chars += argLength;
 
 		if(full)
 		{
@@ -3937,8 +3959,9 @@ function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads)
 	{
 		task.size += fileSize;
 		task.items++;
+		task.chars += argLength;
 
-		if(task.items >= maxItems)
+		if(task.items >= maxItems || tooManyChars(task))
 			status.current++;
 	}
 
