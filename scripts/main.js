@@ -155,9 +155,6 @@ function createWindow(options = {}) {
 	if(configInit.openDevTools)
 		win.webContents.openDevTools();
 
-	if(toOpenFile && !newWindow)
-		win.webContents.executeJavaScript('toOpenFile = "'+toOpenFile+'";', false);
-
 	win.on('close', function(event) {
 
 		if(!appClosing)
@@ -249,6 +246,9 @@ function createWindow(options = {}) {
 	windows.set(id, win);
 	firstWindowCreated = true;
 
+	if(toOpenFile && !newWindow)
+		deliverOpenFile(toOpenFile);
+
 	if(options.initHistory) // Open immediately
 	{
 		if(options.showInactive)
@@ -291,10 +291,43 @@ if(configInit.forceColorProfile)
 
 var toOpenFile = false;
 
+function deliverOpenFile(filePath)
+{
+	const windowsToCheck = [...windows.values()];
+
+	if(!windowsToCheck.length)
+		return;
+
+	Promise.all(windowsToCheck.map(function(win) {
+
+		if(win.isDestroyed())
+			return false;
+
+		return win.webContents.executeJavaScript(
+			`(function(){
+				if(typeof windowHasLoaded !== 'undefined' && windowHasLoaded && typeof handleOpenFile === 'function'){handleOpenFile(${JSON.stringify(filePath)}); return true;}
+				return false;
+			})();`, false
+		).catch(function() {
+			return false;
+		});
+
+	})).then(function(results) {
+
+		if(!results.includes(true))
+			setTimeout(function() {deliverOpenFile(filePath)}, 250);
+
+	});
+}
+
 app.on('open-file', function(event, path) {
+
+	event.preventDefault();
 
 	if(!firstWindowCreated)
 		toOpenFile = path;
+	else
+		deliverOpenFile(path);
 
 });
 

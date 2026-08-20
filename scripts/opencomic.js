@@ -122,8 +122,7 @@ require('jquery-bez');
 // Open file and open url logic
 var toOpenFile = toOpenFile || false, windowHasLoaded = false;
 
-electronRemote.app.on('open-file', function(event, path) {
-
+function handleOpenFile(path) {
 	if(!storage.syncWindows.firstWindow)
 		return;
 
@@ -143,7 +142,7 @@ electronRemote.app.on('open-file', function(event, path) {
 	else
 		toOpenFile = path;
 
-});
+}
 
 electronRemote.app.on('open-url', function(event, url) {
 
