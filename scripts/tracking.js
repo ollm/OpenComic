@@ -515,7 +515,7 @@ async function getRedirectResult(site, url)
 	});
 }
 
-async function getTokenDialog(site = '', done = false)
+async function getTokenDialog(site = '', done = false, resolve = false)
 {
 	if(done)
 	{
@@ -528,6 +528,9 @@ async function getTokenDialog(site = '', done = false)
 	{
 		const siteData = trackingSites.site(site);
 		if(!siteData) return;
+
+		if(resolve)
+			getRedirectResultResolve = resolve;
 
 		if(!handlebarsContext.tracking) handlebarsContext.tracking = {};
 		handlebarsContext.tracking.getTokenInput = hb.compile(language.dialog.tracking.getTokenInput)({siteName: siteData.name});

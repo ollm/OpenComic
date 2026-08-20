@@ -26,6 +26,15 @@ const sites = [
 		url: 'https://mangabaka.org/',
 		pageUrl: 'https://mangabaka.org/{{siteId}}',
 	},
+	{
+		key: 'bangumi',
+		name: 'Bangumi',
+		description: 'Anime, manga and book database',
+		trackingChapter: true, // Supports chapter tracking
+		trackingVolume: true,  // Supports volume tracking
+		url: 'https://bgm.tv/',
+		pageUrl: 'https://bgm.tv/subject/{{siteId}}',
+	},
 ];
 
 const trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));
