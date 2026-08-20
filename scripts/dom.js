@@ -2869,6 +2869,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	let startImage = false;
 	let imagePath = path;
 	let indexStart = 1;
+	let readingProgress = mainPath ? relative.get('readingProgress')[mainPath] : false;
 
 	if(compatible.image(path))
 	{
@@ -3028,6 +3029,10 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		if(comics[i].path == imagePath)
 			indexStart = comics[i].index;
 	}
+
+	// Fallback: https://github.com/ollm/OpenComic/issues/636
+	if(startImage && indexStart === 1 && readingProgress?.index >= 1 && readingProgress.index <= comics.length)
+		indexStart = readingProgress.index;
 
 	if(isEbook)
 		comics = [];
