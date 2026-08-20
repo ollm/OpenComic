@@ -43,7 +43,7 @@ More [Screenshots 📸](/SCREENSHOTS.MD)
 - 🖱️ Reading in scroll or slide
 - ⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors
 - 🎨 Colorize black and white images
-- 🔄 Tracking with sites (AniList and MyAnimeList)
+- 🔄 Tracking with sites (AniList, Mangabaka and MyAnimeList)
 - 🎮 Gamepad navigation
 - ⌨️ Custom shortcuts and tap zones
 - 🔢 Multiple interpolation methods: `lanczos3`, `lanczos2`, `mitchell`, `cubic`, `linear`, `nearest` and others

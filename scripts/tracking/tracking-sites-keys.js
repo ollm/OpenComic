@@ -5,6 +5,9 @@ const authKeys = {
 	myanimelist: {
 		clientId: '66ede34f8b00b1cc6c3480ab3923fda4',
 	},
+	mangabaka: {
+		clientId: 'RLHDttKJzgfVCyCEZINPYWDMHcTrSbDB',
+	},
 };
 
 module.exports = authKeys;

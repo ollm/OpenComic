@@ -47,6 +47,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improved loading of high resolution images [`f78a1d5`](https://github.com/ollm/OpenComic/commit/f78a1d5f39483fb19a68a89e352823dae169a277)
 - Option to automatically detect Webtoons [`fc27a5e`](https://github.com/ollm/OpenComic/commit/fc27a5ee3162902d6ed26d0431c67b9c211dcf52)
 - Support AudioManga SFX and OST effects [`9595169`](https://github.com/ollm/OpenComic/commit/9595169a6e498213dbc633472e60066d906d3c15)
+- Add support for MangaBaka tracking site integration
 
 ##### 🐛 Bug Fixes
 

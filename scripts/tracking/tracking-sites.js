@@ -17,6 +17,15 @@ const sites = [
 		url: 'https://myanimelist.net/',
 		pageUrl: 'https://myanimelist.net/manga/{{siteId}}',
 	},
+	{
+		key: 'mangabaka',
+		name: 'MangaBaka',
+		description: 'Manga & Light Novel database',
+		trackingChapter: true, // Supports chapter tracking 
+		trackingVolume: true,  // Supports volume tracking
+		url: 'https://mangabaka.org/',
+		pageUrl: 'https://mangabaka.org/{{siteId}}',
+	},
 ];
 
 const trackingSitesKeys = require(p.join(tracking.scriptsPath(), 'tracking-sites-keys.js'));
