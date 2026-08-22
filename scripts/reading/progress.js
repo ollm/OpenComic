@@ -1,6 +1,6 @@
 var saveIsActive = false;
 
-function save(path = false, mainPath = false, hasChildFolders = null)
+function save(path = false, mainPath = false, hasChildFolders = false)
 {
 	if(!onReading || !reading.isLoaded())
 		return;
@@ -42,7 +42,7 @@ function save(path = false, mainPath = false, hasChildFolders = null)
 		}
 	}
 
-	hasChildFolders = hasChildFolders !== null ? hasChildFolders : Object.values(reading.currentComics()).find((comic) => comic.folder);
+	hasChildFolders = hasChildFolders || Object.values(reading.currentComics()).find((comic) => comic.folder);
 	const isParent = mainPath !== dirname || hasChildFolders ? true : false;
 
 	// Calculate progress of eBook
