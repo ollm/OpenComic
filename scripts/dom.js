@@ -274,17 +274,9 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 	let openFirstPage = ['first-page', 'continue-reading-first-page', 'first-page-last', 'continue-reading-first-page-last'].includes(openingBehavior);
 	let openContinueReading = ['continue-reading', 'continue-reading-first-page', 'continue-reading-last', 'continue-reading-first-page-last'].includes(openingBehavior);
 
-	const printData = {
-		path,
-		mainPath
-	};
-
 	if(openContinueReading && !fromGoBack && !notAutomaticBrowsing && readingProgress)
 	{
 		const isParentPath = fileManager.isParentPath(path, readingProgress.path);
-
-		printData.isParentPath = isParentPath;
-		printData.readingProgressCurrentPath = readingProgressCurrentPath;
 
 		if(isParentPath || readingProgressCurrentPath)
 		{
@@ -324,14 +316,6 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 			openContinueReading = false;
 		}
 	}
-
-	printData.openContinueReading = openContinueReading;
-	printData.fromGoBack = fromGoBack;
-	printData.fromGoForwards = fromGoForwards;
-	printData.notAutomaticBrowsing = notAutomaticBrowsing;
-	printData.readingProgress = readingProgress;
-
-	console.log(JSON.stringify(printData, null, 4));
 
 	if(openContinueReading && !fromGoBack && !fromGoForwards && !notAutomaticBrowsing)
 	{

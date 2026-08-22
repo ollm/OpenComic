@@ -48,7 +48,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Option to automatically detect Webtoons [`fc27a5e`](https://github.com/ollm/OpenComic/commit/fc27a5ee3162902d6ed26d0431c67b9c211dcf52)
 - Support AudioManga SFX and OST effects [`9595169`](https://github.com/ollm/OpenComic/commit/9595169a6e498213dbc633472e60066d906d3c15)
 - Add support for MangaBaka tracking site integration [`ab658f2`](https://github.com/ollm/OpenComic/commit/ab658f228ee792618a27b218cb616a23e0b0004c)
-- Add support for Bangumi tracking site integration 
+- Add support for Bangumi tracking site integration [`4ec4550`](https://github.com/ollm/OpenComic/commit/4ec4550d8d919ec09294bcf76b118e92d7dbb220)
 
 ##### 🐛 Bug Fixes
 
@@ -64,6 +64,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Replace `electron-json-storage` with custom implementation to fix write hang issue [`e6fb35b`](https://github.com/ollm/OpenComic/commit/e6fb35bf919ced619667b9c7a2ab8208f8fd442e)
 - `Align with next horizontal` conflicts with `Blank page at the beginning` [`0af09be`](https://github.com/ollm/OpenComic/commit/0af09be7501ad550c261faa24e5bbe8588465005)
 - Support searching for NSFW manga on MyAnimeList [`b59fdfe`](https://github.com/ollm/OpenComic/commit/b59fdfe337836584080b5d65cc6e58e3a53fbd1e)
+- Some errors saving progress
 
 ## [v1.6.5](https://github.com/ollm/OpenComic/releases/tag/v1.6.5) (31-10-2025)
 
