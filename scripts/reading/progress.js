@@ -1,6 +1,6 @@
 var saveIsActive = false;
 
-function save(path = false, mainPath = false, hasChildFolders = false)
+function save(path = false, mainPath = false, hasKnownChildren = false)
 {
 	if(!onReading || !reading.isLoaded())
 		return;
@@ -16,34 +16,34 @@ function save(path = false, mainPath = false, hasChildFolders = false)
 		path = p.normalize(image.path);
 	}
 
-	const dirname = p.dirname(path);
+	const folderPath = p.dirname(path);
 
 	if(mainPath === false)
 	{
 		mainPath = dom.history.mainPath;
 
-		const halfPath = fileManager.removePathPart(path, mainPath);
-		const splitPath = fileManager.splitPath(halfPath);
+		const relativePath = fileManager.removePathPart(path, mainPath);
+		const segments = fileManager.splitPath(relativePath);
 
-		splitPath.pop(); // Remove the image filename, keeping only the folder hierarchy (Same as p.dirname(path))
+		segments.pop(); // Remove the image filename, keeping only the folder hierarchy (Same as p.dirname(path))
 
-		let savePath = mainPath;
+		let currentFolderPath = mainPath;
 
-		for(let i = 0, len = splitPath.length; i < len; i++)
+		for(let i = 0, len = segments.length; i < len; i++)
 		{
-			const last = i === len - 1;
-			const hasChildFolders = !last; // Only the deepest folder may or may not contain child folders. All parent folders always have at least one child folder.
+			const isLastFolder = i === len - 1;
+			const hasKnownChildren = !isLastFolder; // Only the deepest folder may or may not contain child folders. All parent folders always have at least one child folder.
 
-			const segment = splitPath[i];
-			savePath = p.join(savePath, segment);
+			const segment = segments[i];
+			currentFolderPath = p.join(currentFolderPath, segment);
 
-			if(mainPath !== savePath)
-				save(path, savePath, hasChildFolders);
+			if(mainPath !== currentFolderPath)
+				save(path, currentFolderPath, hasKnownChildren);
 		}
 	}
 
-	hasChildFolders = hasChildFolders || Object.values(reading.currentComics()).find((comic) => comic.folder);
-	const isParent = mainPath !== dirname || hasChildFolders ? true : false;
+	const hasChildFolders = hasKnownChildren || Object.values(reading.currentComics()).find((comic) => comic.folder);
+	const isParent = mainPath !== folderPath || hasChildFolders ? true : false;
 
 	// Calculate progress of eBook
 	let progress = 0;
