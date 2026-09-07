@@ -234,12 +234,7 @@ function _image(src, imageSize, options = {})
 		await threads.job('aiPipeline', {key: imageSha, useThreads: threads.SINGLE}, async function() {
 
 			if(fs.existsSync(path))
-			{
-				if(options.end)
-					options.end(path);
-
 				return;
-			}
 
 			const ext = app.extname(src);
 			let imagePath = src, convertPath = false;

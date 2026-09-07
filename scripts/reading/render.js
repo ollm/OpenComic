@@ -693,7 +693,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 					});
 				}
 
-				onRender.callback();
+				if(onRender?.callback) onRender.callback();
 				onRender = false;
 			}
 		}

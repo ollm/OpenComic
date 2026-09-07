@@ -1045,8 +1045,8 @@ function generateAppMenu(force = false)
 			{
 				label: language.menu.debug.main,
 				submenu: [
-					{label: language.menu.debug.reload, click: function(){electronRemote.getCurrentWindow().webContents.reload();}, accelerator: 'CmdOrCtrl+R'},
-					{label: language.menu.debug.forceReload, click: function(){electronRemote.getCurrentWindow().webContents.reloadIgnoringCache();}, accelerator: 'CmdOrCtrl+Shift+R'},
+					{label: language.menu.debug.reload, click: async function(){await prevToReload(); electronRemote.getCurrentWindow().webContents.reload();}, accelerator: 'CmdOrCtrl+R'},
+					{label: language.menu.debug.forceReload, click: async function(){await prevToReload(); electronRemote.getCurrentWindow().webContents.reloadIgnoringCache();}, accelerator: 'CmdOrCtrl+Shift+R'},
 					{label: language.menu.debug.toggleDevTools, click: function(){electronRemote.getCurrentWindow().webContents.toggleDevTools();}, accelerator: 'CmdOrCtrl+Shift+I'},
 				]
 			},
@@ -1194,6 +1194,21 @@ function printMemoryUsage()
 function reload()
 {
 	electronRemote.getCurrentWindow().webContents.reload();
+}
+
+async function prevToReload()
+{
+	console.log('prevToReload');
+	const saved = reading.progress.save();
+	tabs.restore.save(false, true);
+	// settings.purgeTemporaryFiles();
+	// cache.purge();
+	ebook.closeAllRenders();
+	workers.closeAllWorkers();
+	// storage.backup.save();
+	// storage.purgeOldAtomic();
+
+	await app.sleep(100);
 }
 
 function escapeBackSlash(string)

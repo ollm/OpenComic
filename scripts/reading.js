@@ -101,16 +101,16 @@ function changeHeaderButtons(scrollInStart = null, scrollInEnd = null)
 }
 
 //Go to a specific comic image (Left menu)
-function goToImageCL(index, animation = true, fromScroll = false, fromPageRange = false)
+function goToImageCL(index, animation = true, fromScroll = false, onlyMoveScroll = false)
 {
 	if(!onReading) return;
 
-	if(!fromPageRange)
+	if(!onlyMoveScroll)
 	{
 		render.focusIndex(index, doublePage.active());
 		filters.focusIndex(index);
 		music.focusIndex();
-		panels.focusPage(index, fromScroll); // Use idnex as page
+		panels.focusPage(index, fromScroll); // Use index as page
 		shortcuts.calcEventFromPoint(false);
 	}
 
@@ -200,7 +200,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 		sidebar.disableEvent(animationDurationMS + 50);
 	}
 
-	if(!fromPageRange)
+	if(!onlyMoveScroll)
 	{
 		let input = contentLeft.querySelector('.simple-slider input');
 		if(input) events.goRange(input, index, false);
@@ -219,7 +219,7 @@ function goToImageCL(index, animation = true, fromScroll = false, fromPageRange 
 	sidebar.goToImage(index);
 
 	// Change header buttons
-	if(!fromPageRange && (!readingViewIs('scroll') || !fromScroll))
+	if(!onlyMoveScroll && (!readingViewIs('scroll') || !fromScroll))
 		changeHeaderButtons();
 }
 
@@ -1581,7 +1581,7 @@ function zoomScrollHeight()
 			top: newRect.top,
 		};
 
-		if(!readingBody.classList.contains('zooming'))
+		if(!readingBody.classList.contains('zooming') && globalZoomScroll)
 		{
 			dom.this(contentRight).find('.reading-body').css({
 				height: childRect.height+'px',
@@ -2400,6 +2400,8 @@ function hideContent(fullScreen = false, first = false)
 
 	}, 10);
 
+	const changed = (hiddenContentLeft != _hideContentLeft || hiddenBarHeader != _hideBarHeader || hiddenTabsBar != _hideTabsBar);
+
 	const app = document.querySelector('.app');
 
 	if(_hideContentLeft)
@@ -2439,7 +2441,7 @@ function hideContent(fullScreen = false, first = false)
 	showHideHeader();
 	dom.this(template._contentRight()).find('.reading-progress').class(fullScreen ? config.readingShowPageNumberFullScreen : config.readingShowPageNumber, 'active');
 
-	if(!first && onReading)
+	if(changed && !first && onReading)
 		resized();
 }
 
@@ -4445,7 +4447,7 @@ function pointermove(event)
 					hideWindowButtons(false, true);
 
 					const tabsBar = document.querySelector('.tabs-bar');
-					tabsBar.style.webkitAppRegion = 'drag';
+					tabsBar.style.webkitAppRegion = 'none';
 
 					setTimeout(function() {
 
@@ -5445,6 +5447,7 @@ module.exports = {
 	scalePrevData: function(){return scalePrevData},
 	goToPage: goToPage,
 	goToImage: goToImage,
+	goToImageCL: goToImageCL,
 	goToFolder: goToFolder,
 	goToEbookId: goToEbookId,
 	goToIndex: function(v1, v2, v3, v4){readingDirection = true; calculateRealReadingDirection(v1); goToIndex(v1, v2, v3, v4)},

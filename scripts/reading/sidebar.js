@@ -96,6 +96,8 @@ function calculateScrollPositions(contentLeft, imgs)
 	}
 
 	scrollHeight = top;
+
+	reading.goToImageCL(reading.currentPage(), false, false, true);
 }
 
 function disableThumbnailsHeight(end = false)

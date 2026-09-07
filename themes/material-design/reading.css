@@ -262,14 +262,15 @@ oc-img .ai-loading
 	right: 0px !important;
 	top: 0px !important;
 	background: transparent !important;
-	mix-blend-mode: difference;
+	/* This produces blurry during zoom */
+	/*mix-blend-mode: difference;*/
 	width: 48px;
 	height: 48px;
 }
 
 oc-img .ai-loading .material-icon
 {
-	color: white !important;
+	color: #808080 !important;
 	margin: 12px 12px 12px 10px;
 	animation: ai-blink 1.5s ease-in-out infinite;
 }

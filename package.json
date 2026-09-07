@@ -113,7 +113,7 @@
 		"minimatch": "^10.2.6",
 		"node-7z": "github:ollm/node-7z",
 		"node-scp": "^0.0.25",
-		"opencomic-ai-bin": "^1.4.4",
+		"opencomic-ai-bin": "^1.4.5",
 		"pdfjs-dist": "^6.3.289",
 		"sanitize-html": "^2.17.7",
 		"sharp": "^0.35.4",

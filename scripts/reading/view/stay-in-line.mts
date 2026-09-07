@@ -111,6 +111,11 @@ function recalculate()
 		const scrollTop = position.top + (percent * position.height) - (rect.height / 2);
 		content.scrollTop = rect.height > stayInLineData.height ? app.ceilDPR(scrollTop) : app.floorDPR(scrollTop);
 	}
+
+	const scale = reading.currentScale;
+
+	if(scale != 1)
+		reading.fixBlurOnZoom(scale);
 }
 
 export default {
