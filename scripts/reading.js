@@ -1557,32 +1557,36 @@ function zoomScrollHeight()
 	{
 		const globalZoomScroll = config.readingGlobalZoom && readingViewIs('scroll');
 
-		let contentRight = template._contentRight();
-		let readingBody = contentRight.querySelector('.reading-body');
-		let readingBodyChild = readingBody.firstElementChild;
+		const contentRight = template._contentRight();
+		const readingBody = contentRight.querySelector('.reading-body');
 
-		let content = contentRight.firstElementChild;
+		const content = contentRight.firstElementChild;
 
-		let newRect = readingBody.getBoundingClientRect();
-		let childRect = readingBodyChild.getBoundingClientRect();
+		const newRect = reading.view.rightSize;
 		originalRectReadingBody = content.getBoundingClientRect();
+
+		const isScroll = readingViewIs('scroll')
+		const height = isScroll ? newRect.scrollHeight : newRect.height;
 
 		originalRect = {
 			width: newRect.width,
-			height: globalZoomScroll ? newRect.height / scalePrevData.scale : newRect.height,
+			height: globalZoomScroll ? height / scalePrevData.scale : height,
 			left: newRect.left,
 			top: newRect.top,
 		};
 
 		originalRect2 = {
 			width: originalRect.width,
-			height: newRect.height,
+			height: height,
 			left: newRect.left,
 			top: newRect.top,
 		};
 
 		if(!readingBody.classList.contains('zooming') && globalZoomScroll)
 		{
+			const readingBodyChild = readingBody.firstElementChild;
+			const childRect = readingBodyChild.getBoundingClientRect();
+
 			dom.this(contentRight).find('.reading-body').css({
 				height: childRect.height+'px',
 			});
@@ -2241,9 +2245,22 @@ function magnifyingGlassControl(mode, event = false, lensData = false)
 	//view.calculateView();
 }
 
-async function resized()
+let resizeAfterLoad = false;
+
+function resized()
 {
-	if(onLoadPromise) await onLoadPromise.promise;
+    if(onLoadPromise)
+    {
+        if(resizeAfterLoad)
+            return;
+
+        resizeAfterLoad = onLoadPromise.promise.then(function(){
+            resizeAfterLoad = false;
+            resized();
+        });
+
+        return;
+    }
 
 	originalRect = false;
 	originalRectReadingBody = false;
@@ -2258,8 +2275,8 @@ async function resized()
 		if(!readingIsEbook)
 		{
 			view.disposeImages();
-			zoomScrollHeight();
 			view.calculateView();
+			zoomScrollHeight();
 			view.stayInLine.recalculate(true);
 		}
 
@@ -4683,11 +4700,25 @@ function _mouseleave()
 	isMouseenter.document = false;
 }
 
+let initialized = false;
+
+function init()
+{
+	if(initialized)
+		return;
+
+	initialized = true;
+
+	app.event(window, 'resize', resized);
+}
+
 var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsPdf = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isPdf = false, isEbook = false, imagePath = false)
 {
+	init();
+
 	let contentRightIndex = template.contentRightIndex();
 
 	items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, currentScale = 1, currentZoomIndex = false, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
@@ -4721,7 +4752,7 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 	let promise = new Promise(function(_resolve){
 		resolve = _resolve;
 	});
-	onLoadPromise = {promise: promise, resolve: resolve};
+	onLoadPromise = {promise: promise, resolve: resolve, waitResize: false};
 
 	const contentRight = template._contentRight();
 	const readingLens = contentRight.querySelector('.reading-lens');
@@ -5238,8 +5269,6 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 		}
 
 	})
-
-	app.event(window, 'resize', resized);
 
 	$(window).on('mousewheel touchstart', function(e) {
 
