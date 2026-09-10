@@ -4752,7 +4752,7 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 	let promise = new Promise(function(_resolve){
 		resolve = _resolve;
 	});
-	onLoadPromise = {promise: promise, resolve: resolve, waitResize: false};
+	onLoadPromise = {promise: promise, resolve: resolve};
 
 	const contentRight = template._contentRight();
 	const readingLens = contentRight.querySelector('.reading-lens');

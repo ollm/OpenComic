@@ -63,6 +63,7 @@ const MACOS = process.platform === 'darwin';
 const ANIMATION_SPEED = 1; // Only to debug animation transitions
 
 let tabs: Tab[] = [];
+let initEmptyTabs: boolean = false;
 let idCounter = 0;
 
 function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = true, newTab: boolean = false): number
@@ -698,9 +699,14 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 		restore.restore(openLastActiveTab);
 
 	if(tabs.length === 0)
+	{
+		initEmptyTabs = true;
 		addCurrentTab(false);
+	}
 	else if(!_restore)
+	{
 		update();
+	}
 
 	let ST: NodeJS.Timeout;
 
@@ -754,6 +760,7 @@ export default {
 	get tabs() {return tabs},
 	get idCounter() {return idCounter},
 	get lastUsedTabs() {return lastUsedTabs},
+	get initEmptyTabs() {return initEmptyTabs},
 	set tabs(val: Tab[]) {tabs = val},
 	set idCounter(val: number) {idCounter = val},
 	set lastUsedTabs(val: number[]) {lastUsedTabs = val},

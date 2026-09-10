@@ -522,7 +522,7 @@ async function startApp()
 			}
 		}
 
-		if(emptyNewWindow || !config.restoreTabsFromLastSession || !tabs?.tabs?.length || (tabs.tabs.length === 1 && !config.showAlwaysTabsBar))
+		if(emptyNewWindow || !config.restoreTabsFromLastSession || tabs.initEmptyTabs || !tabs?.tabs?.length || (tabs.tabs.length === 1 && !config.showAlwaysTabsBar))
 		{
 			if(lastReading && fs.existsSync(lastReading.mainPath))
 				dom.openComic(false, lastReading.path, lastReading.mainPath);
