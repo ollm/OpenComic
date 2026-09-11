@@ -14,6 +14,7 @@ function start()
 	app.event(window, 'mousedown touchstart', mousedown);
 
 	getControlsPosition();
+	getControlsPositionEvent();
 
 	if(process.platform == 'darwin') // Now tabs bar has the space of the traffic lights
 		hide();
@@ -48,6 +49,11 @@ function getControlsPosition()
 	controls.widthAndMargin = controlsWidth + MARGIN;
 	controls.right = !controlsOnLeft ? controlsWidth + MARGIN : 0;
 	controls.left = controlsOnLeft ? controlsWidth : 0;
+}
+
+function getControlsPositionEvent()
+{
+	navigator.windowControlsOverlay.addEventListener('geometrychange', getControlsPosition);
 }
 
 function mousedown(event)
@@ -157,6 +163,8 @@ function clickMenu(index)
 	let _menu = document.querySelector('.title-bar-menu-'+index);
 	let _menus = document.querySelector('.title-bar-menus-'+index);
 
+	const offset = controls.position === 'left' ? controls.width : 0;
+
 	if(_menu && _menus)
 	{
 		if(activeMenu !== index)
@@ -165,7 +173,7 @@ function clickMenu(index)
 
 			_menu.classList.add('active');
 			_menus.style.display = 'block';
-			_menus.style.left = (_menu.offsetLeft)+'px';
+			_menus.style.left = (_menu.offsetLeft + offset)+'px';
 		
 			dom.query('.bar-header').css({
 				webkitAppRegion: 'no-drag',

@@ -79,7 +79,7 @@
 	padding: 9px 9px;
 	box-sizing: border-box;
 	-webkit-app-region: no-drag;
-	margin-left: env(titlebar-area-x);
+	/*margin-left: env(titlebar-area-x);*/
 
 	transition: 0.2s;
 	display: none;
