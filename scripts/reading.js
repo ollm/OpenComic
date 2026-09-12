@@ -4444,8 +4444,8 @@ function pointermove(event)
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 	{
 		const areas = {
-			left: isFullScreen ? 12 : 192,
-			top: isFullScreen ? 12 : 96,
+			left: isFullScreen ? 3 : 192,
+			top: isFullScreen ? 3 : 96,
 			scrollBar: {
 				left: 180,
 				left2: 192,
@@ -4473,7 +4473,7 @@ function pointermove(event)
 
 					}, 200);
 
-				}, 300);
+				}, 500);
 
 				hideContentRunningST = true;
 			}
