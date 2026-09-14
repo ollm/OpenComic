@@ -176,6 +176,7 @@
 		"executableName": "opencomic",
 		"asar": true,
 		"publish": null,
+		"afterPack": "scripts/electron-fuses.js",
 		"toolsets": {
 			"winCodeSign": "1.1.0"
 		},
