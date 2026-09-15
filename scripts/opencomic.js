@@ -357,6 +357,7 @@ async function start()
 
 		template.loadInQuery('body', 'body.html');
 		theme.systemNightMode();
+		theme.loadCustomThemes();
 
 		titleBar.start();
 

@@ -3532,3 +3532,16 @@ a > code
 	margin-top: -7px;
 	margin-bottom: -3px;
 }
+
+.compact-actions-buttons-horizontal
+{
+	display: flex;
+	align-content: center;
+	width: auto;
+	align-items: center;
+}
+
+.compact-actions-buttons-horizontal > i
+{
+	margin-left: 8px;
+}

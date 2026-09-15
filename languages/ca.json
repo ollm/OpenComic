@@ -111,7 +111,9 @@
 		"title": "Títol",
 		"nightMode": "Mode nit",
 		"beta": "Beta",
-		"alpha": "Alfa"
+		"alpha": "Alfa",
+		"name": "Nom",
+		"active": "Actiu"
 	},
 	"comics": {
 		"continueReading": "Continuar llegint",
@@ -428,6 +430,14 @@
 				"green": "Verd",
 				"red": "Vermell",
 				"yellow": "Groc"
+			},
+			"customThemes": {
+				"main": "Temes personalitzats",
+				"description": "Afegeix un tema personalitzat seleccionant un arxiu css, l'arxiu pot tenir declaracions d'importació, més informació a la documentació",
+				"noThemes": "No hi ha temes personalitzats",
+				"add": "Afegir tema personalitzat",
+				"delete": "Eliminar tema personalitzat",
+				"confirmDelete": "Estàs segur que vols eliminar aquest tema personalitzat?"
 			}
 		},
 		"releases": {

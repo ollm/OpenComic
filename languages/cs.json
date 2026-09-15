@@ -111,7 +111,9 @@
 		"title": "",
 		"nightMode": "Noční režim",
 		"beta": "",
-		"alpha": ""
+		"alpha": "",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "Pokračovat ve čtení",
@@ -428,6 +430,14 @@
 				"green": "",
 				"red": "",
 				"yellow": ""
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

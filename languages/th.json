@@ -111,7 +111,9 @@
 		"title": "ชื่อเรื่อง",
 		"nightMode": "โหมดมืด",
 		"beta": "เบต้า",
-		"alpha": "อัลฟ่า"
+		"alpha": "อัลฟ่า",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "อ่านต่อ",
@@ -428,6 +430,14 @@
 				"green": "เขียว",
 				"red": "แดง",
 				"yellow": "เหลือง"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

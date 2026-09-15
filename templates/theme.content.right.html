@@ -41,4 +41,22 @@
 
 		{{/each}}
 	</div>
+
+	<h2 class="headline-small">{{language.settings.theme.customThemes.main}}</h2>
+
+	<div class="settings-custom-themes">
+		
+		<div class="menu-simple-text menu-grey settings-custom-themes-empty"{{#if customThemes}} style="display: none;"{{/if}}>
+			<span>{{language.settings.theme.customThemes.noThemes}}</span>
+		</div>
+
+		<div class="settings-custom-themes-list"{{#unless customThemes}} style="display: none;"{{/unless}}>
+		</div>
+
+		<div class="simple-button filled-tonal gamepad-item" onclick="theme.addCustomTheme();">
+			<div class="touch-effect"><i class="icon-24 material-icon">add</i>{{language.settings.theme.customThemes.add}}</div>
+		</div>
+		<cb></cb>
+	</div>
+
 </div>

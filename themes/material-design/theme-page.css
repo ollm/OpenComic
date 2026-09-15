@@ -78,3 +78,13 @@
 	opacity: 1;
 	animation: 4s blink normal 1s infinite ease-in-out;
 }
+
+.settings-custom-themes-list .compact-actions
+{
+	width: 100%;
+}
+
+.settings-custom-themes-list .compact-actions-button
+{
+	margin-right: 16px;
+}

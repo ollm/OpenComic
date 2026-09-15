@@ -111,7 +111,9 @@
 		"title": "제목",
 		"nightMode": "야간 모드",
 		"beta": "베타",
-		"alpha": "알파"
+		"alpha": "알파",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "이어서 읽기",
@@ -428,6 +430,14 @@
 				"green": "초록",
 				"red": "빨강",
 				"yellow": "노랑"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

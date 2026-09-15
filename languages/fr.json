@@ -111,7 +111,9 @@
 		"title": "Titre",
 		"nightMode": "Mode nuit",
 		"beta": "Bêta",
-		"alpha": "Alpha"
+		"alpha": "Alpha",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "Continuer la lecture",
@@ -428,6 +430,14 @@
 				"green": "Vert",
 				"red": "Rouge",
 				"yellow": "Jaune"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

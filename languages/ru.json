@@ -111,7 +111,9 @@
 		"title": "Название",
 		"nightMode": "Ночной режим",
 		"beta": "Бета",
-		"alpha": "Альфа"
+		"alpha": "Альфа",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "Продолжить чтение",
@@ -428,6 +430,14 @@
 				"green": "Зелёный",
 				"red": "Красный",
 				"yellow": "Жёлтый"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

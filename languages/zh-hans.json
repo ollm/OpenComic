@@ -111,7 +111,9 @@
 		"title": "标题",
 		"nightMode": "夜间模式",
 		"beta": "Beta",
-		"alpha": "Alpha"
+		"alpha": "Alpha",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "继续阅读",
@@ -428,6 +430,14 @@
 				"green": "绿色",
 				"red": "红色",
 				"yellow": "黄色"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

@@ -111,7 +111,9 @@
 		"title": "Назва",
 		"nightMode": "Нічний режим",
 		"beta": "Бета",
-		"alpha": "Альфа"
+		"alpha": "Альфа",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "Продовжити читання",
@@ -428,6 +430,14 @@
 				"green": "Зелений",
 				"red": "Червоний",
 				"yellow": "Жовтий"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

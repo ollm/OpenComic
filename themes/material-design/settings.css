@@ -54,7 +54,8 @@
 
 .settings-master-folders,
 .settings-servers,
-.settings-ignore-files
+.settings-ignore-files,
+.settings-custom-themes
 {
 	padding: 0px 24px;
 }
@@ -74,7 +75,8 @@
 
 .settings-master-folders-empty,
 .settings-servers-empty,
-.settings-ignore-files-empty
+.settings-ignore-files-empty,
+.settings-custom-themes-empty
 {
 	padding: 0px;
 	margin-bottom: 10px;
@@ -82,7 +84,8 @@
 
 .settings-master-folders-list,
 .settings-servers-list,
-.settings-ignore-files-list
+.settings-ignore-files-list,
+.settings-custom-themes-list
 {
 	margin: 19px 0px 13px;
 	display: flex;

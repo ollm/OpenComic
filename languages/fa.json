@@ -111,7 +111,9 @@
 		"title": "عنوان",
 		"nightMode": "حالت شب",
 		"beta": "بتا",
-		"alpha": "آلفا"
+		"alpha": "آلفا",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "ادامه مطالعه",
@@ -428,6 +430,14 @@
 				"green": "سبز",
 				"red": "قرمز",
 				"yellow": "زرد"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

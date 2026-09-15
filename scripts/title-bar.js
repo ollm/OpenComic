@@ -31,6 +31,8 @@ function getControlsPosition()
 	const controlsOnLeft = rect.left >= rightWidth;
 	let controlsWidth = controlsOnLeft ? rect.left : rightWidth;
 
+	console.log('getControlsPosition:', rect, controls);
+
 	if(controlsWidth > 400)
 	{
 		console.error(window.innerWidth, rect);

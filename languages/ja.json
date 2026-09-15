@@ -111,7 +111,9 @@
 		"title": "タイトル",
 		"nightMode": "ナイトモード",
 		"beta": "ベータ",
-		"alpha": "アルファ"
+		"alpha": "アルファ",
+		"name": "",
+		"active": ""
 	},
 	"comics": {
 		"continueReading": "続きから読む",
@@ -428,6 +430,14 @@
 				"green": "緑",
 				"red": "赤",
 				"yellow": "黄"
+			},
+			"customThemes": {
+				"main": "",
+				"description": "",
+				"noThemes": "",
+				"add": "",
+				"delete": "",
+				"confirmDelete": ""
 			}
 		},
 		"releases": {

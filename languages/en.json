@@ -111,7 +111,9 @@
 		"title": "Title",
 		"nightMode": "Night mode",
 		"beta": "Beta",
-		"alpha": "Alpha"
+		"alpha": "Alpha",
+		"name": "Name",
+		"active": "Active"
 	},
 	"comics": {
 		"continueReading": "Continue reading",
@@ -428,6 +430,14 @@
 				"green": "Green",
 				"red": "Red",
 				"yellow": "Yellow"
+			},
+			"customThemes": {
+				"main": "Custom themes",
+				"description": "Add a custom theme by selecting a css file, the file can have import statements, more info in the documentation",
+				"noThemes": "No custom themes",
+				"add": "Add custom theme",
+				"delete": "Delete custom theme",
+				"confirmDelete": "Are you sure you want to delete this custom theme?"
 			}
 		},
 		"releases": {
