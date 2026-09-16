@@ -802,11 +802,17 @@ a:hover
 {
 	overflow: hidden;
 	height: 100%;
+	display: flex;
 }
 
 .bar-left
 {
 	transform: translate(-50px, 0px);
+	flex: 1 1 auto;
+	display: flex;
+	min-width: 160px;
+	padding-right: 10px;
+	box-sizing: border-box;
 }
 
 .bar-left.show
@@ -1092,12 +1098,15 @@ a:hover
 
 .bar-right-buttons
 {
-	float: right;
 	max-width: calc(100% - 160px);
 	overflow-x: auto;
 	overflow-y: hidden;
 	height: 48px;
 	-webkit-app-region: no-drag;
+	width: max-content;
+	flex: 0 0 auto;
+	max-width: calc(100vw - 160px);
+	box-sizing: border-box;
 }
 
 .bar-right-buttons > div

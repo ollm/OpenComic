@@ -1,6 +1,6 @@
 <div class="bar-left {{barBack}}" style="{{headerAnimationDelay}}">
 	<div class="bar-back material-icon button button2 hover-text" hover-text="{{language.global.goBack}}" onclick="dom.history.goBack()" style="{{headerAnimationDelay}}">arrow_back</div>
-	<div class="bar-title title-small scroll-fade-x" style="max-width: calc(100% - ({{#if comicsDeep2}}685px{{else}}561px{{/if}} + 68px));">
+	<div class="bar-title title-small scroll-fade-x">
 		{{#if headerTitlePath}}
 			{{#each headerTitlePath}}
 				<span class="bar-title-a" onclick="{{#if path}}dom.loadIndexPage(true, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', false, false, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}', false, true){{else}}dom.goStartPath(){{/if}}" onmousedown="{{#if path}}tabs.middleClickOpen(event, '{{chain 'escapeBackSlash' 'escapeQuotesSimples' path}}', '{{chain 'escapeBackSlash' 'escapeQuotesSimples' mainPath}}'){{else}}dom.labels.middleClick(event, 'library'){{/if}}">{{name}}</span>
