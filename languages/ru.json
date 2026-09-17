@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Отслеживание в конце главы/тома",
 			"trackingAutoPrompt": "Автоматически предлагать отслеживание",
 			"trackingAutoPromptFavorites": "Автоматически предлагать отслеживание (только избранные сайты)",
-			"discordRcp": "Discord Rich Presence"
+			"discordRcp": "Discord Rich Presence",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Интерполяция изображений",

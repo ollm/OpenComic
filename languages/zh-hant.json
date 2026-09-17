@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "追蹤章節/卷末進度",
 			"trackingAutoPrompt": "自動提示追蹤",
 			"trackingAutoPromptFavorites": "自動提示追蹤 (僅限最愛網站)",
-			"discordRcp": "Discord 自訂狀態"
+			"discordRcp": "Discord 自訂狀態",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "圖片插值",

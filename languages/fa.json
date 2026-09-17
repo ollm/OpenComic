@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "همگام‌سازی در پایان چپتر/جلد",
 			"trackingAutoPrompt": "پرسش خودکار برای همگام‌سازی",
 			"trackingAutoPromptFavorites": "پرسش خودکار (فقط سایت‌های موردعلاقه)",
-			"discordRcp": "نمایش وضعیت در دیسکورد"
+			"discordRcp": "نمایش وضعیت در دیسکورد",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "درون‌یابی تصویر",

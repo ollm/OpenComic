@@ -1608,6 +1608,12 @@ function set(key, value, save = true)
 			dom.query('.settings-body .settings-open-files-in-new-tab').class(value, 'disable-pointer');
 
 			break;
+
+		case 'readingShowBarsOnClick':
+
+			dom.query('.settings-body .settings-show-bars-delay').class(!!value, 'disable-pointer');
+
+			break;
 	}
 
 	if(save)

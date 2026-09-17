@@ -4257,6 +4257,110 @@ function applyMoveZoomWithMouse(pageX = false, pageY = false)
 var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
 var ebookHasSelection = false;
 
+function showHiddenBars(event, onclick = false)
+{
+	const pageX = app.pageX(event);
+	const pageY = app.pageY(event);
+
+	const delay = onclick ? 0 : config.readingShowBarsDelay * 1000;
+
+	let showedSome = false;
+
+	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
+	{
+		const areas = {
+			left: isFullScreen ? 3 : 192,
+			top: isFullScreen ? 3 : 96,
+			scrollBar: {
+				left: 180,
+				left2: 192,
+				right: window.innerWidth - 12,
+			},
+		};
+
+		const canShow = !hideContentRunningST && (!config.readingShowBarsOnClick || onclick);
+		const inTopArea = pageY < areas.top && pageX < areas.scrollBar.right && (!(pageX >= areas.scrollBar.left && pageX <= areas.scrollBar.left2) || hiddenContentLeft);
+
+		if(inTopArea)
+		{
+			if(hiddenBarHeader && !shownBarHeader && !shownContentLeft && canShow)
+			{
+				hideContentST = setTimeout(function(){
+
+					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
+					reading.setShownBarHeader(true);
+					hideWindowButtons(false, true);
+
+					const tabsBar = document.querySelector('.tabs-bar');
+					tabsBar.style.webkitAppRegion = 'none';
+
+					setTimeout(function() {
+
+						// Force reflow
+						tabsBar.style.webkitAppRegion = '';
+
+					}, 200);
+
+				}, delay);
+
+				hideContentRunningST = true;
+
+				showedSome = true;
+			}
+		}
+		else if(pageX < areas.left)
+		{
+			if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && canShow)
+			{
+				hideContentST = setTimeout(function(){
+
+					dom.query('.content-left').addClass('show');
+					reading.setShownContentLeft(true, true);
+
+				}, delay);
+
+				hideContentRunningST = true;
+
+				showedSome = true;
+			}
+		}
+		else
+		{
+			clearTimeout(hideContentST);
+			hideContentRunningST = false;
+		}
+
+		if(contentLeftRect === false)
+		{
+			barHeaderRect = template._barHeader().getBoundingClientRect();
+			contentLeftRect = template._contentLeft().getBoundingClientRect();
+		}
+
+		if(shownBarHeader && pageY > barHeaderRect.height + tabs.height + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
+		{
+			clearTimeout(hideContentST);
+
+			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
+			reading.setShownBarHeader(false);
+			hideWindowButtons(true, true);
+
+			hideContentRunningST = false;
+		}
+
+		if(shownContentLeft && pageX > contentLeftRect.width + 48)
+		{
+			clearTimeout(hideContentST);
+
+			dom.query('.content-left').removeClass('show');
+			reading.setShownContentLeft(false);
+
+			hideContentRunningST = false;
+		}
+	}
+
+	return showedSome;
+}
+
 function pointermove(event)
 {
 	pointermoveEvent = event;
@@ -4441,91 +4545,7 @@ function pointermove(event)
 		}
 	}
 
-	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
-	{
-		const areas = {
-			left: isFullScreen ? 3 : 192,
-			top: isFullScreen ? 3 : 96,
-			scrollBar: {
-				left: 180,
-				left2: 192,
-				right: window.innerWidth - 12,
-			},
-		};
-
-		if(pageY < areas.top && pageX < areas.scrollBar.right && (!(pageX >= areas.scrollBar.left && pageX <= areas.scrollBar.left2) || hiddenContentLeft))
-		{
-			if(hiddenBarHeader && !shownBarHeader && !shownContentLeft && !hideContentRunningST)
-			{
-				hideContentST = setTimeout(function(){
-
-					dom.queryAll('.bar-header, .tabs-bar').addClass('show');
-					reading.setShownBarHeader(true);
-					hideWindowButtons(false, true);
-
-					const tabsBar = document.querySelector('.tabs-bar');
-					tabsBar.style.webkitAppRegion = 'none';
-
-					setTimeout(function() {
-
-						// Force reflow
-						tabsBar.style.webkitAppRegion = '';
-
-					}, 200);
-
-				}, 500);
-
-				hideContentRunningST = true;
-			}
-		}
-		else if(pageX < areas.left)
-		{
-			if(hiddenContentLeft && !shownContentLeft && !shownBarHeader && !hideContentRunningST)
-			{
-				hideContentST = setTimeout(function(){
-
-					dom.query('.content-left').addClass('show');
-					reading.setShownContentLeft(true, true);
-
-				}, 300);
-
-				hideContentRunningST = true;
-			}
-		}
-		else
-		{
-			clearTimeout(hideContentST);
-			hideContentRunningST = false;
-		}
-
-		if(contentLeftRect === false)
-		{
-			barHeaderRect = template._barHeader().getBoundingClientRect();
-			contentLeftRect = template._contentLeft().getBoundingClientRect();
-		}
-
-		if(shownBarHeader && pageY > barHeaderRect.height + tabs.height + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
-		{
-			clearTimeout(hideContentST);
-
-			dom.queryAll('.bar-header, .tabs-bar').removeClass('show');
-			reading.setShownBarHeader(false);
-			hideWindowButtons(true, true);
-
-			hideContentRunningST = false;
-		}
-
-		if(shownContentLeft && pageX > contentLeftRect.width + 48)
-		{
-			clearTimeout(hideContentST);
-
-			dom.query('.content-left').removeClass('show');
-			reading.setShownContentLeft(false);
-
-			hideContentRunningST = false;
-		}
-	}
-
+	showHiddenBars(event, false);
 	hideMouseInFullscreen(event);
 }
 
@@ -5528,6 +5548,7 @@ module.exports = {
 	createAndDeleteBookmark: createAndDeleteBookmark,
 	currentPageIsBookmark: currentPageIsBookmark,
 	deleteBookmark: deleteBookmark,
+	showHiddenBars: showHiddenBars,
 	hideMouseInFullscreen: hideMouseInFullscreen,
 	currentIndex: function(){return currentIndex},
 	currentImagePosition: currentImagePosition,

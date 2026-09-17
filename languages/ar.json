@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "التتبع في نهاية الفصل/الجزء",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "معالجة الصور في البرنامج",

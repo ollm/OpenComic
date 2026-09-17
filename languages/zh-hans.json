@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪",
 			"trackingAutoPrompt": "自动提示跟踪",
 			"trackingAutoPromptFavorites": "自动提示跟踪（仅限收藏站点）",
-			"discordRcp": "Discord Rich Presence"
+			"discordRcp": "Discord Rich Presence",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "图像插值",

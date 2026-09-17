@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Seguimiento al final del capítulo/tomo",
 			"trackingAutoPrompt": "Aviso automático para realizar el seguimiento",
 			"trackingAutoPromptFavorites": "Aviso automático para realizar el seguimiento (Solo sitios favoritos)",
-			"discordRcp": "Discord Rich Presence"
+			"discordRcp": "Discord Rich Presence",
+			"showBarsOnClick": "Mostrar barras al hacer clic en el área",
+			"showBarsDelay": "Retraso al mostrar las barras"
 		},
 		"imageInterpolation": {
 			"main": "Interpolación de imagen",

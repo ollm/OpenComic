@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Seguiment al final del capítol/tom",
 			"trackingAutoPrompt": "Avís automàtic per fer el seguiment",
 			"trackingAutoPromptFavorites": "Avís automàtic per fer el seguiment (Solament llocs favorits)",
-			"discordRcp": "Discord Rich Presence"
+			"discordRcp": "Discord Rich Presence",
+			"showBarsOnClick": "Mostrar les barres en fer clic a l'àrea",
+			"showBarsDelay": "Retard en mostrar les barres"
 		},
 		"imageInterpolation": {
 			"main": "Interpolació d'imatge",

@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Tracking am Ende des Kapitels/Bandes",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": "Discord Rich Presence"
+			"discordRcp": "Discord Rich Presence",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Bildinterpolation",

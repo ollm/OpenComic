@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "",

@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 167; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 168; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -228,6 +228,8 @@ const storageDefault = {
 		readingHideContentLeftFullScreen: true,
 		readingHideBarHeaderFullScreen: true,
 		readingHideTabsBarFullScreen: true,
+		readingShowBarsDelay: 0.5,
+		readingShowBarsOnClick: false,
 		readingShowPageNumberFullScreen: false,
 		readingMaxMargin: 800,
 		readingGlobalZoom: true,

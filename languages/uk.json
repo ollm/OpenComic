@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Відстеження в кінці розділу/тому",
 			"trackingAutoPrompt": "Автоматично пропонувати відстеження",
 			"trackingAutoPromptFavorites": "Автоматично пропонувати відстеження (лише для обраних сайтів)",
-			"discordRcp": "Розширений статус Discord"
+			"discordRcp": "Розширений статус Discord",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Інтерполяція зображень",

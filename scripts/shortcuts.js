@@ -127,6 +127,12 @@ function getTapZoneAction(event, button)
 
 function clickTapZone(event, button)
 {
+	if(config.readingShowBarsOnClick)
+	{
+		const showedSome = reading.showHiddenBars(event, true);
+		if(showedSome) return false;
+	}
+
 	if(config.disableTapZones)
 		return false;
 

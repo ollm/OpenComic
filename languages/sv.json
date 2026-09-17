@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Bildinterpolering",

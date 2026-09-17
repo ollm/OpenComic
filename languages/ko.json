@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "챕터/권 끝까지 읽으면 사이트 연동 자동 업데이트",
 			"trackingAutoPrompt": "읽음 처리 자동 알림",
 			"trackingAutoPromptFavorites": "읽음 처리 자동 알림 (즐겨찾기 사이트만)",
-			"discordRcp": "디스코드 리치 프레즌스 사용"
+			"discordRcp": "디스코드 리치 프레즌스 사용",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "이미지 보간",

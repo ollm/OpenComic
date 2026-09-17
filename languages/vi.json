@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Theo dõi tại đầu của chương/tập truyện",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Xử lý hình ảnh (interpolation)",

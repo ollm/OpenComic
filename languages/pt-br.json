@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Monitorar ao final do capítulo/volume",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Interpolação de imagens",

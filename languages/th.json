@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "ติดตามส่วนท้ายของตอน/เล่ม",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "การปรับปรุงรูปภาพ",

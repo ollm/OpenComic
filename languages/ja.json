@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "章/巻の最後でサイト連携を更新",
 			"trackingAutoPrompt": "自動でサイト連携を確認",
 			"trackingAutoPromptFavorites": "自動でサイト連携を確認（お気に入りサイトのみ）",
-			"discordRcp": "Discord Rich Presence"
+			"discordRcp": "Discord Rich Presence",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "画像の補間",

@@ -342,7 +342,9 @@
 			"trackingAtTheEnd": "Sadece bölüm/cilt sonlarını takip et",
 			"trackingAutoPrompt": "",
 			"trackingAutoPromptFavorites": "",
-			"discordRcp": ""
+			"discordRcp": "",
+			"showBarsOnClick": "",
+			"showBarsDelay": ""
 		},
 		"imageInterpolation": {
 			"main": "Resim enterpolasyonu",
