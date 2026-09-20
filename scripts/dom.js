@@ -1297,6 +1297,9 @@ function loadIndexContentLeft(animation, onlyIfIsNotLoaded = false)
 	// Is from
 	handlebarsContext.isFrom = currentSelectMenuItem;
 
+	// Labels expanded state
+	handlebarsContext.labelsExpanded = config.labelsExpanded;
+
 	template.loadContentLeft('index.content.left.html', animation);
 
 	setTimeout(function() {

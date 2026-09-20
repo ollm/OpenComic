@@ -45,8 +45,15 @@
 	</div>
 	{{/each}}
 
+	{{#if labels.length}}
+	<div class="menu-item menu-item-labels-expanded body-medium gamepad-item" onclick="dom.labels.expandLabels();" hover-text="{{language.global.labels}}">
+		<div class="icon-24 material-icon">{{#if labelsExpanded}}unfold_less{{else}}unfold_more{{/if}}</div>
+		{{language.global.labels}}
+	</div>
+	{{/if}}
+
 	{{#each labels}}
-	<div class="menu-item menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" onclick="dom.labels.label('{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}', {{key}});" onmousedown="dom.labels.middleClick(event, 'label', {index: {{key}}, name: '{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}'})" hover-text="{{name}}">
+	<div class="menu-item menu-item-label menu-item-{{id}} body-medium gamepad-item{{#compare @root.isFrom '==' id}} active{{/compare}}" style="display: {{#if ../labelsExpanded}}block{{else}}none{{/if}};" onclick="dom.labels.label('{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}', {{key}});" onmousedown="dom.labels.middleClick(event, 'label', {index: {{key}}, name: '{{chain 'escapeBackSlash' 'escapeQuotesSimples' name}}'})" hover-text="{{name}}">
 		<div class="icon-24 material-icon">label</div>
 		{{name}}
 	</div>

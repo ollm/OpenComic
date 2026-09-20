@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 168; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 169; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -211,6 +211,7 @@ const storageDefault = {
 			}
 		},
 		recentlyOpenedItems: 100,
+		labelsExpanded: true,
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
 		showLibraryPath: true,

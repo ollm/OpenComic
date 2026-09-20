@@ -263,6 +263,18 @@ function loadLabels()
 	events.events();
 }
 
+function expandLabels()
+{
+	const labelsExpanded = !config.labelsExpanded;
+	settings.set('labelsExpanded', labelsExpanded);
+
+	dom.query('.menu-item.menu-item-labels-expanded .icon-24.material-icon').html(labelsExpanded ? 'unfold_less' : 'unfold_more');
+
+	dom.queryAll('.menu-item-label').css({
+		display: labelsExpanded ? 'block' : 'none',
+	});
+}
+
 function filterLabels(key = 0)
 {
 	const currentFilter = dom.prevIndexLabel()?.filter || {};
@@ -989,6 +1001,7 @@ module.exports = {
 	filter,
 	filterFavorite,
 	loadLabels,
+	expandLabels,
 	filterLabels,
 	filterRequireAllLabels,
 	filterOnlyRoot,
