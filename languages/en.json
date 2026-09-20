@@ -68,6 +68,7 @@
 			"setAsPosterFolders": "Set image as poster of another folder",
 			"posterSetSuccessfully": "The image has been set as poster",
 			"saveImage": "Save image",
+			"saveAiImage": "Save AI image",
 			"saveAllImages": "Save all images",
 			"saveBookmarksImages": "Save current bookmarked images",
 			"saveAllBookmarksImages": "Save all bookmarked images",

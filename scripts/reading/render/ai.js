@@ -86,54 +86,8 @@ function upscale(src, imageSize, options = {})
 	return false;
 }
 
-function pipeline()
+function pipeline(src, imageSize)
 {
-
-}
-
-const downloading = {
-	start: function() {
-
-		events.snackbar({
-			key: 'downloadingAiModel',
-			text: 'Downloading AI model',
-			duration: events.INFINITY,
-			buttons: [
-				{
-					text: 'AA', // language.buttons.download,
-					function: 'events.closeSnackbar();',
-					className: 'ai-model-downloading-button',
-				},
-			],
-		});
-
-		const button = document.querySelector('.snackbar .ai-model-downloading-button');
-		//events.buttonLoading(button, true);
-		events.buttonLoading(button, 0.01);
-
-	},
-	progress: function(progress) {
-
-		const button = document.querySelector('.snackbar .ai-model-downloading-button');
-		events.buttonLoading(button, progress);
-
-	},
-	end: function() {
-
-		const button = document.querySelector('.snackbar .ai-model-downloading-button');
-		events.buttonLoading(button, 1);
-
-		events.closeSnackbar();
-
-	},
-};
-
-function _image(src, imageSize, options = {})
-{
-	setModelsPath();
-	OpenComicAI.setSharp(sharp);
-
-	// Set tmp usage
 	const listModels = [];
 
 	const artifactRemoval = _config.readingAi.artifactRemoval;
@@ -198,6 +152,53 @@ function _image(src, imageSize, options = {})
 		listModels.push(toUpscale.model);
 	}
 
+	return {pipeline: _pipeline, listModels};
+}
+
+const downloading = {
+	start: function() {
+
+		events.snackbar({
+			key: 'downloadingAiModel',
+			text: 'Downloading AI model',
+			duration: events.INFINITY,
+			buttons: [
+				{
+					text: 'AA', // language.buttons.download,
+					function: 'events.closeSnackbar();',
+					className: 'ai-model-downloading-button',
+				},
+			],
+		});
+
+		const button = document.querySelector('.snackbar .ai-model-downloading-button');
+		//events.buttonLoading(button, true);
+		events.buttonLoading(button, 0.01);
+
+	},
+	progress: function(progress) {
+
+		const button = document.querySelector('.snackbar .ai-model-downloading-button');
+		events.buttonLoading(button, progress);
+
+	},
+	end: function() {
+
+		const button = document.querySelector('.snackbar .ai-model-downloading-button');
+		events.buttonLoading(button, 1);
+
+		events.closeSnackbar();
+
+	},
+};
+
+function _image(src, imageSize, options = {})
+{
+	setModelsPath();
+	OpenComicAI.setSharp(sharp);
+
+	const {pipeline: _pipeline, listModels} = pipeline(src, imageSize);
+
 	if(!_pipeline.length)
 		return;
 
@@ -217,7 +218,7 @@ function _image(src, imageSize, options = {})
 		return;
 
 	if(options.start)
-		options.start(pipeline);
+		options.start(_pipeline);
 
 	(async function(){
 
@@ -268,6 +269,28 @@ function _image(src, imageSize, options = {})
 	return;
 }
 
+function hasAiImage(src, imageSize)
+{
+	const {pipeline: _pipeline, listModels} = pipeline(src, imageSize);
+
+	if(!_pipeline.length)
+		return;
+
+	const folderSha = sha1(p.dirname(src));
+	const imageSha = sha1(`${src}|${JSON.stringify(_pipeline)}`);
+
+	const folderPath = p.join(tempFolder, 'ai', folderSha);
+	const path = p.join(folderPath, imageSha+'.jpg');
+
+	if(fs.existsSync(path))
+	{
+		fileManager.setTmpUsage(path);
+		return path;
+	}
+
+	return false;
+}
+
 let prevOptionsKey = false;
 
 function clean(force = false)
@@ -288,6 +311,7 @@ module.exports = {
 	upscale,
 	pipeline,
 	image: _image,
+	hasAiImage,
 	clean,
 	downloading,
 };

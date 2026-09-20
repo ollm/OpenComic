@@ -9,12 +9,15 @@ function show(event, gamepad = false)
 	const elementFromPoint = shortcuts.elementFromPoint;
 
 	const saveImages = (reading.isPdf() || reading.isEbook()) ? false : true;
-	dom.queryAll('.separator-set-as-poster, .reading-context-menu-copy-image, .separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
+	dom.queryAll('.separator-set-as-poster, .reading-context-menu-copy-image, .separator-save-images, .reading-context-menu-save-image, .reading-context-menu-save-ai-image, .reading-context-menu-save-all-images, .reading-context-menu-save-bookmarks-images, .reading-context-menu-save-all-bookmarks-images, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: saveImages ? '' : 'none'});
 
 	if(saveImages)
 	{
 		const setAsPoster = /app\.asar\.unpacked/.test(reading.readingCurrentPath()) ? false : true;
 		dom.queryAll('.separator-set-as-poster, .reading-context-menu-set-as-poster, .reading-context-menu-set-as-poster-folders').css({display: setAsPoster ? '' : 'none'});
+
+		const hasAiImage = reading.contextMenu.hasAiImage();
+		dom.queryAll('.reading-context-menu-save-ai-image').css({display: hasAiImage ? '' : 'none'});
 	}
 
 	// Blank pages
@@ -112,8 +115,11 @@ function setAsPosterFolders()
 	dom.poster.setAsPosterFolders(image.path, dom.history.mainPath);
 }
 
-function generateFileName(path, page, leadingZeros, fileName)
+function generateFileName(path, page, leadingZeros, fileName, ai = false)
 {
+	if(ai)
+		path = ai;
+
 	// Parent folder name
 	let parentFolderName = p.dirname(p.dirname(path));
 	let ext1 = p.extname(parentFolderName);
@@ -133,6 +139,9 @@ function generateFileName(path, page, leadingZeros, fileName)
 	fileName = fileName.replace(/\[page\]/, String(page).padStart(leadingZeros, '0'));
 	fileName = fileName.replace(/\[pageInt\]/, page);
 
+	if(ai)
+		fileName = `${fileName} [ai]`;
+
 	let ext3 = p.extname(fileName);
 	if(!ext3 || ext3.length >= 6) fileName += extension;
 
@@ -145,6 +154,31 @@ function saveImage()
 	const image = getCurrentImage(true);
 
 	saveAllImages(position, image);
+}
+
+function saveAiImage()
+{
+	const aiPath = hasAiImage();
+	if(!aiPath) return;
+
+	const image = getCurrentImage(true);
+
+	const toSave = [{path: aiPath, page: image.index, ai: image.path}];
+
+	const imagesData = reading.imagesData();
+
+	const highestPage = Object.keys(imagesData).reduce((highest, key) => {
+		const page = Number(key);
+		return Number.isFinite(page) && page > highest ? page : highest;
+	}, 0);
+
+	saveImages(toSave, String(highestPage).length);
+}
+
+function hasAiImage()
+{
+	const image = getCurrentImage(true);
+	return reading.render.ai.hasAiImage(image.image, image);
 }
 
 function saveAllImages(position = false, image = false, _return = false)
@@ -249,7 +283,7 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 		{
 			const image = toSave[i];
 			const realPath = fileManager.realPath(image.path);
-			const saveImageTo = fileManager.genearteFilePath(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName));
+			const saveImageTo = fileManager.genearteFilePath(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName, image.ai));
 			if(first === '') first = saveImageTo;
 
 			if(!fs.existsSync(saveImageTo))
@@ -457,6 +491,8 @@ module.exports = {
 	setAsPoster: setAsPoster,
 	setAsPosterFolders: setAsPosterFolders,
 	saveImage: saveImage,
+	saveAiImage: saveAiImage,
+	hasAiImage: hasAiImage,
 	saveAllImages: saveAllImages,
 	saveBookmarksImages: saveBookmarksImages,
 	saveAllBookmarksImages: saveAllBookmarksImages,

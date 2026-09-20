@@ -68,6 +68,7 @@
 			"setAsPosterFolders": "将图片设置为另一个文件夹的海报",
 			"posterSetSuccessfully": "该图片已设置为海报",
 			"saveImage": "保存图片",
+			"saveAiImage": "",
 			"saveAllImages": "保存所有图片",
 			"saveBookmarksImages": "保存当前已加书签的图片",
 			"saveAllBookmarksImages": "保存所有已加书签的图片",
