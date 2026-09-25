@@ -30,33 +30,39 @@ async function getRecursiveFiles(path)
 	return files;
 }
 
-async function clear(path)
+async function clear(paths)
 {
-	const files = await getRecursiveFiles(path);
+	if(typeof paths === 'string')
+		paths = [paths];
 
-	files.push({
-		path: path,
-		folder: false, // It may be true, but it only matters if it is a compressed file
-		compressed: fileManager.isCompressed(path),
-	});
-
-	for(let i = 0, len = files.length; i < len; i++)
+	for(const path of paths)
 	{
-		const file = files[i];
+		const files = await getRecursiveFiles(path);
 
-		if(!file.folder && !file.compressed)
+		files.push({
+			path: path,
+			folder: false, // It may be true, but it only matters if it is a compressed file
+			compressed: fileManager.isCompressed(path),
+		});
+
+		for(let i = 0, len = files.length; i < len; i++)
 		{
-			await cache.deleteInCache(file.path);
+			const file = files[i];
+
+			if(!file.folder && !file.compressed)
+			{
+				await cache.deleteInCache(file.path);
+			}
+			else if(file.compressed)
+			{
+				const cacheFile = 'compressed-files-'+sha1(file.path)+'.json';
+				cache.deleteJson(cacheFile);
+			}
 		}
-		else if(file.compressed)
-		{
-			const cacheFile = 'compressed-files-'+sha1(file.path)+'.json';
-			cache.deleteJson(cacheFile);
-		}
+
+		// Force recount of pages
+		await reading.progress.countPages(path, false);
 	}
-
-	// Force recount of pages
-	await reading.progress.countPages(path, false);
 
 	dom.reload();
 

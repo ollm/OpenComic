@@ -141,19 +141,27 @@ function masterFolder(folder, index)
 	dom.loadIndexPage(true);
 }
 
-function setFavorite(path)
+function setFavorite(paths)
 {
-	path = relative.path(path);
-	let favorites = storage.get('favorites');
+	if(typeof paths === 'string')
+		paths = [paths];
 
-	if(favorites[path])
-		delete favorites[path];
-	else
-		favorites[path] = {added: time()};
+	paths = paths.map(path => relative.path(path));
+	const favorites = storage.get('favorites');
+
+	const deleteFavorite = haveFavorite(paths, true);
+
+	for(const path of paths)
+	{
+		if(deleteFavorite)
+			delete favorites[path];
+		else
+			favorites[path] = {added: time()};
+	}
 
 	storage.set('favorites', favorites);
 
-	let prevIndexLabel = dom.prevIndexLabel();
+	const prevIndexLabel = dom.prevIndexLabel();
 
 	if(prevIndexLabel.favorites)
 		dom.reload();
@@ -410,7 +418,7 @@ function deleteFromSortAndView(name, index)
 	storage.setKey('config', 'sortAndView', sortAndView);
 }
 
-var labelsDialogPath = false;
+var labelsDialogPaths = false;
 
 function getLabels(comicLabels = [])
 {
@@ -438,47 +446,52 @@ function getLabels(comicLabels = [])
 	return labels;
 }
 
-function setLabels(path, save = false)
+function setLabels(paths, save = false)
 {
+	if(typeof paths === 'string')
+		paths = [paths];
+
 	if(save)
 	{
-		let labels = storage.get('labels');
-		let comicLabels = storage.get('comicLabels');
+		const labels = storage.get('labels');
+		const comicLabels = storage.get('comicLabels');
 
-		let _labels = [];
+		const _labels = [];
 
-		let inputs = template._globalElement().querySelectorAll('.dialog .checkbox input');
+		const inputs = template._globalElement().querySelectorAll('.dialog .checkbox input');
 
-		for(let i = 0, len = inputs.length; i < len; i++)
+		for(const input of inputs)
 		{
-			let input = inputs[i];
-			let key = +input.dataset.key;
-			let value = +input.value;
+			const key = +input.dataset.key;
+			const value = +input.value;
 
 			if(value && labels[key])
 				_labels.push(labels[key]);
 		}
 
-		if(!_labels.length)
-			delete comicLabels[labelsDialogPath];
-		else
-			comicLabels[labelsDialogPath] = _labels;
+		for(const path of labelsDialogPaths)
+		{
+			if(!_labels.length)
+				delete comicLabels[path];
+			else
+				comicLabels[path] = _labels;
+		}
 
 		storage.set('comicLabels', comicLabels);
 
-		labelsDialogPath = false;
+		labelsDialogPaths = false;
 
-		let prevIndexLabel = dom.prevIndexLabel();
+		const prevIndexLabel = dom.prevIndexLabel();
 
 		if(prevIndexLabel.label)
 			dom.reload();
 	}
 	else
 	{
-		labelsDialogPath = relative.path(path);
+		labelsDialogPaths = paths.map(path => relative.path(path));
 
 		const comicLabels = relative.get('comicLabels');
-		const labels = getLabels(comicLabels[path] || []);
+		const labels = getLabels(comicLabels[labelsDialogPaths[0]] || []);
 
 		handlebarsContext.labels = labels;
 
@@ -532,8 +545,8 @@ function newLabel(save = false, fromEditLabels = false)
 
 			if(fromEditLabels)
 				editLabels();
-			else if(labelsDialogPath)
-				setLabels(labelsDialogPath);
+			else if(labelsDialogPaths)
+				setLabels(labelsDialogPaths);
 			else if(labelsShortcutPageConfig)
 				setShortcutPageConfigLabels();
 
@@ -858,6 +871,64 @@ function has(path, parents = false)
 	return false;
 }
 
+function haveLabel(paths, requireAll = true)
+{
+	if(typeof paths === 'string')
+		paths = [paths];
+
+	if(!Array.isArray(paths))
+		return false;
+
+	const comicLabels = relative.get('comicLabels');
+	let isLabel = false;
+
+	for(const path of paths)
+	{
+		if(comicLabels[path])
+		{
+			isLabel = true;
+
+			if(!requireAll)
+				return true;
+		}
+		else if(requireAll)
+		{
+			return false;
+		}
+	}
+
+	return isLabel;
+}
+
+function haveFavorite(paths, requireAll = true)
+{
+	if(typeof paths === 'string')
+		paths = [paths];
+
+	if(!Array.isArray(paths))
+		return false;
+
+	const favorites = relative.get('favorites');
+	let isFavorite = false;
+
+	for(const path of paths)
+	{
+		if(favorites[path])
+		{
+			isFavorite = true;
+
+			if(!requireAll)
+				return true;
+		}
+		else if(requireAll)
+		{
+			return false;
+		}
+	}
+
+	return isFavorite;
+}
+
 // Labels functions related to reading shortcut page config
 var labelsShortcutPageConfig = false;
 
@@ -1013,6 +1084,8 @@ module.exports = {
 	deleteLabel,
 	deleteFromSortAndView,
 	has,
+	haveLabel,
+	haveFavorite,
 	menuItemSelector,
 	getName,
 	setShortcutPageConfigLabels,

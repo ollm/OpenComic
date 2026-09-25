@@ -8,7 +8,9 @@ const domPoster = require(p.join(appDir, '.dist/dom/poster.js')),
 	boxes = require(p.join(appDir, '.dist/dom/boxes.js')),
 	history = require(p.join(appDir, '.dist/dom/history.js')),
 	scroll = require(p.join(appDir, '.dist/dom/scroll.js')),
-	sort = require(p.join(appDir, '.dist/dom/sort.mjs')).default;
+	sort = require(p.join(appDir, '.dist/dom/sort.mjs')).default,
+	multiSelect = require(p.join(appDir, '.dist/dom/multi-select.mjs')).default,
+	contextMenu = require(p.join(appDir, '.dist/dom/context-menu.mjs')).default;
 
 const diff = require(p.join(appDir, '.dist/diff.mjs')).default;
 
@@ -146,20 +148,14 @@ async function addProgressToDom(sha, progress, animation = true)
 		{
 			for(const item of src)
 			{
-				if(item.classList.contains('medium-list'))
-					item.style.opacity = 0.3;
-				else
-					item.firstElementChild.style.opacity = 0.3;
+				item.firstElementChild.style.opacity = 0.3;
 			}
 		}
 		else
 		{
 			for(const item of src)
 			{
-				if(item.classList.contains('medium-list'))
-					item.style.opacity = '';
-				else
-					item.firstElementChild.style.opacity = '';
+				item.firstElementChild.style.opacity = '';
 			}
 		}
 	}
@@ -1766,6 +1762,49 @@ function calculateVisibleItems(view, scrollTop = false)
 	return {start: start, end: end};
 }
 
+function calculateItemsDistribution(view, scrollTop = false)
+{
+	const element = template._contentRight().firstElementChild;
+	let rect = element.getBoundingClientRect();
+
+	if(rect.width == 0 || rect.height == 0)
+		rect = {width: window.innerWidth, height: window.innerHeight, top: rect.top, left: rect.left};
+
+	let width = rect.width;
+	let height = 72;
+	let itemsPerLine = 1;
+
+	if(view == 'module')
+	{
+		const viewModuleSize = handlebarsContext.page.viewModuleSize || 150;
+
+		const sizes = {
+			100: {width: 116, height: 230},
+			150: {width: 166, height: 305},
+			200: {width: 216, height: 380},
+			250: {width: 266, height: 455},
+			300: {width: 316, height: 530},
+		};
+
+		const size = sizes[viewModuleSize];
+		width = size.width;
+		height = size.height;
+		itemsPerLine = Math.floor((rect.width - 16) / size.width);
+	}
+
+	return {
+		width: width,
+		height: height,
+		itemsPerLine: itemsPerLine,
+		rect: {
+			width: rect.width,
+			height: rect.height,
+			top: rect.top,
+			left: rect.left,
+		},
+	};
+}
+
 function goStartPath()
 {
 	const root = history.root();
@@ -2511,7 +2550,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 		return;
 	}
 
-	const canBeDelete = (!fileManager.isServer(path) && !fileManager.lastCompressedFile(p.dirname(path))) ? true : false;
+	const canBeDelete = (!isServer && !fileManager.lastCompressedFile(p.dirname(path))) ? true : false;
 
 	dom.query('#index-context-menu .separator-remove').css({display: canBeDelete ? 'block' : 'none'});
 
@@ -2782,14 +2821,17 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 }
 
 // Remove the comic from OpenComic
-function removeComic(path, confirm = false, reload = true)
+function removeComic(paths, confirm = false, reload = true)
 {
-	path = relative.path(path);
-	var _comics = [], comics = storage.get('comics');
+	if(typeof paths === 'string')
+		paths = [paths]
+
+	paths = paths.map(path => relative.path(path));
+	const _comics = [], comics = storage.get('comics');
 
 	for(let i in comics)
 	{
-		if(comics[i].path != path)
+		if(!paths.includes(comics[i].path))
 			_comics.push(comics[i]);
 	}
 
@@ -2798,32 +2840,71 @@ function removeComic(path, confirm = false, reload = true)
 	if(reload) dom.reload();
 }
 
-async function moveToTrash(path, fromIndexNotMasterFolders = false, confirm = false)
+async function moveToTrash(paths, fromIndex = false, confirm = false)
 {
-	await dom.poster.findAndDelete(path, true, true);
-	await electron.ipcRenderer.invoke('move-to-trash', path);
+	if(typeof paths === 'string')
+		paths = [paths];
 
-	if(fromIndexNotMasterFolders)
-		dom.removeComic(path, true, false);
+	for(const path of paths)
+	{
+		await dom.poster.findAndDelete(path, true, true);
+
+		if(!fs.existsSync(path))
+			continue;
+
+		try
+		{
+			await electron.ipcRenderer.invoke('move-to-trash', path);
+		}
+		catch(error)
+		{
+			if(fs.existsSync(path))
+				console.error('Failed to move to trash:', path, error);
+		}
+	}
+
+	if(fromIndex)
+		dom.removeComic(paths, true, false);
 
 	dom.reload();
 }
 
-async function deletePermanently(path, fromIndexNotMasterFolders = false, confirm = false)
-{
+let deletePermanentlyPaths = [];
+
+async function deletePermanently(paths = false, fromIndex = false, confirm = false)
+{	
+	if(typeof paths === 'string')
+		paths = [paths];
+	else if(!paths)
+		paths = deletePermanentlyPaths;
+
 	if(confirm)
 	{
-		await dom.poster.findAndDelete(path, false, true);
+		for(const path of paths)
+		{
+			try
+			{
+				await dom.poster.findAndDelete(path, false, true);
 
-		fs.rmSync(path, {recursive: true});
+				if(fs.existsSync(path))
+					fs.rmSync(path, {recursive: true});
+			}
+			catch(error)
+			{
+				if(fs.existsSync(path))
+					console.error('Failed to delete permanently:', path, error);
+			}
+		}
 
-		if(fromIndexNotMasterFolders)
-			dom.removeComic(path, true, false);
+		if(fromIndex)
+			dom.removeComic(paths, true, false);
 
 		dom.reload();
 	}
 	else
 	{
+		deletePermanentlyPaths = paths;
+
 		events.dialog({
 			header: language.global.contextMenu.deletePermanently,
 			width: 400,
@@ -2836,7 +2917,7 @@ async function deletePermanently(path, fromIndexNotMasterFolders = false, confir
 				},
 				{
 					text: language.global.contextMenu.deletePermanently,
-					function: 'events.closeDialog(); dom.deletePermanently(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\', '+(fromIndexNotMasterFolders ? 'true' : 'false')+', true);',
+					function: 'events.closeDialog(); dom.deletePermanently(false, '+(fromIndex ? 'true' : 'false')+', true);',
 				}
 			],
 		});
@@ -3173,6 +3254,7 @@ module.exports = {
 	fromLibrary: fromLibrary,
 	continueReadingError: continueReadingError,
 	calculateVisibleItems: calculateVisibleItems,
+	calculateItemsDistribution: calculateItemsDistribution,
 	poster: domPoster,
 	search: search,
 	labels: labels,
@@ -3183,6 +3265,8 @@ module.exports = {
 	history: history,
 	scroll: scroll,
 	sort: sort,
+	multiSelect: multiSelect,
+	contextMenu: contextMenu,
 	this: domManager.this,
 	query: domManager.query,
 	queryAll: domManager.queryAll,

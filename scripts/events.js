@@ -840,7 +840,7 @@ function select(This)
 	This.classList.add('s');
 }
 
-function menuSimple(items, {width = false, query = '#menu-simple-element'} = {})
+function menuSimple(items, {width = false, query = '#menu-simple-element', size = false, closeFuncion = 'events.hideSelect(true);'} = {})
 {
 	const menu = document.querySelector(`${query} .menu-simple`);
 	if(!menu) return;
@@ -848,9 +848,21 @@ function menuSimple(items, {width = false, query = '#menu-simple-element'} = {})
 	const content = menu.querySelector('.menu-simple-content');
 	if(!content) return;
 
+	items = items.map(function(item) {
+
+		const _function = item.function ? (item.function.endsWith(';') ? item.function : item.function+';') : '';
+
+		return {
+			...item,
+			size,
+			closeFuncion,
+			function: _function
+		};
+	});
+
 	handlebarsContext.menu = {items};
 
-	menu.style.width = width ? `${width}px` : '354px';
+	menu.style.width = width ? `${width}px` : (width === false ? '354px' : '');
 	content.innerHTML = template.load('menu.simple.element.html');
 }
 

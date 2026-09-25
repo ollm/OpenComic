@@ -55,7 +55,6 @@ function systemNightMode()
 function loadCustomThemes()
 {
 	const customThemes = storage.get('customThemes');
-	console.log(customThemes);
 
 	const currentCustomTheme = dom.queryAll('link.custom-theme');
 	currentCustomTheme.remove();

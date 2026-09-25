@@ -3545,3 +3545,13 @@ a > code
 {
 	margin-left: 8px;
 }
+
+.marquee-selection
+{
+	position: absolute;
+	border: 1px dashed var(--md-sys-color-primary);
+	background-color: color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent 80%);
+	pointer-events: none;
+	border-radius: 8px;
+	z-index: 1000;
+}

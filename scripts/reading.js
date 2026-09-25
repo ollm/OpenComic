@@ -2049,6 +2049,8 @@ function scrollWithMouse()
 
 		offset = offset / zone * 15;
 
+		console.log(offset);
+
 		if(offset != 0 && pageY > scrollWithMouseStatus.headerHeight && pageX > zoneWidth && pageX < width - zoneWidth && isMouseenter.document)
 		{
 			let scrollHeight = scrollWithMouseStatus.content.scrollHeight;

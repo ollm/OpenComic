@@ -1,12 +1,14 @@
 <div>
 	{{#each menu.items}}
-		{{#if text}}
+		{{#if separator}}
+			<div class="menu-simple-separator{{#if class}} {{class}}{{/if}}"></div>
+		{{else if text}}
 		<div class="menu-simple-text-small menu-simple-text-grey">
 			<span>{{text}}</span>
 		</div>
 		{{else}}
-		<div class="menu-simple-element{{#if disabled}} disable-pointer{{/if}}{{#if paddingLeft}} menu-simple-element-padding-left{{/if}} gamepad-item{{#if select}} s{{/if}}" onclick="{{function}} events.hideSelect(true);">
-			{{#if icon}}<i class="material-icon menu-simple-icon-first">{{icon}}</i>{{/if}}
+		<div class="menu-simple-element{{#if disabled}} disable-pointer{{/if}}{{#if paddingLeft}} menu-simple-element-padding-left{{/if}} gamepad-item{{#if select}} s{{/if}}{{#if class}} {{class}}{{/if}}{{#if size}} menu-simple-element-{{size}}{{/if}}" onclick="{{function}}{{closeFuncion}}">
+			{{#if icon}}<i class="material-icon menu-simple-icon-first{{#if fill}} fill{{/if}}">{{icon}}</i>{{/if}}
 			<span>{{name}}</span>
 			{{#if rightText}}
 			<div class="menu-simple-element-right-text">{{rightText}}</div>

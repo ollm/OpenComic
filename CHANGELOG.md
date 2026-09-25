@@ -55,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Support for `MOBI`, `AZW`, `AZW3` and `FB2` formats [`cdfbebe`](https://github.com/ollm/OpenComic/commit/cdfbebebbf0fa0e6699a2e799d4c4e6218ab1b89)
 - Added support for custom themes [`b904db4`](https://github.com/ollm/OpenComic/commit/b904db48971b49e074da86a43ac9d6a81e30d0ad)
 - Option to set the delay and show bars on click [`218fbd2`](https://github.com/ollm/OpenComic/commit/218fbd2cbce84dd3df835aec0c8d0b8267a95abf)
+- Multi-select support for context menu actions
 
 ##### 🐛 Bug Fixes
 

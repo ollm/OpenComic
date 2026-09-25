@@ -1424,11 +1424,30 @@ a:hover
 	transition: 0.2s;
 	border-radius: 12px;
 	z-index: 0;
+	z-index: -1;
 }
 
 .medium-list:hover:before
 {
 	background-color: var(--md-sys-color-on-surface-variant-2);
+}
+
+.medium-list.multi-select:before,
+.medium-list.multi-select:hover:before,
+{
+	background-color: var(--md-sys-color-secondary-container);
+}
+
+.medium-list.preview-select:before,
+.medium-list.preview-select:hover:before
+{
+	background-color: var(--md-sys-color-surface-variant);
+}
+
+.medium-list.preview-select.multi-select:before,
+.medium-list.preview-select.multi-select:hover:before
+{
+	background-color: color-mix(in srgb, var(--md-sys-color-primary-container), var(--md-sys-color-primary) 20%);
 }
 
 .medium-list:active:before,
@@ -1461,6 +1480,12 @@ a:hover
 	animation: 4s blink normal 1s infinite ease-in-out;
 }
 
+.medium-list > div
+{
+	display: flex;
+	width: 100%;
+}
+
 .medium-list img
 {
 	width: 56px;
@@ -1488,7 +1513,7 @@ a:hover
 	border: 1px solid var(--md-sys-color-surface-variant);
 }
 
-.medium-list > .icon-24
+.medium-list > div > .icon-24
 {
 	float: left;
 	margin: 16px 28px 16px 16px;
@@ -1567,6 +1592,7 @@ a:hover
 .content-view-module
 {
 	width: calc(100% - 4px);
+	padding-right: 4px;
 	overflow-x: hidden;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 166px);
@@ -1599,6 +1625,39 @@ a:hover
 	content-visibility: auto;
 	contain-intrinsic-size: 150px 273px;
 	flex-shrink: 0;
+}
+
+.content-view-module > div::after
+{
+	content: '';
+	display: block;
+	background-color: var(--md-sys-color-tertiary-container);
+	background-color: var(--md-sys-color-secondary-container);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 12px;
+	z-index: -1;
+	transition: 0.2s;
+	opacity: 0;
+}
+
+.content-view-module > div.preview-select::after
+{
+	background-color: var(--md-sys-color-surface-variant);
+}
+
+.content-view-module > div.preview-select.multi-select::after
+{
+	background-color: color-mix(in srgb, var(--md-sys-color-primary-container), var(--md-sys-color-primary) 20%);
+}
+
+.content-view-module > div.multi-select::after,
+.content-view-module > div.preview-select::after
+{
+	opacity: 1;
 }
 
 .content-view-module > div > div:first-child

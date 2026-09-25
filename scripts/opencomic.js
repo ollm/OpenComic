@@ -534,6 +534,7 @@ async function startApp()
 
 	dragAndDrop.start();
 	dom.search.start();
+	dom.multiSelect.init();
 	tracking.start();
 	fileManager.diskType.findDisks();
 
