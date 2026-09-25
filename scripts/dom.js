@@ -524,6 +524,9 @@ async function loadFilesIndexPage(files, file, animation, path, keepScroll, main
 			path: p.dirname(progress.path),
 		};
 
+		if(!progress.exists)
+			return false;
+
 		return progress;
 
 	}
