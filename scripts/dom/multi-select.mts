@@ -340,14 +340,17 @@ function previewMarqueeSelectionItems(): void {
 		const rowNumber = Math.floor(i / itemsDistribution.itemsPerLine);
 
 		const left = lineItem * itemsDistribution.width + (marginLeft * lineItem);
-		const top = rowNumber * itemsDistribution.height + offsetTop;
+		const top = (rowNumber * itemsDistribution.height + offsetTop) - scrollTop;
+
+		const width = itemsDistribution.width;
+		const height = itemsDistribution.height - marginTop;
 
 		placeholderItems.push({
 			left: left,
-			top: top - scrollTop,
-			width: itemsDistribution.width,
-			height: itemsDistribution.height - marginTop,
-			selected: isSelected(left, top, itemsDistribution.width, itemsDistribution.height),
+			top: top,
+			width: width,
+			height: height,
+			selected: isSelected(left, top, width, height),
 		});
 	}
 

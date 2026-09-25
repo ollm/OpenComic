@@ -1433,20 +1433,23 @@ a:hover
 }
 
 .medium-list.multi-select:before,
-.medium-list.multi-select:hover:before,
+.medium-list.multi-select:hover:before
 {
+	transition: 0s;
 	background-color: var(--md-sys-color-secondary-container);
 }
 
 .medium-list.preview-select:before,
 .medium-list.preview-select:hover:before
 {
+	transition: 0s;
 	background-color: var(--md-sys-color-surface-variant);
 }
 
 .medium-list.preview-select.multi-select:before,
 .medium-list.preview-select.multi-select:hover:before
 {
+	transition: 0s;
 	background-color: color-mix(in srgb, var(--md-sys-color-primary-container), var(--md-sys-color-primary) 20%);
 }
 
@@ -1640,7 +1643,7 @@ a:hover
 	height: 100%;
 	border-radius: 12px;
 	z-index: -1;
-	transition: 0.2s;
+	transition: 0s;
 	opacity: 0;
 }
 
