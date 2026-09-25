@@ -1,5 +1,3 @@
-import { select } from "events.js";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const app: any;
 declare const dom: any;
@@ -290,7 +288,7 @@ function updateMarqueeSelection(): void {
 			left: Math.min(clientX, startX) - offsetX,
 			top: Math.min(clientY, startY) - offsetY,
 			width: Math.abs(clientX - startX),
-			height: Math.abs(clientY - startY)
+			height: Math.abs(clientY - startY),
 		};
 
 		marqueeSelection.box = box;
