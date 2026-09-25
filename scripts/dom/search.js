@@ -220,8 +220,6 @@ async function search(text)
 
 				let text = file.matchPath ? file.path.replace(new RegExp('^\s*'+pregQuote(file.mainPath)+pregQuote(p.sep)+'?'), '') : file.name;
 
-				text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-
 				results.push({
 					icon: file.compressed ? 'folder_zip' : (file.folder ? 'folder' : ''),
 					image: image,
