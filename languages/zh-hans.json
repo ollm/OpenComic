@@ -68,7 +68,7 @@
 			"setAsPosterFolders": "将图片设置为另一个文件夹的海报",
 			"posterSetSuccessfully": "该图片已设置为海报",
 			"saveImage": "保存图片",
-			"saveAiImage": "",
+			"saveAiImage": "保存 AI 图片",
 			"saveAllImages": "保存所有图片",
 			"saveBookmarksImages": "保存当前已加书签的图片",
 			"saveAllBookmarksImages": "保存所有已加书签的图片",
@@ -113,8 +113,8 @@
 		"nightMode": "夜间模式",
 		"beta": "Beta",
 		"alpha": "Alpha",
-		"name": "",
-		"active": ""
+		"name": "名称",
+		"active": "活跃"
 	},
 	"comics": {
 		"continueReading": "继续阅读",
@@ -344,8 +344,8 @@
 			"trackingAutoPrompt": "自动提示跟踪",
 			"trackingAutoPromptFavorites": "自动提示跟踪（仅限收藏站点）",
 			"discordRcp": "Discord Rich Presence",
-			"showBarsOnClick": "",
-			"showBarsDelay": ""
+			"showBarsOnClick": "点击该区域时显示条形图",
+			"showBarsDelay": "显示柱状图延迟"
 		},
 		"imageInterpolation": {
 			"main": "图像插值",
@@ -435,12 +435,12 @@
 				"yellow": "黄色"
 			},
 			"customThemes": {
-				"main": "",
-				"description": "",
-				"noThemes": "",
-				"add": "",
-				"delete": "",
-				"confirmDelete": ""
+				"main": "自定义主题",
+				"description": "通过选择 CSS 文件来添加自定义主题；该文件可以包含 import 语句，更多信息请参阅文档。",
+				"noThemes": "无自定义主题",
+				"add": "添加自定义主题",
+				"delete": "删除自定义主题",
+				"confirmDelete": "您确定要删除此自定义主题吗？"
 			}
 		},
 		"releases": {
