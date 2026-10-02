@@ -20,10 +20,10 @@
 			"lastAdd": "Zuletzt hinzugefügt",
 			"lastReading": "Zuletzt gelesen",
 			"lastOpened": "Zuletzt geöffnet",
-			"lastModified": "",
-			"shuffle": "",
+			"lastModified": "Zuletzt geändert",
+			"shuffle": "Zufällig",
 			"foldersFirst": "Ordner zuerst",
-			"compressedFirst": "",
+			"compressedFirst": "Komprimierte zuerst",
 			"invert": "Invertieren"
 		},
 		"view": {
@@ -52,8 +52,8 @@
 			"deletePermanently": "Dauerhaft löschen",
 			"deletePermanentlyConfirm": "Möchten Sie diese Datei wirklich dauerhaft löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
 			"favorite": "Favorit",
-			"openInNewTab": "",
-			"openInNewWindow": "",
+			"openInNewTab": "Öffne in neuem Tab",
+			"openInNewWindow": "Öffne in neuem Fenster",
 			"markAsRead": "Als gelesen markieren",
 			"markAsUnread": "Als ungelesen markieren",
 			"openFileLocation": "Dateispeicherort öffnen",
@@ -66,29 +66,29 @@
 			"cannotDeletePoster": "Es ist nicht möglich, das Poster zu löschen, wenn es sich in einer komprimierten Datei befindet. Sie müssen die Datei mit 7-Zip, UnRAR usw. bearbeiten.",
 			"setAsPoster": "Bild als Poster festlegen",
 			"setAsPosterFolders": "Bild als Poster eines anderen Ordners festlegen",
-			"posterSetSuccessfully": "Das Bild wurde als Poster festgelegt.",
+			"posterSetSuccessfully": "Das Bild wurde als Poster festgelegt",
 			"saveImage": "Bild speichern",
-			"saveAiImage": "",
+			"saveAiImage": "KI-Bild speichern",
 			"saveAllImages": "Alle Bilder speichern",
 			"saveBookmarksImages": "Aktuelle mit Lesezeichen versehene Bilder speichern",
 			"saveAllBookmarksImages": "Alle mit Lesezeichen versehenen Bilder speichern",
-			"saveImagesMessage": "Bilder wurden erfolgreich gespeichert.",
-			"saveImageMessage": "",
+			"saveImagesMessage": "Bilder wurden erfolgreich gespeichert",
+			"saveImageMessage": "Bild wurde erfolgreich gespeichert",
 			"copyImage": "Bild in die Zwischenablage kopieren",
-			"copyImageMessage": "Bild wurde in die Zwischenablage kopiert.",
-			"addBlankPageLeft": "",
-			"addBlankPageRight": "",
-			"removeBlankPage": "",
+			"copyImageMessage": "Bild wurde in die Zwischenablage kopiert",
+			"addBlankPageLeft": "Leere Seite links hinzufügen",
+			"addBlankPageRight": "Leere Seite rechts hinzufügen",
+			"removeBlankPage": "Leere Seite entfernen",
 			"clearFileCache": "Datei-Cache leeren",
-			"clearFileCacheSuccessfully": "Datei-Cache wurde erfolgreich geleert.",
+			"clearFileCacheSuccessfully": "Datei-Cache wurde erfolgreich geleert",
 			"closeApp": "OpenComic schließen"
 		},
 		"speed": {
-			"veryFast": "",
-			"fast": "",
-			"medium": "",
-			"slow": "",
-			"verySlow": ""
+			"veryFast": "Sehr schnell",
+			"fast": "Schnell",
+			"medium": "Mittel",
+			"slow": "Langsam",
+			"verySlow": "Sehr langsam"
 		},
 		"back": "Zurück",
 		"goBack": "Zurückgehen",
@@ -113,8 +113,8 @@
 		"nightMode": "Nachtmodus",
 		"beta": "Beta",
 		"alpha": "Alpha",
-		"name": "",
-		"active": ""
+		"name": "Name",
+		"active": "Aktiv"
 	},
 	"comics": {
 		"continueReading": "Lesen fortsetzen",
@@ -143,13 +143,13 @@
 		"pages": {
 			"main": "Seiten",
 			"pageLayout": "Seitenlayout",
-			"pageLayoutShort": "",
+			"pageLayoutShort": "Seite",
 			"ebookLayout": "E-Book-Layout",
-			"ebookLayoutShort": "",
+			"ebookLayoutShort": "eBook",
 			"colorFilters": "Farbfilter",
-			"colorFiltersShort": "",
-			"aiTools": "",
-			"aiToolsShort": "",
+			"colorFiltersShort": "Filter",
+			"aiTools": "KI-Tools",
+			"aiToolsShort": "KI",
 			"slide": "Slide Reader",
 			"scroll": "Vertikaler Reader",
 			"panels": "",
@@ -198,7 +198,7 @@
 			"saveAsPreset": "Als Voreinstellung speichern",
 			"addColor": "Farbe hinzufügen",
 			"fromImage": "Farbe aus einem Bild",
-			"presets": "",
+			"presets": "Voreinstellungen",
 			"savedPresets": "Gespeicherte Voreinstellungen",
 			"multipleTonePresets": "Mehrton-Voreinstellungen",
 			"oneTonePresets": "Einton-Voreinstellungen",
@@ -208,7 +208,7 @@
 			"increaseFontSize": "Schriftgröße erhöhen",
 			"decreaseFontSize": "Schriftgröße verringern",
 			"fontFamily": "Schriftart",
-			"forceLeftToRight": "",
+			"forceLeftToRight": "Erzwinge Links-zu-Rechts-Leserichtung",
 			"useEbookFont": "Die E-Book-Schriftart verwenden",
 			"useEbookTheme": "Das E-Book-Thema verwenden",
 			"useAppTheme": "Das App-Thema verwenden",
@@ -234,15 +234,15 @@
 			"angle": "Winkel",
 			"aiArtifactRemoval": "",
 			"aiDescreen": "",
-			"aiUpscale": "",
-			"aiModel": "",
-			"aiKeepBigHalftone": "",
-			"downloadingAiModel": "",
-			"maxMegapixels": "",
-			"autoScale": "",
-			"scale": "",
-			"noiseReduction": "",
-			"extractDocumentImages": ""
+			"aiUpscale": "KI-Hochskalieren",
+			"aiModel": "Modell",
+			"aiKeepBigHalftone": "Große Halbtöne beibehalten",
+			"downloadingAiModel": "KI-Modell wird heruntergeladen",
+			"maxMegapixels": "Max. Bildquelle-Auflösung (Megapixel)",
+			"autoScale": "Auto-Skalieren",
+			"scale": "Skalierung",
+			"noiseReduction": "Rauschreduzierung",
+			"extractDocumentImages": "Extrahieren der Dokument-Bilder"
 		},
 		"magnifyingGlass": {
 			"main": "Leselupe",
@@ -268,7 +268,7 @@
 		"music": {
 			"main": "Musik",
 			"volume": "Lautstärke",
-			"sfx": "",
+			"sfx": "Soundeffekte",
 			"pageSoundEffect": "Soundeffekt beim Umblättern",
 			"adaptToAnimationSpeed": "An die Animationsgeschwindigkeit anpassen",
 			"soundEffect": {
@@ -287,33 +287,33 @@
 			}
 		},
 		"panels": {
-			"focus": "",
-			"hide": "",
-			"immersive": "",
-			"maxZoom": "",
-			"panels": "",
+			"focus": "Fokus",
+			"hide": "Ausblenden",
+			"immersive": "Immersiv",
+			"maxZoom": "Maximaler Zoom",
+			"panels": "Panele",
 			"focusTo": {
-				"prevPanels": "",
-				"nextPanels": ""
+				"prevPanels": "Fokus auf vorherige Panele",
+				"nextPanels": "Fokus auf nächste Panele"
 			},
 			"showFullPage": {
-				"beforeFirstPanel": "",
-				"afterLastPanel": ""
+				"beforeFirstPanel": "Zeige ganze Seite vor erstem Panel",
+				"afterLastPanel": "Zeige ganze Seite nach letztem Panel"
 			},
-			"hideEffect": "",
-			"white": "",
-			"black": "",
-			"blur": "",
-			"expandPanel": "",
+			"hideEffect": "Ausblende-Effekt",
+			"white": "Weiß",
+			"black": "Schwarz",
+			"blur": "Unscharf",
+			"expandPanel": "Erweitere Panel",
 			"visibility": {
-				"prevPanels": "",
-				"nextPanels": ""
+				"prevPanels": "Sichtbare nächste Panele",
+				"nextPanels": "Sichtbare vorherige Panele"
 			}
 		},
 		"moreOptions": {
 			"main": "Weitere Optionen",
 			"hideBarHeader": "Kopfleiste ausblenden",
-			"hideTabsBar": "",
+			"hideTabsBar": "Tableiste ausblenden",
 			"hideContentLeft": "Seitenleiste ausblenden",
 			"showPageNumber": "Seitenzahl anzeigen"
 		},
@@ -334,18 +334,18 @@
 			"scrollWithMouse": "Scrollen durch Bewegen des Cursors an den Bildschirmrändern (Deaktiviert das Scrollen per Drag & Drop)",
 			"goNextPrevChapterWithScroll": "Zum nächsten/vorherigen Kapitel mit dem Mausrad scrollen (Vertikales Lesen)",
 			"turnPagesWithMouseWheel": "Seiten mit dem Mausrad umblättern (Zoom nur bei gedrückter Strg-Taste)",
-			"autodetectWebtoon": "",
-			"disableThumbnails": "",
+			"autodetectWebtoon": "Webtoon automatisch erkennen",
+			"disableThumbnails": "Miniaturansichten deaktivieren (zeige Dateinamen)",
 			"mouseWheelSensitivityInZoom": "Mausrad-Empfindlichkeit beim Zoomen",
-			"zoomMoveStep": "",
+			"zoomMoveStep": "Zoom-Geschwindigkeit",
 			"rotateHorizontalsAnticlockwise": "Beim Drehen horizontaler Bilder gegen den Uhrzeigersinn drehen",
 			"startReadingInFullScreen": "Lesen im Vollbildmodus starten",
 			"trackingAtTheEnd": "Tracking am Ende des Kapitels/Bandes",
-			"trackingAutoPrompt": "",
-			"trackingAutoPromptFavorites": "",
+			"trackingAutoPrompt": "Automatisch nach Tracking fragen",
+			"trackingAutoPromptFavorites": "Automatisch nach Tracking fragen (nur Favoriten-Seiten)",
 			"discordRcp": "Discord Rich Presence",
 			"showBarsOnClick": "",
-			"showBarsDelay": ""
+			"showBarsDelay": "Leisten Anzeigeverzögerung"
 		},
 		"imageInterpolation": {
 			"main": "Bildinterpolation",
@@ -357,9 +357,9 @@
 			"upscalingDescription": "Diese Methode wird nur verwendet, wenn die Bildauflösung vergrößert werden muss. Die Interpolationsmethode gilt nicht für PDF, EPUB oder animierte Bilder. Warnung: Scharfe Methoden können beim Hochskalieren langsam sein."
 		},
 		"preload": {
-			"main": "",
-			"imagesToPreload": "",
-			"imagesToPreloadDescription": ""
+			"main": "Caching",
+			"imagesToPreload": "Anzahl Bilder vorausladen",
+			"imagesToPreloadDescription": "Bilder werden vorausgeladen, damit sie fertig gerendert sind beim Navigieren (Interpolation und KI)"
 		},
 		"colorProfile": {
 			"main": "Farbprofil",
@@ -398,14 +398,14 @@
 				"anyFolder": "Jeder Ordner",
 				"continueReadingOrFirstPage": "Lesen fortsetzen oder erste Seite"
 			},
-			"useTheFirstImageAsPoster": "Das erste Bild als Poster verwenden (Nur wenn aktuell keines vorhanden ist)",
-			"useTheFirstImageAsPosterInParentFolders": "",
+			"useTheFirstImageAsPoster": "Nutze erstes Bild als Poster (Nur wenn aktuell keines eingestellt ist)",
+			"useTheFirstImageAsPosterInParentFolders": "Nutze erstes Bild als Poster für übergeordnete Ordner (Nur wenn aktuell keines eingestellt ist)",
 			"showFullPathLibrary": "Vollständigen Pfad beim Öffnen von Bibliotheks-Comics anzeigen",
 			"showFullPathOpened": "Vollständigen Pfad beim Öffnen einer Datei oder eines Ordners anzeigen",
 			"showLibraryPath": "Bibliothek, Favoriten, Labels usw. im Kopfzeilenpfad anzeigen",
-			"showFileExtension": "",
-			"openFilesInNewTab": "",
-			"openFilesInNewWindow": "",
+			"showFileExtension": "Zeige Datei-Endung in Datei-Liste",
+			"openFilesInNewTab": "Öffne Dateien in neuem Tab (Beim Öffnen von Dateien außerhalb von OpenComic)",
+			"openFilesInNewWindow": "Öffne Dateien in neuem Fenster (Beim Öffnen von Dateien außerhalb von OpenComic)",
 			"recentlyOpenedItems": "Anzahl der in 'Kürzlich geöffnet' zu speichernden Elemente"
 		},
 		"saveImages": {
@@ -417,15 +417,15 @@
 		"startupBehavior": {
 			"main": "Startverhalten",
 			"startInFullScreen": "OpenComic im Vollbildmodus starten",
-			"restoreTabsFromLastSession": "",
-			"showAlwaysTabsBar": "",
+			"restoreTabsFromLastSession": "Tabs aus letzter Sitzung wiederherstellen",
+			"showAlwaysTabsBar": "Tableiste immer anzeigen",
 			"startInContinueReading": "Direkt bei der zuletzt gelesenen Datei starten",
 			"startOnlyFromLibrary": "Nur wenn die zuletzt gelesene Datei aus der Bibliothek stammt",
 			"startOnStartup": "OpenComic beim Systemstart starten"
 		},
 		"theme": {
 			"systemNightMode": "Zum Nacht-/Tagmodus wechseln, wenn das Betriebssystem dies tut",
-			"lightModeBlackBackgroundOnReading": "",
+			"lightModeBlackBackgroundOnReading": "Schwarz als Hintergrund während dem Lesen im Tagmodus verwenden",
 			"nightModeBlackBackground": "Schwarz als Hintergrund im Nachtmodus verwenden",
 			"nightModeWhiteBlankPage": "Leere Seiten im Nachtmodus weiß anzeigen",
 			"colors": {
@@ -435,12 +435,12 @@
 				"yellow": "Gelb"
 			},
 			"customThemes": {
-				"main": "",
-				"description": "",
-				"noThemes": "",
-				"add": "",
-				"delete": "",
-				"confirmDelete": ""
+				"main": "Benutzerdefinierte Themen",
+				"description": "Fügen Sie ein benutzerdefiniertes Thema hinzu durch Auswählen einer CSS-Datei. Die Datei kann import-Statements haben. Mehr Infos in der Dokumentation.",
+				"noThemes": "Keine benutzerdefinierte Themen",
+				"add": "Füge benutzerdefiniertes Thema hinzu",
+				"delete": "Lösche benutzerdefiniertes Thema",
+				"confirmDelete": "Sicher, dass dieses benutzerdefinierte Thema gelöscht werden soll?"
 			}
 		},
 		"releases": {
@@ -449,18 +449,18 @@
 			"checkPreReleases": "Vorabversionen anzeigen (Beta-/Alpha-Versionen)"
 		},
 		"macros": {
-			"main": "",
-			"add": "",
-			"addAction": "",
-			"empty": "",
-			"emptyActions": "",
-			"name": "",
-			"toggleMode": "",
-			"targetState": "",
-			"delay": "",
-			"description": "",
-			"deleteMacro": "",
-			"confirmDelete": ""
+			"main": "Makros",
+			"add": "Makro hinzufügen",
+			"addAction": "Aktion hinzufügen",
+			"empty": "Keine Makros",
+			"emptyActions": "Keine Aktionen",
+			"name": "Makro-Name",
+			"toggleMode": "Toggle-Modus",
+			"targetState": "Ziel-State",
+			"delay": "Verzögerung der Aktion",
+			"description": "Mit Makros können Sie mehrere Aktionen mit einem Shortcut ausführen inklusive Verzögerungen zwischen Aktionen",
+			"deleteMacro": "Lösche Makro",
+			"confirmDelete": "Sicher, dass Sie dieses Makro löschen wollen?"
 		},
 		"shortcuts": {
 			"main": "Tastenkürzel",
@@ -488,8 +488,8 @@
 		"tapZones": {
 			"main": "Tipp-Zonen",
 			"disable": "Tipp-Zonen deaktivieren",
-			"middleClickAutoScrollInAllTapZones": "",
-			"middleClickAutoScrollInCenterTapZone": "",
+			"middleClickAutoScrollInAllTapZones": "Mittelklick Auto-Scroll in allen Zonen (Vertikaler Reader)",
+			"middleClickAutoScrollInCenterTapZone": "Mittelklick Auto-Scroll in mittlerer Zone (Vertikaler Reader)",
 			"invertInManga": "Tipp-Zonen beim Manga-Lesen umkehren",
 			"leftClick": "Linksklick",
 			"rightClick": "Rechtsklick",
@@ -507,8 +507,8 @@
 			"deleteServer": "Server löschen",
 			"confirmDelete": "Sind Sie sicher, dass Sie diesen Server löschen möchten?",
 			"supportedProtocols": "Unterstützte Protokolle",
-			"protocolsDescription": "Verbinden Sie sich nur mit vertrauenswürdigen Servern und verwenden Sie nach Möglichkeit sichere Protokolle.",
-			"serverNameExists": "Dieser Servername existiert bereits.",
+			"protocolsDescription": "Verbinden Sie sich nur mit vertrauenswürdigen Servern und verwenden Sie nach Möglichkeit sichere Protokolle",
+			"serverNameExists": "Dieser Servername existiert bereits",
 			"name": "Servername",
 			"path": "Serverpfad",
 			"user": "Benutzername",
@@ -520,21 +520,21 @@
 		},
 		"storage": {
 			"main": "Speicher",
-			"useCustomCacheAndTmpFolder": "",
+			"useCustomCacheAndTmpFolder": "Nutze benutzerdefinierten Ordner für Cache und temporäre Dateien (vorhandene werden an den neuen Ort kopiert)",
 			"cache": "Cache",
 			"cacheDescription": "Die Miniaturansichten und der Index der komprimierten Dateien werden hier gespeichert. Es wird nicht empfohlen, ihn zu leeren, es sei denn, er ist sehr groß oder es liegt ein damit zusammenhängender Fehler vor.",
 			"cacheMaxSize": "Maximale Cache-Größe",
-			"cacheMaxSizeDescription": "Dateien werden aus dem Cache entfernt, wenn diese Größe überschritten wird, wobei ältere, ungenutzte Dateien priorisiert werden.",
+			"cacheMaxSizeDescription": "Dateien werden aus dem Cache entfernt, wenn diese Größe überschritten wird, wobei ältere, ungenutzte Dateien priorisiert werden",
 			"cacheMaxOld": "Maximale Cache-Zeit",
-			"cacheMaxOldDescription": "Dateien werden aus dem Cache entfernt, wenn sie länger als diese Zeit nicht verwendet wurden.",
+			"cacheMaxOldDescription": "Dateien werden aus dem Cache entfernt, wenn sie länger als diese Zeit nicht verwendet wurden",
 			"clearCache": "Cache leeren",
 			"temporaryFiles": "Temporäre Dateien",
-			"temporaryFilesDescription": "Hier werden die komprimierten Dateien bei Bedarf dekomprimiert. Dies wird beim Schließen von OpenComic teilweise entfernt.",
+			"temporaryFilesDescription": "Hier werden die komprimierten Dateien bei Bedarf dekomprimiert. Dies wird beim Schließen von OpenComic teilweise entfernt",
 			"removeTemporaryFiles": "Temporäre Dateien entfernen",
 			"temporaryFilesMaxSize": "Maximum an temporären Dateien",
-			"temporaryFilesMaxSizeDescription": "Temporäre Dateien werden entfernt, wenn sie diese Größe überschreiten, wobei ältere, ungenutzte Dateien priorisiert werden.",
+			"temporaryFilesMaxSizeDescription": "Temporäre Dateien werden entfernt, wenn sie diese Größe überschreiten, wobei ältere, ungenutzte Dateien priorisiert werden",
 			"temporaryFilesMaxOld": "Maximale Zeit für temporäre Dateien",
-			"temporaryFilesMaxOldDescription": "Temporäre Dateien werden entfernt, wenn sie länger als diese Zeit nicht verwendet wurden."
+			"temporaryFilesMaxOldDescription": "Temporäre Dateien werden entfernt, wenn sie länger als diese Zeit nicht verwendet wurden"
 		}
 	},
 	"menu": {
@@ -592,12 +592,12 @@
 			"serachIn": "Suche in {{siteName}}",
 			"emptySearch": "Keine Ergebnisse gefunden",
 			"setHeader": "Manuell markieren",
-			"setMessage": "Wenn du möchtest kannst du die Kapitel auch manuell markieren",
+			"setMessage": "Wenn du möchtest, kannst du die Kapitel auch manuell markieren",
 			"setWaitMessage": "Du kannst das jetzt machen oder warten bis es automatisch in einem anderen Kapitel erkannt wird",
 			"setChapterNumber": "Markiere bis zum Kapitel",
 			"setVolumeNumber": "Markiere bis zur Ausgabe",
 			"activate": "Tracken aktivieren",
-			"wantToTrack": ""
+			"wantToTrack": "Möchten Sie tracken?"
 		},
 		"pages": {
 			"readingPresetNewHeader": "Neues Preset erstellen",
@@ -607,7 +607,7 @@
 			"readingPresetRemove": "Sind Sie sicher, dass Sie dieses Preset entfernen möchten?",
 			"readingPresetApplyToLabels": "Dieses Preset automatisch auf Ordner/Dateien mit diesen Labels anwenden",
 			"readingPresetApplyToAllLabel": "Dieses Preset auf Ordner/Dateien mit diesem Label anwenden",
-			"readingPresetApplyToAllLabelDescription": "Dies erzwingt die Anwendung dieses Presets auf alle Ordner/Dateien, die das Label haben, auch wenn das Preset manuell geändert wurde.",
+			"readingPresetApplyToAllLabelDescription": "Dies erzwingt die Anwendung dieses Presets auf alle Ordner/Dateien, die das Label haben, auch wenn das Preset manuell geändert wurde",
 			"readingNumColorsGenerate": "Anzahl der zu generierenden Farben",
 			"readingGotoPage": "Gehe zu Seite"
 		},
@@ -615,7 +615,7 @@
 			"empty": "Keine Labels",
 			"newLabel": "Neues Label",
 			"labelName": "Labelsname",
-			"labelExists": "Dieses Label existiert bereits.",
+			"labelExists": "Dieses Label existiert bereits",
 			"deleteLabel": "Label löschen",
 			"confirmDelete": "Sind Sie sicher, dass Sie dieses Label löschen möchten?"
 		},
@@ -623,12 +623,12 @@
 			"add": "Katalog hinzufügen",
 			"delete": "Katalog löschen",
 			"confirmDelete": "Sind Sie sicher, dass Sie diesen Katalog löschen möchten?",
-			"downloadAuto": "",
+			"downloadAuto": "Dateien von OPDS-Katalog automatisch herunterladen",
 			"showOnLeft": "Im Navigationsbereich anzeigen",
 			"downloadTitle": "OPDS-Ordner",
-			"downloadDescription": "Ordner, in dem über OPDS heruntergeladene Dateien gespeichert werden.",
+			"downloadDescription": "Ordner, in dem über OPDS heruntergeladene Dateien gespeichert werden",
 			"autoSave": "Dateien automatisch in diesem Ordner speichern",
-			"downloadSuccess": "Die Datei wurde erfolgreich heruntergeladen."
+			"downloadSuccess": "Die Datei wurde erfolgreich heruntergeladen"
 		},
 		"fileInfo": {
 			"description": "Beschreibung",
@@ -699,11 +699,11 @@
 		},
 		"requestFileAccess": {
 			"title": "Der Zugriff auf bestimmte Dateien ging verloren",
-			"description": "Sie können die Berechtigungen von diesem Dialog aus erneut erteilen, um die ordnungsgemäße Funktion von OpenComic sicherzustellen."
+			"description": "Sie können die Berechtigungen von diesem Dialog aus erneut erteilen, um die ordnungsgemäße Funktion von OpenComic sicherzustellen"
 		},
 		"release": {
 			"title": "Neue Version verfügbar <b>{{releaseName}}</b>",
-			"body": "Sie können die implementierten Änderungen auf der {{{linkStart}}}Release-Seite{{{linkEnd}}} einsehen."
+			"body": "Sie können die implementierten Änderungen auf der {{{linkStart}}}Release-Seite{{{linkEnd}}} einsehen"
 		}
 	},
 	"buttons": {
@@ -711,13 +711,13 @@
 		"ok": "Ok",
 		"on": "An",
 		"off": "Aus",
-		"yes": "",
-		"no": "",
-		"edit": "",
+		"yes": "Ja",
+		"no": "Nein",
+		"edit": "Bearbeiten",
 		"save": "Speichern",
 		"undo": "Rückgängig machen",
 		"dismiss": "Ignorieren",
-		"delete": "",
+		"delete": "Löschen",
 		"remove": "Entfernen",
 		"download": "Herunterladen",
 		"buy": "Kaufen",
@@ -733,7 +733,7 @@
 	"error": {
 		"uncompress": {
 			"title": "Fehler während des Entpackens",
-			"message": "Während des Entpackens der Datei ist ein Fehler aufgetreten."
+			"message": "Während des Entpackens der Datei ist ein Fehler aufgetreten"
 		}
 	},
 	"about": {
@@ -748,6 +748,10 @@
 			{
 				"name": "Mett-mit-Zwiebel",
 				"url": "https://github.com/Mett-mit-Zwiebel"
+			},
+			{
+				"name": "Markus K.",
+				"url": "https://github.com/mMuck"
 			}
 		]
 	}
