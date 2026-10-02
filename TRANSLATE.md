@@ -67,9 +67,9 @@ Translate by [Matyáš Caras](https://github.com/hernikplays)
 
 [de.json](https://github.com/ollm/OpenComic/blob/master/languages/de.json)
 
-Translate by [Hernesto Sanchez](https://github.com/herrsunchess) and [Mett-mit-Zwiebel](https://github.com/Mett-mit-Zwiebel)
+Translate by [Hernesto Sanchez](https://github.com/herrsunchess), [Mett-mit-Zwiebel](https://github.com/Mett-mit-Zwiebel), and [Markus K.](https://github.com/mMuck)
 
-`83.9% | Remain 99 | Translated 517`
+`99.2% | Remain 5 | Translated 611`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/de.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/de.svg" /></a>
 
@@ -273,7 +273,7 @@ Translate by [Nguyen Do](https://github.com/catouberos)
 
 Translate by [無情天](https://github.com/kofzhanganguo)
 
-`98.2% | Remain 11 | Translated 605`
+`100% | Remain 0 | Translated 616`
 
 <a href="https://github.com/ollm/OpenComic/blob/master/languages/zh-hans.json"><img src="https://raw.githubusercontent.com/ollm/OpenComic/master/images/translated/zh-hans.svg" /></a>
 

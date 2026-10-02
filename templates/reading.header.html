@@ -18,34 +18,34 @@
 <div class="bar-right-buttons reading-header reading-header-loading scroll-fade-x">
 	<div>
 		<div class="material-icon button button-min button1 button-more-options hover-text" hover-text="{{language.reading.moreOptions.main}}" onclick="reading.loadReadingMoreOptions(); events.activeMenu('#reading-more-options', '.bar-right-buttons .button-more-options', 'right');">more_vert</div>
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-sort"></div>
 		<div class="material-icon button button1 button-sort hover-text" hover-text="{{language.global.sort.main}}" onclick="events.activeMenu('#reading-sort', '.bar-right-buttons .button-sort', 'right');">sort</div>
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-layout"></div>
 		<div class="material-icon button button1 button-ai hover-text" hover-text="{{language.reading.pages.aiTools}}" onclick="reading.loadReadingPages(false, false, 'ai'); events.activeMenu('#reading-pages', '.bar-right-buttons .button-ai', 'right'); events.eventsTab();">auto_awesome</div>
 		<div class="material-icon button button1 button-filters hover-text" hover-text="{{language.reading.pages.colorFilters}}" onclick="reading.loadReadingPages(false, false, 'filters'); events.activeMenu('#reading-pages', '.bar-right-buttons .button-filters', 'right'); events.eventsTab();">invert_colors</div>
 		<div class="material-icon button button1 button-page-layout hover-text" hover-text="{{language.reading.pages.pageLayout}}" onclick="reading.loadReadingPages(false, false, 'page-layout'); events.activeMenu('#reading-pages', '.bar-right-buttons .button-page-layout', 'right'); events.eventsTab();">auto_stories</div>
 		<div class="material-icon button button1 button-ebook-layout hover-text" hover-text="{{language.reading.pages.ebookLayout}}" onclick="reading.loadReadingPages(false, false, 'ebook-layout'); events.activeMenu('#reading-pages', '.bar-right-buttons .button-ebook-layout', 'right'); events.eventsTab();">format_size</div>
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-magnifying-glass"></div>
 		<div class="material-icon button button1 button-magnifying-glass hover-text" hover-text="{{language.reading.magnifyingGlass.main}}" onclick="events.activeMenu('#reading-magnifying-glass', '.bar-right-buttons .button-magnifying-glass', 'right');">search</div>
-		<div class="bar-buttons-separator"></div>
-		<div class="material-icon button button2 hover-text" hover-text="{{language.menu.view.zoomIn}}" onclick="reading.zoomIn(true, true);">zoom_in</div>
+		<div class="bar-buttons-separator seperator-zoom"></div>
+		<div class="material-icon button button2 button-zoom-in hover-text" hover-text="{{language.menu.view.zoomIn}}" onclick="reading.zoomIn(true, true);">zoom_in</div>
 		<div class="material-icon button button2 button-reset-zoom hover-text" hover-text="{{language.menu.view.originalSize}}" onclick="reading.resetZoom();">aspect_ratio</div>
-		<div class="material-icon button button2 hover-text" hover-text="{{language.menu.view.zoomOut}}" onclick="reading.zoomOut(true, true);">zoom_out</div>
-		<div class="bar-buttons-separator"></div>
+		<div class="material-icon button button2 button-zoom-out hover-text" hover-text="{{language.menu.view.zoomOut}}" onclick="reading.zoomOut(true, true);">zoom_out</div>
+		<div class="bar-buttons-separator seperator-tracking-sites"></div>
 		<div class="material-icon button button1 button-tracking-sites hover-text" hover-text="{{language.reading.tracking.main}}" onclick="reading.loadTrackigSites();events.activeMenu('#tracking-sites', '.bar-right-buttons .button-tracking-sites', 'right');">sync</div>
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-collections-bookmark"></div>
 		<div class="material-icon button button1 button-collections-bookmark hover-text" hover-text="{{language.reading.viewBookmarks}}" onclick="reading.loadBookmarks();events.activeMenu('#collections-bookmark', '.bar-right-buttons .button-collections-bookmark', 'right');">collections_bookmark</div>
 		<div class="material-icon button button2 button-bookmark hover-text" hover-text="{{language.reading.addBookmark}}" onclick="reading.createAndDeleteBookmark();">bookmark_border</div>
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-page-navigation"></div>
 		<div class="material-icon button button2 button-last-page hover-text" hover-text="{{language.reading.lastPage}}" onclick="reading.goEnd();">last_page</div>
 		<div class="material-icon button button2 button-next hover-text" hover-text="{{language.reading.next}}" onclick="reading.goNext();">navigate_next</div>
 		<div class="material-icon button button2 button-prev hover-text" hover-text="{{language.reading.previous}}" onclick="reading.goPrevious();">navigate_before</div>
 		<div class="material-icon button button2 button-first-page hover-text" hover-text="{{language.reading.firstPage}}" onclick="reading.goStart();">first_page</div>
 		{{#if hasMusic}}
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-music"></div>
 		<div class="material-icon button button2 button-reading-music hover-text" hover-text="{{language.reading.music.main}}" onclick="reading.music.loadMenu(); events.activeMenu('#reading-music', '.bar-right-buttons .button-reading-music', 'right');">queue_music{{!-- {{#if config.readingMusic.play}}music_note{{else}}music_off{{/if}}--}}</div>
 		{{/if}}
-		<div class="bar-buttons-separator"></div>
+		<div class="bar-buttons-separator seperator-night-mode"></div>
 		<div class="material-icon button button2 button-night-mode hover-text" hover-text="{{language.global.nightMode}}" onclick="dom.nightMode(); reading.ebook.updateAppTheme();">{{#if config.nightMode}}dark_mode{{else}}light_mode{{/if}}</div>
 
 	</div>

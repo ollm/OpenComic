@@ -7,7 +7,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="52" transform="rotate(-90)">CS</text>
 		<rect style="fill: #f6664c;" height="26.1" width="6" rx="2" y="113.9" x="46" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="70" transform="rotate(-90)">DE</text>
-		<rect style="fill: #2eccaa;" height="117.5" width="6" rx="2" y="22.5" x="64" />
+		<rect style="fill: #2eccaa;" height="138.9" width="6" rx="2" y="1.1" x="64" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="88" transform="rotate(-90)">EN</text>
 		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="82" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="106" transform="rotate(-90)">ES</text>
@@ -41,7 +41,7 @@
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="358" transform="rotate(-90)">VI</text>
 		<rect style="fill: #f1cc09;" height="67.3" width="6" rx="2" y="72.7" x="352" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="376" transform="rotate(-90)">ZH-HANS</text>
-		<rect style="fill: #2eccaa;" height="137.5" width="6" rx="2" y="2.5" x="370" />
+		<rect style="fill: #3388ff;" height="140" width="6" rx="2" y="0" x="370" />
 		<text style="font-size: 11px; font-family: monospace; letter-spacing: 1.5px; fill: #888; text-anchor: end;" x="-150" y="394" transform="rotate(-90)">ZH-HANT</text>
 		<rect style="fill: #2eccaa;" height="137.5" width="6" rx="2" y="2.5" x="388" />
 	</g>
