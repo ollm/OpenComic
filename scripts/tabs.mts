@@ -371,6 +371,8 @@ async function goTab(tab: Tab): Promise<void>
 
 	dom.queryAll('.bar-header, .content-left, .content-right').addClass('disable-transitions-and-animations');
 
+	state.setFirst(tab.data.history, tab.data.data);
+
 	if(onReading) reading.progress.save();
 	dom.history.load(tab.data.history);
 	await dom.history.goTo(tab.data.history.current, false);

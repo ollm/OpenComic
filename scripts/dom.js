@@ -2074,7 +2074,7 @@ function loadThemePage(animation = true)
 	floatingActionButton(false);
 
 	shortcuts.register('browse');
-	theme.start();
+	theme.start(animation);
 
 	if(readingActive)
 		readingActive = false;

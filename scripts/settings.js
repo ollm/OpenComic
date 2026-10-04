@@ -1441,7 +1441,7 @@ function getTabState()
 
 let activeTab = false;
 
-async function setTabState(data)
+async function setTabStateFirst(data)
 {
 	if(!data) return;
 	activeTab = data.activeTab;
@@ -1763,7 +1763,7 @@ module.exports = {
 	purgeTemporaryFilesEveryTimes: purgeTemporaryFilesEveryTimes,
 	generateShortcutsTable: generateShortcutsTable,
 	getTabState,
-	setTabState,
+	setTabStateFirst,
 	getTmpFolder,
 	getCacheFolder,
 	macros,

@@ -227,7 +227,7 @@ function removeCustomTheme(key, confirm = false)
 	}
 }
 
-function start()
+function start(animation = true)
 {
 	const themeColors = [];
 
@@ -259,7 +259,7 @@ function start()
 
 	handlebarsContext.themeColors = themeColors;
 
-	template.loadContentRight('theme.content.right.html', true);
+	template.loadContentRight('theme.content.right.html', animation);
 
 	gamepad.updateBrowsableItems('theme');
 

@@ -39,11 +39,34 @@ function set(history: History, data: any): void
 	}
 	else
 	{
+		/*
 		switch (current.page)
 		{
 			case 'settings':
 
 				settings.setTabState(data);
+
+				break;
+		}
+		*/
+	}
+}
+
+function setFirst(history: History, data: any): void
+{
+	const current = history.current;
+
+	if(current.isComic)
+	{
+		// reading.setTabState(data);
+	}
+	else
+	{
+		switch (current.page)
+		{
+			case 'settings':
+
+				settings.setTabStateFirst(data);
 
 				break;
 		}
@@ -53,4 +76,5 @@ function set(history: History, data: any): void
 export default {
 	get,
 	set,
+	setFirst,
 };
