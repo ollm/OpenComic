@@ -606,13 +606,12 @@ let contentRightScrollTop = new WeakMap();
 function scrollTopEvent(event)
 {
 	const target = event.target;
-	const parent = target.parentElement.parentElement;
+	const parent = target.parentElement?.parentElement;
 
-	if(!parent.classList.contains('content-right') && !target.classList.contains('opds-browse-content'))
+	if(!parent?.classList.contains('content-right') && !target.classList.contains('opds-browse-content'))
 		return;
 
 	contentRightScrollTop.set(target, target.scrollTop);
-	console.log(contentRightScrollTop);
 }
 
 function getContentRightScrollTop(scrollElement = false)

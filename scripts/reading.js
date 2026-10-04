@@ -337,6 +337,62 @@ function goPageDialog(go = false)
 //Returns the highest image
 function returnLargerImage(index)
 {
+	const positions = view.imagesFullPosition?.[index] ?? [];
+	const items = view.distribution?.currentDistribution?.[index] ?? [];
+
+	const position0 = positions[0];
+	const position1 = doublePage.active() ? positions[1] : undefined;
+	const item0 = items[0];
+	const item1 = items[1];
+	const getHeight = (position, item) => {
+
+		if(!position) return 0;
+
+		const rendered = item?.rendered;
+		const scale = position.original.height
+			? position.height / position.original.height
+			: (config.readingGlobalZoom ? reading.scalePrevData().scale : 1);
+
+		return position.height + ((rendered?.top ?? 0) + (rendered?.bottom ?? 0)) * scale;
+
+	};
+
+	const height0 = getHeight(position0, item0);
+	const height1 = getHeight(position1, item1);
+	const useImage1 = height0 < height1;
+	const position = useImage1 ? position1 : position0;
+	const item = items[useImage1 ? 1 : 0];
+
+	const result = {
+		image: item?.element ?? null,
+		height: useImage1 ? height1 : height0,
+		top: position?.top ?? 0,
+	};
+
+	const oldResult = returnLargerImageOld(index);
+	const content = template._contentRight().firstElementChild;
+	const oldTop = oldResult.image
+		? oldResult.top - view.viewSize().top + content.scrollTop
+		: 0;
+
+	console.log('returnLargerImage comparison', {
+		index,
+		sameImage: result.image === oldResult.image,
+		newHeight: result.height,
+		oldHeight: oldResult.height,
+		heightMatches: result.height === oldResult.height,
+		heightDifference: result.height - oldResult.height,
+		newTop: result.top,
+		oldTop,
+		topMatches: result.top === oldTop,
+		topDifference: result.top - oldTop,
+	});
+
+	return result;
+}
+
+function returnLargerImageOld(index)
+{
 	if(doublePage.active())
 	{
 		let image0 = template._contentRight().querySelector('.image-position'+(index)+'-0');
@@ -361,6 +417,7 @@ function returnLargerImage(index)
 		return {image: image, height: rect.height || 0, top: rect.top || 0};
 	}
 }
+
 
 var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, realReadingDirection = true, disableOnScrollST = false;
 
@@ -527,7 +584,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 	else if(readingViewIs('scroll'))
 	{
 		let largerImage = returnLargerImage(eIndex-1);
-		let scrollTop = (largerImage.top - viewSize.top) + content.scrollTop;
+		let scrollTop = largerImage.top;
 
 		let scrollSum = 0;
 
