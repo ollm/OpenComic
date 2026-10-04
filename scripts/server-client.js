@@ -1,4 +1,4 @@
-var smb2 = false, basicFtp = false, ssh2 = false, nodeScp = false, s3c = false, webdav = false;
+var smb2 = false, basicFtp = false, ssh2 = false, s3c = false, webdav = false;
 
 var servers = [];
 
@@ -216,12 +216,6 @@ var client = function(path) {
 			progress: true,
 			secure: true,
 		},
-		scp: {
-			read: true,
-			single: true,
-			progress: true,
-			secure: true,
-		},
 		s3: {
 			read: true,
 			single: true,
@@ -296,10 +290,8 @@ var client = function(path) {
 				force = 'ftp';
 			else if(/^(?:ftps)\:\//.test(this.path))
 				force = 'ftps';
-			else if(/^(?:sftp|ssh)\:\//.test(this.path))
+			else if(/^(?:sftp|ssh|scp)\:\//.test(this.path))
 				force = 'ssh';
-			else if(/^(?:scp)\:\//.test(this.path))
-				force = 'scp';
 			else if(/^(?:s3)\:\//.test(this.path))
 				force = 's3';
 			else if(/^(?:webdav)\:\//.test(this.path))
@@ -390,8 +382,6 @@ var client = function(path) {
 			return this.readFtp(path);
 		else if(this.features.ssh)
 			return this.readSsh(path);
-		else if(this.features.scp)
-			return this.readScp(path);
 		else if(this.features.s3)
 			return this.readS3(path);
 		else if(this.features.webdav || this.features.webdavs)
@@ -438,8 +428,6 @@ var client = function(path) {
 			return this.downloadFtp(path, callbackWhenFileDownload, index);
 		else if(this.features.ssh)
 			return this.downloadSsh(path, callbackWhenFileDownload, index);
-		else if(this.features.scp)
-			return this.downloadScp(path, callbackWhenFileDownload, index);
 		else if(this.features.s3)
 			return this.downloadS3(path, callbackWhenFileDownload, index);
 		else if(this.features.webdav || this.features.webdavs)
@@ -995,7 +983,7 @@ var client = function(path) {
 			let client = {
 				host: serverInfo.host,
 				readyTimeout: 5000 * config.serverTimeoutMultiplier,
-				keepalive: 15 * 60 * 1000,
+				keepaliveInterval: 15 * 60 * 1000,
 				// debug: function(debug){console.log(debug)}
 			};
 
@@ -1118,155 +1106,6 @@ var client = function(path) {
 		return;
 
 	}
-
-
-	// SCP
-	this.scp = false;
-
-	this.connectScp = async function() {
-
-		if(this.scp) return this.scp;
-
-		if(nodeScp === false) nodeScp = require('node-scp');
-
-		let serverInfo;
-
-		try
-		{
-			serverInfo = this.getServerInfo();
-		}
-		catch(error)
-		{
-			this.scp = false;
-
-			throw new Error(error);
-		}
-
-		try
-		{
-			let client = {
-				host: serverInfo.host,
-				readyTimeout: 5000 * config.serverTimeoutMultiplier,
-				keepalive: 15 * 60 * 1000,
-			};
-
-			if(serverInfo.user) client.username = serverInfo.user;
-			if(serverInfo.pass) client.password = serverInfo.pass;
-			if(serverInfo.port) client.port = serverInfo.port;
-
-			this.scp = nodeScp.Client(client);
-			await this.scp;
-		}
-		catch(error)
-		{
-			if(this.scp)
-				await this.scp.close();
-
-			this.scp = false;
-
-			throw new Error('connection | '+error.message);
-		}
-
-		return this.scp;
-
-	}
-
-	this.readScp = async function(path) {
-
-		let files = [];
-
-		console.time('readScp');
-
-		let scp = await this.connectScp();
-
-		let entries = await scp.list('/'+getPath(path));
-
-		for(let i = 0, len = entries.length; i < len; i++)
-		{
-			let entry = entries[i];
-			let name = p.normalize(entry.name);
-
-			files.push({name: name, path: p.join(path, name), folder: (entry.type === 'd' ? true : false), compressed: fileManager.isCompressed(name), mtime: entry.modifyTime});
-		}
-
-		console.timeEnd('readScp');
-
-		return files;
-
-	}
-
-	this.downloadScp = async function(_path, callbackWhenFileDownload, contentRightIndex) {
-
-		let files = [];
-
-		console.time('downloadScp');
-
-		let _this = this;
-		let _only = this.config._only;
-
-		let scp = await this.connectScp();
-
-		let promises = [];
-
-		let progressIndex = 0;
-
-		for(let i = 0, len = _only.length; i < len; i++)
-		{
-			let inTask = this.inTask(20);
-			if(inTask) await inTask;
-
-			let task = this.setTask(inTask);
-
-			promises.push(new Promise(async function(resolve, reject) {
-
-				let path = _only[i];
-
-				let filePath = fileManager.realPath(path, -1);
-				let folderPath = p.dirname(filePath);
-
-				if(!fs.existsSync(folderPath))
-					fs.mkdirSync(folderPath, {recursive: true});
-
-				// Avoid downloading the same files at the same time
-				if(!serverClient.existsOrDownloading(filePath))
-				{
-					let isDownloading = _this.isDownloadingPath(path);
-
-					if(isDownloading)
-					{
-						await isDownloading;
-					}
-					else
-					{
-						let downloading = _this.setDownloading(path, filePath);
-
-						await scp.downloadFile('/'+getPath(path), filePath);
-
-						downloading.resolve();
-					}
-				}
-
-				progressIndex++;
-
-				_this.file.setProgress(progressIndex / len, contentRightIndex);
-				_this.whenDownloadFile(path, filePath, callbackWhenFileDownload);
-
-				task.resolve();
-				resolve();
-
-			}));
-		}
-
-		await Promise.all(promises);
-
-		this.file.setProgress(1, contentRightIndex);
-
-		console.timeEnd('downloadScp');
-
-		return;
-
-	}
-
 
 	// S3
 	this.s3 = false;
@@ -1855,7 +1694,6 @@ var client = function(path) {
 		if(this.smb) await this.smb.client.close();
 		if(this.ftp) await this.ftp.close();
 		if(this.ssh) await this.ssh.end();
-		if(this.scp) await this.scp.close();
 		if(this.s3) delete this.s3;
 		if(this.webdav) delete this.webdav;
 		//if(this.opds) delete this.opds;
