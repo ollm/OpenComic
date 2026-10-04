@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "",
 			"downloadingAiModel": "دانلود مدل AI",
 			"maxMegapixels": "حداکثر وضوح ورودی (مگاپیکسل)",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "مقیاس خودکار",
 			"scale": "مقیاس",
 			"noiseReduction": "کاهش نویز",

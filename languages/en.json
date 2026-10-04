@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "Keep big halftones",
 			"downloadingAiModel": "Downloading AI model",
 			"maxMegapixels": "Max input image resolution (Megapixels)",
+			"openComicModels": "OpenComic AI Models",
+			"otherModels": "Other Models",
 			"autoScale": "Auto scale",
 			"scale": "Scale",
 			"noiseReduction": "Noise reduction",

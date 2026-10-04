@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "Große Halbtöne beibehalten",
 			"downloadingAiModel": "KI-Modell wird heruntergeladen",
 			"maxMegapixels": "Max. Bildquelle-Auflösung (Megapixel)",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "Auto-Skalieren",
 			"scale": "Skalierung",
 			"noiseReduction": "Rauschreduzierung",

@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "",
 			"downloadingAiModel": "Завантаження AI-моделі",
 			"maxMegapixels": "Максимальна роздільна здатність вхідного зображення (Мегапікселі)",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "Автоматичне масштабування",
 			"scale": "Масштабування",
 			"noiseReduction": "Зниження шуму",

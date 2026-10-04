@@ -248,19 +248,39 @@ function loadModels(key)
 	const current = _config.readingAi[key].model;
 	const items = [];
 
-	for(const model of models)
-	{
-		const modeInfo = OpenComicAI.model(model);
+	const opencomic = models.filter(model => model.startsWith('opencomic-'));
+	const others = models.filter(model => !model.startsWith('opencomic-'));
 
-		items.push({
-			key: model,
-			name: getModelName(model),
-			//rightText: modeInfo.speed+' (~'+app.normalizeNumber(app.round(modeInfo.latency, 1), 0.1)+'s)',
-			rightText: getModelSpeed(modeInfo.speed),
-			select: current == model ? true : false,
-			function: 'reading.ai.change(\''+key+'\', \'model\', \''+model+'\');',
-		});
+	const process = function(models) {
+
+		for(const model of models)
+		{
+			const modeInfo = OpenComicAI.model(model);
+
+			items.push({
+				key: model,
+				name: getModelName(model),
+				//rightText: modeInfo.speed+' (~'+app.normalizeNumber(app.round(modeInfo.latency, 1), 0.1)+'s)',
+				rightText: getModelSpeed(modeInfo.speed),
+				paddingLeft: true,
+				select: current == model ? true : false,
+				function: 'reading.ai.change(\''+key+'\', \'model\', \''+model+'\');',
+			});
+		}
+
 	}
+
+	items.push({
+		text: language.reading.pages.openComicModels,
+	});
+
+	process(opencomic);
+
+	items.push({
+		text: language.reading.pages.otherModels,
+	});
+
+	process(others);
 
 	events.menuSimple(items, {
 		width: 552,

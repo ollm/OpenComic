@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "",
 			"downloadingAiModel": "Téléchargement du modèle IA",
 			"maxMegapixels": "Résolution max. de l’image d’entrée (Mégapixels)",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "Échelle auto",
 			"scale": "Échelle",
 			"noiseReduction": "Réduction du bruit",

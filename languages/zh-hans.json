@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "保持色调平缓",
 			"downloadingAiModel": "下载 AI 模型",
 			"maxMegapixels": "最大输入图像分辨率（百万像素）",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "自动比例",
 			"scale": "比例",
 			"noiseReduction": "降噪",

@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "保留大網點",
 			"downloadingAiModel": "正在下載 AI 模型",
 			"maxMegapixels": "最大輸入影像解析度 (百萬像素)",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "自動縮放",
 			"scale": "縮放比例",
 			"noiseReduction": "降噪",

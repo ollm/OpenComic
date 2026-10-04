@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "Mantenir semitons grans",
 			"downloadingAiModel": "Descarregant model d'IA",
 			"maxMegapixels": "Resolució màxima de la imatge d'entrada (Megapíxels)",
+			"openComicModels": "Models d'OpenComic AI",
+			"otherModels": "Altres models",
 			"autoScale": "Escalat automàtic",
 			"scale": "Escalat",
 			"noiseReduction": "Reducció de soroll",

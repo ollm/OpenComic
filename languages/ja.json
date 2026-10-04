@@ -239,6 +239,8 @@
 			"aiKeepBigHalftone": "",
 			"downloadingAiModel": "AI モデルをダウンロード中",
 			"maxMegapixels": "入力画像の最大解像度（メガピクセル）",
+			"openComicModels": "",
+			"otherModels": "",
 			"autoScale": "自動スケール",
 			"scale": "スケール",
 			"noiseReduction": "ノイズ除去",
