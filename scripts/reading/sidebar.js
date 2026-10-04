@@ -114,6 +114,39 @@ function calcScrollHeight()
 	return scrollHeight;
 }
 
+let currentScrollTop = 0;
+
+function setScrollTop(scrollTop, animation = false, go = true, force = false)
+{
+	const maxScrollTop = calcScrollHeight();
+	scrollTop = Math.min(scrollTop, maxScrollTop);
+	
+	if(!go || (scrollTop === currentScrollTop && !force))
+	{
+		currentScrollTop = scrollTop;
+		return;
+	}
+
+	currentScrollTop = scrollTop;
+
+	const contentLeft = template._contentLeft();
+	const scrollElement = contentLeft.firstElementChild;
+
+	if(animation)
+	{
+		$(scrollElement).stop(true).animate({scrollTop: scrollTop}, animation);
+	}
+	else
+	{
+		scrollElement.scrollTop = scrollTop;
+	}
+}
+
+function getScrollTop()
+{
+	return currentScrollTop;
+}
+
 function getPosition(page = 0)
 {
 	if(config.readingDisableThumbnails)
@@ -256,8 +289,10 @@ function scroll(event)
 	if(!activeEvent || status.showed === status.all || config.readingDisableThumbnails)
 		return;
 
+	currentScrollTop = this.scrollTop;
+
 	const windowHeight = window.innerHeight;
-	const scrollTop = this.scrollTop + windowHeight / 2;
+	const scrollTop = currentScrollTop + windowHeight / 2;
 
 	let index = 0;
 
@@ -284,5 +319,7 @@ module.exports = {
 	goToImage,
 	disableEvent,
 	getPosition,
+	setScrollTop,
+	getScrollTop,
 	get scrollHeight() {return calcScrollHeight()},
 };

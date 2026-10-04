@@ -664,6 +664,18 @@ function events()
 	eventSelect(false);
 }
 
+function eventsFast()
+{
+	eventHover();
+	eventButton();
+	eventSwitch();
+	eventCheckbox();
+	eventInput();
+	eventRange();
+	// eventsTab();
+	eventSelect(false);
+}
+
 function showHoverText()
 {
 	const This = eventHoverTimeoutThis;
@@ -1506,6 +1518,7 @@ module.exports = {
 	eventInput: eventInput,
 	eventsTab: eventsTab,
 	events: events,
+	eventsFast: eventsFast,
 	focus: focus,
 	showHoverText: showHoverText,
 	hideHoverText: hideHoverText,

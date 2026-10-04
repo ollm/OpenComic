@@ -326,7 +326,7 @@ function update(retrieveData: boolean = false): void
 	const icon = materialIcon && !onReading ? materialIcon.innerHTML : (onReading ? 'auto_stories' : 'indeterminate_question_box');
 
 	const barHeader = template._barHeader();
-	const title = (barHeader.querySelector('.bar-title-a:last-child') ?? barHeader.querySelector('.bar-title'))?.innerText.trim() || 'Untitled';
+	const title = (barHeader.querySelector('.bar-title-a:last-child') ?? barHeader.querySelector('.bar-title'))?.textContent.trim() || 'Untitled';
 
 	const type = onReading ? 'reading' : 'normal';
 
@@ -491,7 +491,7 @@ function middleClickClose(event: MouseEvent, id: number): void
 function retrieveCurrentData(): TabData
 {
 	const contentElement = template._contentRight().firstElementChild as HTMLElement;
-	const scrollTop = contentElement ? contentElement.scrollTop : 0;
+	const scrollTop = dom.getContentRightScrollTop(contentElement);
 
 	const history = dom.history.serialize();
 

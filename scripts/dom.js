@@ -601,16 +601,44 @@ function setPrevIndexLabel(options)
 	prevIndexLabel = options;
 }
 
+let contentRightScrollTop = new WeakMap();
+
+function scrollTopEvent(event)
+{
+	const target = event.target;
+	const parent = target.parentElement.parentElement;
+
+	if(!parent.classList.contains('content-right') && !target.classList.contains('opds-browse-content'))
+		return;
+
+	contentRightScrollTop.set(target, target.scrollTop);
+	console.log(contentRightScrollTop);
+}
+
+function getContentRightScrollTop(scrollElement = false)
+{
+	if(!scrollElement)
+	{
+		const isOpds = fileManager.isOpds(currentPath);
+
+		const contentRight = template._contentRight();
+		scrollElement = isOpds ? contentRight.querySelector('.opds-browse-content') : contentRight.firstElementChild;
+	}
+
+	return scrollElement ? contentRightScrollTop.get(scrollElement) || 0 : 0;
+}
+
+app.event(document, 'scroll', scrollTopEvent, {
+	capture: true,
+	passive: true,
+});
+
 var currentPath = false, currentPathScrollTop = [];
 
 function setCurrentPathScrollTop(path = false)
 {
-	const isOpds = fileManager.isOpds(currentPath);
-
-	const contentRight = template._contentRight();
-	const scrollElement = isOpds ? contentRight.querySelector('.opds-browse-content') : contentRight.firstElementChild;
-
-	currentPathScrollTop[currentPath === false ? 0 : currentPath] = scrollElement ? scrollElement.scrollTop : 0;
+	const scrollTop = getContentRightScrollTop();
+	currentPathScrollTop[currentPath === false ? 0 : currentPath] = scrollTop;
 
 	if(path !== false)
 	{
@@ -3005,6 +3033,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	handlebarsContext.barBack = 'active';
 	template.loadHeader('reading.header.html', animation);
 	template.loadContentLeft('reading.content.left.html', animation);
+	reading.sidebar.setScrollTop(0, false, false);
 	tabs.update();
 
 	reading.hideContent(isFullScreen, true);
@@ -3162,11 +3191,13 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 		}
 
 		template._contentLeft().firstElementChild.innerHTML = template.load('reading.content.left.html');
+		reading.sidebar.setScrollTop(0, false, false);
 	}
 	else
 	{
 		template.loadContentLeft('reading.content.left.html', animation);
 		template.loadContentRight('reading.content.right.html', animation);
+		reading.sidebar.setScrollTop(0, false, false);
 	}
 
 	template._contentLeft().firstElementChild.style.height = 'calc(100% - 66px)';
@@ -3175,7 +3206,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	floatingActionButton(false);
 	
-	events.events();
+	events.eventsFast();
 
 	reading.onLoad(function(){
 
@@ -3185,7 +3216,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	});
 
 	reading.read(path, indexStart, end, isPdf, isEbook, imagePath);
-	reading.hideContent(isFullScreen, true);
+	// reading.hideContent(isFullScreen, true);
 	reading.music.read(hasMusic, files);
 
 	generateAppMenu();
@@ -3256,6 +3287,7 @@ module.exports = {
 	setWindowTitle: setWindowTitle,
 	fromLibrary: fromLibrary,
 	continueReadingError: continueReadingError,
+	getContentRightScrollTop: getContentRightScrollTop,
 	calculateVisibleItems: calculateVisibleItems,
 	calculateItemsDistribution: calculateItemsDistribution,
 	poster: domPoster,

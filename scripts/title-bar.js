@@ -232,14 +232,14 @@ function clickSubMenu(index1, index2)
 
 var first = true, colors = {};
 
-function setColors()
+function getColors()
 {
-	let computedStyle = getComputedStyle(document.querySelector('.app'));
+	const computedStyle = getComputedStyle(document.querySelector('.app'));
 
-	let symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#7F7F7F';
-	let backgroundColor = computedStyle.getPropertyValue('--md-sys-color-surface-container').trim() || '#7F7F7F';
+	const symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#7F7F7F';
+	const backgroundColor = computedStyle.getPropertyValue('--md-sys-color-surface-container').trim() || '#7F7F7F';
 
-	let win = electronRemote.getCurrentWindow();
+	const win = electronRemote.getCurrentWindow();
 	win.setBackgroundColor(backgroundColor);
 
 	colors = {
@@ -247,6 +247,14 @@ function setColors()
 		symbolColor: symbolColor,
 		height: 40,
 	};
+}
+
+function setColors()
+{
+	if(!first || !colors.color)
+		getColors();
+
+	const win = electronRemote.getCurrentWindow();
 
 	if(process.platform == 'win32')
 	{
@@ -318,7 +326,9 @@ module.exports = {
 	enterMenu: enterMenu,
 	clickSubMenu: clickSubMenu,
 	setMenu: setMenu,
+	getColors: getColors,
 	setColors: setColors,
 	setFullScreen: setFullScreen,
 	get controls() {return controls},
+	get colors() {return colors},
 };

@@ -169,12 +169,13 @@ function goToImageCL(index, animation = true, fromScroll = false, onlyMoveScroll
 		let scrollTop = 0;
 		let scrollHeight = 0;
 		const leftSize = view.leftSize(false);
+		const currentScrollTop = sidebar.getScrollTop();
 
 		if(readingIsEbook)
 		{
 			const rectItem = leftItem.getBoundingClientRect();
 
-			scrollTop = (((rectItem.top + leftScroll.scrollTop) - leftSize.top) + (rectItem.height / 2)) - (leftSize.height / 2);
+			scrollTop = (((rectItem.top + currentScrollTop) - leftSize.top) + (rectItem.height / 2)) - (leftSize.height / 2);
 			scrollHeight = leftScroll.scrollHeight;
 		}
 		else
@@ -188,14 +189,8 @@ function goToImageCL(index, animation = true, fromScroll = false, onlyMoveScroll
 		const maxScrollTop = scrollHeight - leftSize.height;
 		const targetScrollTop = Math.max(0, Math.min(scrollTop, maxScrollTop));
 
-		if(animation)
-		{
-			$(leftScroll).stop(true).animate({scrollTop: targetScrollTop}, animationDurationMS);
-		}
-		else
-		{
-			leftScroll.scrollTop = targetScrollTop;
-		}
+		if(currentScrollTop !== targetScrollTop)
+			sidebar.setScrollTop(targetScrollTop, (animation ? animationDurationMS : false));
 
 		sidebar.disableEvent(animationDurationMS + 50);
 	}
@@ -2303,8 +2298,9 @@ function hideWindowButtons(hide = false, animation = false)
 	const fullHide = hiddenBarHeader && hiddenTabsBar;
 	hide = fullHide && hide;
 
-	const computedStyle = getComputedStyle(document.querySelector('.app'));
-	const symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#7F7F7F';
+	// const computedStyle = getComputedStyle(document.querySelector('.app'));
+	// const symbolColor = computedStyle.getPropertyValue('--md-sys-color-on-surface-variant').trim() || '#7F7F7F';
+	const symbolColor = titleBar.colors.symbolColor;
 	const color = app.hexToRgb(symbolColor);
 
 	const _animate = function() {
@@ -4149,6 +4145,7 @@ async function generateEbookPages(end = false, reset = false, fast = false, imag
 		template.loadContentLeft('reading.content.left.ebook.html', true);
 		template._contentLeft().firstElementChild.style.height = 'calc(100% - 66px)';
 		events.eventRange();
+		sidebar.setScrollTop(0, false, false);
 
 		// await render.render(currentIndex);
 

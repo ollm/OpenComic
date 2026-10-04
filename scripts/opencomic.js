@@ -360,6 +360,7 @@ async function start()
 		theme.loadCustomThemes();
 
 		titleBar.start();
+		titleBar.getColors();
 
 		appBaseLoadedResolve();
 		startApp();
