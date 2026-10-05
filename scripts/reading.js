@@ -1287,7 +1287,25 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0, extra: {tranX: false, tranY: false}}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
 
-function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false, {force = false, tranX = false, tranY = false, crossZoomLimits = false} = {})
+function resetZoomState()
+{
+	clearTimeout(applyScaleST);
+
+	currentScale = 1;
+	scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0};
+	originalRect = false;
+	originalRectReadingBody = false;
+	originalRect2 = false;
+	originalRectReadingBody2 = false;
+	haveZoom = false;
+	currentZoomIndex = false;
+	applyScaleST = false;
+	zoomingIn = false;
+	zoomMoveData = {};
+	contentRightRect = false;
+}
+
+function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false, {force = false, tranX = false, tranY = false, crossZoomLimits = false, restoreScrollTop = false} = {})
 {	
 	if((!onReading && !_onReading) || !isLoaded)
 		return;
@@ -1436,6 +1454,10 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				scalePrevData.tranY = translateY;
 
 				view.calculateView();
+
+				if(restoreScrollTop !== false)
+					content.scrollTop = restoreScrollTop;
+
 				disableOnScroll(false);
 
 				originalRect2 = false;
@@ -1792,24 +1814,27 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 
 	currentScale = 1;
 
-	if(apply)
+	if(!apply)
 	{
-		if(config.readingGlobalZoom && readingViewIs('scroll'))
-		{
-			applyScale(animation, currentScale, true);
-		}
-		else
-		{
-			applyScale(animation, currentScale, true, false, delayed);
+		resetZoomState();
+		return;
+	}
 
-			originalRect = false;
-			scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0};
-			haveZoom = false;
-			zoomMoveData.active = false;
-			currentZoomIndex = false;
+	if(config.readingGlobalZoom && readingViewIs('scroll'))
+	{
+		applyScale(animation, currentScale, true);
+	}
+	else
+	{
+		applyScale(animation, currentScale, true, false, delayed);
 
-			render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
-		}
+		originalRect = false;
+		scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0};
+		haveZoom = false;
+		zoomMoveData.active = false;
+		currentZoomIndex = false;
+
+		render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
 	}
 }
 
@@ -2020,8 +2045,10 @@ function dragZoomEnd(force = false)
 
 function getTabState()
 {
+	const content = template._contentRight().firstElementChild;
 	const data = {
-		scaleData: scalePrevData,
+		scaleData: {...scalePrevData},
+		scrollTop: readingViewIs('scroll') && content ? content.scrollTop : undefined,
 	};
 
 	return data;
@@ -2030,19 +2057,29 @@ function getTabState()
 async function setTabState(data)
 {
 	const scaleData = data?.scaleData ?? false;
+	const scrollTop = data?.scrollTop;
+	const hasScrollTop = Number.isFinite(scrollTop);
+	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') ? scrollTop : false;
 
-	if(scaleData && scaleData.scale !== 1)
+	if((scaleData && scaleData.scale !== 1) || hasScrollTop)
 	{
 		await onLoadPromise.promise;
 
-		if(_config.readingView == 'panels')
-			return;
+		if(scaleData && scaleData.scale !== 1)
+		{
+			applyScale(false, scaleData.scale, true, (scaleData.scale < 1) ? true : false, false, {restoreScrollTop});
+			applyZoom(scaleData.tranX, scaleData.tranY, false);
 
-		applyScale(false, scaleData.scale, true, (scaleData.scale < 1) ? true : false);
-		applyZoom(scaleData.tranX, scaleData.tranY, false);
+			scalePrevData.tranX = scalePrevData.tranX2 = zoomMoveData.tranX;
 
-		currentScale = scaleData.scale;
-		scalePrevData = scaleData;
+			if(!(config.readingGlobalZoom && readingViewIs('scroll')))
+				scalePrevData.tranY = scalePrevData.tranY2 = zoomMoveData.tranY;
+			
+			currentScale = scaleData.scale;
+		}
+
+		if(restoreScrollTop !== false)
+			template._contentRight().firstElementChild.scrollTop = restoreScrollTop;
 	}
 }
 
@@ -4795,9 +4832,11 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 {
 	init();
 
+	resetZoomState();
+
 	let contentRightIndex = template.contentRightIndex();
 
-	items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, currentScale = 1, currentZoomIndex = false, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0}, originalRect = false, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
+	items = [], imagesData = {}, imagesDataClip = {}, imagesPath = {}, imagesNum = 0, contentNum = 0, imagesNumLoad = 0, currentIndex = index, scrollInStart = false, scrollInEnd = false, prevChangeHeaderButtons = {}, trackingCurrent = false, pageRangeHistory = [], showComicSkip = false, ebookHasSelection = false;
 
 	isLoaded = false;
 	magnifyingGlassPosition.mode = false;
