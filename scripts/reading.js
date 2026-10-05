@@ -344,7 +344,8 @@ function returnLargerImage(index)
 	const position1 = doublePage.active() ? positions[1] : undefined;
 	const item0 = items[0];
 	const item1 = items[1];
-	const getHeight = (position, item) => {
+
+	const getHeight = function(position, item) {
 
 		if(!position) return 0;
 
@@ -369,55 +370,8 @@ function returnLargerImage(index)
 		top: position?.top ?? 0,
 	};
 
-	const oldResult = returnLargerImageOld(index);
-	const content = template._contentRight().firstElementChild;
-	const oldTop = oldResult.image
-		? oldResult.top - view.viewSize().top + content.scrollTop
-		: 0;
-
-	console.log('returnLargerImage comparison', {
-		index,
-		sameImage: result.image === oldResult.image,
-		newHeight: result.height,
-		oldHeight: oldResult.height,
-		heightMatches: result.height === oldResult.height,
-		heightDifference: result.height - oldResult.height,
-		newTop: result.top,
-		oldTop,
-		topMatches: result.top === oldTop,
-		topDifference: result.top - oldTop,
-	});
-
 	return result;
 }
-
-function returnLargerImageOld(index)
-{
-	if(doublePage.active())
-	{
-		let image0 = template._contentRight().querySelector('.image-position'+(index)+'-0');
-		let image1 = template._contentRight().querySelector('.image-position'+(index)+'-1');
-
-		let rect0 = image0 ? image0.getBoundingClientRect() : false;
-		let rect1 = image1 ? image1.getBoundingClientRect() : false;
-
-		let imageHeight0 = rect0.height || 0;
-		let imageHeight1 = rect1.height || 0;
-
-		if(imageHeight0 >= imageHeight1)
-			return {image: image0, height: imageHeight0, top: rect0.top || 0};
-		else
-			return {image: image1, height: imageHeight1, top: rect1.top || 0};
-	}
-	else
-	{
-		let image = template._contentRight().querySelector('.image-position'+(index)+'-0');
-		let rect = image ? image.getBoundingClientRect() : false;
-
-		return {image: image, height: rect.height || 0, top: rect.top || 0};
-	}
-}
-
 
 var currentPageVisibility = 0, maxPageVisibility = 0, currentPageStart = true, readingDirection = true, realReadingDirection = true, disableOnScrollST = false;
 
