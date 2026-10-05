@@ -568,7 +568,17 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		}, animationDurationMS + 200); // Add 200 of margin to avoid errors
 
-		$(content).stop(true).animate({scrollTop: (scrollTop + scrollSum)+'px'}, animationDurationMS);
+		const targetScrollTop = scrollTop + scrollSum;
+
+		if(animationDurationMS > 0)
+		{
+			$(content).stop(true).animate({scrollTop: targetScrollTop+'px'}, animationDurationMS);
+		}
+		else
+		{
+			$(content).stop(true);
+			content.scrollTop = targetScrollTop;
+		}
 	}
 
 	let newIndex = (eIndex - 1);
