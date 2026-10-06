@@ -165,8 +165,6 @@ function checkNightly(force = false)
 	if((!nightly.build && !force) || !config.checkNightlyReleases)
 		return;
 
-	console.log('Checking for nightly build');
-
 	let options = {
 		headers:{
 			'User-Agent': window.navigator.userAgent,
@@ -196,7 +194,6 @@ function checkNightly(force = false)
 		if(lastRelease)
 		{
 			const releaseHash = app.extract(/OpenComic-Nightly-v[0-9.]+-([a-f0-9]+)/iu, lastRelease.name);
-			console.log(releaseHash);
 
 			if((lastRelease.name != config.lastCheckedNightlyRelease && releaseHash != nightly.commit7) || force)
 			{

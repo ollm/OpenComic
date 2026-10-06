@@ -58,7 +58,7 @@ function setFirst(history: History, data: any): void
 
 	if(current.isComic)
 	{
-		// reading.setTabState(data);
+		reading.setTabStateFirst(data);
 	}
 	else
 	{

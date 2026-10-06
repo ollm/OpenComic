@@ -570,14 +570,17 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		const targetScrollTop = scrollTop + scrollSum;
 
-		if(animationDurationMS > 0)
+		if(!tabsState || !tabsState.restoreScrollTop)
 		{
-			$(content).stop(true).animate({scrollTop: targetScrollTop+'px'}, animationDurationMS);
-		}
-		else
-		{
-			$(content).stop(true);
-			content.scrollTop = targetScrollTop;
+			if(animationDurationMS > 0)
+			{
+				$(content).stop(true).animate({scrollTop: targetScrollTop+'px'}, animationDurationMS);
+			}
+			else
+			{
+				$(content).stop(true);
+				content.scrollTop = targetScrollTop;
+			}
 		}
 	}
 
@@ -1275,6 +1278,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		return;
 
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
+	let applyScaleEnd = false;
 
 	if(currentZoomIndex === false)
 	{
@@ -1397,7 +1401,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(scale != 1) dom.this(contentRight).find('.reading-body > div img.originalSize', true).addClass('zoomed');
 
-			applyScaleST = setTimeout(function() {
+			applyScaleEnd = function() {
 
 				let scrollTop = content.scrollTop;
 
@@ -1412,15 +1416,16 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 					transform: 'translateX('+app.roundDPR(scalePrevData.tranX)+'px) translateY('+app.roundDPR(translateY)+'px) scale('+scale+')',
 				});
 
-				content.scrollTop = scrollTop + (translateY - scalePrevData.tranY);
+				if(restoreScrollTop === false)
+					content.scrollTop = scrollTop + (translateY - scalePrevData.tranY);
+				else
+					content.scrollTop = restoreScrollTop;
+
 				applyDiffScrolls((translateY - scalePrevData.tranY));
 
 				scalePrevData.tranY = translateY;
 
 				view.calculateView();
-
-				if(restoreScrollTop !== false)
-					content.scrollTop = restoreScrollTop;
 
 				disableOnScroll(false);
 
@@ -1441,7 +1446,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				applyScaleST = false;
 				zoomingIn = false;
 
-			}, animationDurationS * 1000 + 100);
+			};
 		}
 		else
 		{
@@ -1530,7 +1535,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				dom.this(imagePosition._this).find('img.originalSize', true).addClass('zoomed');
 			}
 
-			applyScaleST = setTimeout(function() {
+			applyScaleEnd = function() {
 
 				fixBlurOnZoom(scale, currentZoomIndex);
 
@@ -1539,7 +1544,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				applyScaleST = false;
 				zoomingIn = false;
 
-			}, animationDurationS * 1000 + 100);
+			};
 		}
 
 		if(center)
@@ -1571,6 +1576,14 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 	}
 
 	setOriginalSize(scale);
+
+	if(applyScaleEnd)
+	{
+		if(animationDurationS > 0)
+			applyScaleST = setTimeout(applyScaleEnd, animationDurationS * 1000 + 100);
+		else
+			applyScaleEnd();
+	}
 }
 
 function applyDiffScrolls(diff = 0)
@@ -2018,6 +2031,8 @@ function getTabState()
 	return data;
 }
 
+let tabsState = false;
+
 async function setTabState(data)
 {
 	const scaleData = data?.scaleData ?? false;
@@ -2043,8 +2058,23 @@ async function setTabState(data)
 		}
 
 		if(restoreScrollTop !== false)
+		{
+			console.log('restoreScrollTop', restoreScrollTop);
 			template._contentRight().firstElementChild.scrollTop = restoreScrollTop;
+		}
 	}
+}
+
+async function setTabStateFirst(data)
+{
+	const scrollTop = data?.scrollTop;
+	const hasScrollTop = Number.isFinite(scrollTop);
+	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') ? scrollTop : false;
+
+	tabsState = {
+		...data,
+		restoreScrollTop,
+	} ?? false;
 }
 
 // Move scroll whit mouse
@@ -5638,6 +5668,7 @@ module.exports = {
 	haveZoom: function(){return haveZoom},
 	getTabState: getTabState,
 	setTabState: setTabState,
+	setTabStateFirst: setTabStateFirst,
 	imagesPosition: function(){return view.imagesPosition},
 	imagesFullPosition: function(){return view.imagesFullPosition},
 	readingCurrentPath: function () {return readingCurrentPath},
