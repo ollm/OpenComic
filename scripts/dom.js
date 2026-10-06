@@ -3064,7 +3064,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	}
 	else if(fileManager.isServer(path))
 	{
-		await file.makeAvailable([{path: path}]); // Make avaiable only the compressed file
+		await file.makeAvailable(files, false, true);
 	}
 
 	file.destroy();
