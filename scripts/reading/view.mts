@@ -5,7 +5,6 @@ import stayInLine from './view/stay-in-line.mjs';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const dom: any;
 declare const image: any;
-declare const config: any;
 declare const reading: any;
 declare const _config: any;
 declare const template: any;
