@@ -178,6 +178,8 @@ function checkNightly(force = false)
 		let json = await response.json();
 		if(json.message) return console.log(json.message);
 
+		json.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+
 		let lastRelease = false;
 
 		for(let key in json)
