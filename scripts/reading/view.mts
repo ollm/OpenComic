@@ -164,7 +164,7 @@ function calculateView(first: boolean = false)
 		imagesPosition = [];
 		imagesFullPosition = [];
 
-		const scale = config.readingGlobalZoom ? reading.scalePrevData().scale : 1;
+		const scale = reading.globalZoom() ? reading.scalePrevData().scale : 1;
 		let scrollHeight = 0;
 
 		for(let i = 0, len = distribution.distribution.length; i < len; i++)

@@ -614,11 +614,11 @@ function scrollTopEvent(event)
 	contentRightScrollTop.set(target, target.scrollTop);
 }
 
-function getContentRightScrollTop(scrollElement = false)
+function getContentRightScrollTop(scrollElement = false, noOpds = false)
 {
 	if(!scrollElement)
 	{
-		const isOpds = fileManager.isOpds(currentPath);
+		const isOpds = fileManager.isOpds(currentPath) && !noOpds;
 
 		const contentRight = template._contentRight();
 		scrollElement = isOpds ? contentRight.querySelector('.opds-browse-content') : contentRight.firstElementChild;

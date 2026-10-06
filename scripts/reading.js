@@ -352,7 +352,7 @@ function returnLargerImage(index)
 		const rendered = item?.rendered;
 		const scale = position.original.height
 			? position.height / position.original.height
-			: (config.readingGlobalZoom ? reading.scalePrevData().scale : 1);
+			: (readingGlobalZoom() ? reading.scalePrevData().scale : 1);
 
 		return position.height + ((rendered?.top ?? 0) + (rendered?.bottom ?? 0)) * scale;
 
@@ -392,7 +392,7 @@ function goScrollPercent(screenPercent = 50, animation = true)
 		let animationDurationMS = (animation ? _config.readingViewSpeed : 0) * 1000;
 
 		const content = template._contentRight().firstElementChild;
-		const rect = content.getBoundingClientRect();
+		const rect = getViewportRect();
 
 		const now = Date.now();
 		const prevNow = +content.dataset.now;
@@ -428,8 +428,8 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	let _currentScale = currentScale;
 
-	if(currentScale != 1 && animation && !(config.readingGlobalZoom && readingViewIs('scroll')))
-		reading.resetZoom(true, false, true, true, (config.readingGlobalZoomSlide && !readingViewIs('scroll')));
+	if(currentScale != 1 && animation && !(readingGlobalZoom() && readingViewIs('scroll')))
+		reading.resetZoom(true, false, true, true, (readingGlobalZoomSlide() && !readingViewIs('scroll')));
 
 	const content = template._contentRight().firstElementChild;
 	const viewSize = view.viewSize();
@@ -570,7 +570,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 		const targetScrollTop = scrollTop + scrollSum;
 
-		if(!tabsState || !tabsState.restoreScrollTop)
+		if(!restoringTabState || !restoringTabState.restoreScrollTop)
 		{
 			if(animationDurationMS > 0)
 			{
@@ -598,7 +598,7 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	}, false, false, true);
 
-	if(_currentScale && _currentScale != 1 && config.readingGlobalZoomSlide && !readingViewIs('scroll'))
+	if(_currentScale && _currentScale != 1 && readingGlobalZoomSlide() && !readingViewIs('scroll'))
 	{
 		currentZoomIndex = false;
 		currentScale = _currentScale;
@@ -942,7 +942,7 @@ function onScroll(event)
 
 		if(currentIndex != selIndex + 1)
 		{
-			if(currentScale != 1 && !(config.readingGlobalZoom && readingViewIs('scroll')))
+			if(currentScale != 1 && !(readingGlobalZoom() && readingViewIs('scroll')))
 				reading.resetZoom();
 
 			var isBookmarkTrue = false;
@@ -1254,6 +1254,51 @@ function showPreviousComic(mode, animation = true, invert = false)
 
 var currentScale = 1, scalePrevData = {tranX: 0, tranX2: 0, tranY: 0, tranY2: 0, scale: 1, scrollTop: 0, extra: {tranX: false, tranY: false}}, originalRect = false, originalRectReadingBody = false, originalRect2 = false, originalRectReadingBody2 = false, haveZoom = false, currentZoomIndex = false, applyScaleST = false, zoomingIn = false, prevAnime = false;
 
+// Scroll container, includes the 12px scrollbar that view.rightSize excludes in scroll view
+function getViewportRect()
+{
+	const rightSize = view.rightSize;
+	if(!rightSize) return template._contentRight().getBoundingClientRect();
+
+	return {
+		left: rightSize.left,
+		top: rightSize.top,
+		width: rightSize.width + (readingViewIs('scroll') ? 12 : 0),
+		height: rightSize.height,
+	};
+}
+
+// .reading-body, it grows to the full scroll height in scroll view
+function getBodyRect()
+{
+	const rightSize = view.rightSize;
+
+	return {
+		left: rightSize.left,
+		top: rightSize.top - dom.getContentRightScrollTop(false, true),
+		width: rightSize.width,
+		height: rightSize.scrollHeight,
+	};
+}
+
+// .image-position{index}, the row of the group (includes margins) in scroll view
+function getGroupRect(index)
+{
+	const rightSize = view.rightSize;
+	const group = view.imagesFullPosition?.[index]?.[0];
+	if(!group) return null;
+
+	const next = view.imagesFullPosition[index + 1]?.[0];
+	const bottom = next ? next.top : rightSize.scrollHeight;
+
+	return {
+		left: rightSize.left,
+		top: rightSize.top + group.top - dom.getContentRightScrollTop(false, true),
+		width: rightSize.width,
+		height: bottom - group.top,
+	};
+}
+
 function resetZoomState()
 {
 	clearTimeout(applyScaleST);
@@ -1288,7 +1333,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		}
 		else
 		{
-			let currentRect = template.contentRight('.image-position'+(currentIndex - 1)).get(0).getBoundingClientRect();
+			const currentRect = getGroupRect(currentIndex - 1) || template.contentRight('.image-position'+(currentIndex - 1)).get(0).getBoundingClientRect();
 
 			if(currentRect.top > currentPageXY.y && (currentIndex - 2) >= 0)
 			{
@@ -1327,19 +1372,19 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 		clearTimeout(applyScaleST);
 
-		if(config.readingGlobalZoom && readingViewIs('scroll'))
+		if(readingGlobalZoom() && readingViewIs('scroll'))
 		{
 			zoomingIn = true;
 			disableOnScroll(true);
 
 			if(originalRect === false)
 			{
-				originalRect = originalRect2 = contentRight.querySelector('.reading-body').getBoundingClientRect();
-				originalRectReadingBody = content.getBoundingClientRect();
+				originalRect = originalRect2 = getBodyRect();
+				originalRectReadingBody = getViewportRect();
 			}
 			else if(originalRect2 === false)
 			{
-				originalRect2 = contentRight.querySelector('.reading-body').getBoundingClientRect();
+				originalRect2 = getBodyRect();
 			}
 
 			scrollTop = content.scrollTop;
@@ -1454,8 +1499,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(originalRect === false)
 			{
-				originalRect = !readingViewIs('scroll') ? contentRight.getBoundingClientRect() : contentRight.querySelector('.image-position'+currentZoomIndex).getBoundingClientRect();
-				originalRectReadingBody = content.getBoundingClientRect();
+				originalRect = !readingViewIs('scroll') ? getViewportRect() : (getGroupRect(currentZoomIndex) || contentRight.querySelector('.image-position'+currentZoomIndex).getBoundingClientRect());
+				originalRectReadingBody = getViewportRect();
 			}
 
 			if(!zoomOut)
@@ -1572,7 +1617,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			},
 		};
 
-		render.setScale(scale, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
+		render.setScale(scale, ((readingGlobalZoom() && readingViewIs('scroll')) || (readingGlobalZoomSlide() && !readingViewIs('scroll'))), doublePage.active());
 	}
 
 	setOriginalSize(scale);
@@ -1606,15 +1651,13 @@ function zoomScrollHeight()
 {
 	if(scalePrevData.scale != 1)
 	{
-		const globalZoomScroll = config.readingGlobalZoom && readingViewIs('scroll');
+		const globalZoomScroll = readingGlobalZoom() && readingViewIs('scroll');
 
 		const contentRight = template._contentRight();
 		const readingBody = contentRight.querySelector('.reading-body');
 
-		const content = contentRight.firstElementChild;
-
 		const newRect = reading.view.rightSize;
-		originalRectReadingBody = content.getBoundingClientRect();
+		originalRectReadingBody = getViewportRect();
 
 		const isScroll = readingViewIs('scroll')
 		const height = isScroll ? newRect.scrollHeight : newRect.height;
@@ -1797,7 +1840,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 		return;
 	}
 
-	if(config.readingGlobalZoom && readingViewIs('scroll'))
+	if(readingGlobalZoom() && readingViewIs('scroll'))
 	{
 		applyScale(animation, currentScale, true);
 	}
@@ -1811,7 +1854,7 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 		zoomMoveData.active = false;
 		currentZoomIndex = false;
 
-		render.setScale(1, ((config.readingGlobalZoom && readingViewIs('scroll')) || (config.readingGlobalZoomSlide && !readingViewIs('scroll'))), doublePage.active());
+		render.setScale(1, ((readingGlobalZoom() && readingViewIs('scroll')) || (readingGlobalZoomSlide() && !readingViewIs('scroll'))), doublePage.active());
 	}
 }
 
@@ -1925,7 +1968,7 @@ function notCrossZoomLimits(x, y, scale = false, crossZoomLimits = false)
 {
 	scale = scale !== false ? scale : scalePrevData.scale;
 
-	let indexSize = getIndexImagesSize((config.readingGlobalZoom && readingViewIs('scroll')) ? (currentIndex - 1) : currentZoomIndex);
+	let indexSize = getIndexImagesSize((readingGlobalZoom() && readingViewIs('scroll')) ? (currentIndex - 1) : currentZoomIndex);
 
 	let maxX = indexSize.width * 0.5 * scale - originalRect.width * 0.5;
 	let minX = indexSize.width * -0.5 * scale - originalRect.width * -0.5;
@@ -1979,7 +2022,7 @@ function applyZoom(x, y, animation, crossZoomLimits = false)
 
 	const contentRight = template._contentRight();
 
-	if(config.readingGlobalZoom && readingViewIs('scroll'))
+	if(readingGlobalZoom() && readingViewIs('scroll'))
 	{
 		scalePrevData.tranX = zoomMoveData.tranX = x;
 		zoomMoveData.tranY = scalePrevData.tranY;
@@ -2031,7 +2074,7 @@ function getTabState()
 	return data;
 }
 
-let tabsState = false;
+let restoringTabState = false;
 
 async function setTabState(data)
 {
@@ -2051,7 +2094,7 @@ async function setTabState(data)
 
 			scalePrevData.tranX = scalePrevData.tranX2 = zoomMoveData.tranX;
 
-			if(!(config.readingGlobalZoom && readingViewIs('scroll')))
+			if(!(readingGlobalZoom() && readingViewIs('scroll')))
 				scalePrevData.tranY = scalePrevData.tranY2 = zoomMoveData.tranY;
 			
 			currentScale = scaleData.scale;
@@ -2063,6 +2106,8 @@ async function setTabState(data)
 			template._contentRight().firstElementChild.scrollTop = restoreScrollTop;
 		}
 	}
+
+	restoringTabState = false;
 }
 
 async function setTabStateFirst(data)
@@ -2071,7 +2116,7 @@ async function setTabStateFirst(data)
 	const hasScrollTop = Number.isFinite(scrollTop);
 	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') ? scrollTop : false;
 
-	tabsState = {
+	restoringTabState = {
 		...data,
 		restoreScrollTop,
 	} ?? false;
@@ -2179,8 +2224,7 @@ function activeMagnifyingGlass(active = null, gamepad = false, fromSwitch = fals
 
 		if(gamepad)
 		{
-			let contentRight = template._contentRight();
-			let rect = contentRight.getBoundingClientRect();
+			const rect = getViewportRect();
 
 			let pageX = (rect.width / 2) + rect.left;
 			let pageY = (rect.height / 2) + rect.top;
@@ -2203,8 +2247,7 @@ function activeMagnifyingGlass(active = null, gamepad = false, fromSwitch = fals
 //Magnifying glass settings
 function changeMagnifyingGlass(mode, value, save)
 {
-	let contentRight = template._contentRight();
-	let rect = contentRight.getBoundingClientRect();
+	const rect = getViewportRect();
 
 	let pageX = (rect.width / 2) + rect.left;
 	let pageY = (rect.height / 2) + rect.top;
@@ -2351,7 +2394,6 @@ function resized()
 	originalRectReadingBody = false;
 	originalRect2 = false;
 	originalRectReadingBody2 = false;
-	contentLeftRect = false;
 	contentRightRect = false;
 	barHeaderRect = false;
 
@@ -2635,6 +2677,16 @@ function readingView()
 function readingManga()
 {
 	return (_config.readingManga && !readingViewIs('scroll'));
+}
+
+function readingGlobalZoom()
+{
+	return config.readingGlobalZoom || readingViewIs('panels');
+}
+
+function readingGlobalZoomSlide()
+{
+	return config.readingGlobalZoomSlide;
 }
 
 var activeOnScroll = true;
@@ -4341,7 +4393,7 @@ function applyMoveZoomWithMouse(pageX = false, pageY = false)
 }
 
 // Events functions
-var contentLeftRect = false, contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
+var contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
 var ebookHasSelection = false;
 
 function showHiddenBars(event, onclick = false)
@@ -4417,11 +4469,8 @@ function showHiddenBars(event, onclick = false)
 			hideContentRunningST = false;
 		}
 
-		if(contentLeftRect === false)
-		{
+		if(barHeaderRect === false)
 			barHeaderRect = template._barHeader().getBoundingClientRect();
-			contentLeftRect = template._contentLeft().getBoundingClientRect();
-		}
 
 		if(shownBarHeader && pageY > barHeaderRect.height + tabs.height + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
 		{
@@ -4434,7 +4483,7 @@ function showHiddenBars(event, onclick = false)
 			hideContentRunningST = false;
 		}
 
-		if(shownContentLeft && pageX > contentLeftRect.width + 48)
+		if(shownContentLeft && pageX > view.leftSize().width + 48)
 		{
 			clearTimeout(hideContentST);
 
@@ -4464,9 +4513,7 @@ function pointermove(event)
 	{
 		if(contentRightRect === false)
 		{
-			contentRightRect = template._contentRight().getBoundingClientRect();
-			let _contentRightRect = template._contentRight().firstElementChild.firstElementChild.getBoundingClientRect();
-			contentRightRect.width = _contentRightRect.width;
+			contentRightRect = {...getViewportRect(), width: view.rightSize.width};
 		}
 
 		if(config.readingMoveZoomWithMouse && (!readingViewIs('scroll') || config.readingScrollWithMouse) && event instanceof PointerEvent)
@@ -4510,8 +4557,7 @@ function pointermove(event)
 
 			if(maxDiff > 10)
 			{
-				let content = template._contentRight().firstElementChild;
-				let rect = content.getBoundingClientRect();
+				const rect = getViewportRect();
 
 				touchevents.start = true;
 				touchevents.type = numTouches > 1 || haveZoom || readingViewIs('scroll') ? 'zoom' : 'move';
@@ -4598,7 +4644,6 @@ function pointermove(event)
 			}
 		}
 
-		contentLeftRect = false;
 		contentRightRect = false;
 		barHeaderRect = false;
 	}
@@ -4908,7 +4953,7 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 
 	template.contentRight('.reading-body, .reading-lens').on('pointerdown', function(e) {
 
-		if(onReading && isLoaded && (!haveZoom || config.readingGlobalZoom) && !config.readingScrollWithMouse && readingViewIs('scroll'))
+		if(onReading && isLoaded && (!haveZoom || readingGlobalZoom()) && !config.readingScrollWithMouse && readingViewIs('scroll'))
 		{
 			if(e.originalEvent.pointerType != 'touch' && e.originalEvent.button >= 0 && e.originalEvent.button <= 1)
 			{
@@ -5012,8 +5057,7 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 
 					if(magnifyingGlassPosition.x === false)
 					{
-						let contentRight = template._contentRight();
-						let rect = contentRight.getBoundingClientRect();
+						const rect = getViewportRect();
 
 						magnifyingGlassPosition.x = (rect.width / 2) + rect.left;
 						magnifyingGlassPosition.y = (rect.height / 2) + rect.top;
@@ -5702,6 +5746,8 @@ module.exports = {
 	isLoaded: function(value){return isLoaded},
 	manga: readingManga,
 	margin: readingMargin,
+	globalZoom: readingGlobalZoom,
+	globalZoomSlide: readingGlobalZoomSlide,
 	horizontalsMargin: readingHorizontalsMargin,
 	isLoad: isLoad,
 	onLoad: onLoad,
