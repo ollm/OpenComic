@@ -2395,7 +2395,6 @@ function resized()
 	originalRect2 = false;
 	originalRectReadingBody2 = false;
 	contentRightRect = false;
-	barHeaderRect = false;
 
 	if((onReading || _onReading) && isLoaded)
 	{
@@ -4393,7 +4392,7 @@ function applyMoveZoomWithMouse(pageX = false, pageY = false)
 }
 
 // Events functions
-var contentRightRect = false, barHeaderRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
+var contentRightRect = false, touchevents = {active: false, start: false, distance: 0, scale: 0, maxTouches: 0, numTouches: 0, touches: [], touchesXY: [], type: 'move'}, pointermoveEvent = false;
 var ebookHasSelection = false;
 
 function showHiddenBars(event, onclick = false)
@@ -4469,10 +4468,7 @@ function showHiddenBars(event, onclick = false)
 			hideContentRunningST = false;
 		}
 
-		if(barHeaderRect === false)
-			barHeaderRect = template._barHeader().getBoundingClientRect();
-
-		if(shownBarHeader && pageY > barHeaderRect.height + tabs.height + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
+		if(shownBarHeader && pageY > view.barHeaderHeight + view.tabsBarHeight + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
 		{
 			clearTimeout(hideContentST);
 
@@ -4645,7 +4641,6 @@ function pointermove(event)
 		}
 
 		contentRightRect = false;
-		barHeaderRect = false;
 	}
 
 	if(readingDragScroll) // Drag to scroll

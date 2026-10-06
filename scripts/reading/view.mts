@@ -39,6 +39,10 @@ export interface FullPosition {
 	};
 }
 
+export const contentLeftWidth = 192;
+export const barHeaderHeight = 48;
+export const tabsBarHeight = 41;
+
 export function viewSize(isScroll: boolean = false)
 {
 	let width = window.innerWidth;
@@ -52,13 +56,13 @@ export function viewSize(isScroll: boolean = false)
 		width -= 12;
 
 	if(!hideContentLeft)
-		left = 192; // content left width
+		left = contentLeftWidth;
 
 	if(!hideBarHeader)
-		top += 48; // header height
+		top += barHeaderHeight;
 
 	if(!hideTabsBar)
-		top += 41; // tabs bar height
+		top += tabsBarHeight;
 
 	width -= left;
 	height -= top;
@@ -79,10 +83,10 @@ export function leftSize(range: boolean = true)
 	const {hideContentLeft, hideBarHeader, hideTabsBar} = reading.getHideContent();
 
 	if(!hideBarHeader)
-		top += 48; // header height
+		top += barHeaderHeight;
 
 	if(!hideTabsBar)
-		top += 41; // tabs bar height
+		top += tabsBarHeight;
 
 	if(hideContentLeft)
 		top = 0;
@@ -91,7 +95,7 @@ export function leftSize(range: boolean = true)
 	if(!range) height -= 66; // range height
 
 	return {
-		width: 192,
+		width: contentLeftWidth,
 		height,
 		left: 0,
 		top,
@@ -438,6 +442,9 @@ function start(first = true)
 }
 
 export default {
+	contentLeftWidth,
+	barHeaderHeight,
+	tabsBarHeight,
 	viewSize,
 	leftSize,
 	requiredImages,
