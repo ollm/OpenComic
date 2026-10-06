@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "البحث عن التحديثات",
 			"checkReleases": "البحث عن التحديثات عند تشغيل البرنامج",
-			"checkPreReleases": "إظهار النسخ غير المكتملة (بيتا/ألفا)"
+			"checkPreReleases": "إظهار النسخ غير المكتملة (بيتا/ألفا)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "نسخة جديدة متوفرة <b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "يمكنك معرفة التغييرات التي تمت من خلال {{{linkStart}}}صفحة الإصدارات{{{linkEnd}}}"
 		}
 	},

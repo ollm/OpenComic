@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "",
 			"checkReleases": "",
-			"checkPreReleases": ""
+			"checkPreReleases": "",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "",
+			"titleNightly": "",
 			"body": ""
 		}
 	},

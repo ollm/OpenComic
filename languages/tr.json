@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "Yeni sürümleri kontrol et",
 			"checkReleases": "OpenComic başlatılırken yeni bir sürüm olup olmadığını kontrol et",
-			"checkPreReleases": "Ön izlenim sürümlerini göster (beta/alpha sürümleri)"
+			"checkPreReleases": "Ön izlenim sürümlerini göster (beta/alpha sürümleri)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "Yeni sürüm mevcut: <b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "Yeni değişiklikleri {{{linkStart}}}sürüm sayfasından{{{linkEnd}}} görebilirsiniz"
 		}
 	},

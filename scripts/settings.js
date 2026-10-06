@@ -14,6 +14,7 @@ function start()
 	handlebarsContext.downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
 	handlebarsContext.customCacheAndTmpFolder = relative.resolve(config.customCacheAndTmpFolder);
 	handlebarsContext.settingsTab = activeTab || 'general';
+	handlebarsContext.nightly = nightly;
 	activeTab = false;
 }
 
@@ -1525,18 +1526,6 @@ function setStartOnStartup(value)
 	electron.ipcRenderer.send('open-at-login', value);
 }
 
-function setCheckReleases(value)
-{
-	storage.setKey('config', 'checkReleases', value);
-
-	dom.query('.settings-check-prereleases').class(!value, 'disable-pointer');
-}
-
-function setCheckPreReleases(value)
-{
-	storage.setKey('config', 'checkPreReleases', value);
-}
-
 function set(key, value, save = true)
 {
 	switch (key)
@@ -1612,6 +1601,12 @@ function set(key, value, save = true)
 		case 'readingShowBarsOnClick':
 
 			dom.query('.settings-body .settings-show-bars-delay').class(!!value, 'disable-pointer');
+
+			break;
+
+		case 'checkReleases':
+
+			dom.queryAll('.settings-check-prereleases, .settings-check-nightly-releases').class(!value, 'disable-pointer');
 
 			break;
 	}
@@ -1726,8 +1721,6 @@ module.exports = {
 	setStartInContinueReading: setStartInContinueReading,
 	setStartOnlyFromLibrary: setStartOnlyFromLibrary,
 	setStartOnStartup: setStartOnStartup,
-	setCheckReleases: setCheckReleases,
-	setCheckPreReleases: setCheckPreReleases,
 	getTurnPagesWithMouseWheelShortcut: getTurnPagesWithMouseWheelShortcut,
 	setTurnPagesWithMouseWheelShortcut: setTurnPagesWithMouseWheelShortcut,
 	changeShortcut: changeShortcut,

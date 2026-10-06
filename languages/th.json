@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "ตรวจหาเวอร์ชั่นใหม่",
 			"checkReleases": "ตรวจหาเวอร์ชั่นใหม่เมื่อเปิด OpenComic",
-			"checkPreReleases": "แสดงเวอร์ชั่นปล่อยให้ใช้ก่อน (เวอร์ชั่นเบต้า/อัลฟ่า)"
+			"checkPreReleases": "แสดงเวอร์ชั่นปล่อยให้ใช้ก่อน (เวอร์ชั่นเบต้า/อัลฟ่า)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "มีเวอร์ชั่นใหม่พร้อมใช้งาน <b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "คุณสามารถดูการเปลี่ยนแปลงจาก {{{linkStart}}}หน้าปล่อยซอฟแวร์{{{linkEnd}}}"
 		}
 	},

@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "بررسی نسخه جدید",
 			"checkReleases": "بررسی نسخه جدید هنگام شروع برنامه",
-			"checkPreReleases": "نمایش نسخه‌های آزمایشی (بتا/آلفا)"
+			"checkPreReleases": "نمایش نسخه‌های آزمایشی (بتا/آلفا)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "نسخه جدید در دسترس است <b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "می‌توانید تغییرات را در {{{linkStart}}}صفحه انتشار{{{linkEnd}}} ببینید"
 		}
 	},

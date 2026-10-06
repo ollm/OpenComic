@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "檢查新版本",
 			"checkReleases": "啟動 OpenComic 時檢查是否有新版本",
-			"checkPreReleases": "顯示預發布版本(beta/alpha)"
+			"checkPreReleases": "顯示預發布版本(beta/alpha)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "巨集",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "新版本可用<b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "您可以從{{{linkStart}}}發行頁面{{{linkEnd}}}查看最新變更"
 		}
 	},

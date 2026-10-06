@@ -36,11 +36,11 @@
             <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>linear</code>, <code>nearest</code> and others</li>
         </ul>
     </description>
-    <url type="homepage">https://github.com/ollm/OpenComic</url>
+    <url type="homepage">https://opencomic.app</url>
     <url type="bugtracker">https://github.com/ollm/OpenComic/issues</url>
     <url type="help">https://github.com/ollm/OpenComic/issues</url>
     <url type="translate">https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md</url>
-    <url type="donation">https://github.com/ollm/OpenComic/blob/master/FUNDING.md</url>
+    <url type="donation">https://opencomic.app/docs/donate</url>
     <url type="vcs-browser">https://github.com/ollm/OpenComic</url>
     <icon type="remote">https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/icon-border-transparent.png</icon>
     <screenshots>

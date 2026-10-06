@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "Sök efter nya versioner",
 			"checkReleases": "Kontrollera om det finns en ny version när du startar OpenComic",
-			"checkPreReleases": "Visa förhandsversioner (beta/alfa-versioner)"
+			"checkPreReleases": "Visa förhandsversioner (beta/alfa-versioner)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "Ny version tillgänglig: <b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "Ändringarna kan ses på {{{linkStart}}}versionssidan{{{linkEnd}}}"
 		}
 	},

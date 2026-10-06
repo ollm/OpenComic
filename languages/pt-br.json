@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "Verificar para novas versões",
 			"checkReleases": "Quando inicia OpenComic verifica se tem uma nova versão",
-			"checkPreReleases": "Mostrar versões pré-lançamento (versões em beta/alfa)"
+			"checkPreReleases": "Mostrar versões pré-lançamento (versões em beta/alfa)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "Nova versão disponível <b>{{realeaseName}}</b>",
+			"titleNightly": "",
 			"body": "Você pode ver as mudanças implementadas em {{{linkStart}}}página de lançamento{{{linkEnd}}}"
 		}
 	},

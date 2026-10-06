@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "Kiểm tra phiên bản mới",
 			"checkReleases": "Kiểm tra phiên bản mới khi khởi động OpenComic",
-			"checkPreReleases": "Hiển thị phiên bản dùng trước (các phiên bản beta/alpha)"
+			"checkPreReleases": "Hiển thị phiên bản dùng trước (các phiên bản beta/alpha)",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "Đã có phiên bản mới <b>{{releaseName}}</b>",
+			"titleNightly": "",
 			"body": "Bạn có thể xem nội dung cập nhật trên {{{linkStart}}}trang tải về{{{linkEnd}}}"
 		}
 	},

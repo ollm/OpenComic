@@ -448,7 +448,8 @@
 		"releases": {
 			"main": "업데이트 확인",
 			"checkReleases": "OpenComic 을 시작할 때 새 업데이트가 있는지 확인합니다.",
-			"checkPreReleases": "아직 출시되지 않은 베타 버전 릴리즈를 표시합니다."
+			"checkPreReleases": "아직 출시되지 않은 베타 버전 릴리즈를 표시합니다.",
+			"checkNightlyReleases": ""
 		},
 		"macros": {
 			"main": "",
@@ -705,6 +706,7 @@
 		},
 		"release": {
 			"title": "새로운 버전 <b>{{releaseName}}</b>이(가) 릴리즈 되었습니다",
+			"titleNightly": "",
 			"body": "{{{linkStart}}}릴리스 페이지{{{linkEnd}}}에서 변경 사항을 확인할 수 있습니다"
 		}
 	},
