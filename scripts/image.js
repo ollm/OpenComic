@@ -279,7 +279,7 @@ async function isAnimated(path)
 	{
 		_isAnimated = true;
 	}
-	else if(compatible.image.png.has(extension) || compatible.image.webp.has(extension) || compatible.image.avif.has(extension) || compatible.image.gif.has(extension))  // They can have animations
+	else if(compatible.image.png.has(extension) || compatible.image.jxl.has(extension) || compatible.image.webp.has(extension) || compatible.image.avif.has(extension) || compatible.image.gif.has(extension))  // They can have animations
 	{
 		_isAnimated = false;
 
@@ -287,6 +287,8 @@ async function isAnimated(path)
 
 		if(compatible.image.png.has(extension))
 			type = 'image/png';
+		else if(compatible.image.jxl.has(extension))
+			type = 'image/jxl';
 		else if(compatible.image.webp.has(extension))
 			type = 'image/webp';
 		else if(compatible.image.avif.has(extension))

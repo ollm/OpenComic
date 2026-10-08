@@ -736,30 +736,6 @@ async function loadPdfjsDecoders()
 
 }
 
-var JxlImage = false;
-
-async function loadJxlImage()
-{
-	if(importPromises.JxlImage) return importPromises.JxlImage;
-	if(JxlImage) return;
-
-	importPromises.JxlImage = new Promise(async function(resolve){
-
-		JxlImage = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/jxl-oxide-wasm/jxl_oxide_wasm.js')));
-
-		await JxlImage.default();
-		JxlImage = JxlImage.JxlImage;
-
-		resolve();
-
-		importPromises.JxlImage = false;
-
-	});
-
-	return importPromises.JxlImage;
-	
-}
-
 var foliateJs = {};
 
 async function loadFoliateJs()

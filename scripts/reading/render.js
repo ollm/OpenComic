@@ -559,7 +559,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 				{
 					const data = renderedObjectsURLCache[key];
 
-					img.src = data.blob;
+					setSrc(img, data.blob);
 					img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
 					img.style.imageRendering = '';
 
@@ -584,7 +584,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 
 							if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
-							img.src = data.blob;
+							setSrc(img, data.blob);
 							img.classList.add('blobRendered', 'blobRender', 'sizeFromImg');
 							img.style.imageRendering = '';
 
@@ -610,13 +610,13 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 			{
 				if(cssMethods[_config.kernel])
 				{
-					img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
+					setSrc(img, app.encodeSrcURI(app.shortWindowsPath(src, true)));
 					img.classList.remove('blobRendered', 'blobRender');
 					img.style.imageRendering = cssMethods[_config.kernel];
 				}
 				else if(renderedObjectsURLCache[key])
 				{
-					img.src = renderedObjectsURLCache[key].blob;
+					setSrc(img, renderedObjectsURLCache[key].blob);
 					img.classList.add('blobRendered', 'blobRender');
 					img.style.imageRendering = '';
 				}
@@ -640,7 +640,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 
 						if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
-						img.src = data.blob;
+						setSrc(img, data.blob);
 						img.classList.add('blobRendered', 'blobRender');
 						img.style.imageRendering = '';
 					}
@@ -716,7 +716,7 @@ async function srcToImage(src, img, key, threadsId)
 
 		if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
-		img.src = renderedObjectsURLCache[key].blob;
+		setSrc(img, renderedObjectsURLCache[key].blob);
 		img.classList.remove('blobRendered', 'blobRender');
 		img.style.imageRendering = '';
 
@@ -739,7 +739,7 @@ async function srcToImage(src, img, key, threadsId)
 
 	if(threadsId !== threads.id('readingRender')) return; // Return if the threads is different
 
-	img.src = app.encodeSrcURI(app.shortWindowsPath(src, true));
+	setSrc(img, app.encodeSrcURI(app.shortWindowsPath(src, true)));
 	img.classList.remove('blobRendered', 'blobRender');
 	img.style.imageRendering = '';
 
@@ -758,6 +758,17 @@ async function decodeImage(img, sync = false)
 	}
 
 	observer.observe(img);
+}
+
+function setSrc(img, src)
+{
+	const isBlob = src.startsWith('blob:');
+
+	const currentSrc = img.src;
+	const currentIsBlob = currentSrc.startsWith('blob:');
+
+	if(currentSrc !== src && (currentIsBlob || isBlob || !currentSrc))
+		img.src = src;
 }
 
 var observer = false;

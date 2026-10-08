@@ -336,7 +336,6 @@ compatible.image.blob = [ // This image formats requires conversion to Blob to b
 ];
 compatible.image.sharp = [ // This image formats requires sharp (custom build) to be displayed
 	...compatible.image.jp2,
-	...compatible.image.jxl,
 	// ...compatible.image.heic,	
 ];
 compatible.image.convert = [ // This image formats requires conversion to PNG to be displayed
@@ -371,7 +370,6 @@ compatibleMime.image.blob = [ // This image formats requires conversion to Blob 
 ];
 compatibleMime.image.sharp = [ // This image formats requires sharp (custom build) to be displayed
 	...compatibleMime.image.jp2,
-	...compatibleMime.image.jxl,
 	// ...compatibleMime.image.heic,
 ];
 compatibleMime.image.convert = [ // This image formats requires conversion to PNG to be displayed
