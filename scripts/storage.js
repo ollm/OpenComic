@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 171; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 172; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -128,17 +128,17 @@ const readingPagesConfig = {
 	readingAi: {
 		artifactRemoval: {
 			active: false,
-			model: 'opencomic-ai-artifact-removal-lite',
+			model: 'opencomic-ai-artifact-removal-balanced-v3-ps',
 		},
 		descreen: {
 			active: false,
-			model: 'opencomic-ai-descreen-hard-lite',
+			model: 'opencomic-ai-descreen-hard-fast-v3-256',
 			keepBigHalftone: true,
 			minSize: 2.5,
 		},
 		upscale: {
 			active: false,
-			model: 'opencomic-ai-upscale-lite',
+			model: 'opencomic-ai-upscale-fast-v3',
 			maxMegapixels: 1.5,
 			scale: 4,
 			noise: 0,

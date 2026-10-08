@@ -419,45 +419,72 @@ function migrateDefaultModelsToOpenComicAiModels(data)
 {
 	console.time('Migration: defaultModelsToOpenComicAiModels');
 
-	if(data.config.readingAi)
-	{
-		if(data.config.readingAi.artifactRemoval?.model)
-			data.config.readingAi.artifactRemoval.model = 'opencomic-ai-artifact-removal-lite';
+	const models = {
+		artifactRemoval: 'opencomic-ai-artifact-removal-balanced-v3-ps',
+		descreen: 'opencomic-ai-descreen-hard-fast-v3-256',
+		upscale: 'opencomic-ai-upscale-fast-v3'
+	};
 
-		if(data.config.readingAi.descreen?.model)
-			data.config.readingAi.descreen.model = 'opencomic-ai-descreen-hard-lite';
+	const migrateReadingAi = function (readingAi) {
 
-		if(data.config.readingAi.upscale?.model)
-			data.config.readingAi.upscale.model = 'opencomic-ai-upscale-lite';
+		if(!readingAi)
+			return;
 
-		for(let key in data.readingShortcutPagesConfig)
+		for(const [key, model] of Object.entries(models))
 		{
-			if(data.readingShortcutPagesConfig[key]?.readingAi?.artifactRemoval?.model)
-				data.readingShortcutPagesConfig[key].readingAi.artifactRemoval.model = 'opencomic-ai-artifact-removal-lite';
-
-			if(data.readingShortcutPagesConfig[key]?.readingAi?.descreen?.model)
-				data.readingShortcutPagesConfig[key].readingAi.descreen.model = 'opencomic-ai-descreen-hard-lite';
-
-			if(data.readingShortcutPagesConfig[key]?.readingAi?.upscale?.model)
-				data.readingShortcutPagesConfig[key].readingAi.upscale.model = 'opencomic-ai-upscale-lite';
+			if(readingAi[key]?.model)
+				readingAi[key].model = model;
 		}
 
-		for(let key in data.readingPagesConfig)
-		{
-			if(data.readingPagesConfig[key]?.readingAi?.artifactRemoval?.model)
-				data.readingPagesConfig[key].readingAi.artifactRemoval.model = 'opencomic-ai-artifact-removal-lite';
+	};
 
-			if(data.readingPagesConfig[key]?.readingAi?.descreen?.model)
-				data.readingPagesConfig[key].readingAi.descreen.model = 'opencomic-ai-descreen-hard-lite';
+	migrateReadingAi(data.config.readingAi);
 
-			if(data.readingPagesConfig[key]?.readingAi?.upscale?.model)
-				data.readingPagesConfig[key].readingAi.upscale.model = 'opencomic-ai-upscale-lite';
-		}
-	}
+	for(const key in data.readingShortcutPagesConfig)
+		migrateReadingAi(data.readingShortcutPagesConfig[key]?.readingAi);
+
+	for(const key in data.readingPagesConfig)
+		migrateReadingAi(data.readingPagesConfig[key]?.readingAi);
 
 	console.timeEnd('Migration: defaultModelsToOpenComicAiModels');
 
 	return data;
+}
+
+function migrateOldOpenComicAiModelsToLastOpenComicAiModels(data)
+{
+    console.time('Migration: oldOpenComicAiModelsToLastOpenComicAiModels');
+
+    const models = {
+        artifactRemoval: 'opencomic-ai-artifact-removal-balanced-v3-ps',
+        descreen: 'opencomic-ai-descreen-hard-fast-v3-256',
+        upscale: 'opencomic-ai-upscale-fast-v3'
+    };
+
+    const migrateReadingAi = function (readingAi) {
+
+        if(!readingAi)
+            return;
+
+        for(const [key, model] of Object.entries(models))
+        {
+            if(readingAi[key]?.model?.startsWith('opencomic-'))
+                readingAi[key].model = model;
+        }
+
+    };
+
+    migrateReadingAi(data.config.readingAi);
+
+    for(const key in data.readingShortcutPagesConfig)
+        migrateReadingAi(data.readingShortcutPagesConfig[key]?.readingAi);
+
+    for(const key in data.readingPagesConfig)
+        migrateReadingAi(data.readingPagesConfig[key]?.readingAi);
+
+    console.timeEnd('Migration: oldOpenComicAiModelsToLastOpenComicAiModels');
+
+    return data;
 }
 
 function removeEpubRenderCache()
@@ -522,6 +549,9 @@ function start(data)
 
 	if(changes < 155) // Change default models to OpenComic AI models
 		data = migrateDefaultModelsToOpenComicAiModels(data);
+
+	if(changes < 172) // Change old OpenComic AI models to last OpenComic AI models
+		data = migrateOldOpenComicAiModelsToLastOpenComicAiModels(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);
 

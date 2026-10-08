@@ -107,8 +107,8 @@ function pipeline(src, imageSize)
 
 	if(descreen.active)
 	{
-		const descreenMaskModel = 'opencomic-ai-descreen-mask-fast-v3-test-500000';
-		const artifactRemovalModel = 'opencomic-ai-artifact-removal-compact';
+		const descreenMaskModel = 'opencomic-ai-descreen-mask-fast-v3-256';
+		const artifactRemovalModel = 'opencomic-ai-artifact-removal-balanced-v3-ps';
 
 		_pipeline.push({
 			model: descreen.model,

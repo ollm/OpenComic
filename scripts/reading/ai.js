@@ -248,7 +248,8 @@ function loadModels(key)
 	const current = _config.readingAi[key].model;
 	const items = [];
 
-	const opencomic = models.filter(model => model.startsWith('opencomic-'));
+	const opencomicLast = models.filter(model => model.startsWith('opencomic-') && /-v3/.test(model));
+	const opencomic = models.filter(model => model.startsWith('opencomic-') && !/-v3/.test(model));
 	const others = models.filter(model => !model.startsWith('opencomic-'));
 
 	const process = function(models) {
@@ -269,6 +270,12 @@ function loadModels(key)
 		}
 
 	}
+
+	items.push({
+		text: `${language.reading.pages.openComicModels} v3`,
+	});
+
+	process(opencomicLast);
 
 	items.push({
 		text: language.reading.pages.openComicModels,
