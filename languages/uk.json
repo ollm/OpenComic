@@ -68,7 +68,7 @@
 			"setAsPosterFolders": "Встановити зображення як обкладинку іншого каталогу",
 			"posterSetSuccessfully": "Зображення встановлено як обкладинку",
 			"saveImage": "Зберегти зображення",
-			"saveAiImage": "",
+			"saveAiImage": "Зберегти зображення AI",
 			"saveAllImages": "Зберегти всі зображення",
 			"saveBookmarksImages": "Зберегти зображення з поточних закладок",
 			"saveAllBookmarksImages": "Зберегти зображення з усіх закладок",
@@ -113,8 +113,8 @@
 		"nightMode": "Нічний режим",
 		"beta": "Бета",
 		"alpha": "Альфа",
-		"name": "",
-		"active": ""
+		"name": "Назва",
+		"active": "Активний"
 	},
 	"comics": {
 		"continueReading": "Продовжити читання",
@@ -236,11 +236,11 @@
 			"aiDescreen": "AI-видалення растру",
 			"aiUpscale": "AI-масштабування",
 			"aiModel": "Модель",
-			"aiKeepBigHalftone": "",
+			"aiKeepBigHalftone": "Зберегти великі растри",
 			"downloadingAiModel": "Завантаження AI-моделі",
 			"maxMegapixels": "Максимальна роздільна здатність вхідного зображення (Мегапікселі)",
-			"openComicModels": "",
-			"otherModels": "",
+			"openComicModels": "OpenComic AI моделі",
+			"otherModels": "Інші моделі",
 			"autoScale": "Автоматичне масштабування",
 			"scale": "Масштабування",
 			"noiseReduction": "Зниження шуму",
@@ -346,8 +346,8 @@
 			"trackingAutoPrompt": "Автоматично пропонувати відстеження",
 			"trackingAutoPromptFavorites": "Автоматично пропонувати відстеження (лише для обраних сайтів)",
 			"discordRcp": "Розширений статус Discord",
-			"showBarsOnClick": "",
-			"showBarsDelay": ""
+			"showBarsOnClick": "Показати панелі при натисканні на область",
+			"showBarsDelay": "Показати затримку смуг"
 		},
 		"imageInterpolation": {
 			"main": "Інтерполяція зображень",
@@ -401,7 +401,7 @@
 				"continueReadingOrFirstPage": "Продовжувати або читати спочатку"
 			},
 			"useTheFirstImageAsPoster": "Використовувати перше зображення як обкладинку (якщо немає жодного)",
-			"useTheFirstImageAsPosterInParentFolders": "",
+			"useTheFirstImageAsPosterInParentFolders": "Використовувати перше зображення як обкладинку для батьківських папок (якщо немає жодного)",
 			"showFullPathLibrary": "Показати повний шлях при відкритті коміксів з бібліотеки",
 			"showFullPathOpened": "Показати повний шлях при відкритті файлу або каталогу",
 			"showLibraryPath": "Показати бібліотеку, вибране, мітки тощо в шляху заголовка",
@@ -437,19 +437,19 @@
 				"yellow": "Жовтий"
 			},
 			"customThemes": {
-				"main": "",
-				"description": "",
-				"noThemes": "",
-				"add": "",
-				"delete": "",
-				"confirmDelete": ""
+				"main": "Власні теми",
+				"description": "Додати власну тему, вибравши файл CSS. Файл може містити оператори імпорту. Детальніше — у документації",
+				"noThemes": "Немає власних тем",
+				"add": "Додати власну тему",
+				"delete": "Видалити власну тему",
+				"confirmDelete": "Ви впевнені, що хочете видалити цю власну тему?"
 			}
 		},
 		"releases": {
 			"main": "Перевірити наявність нових версій",
 			"checkReleases": "Перевіряти наявність нової версії під час запуску OpenComic",
 			"checkPreReleases": "Показувати предрелізні версії (бета/альфа-версії)",
-			"checkNightlyReleases": ""
+			"checkNightlyReleases": "Показати нічні версії"
 		},
 		"macros": {
 			"main": "Макроси",
@@ -706,7 +706,7 @@
 		},
 		"release": {
 			"title": "Доступна нова версія <b>{{releaseName}}</b>",
-			"titleNightly": "",
+			"titleNightly": "Доступна нова нічна версія <b>{{releaseName}}</b>",
 			"body": "Ви можете побачити внесені зміни на {{{linkStart}}}сторінці випуску{{{linkEnd}}}"
 		}
 	},
