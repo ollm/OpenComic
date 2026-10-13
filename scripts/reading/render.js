@@ -762,13 +762,13 @@ async function decodeImage(img, sync = false)
 
 function setSrc(img, src)
 {
-	const isBlob = src.startsWith('blob:');
+	const currentSrc = img.dataset.currentSrc || '';
 
-	const currentSrc = img.src;
-	const currentIsBlob = currentSrc.startsWith('blob:');
-
-	if(currentSrc !== src && (currentIsBlob || isBlob || !currentSrc))
+	if(currentSrc !== src)
+	{
 		img.src = src;
+		img.dataset.currentSrc = src;
+	}
 }
 
 var observer = false;
