@@ -5,7 +5,7 @@ declare const template: any;
 declare const handlebarsContext: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-type ItemType = 'image' | 'folder';
+export type ItemType = 'image' | 'folder';
 
 export interface SelectedItem {
 	type: ItemType;
