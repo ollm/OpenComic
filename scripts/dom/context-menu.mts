@@ -1,5 +1,5 @@
 import p from 'path';
-import multiSelect, {SelectedItem, SelectedItems} from './multi-select.mjs';
+import multiSelect, {SelectedItem, SelectedItems, ItemType} from './multi-select.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const dom: any;
@@ -41,7 +41,13 @@ function show(this: HTMLElement, gamepad = false): void {
 	// TODO: Migrate the old context menu in the future
 	if(selectedItems.items.length <= 1 || !inSelectedItems)
 	{
-		multiSelect.unselectAll();
+		const type = this.dataset.type as ItemType;
+		const path = this.dataset.path as string;
+		const mainPath = this.dataset.mainPath as string;
+
+		const item: SelectedItem = {type, element: this, path, mainPath};
+		multiSelect.selectItem(item);
+		// multiSelect.unselectAll();
 		dom.comicContextMenu(path, mainPath, fromIndex, fromIndexNotMasterFolders, folder, gamepad);
 	}
 	else

@@ -127,7 +127,7 @@ function init(): void {
 		marqueeSelection.clientX = clientX;
 		marqueeSelection.clientY = clientY;
 
-		if(!marqueeSelection.active && (Math.abs(clientX - marqueeSelection.startX) > 5 || Math.abs(clientY - marqueeSelection.startY) > 5))
+		if(!marqueeSelection.active && (Math.abs(clientX - marqueeSelection.startX) > 15 || Math.abs(clientY - marqueeSelection.startY) > 15))
 		{
 			marqueeSelection.active = true;
 			scrollWithMouseStart();
@@ -156,13 +156,13 @@ function init(): void {
 		event.preventDefault();
 		event.stopPropagation();
 
-		if(!keyPressed)
+		const fileItem = (event.target as HTMLElement).closest('.file-item') as HTMLElement;
+
+		if(!keyPressed && !fileItem)
 		{
 			unselectAll();
 			return;
 		}
-
-		const fileItem = (event.target as HTMLElement).closest('.file-item') as HTMLElement;
 
 		if(!fileItem)
 			return;
@@ -314,7 +314,7 @@ function previewMarqueeSelectionItems(): void {
 	const itemsDistribution = dom.calculateItemsDistribution(handlebarsContext.page.view, scrollTop);
 	const rect = itemsDistribution.rect;
 
-	const view = contentRight.querySelector('.content-view-module, .content-view-list');
+	const view = contentRight.querySelector('.content-view-module:not(.boxes *), .content-view-list:not(.boxes *)');
 	if(!view) return;
 
 	const viewRect = view.getBoundingClientRect();
@@ -329,7 +329,7 @@ function previewMarqueeSelectionItems(): void {
 			|| box.top + box.height < top);
 	};
 
-	const offsetTop = viewRect.top - rect.top;
+	const offsetTop = (viewRect.top + scrollTop) - rect.top;
 
 	const marginLeft = itemsDistribution.itemsPerLine > 1 ? (rect.width - (itemsDistribution.itemsPerLine * itemsDistribution.width)) / (itemsDistribution.itemsPerLine - 1) : 0;
 	const marginTop = 16; // Margin top it has already been applied in itemsDistribution.height
@@ -354,7 +354,7 @@ function previewMarqueeSelectionItems(): void {
 		});
 	}
 
-	const fileItems = contentRight.querySelectorAll('.file-item');
+	const fileItems = contentRight.querySelectorAll('.file-item:not(.boxes *)');
 
 	for(const [index, fileItem] of fileItems.entries())
 	{
@@ -375,7 +375,7 @@ function selectMarqueeItems(event: MouseEvent): void {
 		return;
 
 	const contentRight = template._contentRight();
-	const fileItems = contentRight.querySelectorAll('.file-item');
+	const fileItems = contentRight.querySelectorAll('.file-item:not(.boxes *)');
 
 	if(!event.ctrlKey && !event.shiftKey)
 		unselectAll();
