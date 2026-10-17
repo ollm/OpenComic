@@ -3,7 +3,7 @@ import fs from 'fs';
 import fsp from 'fs/promises';
 import sharp from 'sharp';
 import {setProperty} from 'dot-prop';
-import OpenComicAI, {Downloading, Detection, Box} from 'opencomic-ai-bin';
+import OpenComicAI, {Downloading, Detection, Box, OpenComicAIPanels} from 'opencomic-ai-bin';
 
 import view from './view.mjs';
 import corners from './panels/corners.mjs';
@@ -81,16 +81,25 @@ async function _getPanels(src: string): Promise<Detection>
 
 	// Test model
 	const model = 'opencomic-ai-panels-fast-512-channels-inverted-259780';
+	const upscaleModel = 'opencomic-ai-upscale-compact';
+	// const model = 'opencomic-ai-panels-fast-big-1024-channels-inverted-custom-arch-v2.1-20000';
 
-	const options = {
+	const options: OpenComicAIPanels = {
 		model,
-		/*
-		upscale: {
-			model: 'opencomic-ai-upscale-compact', // TODO: Train a model specifically for this?
-			scale: 4,
+		imageLevels: {
+			dark: 20,
+			light: 20,
+			smoothness: 1,
 		},
-		*/
 	};
+
+	if(_config.readingViewConfig.panels.upscaleMask?.scale > 1)
+	{
+		options.upscale = {
+			model: upscaleModel,
+			scale: _config.readingViewConfig.panels.upscaleMask.scale,
+		};
+	}
 
 	// Set tmp usage
 	const listModels = [
@@ -221,7 +230,7 @@ function closest(a: Point[], b: Point[]): [Point, Point]
 function sortBoxes(boxes: PanelBox[]): Box[]
 {
 	const first = boxes[0];
-	const threshold = 0.05 * first.width;
+	const threshold = 0.05 * first.height;
 
 	const invertX = function(point: Point): Point {
 
@@ -246,9 +255,9 @@ function sortBoxes(boxes: PanelBox[]): Box[]
 			|| (aTop.y + threshold > bTop.y && aBottom.y < bBottom.y + threshold) // a is inside b (b is bigger)
 			|| (bTop.y + threshold > aTop.y && bBottom.y < aBottom.y + threshold) // b is inside a (a is bigger)
 		)
-			return invertX(a.corners.bottomRight).x - invertX(b.corners.bottomRight).x;
+			return invertX(a.corners.bottomRight).x > invertX(b.corners.bottomRight).x ? 1 : -1;
 
-		return invertX(a.corners.topLeft).y - invertX(b.corners.topLeft).y;
+		return invertX(a.corners.topLeft).y < invertX(b.corners.topLeft).y ? -0.999 : 0.999;
 
 	};
 
@@ -916,7 +925,7 @@ function change(key: string, value: unknown)
 				removeAllMasks();
 			}
 
-			dom.queryAll('.reading-panels-hide-effect-title, .reading-panels-hide-effect, .reading-panels-expand-panel').class((value === 'focus'), 'disable-pointer');
+			dom.queryAll('.reading-panels-hide-effect-title, .reading-panels-hide-effect, .reading-panels-expand-panel, .reading-panels-upscale-mask-scale').class((value === 'focus'), 'disable-pointer');
 			dom.queryAll('.reading-panels-visibility-prev, .reading-panels-visibility-next').class((value !== 'hide'), 'disable-pointer');
 
 			break;
