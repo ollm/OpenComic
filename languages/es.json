@@ -490,7 +490,22 @@
 			"key4": "Tecla 4",
 			"key5": "Tecla 5",
 			"gamepad1": "Botón 1",
-			"gamepad2": "Botón 2"
+			"gamepad2": "Botón 2",
+			"tabs": {
+				"main": "Pestañas",
+				"goNext": "Ir a la siguiente pestaña",
+				"goPrev": "Ir a la pestaña anterior",
+				"goTo1": "Ir a la pestaña 1",
+				"goTo2": "Ir a la pestaña 2",
+				"goTo3": "Ir a la pestaña 3",
+				"goTo4": "Ir a la pestaña 4",
+				"goTo5": "Ir a la pestaña 5",
+				"goTo6": "Ir a la pestaña 6",
+				"goTo7": "Ir a la pestaña 7",
+				"goTo8": "Ir a la pestaña 8",
+				"goTo9": "Ir a la pestaña 9",
+				"goToLast": "Ir a la última pestaña"
+			}
 		},
 		"tapZones": {
 			"main": "Zonas de toque",

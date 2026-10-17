@@ -490,7 +490,22 @@
 			"key4": "Botão 4",
 			"key5": "Botão 5",
 			"gamepad1": "Botão 1",
-			"gamepad2": "Botão 2"
+			"gamepad2": "Botão 2",
+			"tabs": {
+				"main": "",
+				"goNext": "",
+				"goPrev": "",
+				"goTo1": "",
+				"goTo2": "",
+				"goTo3": "",
+				"goTo4": "",
+				"goTo5": "",
+				"goTo6": "",
+				"goTo7": "",
+				"goTo8": "",
+				"goTo9": "",
+				"goToLast": ""
+			}
 		},
 		"tapZones": {
 			"main": "Zonas de toque",

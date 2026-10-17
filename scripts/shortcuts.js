@@ -194,6 +194,93 @@ function loadShortcuts()
 
 	}
 
+	const tabsShortcuts = {
+		tabsGoNext: {
+			name: language.settings.shortcuts.tabs.goNext,
+			function: function(){
+				tabs.goNext();
+				return true;
+			},
+		},
+		tabsGoPrev: {
+			name: language.settings.shortcuts.tabs.goPrev,
+			function: function(){
+				tabs.goPrev();
+				return true;
+			},
+		},
+		tabsGoTo1: {
+			name: language.settings.shortcuts.tabs.goTo1,
+			function: function(){
+				tabs.goToNumberTab(1);
+				return true;
+			},
+		},
+		tabsGoTo2: {
+			name: language.settings.shortcuts.tabs.goTo2,
+			function: function(){
+				tabs.goToNumberTab(2);
+				return true;
+			},
+		},
+		tabsGoTo3: {
+			name: language.settings.shortcuts.tabs.goTo3,
+			function: function(){
+				tabs.goToNumberTab(3);
+				return true;
+			},
+		},
+		tabsGoTo4: {
+			name: language.settings.shortcuts.tabs.goTo4,
+			function: function(){
+				tabs.goToNumberTab(4);
+				return true;
+			},
+		},
+		tabsGoTo5: {
+			name: language.settings.shortcuts.tabs.goTo5,
+			function: function(){
+				tabs.goToNumberTab(5);
+				return true;
+			},
+		},
+		tabsGoTo6: {
+			name: language.settings.shortcuts.tabs.goTo6,
+			function: function(){
+				tabs.goToNumberTab(6);
+				return true;
+			},
+		},
+		tabsGoTo7: {
+			name: language.settings.shortcuts.tabs.goTo7,
+			function: function(){
+				tabs.goToNumberTab(7);
+				return true;
+			},
+		},
+		tabsGoTo8: {
+			name: language.settings.shortcuts.tabs.goTo8,
+			function: function(){
+				tabs.goToNumberTab(8);
+				return true;
+			},
+		},
+		tabsGoTo9: {
+			name: language.settings.shortcuts.tabs.goTo9,
+			function: function(){
+				tabs.goToNumberTab(9);
+				return true;
+			},
+		},
+		tabsGoToLast: {
+			name: language.settings.shortcuts.tabs.goToLast,
+			function: function(){
+				tabs.goToLastTab();
+				return true;
+			},
+		},
+	};
+
 	shortcuts = {
 		browse: {
 			actionsOrder: [
@@ -255,6 +342,8 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				// Tabs
+				...tabsShortcuts,
 			},
 			shortcuts: {},
 			_shortcuts: {
@@ -263,6 +352,19 @@ function loadShortcuts()
 				'Ctrl+G': 'searchFilter',
 				'Mouse3': 'goBack',
 				'Mouse4': 'goForwards',
+				// Tabs
+				'Ctrl+Tab': 'tabsGoNext',
+				'Ctrl+Shift+Tab': 'tabsGoPrev',
+				'Ctrl+1': 'tabsGoTo1',
+				'Ctrl+2': 'tabsGoTo2',
+				'Ctrl+3': 'tabsGoTo3',
+				'Ctrl+4': 'tabsGoTo4',
+				'Ctrl+5': 'tabsGoTo5',
+				'Ctrl+6': 'tabsGoTo6',
+				'Ctrl+7': 'tabsGoTo7',
+				'Ctrl+8': 'tabsGoTo8',
+				'Ctrl+9': 'tabsGoTo9',
+				'Ctrl+0': 'tabsGoToLast',
 			},
 			_shortcutsForce: {},
 			tapZones: {},
@@ -310,6 +412,8 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				// Tabs
+				...tabsShortcuts,
 			},
 			shortcuts: {},
 			_shortcuts: {
@@ -317,6 +421,19 @@ function loadShortcuts()
 				'Ctrl+F': 'search',
 				'Mouse3': 'goBack',
 				'Mouse4': 'goForwards',
+				// Tabs
+				'Ctrl+Tab': 'tabsGoNext',
+				'Ctrl+Shift+Tab': 'tabsGoPrev',
+				'Ctrl+1': 'tabsGoTo1',
+				'Ctrl+2': 'tabsGoTo2',
+				'Ctrl+3': 'tabsGoTo3',
+				'Ctrl+4': 'tabsGoTo4',
+				'Ctrl+5': 'tabsGoTo5',
+				'Ctrl+6': 'tabsGoTo6',
+				'Ctrl+7': 'tabsGoTo7',
+				'Ctrl+8': 'tabsGoTo8',
+				'Ctrl+9': 'tabsGoTo9',
+				'Ctrl+0': 'tabsGoToLast',
 			},
 			_shortcutsForce: {},
 			tapZones: {},
@@ -380,6 +497,20 @@ function loadShortcuts()
 				'goForwards',
 				'contextMenu',
 				'gamepadMenu',
+
+				// Tabs
+				'tabsGoNext',
+				'tabsGoPrev',
+				'tabsGoTo1',
+				'tabsGoTo2',
+				'tabsGoTo3',
+				'tabsGoTo4',
+				'tabsGoTo5',
+				'tabsGoTo6',
+				'tabsGoTo7',
+				'tabsGoTo8',
+				'tabsGoTo9',
+				'tabsGoToLast',
 
 				// Settings
 				'globalZoomSlide',
@@ -493,6 +624,23 @@ function loadShortcuts()
 					items: [
 						'contextMenu',
 						'gamepadMenu',
+					],
+				},
+				{
+					name: language.settings.shortcuts.tabs.main,
+					items: [
+						'tabsGoNext',
+						'tabsGoPrev',
+						'tabsGoTo1',
+						'tabsGoTo2',
+						'tabsGoTo3',
+						'tabsGoTo4',
+						'tabsGoTo5',
+						'tabsGoTo6',
+						'tabsGoTo7',
+						'tabsGoTo8',
+						'tabsGoTo9',
+						'tabsGoToLast',
 					],
 				},
 				{
@@ -1153,6 +1301,8 @@ function loadShortcuts()
 						return true;
 					},
 				},
+				// Tabs
+				...tabsShortcuts,
 				// Settings
 				globalZoomSlide: {
 					name: language.settings.reading.globalZoomSlide,
@@ -1274,13 +1424,13 @@ function loadShortcuts()
 				'B': 'createAndDeleteBookmark',
 				'C': 'contextMenu',
 				'Ctrl+P': 'pageLayout',
-				'Ctrl+0': 'pageLayout',
-				'Ctrl+1': 'slide',
-				'Ctrl+2': 'scroll',
-				'Ctrl+3': 'roughPageTurn',
-				'Ctrl+4': 'smoothPageTurn',
-				'Ctrl+5': 'fade',
-				'Ctrl+6': 'panels',
+				'Shift+1': 'pageLayout',
+				'Shift+2': 'slide',
+				'Shift+3': 'scroll',
+				'Shift+4': 'roughPageTurn',
+				'Shift+5': 'smoothPageTurn',
+				'Shift+6': 'fade',
+				'Shift+7': 'panels',
 				'Ctrl+M': 'readingManga',
 				'Ctrl+W': 'readingWebtoon',
 				'Ctrl+D': 'doublePage',
@@ -1297,9 +1447,7 @@ function loadShortcuts()
 				'Shift+I': 'panelsImmersive',
 				'Shift+G': 'panelsImmersive',
 				'Shift+E': 'ebookLayout',
-				'Shift+2': 'increaseFontSize',
 				'Shift+.': 'increaseFontSize',
-				'Shift+1': 'decreaseFontSize',
 				'Shift+,': 'decreaseFontSize',
 				'Q': 'zoomIn',
 				'E': 'zoomOut',
@@ -1330,6 +1478,19 @@ function loadShortcuts()
 				'Alt+MouseDown': 'next',
 				'Ctrl+RightClick': 'contextMenu',
 				'Alt+1': 'preset-0',
+				// Tabs
+				'Ctrl+Tab': 'tabsGoNext',
+				'Ctrl+Shift+Tab': 'tabsGoPrev',
+				'Ctrl+1': 'tabsGoTo1',
+				'Ctrl+2': 'tabsGoTo2',
+				'Ctrl+3': 'tabsGoTo3',
+				'Ctrl+4': 'tabsGoTo4',
+				'Ctrl+5': 'tabsGoTo5',
+				'Ctrl+6': 'tabsGoTo6',
+				'Ctrl+7': 'tabsGoTo7',
+				'Ctrl+8': 'tabsGoTo8',
+				'Ctrl+9': 'tabsGoTo9',
+				'Ctrl+0': 'tabsGoToLast',
 			},
 			_shortcutsForce: {
 				'LeftClick': 'leftClick',
@@ -1508,7 +1669,7 @@ var currentlyRegistered = false;
 
 async function register(section = 'reading', force = false)
 {
-	if(currentlyRegistered === reading && !force)
+	if(currentlyRegistered === section && !force)
 		return;
 
 	await loadShoSho();
@@ -1519,9 +1680,23 @@ async function register(section = 'reading', force = false)
 	shoshoMouse.reset();
 	mouseWheel.reset();
 
-	for(let shortcut in shortcuts[section].shortcuts)
+	let readingTabsShortcuts = {};
+
+	// Apply custom tabs shortcuts from the reading section to other sections
+	if(section !== 'reading')
 	{
-		let actionKey = shortcuts[section].shortcuts[shortcut];
+		const readingShortcuts = shortcuts['reading'].shortcuts;
+
+		readingTabsShortcuts = Object.fromEntries(
+			Object.entries(readingShortcuts).filter(([shortcut, value]) => value.startsWith('tabs'))
+		);
+	}
+
+	const _shortcuts = Object.assign({}, readingTabsShortcuts, shortcuts[section].shortcuts);
+
+	for(let shortcut in _shortcuts)
+	{
+		let actionKey = _shortcuts[shortcut];
 		let action = shortcuts[section].actions[actionKey];
 
 		const callback = function(event) {

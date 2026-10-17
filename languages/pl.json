@@ -490,7 +490,22 @@
 			"key4": "Klawisz 4",
 			"key5": "Klawisz 5",
 			"gamepad1": "Przycisk 1",
-			"gamepad2": "Przycisk 2"
+			"gamepad2": "Przycisk 2",
+			"tabs": {
+				"main": "",
+				"goNext": "",
+				"goPrev": "",
+				"goTo1": "",
+				"goTo2": "",
+				"goTo3": "",
+				"goTo4": "",
+				"goTo5": "",
+				"goTo6": "",
+				"goTo7": "",
+				"goTo8": "",
+				"goTo9": "",
+				"goToLast": ""
+			}
 		},
 		"tapZones": {
 			"main": "Strefy dotyku",

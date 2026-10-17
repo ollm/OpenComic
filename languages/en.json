@@ -490,7 +490,22 @@
 			"key4": "Key 4",
 			"key5": "Key 5",
 			"gamepad1": "Button 1",
-			"gamepad2": "Button 2"
+			"gamepad2": "Button 2",
+			"tabs": {
+				"main": "Tabs",
+				"goNext": "Go to next tab",
+				"goPrev": "Go to previous tab",
+				"goTo1": "Go to tab 1",
+				"goTo2": "Go to tab 2",
+				"goTo3": "Go to tab 3",
+				"goTo4": "Go to tab 4",
+				"goTo5": "Go to tab 5",
+				"goTo6": "Go to tab 6",
+				"goTo7": "Go to tab 7",
+				"goTo8": "Go to tab 8",
+				"goTo9": "Go to tab 9",
+				"goToLast": "Go to last tab"
+			}
 		},
 		"tapZones": {
 			"main": "Tap zones",

@@ -362,6 +362,46 @@ async function _switch(id: number): Promise<void>
 	setTabPositions();
 }
 
+function goToTab(index: number): void
+{
+	const tab = tabs[index];
+
+	if(tab)
+		_switch(tab.id);
+}
+
+function goNext(): void
+{
+	const activeTab = getActive();
+	if(!activeTab) return;
+
+	const tabIndex = tabs.findIndex(t => t.id === activeTab.id);
+	if(tabIndex === -1) return;
+
+	goToTab((tabIndex + 1) % tabs.length);
+}
+
+function goPrev(): void
+{
+	const activeTab = getActive();
+	if(!activeTab) return;
+
+	const tabIndex = tabs.findIndex(t => t.id === activeTab.id);
+	if(tabIndex === -1) return;
+
+	goToTab((tabIndex - 1 + tabs.length) % tabs.length);
+}
+
+function goToNumberTab(number: number): void
+{
+	goToTab(number - 1);
+}
+
+function goToLastTab(): void
+{
+	goToTab(tabs.length - 1);
+}
+
 let goTabST: NodeJS.Timeout | false = false;
 
 async function goTab(tab: Tab): Promise<void>
@@ -748,6 +788,11 @@ export default {
 	openPath,
 	openTab,
 	goTab,
+	goToTab,
+	goNext,
+	goPrev,
+	goToNumberTab,
+	goToLastTab,
 	update,
 	updateData,
 	switch: _switch,

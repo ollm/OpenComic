@@ -490,7 +490,22 @@
 			"key4": "Tecla 4",
 			"key5": "Tecla 5",
 			"gamepad1": "Botó 1",
-			"gamepad2": "Botó 2"
+			"gamepad2": "Botó 2",
+			"tabs": {
+				"main": "Pestanyes",
+				"goNext": "Anar a la següent pestanya",
+				"goPrev": "Anar a la pestanya anterior",
+				"goTo1": "Anar a la pestanya 1",
+				"goTo2": "Anar a la pestanya 2",
+				"goTo3": "Anar a la pestanya 3",
+				"goTo4": "Anar a la pestanya 4",
+				"goTo5": "Anar a la pestanya 5",
+				"goTo6": "Anar a la pestanya 6",
+				"goTo7": "Anar a la pestanya 7",
+				"goTo8": "Anar a la pestanya 8",
+				"goTo9": "Anar a la pestanya 9",
+				"goToLast": "Anar a l'última pestanya"
+			}
 		},
 		"tapZones": {
 			"main": "Zones de toc",

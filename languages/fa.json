@@ -490,7 +490,22 @@
 			"key4": "کلید 4",
 			"key5": "کلید 5",
 			"gamepad1": "دکمه 1",
-			"gamepad2": "دکمه 2"
+			"gamepad2": "دکمه 2",
+			"tabs": {
+				"main": "",
+				"goNext": "",
+				"goPrev": "",
+				"goTo1": "",
+				"goTo2": "",
+				"goTo3": "",
+				"goTo4": "",
+				"goTo5": "",
+				"goTo6": "",
+				"goTo7": "",
+				"goTo8": "",
+				"goTo9": "",
+				"goToLast": ""
+			}
 		},
 		"tapZones": {
 			"main": "ناحیه‌های لمس",

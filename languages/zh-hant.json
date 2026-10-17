@@ -490,7 +490,22 @@
 			"key4": "快捷鍵 4",
 			"key5": "快捷鍵 5",
 			"gamepad1": "按鈕 1",
-			"gamepad2": "按鈕 2"
+			"gamepad2": "按鈕 2",
+			"tabs": {
+				"main": "",
+				"goNext": "",
+				"goPrev": "",
+				"goTo1": "",
+				"goTo2": "",
+				"goTo3": "",
+				"goTo4": "",
+				"goTo5": "",
+				"goTo6": "",
+				"goTo7": "",
+				"goTo8": "",
+				"goTo9": "",
+				"goToLast": ""
+			}
 		},
 		"tapZones": {
 			"main": "點擊區域",
