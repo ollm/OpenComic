@@ -307,6 +307,10 @@
 			"black": "黑底",
 			"blur": "模糊",
 			"expandPanel": "展開面板",
+			"upscaleMask": {
+				"scale": "",
+				"scaleDescription": ""
+			},
 			"visibility": {
 				"prevPanels": "顯示前一個面板",
 				"nextPanels": "顯示後一個面板"

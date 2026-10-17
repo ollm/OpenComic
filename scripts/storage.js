@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 172; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 173; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -32,6 +32,10 @@ const readingPagesConfig = {
 				afterLastPanel: false,
 			},
 			// Only in hide mode
+			upscaleMask: {
+				model: '',
+				scale: 1,
+			},
 			hideEffect: 'black',
 			expandPanel: 0,
 			visibility: {

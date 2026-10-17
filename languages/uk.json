@@ -307,6 +307,10 @@
 			"black": "Чорний",
 			"blur": "Розмиття",
 			"expandPanel": "Розгорнути кадр",
+			"upscaleMask": {
+				"scale": "",
+				"scaleDescription": ""
+			},
 			"visibility": {
 				"prevPanels": "Показувати попередні кадри",
 				"nextPanels": "Показувати наступні кадри"

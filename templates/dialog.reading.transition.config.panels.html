@@ -139,6 +139,21 @@
 
 	</div>
 
+	<div class="simple-slider simple-slider-min-disables reading-panels-upscale-mask-scale gamepad-item{{#compare _config.readingViewConfig.panels.type '==' 'focus'}} disable-pointer{{/compare}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+		<div class="simple-slider-text">{{language.reading.panels.upscaleMask.scale}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="1" style="right: 76px;">undo</i><span>{{_config.readingViewConfig.panels.upscaleMask.scale}}</span>x</div></div>
+		<span class="simple-slider-supporting-text body-medium">{{language.reading.panels.upscaleMask.scaleDescription}}</span>
+		<div class="range">
+			<div class="range-position">
+				<span class="range-line" style="width: 100%"></span>
+				<span class="range-steps"></span>
+				<div>
+					<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+				</div>
+			</div>
+			<input type="range" max="4" min="1" step="1" value="{{_config.readingViewConfig.panels.upscaleMask.scale}}" onrange="reading.panels.change('upscaleMask.scale', \{{value}})">
+		</div>
+	</div>
+
 	<div class="simple-slider reading-panels-expand-panel gamepad-item{{#compare _config.readingViewConfig.panels.type '==' 'focus'}} disable-pointer{{/compare}}" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
 		<div class="simple-slider-text">{{language.reading.panels.expandPanel}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="0" style="right: 80px;">undo</i><span>{{_config.readingViewConfig.panels.expandPanel}}</span>px</div></div>
 		<div class="range">

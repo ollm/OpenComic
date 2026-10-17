@@ -307,6 +307,10 @@
 			"black": "Black",
 			"blur": "Blur",
 			"expandPanel": "Expand panel",
+			"upscaleMask": {
+				"scale": "Upscale mask with AI",
+				"scaleDescription": "Improves mask/panel edge quality, but takes longer"
+			},
 			"visibility": {
 				"prevPanels": "Visible previous panels",
 				"nextPanels": "Visible next panels"

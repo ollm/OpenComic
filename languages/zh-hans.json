@@ -307,6 +307,10 @@
 			"black": "黑色",
 			"blur": "模糊",
 			"expandPanel": "展开画板",
+			"upscaleMask": {
+				"scale": "",
+				"scaleDescription": ""
+			},
 			"visibility": {
 				"prevPanels": "可见的上一画板",
 				"nextPanels": "可见的下一画板"

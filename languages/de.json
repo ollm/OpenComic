@@ -307,6 +307,10 @@
 			"black": "Schwarz",
 			"blur": "Unscharf",
 			"expandPanel": "Erweitere Panel",
+			"upscaleMask": {
+				"scale": "",
+				"scaleDescription": ""
+			},
 			"visibility": {
 				"prevPanels": "Sichtbare nächste Panele",
 				"nextPanels": "Sichtbare vorherige Panele"

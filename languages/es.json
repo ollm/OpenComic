@@ -307,6 +307,10 @@
 			"black": "Negro",
 			"blur": "Desenfocar",
 			"expandPanel": "Expandir panel",
+			"upscaleMask": {
+				"scale": "Escalar máscara con IA",
+				"scaleDescription": "Mejora la calidad de los bordes de la máscara/panel, pero tarda más"
+			},
 			"visibility": {
 				"prevPanels": "Paneles anteriores visibles",
 				"nextPanels": "Paneles siguientes visibles"

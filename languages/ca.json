@@ -307,6 +307,10 @@
 			"black": "Negre",
 			"blur": "Desenfocar",
 			"expandPanel": "Expandir vinyeta",
+			"upscaleMask": {
+				"scale": "Escalar màscara amb IA",
+				"scaleDescription": "Millora la qualitat dels bordes de la màscara/vinyeta, però triga més temps"
+			},
 			"visibility": {
 				"prevPanels": "Vinyetes anteriors visibles",
 				"nextPanels": "Vinyetes següents visibles"
