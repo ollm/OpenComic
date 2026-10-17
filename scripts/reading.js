@@ -1790,6 +1790,8 @@ function setOriginalSize(currentScale)
 
 		if(scale === currentScale)
 			img.classList.add('zoomOriginalSize');
+		else
+			img.classList.remove('zoomOriginalSize');
 	}
 }
 
@@ -2410,6 +2412,7 @@ function resized()
 		fastUpdateEbookPages(false, true);
 		generateEbookPagesDelayed();
 		hideMouseInFullscreen();
+		setOriginalSize(currentScale);
 	}
 
 	// view.stayInLine.getPreviusContentSize();
