@@ -267,15 +267,27 @@ function applySizes(item: Item, cSizes: CalcSizes, sizes: Sizes, clip: Clip, las
 		image.setAttribute('style', style);
 		// image.style.cssText = style;
 
-		image.dataset.estimated = sizes.estimated ? '1' : '0';
-		image.dataset.height = String(imgSize.height);
-		image.dataset.width = String(imgSize.width);
-		image.dataset.left = String(left);
-		image.dataset.top = String(top);
+		const dataset = image.dataset;
+
+		const heightValue = String(imgSize.height);
+		const widthValue = String(imgSize.width);
+		const leftValue = String(left);
+		const topValue = String(top);
+
+		const changed = dataset.height !== heightValue
+			|| dataset.width !== widthValue
+			|| dataset.left !== leftValue
+			|| dataset.top !== topValue;
+
+		dataset.estimated = sizes.estimated ? '1' : '0';
+		dataset.height = heightValue;
+		dataset.width = widthValue;
+		dataset.left = leftValue;
+		dataset.top = topValue;
 
 		const img = image.firstElementChild as HTMLImageElement;
 
-		if(img)
+		if(img && changed)
 		{
 			const style = `margin-top: ${imgMarginTop}px; margin-left: ${imgMarginLeft}px; height: ${imgHeight}px; width: ${imgWidth}px;${transform ? ` transform: ${transform};` : ''}`;
 

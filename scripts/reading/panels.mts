@@ -56,6 +56,7 @@ interface HTMLDivElementMask extends HTMLDivElement {
 }
 
 let panelsCache: Record<string, Detection> = {};
+let panelsSrc: Record<string, string> = {};
 let currentPannel: number = 0;
 let currentPage: number = 0;
 
@@ -93,17 +94,20 @@ async function _getPanels(src: string): Promise<Detection>
 		},
 	};
 
-	if(_config.readingViewConfig.panels.upscaleMask?.scale > 1)
+	const maskScale = _config.readingViewConfig.panels.upscaleMask?.scale ?? 1;
+
+	if(maskScale > 1)
 	{
 		options.upscale = {
 			model: upscaleModel,
-			scale: _config.readingViewConfig.panels.upscaleMask.scale,
+			scale: maskScale,
 		};
 	}
 
 	// Set tmp usage
 	const listModels = [
 		model,
+		...(maskScale > 1 ? [upscaleModel] : []),
 	];
 
 	for(const model of listModels)
@@ -146,6 +150,8 @@ async function _getPanels(src: string): Promise<Detection>
 
 async function getPanels(src: string, page: number)
 {
+	panelsSrc[page] = src;
+
 	if(!reading.viewIs('panels'))
 		return;
 
@@ -154,7 +160,7 @@ async function getPanels(src: string, page: number)
 
 	const threadsId = threads.id('panels');
 
-	threads.job('panels', {useThreads: threads.SINGLE, delay: 10}, async function() {
+	return threads.job('panels', {useThreads: threads.SINGLE, delay: 10}, async function() {
 
 		if(panelsCache[page])
 			return;
@@ -424,6 +430,28 @@ function goPrev(animation: boolean = true): boolean
 
 	const box = boxes[currentPannel];
 
+	if(!box)
+		return false;
+
+	focusPanel(box, currentPannel, currentPage, animation);
+	return true;
+}
+
+function goCurrent(animation: boolean = true): boolean
+{
+	if(!reading.viewIs('panels'))
+		return false;
+
+	const boxes = getPanel(currentPage);
+	if(!boxes) return false;
+
+	if(currentPannel < 0)
+		currentPannel = 0;
+
+	if(currentPannel >= boxes.length)
+		currentPannel = boxes.length - 1;
+
+	const box = boxes[currentPannel];
 	if(!box)
 		return false;
 
@@ -803,6 +831,8 @@ function applyHideMasks(box: Box, panel: number, page: number, animation: boolea
 	else if(panelsConfig.type === 'immersive')
 	{
 		const contentRight = template._contentRight();
+		contentRight.classList.add('panels-immersive');
+
 		const bodies = contentRight.querySelectorAll('.reading-body > div, .reading-lens > div > div');
 
 		for(const body of bodies)
@@ -862,6 +892,13 @@ function applyHideMasks(box: Box, panel: number, page: number, animation: boolea
 					mask.style.opacity = '1';
 				}, animationDurationS * 1000);
 			}
+			else
+			{
+				setTimeout(() => {
+					mask.classList.remove('animate');
+					mask.style.opacity = '1';
+				}, animationDurationS * 1000);
+			}
 		}
 	}
 }
@@ -872,6 +909,7 @@ function removeAllMasks(onlyInPanelsView = false)
 		return;
 
 	const contentRight = template._contentRight();
+	contentRight.classList.remove('panels-immersive');
 	dom.this(contentRight).find('.reading-panels-hide-mask, .reading-panels-immersive-mask, .reading-panels-immersive-hide-mask, .reading-panels-immersive-show-mask', true).remove();
 }
 
@@ -880,6 +918,19 @@ function reset()
 	threads.clean('panels');
 	currentPannel = -1;
 	panelsCache = {};
+	panelsSrc = {};
+}
+
+async function reload()
+{
+	threads.clean('panels');
+	panelsCache = {};
+
+	const src = panelsSrc[currentPage] ?? '';
+	if(!src) return;
+
+	await getPanels(src, currentPage);
+	goCurrent();
 }
 
 function configDialog(event: PointerEvent): PanelsConfig | void
@@ -905,7 +956,7 @@ function configDialog(event: PointerEvent): PanelsConfig | void
 	events.events();
 }
 
-function change(key: string, value: unknown)
+function change(key: string, value: unknown, toEnd?: boolean)
 {
 	let element: HTMLElement | null;
 	let current: unknown;
@@ -955,6 +1006,16 @@ function change(key: string, value: unknown)
 	reading.updateReadingPagesConfig('readingViewConfig', _config.readingViewConfig);
 
 	updateCurrent();
+
+	switch(key)
+	{
+		case 'upscaleMask.scale':
+
+			if(toEnd)
+				reload();
+
+			break;
+	}
 }
 
 export default {
@@ -963,6 +1024,7 @@ export default {
 	reset,
 	goNext,
 	goPrev,
+	goCurrent,
 	configDialog,
 	removeAllMasks,
 	change,

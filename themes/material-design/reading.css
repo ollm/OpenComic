@@ -1003,10 +1003,15 @@ oc-img .ai-loading circle
 	content-visibility: hidden;
 	/*pointer-events: none;*/
 	background-color: var(--reading-background-color);
-	display: flex;
 	transition: 0.3s background-color;
+	display: none;
 }
 
+.compact.rough-page-turn .reading-transitions,
+.compact.smooth-page-turn .reading-transitions
+{
+	display: flex;
+}
 
 .reading-transitions.active
 {
@@ -1299,8 +1304,10 @@ oc-img .ai-loading circle
 	backdrop-filter: blur(6px);
 }
 
-
-
+.content-right > div.panels-immersive
+{
+	background-color: black !important;
+}
 
 oc-sfx
 {

@@ -1446,6 +1446,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(scale != 1) dom.this(contentRight).find('.reading-body > div img.originalSize', true).addClass('zoomed');
 
+			fixBlurOnZoom(scale, false, true);
+
 			applyScaleEnd = function() {
 
 				let scrollTop = content.scrollTop;
@@ -1579,6 +1581,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 			{
 				dom.this(imagePosition._this).find('img.originalSize', true).addClass('zoomed');
 			}
+
+			fixBlurOnZoom(scale, currentZoomIndex, true);
 
 			applyScaleEnd = function() {
 
@@ -1860,18 +1864,92 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 	}
 }
 
+/*
+// Debug
+let registeredMutationObserver = false;
+
+function findMutation()
+{
+	if(registeredMutationObserver)
+		return;
+
+	const element = document.querySelector('.r-img-i113 img');
+	if(!element)
+		return;
+
+	clearInterval(intervalId);
+
+	registeredMutationObserver = true;
+
+	const observer = new MutationObserver(mutations =>
+	{
+		console.group('[DOM modification]');
+
+		console.trace('Call stack del observer');
+
+		for(const mutation of mutations)
+		{
+			console.log({
+				type: mutation.type,
+				target: mutation.target,
+				attribute: mutation.attributeName,
+				oldValue: mutation.oldValue,
+				class: mutation.target.className,
+				style: mutation.target.getAttribute('style'),
+			});
+		}
+
+		console.groupEnd();
+	});
+
+	observer.observe(element, {
+		attributes: true,
+		attributeOldValue: true,
+		childList: true,
+		subtree: true
+	});
+}
+*/
+
+const intervalId = setInterval(findMutation, 1);
+
 // Fix blur on zoom cause by tranform scale, still happening in vertical reader in some conditions
-function fixBlurOnZoom(scale = 1, index = false)
+function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 {
 	const _scale = 1 / scale;
 
 	const contentRight = template._contentRight();
 	const images = index !== false ? contentRight.querySelectorAll('.image-position'+index+' oc-img img') : contentRight.querySelectorAll('.r-img oc-img img');
 
+	/*
+	const scrollTop = dom.getContentRightScrollTop();
+	const viewSize = view.viewSize();
+	const margin = readingMargin();
+	*/
+
 	for(let i = 0, len = images.length; i < len; i++)
 	{
 		const img = images[i];
 		const image = imagesData[+img.dataset.index] || [];
+
+		/*
+		const position = view.imagesFullPosition[image.key1][image.key2] ?? [];
+
+		
+		//	reading.view.imagesFullPosition[184][0].top
+		//	- dom.getContentRightScrollTop()
+		//	+ 89
+		//	+ margin.top * 0.557156
+
+		const estimatedLeft = position.left + viewSize.left + margin.left * _scale;
+		const estimatedTop = position.top - scrollTop + viewSize.top + margin.top * _scale;
+
+		let left = -(estimatedLeft - app.floorDPR(estimatedLeft));
+		let top = -(estimatedTop - app.floorDPR(estimatedTop));
+
+		if(left < -0.5) left++;
+		if(top < -0.5) top++;
+		*/
 
 		const ocImg = img.parentElement;
 
@@ -1890,17 +1968,17 @@ function fixBlurOnZoom(scale = 1, index = false)
 		img.style.height = (height / window.devicePixelRatio)+'px';
 
 		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
-			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.011, 0.011);
+			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.15293, 0.15293);
 		else
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
 	}
 
-	if(_scale == 1)
+	if(_scale == 1 || blobOnly)
 		return;
 
-	window.requestAnimationFrame(function(){
+	window.requestAnimationFrame(function() {
 
-		window.requestAnimationFrame(function(){
+		window.requestAnimationFrame(function() {
 
 			for(let i = 0, len = images.length; i < len; i++)
 			{
@@ -2758,8 +2836,8 @@ function updateReadingPagesConfig(key, value)
 //Controls the page view
 function changePagesView(mode, value, save)
 {
-	if(currentScale != 1)
-		reading.resetZoom(true, false, false);
+	// if(currentScale != 1)
+	//	reading.resetZoom(true, false, false);
 
 	const updateView = function(disposeImages) {
 
@@ -4907,6 +4985,7 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 	onLoadPromise = {promise: promise, resolve: resolve};
 
 	const contentRight = template._contentRight();
+	// contentRight.classList.add(`reading-page-view-${_config.readingView}`);
 	const readingLens = contentRight.querySelector('.reading-lens');
 
 	app.event(contentRight, 'mousewheel', function(event) {

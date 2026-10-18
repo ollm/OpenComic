@@ -565,6 +565,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 
 					img.dataset.width = Math.round(data.width);
 					img.dataset.height = Math.round(data.height);
+					reading.fixBlurOnZoom(reading.currentScale, index, true);
 				}
 				else
 				{
@@ -590,6 +591,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 
 							img.dataset.width = Math.round(data.width);
 							img.dataset.height = Math.round(data.height);
+							reading.fixBlurOnZoom(reading.currentScale, index, true);
 						}
 						else
 						{
@@ -619,6 +621,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 					setSrc(img, renderedObjectsURLCache[key].blob);
 					img.classList.add('blobRendered', 'blobRender');
 					img.style.imageRendering = '';
+					reading.fixBlurOnZoom(reading.currentScale, index, true);
 				}
 				else if(!(await image.isAnimated(src)))
 				{
@@ -643,6 +646,7 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 						setSrc(img, data.blob);
 						img.classList.add('blobRendered', 'blobRender');
 						img.style.imageRendering = '';
+						reading.fixBlurOnZoom(reading.currentScale, index, true);
 					}
 					catch(error)
 					{
