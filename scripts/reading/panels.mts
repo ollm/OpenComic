@@ -80,10 +80,8 @@ async function _getPanels(src: string): Promise<Detection>
 	setModelsPath();
 	OpenComicAI.setSharp(sharp);
 
-	// Test model
-	const model = 'opencomic-ai-panels-fast-512-channels-inverted-259780';
+	const model = 'opencomic-ai-panels-fast-1024-channels-inverted-v4';
 	const upscaleModel = 'opencomic-ai-upscale-compact';
-	// const model = 'opencomic-ai-panels-fast-big-1024-channels-inverted-custom-arch-v2.1-20000';
 
 	const options: OpenComicAIPanels = {
 		model,
@@ -92,6 +90,7 @@ async function _getPanels(src: string): Promise<Detection>
 			light: 20,
 			smoothness: 1,
 		},
+		minPixels: 300,
 	};
 
 	const maskScale = _config.readingViewConfig.panels.upscaleMask?.scale ?? 1;

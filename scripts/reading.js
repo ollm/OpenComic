@@ -1909,9 +1909,9 @@ function findMutation()
 		subtree: true
 	});
 }
-*/
 
 const intervalId = setInterval(findMutation, 1);
+*/
 
 // Fix blur on zoom cause by tranform scale, still happening in vertical reader in some conditions
 function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
@@ -1968,7 +1968,7 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 		img.style.height = (height / window.devicePixelRatio)+'px';
 
 		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
-			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.15293, 0.15293);
+			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.09293, 0.09293);
 		else
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
 	}
