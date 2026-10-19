@@ -81,6 +81,11 @@
         <color type="primary" scheme_preference="light">#fde4e5</color>
         <color type="primary" scheme_preference="dark">#fde4e5</color>
     </branding>
+    <supports>
+        <control>pointing</control>
+        <control>keyboard</control>
+        <control>gamepad</control>
+    </supports>
     <releases>
         <release version="1.6.5" date="2025-10-31">
             <description>
