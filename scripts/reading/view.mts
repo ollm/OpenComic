@@ -26,6 +26,7 @@ export interface FullPosition {
 	center: number;
 	bottom: number;
 	left: number;
+	totalLeft?: number;
 	height: number;
 	width: number;
 	original: {
@@ -33,6 +34,7 @@ export interface FullPosition {
 		center: number;
 		bottom: number;
 		left: number;
+		totalLeft?: number;
 		height: number;
 		width: number;
 	};
@@ -146,6 +148,64 @@ function calculateView(first: boolean = false)
 		else
 		{
 			elements.removeClass(...removeClasses);
+		}
+
+		// Calculate images full position
+		prevImagesFullPosition = imagesFullPosition;
+
+		pagesPosition = [];
+		imagesPosition = [];
+		imagesFullPosition = [];
+
+		const scale = reading.globalZoomSlide() ? reading.scalePrevData().scale : 1;
+
+		for(let i = 0, len = distribution.distribution.length; i < len; i++)
+		{
+			const group = distribution.distribution[i];
+
+			if(!imagesPosition[i]) imagesPosition[i] = [];
+			if(!imagesFullPosition[i]) imagesFullPosition[i] = [];
+
+			let left = 0;
+
+			for(let j = 0, len2 = group.length; j < len2; j++)
+			{
+				const item = group[j];
+				const rendered = item.rendered!;
+
+				const height = rendered.height * scale;
+
+				const position = {
+					i,
+					j,
+					top: 0,
+					center: height / 2,
+					bottom: height,
+					left: (rendered.left + left) * scale,
+					totalLeft: left + rightSize.width * i,
+					height,
+					width: rendered.width * scale,
+				} satisfies Omit<FullPosition, 'original'>;
+
+				const fullPosition: FullPosition = {
+					...position,
+					original: {
+						top: position.top / scale,
+						center: position.center / scale,
+						bottom: position.bottom / scale,
+						left: position.left / scale,
+						totalLeft: position.totalLeft / scale,
+						height: position.height / scale,
+						width: position.width / scale,
+					},
+				};
+
+				pagesPosition[item.index] = fullPosition;
+				imagesPosition[i][j] = fullPosition.center;
+				imagesFullPosition[i][j] = fullPosition;
+
+				left += rendered.left + rendered.width;
+			}
 		}
 	}
 	else if(isScroll)

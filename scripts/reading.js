@@ -1920,37 +1920,52 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 
 	const contentRight = template._contentRight();
 	const images = index !== false ? contentRight.querySelectorAll('.image-position'+index+' oc-img img') : contentRight.querySelectorAll('.r-img oc-img img');
-
-	/*
+	
 	const scrollTop = dom.getContentRightScrollTop();
-	const viewSize = view.viewSize();
+	const isScroll = readingViewIs('scroll');
+	const viewSize = view.viewSize(isScroll);
 	const margin = readingMargin();
-	*/
 
 	for(let i = 0, len = images.length; i < len; i++)
 	{
 		const img = images[i];
 		const image = imagesData[+img.dataset.index] || [];
 
-		/*
 		const position = view.imagesFullPosition[image.key1][image.key2] ?? [];
+		const original = position.original;
 
+		const halfHeight = viewSize.height / 2;
+		const halfWidth = viewSize.width / 2;
+
+		const heightOffset = app.roundDPR(halfHeight) - halfHeight;
+		const widthOffset = app.roundDPR(halfWidth) - halfWidth;
+
+		const estimatedLeft = isScroll
+			? (original.left - halfWidth + margin.left) * scale
+			: (original.left - halfWidth) * scale;
+
+		const estimatedTop = isScroll
+			? (original.top + margin.top) * scale
+			: ((original.top + margin.top) - halfHeight) * scale;
+
+		let left = (-(estimatedLeft - app.floorDPR(estimatedLeft)) - widthOffset) % 1;
+		let top = (-(estimatedTop - app.floorDPR(estimatedTop)) - heightOffset) % 1;
+
+		if(left <= -0.5) left++;
+		else if(left > 0.5) left--;
+
+		if(top <= -0.5) top++;
+		else if(top > 0.5) top--;
+
+		if(+img.dataset.index === 184)
+		{
+			console.log(image);
+			console.log(position);
+			console.log(estimatedTop);
+			console.log(left);
+			console.log(top);
+		}
 		
-		//	reading.view.imagesFullPosition[184][0].top
-		//	- dom.getContentRightScrollTop()
-		//	+ 89
-		//	+ margin.top * 0.557156
-
-		const estimatedLeft = position.left + viewSize.left + margin.left * _scale;
-		const estimatedTop = position.top - scrollTop + viewSize.top + margin.top * _scale;
-
-		let left = -(estimatedLeft - app.floorDPR(estimatedLeft));
-		let top = -(estimatedTop - app.floorDPR(estimatedTop));
-
-		if(left < -0.5) left++;
-		if(top < -0.5) top++;
-		*/
-
 		const ocImg = img.parentElement;
 
 		let width, height;
@@ -1966,13 +1981,17 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 
 		img.style.width = (width / window.devicePixelRatio)+'px';
 		img.style.height = (height / window.devicePixelRatio)+'px';
+		img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
 
-		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
-			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, 0.09293, 0.09293);
+		/*
+		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
+			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
 		else
 			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
+		*/
 	}
 
+	/*
 	if(_scale == 1 || blobOnly)
 		return;
 
@@ -1994,14 +2013,15 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 				let left = -(rect.left - app.floorDPR(rect.left));
 				let top = -(rect.top - app.floorDPR(rect.top));
 
-				if(left < -0.5) left++;
-				if(top < -0.5) top++;
+				if(left <= -0.5) left++;
+				if(top <= -0.5) top++;
 
 				img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
 			}
 
 		});
 	});
+	*/
 
 }
 
