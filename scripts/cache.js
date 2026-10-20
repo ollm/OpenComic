@@ -162,7 +162,10 @@ function addImageVars(image)
 		vars.push('type='+image.type);
 
 	if(image.forceSize && image.forceSize != 150)
-		vars.push('size='+image.forceSize);
+	{
+		const dpr = window.devicePixelRatio;
+		vars.push('size='+Math.round(image.forceSize * dpr));
+	}
 
 	return image.path+(vars.length ? '?'+vars.join('&') : '');
 }

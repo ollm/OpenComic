@@ -3,6 +3,7 @@ import disposeImages from './view/dispose-images.mjs';
 import stayInLine from './view/stay-in-line.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+declare const app: any;
 declare const dom: any;
 declare const image: any;
 declare const reading: any;
@@ -46,8 +47,9 @@ export const tabsBarHeight = 41;
 
 export function viewSize(isScroll: boolean = false)
 {
-	let width = window.innerWidth;
-	let height = window.innerHeight;
+	const dpr = window.devicePixelRatio;
+	let width = app.roundHalfDown(window.innerWidth * dpr) / dpr;
+	let height = app.roundHalfDown(window.innerHeight * dpr) / dpr;
 	let top = 0;
 	let left = 0;
 
@@ -78,7 +80,8 @@ export function viewSize(isScroll: boolean = false)
 
 export function leftSize(range: boolean = true)
 {
-	let height = window.innerHeight;
+	const dpr = window.devicePixelRatio;
+	let height = app.roundHalfDown(window.innerHeight * dpr) / dpr;
 	let top = 0;
 
 	const {hideContentLeft, hideBarHeader, hideTabsBar} = reading.getHideContent();

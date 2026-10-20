@@ -1916,7 +1916,8 @@ const intervalId = setInterval(findMutation, 1);
 // Fix blur on zoom cause by tranform scale, still happening in vertical reader in some conditions
 function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 {
-	const _scale = 1 / scale;
+	const inverseScale = 1 / scale;
+	const scaleIncrease = scale - 1;
 
 	const contentRight = template._contentRight();
 	const images = index !== false ? contentRight.querySelectorAll('.image-position'+index+' oc-img img') : contentRight.querySelectorAll('.r-img oc-img img');
@@ -1926,6 +1927,24 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 	const viewSize = view.viewSize(isScroll);
 	const margin = readingMargin();
 
+	const dpr = window.devicePixelRatio;
+	const inverseDPR = 1 / dpr;
+
+	const marginDPR = {
+		top: margin.top * dpr,
+		left: margin.left * dpr,
+	};
+
+	const viewDPR = {
+		top: viewSize.top * dpr,
+		left: viewSize.left * dpr,
+		height: viewSize.height * dpr,
+		width: viewSize.width * dpr,
+	};
+
+	const halfHeight = viewDPR.height / 2;
+	const halfWidth = viewDPR.width / 2;
+
 	for(let i = 0, len = images.length; i < len; i++)
 	{
 		const img = images[i];
@@ -1934,37 +1953,46 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 		const position = view.imagesFullPosition[image.key1][image.key2] ?? [];
 		const original = position.original;
 
-		const halfHeight = viewSize.height / 2;
-		const halfWidth = viewSize.width / 2;
+		const originalDPR = {
+			top: original.top * dpr,
+			left: original.left * dpr,
+		};
 
-		const heightOffset = app.roundDPR(halfHeight) - halfHeight;
-		const widthOffset = app.roundDPR(halfWidth) - halfWidth;
+		const imageEdges = {
+			top: originalDPR.top + marginDPR.top + viewDPR.top,
+			left: originalDPR.left + (isScroll ? marginDPR.left : 0) + viewDPR.left,
+		};
 
-		const estimatedLeft = isScroll
-			? (original.left - halfWidth + margin.left) * scale
-			: (original.left - halfWidth) * scale;
+		// Round, Even if the image isn't actually centered on a physical pixel, Chrome will center it as long as there is no transform applied.
+		const imageEdgesRound = {
+			top: Math.round(imageEdges.top),
+			left: Math.round(imageEdges.left),
+		};
+		
+		const transformOrigin = {
+			top: viewDPR.top + (isScroll ? 0 : halfHeight),
+			left: viewDPR.left + halfWidth,
+		};
 
-		const estimatedTop = isScroll
-			? (original.top + margin.top) * scale
-			: ((original.top + margin.top) - halfHeight) * scale;
+		const displacementFromOrigin = {
+			top: (transformOrigin.top - imageEdges.top) * scaleIncrease,
+			left: (transformOrigin.left - imageEdges.left) * scaleIncrease,
+		};
 
-		let left = (-(estimatedLeft - app.floorDPR(estimatedLeft)) - widthOffset) % 1;
-		let top = (-(estimatedTop - app.floorDPR(estimatedTop)) - heightOffset) % 1;
+		let left = ((imageEdgesRound.left - displacementFromOrigin.left) % 1);
+		let top = ((imageEdgesRound.top - displacementFromOrigin.top) % 1);
 
-		if(left <= -0.5) left++;
-		else if(left > 0.5) left--;
+		left = -(left);
+		top = -(top);
 
-		if(top <= -0.5) top++;
-		else if(top > 0.5) top--;
+		left /= dpr;
+		top /= dpr;
 
-		if(+img.dataset.index === 184)
-		{
-			console.log(image);
-			console.log(position);
-			console.log(estimatedTop);
-			console.log(left);
-			console.log(top);
-		}
+		if(left <= -0.5) left += inverseDPR;
+		else if(left > 0.5) left -= inverseDPR;
+
+		if(top <= -0.5) top += inverseDPR;
+		else if(top > 0.5) top -= inverseDPR;
 		
 		const ocImg = img.parentElement;
 
@@ -1973,56 +2001,16 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 		width = +ocImg.dataset.width;
 		height = +ocImg.dataset.height;
 
-		width = Math.round(width * scale * window.devicePixelRatio);
-		height = Math.round(height * scale * window.devicePixelRatio);
+		width = Math.round(width * scale * dpr);
+		height = Math.round(height * scale * dpr);
 
 		const rotated = image?.rotated == 1 || image?.rotated == 2;
 		if(rotated) [width, height] = [height, width];
 
-		img.style.width = (width / window.devicePixelRatio)+'px';
-		img.style.height = (height / window.devicePixelRatio)+'px';
-		img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
-
-		/*
-		if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
-			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
-		else
-			img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated);
-		*/
+		img.style.width = (width / dpr)+'px';
+		img.style.height = (height / dpr)+'px';
+		img.style.transform = 'scale('+inverseScale+') '+rotateImage(image?.rotated, left, top);
 	}
-
-	/*
-	if(_scale == 1 || blobOnly)
-		return;
-
-	window.requestAnimationFrame(function() {
-
-		window.requestAnimationFrame(function() {
-
-			for(let i = 0, len = images.length; i < len; i++)
-			{
-				const img = images[i];
-
-				if(img.classList.contains('blobRender') || img.classList.contains('zoomOriginalSize') || img.classList.contains('originalSize'))
-					continue;
-
-				const image = imagesData[+img.dataset.index] || [];
-
-				const rect = img.getBoundingClientRect();
-
-				let left = -(rect.left - app.floorDPR(rect.left));
-				let top = -(rect.top - app.floorDPR(rect.top));
-
-				if(left <= -0.5) left++;
-				if(top <= -0.5) top++;
-
-				img.style.transform = 'scale('+_scale+') '+rotateImage(image?.rotated, left, top);
-			}
-
-		});
-	});
-	*/
-
 }
 
 function getIndexImagesSize(index)

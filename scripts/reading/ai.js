@@ -67,6 +67,12 @@ function change(feaute, key, value, save = true)
 					dom.query('.ai-descreen').class(!value, 'disable-pointer');
 
 					break;
+
+				case 'keepBigHalftone':
+
+					dom.query('.reading-ai-keep-big-halftone-scale').class(!value, 'disable-pointer');
+
+					break;
 			}
 
 			break;

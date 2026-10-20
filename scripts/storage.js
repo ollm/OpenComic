@@ -138,7 +138,7 @@ const readingPagesConfig = {
 			active: false,
 			model: 'opencomic-ai-descreen-hard-fast-v3-256',
 			keepBigHalftone: true,
-			minSize: 2.5,
+			minSize: 3,
 		},
 		upscale: {
 			active: false,
