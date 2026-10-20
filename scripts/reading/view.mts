@@ -9,6 +9,7 @@ declare const image: any;
 declare const reading: any;
 declare const _config: any;
 declare const template: any;
+declare const themeVars: any;
 declare const fileManager: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
@@ -41,10 +42,6 @@ export interface FullPosition {
 	};
 }
 
-export const contentLeftWidth = 192;
-export const barHeaderHeight = 48;
-export const tabsBarHeight = 41;
-
 export function viewSize(isScroll: boolean = false)
 {
 	const dpr = window.devicePixelRatio;
@@ -59,13 +56,13 @@ export function viewSize(isScroll: boolean = false)
 		width -= 12;
 
 	if(!hideContentLeft)
-		left = contentLeftWidth;
+		left = themeVars.sideBarWidth;
 
 	if(!hideBarHeader)
-		top += barHeaderHeight;
+		top += themeVars.headerBarHeight;
 
 	if(!hideTabsBar)
-		top += tabsBarHeight;
+		top += themeVars.tabsBarHeight;
 
 	width -= left;
 	height -= top;
@@ -87,10 +84,10 @@ export function leftSize(range: boolean = true)
 	const {hideContentLeft, hideBarHeader, hideTabsBar} = reading.getHideContent();
 
 	if(!hideBarHeader)
-		top += barHeaderHeight;
+		top += themeVars.headerBarHeight;
 
 	if(!hideTabsBar)
-		top += tabsBarHeight;
+		top += themeVars.tabsBarHeight;
 
 	if(hideContentLeft)
 		top = 0;
@@ -99,7 +96,7 @@ export function leftSize(range: boolean = true)
 	if(!range) height -= 66; // range height
 
 	return {
-		width: contentLeftWidth,
+		width: themeVars.sideBarWidth,
 		height,
 		left: 0,
 		top,
@@ -504,9 +501,6 @@ function start(first = true)
 }
 
 export default {
-	contentLeftWidth,
-	barHeaderHeight,
-	tabsBarHeight,
 	viewSize,
 	leftSize,
 	requiredImages,

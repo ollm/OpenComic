@@ -71,6 +71,7 @@ function loadCustomThemes()
 		document.head.appendChild(link);
 	}
 
+	themeVars.get();
 }
 
 function updateCustomThemes()

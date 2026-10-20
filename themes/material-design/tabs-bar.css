@@ -9,8 +9,8 @@
 
 .app.visible-tabs-bar
 {
-	--tabs-bar-height: 41px;
-	--tabs-bar-height-always-visible: 41px;
+	--tabs-bar-height: var(--const-tabs-bar-height);
+	--tabs-bar-height-always-visible: var(--const-tabs-bar-height);
 }
 
 .app.visible-tabs-bar.hide-tabs-bar

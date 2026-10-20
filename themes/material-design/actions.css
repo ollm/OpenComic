@@ -2930,8 +2930,8 @@ table tbody td.lh0
 	min-height: 56px;
 	border-radius: 28px;
 	width: 600px;
-	max-width: calc(100% - 192px - 32px);
-	right: calc(50% - 400px);
+	max-width: calc(100% - var(--const-side-bar-width) - 32px);
+	right: calc(50% - (var(--const-side-bar-width) + 208px));
 	top: calc(64px + var(--title-and-tabs-bar-height));
 	z-index: 4;
 	background-color: var(--md-sys-color-surface-container-high);

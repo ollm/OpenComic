@@ -1,6 +1,6 @@
 .app
 {
-	--title-bar-height: 30px;
+	--title-bar-height: var(--const-title-bar-height);
 	--title-bar-height: 0px;
 }
 

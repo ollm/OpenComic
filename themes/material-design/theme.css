@@ -21,6 +21,16 @@
 @import url('./opds.css');
 @import url('./colors/all.colors.css');
 
+/* Size Constants */
+
+:root
+{
+	--const-title-bar-height: 30px; /* Title bar was replaced with tabs bar */
+	--const-tabs-bar-height: 41px;
+	--const-header-bar-height: 48px;
+	--const-side-bar-width: 192px;
+}
+
 /* Animations */
 
 @keyframes zoom-in
@@ -649,6 +659,7 @@
 	}
 }
 
+
 /* CSS */
 
 
@@ -746,7 +757,7 @@ a:hover
 
 .bar-header
 {
-	height: 48px;
+	height: var(--const-header-bar-height);
 	position: fixed;
 	top: var(--title-and-tabs-bar-height-always-visible);
 	left: 0px;
@@ -876,10 +887,10 @@ a:hover
 .content-left
 {
 	position: fixed;
-	top: calc(48px + var(--title-and-tabs-bar-height));
+	top: calc(var(--const-header-bar-height) + var(--title-and-tabs-bar-height));
 	left: 0px;
-	width: 192px;
-	height: calc(100% - 48px - var(--title-and-tabs-bar-height));
+	width: var(--const-side-bar-width);
+	height: calc(100% - var(--const-header-bar-height) - var(--title-and-tabs-bar-height));
 	padding: 50px 0px;
 	margin-top: -50px;
 	background-color: var(--md-sys-color-surface-container);
@@ -1038,10 +1049,10 @@ a:hover
 .content-right
 {
 	position: absolute;
-	top: calc(48px + var(--title-and-tabs-bar-height));
-	left: 192px;
-	width: calc(100% - 192px);
-	height: calc(100% - 48px - var(--title-and-tabs-bar-height));
+	top: calc(var(--const-header-bar-height) + var(--title-and-tabs-bar-height));
+	left: var(--const-side-bar-width);
+	width: calc(100% - var(--const-side-bar-width));
+	height: calc(100% - var(--const-header-bar-height) - var(--title-and-tabs-bar-height));
 	z-index: 1;
 	background-color: var(--md-sys-color-surface-container);
 	transition: background-color 0.2s;
