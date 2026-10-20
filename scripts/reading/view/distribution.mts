@@ -56,6 +56,11 @@ export interface Item {
 
 	key1?: number;
 	key2?: number;
+
+	distribution: {
+		key1?: number;
+		key2?: number;
+	};
 }
 
 interface Compare {
@@ -196,6 +201,8 @@ export default class Distribution
 		aspectRatio: 1,
 
 		calculated: false,
+
+		distribution: {},
 	};
 
 	calculateImagesDistribution() {
@@ -348,18 +355,22 @@ export default class Distribution
 
 	applyMangaReading(distribution: Item[][]): Item[][] {
 
-		const _distribution = [...distribution];
-
-		if(_config.readingManga)
+		for(let i = 0, len = distribution.length; i < len; i++)
 		{
-			if(!reading.viewIs('scroll'))
-				_distribution.reverse();
-
-			for(let i = 0, len = _distribution.length; i < len; i++)
+			for(let j = 0, len2 = distribution[i].length; j < len2; j++)
 			{
-				_distribution[i].reverse();
+				const item = distribution[i][j];
+
+				item.distribution ??= {};
+				item.distribution.key1 = i;
+				item.distribution.key2 = j;
 			}
 		}
+
+		const _distribution = _config.readingManga ? distribution.map(group => [...group].reverse()) : [...distribution];
+
+		if(_config.readingManga && !reading.viewIs('scroll'))
+			_distribution.reverse();
 
 		return _distribution;
 	}
@@ -413,8 +424,8 @@ export default class Distribution
 
 			for(let j = 0; j < maxLen; j++)
 			{
-				if(newGroup[j]) newGroup[j].key1 = i;
-				if(newGroup[j]) newGroup[j].key2 = j;
+				if(newGroup[j]) newGroup[j]!.key1 = i;
+				if(newGroup[j]) newGroup[j]!.key2 = j;
 
 				compareGroup.items.push({
 					prev: prevGroup[j] || null,

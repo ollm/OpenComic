@@ -1464,7 +1464,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				});
 
 				if(restoreScrollTop === false)
-					content.scrollTop = scrollTop + (translateY - scalePrevData.tranY);
+					content.scrollTop = app.roundHalfDownDPR(scrollTop + (translateY - scalePrevData.tranY));
 				else
 					content.scrollTop = restoreScrollTop;
 
@@ -1913,7 +1913,7 @@ function findMutation()
 const intervalId = setInterval(findMutation, 1);
 */
 
-// Fix blur on zoom cause by tranform scale, still happening in vertical reader in some conditions
+// Fix blur on zoom cause by tranform scale, TODO: It is still possible that it may not work well in some cases.
 function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 {
 	const inverseScale = 1 / scale;
@@ -1925,15 +1925,9 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 	const scrollTop = dom.getContentRightScrollTop();
 	const isScroll = readingViewIs('scroll');
 	const viewSize = view.viewSize(isScroll);
-	const margin = readingMargin();
 
 	const dpr = window.devicePixelRatio;
 	const inverseDPR = 1 / dpr;
-
-	const marginDPR = {
-		top: margin.top * dpr,
-		left: margin.left * dpr,
-	};
 
 	const viewDPR = {
 		top: viewSize.top * dpr,
@@ -1950,8 +1944,14 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 		const img = images[i];
 		const image = imagesData[+img.dataset.index] || [];
 
-		const position = view.imagesFullPosition[image.key1][image.key2] ?? [];
+		const rendered = image.rendered;
+		const position = view.imagesFullPosition[image.distribution.key1][image.distribution.key2] ?? [];
 		const original = position.original;
+
+		const renderedDPR = {
+			top: rendered.top * dpr,
+			// left: rendered.left * dpr,
+		};
 
 		const originalDPR = {
 			top: original.top * dpr,
@@ -1959,8 +1959,8 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 		};
 
 		const imageEdges = {
-			top: originalDPR.top + marginDPR.top + viewDPR.top,
-			left: originalDPR.left + (isScroll ? marginDPR.left : 0) + viewDPR.left,
+			top: originalDPR.top + renderedDPR.top + viewDPR.top,
+			left: originalDPR.left + viewDPR.left,
 		};
 
 		// Round, Even if the image isn't actually centered on a physical pixel, Chrome will center it as long as there is no transform applied.
@@ -1993,7 +1993,7 @@ function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
 
 		if(top <= -0.5) top += inverseDPR;
 		else if(top > 0.5) top -= inverseDPR;
-		
+
 		const ocImg = img.parentElement;
 
 		let width, height;
@@ -4496,11 +4496,11 @@ function showHiddenBars(event, onclick = false)
 	if(hiddenContentLeft || hiddenBarHeader) // Show content left and header bar when they are hidden
 	{
 		const areas = {
-			left: isFullScreen ? 3 : 192,
-			top: isFullScreen ? 3 : 96,
+			left: isFullScreen ? 3 : themeVars.sideBarWidth,
+			top: isFullScreen ? 3 : themeVars.headerBarHeight + themeVars.tabsBarHeight,
 			scrollBar: {
-				left: 180,
-				left2: 192,
+				left: themeVars.sideBarWidth - 12,
+				left2: themeVars.sideBarWidth,
 				right: window.innerWidth - 12,
 			},
 		};
@@ -4557,7 +4557,7 @@ function showHiddenBars(event, onclick = false)
 			hideContentRunningST = false;
 		}
 
-		if(shownBarHeader && pageY > view.barHeaderHeight + view.tabsBarHeight + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
+		if(shownBarHeader && pageY > themeVars.headerBarHeight + themeVars.tabsBarHeight + 48 && !document.querySelector('.menu-simple.a, .title-bar-menu.show'))
 		{
 			clearTimeout(hideContentST);
 

@@ -158,6 +158,7 @@ function calculateView(first: boolean = false)
 		imagesFullPosition = [];
 
 		const scale = reading.globalZoomSlide() ? reading.scalePrevData().scale : 1;
+		const reverse = !!_config.readingManga;
 
 		for(let i = 0, len = distribution.distribution.length; i < len; i++)
 		{
@@ -168,7 +169,11 @@ function calculateView(first: boolean = false)
 
 			let left = 0;
 
-			for(let j = 0, len2 = group.length; j < len2; j++)
+			const step = reverse ? -1 : 1;
+			const start = reverse ? group.length - 1 : 0;
+			const end = reverse ? -1 : group.length;
+
+			for(let j = start; j !== end; j += step)
 			{
 				const item = group[j];
 				const rendered = item.rendered!;
@@ -228,6 +233,8 @@ function calculateView(first: boolean = false)
 		imagesFullPosition = [];
 
 		const scale = reading.globalZoom() ? reading.scalePrevData().scale : 1;
+		const reverse = !!_config.readingManga;
+
 		let scrollHeight = 0;
 
 		for(let i = 0, len = distribution.distribution.length; i < len; i++)
@@ -240,7 +247,11 @@ function calculateView(first: boolean = false)
 			let maxHeight = 0;
 			let left = 0;
 
-			for(let j = 0, len2 = group.length; j < len2; j++)
+			const step = reverse ? -1 : 1;
+			const start = reverse ? group.length - 1 : 0;
+			const end = reverse ? -1 : group.length;
+
+			for(let j = start; j !== end; j += step)
 			{
 				const item = group[j];
 				const rendered = item.rendered!;

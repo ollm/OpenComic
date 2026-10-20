@@ -102,6 +102,12 @@ function roundDPR(number, base = 0) {
 
 }
 
+function roundHalfDownDPR(number, base = 0) {
+
+	return Math.ceil(base + number * window.devicePixelRatio - 0.5) / window.devicePixelRatio - base;
+
+}
+
 function floorDPR(number, base = 0) {
 
 	return Math.floor(base + number * window.devicePixelRatio) / window.devicePixelRatio - base;
@@ -556,6 +562,7 @@ module.exports = {
 	extnameC: extnameC,
 	round: round,
 	roundDPR: roundDPR,
+	roundHalfDownDPR: roundHalfDownDPR,
 	floorDPR: floorDPR,
 	ceilDPR: ceilDPR,
 	roundHalfDown: roundHalfDown,
