@@ -2157,6 +2157,10 @@ function getTabState()
 	const data = {
 		scaleData: {...scalePrevData},
 		scrollTop: readingViewIs('scroll') && content ? content.scrollTop : undefined,
+		window: {
+			width: window.innerWidth,
+			height: window.innerHeight,
+		}
 	};
 
 	return data;
@@ -2164,12 +2168,32 @@ function getTabState()
 
 let restoringTabState = false;
 
+function stateScrollTop(data)
+{
+	const width = window.innerWidth;
+	const height = window.innerHeight;
+
+	// Avoid restore scrollTop if the window size has changed
+	// TODO: Consider using stayInLine to solve this
+	const windowChangedSize = data?.window?.width !== width || data?.window?.height !== height;
+
+	const scrollTop = data?.scrollTop;
+	const hasScrollTop = Number.isFinite(scrollTop);
+	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') && !windowChangedSize ? scrollTop : false;
+
+	console.log(data);
+
+	return {
+		restoreScrollTop,
+		hasScrollTop,
+		scrollTop,
+	};
+}
+
 async function setTabState(data)
 {
 	const scaleData = data?.scaleData ?? false;
-	const scrollTop = data?.scrollTop;
-	const hasScrollTop = Number.isFinite(scrollTop);
-	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') ? scrollTop : false;
+	const {restoreScrollTop, hasScrollTop, scrollTop} = stateScrollTop(data);
 
 	if((scaleData && scaleData.scale !== 1) || hasScrollTop)
 	{
@@ -2200,9 +2224,7 @@ async function setTabState(data)
 
 async function setTabStateFirst(data)
 {
-	const scrollTop = data?.scrollTop;
-	const hasScrollTop = Number.isFinite(scrollTop);
-	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') ? scrollTop : false;
+	const {restoreScrollTop, hasScrollTop, scrollTop} = stateScrollTop(data);
 
 	restoringTabState = {
 		...data,
