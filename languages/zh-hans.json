@@ -152,7 +152,7 @@
 			"aiToolsShort": "AI",
 			"slide": "横向阅读",
 			"scroll": "垂直阅读",
-			"panels": "引导式视图",
+			"panels": "导览视图",
 			"roughPageTurn": "翻页",
 			"smoothPageTurn": "平滑翻页",
 			"fade": "淡出",
@@ -239,8 +239,8 @@
 			"aiKeepBigHalftone": "保持色调平缓",
 			"downloadingAiModel": "下载 AI 模型",
 			"maxMegapixels": "最大输入图像分辨率（百万像素）",
-			"openComicModels": "",
-			"otherModels": "",
+			"openComicModels": "OpenComic AI 模型",
+			"otherModels": "其他模型",
 			"autoScale": "自动比例",
 			"scale": "比例",
 			"noiseReduction": "降噪",
@@ -308,12 +308,12 @@
 			"blur": "模糊",
 			"expandPanel": "展开画板",
 			"upscaleMask": {
-				"scale": "",
-				"scaleDescription": ""
+				"scale": "使用AI增强蒙版",
+				"scaleDescription": "提高蒙板/面板边缘质量，但耗时更长"
 			},
 			"visibility": {
-				"prevPanels": "可见的上一画板",
-				"nextPanels": "可见的下一画板"
+				"prevPanels": "显示上一画板",
+				"nextPanels": "显示下一画板"
 			}
 		},
 		"moreOptions": {
@@ -453,7 +453,7 @@
 			"main": "检查新版本",
 			"checkReleases": "启动 OpenComic 时检查是否有新版本",
 			"checkPreReleases": "显示预发布版本（beta/alpha 版本）",
-			"checkNightlyReleases": ""
+			"checkNightlyReleases": "显示夜间版本"
 		},
 		"macros": {
 			"main": "宏",
@@ -492,19 +492,19 @@
 			"gamepad1": "按键 1",
 			"gamepad2": "按键 2",
 			"tabs": {
-				"main": "",
-				"goNext": "",
-				"goPrev": "",
-				"goTo1": "",
-				"goTo2": "",
-				"goTo3": "",
-				"goTo4": "",
-				"goTo5": "",
-				"goTo6": "",
-				"goTo7": "",
-				"goTo8": "",
-				"goTo9": "",
-				"goToLast": ""
+				"main": "标签页",
+				"goNext": "转到下一个标签页",
+				"goPrev": "转到上一个标签页",
+				"goTo1": "转到标签页 1",
+				"goTo2": "转到标签页 2",
+				"goTo3": "转到标签页 3",
+				"goTo4": "转到标签页 4",
+				"goTo5": "转到标签页 5",
+				"goTo6": "转到标签页 6",
+				"goTo7": "转到标签页 7",
+				"goTo8": "转到标签页 8",
+				"goTo9": "转到标签页 9",
+				"goToLast": "转到最后一个标签页"
 			}
 		},
 		"tapZones": {
@@ -724,8 +724,8 @@
 			"description": "您可以从此对话框再次授予权限，以确保 OpenComic 正常运行"
 		},
 		"release": {
-			"title": "新版本可用<b>{{releaseName}}</b>",
-			"titleNightly": "",
+			"title": "新版本可用 <b>{{releaseName}}</b>",
+			"titleNightly": "有新的每日构建版本可用 <b>{{releaseName}}</b>",
 			"body": "您可以从{{{linkStart}}}发布页面{{{linkEdin}}}查看最新更改"
 		}
 	},
