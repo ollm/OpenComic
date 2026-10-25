@@ -1446,7 +1446,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(scale != 1) dom.this(contentRight).find('.reading-body > div img.originalSize', true).addClass('zoomed');
 
-			fixBlurOnZoom(scale, false, true);
+			fixBlurOnZoom(scale);
 
 			applyScaleEnd = function() {
 
@@ -1485,8 +1485,6 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				}
 
 				scalePrevData._scale = scale;
-
-				fixBlurOnZoom(scale);
 
 				contentRight.querySelector('.reading-body').classList.remove('zooming');
 
@@ -1582,11 +1580,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 				dom.this(imagePosition._this).find('img.originalSize', true).addClass('zoomed');
 			}
 
-			fixBlurOnZoom(scale, currentZoomIndex, true);
+			fixBlurOnZoom(scale, currentZoomIndex);
 
 			applyScaleEnd = function() {
-
-				fixBlurOnZoom(scale, currentZoomIndex);
 
 				contentRight.querySelector('.reading-body').classList.remove('zooming');
 
@@ -1914,7 +1910,7 @@ const intervalId = setInterval(findMutation, 1);
 */
 
 // Fix blur on zoom cause by tranform scale, TODO: It is still possible that it may not work well in some cases.
-function fixBlurOnZoom(scale = 1, index = false, blobOnly = false)
+function fixBlurOnZoom(scale = 1, index = false)
 {
 	const inverseScale = 1 / scale;
 	const scaleIncrease = scale - 1;

@@ -56,7 +56,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added support for custom themes [`b904db4`](https://github.com/ollm/OpenComic/commit/b904db48971b49e074da86a43ac9d6a81e30d0ad)
 - Option to set the delay and show bars on click [`218fbd2`](https://github.com/ollm/OpenComic/commit/218fbd2cbce84dd3df835aec0c8d0b8267a95abf)
 - Multi-select support for context menu actions [`a85ca67`](https://github.com/ollm/OpenComic/commit/a85ca67872237dd1c3cefe077d75effb17f9bc31)
-- Support custom user AI models
+- Support custom user AI models [`385b82a`](https://github.com/ollm/OpenComic/commit/385b82a5966601d0b267cadfff5a5318ef77d7e0)
 
 ##### 🐛 Bug Fixes
 
