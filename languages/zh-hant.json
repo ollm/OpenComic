@@ -240,6 +240,8 @@
 			"downloadingAiModel": "正在下載 AI 模型",
 			"maxMegapixels": "最大輸入影像解析度 (百萬像素)",
 			"openComicModels": "",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "",
 			"autoScale": "自動縮放",
 			"scale": "縮放比例",
@@ -366,6 +368,11 @@
 			"main": "預載",
 			"imagesToPreload": "預載圖片數量",
 			"imagesToPreloadDescription": "圖片會預先渲染，以便在向前瀏覽時即可使用（補影格與 AI）"
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "顏色設定",

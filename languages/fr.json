@@ -240,6 +240,8 @@
 			"downloadingAiModel": "Téléchargement du modèle IA",
 			"maxMegapixels": "Résolution max. de l’image d’entrée (Mégapixels)",
 			"openComicModels": "",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "",
 			"autoScale": "Échelle auto",
 			"scale": "Échelle",
@@ -366,6 +368,11 @@
 			"main": "",
 			"imagesToPreload": "",
 			"imagesToPreloadDescription": ""
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "Profil de couleur",

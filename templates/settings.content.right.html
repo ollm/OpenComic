@@ -263,6 +263,23 @@
 				</div>
 			</div>
 
+			<h2 class="headline-small">{{language.settings.ai.main}}</h2>
+
+			<div class="menu-simple-text menu-simple-supporting-text menu-simple-supporting-text-full gamepad-item">
+				<span>
+					<div>{{language.settings.ai.customModelsFolder}}</div>
+					<span class="body-medium">{{{customModelsDescription}}}</span>
+				</span>
+			</div>
+			<div class="settings-custom-models-folder">
+				<div class="path-selector">
+					<span class="label-large">{{customModelsFolder}}</span>
+					<div class="simple-button simple-button-square filled-tonal gamepad-item" onclick="settings.changeCustomModelsFolder();">
+						<div class="touch-effect"><i class="icon-24 material-icon">folder_open</i>{{language.buttons.change}}</div>
+					</div>
+				</div>
+			</div>
+
 			<h2 class="headline-small">{{language.settings.colorProfile.main}}</h2>
 
 			<div class="menu-simple-text menu-simple-supporting-text gamepad-item">

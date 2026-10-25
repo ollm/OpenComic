@@ -13,6 +13,8 @@ function start()
 	handlebarsContext.saveImageFolder = relative.resolve(config.saveImageFolder);
 	handlebarsContext.downloadOpdsFolder = relative.resolve(config.downloadOpdsFolder);
 	handlebarsContext.customCacheAndTmpFolder = relative.resolve(config.customCacheAndTmpFolder);
+	handlebarsContext.customModelsFolder = relative.resolve(config.readingCustomModelsFolder);
+	handlebarsContext.customModelsDescription = hb.compile(language.settings.ai.customModelsFolderDescription)({linkStart: '<a href="https://opencomic.app/docs/guides/settings/custom-models/" target="_blank">', linkEnd: '</a>'});
 	handlebarsContext.settingsTab = activeTab || 'general';
 	handlebarsContext.nightly = nightly;
 	activeTab = false;
@@ -1402,6 +1404,24 @@ function changeCustomCacheAndTmpFolder()
 	});
 }
 
+function changeCustomModelsFolder()
+{
+	const dialog = electronRemote.dialog;
+
+	dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], filters: [{name: language.settings.ai.customModelsFolder}], securityScopedBookmarks: macosMAS, defaultPath: config.readingCustomModelsFolder}).then(async function (files) {
+
+		fileManager.macosSecurityScopedBookmarks(files);
+
+		if(files.filePaths && files.filePaths[0])
+		{
+			const folder = files.filePaths[0];
+			settings.set('readingCustomModelsFolder', relative.path(folder));
+			dom.queryAll('.settings-custom-models-folder .path-selector span').html(folder);
+		}
+
+	});
+}
+
 function changedCustomCacheAndTmpFolder(options = {})
 {
 	const currentTmpFolder = settings.getTmpFolder();
@@ -1748,6 +1768,7 @@ module.exports = {
 	changeSaveImageFolder: changeSaveImageFolder,
 	changeDownloadOpdsFolder: changeDownloadOpdsFolder,
 	changeCustomCacheAndTmpFolder: changeCustomCacheAndTmpFolder,
+	changeCustomModelsFolder: changeCustomModelsFolder,
 	setCacheMaxSize: setCacheMaxSize,
 	setCacheMaxOld: setCacheMaxOld,
 	clearCache: clearCache,

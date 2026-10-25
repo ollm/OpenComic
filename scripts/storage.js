@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 173; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 175; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -16,7 +16,7 @@ const readingPagesConfig = {
 			angle: 30,
 		},
 		panels: {
-			model: '',
+			model: '', // Not used for now
 			type: 'focus', // focus, hide and immersive
 			maxZoom: {
 				active: true,
@@ -33,7 +33,7 @@ const readingPagesConfig = {
 			},
 			// Only in hide mode
 			upscaleMask: {
-				model: '',
+				model: '', // Not used for now
 				scale: 1,
 			},
 			hideEffect: 'black',
@@ -252,6 +252,7 @@ const storageDefault = {
 		readingImageInterpolationMethodDownscaling: 'lanczos3',
 		readingImageInterpolationMethodUpscaling: 'chromium',
 		readingImagesToPreload: 10,
+		readingCustomModelsFolder: '',
 		readingMusic: {
 			play: false,
 			volume: 1.0,
@@ -273,6 +274,7 @@ const storageDefault = {
 		invertTapZonesInManga: true,
 		saveImageTemplate: '[parentFolder] - [folder] - [image] - [page]',
 		saveImageFolder: relative.path(getDownloadsPath()),
+		saveImageLastFolder: '',
 		saveImageToFolder: false,
 		downloadOpdsFolder: relative.path(p.join(getDocumentsPath(), 'OPDS')),
 		downloadOpdsToFolder: false,

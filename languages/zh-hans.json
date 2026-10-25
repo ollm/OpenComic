@@ -240,6 +240,8 @@
 			"downloadingAiModel": "下载 AI 模型",
 			"maxMegapixels": "最大输入图像分辨率（百万像素）",
 			"openComicModels": "OpenComic AI 模型",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "其他模型",
 			"autoScale": "自动比例",
 			"scale": "比例",
@@ -366,6 +368,11 @@
 			"main": "预加载",
 			"imagesToPreload": "要预加载的图片数量",
 			"imagesToPreloadDescription": "图像已预先渲染，因此在向前导航时即可使用（插值和AI）"
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "颜色配置",

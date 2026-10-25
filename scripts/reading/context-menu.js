@@ -313,20 +313,32 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 
 function saveDialogFile(callback)
 {
-	electronRemote.dialog.showSaveDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save, defaultPath: config.saveImageTemplate}).then(function(result) {
+	const defaultPath = config.saveImageLastFolder ? p.join(config.saveImageLastFolder, config.saveImageTemplate) : config.saveImageTemplate;
+
+	electronRemote.dialog.showSaveDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save, defaultPath: defaultPath}).then(function(result) {
 
 		if(!result.canceled && result.filePath)
-			callback(p.dirname(result.filePath), p.basename(result.filePath));
+		{
+			const dirname = p.dirname(result.filePath);
+			settings.set('saveImageLastFolder', dirname);
 
+			callback(dirname, p.basename(result.filePath));
+		}
 	});
 }
 
 function saveDialogDirectory(callback)
 {
-	electronRemote.dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save}).then(function(files) {
+	const defaultPath = config.saveImageLastFolder;
+
+	electronRemote.dialog.showOpenDialog({properties: ['openDirectory', 'createDirectory'], buttonLabel: language.buttons.save, defaultPath: defaultPath}).then(function(files) {
 
 		if(files.filePaths && files.filePaths[0] && fs.statSync(files.filePaths[0]).isDirectory())
-			callback(files.filePaths[0], (config.saveImageTemplate === '[parentFolder] - [folder] - [image] - [page]' ? '[folder] - [image] - [page]' : config.saveImageTemplate));
+		{
+			const dirname = files.filePaths[0];
+			settings.set('saveImageLastFolder', dirname);
+			callback(dirname, (config.saveImageTemplate === '[parentFolder] - [folder] - [image] - [page]' ? '[folder] - [image] - [page]' : config.saveImageTemplate));
+		}
 
 	});
 }

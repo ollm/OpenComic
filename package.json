@@ -115,7 +115,7 @@
 		"marked": "^18.1.1",
 		"minimatch": "^10.2.6",
 		"node-7z": "github:ollm/node-7z",
-		"opencomic-ai-bin": "^1.5.4",
+		"opencomic-ai-bin": "^1.5.6",
 		"pdfjs-dist": "^6.4.299",
 		"sanitize-html": "^2.18.1",
 		"sharp": "^0.35.5",

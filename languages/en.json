@@ -240,6 +240,8 @@
 			"downloadingAiModel": "Downloading AI model",
 			"maxMegapixels": "Max input image resolution (Megapixels)",
 			"openComicModels": "OpenComic AI Models",
+			"customModels": "Custom Models",
+			"emptyCustomModels": "No custom models",
 			"otherModels": "Other Models",
 			"autoScale": "Auto scale",
 			"scale": "Scale",
@@ -366,6 +368,11 @@
 			"main": "Preload",
 			"imagesToPreload": "Number of images to preload",
 			"imagesToPreloadDescription": "Images are pre-rendered so they are ready when navigating forward (Interpolation and AI)"
+		},
+		"ai": {
+			"main": "AI",
+			"customModelsFolder": "Custom models folder",
+			"customModelsFolderDescription": "Folder where custom AI models are stored. Models in this folder can be used alongside the models included with OpenComic. See the {{{linkStart}}}documentation{{{linkEnd}}}"
 		},
 		"colorProfile": {
 			"main": "Color profile",

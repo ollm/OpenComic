@@ -240,6 +240,8 @@
 			"downloadingAiModel": "",
 			"maxMegapixels": "",
 			"openComicModels": "",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "",
 			"autoScale": "",
 			"scale": "",
@@ -366,6 +368,11 @@
 			"main": "",
 			"imagesToPreload": "",
 			"imagesToPreloadDescription": ""
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "색상 프로필",

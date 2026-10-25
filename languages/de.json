@@ -240,6 +240,8 @@
 			"downloadingAiModel": "KI-Modell wird heruntergeladen",
 			"maxMegapixels": "Max. Bildquelle-Auflösung (Megapixel)",
 			"openComicModels": "",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "",
 			"autoScale": "Auto-Skalieren",
 			"scale": "Skalierung",
@@ -366,6 +368,11 @@
 			"main": "Caching",
 			"imagesToPreload": "Anzahl Bilder vorausladen",
 			"imagesToPreloadDescription": "Bilder werden vorausgeladen, damit sie fertig gerendert sind beim Navigieren (Interpolation und KI)"
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "Farbprofil",

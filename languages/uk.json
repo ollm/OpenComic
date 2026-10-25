@@ -240,6 +240,8 @@
 			"downloadingAiModel": "Завантаження AI-моделі",
 			"maxMegapixels": "Максимальна роздільна здатність вхідного зображення (Мегапікселі)",
 			"openComicModels": "OpenComic AI моделі",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "Інші моделі",
 			"autoScale": "Автоматичне масштабування",
 			"scale": "Масштабування",
@@ -366,6 +368,11 @@
 			"main": "Попереднє завантаження",
 			"imagesToPreload": "Кількість зображень для попереднього завантаження",
 			"imagesToPreloadDescription": "Зображення попередньо обробляються, щоб бути готовими до переходу на наступну сторінку (інтерполяція та штучний інтелект)"
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "Колірний профіль",

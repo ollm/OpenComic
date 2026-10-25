@@ -240,6 +240,8 @@
 			"downloadingAiModel": "Descargando el modelo de IA",
 			"maxMegapixels": "Resolución máxima de imagen de entrada (Megapíxeles)",
 			"openComicModels": "Modelos de OpenComic AI",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "Otros modelos",
 			"autoScale": "Escala automática",
 			"scale": "Escala",
@@ -366,6 +368,11 @@
 			"main": "Precarga",
 			"imagesToPreload": "Número de imágenes a precargar",
 			"imagesToPreloadDescription": "Las imágenes se renderizan previamente para que estén listas al avanzar (Interpolación e IA)"
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "Perfil de color",

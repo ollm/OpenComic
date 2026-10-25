@@ -240,6 +240,8 @@
 			"downloadingAiModel": "دانلود مدل AI",
 			"maxMegapixels": "حداکثر وضوح ورودی (مگاپیکسل)",
 			"openComicModels": "",
+			"customModels": "",
+			"emptyCustomModels": "",
 			"otherModels": "",
 			"autoScale": "مقیاس خودکار",
 			"scale": "مقیاس",
@@ -366,6 +368,11 @@
 			"main": "",
 			"imagesToPreload": "",
 			"imagesToPreloadDescription": ""
+		},
+		"ai": {
+			"main": "",
+			"customModelsFolder": "",
+			"customModelsFolderDescription": ""
 		},
 		"colorProfile": {
 			"main": "پروفایل رنگ",

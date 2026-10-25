@@ -62,7 +62,8 @@
 
 .settings-body .settings-save-image-folder,
 .settings-body .settings-download-opds-folder,
-.settings-body .settings-custom-cache-and-tmp-folder
+.settings-body .settings-custom-cache-and-tmp-folder,
+.settings-body .settings-custom-models-folder
 {
 	padding: 0px 24px;
 	margin-top: 14px;

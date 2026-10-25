@@ -905,6 +905,11 @@
 	display: initial;
 }
 
+.menu-simple-supporting-text-full > span
+{
+	max-width: initial;
+}
+
 .menu-simple-supporting-text > span > span
 {
 	color: var(--md-sys-color-on-surface-variant);

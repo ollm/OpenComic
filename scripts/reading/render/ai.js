@@ -99,7 +99,7 @@ function pipeline(src, imageSize)
 	if(artifactRemoval.active)
 	{
 		_pipeline.push({
-			model: artifactRemoval.model,
+			model: reading.ai.removeCustomKey(artifactRemoval.model),
 		});
 
 		listModels.push(artifactRemoval.model);
@@ -111,7 +111,7 @@ function pipeline(src, imageSize)
 		const artifactRemovalModel = 'opencomic-ai-artifact-removal-compact-v2'; // TODO: 'opencomic-ai-artifact-removal-balanced-v3-ps' produces artifacts in some images
 
 		_pipeline.push({
-			model: descreen.model,
+			model: reading.ai.removeCustomKey(descreen.model),
 
 			...(descreen.keepBigHalftone && {
 				keepBigHalftone: {
@@ -121,7 +121,7 @@ function pipeline(src, imageSize)
 
 					...(!artifactRemoval.active && { // Only add artifact removal if it's not already in the pipeline
 						artifactRemoval: {
-							model: artifactRemovalModel,
+							model: reading.ai.removeCustomKey(artifactRemovalModel),
 						},
 					}),
 
@@ -144,13 +144,18 @@ function pipeline(src, imageSize)
 	if(toUpscale)
 	{
 		_pipeline.push({
-			model: toUpscale.model,
+			model: reading.ai.removeCustomKey(toUpscale.model),
 			scale: toUpscale.scale,
 			noise: toUpscale.noise,
 		});
 
 		listModels.push(toUpscale.model);
 	}
+
+	const hasCustom = listModels.some(model => model.startsWith('custom-'));
+
+	if(hasCustom)
+		reading.ai.getAllCustomModels();
 
 	return {pipeline: _pipeline, listModels};
 }
@@ -192,6 +197,21 @@ const downloading = {
 	},
 };
 
+function aiErrorSnackbar(message = '')
+{
+	events.snackbar({
+		key: 'aiError',
+		text: message,
+		duration: 6,
+		buttons: [
+			{
+				text: language.buttons.dismiss,
+				function: 'events.closeSnackbar();',
+			},
+		],
+	});
+}
+
 function _image(src, imageSize, options = {})
 {
 	setModelsPath();
@@ -224,11 +244,18 @@ function _image(src, imageSize, options = {})
 
 		for(const model of listModels)
 		{
-			const modelInfo = OpenComicAI.model(model);
-
-			for(const file of modelInfo.files)
+			try
 			{
-				fileManager.setTmpUsage(p.join(modelInfo.path, file));
+				const modelInfo = OpenComicAI.model(reading.ai.removeCustomKey(model));
+
+				for(const file of modelInfo.files)
+				{
+					fileManager.setTmpUsage(p.join(modelInfo.path, file));
+				}
+			}
+			catch(e)
+			{
+				console.error(e);
 			}
 		}
 
@@ -249,10 +276,18 @@ function _image(src, imageSize, options = {})
 				imagePath = convertPath;
 			}
 
-			OpenComicAI.keepIccProfile('rgb16');
-			await OpenComicAI.pipeline(imagePath, path, _pipeline, options.progress || false, downloading);
+			try
+			{
+				OpenComicAI.keepIccProfile('rgb16');
+				await OpenComicAI.pipeline(imagePath, path, _pipeline, options.progress || false, downloading);
 
-			fileManager.setTmpUsage(path);
+				fileManager.setTmpUsage(path);
+			}
+			catch(e)
+			{
+				console.error(e);
+				aiErrorSnackbar(e.message);
+			}
 
 			if(convertPath)
 				fs.rmSync(convertPath, {force: true});
