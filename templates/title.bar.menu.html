@@ -1,0 +1,17 @@
+<div class="title-bar-menus-{{indicesKey}} title-bar-menus-parent-{{indicesParentKey}} title-bar-menu-submenu elevation-1" onmouseover="titleBar.inSubMenu({{indicesString}})">
+	{{#each submenu}}
+		{{#compare type '==' 'separator'}}
+		<div class="separator"></div>
+		{{else}}
+		<div {{#unless enabled}}class="disable-pointer"{{/unless}}{{#unless submenu.length}} onclick="titleBar.clickSubMenu.call(this, {{indicesString}})" onmouseover="titleBar.hideSubMenu({{indicesString}})"{{else}} onmouseover="titleBar.showSubMenu.call(this, {{indicesString}})" onmouseout="titleBar.hideSubMenu({{indicesString}})"{{/unless}}>
+			<div>{{label}}{{#if shortcut}}<span>{{shortcut}}</span>{{/if}}<div class="title-bar-menu-submenu-indicator">{{#if submenu.length}}<i class="material-icon">keyboard_arrow_right</i>{{/if}}</div></div>
+			{{#if sublabel}}
+				<div class="sublabel">{{sublabel}}</div>
+			{{/if}}
+		</div>
+		{{#if submenu.length}}
+		{{> title.bar.menu.html}}
+		{{/if}}
+		{{/compare}}
+	{{/each}}
+</div>

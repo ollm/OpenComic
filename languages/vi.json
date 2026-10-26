@@ -419,7 +419,8 @@
 			"showFileExtension": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
-			"recentlyOpenedItems": ""
+			"recentlyOpenedItems": "",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "",
@@ -573,6 +574,8 @@
 			"openFolder": "Mở thư mục",
 			"addFile": "Thêm tệp",
 			"addFolder": "Thêm thư mục",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "Thoát"
 		},
 		"view": {

@@ -735,10 +735,10 @@ function mouseLeave()
 	setTabWidth();
 }
 
-function start(openLastActiveTab: boolean = false, _restore: boolean = true): void
+function start(openLastActiveTab: boolean = false, _restore: boolean = true, windowId?: string): void
 {
 	if(_restore)
-		restore.restore(openLastActiveTab);
+		restore.restore(openLastActiveTab, windowId);
 
 	if(tabs.length === 0)
 	{
@@ -774,7 +774,7 @@ function start(openLastActiveTab: boolean = false, _restore: boolean = true): vo
 	app.event('.tabs-bar', 'mouseenter', mouseEnter);
 	app.event('.tabs-bar', 'mouseleave', mouseLeave);
 
-	app.event('.tabs-bar > div', 'mousewheel', dom.header.wheel);
+	app.event('.tabs-bar > div.small-scrollbar', 'mousewheel', dom.header.wheel);
 	drag.start();
 
 }

@@ -419,7 +419,8 @@
 			"showFileExtension": "Afficher l’extension dans la liste de fichiers",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "Ouvrir les fichiers dans une nouvelle fenêtre (s’applique uniquement aux fichiers ouverts en dehors d’OpenComic)",
-			"recentlyOpenedItems": "Nombre d’éléments à conserver dans « Récemment ouverts »"
+			"recentlyOpenedItems": "Nombre d’éléments à conserver dans « Récemment ouverts »",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "Enregistrer les images",
@@ -573,6 +574,8 @@
 			"openFolder": "Ouvrir un dossier",
 			"addFile": "Ajouter un fichier",
 			"addFolder": "Ajouter un dossier",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "Quitter"
 		},
 		"view": {

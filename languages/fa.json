@@ -419,7 +419,8 @@
 			"showFileExtension": "نمایش پسوند فایل در فهرست",
 			"openFilesInNewTab": "باز کردن فایل‌ها در زبانه جدید (فقط فایل‌های خارج از برنامه)",
 			"openFilesInNewWindow": "باز کردن فایل‌ها در پنجره جدید (فقط فایل‌های خارج از برنامه)",
-			"recentlyOpenedItems": "تعداد موارد ذخیره‌شده در اخیراً بازشده"
+			"recentlyOpenedItems": "تعداد موارد ذخیره‌شده در اخیراً بازشده",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "ذخیره تصاویر",
@@ -573,6 +574,8 @@
 			"openFolder": "باز کردن پوشه",
 			"addFile": "افزودن فایل",
 			"addFolder": "افزودن پوشه",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "خروج"
 		},
 		"view": {

@@ -419,7 +419,8 @@
 			"showFileExtension": "Show file extension in file list",
 			"openFilesInNewTab": "Open files in a new tab (Applies only to files opened from outside OpenComic)",
 			"openFilesInNewWindow": "Open files in a new window (Applies only to files opened from outside OpenComic)",
-			"recentlyOpenedItems": "Number of items to save in Recently opened"
+			"recentlyOpenedItems": "Number of items to save in Recently opened",
+			"recentWindows": "Number of recent windows to save"
 		},
 		"saveImages": {
 			"main": "Save images",
@@ -573,6 +574,8 @@
 			"openFolder": "Open folder",
 			"addFile": "Add file",
 			"addFolder": "Add folder",
+			"recentWindows": "Recent windows",
+			"tabsNum": "{{num}} tabs",
 			"quit": "Quit"
 		},
 		"view": {

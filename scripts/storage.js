@@ -151,6 +151,23 @@ const readingPagesConfig = {
 	},
 };
 
+const tabsConfig = {
+	idCounter: 0,
+	lastUsedTabs: [0],
+	list: [
+		{
+			id: 0,
+			title: '',
+			type: '',
+			icon: '',
+			active: false,
+			position: 0,
+			parents: [0],
+			data: '', // Serialized this
+		}
+	],
+};
+
 const storageDefault = {
 	config: {
 		appVersion: _package.version,
@@ -215,6 +232,7 @@ const storageDefault = {
 			}
 		},
 		recentlyOpenedItems: 100,
+		recentWindows: 14,
 		labelsExpanded: true,
 		showFullPathLibrary: false,
 		showFullPathOpened: false,
@@ -456,22 +474,13 @@ const storageDefault = {
 			lastOpened: 0,
 		},
 	},
-	tabs: {
-		idCounter: 0,
-		lastUsedTabs: [0],
-		list: [
-			{
-				id: 0,
-				title: '',
-				type: '',
-				icon: '',
-				active: false,
-				position: 0,
-				parents: [0],
-				data: '', // Serialized this
-			}
-		],
-	},
+	tabs: tabsConfig,
+	recentWindows: [{
+		id: '',
+		date: 0,
+		lastAccess: 0,
+		...tabsConfig,
+	}],
 	tracking: {
 		wildcard: {
 			wildcard: {

@@ -419,7 +419,8 @@
 			"showFileExtension": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
-			"recentlyOpenedItems": ""
+			"recentlyOpenedItems": "",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "",
@@ -573,6 +574,8 @@
 			"openFolder": "Otevřít složku",
 			"addFile": "Přidat soubor",
 			"addFolder": "Přidat složku",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "Opustit"
 		},
 		"view": {

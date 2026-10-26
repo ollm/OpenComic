@@ -123,6 +123,7 @@ require('jquery-bez');
 var toOpenFile = toOpenFile || false, windowHasLoaded = false;
 
 function handleOpenFile(path) {
+
 	if(!storage.syncWindows.firstWindow)
 		return;
 
@@ -379,6 +380,7 @@ function getArgValue(argv, flag, defaultValue = null)
 }
 
 let initHistory = false;
+let initWindowId = false;
 
 electron.ipcRenderer.on('init-data', function(event, data) {
 
@@ -390,17 +392,31 @@ electron.ipcRenderer.on('init-data', function(event, data) {
 		loadFromHistory();
 	}
 
+	if(data.windowId)
+	{
+		initWindowId = data.windowId;
+		loadFromWindowId();
+	}
+
 });
 
-let historyFromStartApp = false;
+let fromStartApp = false;
 let emptyNewWindow = false;
 
 async function loadFromHistory()
 {
-	if(historyFromStartApp && initHistory)
+	if(fromStartApp && initHistory)
 	{
 		dom.history.load(initHistory);
 		await dom.history.goTo(initHistory.current, false);
+	}
+}
+
+async function loadFromWindowId()
+{
+	if(fromStartApp && initWindowId)
+	{
+		tabs.start(true, true, initWindowId);
 	}
 }
 
@@ -426,8 +442,9 @@ async function startApp()
 	let toOpenFileMainPath = getArgValue(args, '--main-path', false);
 	toOpenFile = toOpenFile || getArgValue(args, '--path', false);
 
-	const _initHistory = getArgValue(args, '--init-history', false);
-
+	const initHistoryArg = getArgValue(args, '--init-history', false);
+	const initWindowIdArg = getArgValue(args, '--init-window-id', false);
+	
 	if(!toOpenFile)
 	{
 		for(let i = 1, len = electronRemote.process.argv.length; i < len; i++)
@@ -442,9 +459,14 @@ async function startApp()
 		}
 	}
 
-	if(_initHistory)
+	if(initWindowIdArg)
 	{
-		historyFromStartApp = true;
+		fromStartApp = true;
+		loadFromWindowId();
+	}
+	else if(initHistoryArg)
+	{
+		fromStartApp = true;
 		tabs.start(false, false);
 		loadFromHistory();
 	}
@@ -605,6 +627,9 @@ async function openNewWindow(args = [], options = {})
 
 async function openPathInNewWindow(path, mainPath = '', history = null, options = {})
 {
+	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
+	const args = ['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath, '--init-history=true']
+
 	if(!history)
 	{
 		history = dom.history.serialize();
@@ -624,14 +649,21 @@ async function openPathInNewWindow(path, mainPath = '', history = null, options 
 		history.history = [...history.history, data];
 	}
 
-	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
-	return await openNewWindow(['--path='+path, '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--main-path='+mainPath, '--init-history=true'], {initHistory: history, ...options});
+	return await openNewWindow(args, {initHistory: history, ...options});
 }
 
 async function openEmptyNewWindow()
 {
 	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
-	return await openNewWindow(['--empty-new-window', '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height], {});
+	const args = ['--empty-new-window', '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height]; 
+	return await openNewWindow(args, {});
+}
+
+async function restoreWindow(windowId)
+{
+	const {x, y, width, height} = electronRemote.getCurrentWindow().getBounds();
+	const args = ['--empty-new-window', '--new-window', '--window-x='+x, '--window-y='+y, '--window-width='+width, '--window-height='+height, '--init-window-id=true'];
+	return await openNewWindow(args, {initWindowId: windowId});
 }
 
 function openPathInNewTab(path, mainPath = '')
@@ -985,6 +1017,8 @@ function generateAppMenu(force = false)
 		let currentPath = onReading ? reading.readingCurrentPath() : indexPath;
 		let pathIsFolder = (currentPath && fs.existsSync(currentPath) && fs.statSync(currentPath).isDirectory()) ? true : false;
 
+		const recentWindows = storage.get('recentWindows') || [];
+
 		var menuTemplate = [
 			{
 				label: language.menu.file.main,
@@ -993,6 +1027,43 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.openFolder, click: function(){openComicDialog(true)}, accelerator: 'CmdOrCtrl+Shift+O'},
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
+					{type: 'separator'},
+					{
+						label: language.menu.file.recentWindows,
+						submenu: recentWindows.map(function(window) {
+
+							const activeTab = window.list.find(tab => tab.active);
+							const title = activeTab ? activeTab.title : 'Untitled';
+							const maxLength = 50;
+
+							const segments = [...new Intl.Segmenter(undefined, {
+								granularity: 'grapheme',
+							}).segment(title)];
+
+							const label = segments.length > maxLength ? segments.slice(0, maxLength - 1).map(segment => segment.segment).join('') + '...' : title;
+
+							const date = new Date(window.date).toLocaleString(undefined, {
+								day: '2-digit',
+								month: '2-digit',
+								year: '2-digit',
+								hour: '2-digit',
+								minute: '2-digit',
+							});
+
+							const sublabel = `${hb.compile(language.menu.file.tabsNum)({num: window.list.length})} · ${date}`;
+
+							return {
+								label: label,
+								sublabel: sublabel,
+								click: function() {
+									restoreWindow(window.id);
+								},
+								enabled: true,
+							};
+
+						}),
+						enabled: recentWindows.length > 0
+					},
 					{type: 'separator'},
 					{label: language.global.labels, enabled: currentPath, click: function(){reading.contextMenu.labels()}},
 					{label: pathIsFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, enabled: currentPath, click: function(){reading.contextMenu.openFileLocation()}},

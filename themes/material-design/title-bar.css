@@ -136,7 +136,7 @@
 	font-weight: 400 !important;
 }
 
-.title-bar-menus > div
+.title-bar-menu-submenu
 {
 	position: fixed;
 	z-index: 1001;
@@ -148,21 +148,30 @@
 	top: 31px;
 	display: none;
 	box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.05);
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
-.title-bar-menus > div > div
+.title-bar-menu-submenu > div:not(.title-bar-menu-submenu)
 {
-	height: 30px;
-	line-height: 30px;
-	padding: 0px 24px;
+	padding: 0px 0px 0px 24px;
 	border-radius: 4px;
-	transition: 0.2s;
+	transition: 0s;
 	cursor: pointer;
-	display: flex;
-	justify-content: space-between;
 }
 
-.title-bar-menus > div > div.separator
+.title-bar-menu-submenu > div:not(.title-bar-menu-submenu):hover
+{
+	background-color: var(--md-sys-color-secondary-container);
+}
+
+.title-bar-menu-submenu > div:not(.title-bar-menu-submenu):active,
+.title-bar-menu-submenu > div:not(.title-bar-menu-submenu).active
+{
+	background-color: var(--md-sys-color-secondary-container);
+}
+
+.title-bar-menu-submenu > div.separator
 {
 	display: block;
 	height: 0px;
@@ -173,20 +182,37 @@
 	padding: 0px;
 }
 
-.title-bar-menus > div > div:hover
+.title-bar-menu-submenu > div:not(.title-bar-menu-submenu) > div
 {
-	background-color: var(--md-sys-color-secondary-container);
+	height: 30px;
+	line-height: 30px;
+	display: flex;
+	justify-content: space-between;
 }
 
-.title-bar-menus > div > div:active,
-.title-bar-menus > div > div.active
-{
-	background-color: var(--md-sys-color-secondary-container);
-}
-
-.title-bar-menus > div > div > span
+.title-bar-menu-submenu > div:not(.title-bar-menu-submenu) > div > span
 {
 	display: block;
 	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
 	padding-left: 32px;
+}
+
+.title-bar-menu-submenu .sublabel
+{
+	color: color-mix(in srgb, var(--md-sys-color-on-surface), transparent 50%);
+	margin-top: -14px;
+	padding-right: 24px;
+}
+
+.title-bar-menu-submenu .title-bar-menu-submenu-indicator
+{
+	height: 30px;
+	width: 24px;
+	text-align: center;
+}
+
+.title-bar-menu-submenu .title-bar-menu-submenu-indicator > i.material-icon
+{
+	font-size: 16px;
+	line-height: 30px;
 }

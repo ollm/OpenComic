@@ -419,7 +419,8 @@
 			"showFileExtension": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
-			"recentlyOpenedItems": "จำนวนรายการที่จัดเก็บในรายการที่เปิดล่าสุด"
+			"recentlyOpenedItems": "จำนวนรายการที่จัดเก็บในรายการที่เปิดล่าสุด",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "จัดเก็บรูป",
@@ -573,6 +574,8 @@
 			"openFolder": "เปิดโฟลเดอร์",
 			"addFile": "เพิ่มไฟล์",
 			"addFolder": "เพิ่มโฟลเดอร์",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "ออก"
 		},
 		"view": {

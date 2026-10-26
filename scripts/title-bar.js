@@ -100,6 +100,28 @@ function setMenu(_menu)
 	if(process.platform == 'darwin') // Keep native menu in macOS
 		_menu = [];
 
+	const assignMenuIndices = function(menu, parentIndices = []) {
+
+		for(let i = 0, len = menu.length; i < len; i++)
+		{
+			const currentIndices = [...parentIndices, i];
+			const item = menu[i];
+
+			item.indices = currentIndices;
+			item.indicesString = item.indices.join(', ');
+			item.indicesKey = item.indices.join('-');
+			item.indicesParentKey = parentIndices.join('-');
+
+			if(item.submenu && item.submenu.length > 0)
+				assignMenuIndices(item.submenu, currentIndices);
+			
+		}
+
+		return menu;
+
+	}
+
+	_menu = assignMenuIndices(_menu);
 	menu = [];
 
 	for(let i = 0, len = _menu.length; i < len; i++)
@@ -158,6 +180,8 @@ function hideMenuBar()
 	const app = document.querySelector('.app');
 	menu.classList.remove('show');
 	app.classList.remove('show-title-bar-menu');
+
+	hideAllSubMenus();
 }
 
 function clickMenu(index)
@@ -209,6 +233,10 @@ function hideMenu(index, fromEnter = false)
 		_menu.classList.remove('active');
 		_menus.style.display = 'none';
 
+		dom.this(_menus).find(true, '.title-bar-menu-submenu').css({
+			display: 'none',
+		});
+
 		if(!fromEnter)
 		{
 			dom.query('.bar-header').css({
@@ -220,14 +248,108 @@ function hideMenu(index, fromEnter = false)
 	}
 }
 
-function clickSubMenu(index1, index2)
+let showSubMenuTimeout;
+
+function showSubMenu()
 {
-	let submenu = menu[index1].submenu[index2];
+	const indices = Array.from(arguments);
+
+	const key = indices.join('-');
+	const parentKey = indices.slice(0, -1).join('-');
+
+	clearTimeout(showSubMenuTimeout);
+
+	for(const [key, timeout] of Object.entries(hideSubMenuTimeout))
+	{
+		clearTimeout(timeout);
+		delete hideSubMenuTimeout[key];
+	}
+
+	const parentMenu = document.querySelector('.title-bar-menus-' + indices.slice(0, -1).join('-'));
+	const submenu = document.querySelector('.title-bar-menus-' + indices.join('-'));
+
+	const menuRect = this.getBoundingClientRect();
+	const parentRect = parentMenu ? parentMenu.getBoundingClientRect() : {top: 0, left: 0};
+
+	if(submenu)
+	{
+		showSubMenuTimeout = setTimeout(() => {
+
+			hideAllSubMenus(key, parentKey);
+
+			const margin = 16;
+
+			const top = menuRect.top - 5;
+			const maxHeight = window.innerHeight - top - margin;
+
+			submenu.style.display = 'block';
+			submenu.style.top = top+'px';
+			submenu.style.left = (parentRect.right - 1)+'px';
+			submenu.style.maxHeight = maxHeight+'px';
+
+		}, 300);
+	}
+}
+
+let hideSubMenuTimeout = {};
+
+function hideSubMenu()
+{
+	const indices = Array.from(arguments);
+
+	const key = indices.join('-');
+	const parentKey = indices.slice(0, -1).join('-');
+
+	if(hideSubMenuTimeout[key])
+		return;
+
+	clearTimeout(showSubMenuTimeout);
+	clearTimeout(hideSubMenuTimeout[key]);
+
+	hideSubMenuTimeout[key] = setTimeout(() => {
+
+		hideAllSubMenus(key, parentKey);
+		delete hideSubMenuTimeout[key];
+
+	}, 500);
+}
+
+function inSubMenu()
+{
+	const indices = Array.from(arguments);
+	const key = indices.join('-');
+
+	clearTimeout(hideSubMenuTimeout[key]);
+	delete hideSubMenuTimeout[key];
+}
+
+function clickSubMenu()
+{
+	let _menu = menu;
+
+	for(let i = 0; i < arguments.length; i++)
+	{
+		_menu = _menu.submenu ? _menu.submenu[arguments[i]] : _menu[arguments[i]];
+	}
+
+	const submenu = _menu;
 
 	if(submenu.click)
 		submenu.click();
 
 	hideMenu(activeMenu);
+}
+
+function hideAllSubMenus(key = false, parentKey = false)
+{
+	let query = key ? `.title-bar-menus-${key}, .title-bar-menus-${key} .title-bar-menu-submenu` : '.title-bar-menu-submenu .title-bar-menu-submenu';
+
+	if(parentKey)
+		query += `, .title-bar-menus-parent-${parentKey}, .title-bar-menus-parent-${parentKey} .title-bar-menu-submenu`;
+
+	dom.queryAll(query).css({
+		display: 'none',
+	});
 }
 
 var first = true, colors = {};
@@ -324,6 +446,9 @@ module.exports = {
 	clickIcon,
 	clickMenu: clickMenu,
 	enterMenu: enterMenu,
+	showSubMenu: showSubMenu,
+	hideSubMenu: hideSubMenu,
+	inSubMenu: inSubMenu,
 	clickSubMenu: clickSubMenu,
 	setMenu: setMenu,
 	getColors: getColors,

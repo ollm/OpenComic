@@ -111,6 +111,9 @@ function createWindow(options = {}) {
 	if(options.initHistory)
 		initData.history = options.initHistory;
 
+	if(options.initWindowId)
+		initData.windowId = options.initWindowId;
+
 	const showWindow = function(message = '') {
 
 		if(!windowShowed)
@@ -130,7 +133,7 @@ function createWindow(options = {}) {
 		}
 		else
 		{
-			if(win && !sendInitData && initData?.history)
+			if(win && !sendInitData && Object.keys(initData).length)
 			{
 				win.webContents.send('init-data', initData);
 				sendInitData = true;
@@ -164,7 +167,7 @@ function createWindow(options = {}) {
 
 			const js = `
 				const saved = reading.progress.save();
-				tabs.restore.save(false, true);
+				tabs.restore.save(false, true, true);
 				settings.purgeTemporaryFiles();
 				cache.purge();
 				ebook.closeAllRenders();
@@ -249,7 +252,7 @@ function createWindow(options = {}) {
 	if(toOpenFile && !newWindow)
 		deliverOpenFile(toOpenFile);
 
-	if(options.initHistory) // Open immediately
+	if(options.initHistory || options.initWindowId) // Open immediately
 	{
 		if(options.showInactive)
 			win.showInactive();

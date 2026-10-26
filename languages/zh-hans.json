@@ -419,7 +419,8 @@
 			"showFileExtension": "在文件列表中显示文件扩展名",
 			"openFilesInNewTab": "在新标签页中打开文件（仅适用于从 OpenComic 外部打开的文件）",
 			"openFilesInNewWindow": "在新窗口中打开文件（仅适用于从 OpenComic 外部打开的文件）",
-			"recentlyOpenedItems": "最近打开的要保存的项目数"
+			"recentlyOpenedItems": "最近打开的要保存的项目数",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "保存图片",
@@ -573,6 +574,8 @@
 			"openFolder": "打开文件夹",
 			"addFile": "添加文件",
 			"addFolder": "添加文件夹",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "退出"
 		},
 		"view": {

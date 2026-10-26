@@ -419,7 +419,8 @@
 			"showFileExtension": "Zeige Datei-Endung in Datei-Liste",
 			"openFilesInNewTab": "Öffne Dateien in neuem Tab (Beim Öffnen von Dateien außerhalb von OpenComic)",
 			"openFilesInNewWindow": "Öffne Dateien in neuem Fenster (Beim Öffnen von Dateien außerhalb von OpenComic)",
-			"recentlyOpenedItems": "Anzahl der in 'Kürzlich geöffnet' zu speichernden Elemente"
+			"recentlyOpenedItems": "Anzahl der in 'Kürzlich geöffnet' zu speichernden Elemente",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "Bilder speichern",
@@ -573,6 +574,8 @@
 			"openFolder": "Öffne einen Ordner",
 			"addFile": "Füge eine Datei hinzu",
 			"addFolder": "Füge einen Ordner hinzu",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "Verlassen"
 		},
 		"view": {

@@ -240,8 +240,8 @@
 			"downloadingAiModel": "Descargando el modelo de IA",
 			"maxMegapixels": "Resolución máxima de imagen de entrada (Megapíxeles)",
 			"openComicModels": "Modelos de OpenComic AI",
-			"customModels": "",
-			"emptyCustomModels": "",
+			"customModels": "Modelos personalizados",
+			"emptyCustomModels": "No hay modelos personalizados",
 			"otherModels": "Otros modelos",
 			"autoScale": "Escala automática",
 			"scale": "Escala",
@@ -370,9 +370,9 @@
 			"imagesToPreloadDescription": "Las imágenes se renderizan previamente para que estén listas al avanzar (Interpolación e IA)"
 		},
 		"ai": {
-			"main": "",
-			"customModelsFolder": "",
-			"customModelsFolderDescription": ""
+			"main": "IA",
+			"customModelsFolder": "Carpeta de modelos personalizados",
+			"customModelsFolderDescription": "Carpeta donde se guardan los modelos personalizados para la IA. Los modelos en esta carpeta se pueden usar junto con los modelos incluidos en OpenComic. Vea la {{{linkStart}}}documentación{{{linkEnd}}}"
 		},
 		"colorProfile": {
 			"main": "Perfil de color",
@@ -419,7 +419,8 @@
 			"showFileExtension": "Mostrar la extensión del archivo en la lista de archivos",
 			"openFilesInNewTab": "Abrir archivos en una nueva pestaña (Solo se aplica a archivos abiertos desde fuera de la aplicación)",
 			"openFilesInNewWindow": "Abrir archivos en una nueva ventana (Solo se aplica a archivos abiertos desde fuera de la aplicación)",
-			"recentlyOpenedItems": "Número de elementos a guardar en Abierto recientemente"
+			"recentlyOpenedItems": "Número de elementos a guardar en Abierto recientemente",
+			"recentWindows": "Número de ventanas recientes a guardar"
 		},
 		"saveImages": {
 			"main": "Guardar imágenes",
@@ -573,6 +574,8 @@
 			"openFolder": "Abrir carpeta",
 			"addFile": "Añadir archivo",
 			"addFolder": "Añadir carpeta",
+			"recentWindows": "Ventanas recientes",
+			"tabsNum": "{{num}} pestañas",
 			"quit": "Salir"
 		},
 		"view": {

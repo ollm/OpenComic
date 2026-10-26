@@ -1,5 +1,6 @@
 import tabs, {Tab, TabType} from '../tabs.mjs';
 import drag from './drag.mjs';
+import crypto from 'crypto';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const dom: any;
@@ -21,7 +22,7 @@ interface TabSaved {
 	data: string;
 }
 
-function save(throttle: boolean = true, updateActive: boolean = false): void {
+function save(throttle: boolean = true, updateActive: boolean = false, fromClose: boolean = false): void {
 
 	if(!config.restoreTabsFromLastSession)
 		return;
@@ -50,19 +51,54 @@ function save(throttle: boolean = true, updateActive: boolean = false): void {
 
 	const set = throttle ? storage.setThrottle : storage.set;
 
-	set('tabs', {
+	const saveTabs = {
 		idCounter,
 		lastUsedTabs,
 		list: list.length > 1 || config.showAlwaysTabsBar ? list : [],
-	});
+	};
+
+	set('tabs', saveTabs);
+
+	if(fromClose && list.length)
+	{
+		if(config.recentWindows === 0)
+		{
+			storage.set('recentWindows', []);
+			return;
+		}
+
+		let recentWindows = storage.get('recentWindows') || [];
+
+		const id = crypto.randomUUID();
+		const now = Date.now();
+
+		recentWindows.unshift({
+			id: id,
+			date: now,
+			lastAccess: now,
+			...saveTabs,
+		});
+
+		if(recentWindows.length > config.recentWindows)
+			recentWindows = recentWindows.slice(0, config.recentWindows);
+
+		storage.set('recentWindows', recentWindows);
+	}
 }
 
-function restore(openLastActiveTab: boolean = false): void {
+function restore(openLastActiveTab: boolean = false, windowId?: string): void {
 
-	if(!config.restoreTabsFromLastSession || emptyNewWindow)
+	if((!config.restoreTabsFromLastSession || emptyNewWindow) && !windowId)
 		return;
 
-	const data = storage.get('tabs');
+	let data;
+
+	if(windowId)
+		data = storage.get('recentWindows').find(item => item.id === windowId);
+
+	if(!data)
+		data = storage.get('tabs');
+
 	if(!data?.list?.length || (data.list.length === 1 && !config.showAlwaysTabsBar))
 		return;
 

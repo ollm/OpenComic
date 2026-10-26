@@ -12,15 +12,7 @@
 
 	<div class="title-bar-menus label-medium">
 		{{#each titleBarMenu}}
-			<div class="title-bar-menus-{{@index}} elevation-1">
-				{{#each submenu}}
-					{{#compare type '==' 'separator'}}
-					<div class="separator"></div>
-					{{else}}
-					<div {{#unless enabled}}class="disable-pointer"{{/unless}} onclick="titleBar.clickSubMenu({{@../index}}, {{@index}})">{{label}}{{#if shortcut}}<span>{{shortcut}}</span>{{/if}}</div>
-					{{/compare}}
-				{{/each}}
-			</div>
+			{{> title.bar.menu.html}}
 		{{/each}}
 	</div>
 

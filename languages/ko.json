@@ -419,7 +419,8 @@
 			"showFileExtension": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
-			"recentlyOpenedItems": "최근 연 파일 보관 개수"
+			"recentlyOpenedItems": "최근 연 파일 보관 개수",
+			"recentWindows": ""
 		},
 		"saveImages": {
 			"main": "이미지 저장",
@@ -573,6 +574,8 @@
 			"openFolder": "폴더 열기",
 			"addFile": "파일 추가",
 			"addFolder": "폴더 추가",
+			"recentWindows": "",
+			"tabsNum": "",
 			"quit": "끝내기"
 		},
 		"view": {
