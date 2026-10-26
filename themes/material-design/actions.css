@@ -138,6 +138,12 @@
 	padding: 12px;
 }
 
+.bar-header .button
+{
+	height: var(--const-header-bar-height);
+	padding: calc((var(--const-header-bar-height) - 24px) / 2) 12px;
+}
+
 .button-min
 {
 	width: 24px;
@@ -164,6 +170,11 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
+}
+
+.bar-header .button:before
+{
+	top: calc((var(--const-header-bar-height) - 48px) / 2);
 }
 
 .button-min:before
@@ -235,9 +246,9 @@
 {
 	float: left;
 	font-size: 14px;
-	line-height: 48px !important;
+	line-height: var(--const-header-bar-height) !important;
 	font-weight: 400;
-	height: 48px;
+	height: var(--const-header-bar-height);
 	margin-left: 20px;
 	overflow: hidden;
 	overflow-x: auto;

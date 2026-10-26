@@ -31,6 +31,15 @@
 	--const-side-bar-width: 192px;
 }
 
+:root
+{
+	--const-title-bar-height: 30px; /* Title bar was replaced with tabs bar */
+	--const-tabs-bar-height: 41px;
+	--const-tabs-bar-height-without-border: 40px;
+	--const-header-bar-height: 48px;
+	--const-side-bar-width: 192px;
+}
+
 /* Animations */
 
 @keyframes zoom-in
@@ -1112,7 +1121,7 @@ a:hover
 	max-width: calc(100% - 160px);
 	overflow-x: auto;
 	overflow-y: hidden;
-	height: 48px;
+	height: var(--const-header-bar-height);
 	-webkit-app-region: no-drag;
 	width: max-content;
 	flex: 0 0 auto;
@@ -1123,7 +1132,7 @@ a:hover
 .bar-right-buttons > div
 {
 	min-width: max-content;
-	height: 48px;
+	height: var(--const-header-bar-height);
 	padding-right: 12px;
 	overflow: hidden;
 }
@@ -1226,6 +1235,7 @@ a:hover
 {
 	float: right;
 	height: 48px;
+	height: var(--const-header-bar-height);
 	border-left: 1px solid var(--md-sys-color-surface-variant);
 	transition: border-color 0.2s;
 	margin: 0px 12px;

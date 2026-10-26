@@ -24,6 +24,7 @@
 	left: 0px;
 	width: 40px;
 	height: 40px;
+	height: var(--const-tabs-bar-height-without-border);
 	box-sizing: border-box;
 	z-index: 1000;
 	transition: 0.2s;
@@ -45,12 +46,14 @@
 .title-bar-icon
 {
 	height: 40px;
+	height: var(--const-tabs-bar-height-without-border);
 	width: 40px;
 }
 
 .title-bar-icon > div
 {
 	height: 28px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 12px);
 	width: 28px;
 	margin: 6px;
 	border-radius: 8px;
@@ -58,6 +61,7 @@
 	transition: 0.2s;
 	-webkit-app-region: no-drag;
 	line-height: 28px;
+	line-height: calc(var(--const-tabs-bar-height-without-border) - 12px);
 	text-align: center;
 	font-size: 19px;
 	font-size: 16px;
@@ -75,6 +79,7 @@
 	/*left: 36px;*/
 	left: 0px;
 	height: 40px;
+	height: var(--const-tabs-bar-height-without-border);
 	/*padding: 3px 0px;*/
 	padding: 9px 9px;
 	box-sizing: border-box;
@@ -116,6 +121,8 @@
 {
 	height: 22px;
 	line-height: 22px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 18px);
+	line-height: calc(var(--const-tabs-bar-height-without-border) - 18px);
 	padding: 0px 8px;
 	border-radius: 4px;
 }
@@ -146,6 +153,7 @@
 	padding: 4px;
 	-webkit-app-region: no-drag;
 	top: 31px;
+	top: calc(var(--const-tabs-bar-height-without-border) - 9px);
 	display: none;
 	box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.05);
 	overflow-y: auto;

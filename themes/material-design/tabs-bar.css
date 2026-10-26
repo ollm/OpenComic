@@ -120,6 +120,7 @@
 	transition: 0.2s background-color, 0.2s color;
 	/*overflow: hidden;*/
 	height: 28px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 12px);
 	-webkit-app-region: no-drag;
 	will-change: width;
 }
@@ -137,6 +138,7 @@
 	border-radius: 8px;
 	overflow: hidden;
 	height: 28px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 12px);
 	will-change: width;
 }
 
@@ -310,6 +312,7 @@
 .tabs-bar .tab-separator
 {
 	height: 18px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 22px);
 	width: 2px;
 	right: 0px;
 	transition: 0.2s opacity;
@@ -321,6 +324,7 @@
 .tabs-bar .tab-separator svg
 {
 	height: 18px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 22px);
 	width: 2px;
 }
 
@@ -336,6 +340,7 @@
 {
 	position: absolute;
 	height: 28px;
+	height: calc(var(--const-tabs-bar-height-without-border) - 12px);
 	width: 28px;
 	top: 6px;
 	cursor: pointer;
