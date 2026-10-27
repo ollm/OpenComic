@@ -148,6 +148,13 @@
 {
 	width: 24px;
 	padding: 12px 0px;
+
+}
+
+.bar-header .button-min
+{
+	height: var(--const-header-bar-height);
+	padding: calc((var(--const-header-bar-height) - 24px) / 2) 0px;
 }
 
 .button:hover

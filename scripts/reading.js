@@ -1357,9 +1357,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		scalePrevData.extra = {tranX: tranX, tranY: tranY};
 
 		if(scale == 1)
-			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.originalSize).html('aspect_ratio');
+			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.originalSize).html('view_real_size'); // aspect_ratio
 		else
-			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.resetZoom).html('zoom_out_map');
+			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.resetZoom).html('aspect_ratio'); // zoom_out_map
 
 		let contentRight = template._contentRight();
 
