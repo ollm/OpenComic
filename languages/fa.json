@@ -348,6 +348,8 @@
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "حساسیت چرخ ماوس در بزرگ‌نمایی",
 			"zoomMoveStep": "",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "چرخش تصویر افقی به‌صورت پادساعتگرد",
 			"startReadingInFullScreen": "شروع مطالعه در حالت تمام‌صفحه",
 			"trackingAtTheEnd": "همگام‌سازی در پایان چپتر/جلد",

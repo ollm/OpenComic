@@ -348,6 +348,8 @@
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Чувствительность колеса мыши при масштабировании",
 			"zoomMoveStep": "",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "При повороте горизонтальных изображений — против часовой стрелки",
 			"startReadingInFullScreen": "Начинать чтение в полноэкранном режиме",
 			"trackingAtTheEnd": "Отслеживание в конце главы/тома",

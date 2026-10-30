@@ -694,8 +694,8 @@ function goNext()
 	}
 	else if(nextIndex <= view.distribution.total || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility < maxPageVisibility))
 	{
-		if(_config.readingWebtoon)
-			goScrollPercent(70, true);
+		if(_config.readingWebtoon || config.scrollMovePercentInVerticalMode)
+			goScrollPercent(config.scrollMovePercent, true);
 		else
 			goToIndex(nextIndex, true, true);
 
@@ -732,8 +732,8 @@ function goPrevious()
 	}
 	else if(previousIndex > 0 || ((readingViewIs('scroll') && (_config.readingViewAdjustToWidth || _config.readingWebtoon)) && currentPageVisibility > 0))
 	{
-		if(_config.readingWebtoon)
-			goScrollPercent(-70, true);
+		if(_config.readingWebtoon || config.scrollMovePercentInVerticalMode)
+			goScrollPercent(-config.scrollMovePercent, true);
 		else
 			goToIndex(previousIndex, true, true);
 

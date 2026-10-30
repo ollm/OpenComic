@@ -348,6 +348,8 @@
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"zoomMoveStep": "",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "",
 			"trackingAtTheEnd": "",

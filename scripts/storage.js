@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 176; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 177; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -290,6 +290,8 @@ const storageDefault = {
 		disableGamepadInput: false,
 		mouseWheelSensitivityInZoom: 10,
 		zoomMoveStep: 200,
+		scrollMovePercent: 70,
+		scrollMovePercentInVerticalMode: false,
 		disableTapZones: false,
 		middleClickAutoScrollInAllTapZones: false,
 		middleClickAutoScrollInCenterTapZone: true,

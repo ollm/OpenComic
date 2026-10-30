@@ -348,6 +348,8 @@
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "Yakınlaştırma sırasında fare tekerleği hassasiyeti",
 			"zoomMoveStep": "",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "Yatay resimleri döndürürken saat yönünün tersine çevir",
 			"startReadingInFullScreen": "Okumaya her zaman tam ekranda başla",
 			"trackingAtTheEnd": "Sadece bölüm/cilt sonlarını takip et",

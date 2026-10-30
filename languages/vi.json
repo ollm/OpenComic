@@ -348,6 +348,8 @@
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"zoomMoveStep": "",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Khởi động trình đọc trong chế độ toàn màn hình",
 			"trackingAtTheEnd": "Theo dõi tại đầu của chương/tập truyện",

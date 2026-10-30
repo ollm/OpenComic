@@ -348,6 +348,8 @@
 			"disableThumbnails": "Disable thumbnails (Show filenames)",
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
 			"zoomMoveStep": "Zoom move speed",
+			"scrollMovePercent": "Scroll movement percentage (Webtoon mode)",
+			"scrollMovePercentInVerticalMode": "Use percentage-based scrolling in vertical reading mode",
 			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
 			"startReadingInFullScreen": "Start reading in full screen",
 			"trackingAtTheEnd": "Tracking at the end of the chapter/volume",

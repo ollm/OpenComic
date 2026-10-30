@@ -58,6 +58,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Multi-select support for context menu actions [`a85ca67`](https://github.com/ollm/OpenComic/commit/a85ca67872237dd1c3cefe077d75effb17f9bc31)
 - Support custom user AI models [`385b82a`](https://github.com/ollm/OpenComic/commit/385b82a5966601d0b267cadfff5a5318ef77d7e0)
 - Save and restore recent windows [`60e3554`](https://github.com/ollm/OpenComic/commit/60e3554847b44665d72e3c451b60c2891cef2f91)
+- Added settings for starting with the previous zoom level and configuring the reset zoom button to restore the previous zoom level [`3198c68`](https://github.com/ollm/OpenComic/commit/3198c68d159fde7d059019db63386b650c950348)
+- Setting to use and configure percentage-based scrolling in vertical reading mode
 
 ##### 🐛 Bug Fixes
 

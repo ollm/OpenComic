@@ -348,6 +348,8 @@
 			"disableThumbnails": "Miniaturansichten deaktivieren (zeige Dateinamen)",
 			"mouseWheelSensitivityInZoom": "Mausrad-Empfindlichkeit beim Zoomen",
 			"zoomMoveStep": "Zoom-Geschwindigkeit",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "Beim Drehen horizontaler Bilder gegen den Uhrzeigersinn drehen",
 			"startReadingInFullScreen": "Lesen im Vollbildmodus starten",
 			"trackingAtTheEnd": "Tracking am Ende des Kapitels/Bandes",

@@ -348,6 +348,8 @@
 			"disableThumbnails": "Вимкнути мініатюри (показувати імена файлів)",
 			"mouseWheelSensitivityInZoom": "Чутливість коліщатка миші під час збільшення",
 			"zoomMoveStep": "Швидкість переміщення збільшеного зображення",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "Повертати горизонтальні зображення проти годинникової стрілки",
 			"startReadingInFullScreen": "Почати читання в повноекранному режимі",
 			"trackingAtTheEnd": "Відстеження в кінці розділу/тому",

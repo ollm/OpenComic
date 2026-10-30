@@ -348,6 +348,8 @@
 			"disableThumbnails": "",
 			"mouseWheelSensitivityInZoom": "",
 			"zoomMoveStep": "",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "",
 			"startReadingInFullScreen": "Börja läsningen i helskärmsläge",
 			"trackingAtTheEnd": "Spårning i slutet av kapitlet/volymen",

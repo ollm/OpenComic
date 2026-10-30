@@ -348,6 +348,8 @@
 			"disableThumbnails": "停用縮圖 (顯示檔名)",
 			"mouseWheelSensitivityInZoom": "縮放時滑鼠滾輪的靈敏度",
 			"zoomMoveStep": "縮放移動速度",
+			"scrollMovePercent": "",
+			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "以逆時針方向旋轉水平圖片",
 			"startReadingInFullScreen": "啟動全螢幕閱覽",
 			"trackingAtTheEnd": "追蹤章節/卷末進度",
