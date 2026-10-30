@@ -338,6 +338,8 @@
 			"maxMargin": "左右・上下の余白の最大値",
 			"globalZoom": "画像ごとではなく全体的なズームを使用（縦スクロール）",
 			"globalZoomSlide": "画像ごとではなく全体的なズームを使用（スライド表示）",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "カーソル移動でズーム位置を移動（ドラッグ操作は無効化）",
 			"scrollWithMouse": "画面端でカーソルを移動してスクロール（ドラッグでのスクロールは無効化）",
 			"goNextPrevChapterWithScroll": "マウススクロールで次/前の章に移動（縦スクロール時）",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "表示",
 			"resetZoom": "ズーム リセット",
+			"prevZoom": "",
 			"originalSize": "元のサイズ",
 			"zoomIn": "ズーム イン",
 			"zoomOut": "ズーム アウト",

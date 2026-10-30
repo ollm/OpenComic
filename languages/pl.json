@@ -338,6 +338,8 @@
 			"maxMargin": "Maksymalny margines poziomy i pionowy",
 			"globalZoom": "Globalne powiększenie zamiast obrazu po obrazie (czytanie pionowe)",
 			"globalZoomSlide": "Globalne powiększenie zamiast obrazu po obrazie (czytnik slajdów)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "Przesuwaj powiększenie kursorem (wyłącza przesuwanie przez przeciągnij i upuść)",
 			"scrollWithMouse": "Przewijaj, przesuwając kursor wzdłuż krawędzi ekranu (wyłącza przewijanie przez przeciągnij i upuść)",
 			"goNextPrevChapterWithScroll": "Przechodź do następnego/poprzedniego rozdziału kółkiem myszy (czytanie pionowe)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Widok",
 			"resetZoom": "Resetuj powiększenie",
+			"prevZoom": "",
 			"originalSize": "Oryginalny rozmiar",
 			"zoomIn": "Powiększ",
 			"zoomOut": "Pomniejsz",

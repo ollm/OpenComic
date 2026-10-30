@@ -338,6 +338,8 @@
 			"maxMargin": "Margine massimo orizzontale e verticale",
 			"globalZoom": "Zoom globale invece che immagine per immagine (Scorrimento)",
 			"globalZoomSlide": "Zoom globale invece che immagine per immagine (Slide)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "Sposta zoom tramite cursore (Disabilita movimento tramite drag e drop)",
 			"scrollWithMouse": "Scrolla spostando il cursore lungo i bordi dello schermo (Disabilita scrollamento tramite drag e drop)",
 			"goNextPrevChapterWithScroll": "Passa al capitolo precedente/successivo con la rotella del mouse (Scorrimento)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Vista",
 			"resetZoom": "Ripristina zoom",
+			"prevZoom": "",
 			"originalSize": "Allarga",
 			"zoomIn": "Zoom avanti",
 			"zoomOut": "Zoom indietro",

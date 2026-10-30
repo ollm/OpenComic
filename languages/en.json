@@ -338,6 +338,8 @@
 			"maxMargin": "Maximum horizontal and vertical margin",
 			"globalZoom": "Global zoom instead of image by image (Vertical reading)",
 			"globalZoomSlide": "Global zoom instead of image by image (Slide reading)",
+			"startWithPrevZoom": "Start reading at the previous zoom level",
+			"resetZoomButtonToPrevZoom": "Set the reset zoom button to restore the previous zoom level instead of the original size",
 			"moveZoomWithMouse": "Move zoom using cursor (Disables moving by drag and drop)",
 			"scrollWithMouse": "Auto-scroll when vertically moving the cursor in the middle of the screen (Disables drag and drop scrolling)",
 			"goNextPrevChapterWithScroll": "Go next/previous chapter with mouse scroll (Vertical reading)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "View",
 			"resetZoom": "Reset zoom",
+			"prevZoom": "Previous zoom",
 			"originalSize": "Original size",
 			"zoomIn": "Zoom in",
 			"zoomOut": "Zoom out",

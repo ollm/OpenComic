@@ -338,6 +338,8 @@
 			"maxMargin": "حداکثر حاشیه افقی و عمودی",
 			"globalZoom": "بزرگ‌نمایی سراسری (مطالعه عمودی)",
 			"globalZoomSlide": "بزرگ‌نمایی سراسری (حالت اسلاید)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "جابجایی بزرگ‌نمایی با نشانگر (غیرفعال شدن کشیدن)",
 			"scrollWithMouse": "اسکرول خودکار با حرکت عمودی نشانگر در وسط صفحه",
 			"goNextPrevChapterWithScroll": "رفتن به چپتر بعد/قبل با اسکرول ماوس (مطالعه عمودی)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "View",
 			"resetZoom": "بازنشانی بزرگ‌نمایی",
+			"prevZoom": "",
 			"originalSize": "اندازه اصلی",
 			"zoomIn": "بزرگ کردن",
 			"zoomOut": "کوچک کردن",

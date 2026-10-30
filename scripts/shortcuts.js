@@ -493,6 +493,7 @@ function loadShortcuts()
 				'saveBookmarksImages',
 				'saveAllBookmarksImages',
 				'resetZoom',
+				'resetZoomOrPrevZoom',
 				'goBack',
 				'goForwards',
 				'contextMenu',
@@ -600,6 +601,7 @@ function loadShortcuts()
 						'zoomLeft',
 						'zoomRight',
 						'resetZoom',
+						'resetZoomOrPrevZoom',
 					],
 				},
 				{
@@ -908,12 +910,21 @@ function loadShortcuts()
 						return true;
 					},
 				},
-				resetZoom: {
+				resetZoom: { // resetZoomOrOriginalSize
 					name: language.menu.view.resetZoom+'<br>'+language.menu.view.originalSize,
 					function: function(){
 						let center = true;
 						if(event instanceof PointerEvent) center = false;
-						reading.resetZoom(true, false, true, center);
+						reading.resetZoomOrOriginalSize(true, true, center);
+						return true;
+					},
+				},
+				resetZoomOrPrevZoom: {
+					name: language.menu.view.resetZoom+'<br>'+language.menu.view.prevZoom,
+					function: function(){
+						let center = true;
+						if(event instanceof PointerEvent) center = false;
+						reading.resetZoomOrPrevZoom(true, true, center);
 						return true;
 					},
 				},
@@ -1460,6 +1471,7 @@ function loadShortcuts()
 				'Shift+W': 'zoomUp',
 				'Shift+S': 'zoomDown',
 				'Z': 'resetZoom',
+				'X': 'resetZoomOrPrevZoom',
 				'Esc': 'goBack',
 				'Backspace': 'goBack',
 				'Ctrl+S': 'saveImage',

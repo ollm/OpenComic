@@ -338,6 +338,8 @@
 			"maxMargin": "Maksimum yatay ve dikey kenar boşluğu",
 			"globalZoom": "Global yakınlaştırma ayarı (Dikey okuma modu)",
 			"globalZoomSlide": "Global yakınlaştırma (Slayt okuma modu)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "Fareyi kullanarak yakınlaşmış görüntüyü hareket ettir (Sürükle ve bırak ile sayfa çevirmeyi devre dışı bırakır)",
 			"scrollWithMouse": "Ekranın kenarları boyunca fareyi hareket ettirerek kaydır (Sürükle ve bırak ile sayfa çevirmeyi devre dışı bırakır)",
 			"goNextPrevChapterWithScroll": "Fare kaydırması ile sonraki/önceki bölüme git (Dikey okuma modu)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Görünüm",
 			"resetZoom": "Yakınlaştırmayı sıfırla",
+			"prevZoom": "",
 			"originalSize": "Orijinal boyut",
 			"zoomIn": "Yakınlaştır",
 			"zoomOut": "Uzaklaştır",

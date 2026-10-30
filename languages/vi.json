@@ -338,6 +338,8 @@
 			"maxMargin": "Lề dọc và ngang tối đa",
 			"globalZoom": "Thu phóng chung thay cho từng ảnh một (Trình đọc dọc)",
 			"globalZoomSlide": "Thu phóng chung thay cho từng ảnh một (Trình đọc ngang)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "Thay đổi thu phóng với con trỏ (tắt di chuyển bằng đúp chuột)",
 			"scrollWithMouse": "Cuộn khi di chuyển con trỏ theo viền màn hình (tắt cuộn bằng đúp chuột)",
 			"goNextPrevChapterWithScroll": "",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Hiển thị",
 			"resetZoom": "Đặt lại thu phóng",
+			"prevZoom": "",
 			"originalSize": "Độ lớn mặc định",
 			"zoomIn": "Phóng to",
 			"zoomOut": "Thu nhỏ",

@@ -338,6 +338,8 @@
 			"maxMargin": "最大水平和垂直邊距",
 			"globalZoom": "使用全域縮放，而非逐張圖片縮放（垂直閱覽）",
 			"globalZoomSlide": "使用全域縮放，而非逐張圖片縮放（滑動閱覽）",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "使用游標快速移動(停用拖放移動)",
 			"scrollWithMouse": "在螢幕中央垂直移動遊標時自動捲動（停用拖放捲動）",
 			"goNextPrevChapterWithScroll": "以滑鼠捲動 前／後 章節（垂直閱覽）",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "查看",
 			"resetZoom": "重置縮放",
+			"prevZoom": "",
 			"originalSize": "原始尺寸",
 			"zoomIn": "放大",
 			"zoomOut": "縮小",

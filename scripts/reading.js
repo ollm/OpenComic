@@ -428,8 +428,10 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	let _currentScale = currentScale;
 
-	if(currentScale != 1 && animation && !(readingGlobalZoom() && readingViewIs('scroll')))
-		reading.resetZoom(true, false, true, true, (readingGlobalZoomSlide() && !readingViewIs('scroll')));
+	// TODO: Check if this is necessary, this produces zoom to reset if page is changed fast
+	// This is necesary to avoid prev page to overlap the view, make changes to nod need this, meyby apply a z-index to current page or avaiblable to abort
+	//if(currentScale != 1 && animation && !(readingGlobalZoom() && readingViewIs('scroll')))
+	//	reading.resetZoom(true, true, true, (readingGlobalZoomSlide() && !readingViewIs('scroll')));
 
 	const content = template._contentRight().firstElementChild;
 	const viewSize = view.viewSize();
@@ -1322,6 +1324,11 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 	if((!onReading && !_onReading) || !isLoaded)
 		return;
 
+	if(scale !== 1)
+		settings.set('readingPrevZoom', scale);
+
+	settings.set('readingStartPrevZoom', scale);
+
 	let animationDurationS = ((animation) ? _config.readingViewSpeed : 0);
 	let applyScaleEnd = false;
 
@@ -1356,7 +1363,9 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 	{
 		scalePrevData.extra = {tranX: tranX, tranY: tranY};
 
-		if(scale == 1)
+		if(scale == 1 && config.readingResetZoomButtonToPrevZoom)
+			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.prevZoom).html('zoom_out_map');
+		else if(scale == 1)
 			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.originalSize).html('view_real_size'); // aspect_ratio
 		else
 			template.barHeader('.button-reset-zoom').attr('hover-text', language.menu.view.resetZoom).html('aspect_ratio'); // zoom_out_map
@@ -1762,6 +1771,7 @@ function zoomMove(x = 0, y = 0, animation = false)
 	dragZoomEnd(true);
 }
 
+// If the image original size scale corresponds to the current scale, mark it as original size
 function setOriginalSize(currentScale)
 {
 	if(currentScale === 1 && _config.readingNotEnlargeMoreThanOriginalSize)
@@ -1796,43 +1806,9 @@ function setOriginalSize(currentScale)
 }
 
 // Reset zoom or show in original size if is current in 1 scale
-function resetZoom(animation = true, index = false, apply = true, center = true, delayed = false)
+function resetZoom(animation = true, apply = true, center = true, delayed = false)
 {
 	panels.removeAllMasks(true);
-
-	if(currentScale == 1) // Show current image in original size
-	{
-		let _image = contextMenu.getCurrentImage(false, false);
-		if(_image.folder || _image.blank) _image = contextMenu.getCurrentImage(false, false, 1) || false;
-
-		if(_image && !_image.folder && !_image.blank)
-		{
-			const contentRight = template._contentRight();
-
-			const image = ai.size(_image) || [];
-			const img = contentRight.querySelector('.r-img-i'+_image.index+' oc-img');
-
-			if(img)
-			{
-				if(zoomMoveData.active)
-					return;
-
-				const devicePixelRatio = window.devicePixelRatio;
-
-				const width = +img.dataset.width;
-				const height = +img.dataset.height;
-
-				currentScale = ((image.width / width + image.height / height) / 2) / devicePixelRatio;
-
-				if(apply)
-					applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
-				else
-					setOriginalSize(currentScale);
-
-				return;
-			}
-		}
-	}
 
 	currentScale = 1;
 
@@ -1858,6 +1834,100 @@ function resetZoom(animation = true, index = false, apply = true, center = true,
 
 		render.setScale(1, ((readingGlobalZoom() && readingViewIs('scroll')) || (readingGlobalZoomSlide() && !readingViewIs('scroll'))), doublePage.active());
 	}
+}
+
+function zoomToOriginalSize(animation = true, apply = true, center = true)
+{
+	panels.removeAllMasks(true);
+
+	let _image = contextMenu.getCurrentImage(false, false);
+	if(_image.folder || _image.blank) _image = contextMenu.getCurrentImage(false, false, 1) || false;
+
+	if(_image && !_image.folder && !_image.blank)
+	{
+		const contentRight = template._contentRight();
+
+		const image = ai.size(_image) || [];
+		const img = contentRight.querySelector('.r-img-i'+_image.index+' oc-img');
+
+		if(img)
+		{
+			if(zoomMoveData.active)
+				return;
+
+			const devicePixelRatio = window.devicePixelRatio;
+
+			const width = +img.dataset.width;
+			const height = +img.dataset.height;
+
+			currentScale = ((image.width / width + image.height / height) / 2) / devicePixelRatio;
+
+			if(apply)
+				applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
+			else
+				setOriginalSize(currentScale);
+
+			return;
+		}
+	}
+}
+
+function zoomToPrevZoom(animation = true, apply = true, center = true)
+{
+	panels.removeAllMasks(true);
+
+	currentScale = config.readingPrevZoom;
+
+	if(apply)
+		applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
+	else
+		setOriginalSize(currentScale);
+}
+
+function resetZoomOrOriginalSize(animation = true, apply = true, center = true)
+{
+	if(currentScale == 1)
+		zoomToOriginalSize(animation, apply, center);
+	else
+		resetZoom(animation, apply, center);
+}
+function resetZoomOrPrevZoom(animation = true, apply = true, center = true)
+{
+	if(currentScale == 1)
+		zoomToPrevZoom(animation, apply, center);
+	else
+		resetZoom(animation, apply, center);
+}
+
+function resetZoomOrButtonConfig(animation = true, apply = true, center = true)
+{
+	if(config.readingResetZoomButtonToPrevZoom)
+		resetZoomOrPrevZoom(animation, apply, center);
+	else
+		resetZoomOrOriginalSize(animation, apply, center);
+}
+
+function startWithPrevZoom(animation = true, apply = true, center = true)
+{
+	console.log('startWithPrevZoom called', config.readingStartPrevZoom, config.readingStartWithPrevZoom, restoringTabState);
+
+	if(!config.readingStartWithPrevZoom || restoringTabState || config.readingStartPrevZoom === 1)
+		return;
+
+	console.log('readingStartPrevZoom:', config.readingStartPrevZoom);
+
+	const scale = config.readingStartPrevZoom;
+
+	applyScale(false, scale, true, (scale < 1) ? true : false);
+	currentScale = scale;
+
+	// Move image to top or bottom depending on reading direction and manga mode
+	const offset = !readingManga() ? 99999 : -99999;
+
+	if(config.readingMoveZoomWithMouse)
+		applyMoveZoomWithMouse();
+	else
+		zoomMove(0, readingDirection ? offset : -offset);
 }
 
 /*
@@ -2863,7 +2933,7 @@ function updateReadingPagesConfig(key, value)
 function changePagesView(mode, value, save)
 {
 	// if(currentScale != 1)
-	//	reading.resetZoom(true, false, false);
+	//	reading.resetZoom(true, false);
 
 	const updateView = function(disposeImages) {
 
@@ -5449,7 +5519,7 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 						currentPageXY.x = pageX;
 						currentPageXY.y = pageY;
 
-						reading.resetZoom(true, false, true, false);
+						reading.resetZoom(true, true, false);
 					}
 				}
 
@@ -5714,6 +5784,8 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 	filters.apply();
 	doublePage.apply();
 	progress.setInterval();
+
+	startWithPrevZoom();
 }
 
 module.exports = {
@@ -5762,6 +5834,9 @@ module.exports = {
 	zoomLeft: zoomLeft,
 	zoomRight: zoomRight,
 	resetZoom: resetZoom,
+	resetZoomOrOriginalSize: resetZoomOrOriginalSize,
+	resetZoomOrPrevZoom: resetZoomOrPrevZoom,
+	resetZoomOrButtonConfig: resetZoomOrButtonConfig,
 	dragZoom: dragZoom,
 	fixBlurOnZoom: fixBlurOnZoom,
 	applyScale: applyScale,

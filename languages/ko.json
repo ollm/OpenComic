@@ -338,6 +338,8 @@
 			"maxMargin": "좌우·상하 여백 최대값",
 			"globalZoom": "이미지별 줌이 아닌 전체 줌 사용 (세로 스크롤)",
 			"globalZoomSlide": "이미지별 줌이 아닌 전체 줌 사용 (슬라이드 표시)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "커서 이동으로 줌 위치 조정 (드래그 앤 드롭 비활성화)",
 			"scrollWithMouse": "화면 가장자리에서 커서 움직이면 자동 스크롤 (드래그 스크롤 비활성화)",
 			"goNextPrevChapterWithScroll": "마우스 스크롤로 다음/이전 챕터 이동 (세로 스크롤 시)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "보기",
 			"resetZoom": "확대/축소 단계 초기화",
+			"prevZoom": "",
 			"originalSize": "원본 크기",
 			"zoomIn": "확대",
 			"zoomOut": "축소",

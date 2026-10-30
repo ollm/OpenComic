@@ -338,6 +338,8 @@
 			"maxMargin": "Margem máxima horizontal e vertical",
 			"globalZoom": "Zoom global ao invés de imagem por imagem (Rolar)",
 			"globalZoomSlide": "Zoom global ao invés de imagem por imagem (Deslizar)",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "Move o zoom usando o mouse (Desabilita mover por arrastar e soltar)",
 			"scrollWithMouse": "Rola movendo o cursor perto das bordas (Desabilita rolagem por arrastar e soltar)",
 			"goNextPrevChapterWithScroll": "Vá para o capítulo próximo/anterior com a roda do mouse (Rolar)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Visualização",
 			"resetZoom": "Redefinir zoom",
+			"prevZoom": "",
 			"originalSize": "Tamanho original",
 			"zoomIn": "Aumentar zoom",
 			"zoomOut": "Reduzir zoom",

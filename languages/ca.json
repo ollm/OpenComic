@@ -338,6 +338,8 @@
 			"maxMargin": "Marge horitzontal i vertical màxim",
 			"globalZoom": "Zoom global en comptes d'imatge a imatge (Lectura vertical)",
 			"globalZoomSlide": "Zoom global en comptes d'imatge a imatge (Lectura horitzontal)",
+			"startWithPrevZoom": "Començar la lectura amb el nivell de zoom anterior",
+			"resetZoomButtonToPrevZoom": "Configurar el botó de restablir zoom per restaurar el nivell de zoom anterior en lloc de la mida original",
 			"moveZoomWithMouse": "Moure el zoom mitjançant el cursor (Desactiva moure mitjançant arrossegar i deixar anar)",
 			"scrollWithMouse": "Desplaçament automàtic en moure el cursor verticalment al centre de la pantalla (Desactiva desplaçament mitjançant arrossegar i deixar anar)",
 			"goNextPrevChapterWithScroll": "Anar al capítol següent/anterior amb el desplaçament del ratolí (Lectura vertical)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Veure",
 			"resetZoom": "Restablir zoom",
+			"prevZoom": "Zoom anterior",
 			"originalSize": "Mida original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reduir zoom",

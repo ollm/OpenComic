@@ -338,6 +338,8 @@
 			"maxMargin": "",
 			"globalZoom": "",
 			"globalZoomSlide": "",
+			"startWithPrevZoom": "",
+			"resetZoomButtonToPrevZoom": "",
 			"moveZoomWithMouse": "",
 			"scrollWithMouse": "",
 			"goNextPrevChapterWithScroll": "",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "",
 			"resetZoom": "",
+			"prevZoom": "",
 			"originalSize": "",
 			"zoomIn": "",
 			"zoomOut": "",

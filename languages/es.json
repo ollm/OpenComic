@@ -338,6 +338,8 @@
 			"maxMargin": "Margen horizontal y vertical máximo",
 			"globalZoom": "Zoom global en vez de imagen a imagen (Lectura vertical)",
 			"globalZoomSlide": "Zoom global en vez de imagen a imagen (Lectura horizontal)",
+			"startWithPrevZoom": "Empezar la lectura con el nivel de zoom anterior",
+			"resetZoomButtonToPrevZoom": "Configurar el botón de restablecer zoom para restaurar el nivel de zoom anterior en lugar del tamaño original",
 			"moveZoomWithMouse": "Mover el zoom mediante el puntero (Desactiva mover mediante arrastrar y soltar)",
 			"scrollWithMouse": "Desplazamiento automático al mover el puntero verticalmente en el centro de la pantalla (Desactiva desplazamiento mediante arrastrar y soltar)",
 			"goNextPrevChapterWithScroll": "Ir al capítulo siguiente/anterior con el desplazamiento del ratón (Lectura vertical)",
@@ -581,6 +583,7 @@
 		"view": {
 			"main": "Ver",
 			"resetZoom": "Restablecer zoom",
+			"prevZoom": "Zoom anterior",
 			"originalSize": "Tamaño original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reducir zoom",
