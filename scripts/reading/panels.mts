@@ -90,7 +90,7 @@ async function _getPanels(src: string): Promise<Detection>
 			light: 20,
 			smoothness: 1,
 		},
-		minPixels: 300,
+		minPixels: 600,
 	};
 
 	const maskScale = _config.readingViewConfig.panels.upscaleMask?.scale ?? 1;
