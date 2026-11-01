@@ -1,4 +1,5 @@
 const allColors = require(p.join(appDir, 'themes/material-design/colors/all-colors.js'));
+const communityThemes = require(p.join(appDir, '.dist/theme/community-themes.mjs')).default;
 
 function getColorTokens(color)
 {
@@ -17,6 +18,21 @@ function getTokensColor(tokens, theme, key)
 
 function setColor(color)
 {
+	applyColor(color);
+
+	storage.setKey('config', 'themeColor', color);
+
+	storage.setKey('config', 'communityTheme', {
+		id: '',
+		path: '',
+		baseColor: '',
+	});
+
+	loadCustomThemes();
+}
+
+function applyColor(color)
+{
 	let app = document.querySelector('.app');
 
 	for(let key in allColors.list)
@@ -25,9 +41,6 @@ function setColor(color)
 	}
 
 	app.classList.add(color);
-
-	storage.setKey('config', 'themeColor', color);
-
 	titleBar.setColors();
 }
 
@@ -54,7 +67,18 @@ function systemNightMode()
 
 function loadCustomThemes()
 {
-	const customThemes = storage.get('customThemes');
+	const customThemes = [...storage.get('customThemes')];
+
+	if(config.communityTheme && config.communityTheme.path)
+	{
+		customThemes.push({
+			id: config.communityTheme.id,
+			path: config.communityTheme.path,
+			active: true,
+		});
+
+		applyColor(config.communityTheme.baseColor);
+	}
 
 	const currentCustomTheme = dom.queryAll('link.custom-theme');
 	currentCustomTheme.remove();
@@ -95,7 +119,6 @@ function updateCustomThemes()
 		list.style.display = 'none';
 	}
 
-	// Copiar de los macros???
 	list.innerHTML = template.load('theme.content.right.custom.themes.list.html');
 	
 	events.eventSwitch();
@@ -228,6 +251,17 @@ function removeCustomTheme(key, confirm = false)
 	}
 }
 
+function setCommunityTheme(communityTheme)
+{
+	storage.setKey('config', 'communityTheme', communityTheme);
+	loadCustomThemes();
+
+	if(!communityTheme.path)
+	{
+		applyColor(config.themeColor);
+	}
+}
+
 function start(animation = true)
 {
 	const themeColors = [];
@@ -266,6 +300,8 @@ function start(animation = true)
 
 	events.events();
 	updateCustomThemes();
+
+	communityThemes.load();
 }
 
 module.exports = {
@@ -277,5 +313,7 @@ module.exports = {
 	activeCustomTheme,
 	removeCustomTheme,
 	setCustomThemePath,
+	setCommunityTheme,
+	communityThemes,
 	start,
 };

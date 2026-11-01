@@ -773,7 +773,7 @@ a:hover
 	width: 100%;
 	padding: 0px 50px;
 	margin-left: -50px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	z-index: 10;
 	overflow: hidden;
 	transition: background-color 0.2s, transform 0.2s;
@@ -807,7 +807,7 @@ a:hover
 	width: 100%;
 	box-sizing: border-box;
 	padding: 0px 50px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	transition: background-color 0.2s;
 }
 
@@ -902,7 +902,7 @@ a:hover
 	height: calc(100% - var(--const-header-bar-height) - var(--title-and-tabs-bar-height));
 	padding: 50px 0px;
 	margin-top: -50px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	overflow: hidden;
 	z-index: 1;
 	transition: background-color 0.2s;
@@ -930,7 +930,7 @@ a:hover
 	padding: 50px 0px;
 	margin-top: -50px;
 	width: 100%;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	/*box-shadow: inset -2px 0px 2px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 1px 0px rgba(0, 0, 0, 0.1), inset -1px 0px 0px 0px rgba(0, 0, 0, 0.05);*/
 	transition: background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
@@ -992,13 +992,13 @@ a:hover
 
 .content-left .menu-item:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .content-left .menu-item:active,
 .content-left .menu-item.gamepad-highlight
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .content-left .menu-item:before
@@ -1015,7 +1015,7 @@ a:hover
 	transition-property: transform, opacity, background;
 	transition-timing-function: linear, linear, ease;
 	border-radius: 100px;
-	background: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	z-index: -1;
 }
 
@@ -1032,7 +1032,7 @@ a:hover
 
 .content-left .menu-item.active:before
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
 }
 
@@ -1063,7 +1063,7 @@ a:hover
 	width: calc(100% - var(--const-side-bar-width));
 	height: calc(100% - var(--const-header-bar-height) - var(--title-and-tabs-bar-height));
 	z-index: 1;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	transition: background-color 0.2s;
 }
 
@@ -1095,7 +1095,7 @@ a:hover
 	padding: 0px 0px;
 	margin-top: 0px;
 	width: 100%;
-	background-color: var(--md-sys-color-background);
+	background: var(--md-sys-bg-background);
 	transition: background-color 0.2s;
 	overflow: hidden;
 	border-top-left-radius: 16px;
@@ -1338,18 +1338,18 @@ a:hover
 	height: 100%;
 	opacity: 0;
 	transition: 0.2s;
-	background: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	z-index: -1;
 }
 
 .simple-list:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .simple-list:active
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .simple-list.active:before
@@ -1450,21 +1450,21 @@ a:hover
 
 .medium-list:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .medium-list.multi-select:before,
 .medium-list.multi-select:hover:before
 {
 	transition: 0s;
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .medium-list.preview-select:before,
 .medium-list.preview-select:hover:before
 {
 	transition: 0s;
-	background-color: var(--md-sys-color-surface-variant);
+	background: var(--md-sys-bg-surface-variant);
 }
 
 .medium-list.preview-select.multi-select:before,
@@ -1477,7 +1477,7 @@ a:hover
 .medium-list:active:before,
 .medium-list.active:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 
@@ -1593,7 +1593,7 @@ a:hover
 .medium-list .progress-bar > span
 {
 	height: 4px;
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	transition: background-color 0.2s, transform 0.2s;
 	position: absolute;
 	top: 0px;
@@ -1608,7 +1608,7 @@ a:hover
 
 .medium-list .progress-bar > span:last-child
 {
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 }
 
 /*Content View*/
@@ -1655,8 +1655,8 @@ a:hover
 {
 	content: '';
 	display: block;
-	background-color: var(--md-sys-color-tertiary-container);
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-tertiary-container);
+	background: var(--md-sys-bg-secondary-container);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1670,7 +1670,7 @@ a:hover
 
 .content-view-module > div.preview-select::after
 {
-	background-color: var(--md-sys-color-surface-variant);
+	background: var(--md-sys-bg-surface-variant);
 }
 
 .content-view-module > div.preview-select.multi-select::after
@@ -1694,7 +1694,7 @@ a:hover
 	width: 150px;
 	height: 225px;
 	border-radius: 12px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	/*border: 1px solid var(--md-sys-color-outline-variant);*/
 	cursor: pointer;
 	background-size: 100%;
@@ -1724,12 +1724,12 @@ a:hover
 
 .content-view-module .v-folder:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .content-view-module .v-folder:active:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .content-view-module .gamepad-highlight .v-folder
@@ -1835,12 +1835,12 @@ a:hover
 
 .content-view-module .v-img:hover picture:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .content-view-module .v-img:before picture:active
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .content-view-module .gamepad-highlight .v-img picture:after
@@ -1971,7 +1971,7 @@ a:hover
 {
 	height: 40px;
 	width: calc(100% - 20px);
-	/*background-color: var(--md-sys-color-surface-container-highest);*/
+	/*background: var(--md-sys-bg-surface-container-highest);*/
 	position: absolute;
 	bottom: 54px;
 	left: 10px;
@@ -1990,7 +1990,7 @@ a:hover
 .content-view-module .progress-bar > span
 {
 	height: 40px;
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	transition: background-color 0.2s, transform 0.2s;
 	position: absolute;
 	top: 0px;
@@ -2569,12 +2569,12 @@ a:hover
 
 .continue-reading:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .continue-reading:active:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .continue-reading:after
@@ -2602,7 +2602,7 @@ a:hover
 
 .continue-reading > div
 {
-	background-color: var(--md-sys-color-tertiary-container);
+	background: var(--md-sys-bg-tertiary-container);
 	height: 56px;
 	position: absolute;
 	width: 100%;
@@ -2612,7 +2612,7 @@ a:hover
 
 .continue-reading-not-exists > div
 {
-	background-color: var(--md-sys-color-error-container);
+	background: var(--md-sys-bg-error-container);
 }
 
 .continue-reading > div > div

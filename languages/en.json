@@ -459,6 +459,9 @@
 				"add": "Add custom theme",
 				"delete": "Delete custom theme",
 				"confirmDelete": "Are you sure you want to delete this custom theme?"
+			},
+			"communityThemes": {
+				"main": "Community themes"
 			}
 		},
 		"releases": {

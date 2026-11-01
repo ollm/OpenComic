@@ -2,12 +2,12 @@
 
 .content-right
 {
-	--reading-background-color: var(--md-sys-color-background);
+	--reading-background: var(--md-sys-bg-background);
 }
 
 .app.light-mode-black-background-on-reading .content-right
 {
-	--reading-background-color: var(--md-sys-color-background-dark);
+	--reading-background: var(--md-sys-bg-background-dark);
 }
 
 .app.night-mode-black-background.light-mode-black-background-on-reading .content-right
@@ -17,7 +17,7 @@
 
 .light-mode-black-background-on-reading .content-right > div:has(.reading-content)
 {
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 }
 
 .reading-header-loading
@@ -53,17 +53,17 @@
 
 .reading-left:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .reading-left:active
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .reading-left.s
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
 }
 
@@ -86,7 +86,7 @@
 	height: 66px;
 	padding: 0px 16px 16px 16px;
 	box-sizing: border-box;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	border-top: 1px solid var(--md-sys-color-surface-variant);
 	transition: 0.2s;
 }
@@ -129,7 +129,7 @@
 	width: 80px;
 	margin-left: calc(100% - 80px);
 	border-radius: 7px;
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 	text-align: center;
 }
 
@@ -235,7 +235,7 @@
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 	transition: background-color 0.2s;
 	z-index: 0;
 	content-visibility: hidden;
@@ -332,7 +332,7 @@ oc-img .ai-loading circle
 {
 	transition: background-color 0.2s;
 	box-shadow: var(--md-sys-elevation-level2);
-	/*background-color: var(--reading-background-color);*/
+	/*background: var(--reading-background-color);*/
 	display: flex;
 	position: relative;
 	overflow: hidden;
@@ -379,7 +379,7 @@ oc-img .ai-loading circle
 	height: 100%;
 	position: relative;
 	z-index: 2;
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 }
 
 .night-mode-white-blank-page .reading-body .r-img.blank > div > *, .night-mode-white-blank-page .reading-lens .r-img.blank > div > *
@@ -448,7 +448,7 @@ oc-img .ai-loading circle
 	height: 160px;
 	top: 0px;
 	left: 0px;
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 	overflow: hidden;
 	opacity: 0;
 	z-index: 3;
@@ -551,8 +551,8 @@ oc-img .ai-loading circle
 
 .reading-skip > div
 {
-	background-color: var(--md-sys-color-surface-variant);
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-variant);
+	background: var(--md-sys-bg-surface-container);
 	position: absolute;
 	z-index: 1;
 	transition: background-color 0.2s, box-shadow 0.2s;
@@ -775,7 +775,7 @@ oc-img .ai-loading circle
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	background-color: var(--md-sys-color-force-surface);
+	background: var(--md-sys-bg-force-surface);
 	margin: 0px 12px 0px 0px;
 	float: left;
 }
@@ -872,7 +872,7 @@ oc-img .ai-loading circle
 	opacity: 0;
 	transition: 0.3s;
 	padding: 24px 0px 0px 0px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	z-index: 6;
 	width: 100%;
 	left: 0px;
@@ -953,19 +953,19 @@ oc-img .ai-loading circle
 .reading-toc-item .reading-toc-title:hover,
 .reading-toc-subitem .reading-toc-title:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .reading-toc-item .reading-toc-title:active,
 .reading-toc-subitem .reading-toc-title:active
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .reading-toc-item .reading-toc-title.s,
 .reading-toc-subitem .reading-toc-title.s
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
 }
 
@@ -985,7 +985,7 @@ oc-img .ai-loading circle
 	left: 12px;
 	top: 0px;
 	border-radius: 2px;
-	background-color: var(--md-sys-color-outline-variant);
+	background: var(--md-sys-bg-outline-variant);
 	transition: 0.2s;
 }
 
@@ -1002,7 +1002,7 @@ oc-img .ai-loading circle
 	z-index: -1;
 	content-visibility: hidden;
 	/*pointer-events: none;*/
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 	transition: 0.3s background-color;
 	display: none;
 }
@@ -1049,7 +1049,7 @@ oc-img .ai-loading circle
 	height: 100%;
 	position: relative;
 	overflow: hidden;
-	background-color: var(--reading-background-color);
+	background: var(--reading-background-color);
 }
 
 .reading-transitions-center > div

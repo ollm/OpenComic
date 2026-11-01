@@ -459,6 +459,9 @@
 				"add": "Afegir tema personalitzat",
 				"delete": "Eliminar tema personalitzat",
 				"confirmDelete": "Estàs segur que vols eliminar aquest tema personalitzat?"
+			},
+			"communityThemes": {
+				"main": "Temes de la comunitat"
 			}
 		},
 		"releases": {

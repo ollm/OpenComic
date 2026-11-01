@@ -58,6 +58,8 @@ for(let key in folders)
 	}
 }
 
+allColors += '@import url(./colors.bg.css);\n';
+
 fs.writeFileSync(p.join(basepath, 'all.colors.css'), allColors);
 fs.writeFileSync(p.join(basepath, 'all-colors.js'), 'module.exports = {list: '+JSON.stringify(allColorsJs)+'}');
 

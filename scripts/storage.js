@@ -175,6 +175,11 @@ const storageDefault = {
 		language: 'en',
 		theme: 'material-design',
 		themeColor: 'blue',
+		communityTheme: {
+			id: '',
+			baseColor: '',
+			path: '',
+		},
 		nightMode: false,
 		lightModeBlackBackgroundOnReading: false,
 		nightModeBlackBackground: false,

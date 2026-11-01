@@ -9,7 +9,7 @@
 	box-sizing: border-box;
 	opacity: 0;
 	z-index: -1;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	transition: opacity 0.3s;
 	display: flex;
 	flex-wrap: wrap;
@@ -37,7 +37,7 @@
 	box-sizing: border-box;
 	border: 2px solid transparent;
 	transition: 0.2s border-color, 0.2s transform;
-	background-color: var(--md-sys-color-surface);
+	background: var(--md-sys-bg-surface);
 	padding: 0px 32px;
 }
 

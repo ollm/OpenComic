@@ -459,6 +459,9 @@
 				"add": "添加自定义主题",
 				"delete": "删除自定义主题",
 				"confirmDelete": "您确定要删除此自定义主题吗？"
+			},
+			"communityThemes": {
+				"main": ""
 			}
 		},
 		"releases": {

@@ -1,179 +1,179 @@
 .primary {
-  background-color: var(--md-sys-color-primary);
+  background: var(--md-sys-bg-primary);
 }
 .primary-text {
   color: var(--md-sys-color-primary);
 }
 .on-primary {
-  background-color: var(--md-sys-color-on-primary);
+  background: var(--md-sys-bg-on-primary);
 }
 .on-primary-text {
   color: var(--md-sys-color-on-primary);
 }
 .primary-container {
-  background-color: var(--md-sys-color-primary-container);
+  background: var(--md-sys-bg-primary-container);
 }
 .primary-container-text {
   color: var(--md-sys-color-primary-container);
 }
 .on-primary-container {
-  background-color: var(--md-sys-color-on-primary-container);
+  background: var(--md-sys-bg-on-primary-container);
 }
 .on-primary-container-text {
   color: var(--md-sys-color-on-primary-container);
 }
 .secondary {
-  background-color: var(--md-sys-color-secondary);
+  background: var(--md-sys-bg-secondary);
 }
 .secondary-text {
   color: var(--md-sys-color-secondary);
 }
 .on-secondary {
-  background-color: var(--md-sys-color-on-secondary);
+  background: var(--md-sys-bg-on-secondary);
 }
 .on-secondary-text {
   color: var(--md-sys-color-on-secondary);
 }
 .secondary-container {
-  background-color: var(--md-sys-color-secondary-container);
+  background: var(--md-sys-bg-secondary-container);
 }
 .secondary-container-text {
   color: var(--md-sys-color-secondary-container);
 }
 .on-secondary-container {
-  background-color: var(--md-sys-color-on-secondary-container);
+  background: var(--md-sys-bg-on-secondary-container);
 }
 .on-secondary-container-text {
   color: var(--md-sys-color-on-secondary-container);
 }
 .tertiary {
-  background-color: var(--md-sys-color-tertiary);
+  background: var(--md-sys-bg-tertiary);
 }
 .tertiary-text {
   color: var(--md-sys-color-tertiary);
 }
 .on-tertiary {
-  background-color: var(--md-sys-color-on-tertiary);
+  background: var(--md-sys-bg-on-tertiary);
 }
 .on-tertiary-text {
   color: var(--md-sys-color-on-tertiary);
 }
 .tertiary-container {
-  background-color: var(--md-sys-color-tertiary-container);
+  background: var(--md-sys-bg-tertiary-container);
 }
 .tertiary-container-text {
   color: var(--md-sys-color-tertiary-container);
 }
 .on-tertiary-container {
-  background-color: var(--md-sys-color-on-tertiary-container);
+  background: var(--md-sys-bg-on-tertiary-container);
 }
 .on-tertiary-container-text {
   color: var(--md-sys-color-on-tertiary-container);
 }
 .error {
-  background-color: var(--md-sys-color-error);
+  background: var(--md-sys-bg-error);
 }
 .error-text {
   color: var(--md-sys-color-error);
 }
 .error-container {
-  background-color: var(--md-sys-color-error-container);
+  background: var(--md-sys-bg-error-container);
 }
 .error-container-text {
   color: var(--md-sys-color-error-container);
 }
 .on-error {
-  background-color: var(--md-sys-color-on-error);
+  background: var(--md-sys-bg-on-error);
 }
 .on-error-text {
   color: var(--md-sys-color-on-error);
 }
 .on-error-container {
-  background-color: var(--md-sys-color-on-error-container);
+  background: var(--md-sys-bg-on-error-container);
 }
 .on-error-container-text {
   color: var(--md-sys-color-on-error-container);
 }
 .background {
-  background-color: var(--md-sys-color-background);
+  background: var(--md-sys-bg-background);
 }
 .background-text {
   color: var(--md-sys-color-background);
 }
 .on-background {
-  background-color: var(--md-sys-color-on-background);
+  background: var(--md-sys-bg-on-background);
 }
 .on-background-text {
   color: var(--md-sys-color-on-background);
 }
 .surface {
-  background-color: var(--md-sys-color-surface);
+  background: var(--md-sys-bg-surface);
 }
 .surface-text {
   color: var(--md-sys-color-surface);
 }
 .on-surface {
-  background-color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-bg-on-surface);
 }
 .on-surface-text {
   color: var(--md-sys-color-on-surface);
 }
 .surface-variant {
-  background-color: var(--md-sys-color-surface-variant);
+  background: var(--md-sys-bg-surface-variant);
 }
 .surface-variant-text {
   color: var(--md-sys-color-surface-variant);
 }
 .on-surface-variant {
-  background-color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-bg-on-surface-variant);
 }
 .on-surface-variant-text {
   color: var(--md-sys-color-on-surface-variant);
 }
 .outline {
-  background-color: var(--md-sys-color-outline);
+  background: var(--md-sys-bg-outline);
 }
 .outline-text {
   color: var(--md-sys-color-outline);
 }
 .inverse-on-surface {
-  background-color: var(--md-sys-color-inverse-on-surface);
+  background: var(--md-sys-bg-inverse-on-surface);
 }
 .inverse-on-surface-text {
   color: var(--md-sys-color-inverse-on-surface);
 }
 .inverse-surface {
-  background-color: var(--md-sys-color-inverse-surface);
+  background: var(--md-sys-bg-inverse-surface);
 }
 .inverse-surface-text {
   color: var(--md-sys-color-inverse-surface);
 }
 .inverse-primary {
-  background-color: var(--md-sys-color-inverse-primary);
+  background: var(--md-sys-bg-inverse-primary);
 }
 .inverse-primary-text {
   color: var(--md-sys-color-inverse-primary);
 }
 .shadow {
-  background-color: var(--md-sys-color-shadow);
+  background: var(--md-sys-bg-shadow);
 }
 .shadow-text {
   color: var(--md-sys-color-shadow);
 }
 .surface-tint {
-  background-color: var(--md-sys-color-surface-tint);
+  background: var(--md-sys-bg-surface-tint);
 }
 .surface-tint-text {
   color: var(--md-sys-color-surface-tint);
 }
 .outline-variant {
-  background-color: var(--md-sys-color-outline-variant);
+  background: var(--md-sys-bg-outline-variant);
 }
 .outline-variant-text {
   color: var(--md-sys-color-outline-variant);
 }
 .scrim {
-  background-color: var(--md-sys-color-scrim);
+  background: var(--md-sys-bg-scrim);
 }
 .scrim-text {
   color: var(--md-sys-color-scrim);

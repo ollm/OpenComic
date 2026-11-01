@@ -459,6 +459,9 @@
 				"add": "",
 				"delete": "",
 				"confirmDelete": ""
+			},
+			"communityThemes": {
+				"main": ""
 			}
 		},
 		"releases": {

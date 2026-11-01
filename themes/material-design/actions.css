@@ -18,7 +18,7 @@
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: 8px;
-	background-color: var(--md-sys-color-primary-container);
+	background: var(--md-sys-bg-primary-container);
 	cursor: pointer;
 	overflow: hidden;
 	transition: 0.2s;
@@ -41,7 +41,7 @@
 	display: block;
 	opacity: 0;
 	transform: scale(0);
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 	border-radius: 50%;
 	position: absolute;
 }
@@ -54,7 +54,7 @@
 	height: 32px;
 	opacity: 0;
 	transform: scale(0);
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 	border-radius: 50%;
 	margin: -4px;
 	position: absolute;
@@ -92,7 +92,7 @@
 {
 	height: 40px;
 	width: 40px;
-	background-color: var(--md-sys-color-primary-container);
+	background: var(--md-sys-bg-primary-container);
 	visibility: hidden;
 	transform: scale(0.6);
 	opacity: 0;
@@ -117,7 +117,7 @@
 
 .floating-action-button-min:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .floating-action-button-min > div
@@ -169,7 +169,7 @@
 	height: 32px;
 	width: 32px;
 	border-radius: 50%;
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 	transition: 0.3s;
 	margin: 8px;
 	opacity: 0;
@@ -335,7 +335,7 @@
 	margin-bottom: 0px;
 	display: inline-block;
 	border-radius: 4px;
-	background-color: var(--md-sys-color-inverse-surface);
+	background: var(--md-sys-bg-inverse-surface);
 	line-height: 24px;
 	color: var(--md-sys-color-inverse-on-surface);
 	padding: 0px 8px;
@@ -390,7 +390,7 @@
 	display: block;
 	width: 100%;
 	height: 100%;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	z-index: -1;
 	position: absolute;
 	border-radius: 8px;
@@ -653,7 +653,7 @@
 
 .menu-simple-element.s
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .menu-simple-element:before
@@ -676,13 +676,13 @@
 
 .menu-simple-element:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .menu-simple-element:active:before,
 .menu-simple-element.gamepad-highlight:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .menu-simple-element-image
@@ -818,7 +818,7 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	background-color: var(--md-sys-color-force-surface);
+	background: var(--md-sys-bg-force-surface);
 	margin: 0px 12px 0px 0px;
 	float: left;
 }
@@ -958,7 +958,7 @@
 {
 	content: '';
 	display: block;
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 	position: absolute;
 	top: -2px;
 	left: 12px;
@@ -981,7 +981,7 @@
 .menu-clip-path-shadow
 {
 	position: fixed;
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 	opacity: 0;
 	transition: 0.3s;
 	border-radius: 14px;
@@ -1058,25 +1058,25 @@
 
 .menu-gamepad .menu-simple-element:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-1);
+	background: var(--md-sys-bg-on-surface-variant-1);
 }
 
 .menu-gamepad .menu-simple-element:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .menu-gamepad .menu-simple-element:active:before,
 .menu-gamepad .menu-simple-element.gamepad-highlight:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .menu-gamepad .menu-simple-text
 {
 	border-radius: 12px;
 	margin-bottom: 8px;
-	/*background-color: var(--md-sys-color-on-surface-variant-1);*/
+	/*background: var(--md-sys-bg-on-surface-variant-1);*/
 }
 
 .menu-gamepad .menu-simple-element i.menu-simple-icon-first
@@ -1217,7 +1217,7 @@
 	display: block;
 	width: 100%;
 	height: 100%;
-	background-color: var(--md-sys-color-surface-container-high);
+	background: var(--md-sys-bg-surface-container-high);
 	z-index: -1;
 	position: absolute;
 	border-radius: 28px;
@@ -1347,7 +1347,7 @@
 .dialog-clip-path-shadow
 {
 	position: fixed;
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 	opacity: 0;
 	transition: 0.3s;
 	border-radius: 14px;
@@ -1426,7 +1426,7 @@
 
 .snackbars .snackbar-background
 {
-	background-color: var(--md-sys-color-inverse-surface);
+	background: var(--md-sys-bg-inverse-surface);
 	border-radius: 8px;
 	position: absolute;
 	z-index: -1;
@@ -1566,7 +1566,7 @@
 .simple-button.normal > div
 {
 	border: 1px solid var(--md-sys-color-primary);
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	line-height: 34px;
 	color: #fff;
 }
@@ -1574,7 +1574,7 @@
 .simple-button.filled-tonal > div
 {
 	box-shadow: var(--md-sys-elevation-level);
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
 }
 
@@ -1587,7 +1587,7 @@
 .simple-button.gamepad-highlight > div
 {
 	box-shadow: var(--md-sys-elevation-level);
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	color: var(--md-sys-color-on-primary);
 }
 
@@ -1626,12 +1626,12 @@
 	left: 2px;
 	top: 2px;
 	border-radius: 100px;
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .snackbars .button-loading
 {
-	background-color: var(--md-sys-color-inverse-surface);
+	background: var(--md-sys-bg-inverse-surface);
 
 }
 
@@ -1639,7 +1639,7 @@
 .simple-button.filled .button-loading,
 .simple-button.gamepad-highlight .button-loading
 {
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 }
 
 .simple-button.normal .button-loading .loading > svg > circle,
@@ -1672,7 +1672,7 @@
 	margin-top: -9px;
 	border-radius: 32px;
 	border: 2px solid var(--md-sys-color-outline);
-	background-color: var(--md-sys-color-surface-container-highest);
+	background: var(--md-sys-bg-surface-container-highest);
 	transition: 0.2s var(--md-sys-motion-easing-legacy);
 	margin-left: -19px;
 	box-sizing: border-box;
@@ -1681,7 +1681,7 @@
 .switch.active > div,
 .switch.a > div
 {
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	border-color: var(--md-sys-color-primary);
 }
 
@@ -1819,7 +1819,7 @@
 .checkbox.active > div
 {
 	border: 2px solid var(--md-sys-color-primary);
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 }
 
 .checkbox:before
@@ -1942,7 +1942,7 @@
 {
 	content: '';
 	display: block;
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 	position: absolute;
 	top: -6px;
 	left: 12px;
@@ -2001,7 +2001,7 @@
 	height: 4px;
 	width: 100%;
 	border-radius: 4px;
-	background-color: var(--md-sys-color-surface-container-highest);
+	background: var(--md-sys-bg-surface-container-highest);
 	position: relative;
 	transition: background-color 0.2s;
 }
@@ -2010,7 +2010,7 @@
 {
 	height: 6px;
 	border-radius: 6px;
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	transition: background-color 0.2s;
 	position: absolute;
 	top: -1px;
@@ -2037,13 +2037,13 @@
 	top: 1px;
 	opacity: 0.38;
 	border-radius: 2px;
-	background-color: var(--md-sys-color-on-surface-variant);
+	background: var(--md-sys-bg-on-surface-variant);
 	z-index: 3;
 }
 
 .range > div > span.range-steps > div.active
 {
-	background-color: var(--md-sys-color-on-primary);
+	background: var(--md-sys-bg-on-primary);
 }
 
 .range > div > div
@@ -2086,7 +2086,7 @@
 	height: 20px;
 	width: 20px;
 	border-radius: 20px;
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 }
 
 
@@ -2118,7 +2118,7 @@
 {
 	width: 100%;
 	height: 2px;
-	background: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	border: none;
 }
 
@@ -2130,7 +2130,7 @@
 .range input::-webkit-slider-thumb
 {
 	-webkit-appearance: none !important;
-	background: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	height: 20px;
 	width: 20px;
 	border-radius: 100px;
@@ -2164,7 +2164,7 @@
 {
 	height: 80px;
 	border-radius: 40px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	display: flex;
 	margin: 0px 24px;
 	width: calc(100% - 48px);
@@ -2174,7 +2174,7 @@
 .tabs-high,
 .menu-gamepad .tabs
 {
-	background-color: var(--md-sys-color-surface-container-high);
+	background: var(--md-sys-bg-surface-container-high);
 }
 
 .tabs > div
@@ -2202,13 +2202,13 @@
 
 .tabs > div > div:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .tabs > div > div:active,
 .tabs > div > div.gamepad-highlight
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .tabs > div > div:before
@@ -2225,7 +2225,7 @@
 	transition-property: transform, opacity, background;
 	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 	border-radius: 100px;
-	background: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	z-index: -1;
 }
 
@@ -2487,7 +2487,7 @@ table
 table thead
 {
 	height: 56px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	transition: 0.2s background-color;
 }
 
@@ -2568,7 +2568,7 @@ table tbody td:last-child
 
 table tbody td.active
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 table tbody td:before
@@ -2588,7 +2588,7 @@ table:not(.none) tbody td:not(:first-child):hover:before,
 table:not(.none).full tbody td:hover:before,
 table:not(.none).macro tbody td:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 
@@ -2599,7 +2599,7 @@ table:not(.none).full tbody td.gamepad-highlight:before,
 table:not(.none).macro tbody td:active:before,
 table:not(.none).macro tbody td.gamepad-highlight:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 table tbody td.lh0
@@ -2635,7 +2635,7 @@ table tbody td.lh0
 	width: 100%;
 	position: relative;
 	transition: 0.2s var(--md-sys-motion-easing-legacy);
-	background-color: var(--md-sys-color-surface-container-highest);
+	background: var(--md-sys-bg-surface-container-highest);
 	border-radius: 4px 4px 0px 0px;
 	color: var(--md-sys-color-on-surface-variant);
 	cursor: pointer;
@@ -2657,13 +2657,13 @@ table tbody td.lh0
 
 .select > div:hover:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .select > div:active:before,
 .select.gamepad-highlight > div:before
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .select .select-border
@@ -2694,7 +2694,7 @@ table tbody td.lh0
 	height: 2px;
 	width: 100%;
 	transition: 0.2s var(--md-sys-motion-easing-legacy);
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	opacity: 0;
 }
 
@@ -2794,7 +2794,7 @@ table tbody td.lh0
 	border: 1px solid var(--md-sys-color-outline);
 	padding: 5px 12px;
 	margin: 0px 8px 8px 0px;
-	background-color: var(--md-sys-color-surface-container-low);
+	background: var(--md-sys-bg-surface-container-low);
 	color: var(--md-sys-color-on-surface);
 	display: inline-block;
 	transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2820,18 +2820,18 @@ table tbody td.lh0
 
 .chip > div:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .chip > div:active,
 .chip.gamepad-highlight > div
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .chip.active
 {
-	background-color: var(--md-sys-color-primary);
+	background: var(--md-sys-bg-primary);
 	color: var(--md-sys-color-on-primary);
 	border-color: var(--md-sys-color-primary);
 }
@@ -2874,7 +2874,7 @@ table tbody td.lh0
 .chip i.right:hover,
 .chip i.gamepad-highlight
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .chip > span
@@ -2957,7 +2957,7 @@ table tbody td.lh0
 	right: calc(50% - (var(--const-side-bar-width) + 208px));
 	top: calc(64px + var(--title-and-tabs-bar-height));
 	z-index: 4;
-	background-color: var(--md-sys-color-surface-container-high);
+	background: var(--md-sys-bg-surface-container-high);
 	color: var(--md-sys-color-on-surface);
 	pointer-events: none;
 	transform: translate(0px, -10px);
@@ -3047,13 +3047,13 @@ table tbody td.lh0
 
 .search-bar-result:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .search-bar-result:active,
 .search-bar-result.gamepad-highlight
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .search-bar-result > div
@@ -3472,7 +3472,7 @@ input, textarea
 	padding: 9px 12px;
 	margin: 0px 8px 0px 0px;
 	margin: 0px 16px 0px 0px;
-	background-color: var(--md-sys-color-surface-container-low);
+	background: var(--md-sys-bg-surface-container-low);
 	color: var(--md-sys-color-on-surface);
 	display: inline-block;
 	transition: 0.2s;
@@ -3491,7 +3491,7 @@ code
 	font-size: 85%;
 	white-space: break-spaces;
 	border-radius: 6px;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	color: var(--md-sys-color-on-surface);
 	transition: background-color 0.2s;
 }

@@ -14,12 +14,12 @@
 	height: 250px;
 	overflow: hidden;
 	width: 100%;
-	/*background-color: var(--md-sys-color-tertiary-container);
-	background-color: var(--md-sys-color-secondary-container);*/
+	/*background: var(--md-sys-bg-tertiary-container);
+	background: var(--md-sys-bg-secondary-container);*/
 	border-radius: 12px;
 	margin: 0px 8px;
 	/*border: 2px solid var(--md-sys-color-surface-variant);*/
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	transition: background-color 0.2s;
 }
 
@@ -40,5 +40,5 @@
 
 .box-content .content-view-module .v-folder
 {
-	background-color: var(--md-sys-color-force-surface);
+	background: var(--md-sys-bg-force-surface);
 }

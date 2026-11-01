@@ -459,6 +459,9 @@
 				"add": "Añadir tema personalizado",
 				"delete": "Eliminar tema personalizado",
 				"confirmDelete": "¿Está seguro de que desea eliminar este tema personalizado?"
+			},
+			"communityThemes": {
+				"main": "Temas de la comunidad"
 			}
 		},
 		"releases": {

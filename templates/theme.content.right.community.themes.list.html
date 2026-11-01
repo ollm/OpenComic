@@ -1,0 +1,10 @@
+{{#each communityThemes}}
+<div class="community-theme theme-page-item gamepad-item gamepad-to-highlight{{#if active}} active{{/if}}" onclick="theme.communityThemes.install('{{id}}');">
+	<div>
+		<div>
+			<img src="{{image}}" alt="{{name}}">
+		</div>
+	</div>
+	<span class="headline-small">{{name}}</span>
+</div>
+{{/each}}

@@ -12,7 +12,7 @@
 {
 	width: calc(50% - 8px);
 	border-radius: 24px;
-	background-color: var(--md-sys-color-surface-container-low);
+	background: var(--md-sys-bg-surface-container-low);
 	transition: 0.2s;
 	margin-bottom: 16px;
 	cursor: pointer;
@@ -20,9 +20,10 @@
 	position: relative;
 }
 
-.theme-page-item:hover
+.theme-page-item:hover,
+.theme-page-item.active
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .theme-page-item > div
@@ -87,4 +88,35 @@
 .settings-custom-themes-list .compact-actions-button
 {
 	margin-right: 16px;
+}
+
+.settings-community-themes-list
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+	padding: 0px 24px;
+    margin-top: 40px;
+}
+
+.settings-community-themes-list > *
+{
+    flex: 0 0 calc((100% - 60px) / 3);
+}
+
+.settings-community-themes-list .theme-page-item > div
+{
+	height: inherit;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+}
+
+.settings-community-themes-list .theme-page-item > div > div
+{
+	height: inherit;
+}
+
+.settings-community-themes-list .theme-page-item > div > div img
+{
+	width: 100%;
 }

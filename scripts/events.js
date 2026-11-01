@@ -1395,7 +1395,7 @@ function loadingProgress(loading, progress = 0)
 			array: 368,
 		},
 		24: {
-			array: 343,
+			array: 355,
 		},
 	}
 

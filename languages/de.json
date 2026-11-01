@@ -459,6 +459,9 @@
 				"add": "Füge benutzerdefiniertes Thema hinzu",
 				"delete": "Lösche benutzerdefiniertes Thema",
 				"confirmDelete": "Sicher, dass dieses benutzerdefinierte Thema gelöscht werden soll?"
+			},
+			"communityThemes": {
+				"main": ""
 			}
 		},
 		"releases": {

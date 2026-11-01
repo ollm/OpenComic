@@ -28,7 +28,7 @@
 	box-sizing: border-box;
 	z-index: 1000;
 	transition: 0.2s;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	color: var(--md-sys-color-on-surface-variant);
 	-webkit-app-region: drag;
 }
@@ -57,7 +57,7 @@
 	width: 28px;
 	margin: 6px;
 	border-radius: 8px;
-	background-color: var(--md-sys-color-background);
+	background: var(--md-sys-bg-background);
 	transition: 0.2s;
 	-webkit-app-region: no-drag;
 	line-height: 28px;
@@ -69,7 +69,7 @@
 
 .title-bar-icon:hover > div
 {
-	background: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .title-bar-menu
@@ -88,7 +88,7 @@
 
 	transition: 0.2s;
 	display: none;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 }
 
 .title-bar-menu.show
@@ -129,13 +129,13 @@
 
 .title-bar-menu > div:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .title-bar-menu > div:active,
 .title-bar-menu > div.active
 {
-	background-color: var(--md-sys-color-on-surface-variant-4);
+	background: var(--md-sys-bg-on-surface-variant-4);
 }
 
 .title-bar-menus.label-medium
@@ -147,7 +147,7 @@
 {
 	position: fixed;
 	z-index: 1001;
-	background-color: var(--md-sys-color-surface);
+	background: var(--md-sys-bg-surface);
 	border: 1px solid var(--md-sys-color-surface-variant);
 	border-radius: 8px;
 	padding: 4px;
@@ -170,13 +170,13 @@
 
 .title-bar-menu-submenu > div:not(.title-bar-menu-submenu):hover
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .title-bar-menu-submenu > div:not(.title-bar-menu-submenu):active,
 .title-bar-menu-submenu > div:not(.title-bar-menu-submenu).active
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 .title-bar-menu-submenu > div.separator

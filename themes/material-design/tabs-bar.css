@@ -32,7 +32,7 @@
 	pointer-events: none;
 	opacity: 0;
 	-webkit-app-region: drag;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	padding-right: 34px;
 	transition: 0.2s;
 }
@@ -43,7 +43,7 @@
 	height: calc(var(--tabs-bar-height-always-visible) - 1px);
 	box-sizing: border-box;
 	transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	color: var(--md-sys-color-on-surface-variant);
 	overflow: hidden;
 	overflow-y: hidden;
@@ -144,8 +144,8 @@
 
 .tabs-bar .tab.dragging .tab-content
 {
-	background-color: var(--md-sys-color-surface-container);
-	background-color: var(--md-sys-color-surface-container-highest);
+	background: var(--md-sys-bg-surface-container);
+	background: var(--md-sys-bg-surface-container-highest);
 }
 
 .tabs-bar .tab.opening
@@ -221,7 +221,7 @@
 	opacity: 0;
 	transition: opacity 0.2s, background 0.2s;
 	border-radius: 8px;
-	background: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 	z-index: -1;
 }
 
@@ -244,7 +244,7 @@
 	transition-property: transform, opacity, background;
 	transition-timing-function: linear, linear, ease;
 	border-radius: 8px;
-	background: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	z-index: -2;
 }
 
@@ -261,7 +261,7 @@
 
 .tabs-bar .tab.active .tab-content:before
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 	color: var(--md-sys-color-on-secondary-container);
 }
 
@@ -299,7 +299,7 @@
 
 .tabs-bar .tab i:last-of-type:hover
 {
-	background-color: var(--md-sys-color-on-surface-variant-2);
+	background: var(--md-sys-bg-on-surface-variant-2);
 }
 
 .tabs-bar .tab.active i
@@ -350,13 +350,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: var(--md-sys-color-surface-container);
+	background: var(--md-sys-bg-surface-container);
 	-webkit-app-region: no-drag;
 }
 
 .tabs-bar .new-tab:hover
 {
-	background-color: var(--md-sys-color-secondary-container);
+	background: var(--md-sys-bg-secondary-container);
 }
 
 /*
