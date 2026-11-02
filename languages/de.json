@@ -454,7 +454,7 @@
 			},
 			"customThemes": {
 				"main": "Benutzerdefinierte Themen",
-				"description": "Fügen Sie ein benutzerdefiniertes Thema hinzu durch Auswählen einer CSS-Datei. Die Datei kann import-Statements haben. Mehr Infos in der Dokumentation.",
+				"description": "Fügen Sie ein benutzerdefiniertes Thema hinzu durch Auswählen einer CSS-Datei. Die Datei kann import-Statements haben. Mehr Infos in der {{{linkStart}}}Dokumentation{{{linkEnd}}}.",
 				"noThemes": "Keine benutzerdefinierte Themen",
 				"add": "Füge benutzerdefiniertes Thema hinzu",
 				"delete": "Lösche benutzerdefiniertes Thema",

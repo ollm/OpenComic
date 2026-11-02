@@ -255,7 +255,7 @@ function size(options = {})
 
 function getModelName(model)
 {
-	const modeInfo = OpenComicAIModelSafe(model));
+	const modeInfo = OpenComicAIModelSafe(model);
 	return modeInfo ? modeInfo.name : model;
 }
 

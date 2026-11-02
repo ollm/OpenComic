@@ -454,7 +454,7 @@
 			},
 			"customThemes": {
 				"main": "Temas personalizados",
-				"description": "Añade un tema personalizado seleccionando un archivo css, el archivo puede tener declaraciones de importación, más información en la documentación",
+				"description": "Añade un tema personalizado seleccionando un archivo css, el archivo puede tener declaraciones de importación, más información en la {{{linkStart}}}documentación{{{linkEnd}}}",
 				"noThemes": "No hay temas personalizados",
 				"add": "Añadir tema personalizado",
 				"delete": "Eliminar tema personalizado",

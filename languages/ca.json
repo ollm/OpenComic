@@ -454,7 +454,7 @@
 			},
 			"customThemes": {
 				"main": "Temes personalitzats",
-				"description": "Afegeix un tema personalitzat seleccionant un arxiu css, l'arxiu pot tenir declaracions d'importació, més informació a la documentació",
+				"description": "Afegeix un tema personalitzat seleccionant un arxiu css, l'arxiu pot tenir declaracions d'importació, més informació a la {{{linkStart}}}documentació{{{linkEnd}}}",
 				"noThemes": "No hi ha temes personalitzats",
 				"add": "Afegir tema personalitzat",
 				"delete": "Eliminar tema personalitzat",

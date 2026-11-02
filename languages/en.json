@@ -454,7 +454,7 @@
 			},
 			"customThemes": {
 				"main": "Custom themes",
-				"description": "Add a custom theme by selecting a css file, the file can have import statements, more info in the documentation",
+				"description": "Add a custom theme by selecting a css file, the file can have import statements, more info in the {{{linkStart}}}documentation{{{linkEnd}}}",
 				"noThemes": "No custom themes",
 				"add": "Add custom theme",
 				"delete": "Delete custom theme",

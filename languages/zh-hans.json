@@ -454,7 +454,7 @@
 			},
 			"customThemes": {
 				"main": "自定义主题",
-				"description": "通过选择 CSS 文件来添加自定义主题；该文件可以包含 import 语句，更多信息请参阅文档。",
+				"description": "通过选择 CSS 文件来添加自定义主题；该文件可以包含 import 语句，更多信息请参阅{{{linkStart}}}文档{{{linkEnd}}}。",
 				"noThemes": "无自定义主题",
 				"add": "添加自定义主题",
 				"delete": "删除自定义主题",

@@ -139,6 +139,12 @@ function setCustomThemePath()
 			const folder = files.filePaths[0];
 			currentCustomThemePath = folder;
 			dom.queryAll('.input-path .path-selector span').html(folder);
+
+			const inputName = document.querySelector('.input-name');
+			const fileName = p.basename(folder);
+
+			if(!inputName.value)
+				inputName.value = p.parse(fileName).name;
 		}
 
 	});

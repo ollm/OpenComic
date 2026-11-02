@@ -3480,6 +3480,10 @@ input, textarea
 	overflow: hidden;
 	position: relative;
 	width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
 }
 
 
