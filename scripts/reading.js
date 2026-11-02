@@ -428,10 +428,9 @@ function goToIndex(index, animation = true, nextPrevious = false, end = false)
 
 	let _currentScale = currentScale;
 
-	// TODO: Check if this is necessary, this produces zoom to reset if page is changed fast
-	// This is necesary to avoid prev page to overlap the view, make changes to nod need this, meyby apply a z-index to current page or avaiblable to abort
-	//if(currentScale != 1 && animation && !(readingGlobalZoom() && readingViewIs('scroll')))
-	//	reading.resetZoom(true, true, true, (readingGlobalZoomSlide() && !readingViewIs('scroll')));
+	// This is necesary to avoid prev page to overlap the view
+	if(currentScale != 1 && animation && !(readingGlobalZoom() && readingViewIs('scroll')))
+		reading.resetZoom(true, true, true, (readingGlobalZoomSlide() && !readingViewIs('scroll')));
 
 	const content = template._contentRight().firstElementChild;
 	const viewSize = view.viewSize();
@@ -1319,6 +1318,8 @@ function resetZoomState()
 	contentRightRect = false;
 }
 
+let applyScaleDelayedST = false;
+
 function applyScale(animation = true, scale = 1, center = false, zoomOut = false, delayed = false, {force = false, tranX = false, tranY = false, crossZoomLimits = false, restoreScrollTop = false} = {})
 {	
 	if((!onReading && !_onReading) || !isLoaded)
@@ -1558,7 +1559,8 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 
 			if(delayed)
 			{
-				setTimeout(function(){
+				if(applyScaleDelayedST) clearTimeout(applyScaleDelayedST);
+				applyScaleDelayedST = setTimeout(function() {
 
 					imagePosition.css({
 						transition: 'transform 0s, z-index 0s',
