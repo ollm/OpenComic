@@ -18,6 +18,7 @@ function show(event, gamepad = false)
 
 		const hasAiImage = reading.contextMenu.hasAiImage();
 		dom.queryAll('.reading-context-menu-save-ai-image').css({display: hasAiImage ? '' : 'none'});
+		dom.queryAll('.reading-context-menu-save-all-ai-images').css({display: hasAiImage ? '' : 'none'});
 	}
 
 	// Blank pages
@@ -163,7 +164,7 @@ function saveAiImage()
 
 	const image = getCurrentImage(true);
 
-	const toSave = [{path: aiPath, page: image.index, ai: image.path}];
+	const toSave = [{path: aiPath, page: image.index, ai: image.path, aiPath: aiPath}];
 
 	const imagesData = reading.imagesData();
 
@@ -211,6 +212,30 @@ function saveAllImages(position = false, image = false, _return = false)
 	saveImages(toSave, String(highestPage).length);
 }
 
+async function saveAllAiImages(_return = false)
+{
+	const imagesData = reading.imagesData();
+
+	const toSave = [];
+	let highestPage = 0;
+
+	for(let key in imagesData)
+	{
+		const image = imagesData[key];
+
+		const aiPath = reading.render.ai.hasAiImage(image.image, image);
+		toSave.push({path: aiPath || image.path, page: key, ai: image.path, aiPath, image});
+
+		if(+key > highestPage)
+			highestPage = +key;
+	}
+
+	if(_return)
+		return toSave;
+
+	saveImages(toSave, String(highestPage).length, true);
+}
+
 function saveBookmarksImages(loadBookmarks = false)
 {
 	saveAllBookmarksImages(loadBookmarks, true);
@@ -245,13 +270,13 @@ function saveAllBookmarksImages(loadBookmarks = false, onlyCurrent = false)
 	saveImages(toSave, String(highestPage).length);
 }
 
-function saveImages(toSave = [], leadingZeros = 3)
+function saveImages(toSave = [], leadingZeros = 3, progress = false)
 {
 	if(config.saveImageToFolder)
 	{
 		const saveImageFolder = relative.resolve(config.saveImageFolder);
 		fileManager.macosStartAccessingSecurityScopedResource(saveImageFolder);
-		_saveImages(toSave, leadingZeros, saveImageFolder, config.saveImageTemplate);
+		_saveImages(toSave, leadingZeros, saveImageFolder, config.saveImageTemplate, progress);
 	}
 	else
 	{
@@ -259,29 +284,85 @@ function saveImages(toSave = [], leadingZeros = 3)
 
 		saveDialog(async function(saveTo, fileName){
 
-			_saveImages(toSave, leadingZeros, saveTo, fileName);
+			_saveImages(toSave, leadingZeros, saveTo, fileName, progress);
 
 		});
 	}
 
 }
 
-async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
+function cancelSaveImages()
+{
+	cancelSave = true;
+	events.closeSnackbar();
+}
+
+let cancelSave = false;
+
+async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName, progress = false)
 {
 	const currentTime = new Date();
 	let first = '';
 
 	if(toSave.length)
 	{
-		let file = fileManager.file(p.dirname(toSave[0].path));
+		const len = toSave.length;
+		let button;
+
+		const snackbar = function(i) {
+
+			events.snackbar({
+				key: 'saveImagesProgress',
+				text: `${language.global.contextMenu.saveImagesProgress} (${i}/${len})`,
+				duration: events.INFINITY,
+				update: true,
+				updateShown: true,
+				buttons: [
+					{
+						text: 'AA', // language.buttons.download,
+						function: 'reading.contextMenu.cancelSaveImages();',
+						className: 'save-images-progress-button',
+					},
+					{
+						text: language.buttons.cancel,
+						function: 'reading.contextMenu.cancelSaveImages();',
+					},
+				],
+			});
+		}
+
+		const updateProgress = function(i) {
+
+			if(progress)
+			{
+				events.buttonLoading(button, i / len);
+				snackbar(i);
+			}
+		};
+
+		if(progress)
+		{
+			snackbar(0);
+			button = document.querySelector('.snackbar .save-images-progress-button');
+			events.buttonLoading(button, 0.01);
+		}
+
+		const firstWithPath = toSave.find(item => item.path);
+
+		let file = fileManager.file(p.dirname(firstWithPath.path));
 		await file.makeAvailable(toSave);
 		file.destroy();
-
-		const len = toSave.length;
 
 		for(let i = 0; i < len; i++)
 		{
 			const image = toSave[i];
+
+			if(cancelSave)
+				break;
+
+			if(image.ai && !image.aiPath)
+				image.path = await renderAiImage(image.image);
+
 			const realPath = fileManager.realPath(image.path);
 			const saveImageTo = fileManager.genearteFilePath(saveTo, generateFileName(image.path, image.page, leadingZeros, fileName, image.ai));
 			if(first === '') first = saveImageTo;
@@ -291,8 +372,18 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 				fs.copyFileSync(realPath, saveImageTo);
 				fs.utimes(saveImageTo, currentTime, currentTime, function(){});
 			}
+
+			if(progress)
+			{
+				updateProgress(i + 1);
+			}
 		}
+
+		cancelSave = false;
 	
+		events.buttonLoading(button, 1);
+		events.closeSnackbar();
+
 		events.snackbar({
 			key: 'saveAllImages',
 			text: len === 1 ? language.global.contextMenu.saveImageMessage : language.global.contextMenu.saveImagesMessage,
@@ -309,6 +400,26 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName)
 	{
 		console.error('No images to save');
 	}
+}
+
+async function renderAiImage(image)
+{
+	const {promise, resolve} = Promise.withResolvers();
+
+	const aiPath = reading.render.ai.image(image.image, image, {
+		run: true,
+		start: function() {},
+		progress: function(progress) {},
+		end: function(aiPath) {
+
+			resolve(aiPath);
+
+		}
+	});
+
+	await promise;
+
+	return reading.render.ai.hasAiImage(image.image, image);
 }
 
 function saveDialogFile(callback)
@@ -506,8 +617,10 @@ module.exports = {
 	saveAiImage: saveAiImage,
 	hasAiImage: hasAiImage,
 	saveAllImages: saveAllImages,
+	saveAllAiImages: saveAllAiImages,
 	saveBookmarksImages: saveBookmarksImages,
 	saveAllBookmarksImages: saveAllBookmarksImages,
+	cancelSaveImages: cancelSaveImages,
 	copyImageToClipboard: copyImageToClipboard,
 	addBlankPage: addBlankPage,
 	removeBlankPage: removeBlankPage,

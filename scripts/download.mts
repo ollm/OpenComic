@@ -64,9 +64,15 @@ export default async function download(url: string, downloadPath: string, messag
 		fileStream.end(resolve);
 
 		await promise;
+
+		events.buttonLoading(button, 1);
+		events.closeSnackbar();
 	}
 	else
 	{
+		events.buttonLoading(button, 1);
+		events.closeSnackbar();
+
 		const message = `Invalid response: ${response.status} ${response.statusText}`;
 
 		events.snackbar({
@@ -85,7 +91,4 @@ export default async function download(url: string, downloadPath: string, messag
 
 		throw new Error(message);
 	}
-
-	events.buttonLoading(button, 1);
-	events.closeSnackbar();
 }
