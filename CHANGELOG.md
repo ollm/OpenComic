@@ -60,7 +60,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Save and restore recent windows [`60e3554`](https://github.com/ollm/OpenComic/commit/60e3554847b44665d72e3c451b60c2891cef2f91)
 - Added settings for starting with the previous zoom level and configuring the reset zoom button to restore the previous zoom level [`3198c68`](https://github.com/ollm/OpenComic/commit/3198c68d159fde7d059019db63386b650c950348)
 - Setting to use and configure percentage-based scrolling in vertical reading mode [`2d5bb97`](https://github.com/ollm/OpenComic/commit/2d5bb97008437d234d95992ade730a413f8db09c)
-- Support community themes
+- Support community themes [`f989943`](https://github.com/ollm/OpenComic/commit/f989943e959ea27befc4ced8cc96adc8b5033fca)
 
 ##### 🐛 Bug Fixes
 

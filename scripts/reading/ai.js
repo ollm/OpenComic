@@ -1,5 +1,30 @@
 const OpenComicAI = require('opencomic-ai-bin');
 
+function OpenComicAIModelSafe(name)
+{
+	let model;
+
+	try
+	{
+		model = OpenComicAI.model(removeCustomKey(name));
+	}
+	catch(e)
+	{
+		console.error(e);
+
+		model = {
+			key: name,
+			name: name,
+			scales: [2, 3, 4],
+			noise: undefined,
+			speed: 'Very Slow',
+			supportCurrentPlatform: false,
+		};
+	}
+
+	return model;
+}
+
 function change(feaute, key, value, save = true)
 {
 	switch (feaute)
@@ -10,7 +35,7 @@ function change(feaute, key, value, save = true)
 			{
 				case 'model':
 
-					const model = OpenComicAI.model(removeCustomKey(value));
+					const model = OpenComicAIModelSafe(value);
 
 					fixScale(model);
 					fixNoise(model);
@@ -56,7 +81,7 @@ function change(feaute, key, value, save = true)
 			{
 				case 'model':
 
-					const model = OpenComicAI.model(removeCustomKey(value));
+					const model = OpenComicAIModelSafe(value);
 					dom.queryAll('.reading-ai-descreen-models .text').html(getModelName(value));
 					events.eventRange();
 
@@ -83,7 +108,7 @@ function change(feaute, key, value, save = true)
 			{
 				case 'model':
 
-					const model = OpenComicAI.model(removeCustomKey(value));
+					const model = OpenComicAIModelSafe(value);
 					dom.queryAll('.reading-ai-artifact-removal-models .text').html(getModelName(value));
 					events.eventRange();
 
@@ -111,7 +136,7 @@ function change(feaute, key, value, save = true)
 
 function fixScale(model = false, _scale = false)
 {
-	model = model || OpenComicAI.model(removeCustomKey(_config.readingAi.upscale.model));
+	model = model || OpenComicAIModelSafe(_config.readingAi.upscale.model);
 	_scale = _scale || _config.readingAi.upscale.scale;
 
 	const input = document.querySelector('.reading-ai-upscale-scale input');
@@ -139,7 +164,7 @@ function fixScale(model = false, _scale = false)
 
 function fixNoise(model = false, _noise = false)
 {
-	model = model || OpenComicAI.model(removeCustomKey(_config.readingAi.upscale.model));
+	model = model || OpenComicAIModelSafe(_config.readingAi.upscale.model);
 	_noise = _noise || _config.readingAi.upscale.noise;
 
 	const input = document.querySelector('.reading-ai-upscale-noise input');
@@ -203,7 +228,10 @@ function size(options = {})
 
 		if(mp <= upscale.maxMegapixels)
 		{
-			const model = OpenComicAI.model(removeCustomKey(upscale.model));
+			if(upscale.model.startsWith('custom-'))
+				getAllCustomModels();
+
+			const model = OpenComicAIModelSafe(upscale.model);
 			let scale = upscale.scale;
 
 			if(upscale.autoScale)
@@ -227,16 +255,8 @@ function size(options = {})
 
 function getModelName(model)
 {
-	// If the custom model has deleted
-	try
-	{
-		const modeInfo = OpenComicAI.model(removeCustomKey(model));
-		return modeInfo ? modeInfo.name : model;
-	}
-	catch(e)
-	{
-		return model;
-	}
+	const modeInfo = OpenComicAIModelSafe(model));
+	return modeInfo ? modeInfo.name : model;
 }
 
 function getModelSpeed(speed)
@@ -281,6 +301,37 @@ function getCustomModels(key, cache = true)
 	if(cache && customModelsCache[key])
 		return customModelsCache[key];
 
+	const parameters = [
+		'scale',
+		'tileSize',
+		'tileSizeFromMem128',
+		'tileAlignment',
+		'fp32'
+	];
+
+	const getParameterValue = function(name, content) {
+
+		const match = content.match(new RegExp(`${name}=([a-zA-Z0-9.]+)`, 'iu'));
+		console.log(match);
+		let value = match ? match[1] : null;
+
+		if(!isNaN(value))
+			value = Number(value);
+
+		return value;
+
+	};
+
+	const removeParameters = function(content) {
+
+		for(const name of parameters)
+		{
+			content = content.replace(new RegExp(`${name}=([a-zA-Z0-9]+)`, 'iu'), '');
+		}
+
+		return content.replace(/([ _,.-])\1+/g, '$1').replace(/([ _,.-])$/g, '');
+	};
+
 	const readFiles = function(modelsPath, key = '', type = 'custom') {
 
 		if(!fs.existsSync(modelsPath))
@@ -298,12 +349,26 @@ function getCustomModels(key, cache = true)
 			const type = extension === 'bin' ? 'bin' : extension === 'param' ? 'param' : 'other';
 			const name = p.basename(file, p.extname(file));
 
-			const scaleMatch = name.match(scalePattern);
-			const scale = Number(scaleMatch?.[1] ?? scaleMatch?.[2] ?? 1);
-			const baseName = scaleMatch ? name.replace(scaleMatch[0], '').replace(/([ _-])\1+/g, '$1') : name;
+			let baseName = name;
+			let scale = getParameterValue('scale', name) ?? scale;
+
+			if(!scale)
+			{
+				const scaleMatch = name.match(scalePattern);
+				scale = Number(scaleMatch?.[1] ?? scaleMatch?.[2] ?? 1);
+				baseName = scaleMatch ? name.replace(scaleMatch[0], '') : name;
+			}
+
+			const tileSize = getParameterValue('tileSize', name);
+			const tileSizeFromMem128 = getParameterValue('tileSizeFromMem128', name);
+			const tileAlignment = getParameterValue('tileAlignment', name);
+			let fp32 = getParameterValue('fp32', name);
+			fp32 = fp32 && fp32 !== 'false';
+
+			baseName = removeParameters(baseName);
 
 			if(!grouped[baseName])
-				grouped[baseName] = {scales: [], files: {}};
+				grouped[baseName] = {scales: [], tileSize: false, tileSizeFromMem128: false, tileAlignment: false, fp32: false, files: {}};
 
 			const group = grouped[baseName];
 
@@ -314,6 +379,10 @@ function getCustomModels(key, cache = true)
 				group.scales.push(scale);
 
 			group.files[name][type] = file;
+			group.tileSize = group.tileSize || tileSize;
+			group.tileSizeFromMem128 = group.tileSizeFromMem128 || tileSizeFromMem128;
+			group.tileAlignment = group.tileAlignment || tileAlignment;
+			group.fp32 = group.fp32 || fp32;
 		}
 
 		const result = [];
@@ -343,12 +412,17 @@ function getCustomModels(key, cache = true)
 			if(files.length === 0)
 				continue;
 
+			const {tileSize, tileSizeFromMem128, tileAlignment, fp32} = group;
+
 			const model = {
 				key: baseName,
 				name: baseName, // Format name?
 				type: type,
 				upscaler: 'upscayl',
-				tileSizeFromMem128: 645,
+				tileSize: tileSize || 0,
+				tileSizeFromMem128: tileSizeFromMem128 || 645,
+				tileAlignment: tileAlignment || 4,
+				fp32: fp32 || false,
 				scales: group.scales,
 				noise: undefined,
 				latency: 0,
@@ -357,6 +431,8 @@ function getCustomModels(key, cache = true)
 				files: files,
 				scaleFiles: scaleFiles,
 			};
+
+			console.log(model);
 
 			OpenComicAI.setCustomModel(model);
 			result.push(modelKey);
@@ -392,7 +468,7 @@ function loadModels(key)
 
 		for(const model of models)
 		{
-			const modeInfo = OpenComicAI.model(removeCustomKey(model));
+			const modeInfo = OpenComicAIModelSafe(model);
 
 			items.push({
 				key: model,
@@ -449,7 +525,7 @@ function processContext()
 {
 	getAllCustomModels();
 
-	const model = OpenComicAI.model(removeCustomKey(_config.readingAi.upscale.model));
+	const model = OpenComicAIModelSafe(_config.readingAi.upscale.model);
 	handlebarsContext.readingUpscaleModel = getModelName(_config.readingAi.upscale.model);
 
 	// Scale
