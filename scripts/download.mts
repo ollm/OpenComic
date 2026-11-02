@@ -67,9 +67,11 @@ export default async function download(url: string, downloadPath: string, messag
 	}
 	else
 	{
+		const message = `Invalid response: ${response.status} ${response.statusText}`;
+
 		events.snackbar({
 			key: 'downloadError',
-			text: 'Invalid response: '+response.status+' '+response.statusText,
+			text: message,
 			duration: 6,
 			buttons: [
 				{
@@ -81,7 +83,7 @@ export default async function download(url: string, downloadPath: string, messag
 
 		events.buttonLoading(button, false);
 
-		throw new Error('Invalid response: '+response.status+' '+response.statusText);
+		throw new Error(message);
 	}
 
 	events.buttonLoading(button, 1);
