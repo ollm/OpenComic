@@ -295,7 +295,7 @@ const storageDefault = {
 		disableGamepadInput: false,
 		mouseWheelSensitivityInZoom: 10,
 		zoomMoveStep: 200,
-		scrollMovePercent: 70,
+		scrollMovePercent: 40,
 		scrollMovePercentInVerticalMode: false,
 		disableTapZones: false,
 		middleClickAutoScrollInAllTapZones: false,
