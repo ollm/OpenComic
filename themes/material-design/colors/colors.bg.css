@@ -1,3 +1,4 @@
+/* These variables are used only in CSS backgrounds, which can accept colors, images, gradients, and other background values. */
 .app {
 	--md-sys-bg-primary: var(--md-sys-color-primary);
 	--md-sys-bg-on-primary: var(--md-sys-color-on-primary);
