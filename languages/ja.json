@@ -77,6 +77,7 @@
 			"saveImageMessage": "画像を保存しました",
 			"saveImagesProgress": "",
 			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAINotConfigured": "",
 			"preprocessImagesWithAIProgress": "",
 			"copyImage": "画像をクリップボードにコピー",
 			"copyImageMessage": "画像をクリップボードにコピーしました",

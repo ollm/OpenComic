@@ -77,6 +77,7 @@
 			"saveImageMessage": "L’image a été enregistrée avec succès",
 			"saveImagesProgress": "",
 			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAINotConfigured": "",
 			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Copier l’image dans le presse-papiers",
 			"copyImageMessage": "L’image a été copiée dans le presse-papiers",

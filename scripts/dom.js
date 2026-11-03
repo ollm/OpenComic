@@ -2818,7 +2818,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 		clearFileCache.style.display = folder ? 'block' : 'none';
 
 		// Preprocess images with AI
-		const hasPreprocess = folder && contextMenu.hasPreprocessImagesWithAI();
+		const hasPreprocess = folder; //  && contextMenu.hasPreprocessImagesWithAI();
 		let preprocessImagesWithAI = document.querySelector('#index-context-menu .context-menu-preprocess-images-with-ai');
 
 		preprocessImagesWithAI.setAttribute('onclick', 'dom.contextMenu.preprocessImagesWithAI();');

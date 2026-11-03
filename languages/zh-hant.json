@@ -77,6 +77,7 @@
 			"saveImageMessage": "圖片已成功儲存",
 			"saveImagesProgress": "",
 			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAINotConfigured": "",
 			"preprocessImagesWithAIProgress": "",
 			"copyImage": "複製圖片到剪貼簿",
 			"copyImageMessage": "圖片已成功複製",

@@ -131,7 +131,7 @@ function contextMenu(selectedItems: SelectedItems, {fromIndex, folder}: Options,
 			});
 		}
 
-		const hasPreprocess = hasPreprocessImagesWithAI();
+		const hasPreprocess = true; // hasPreprocessImagesWithAI();
 
 		if(hasPreprocess)
 		{
@@ -300,6 +300,25 @@ function cancelPreprocessImages()
 let cancelPreprocess = false;
 
 async function preprocessImagesWithAI(): Promise<void> {
+
+	const hasPreprocess = hasPreprocessImagesWithAI();
+
+	if(!hasPreprocess)
+	{
+		events.snackbar({
+			key: 'preprocessImagesWithAINotConfigured',
+			text: language.global.contextMenu.preprocessImagesWithAINotConfigured,
+			duration: 6,
+			buttons: [
+				{
+					text: language.buttons.dismiss,
+					function: 'events.closeSnackbar();',
+				},
+			],
+		});
+
+		return;
+	}
 
 	const toPrepocessImages: {path: string; image: string; mainPath: string; width?: number; height?: number}[] = [];
 

@@ -77,6 +77,7 @@
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
 			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAINotConfigured": "",
 			"preprocessImagesWithAIProgress": "",
 			"copyImage": "نسخ الصورة إلى الحافظة",
 			"copyImageMessage": "تم نسخ الصورة إلى الحافظة",

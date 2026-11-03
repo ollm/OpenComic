@@ -77,6 +77,7 @@
 			"saveImageMessage": "S'ha guardat correctament la imatge",
 			"saveImagesProgress": "Guardant imatges",
 			"preprocessImagesWithAI": "Preprocessar imatges amb IA",
+			"preprocessImagesWithAINotConfigured": "La IA no està configurada per als arxius seleccionats",
 			"preprocessImagesWithAIProgress": "Preprocessant imatges amb IA",
 			"copyImage": "Copia la imatge al porta-retalls",
 			"copyImageMessage": "S'ha copiat la imatge al porta-retalls",
