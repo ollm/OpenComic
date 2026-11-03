@@ -1,16 +1,11 @@
-import {spawn} from 'child_process';
-import {path7zc} from '7zip-bin-full';
-import crypto from 'crypto';
+import {Archive} from '7zip-native';
 
 import {OptimalThreads} from '@types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const threads: any;
 declare const fileManager: any;
-declare const asarToAsarUnpacked: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
-
-const bin7z = asarToAsarUnpacked(path7zc);
 
 interface GetBuffers {
 	index?: number;
@@ -23,11 +18,6 @@ interface GetBuffers {
 
 interface BufferWithIndex {
 	index: number;
-	buffer: Buffer;
-}
-
-interface Delimiter {
-	name: string;
 	buffer: Buffer;
 }
 
@@ -44,55 +34,6 @@ interface Group {
 	items: GetBuffers[];
 	indices: number[];
 	optimalThreads: OptimalThreads;
-}
-
-function splitBuffer(buffer: Buffer, delimiter: Buffer)
-{
-	const parts: Buffer[] = [];
-	let start = 0;
-
-	while(true)
-	{
-		const idx = buffer.indexOf(delimiter, start);
-		if(idx === -1) break;
-
-		parts.push(buffer.subarray(start, idx));
-		start = idx + delimiter.length;
-	}
-
-	parts.push(buffer.subarray(start));
-	return parts;
-}
-
-function generateDelimiter(): Delimiter
-{
-	const delimiter = crypto.randomUUID();
-
-	return {
-		name: delimiter,
-		buffer: Buffer.from(delimiter),
-	};
-}
-
-function spawnAsync(command: string, args: string[]): Promise<Buffer>
-{
-	return new Promise(function(resolve, reject) {
-
-		const proc = spawn(command, args);
-		const chunks: Buffer[] = [];
-
-		proc.stdout.on('data', (chunk: Buffer) => chunks.push(chunk));
-		proc.on('error', reject);
-		proc.on('close', function(code) {
-
-			if(code !== 0)
-				reject(new Error(`Process exited with code ${code}`));
-			else
-				resolve(Buffer.concat(chunks));
-
-		});
-
-	});
 }
 
 async function _getBuffers({compressed, realPath, items, optimalThreads}: Group): Promise<Buffer[]>
@@ -126,58 +67,67 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 		tasks[task].push(items[i]);
 	}
 
-	const delimiter = generateDelimiter();
-	const promises: Promise<BufferWithIndex[]>[] = [];
+	const archive = await Archive.open(realPath, {
+		password: fileManager.filePassword.get(compressed),
+	});
 
-	for(const task of tasks)
+	try
 	{
-		const higherSize = Math.max(...task.map(file => file.size));
+		const entries = await archive.entries();
+		const entryIds = new Map(entries.map(entry => [entry.path, entry.id]));
+		const promises: Promise<BufferWithIndex[]>[] = [];
 
-		promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
+		for(const task of tasks)
+		{
+			promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
 
-			const files = task.map(function(file) {
+				const files = task.map(function(file) {
 
-				const name = fileManager.removePathPart(file.path, compressed);
-				const originalName = fileManager.originalName(name);
+					const name = fileManager.removePathPart(file.path, compressed);
+					const originalName = fileManager.originalName(name).replace(/\\/g, '/');
 
-				return {
-					...file,
-					originalName,
-				};
+					return {
+						...file,
+						originalName,
+					};
 
-			});
+				});
 
-			const args = ['x', '-so', `-slb${higherSize}`, `-snf${delimiter.name}{name}${delimiter.name}`, '--', realPath, ...files.map(file => file.originalName)];
-			const buffer = await spawnAsync(bin7z, args);
-			const split = splitBuffer(buffer, delimiter.buffer);
-			split.shift(); // First split is empty because of the delimiter at the start
+				return Promise.all(files.map(async function(file) {
 
-			const names: string[] = split.filter((_, index) => index % 2 === 0).map(name => name.toString());
-			const buffers: Buffer[] = split.filter((_, index) => index % 2 === 1);
+					const entryId = entryIds.get(file.originalName);
+					if(entryId === undefined)
+						throw new Error(`Archive entry not found: ${file.originalName}`);
 
-			const map = new Map<string, Buffer>();
+					const buffer = await archive.read(entryId, {offset: 0, length: file.size});
+					return {index: file.index!, buffer};
 
-			for(let i = 0, len = names.length; i < len; i++)
-			{
-				map.set(names[i], buffers[i]);
-			}
+				}));
 
-			return files.map(file => ({index: file.index, buffer: map.get(file.originalName)!})) as BufferWithIndex[];
+			}));
+		}
 
-		}));
+		const buffers = await Promise.all(promises);
+		const flat = buffers.flat();
+
+		const map: Map<number, Buffer> = new Map();
+
+		for(const item of flat)
+		{
+			map.set(item.index, item.buffer);
+		}
+
+		return items.map(item => map.get(item.index!)!);
 	}
-
-	const buffers = await Promise.all(promises);
-	const flat = buffers.flat();
-
-	const map: Map<number, Buffer> = new Map();
-
-	for(const item of flat)
+	catch (error)
 	{
-		map.set(item.index, item.buffer);
+		console.error(error);
+		throw error;
 	}
-
-	return items.map(item => map.get(item.index!)!);
+	finally
+	{
+		await archive.close();
+	}
 }
 
 async function getBuffers(items: GetBuffers[]): Promise<Buffer[]>

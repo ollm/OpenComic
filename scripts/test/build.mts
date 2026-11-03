@@ -4,6 +4,15 @@ import {exists, existsRegex, fix, versions} from './build/exists.mjs';
 
 const BASE = './node_modules/';
 
+function native7zip(arch: string)
+{
+	const path = `7zip-native/prebuilds/${process.platform}-${arch}/`;
+	const engine = process.platform === 'win32' ? '7z.dll' : process.platform === 'darwin' ? 'lib7z.dylib' : '7z.so';
+
+	exists(BASE, `${path}7zip_native.node`, fs.constants.R_OK);
+	exists(BASE, `${path}${engine}`, fs.constants.R_OK);
+}
+
 if(process.platform == 'darwin')
 {
 	// Node ZSTD All
@@ -18,13 +27,9 @@ if(process.platform == 'darwin')
 	exists(BASE, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 	existsRegex(BASE, '@img/sharp-darwin-arm64/lib/', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
-	// 7zip
-	exists(BASE, '7zip-bin-full/mac/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/mac/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
-
-	// 7zipc
-	exists(BASE, '7zip-bin-full/mac/arm64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/mac/x64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	// 7zip-native
+	native7zip('arm64');
+	native7zip('x64');
 
 	// OpenComicAI
 	exists(BASE, 'opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
@@ -49,17 +54,11 @@ else if(process.platform == 'linux')
 	exists(BASE, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
 	existsRegex(BASE, '@img/sharp-linux-arm64/lib/', /^sharp-linux-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
 
-	// 7zip
-	exists(BASE, '7zip-bin-full/linux/arm/7zz', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/linux/arm64/7zz', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/linux/ia32/7zz', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/linux/x64/7zz', fs.constants.X_OK | fs.constants.R_OK);
-
-	// 7zip
-	exists(BASE, '7zip-bin-full/linux/arm/7zzc', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/linux/arm64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/linux/ia32/7zzc', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/linux/x64/7zzc', fs.constants.X_OK | fs.constants.R_OK);
+	// 7zip-native
+	native7zip('arm');
+	native7zip('arm64');
+	native7zip('ia32');
+	native7zip('x64');
 
 	// OpenComicAI
 	exists(BASE, 'opencomic-ai-bin/linux/arm64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
@@ -84,17 +83,9 @@ else if(process.platform == 'win32')
 	exists(BASE, `@img/sharp-win32-arm64/lib/libvips-cpp-${versions.libvips}.dll`, fs.constants.R_OK, fix.sharp.WIN32_ARM64);
 	existsRegex(BASE, '@img/sharp-win32-arm64/lib/', /^sharp-win32-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.WIN32_ARM64);
 
-	// 7zip
-	exists(BASE, '7zip-bin-full/win/x64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/win/x64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/win/arm64/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/win/arm64/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
-
-	// 7zipc
-	exists(BASE, '7zip-bin-full/win/x64/7zc/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/win/x64/7zc/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/win/arm64/7zc/7z.exe', fs.constants.X_OK | fs.constants.R_OK);
-	exists(BASE, '7zip-bin-full/win/arm64/7zc/7z.dll', fs.constants.X_OK | fs.constants.R_OK);
+	// 7zip-native
+	native7zip('x64');
+	native7zip('arm64');
 
 	// OpenComicAI
 	exists(BASE, 'opencomic-ai-bin/win/x64/realcugan/realcugan-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);

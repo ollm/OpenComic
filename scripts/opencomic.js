@@ -1153,7 +1153,7 @@ function showAboutWindow()
 		'electron',
 		'sharp',
 		'pdfjs-dist',
-		'7zip-bin-full',
+		'7zip-native',
 	];
 
 	const allDependencies = {
