@@ -349,7 +349,7 @@ async function preprocessImagesWithAI(): Promise<void> {
 				},
 			],
 		});
-	}
+	};
 
 	const updateProgress = function(i: number) {
 
@@ -396,7 +396,7 @@ async function preprocessImagesWithAI(): Promise<void> {
 			},
 			canceled: function() {
 				resolve(false);
-			}
+			},
 		});
 
 		if(aiPath)
