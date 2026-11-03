@@ -17,6 +17,12 @@
 	margin: 40px 0px 10px 0px;
 }
 
+.settings-body h2 .simple-button
+{
+	float: right;
+	margin-top: -4px;
+}
+
 .settings-body .big-tabs-content > div
 {
 	padding-bottom: 60px;

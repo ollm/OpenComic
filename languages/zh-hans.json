@@ -463,7 +463,8 @@
 				"confirmDelete": "您确定要删除此自定义主题吗？"
 			},
 			"communityThemes": {
-				"main": ""
+				"main": "",
+				"contribute": ""
 			}
 		},
 		"releases": {

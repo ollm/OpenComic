@@ -186,6 +186,8 @@ function addCustomTheme(edit = false, save = false)
 		handlebarsContext.customTheme = edit !== false ? customThemes[edit] : false;
 		currentCustomThemePath = edit !== false ? customThemes[edit].path : '';
 
+		handlebarsContext.customThemeDescription = hb.compile(language.settings.theme.customThemes.description)({linkStart: '<a href="https://opencomic.app/docs/guides/settings/custom-themes/" target="_blank">', linkEnd: '</a>'});
+
 		events.dialog({
 			header: language.settings.theme.customThemes.main,
 			width: 600,

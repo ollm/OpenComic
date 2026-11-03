@@ -463,7 +463,8 @@
 				"confirmDelete": "Estàs segur que vols eliminar aquest tema personalitzat?"
 			},
 			"communityThemes": {
-				"main": "Temes de la comunitat"
+				"main": "Temes de la comunitat",
+				"contribute": "Aporta un tema"
 			}
 		},
 		"releases": {

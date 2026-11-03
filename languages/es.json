@@ -463,7 +463,8 @@
 				"confirmDelete": "¿Está seguro de que desea eliminar este tema personalizado?"
 			},
 			"communityThemes": {
-				"main": "Temas de la comunidad"
+				"main": "Temas de la comunidad",
+				"contribute": "Aporta un tema"
 			}
 		},
 		"releases": {

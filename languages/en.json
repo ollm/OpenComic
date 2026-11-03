@@ -463,7 +463,8 @@
 				"confirmDelete": "Are you sure you want to delete this custom theme?"
 			},
 			"communityThemes": {
-				"main": "Community themes"
+				"main": "Community themes",
+				"contribute": "Contribute a theme"
 			}
 		},
 		"releases": {

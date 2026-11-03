@@ -463,7 +463,8 @@
 				"confirmDelete": "Ви впевнені, що хочете видалити цю користувацьку тему?"
 			},
 			"communityThemes": {
-				"main": ""
+				"main": "",
+				"contribute": ""
 			}
 		},
 		"releases": {

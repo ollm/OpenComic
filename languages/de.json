@@ -463,7 +463,8 @@
 				"confirmDelete": "Sicher, dass dieses benutzerdefinierte Thema gelöscht werden soll?"
 			},
 			"communityThemes": {
-				"main": ""
+				"main": "",
+				"contribute": ""
 			}
 		},
 		"releases": {

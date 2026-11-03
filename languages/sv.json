@@ -463,7 +463,8 @@
 				"confirmDelete": ""
 			},
 			"communityThemes": {
-				"main": ""
+				"main": "",
+				"contribute": ""
 			}
 		},
 		"releases": {

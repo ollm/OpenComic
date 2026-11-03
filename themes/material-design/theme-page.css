@@ -10,7 +10,7 @@
 
 .theme-page-item
 {
-	width: calc(50% - 8px);
+	width: calc(25% - 16px);
 	border-radius: 24px;
 	background: var(--md-sys-bg-surface-container-low);
 	transition: 0.2s;
@@ -28,14 +28,15 @@
 
 .theme-page-item > div
 {
-	height: 200px;
+	height: 160px;
 	border-radius: 24px 24px 24px 24px;
 	overflow: hidden;
+	background: var(--md-sys-bg-surface-container);
 }
 
 .theme-page-item > div > div
 {
-	height: 200px;
+	height: 160px;
 }
 
 .theme-page-item > div > div > div
