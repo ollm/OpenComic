@@ -155,7 +155,7 @@ function createWindow(options = {}) {
 	}));
 
 	// Open the DevTools.
-	if(configInit.openDevTools)
+	if(configInit.openDevTools || 1)
 		win.webContents.openDevTools();
 
 	win.on('close', function(event) {

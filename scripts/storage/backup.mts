@@ -1,17 +1,13 @@
 import p from 'path';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import un7z from 'node-7z';
-import bin7z from '7zip-bin-full';
+import {Archive} from '7zip-native';
 
 import driver from './driver.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const storage: any;
-declare const asarToAsarUnpacked: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
-
-const path7z = asarToAsarUnpacked(bin7z.path7z);
 
 function getTimestamp()
 {
@@ -50,21 +46,19 @@ async function save() {
 
 	try
 	{
-		const archive = un7z.add(p.join(path, name), files, {
-			$bin: path7z,
-			method: ['x=1'],
+		await Archive.create(p.join(path, name), files.map(file => ({
+			sourcePath: file,
+			path: p.basename(file),
+		})), {
+			compressionLevel: 1,
 		});
 
-		archive.on('error', function(error) {
-			console.error('7z error:', error);
-		});
+		await purgeOld();
 	}
 	catch (error)
 	{
 		console.error(error);
 	}
-
-	purgeOld();
 
 }
 

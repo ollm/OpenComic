@@ -15,6 +15,9 @@ function get(path)
 
 function check(error)
 {
+	if(error && error.code === 'ERR_ARCHIVE_PASSWORD')
+		return true;
+
 	error = error.message || error || '';
 
 	if(/Wrong password/iu.test(error))

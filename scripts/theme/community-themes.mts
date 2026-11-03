@@ -1,10 +1,7 @@
 import p from 'path';
 import fs from 'fs';
 import download from '../download.mjs';
-import sevenBin from '7zip-bin-full';
-import node7z from 'node-7z';
-
-const path7z = sevenBin.path7z;
+import {Archive} from '7zip-native';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const app: any;
@@ -149,14 +146,20 @@ async function install(id: string, update = false)
 
 		await download(`https://opencomic.app/themes/${id}.zip`, zipPath, 'Downloading theme...');
 
-		await new Promise((resolve, reject) => {
-			const extract = node7z.extractFull(zipPath, extractPath, {
-				$bin: path7z,
-			});
+		const archive = await Archive.open(zipPath);
 
-			extract.on('end', resolve);
-			extract.on('error', reject);
-		});
+		try
+		{
+			await archive.extractToFolder(extractPath, {overwrite: true});
+		}
+		catch(error)
+		{
+			console.error(error);
+		}
+		finally
+		{
+			await archive.close();
+		}
 
 		fs.rmSync(zipPath, {force: true});
 
