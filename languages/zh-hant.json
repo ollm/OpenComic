@@ -76,6 +76,8 @@
 			"saveImagesMessage": "圖片已成功儲存",
 			"saveImageMessage": "圖片已成功儲存",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "複製圖片到剪貼簿",
 			"copyImageMessage": "圖片已成功複製",
 			"addBlankPageLeft": "在左側新增空白頁",

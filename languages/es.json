@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Las imágenes han sido guardadas correctamente",
 			"saveImageMessage": "La imagen ha sido guardada correctamente",
 			"saveImagesProgress": "Guardando imágenes",
+			"preprocessImagesWithAI": "Preprocesar imágenes con IA",
+			"preprocessImagesWithAIProgress": "Preprocesando imágenes con IA",
 			"copyImage": "Copiar imagen al portapapeles",
 			"copyImageMessage": "Se ha copiado la imagen al portapapeles",
 			"addBlankPageLeft": "Añadir página en blanco a la izquierda",

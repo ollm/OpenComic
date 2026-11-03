@@ -76,6 +76,8 @@
 			"saveImagesMessage": "S'han guardat correctament les imatges",
 			"saveImageMessage": "S'ha guardat correctament la imatge",
 			"saveImagesProgress": "Guardant imatges",
+			"preprocessImagesWithAI": "Preprocessar imatges amb IA",
+			"preprocessImagesWithAIProgress": "Preprocessant imatges amb IA",
 			"copyImage": "Copia la imatge al porta-retalls",
 			"copyImageMessage": "S'ha copiat la imatge al porta-retalls",
 			"addBlankPageLeft": "Afegir pàgina en blanc a l'esquerra",

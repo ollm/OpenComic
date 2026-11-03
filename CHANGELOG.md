@@ -62,6 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Setting to use and configure percentage-based scrolling in vertical reading mode [`2d5bb97`](https://github.com/ollm/OpenComic/commit/2d5bb97008437d234d95992ade730a413f8db09c)
 - Support community themes [`f989943`](https://github.com/ollm/OpenComic/commit/f989943e959ea27befc4ced8cc96adc8b5033fca)
 - Context menu option to save all AI-processed images [`c65ce56`](https://github.com/ollm/OpenComic/commit/c65ce56a92da5093c9b3d09c06084649db4651ed)
+- Option in context menu to preprocess images with AI
 
 ##### 🐛 Bug Fixes
 

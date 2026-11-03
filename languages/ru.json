@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Изображения успешно сохранены",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Копировать изображение в буфер обмена",
 			"copyImageMessage": "Изображение скопировано в буфер обмена",
 			"addBlankPageLeft": "",

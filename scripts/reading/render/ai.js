@@ -160,6 +160,20 @@ function pipeline(src, imageSize)
 	return {pipeline: _pipeline, listModels};
 }
 
+function hasAi(readingAi)
+{
+	if(readingAi.artifactRemoval && readingAi.artifactRemoval.active)
+		return true;
+
+	if(readingAi.descreen && readingAi.descreen.active)
+		return true;
+
+	if(readingAi.upscale && readingAi.upscale.active)
+		return true;
+
+	return false;
+}
+
 const downloading = {
 	start: function() {
 
@@ -220,7 +234,12 @@ function _image(src, imageSize, options = {})
 	const {pipeline: _pipeline, listModels} = pipeline(src, imageSize);
 
 	if(!_pipeline.length)
+	{
+		if(options.canceled)
+			options.canceled();
+
 		return;
+	}
 
 	const folderSha = sha1(p.dirname(src));
 	const imageSha = sha1(`${src}|${JSON.stringify(_pipeline)}`);
@@ -235,7 +254,12 @@ function _image(src, imageSize, options = {})
 	}
 
 	if(!options.run)
+	{	
+		if(options.canceled)
+			options.canceled();
+
 		return;
+	}
 
 	if(options.start)
 		options.start(_pipeline);
@@ -347,6 +371,7 @@ module.exports = {
 	pipeline,
 	image: _image,
 	hasAiImage,
+	hasAi,
 	clean,
 	downloading,
 };

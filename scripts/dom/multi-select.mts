@@ -78,6 +78,7 @@ function init(): void {
 	initialized = true;
 
 	let menuActive = false;
+	let menuAtiveLegacy = false;
 	let dialogActive = false;
 	let marqueeSelectionClick = false;
 
@@ -85,6 +86,7 @@ function init(): void {
 
 		marqueeSelectionClick = false;
 		menuActive = !!document.querySelector('#index-context-menu-new > .a');
+		menuAtiveLegacy = !!document.querySelector('#index-context-menu > .a');
 		dialogActive = !!document.querySelector('.dialog');
 
 		const contentRight = event.target && (event.target as HTMLElement).closest('.content-right');
@@ -150,8 +152,17 @@ function init(): void {
 		if(!keyPressed && selectedItems.items.length === 0)
 			return;
 
-		if(menuActive || dialogActive)
+		if(menuActive || menuAtiveLegacy || dialogActive)
+		{
+			if(menuAtiveLegacy)
+			{
+				setTimeout(() => {
+					unselectAll();
+				}, 100);
+			}
+
 			return;
+		}
 
 		event.preventDefault();
 		event.stopPropagation();

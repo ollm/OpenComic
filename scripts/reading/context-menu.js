@@ -1,4 +1,3 @@
-
 let blankPage = false;
 
 function show(event, gamepad = false)
@@ -373,16 +372,17 @@ async function _saveImages(toSave = [], leadingZeros = 3, saveTo, fileName, prog
 				fs.utimes(saveImageTo, currentTime, currentTime, function(){});
 			}
 
-			if(progress)
-			{
+			if(progress && !cancelSave)
 				updateProgress(i + 1);
-			}
+		}
+
+		if(!cancelSave)
+		{
+			events.buttonLoading(button, 1);
+			events.closeSnackbar();
 		}
 
 		cancelSave = false;
-	
-		events.buttonLoading(button, 1);
-		events.closeSnackbar();
 
 		events.snackbar({
 			key: 'saveAllImages',
@@ -411,11 +411,15 @@ async function renderAiImage(image)
 		start: function() {},
 		progress: function(progress) {},
 		end: function(aiPath) {
-
 			resolve(aiPath);
-
+		},
+		canceled: function() {
+			resolve(false);
 		}
 	});
+
+	if(aiPath)
+		resolve(aiPath);
 
 	await promise;
 

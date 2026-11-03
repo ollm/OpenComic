@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Imagens foram salvas com sucesso",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Copiar imagem para a área de transferência",
 			"copyImageMessage": "A imagem foi copiada para a área de transferência",
 			"addBlankPageLeft": "",

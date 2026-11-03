@@ -76,6 +76,8 @@
 			"saveImagesMessage": "이미지가 저장되었습니다",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "이미지 복사",
 			"copyImageMessage": "이미지가 클립보드에 복사되었습니다",
 			"addBlankPageLeft": "",

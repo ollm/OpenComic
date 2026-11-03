@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Images have been saved successfully",
 			"saveImageMessage": "Image has been saved successfully",
 			"saveImagesProgress": "Saving images in progress",
+			"preprocessImagesWithAI": "Preprocess images with AI",
+			"preprocessImagesWithAIProgress": "Preprocessing images with AI",
 			"copyImage": "Copy image to clipboard",
 			"copyImageMessage": "Image has been copied to clipboard",
 			"addBlankPageLeft": "Add blank page on the left",

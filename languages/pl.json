@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Obrazy zostały pomyślnie zapisane",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Kopiuj obraz do schowka",
 			"copyImageMessage": "Obraz został skopiowany do schowka",
 			"addBlankPageLeft": "",

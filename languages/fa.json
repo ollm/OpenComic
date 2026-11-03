@@ -76,6 +76,8 @@
 			"saveImagesMessage": "تصاویر با موفقیت ذخیره شدند",
 			"saveImageMessage": "تصویر با موفقیت ذخیره شد",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "کپی تصویر در کلیپ‌بورد",
 			"copyImageMessage": "تصویر در کلیپ‌بورد کپی شد",
 			"addBlankPageLeft": "",

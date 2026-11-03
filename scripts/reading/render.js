@@ -52,6 +52,12 @@ async function setFile(_file, _scaleMagnifyingGlass = false, _renderType = 'pdf'
 	return;
 }
 
+function clean(force = false)
+{
+	threads.clean('readingRender');
+	ai.clean(force);
+}
+
 async function reset(_scaleMagnifyingGlass = false)
 {
 	ebook = renderEbook ? await file.ebook() : false;
@@ -130,8 +136,7 @@ function setScale(_scale = 1, _globalZoom = false, _doublePage = false)
 
 	clearTimeout(setRenderST);
 
-	threads.clean('readingRender');
-	ai.clean();
+	clean();
 
 	scale = _scale;
 	globalZoom = _globalZoom;
@@ -173,8 +178,7 @@ function setScaleMagnifyingGlass(_scale = 1, doublePage = false)
 
 	clearTimeout(setRenderST);
 
-	threads.clean('readingRender');
-	ai.clean();
+	clean();
 
 	renderedMagnifyingGlass = {};
 	scaleMagnifyingGlass = _scale;
@@ -196,8 +200,7 @@ function resized(doublePage = false)
 
 	clearTimeout(setRenderST);
 
-	threads.clean('readingRender');
-	ai.clean();
+	clean();
 
 	if(renderImages)
 		revokeAllObjectURL();
@@ -234,8 +237,7 @@ async function focusIndex(index = null, doublePage = false)
 
 	clearTimeout(setRenderST);
 
-	threads.clean('readingRender', false);
-	ai.clean();
+	clean();
 
 	if(index !== null)
 		currentIndex = index;
@@ -384,8 +386,7 @@ var onRender = false;
 
 async function setOnRender(num = 1, callback = false)
 {
-	threads.clean('readingRender');
-	ai.clean();
+	clean();
 
 	onRender = {
 		num: num,
@@ -803,6 +804,7 @@ function createObserver()
 
 module.exports = {
 	setFile: setFile,
+	clean: clean,
 	reset: reset,
 	resetRendered: resetRendered,
 	setImagesData: setImagesData,

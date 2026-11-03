@@ -656,6 +656,7 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 	onReading = _onReading = false;
 
 	fileManager.revokeAllObjectURL();
+	reading.render.clean(true);
 	reading.render.revokeAllObjectURL();
 	workers.clean('convertImage');
 
@@ -2720,7 +2721,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 	if(isServer)
 	{
-		dom.query('#index-context-menu .separator-poster').css({display: 'none'});
+		dom.query('#index-context-menu .separator-poster, #index-context-menu .separator-preprocess-images-with-ai').css({display: 'none'});
 
 		let openFileLocation = document.querySelector('#index-context-menu .context-menu-open-file-location');
 		let addPoster = document.querySelector('#index-context-menu .context-menu-add-poster');
@@ -2728,6 +2729,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 		let clearFileCache = document.querySelector('#index-context-menu .context-menu-clear-file-cache');
 		let setAsPoster = document.querySelector('#index-context-menu .context-menu-set-as-poster');
 		let setAsPosterFolders = document.querySelector('#index-context-menu .context-menu-set-as-poster-folders');
+		let preprocessImagesWithAI = document.querySelector('#index-context-menu .context-menu-preprocess-images-with-ai');
 
 		openFileLocation.style.display = 'none';
 		addPoster.style.display = 'none';
@@ -2735,6 +2737,7 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 		clearFileCache.style.display = 'none';
 		setAsPoster.style.display = 'none';
 		setAsPosterFolders.style.display = 'none';
+		preprocessImagesWithAI.style.display = 'none';
 	}
 	else
 	{
@@ -2813,7 +2816,18 @@ async function comicContextMenu(path, mainPath, fromIndex = true, fromIndexNotMa
 
 		clearFileCache.setAttribute('onclick', 'dom.clearFileCache.clear(\''+escapeQuotes(escapeBackSlash(path), 'simples')+'\');');
 		clearFileCache.style.display = folder ? 'block' : 'none';
+
+		// Preprocess images with AI
+		const hasPreprocess = folder && contextMenu.hasPreprocessImagesWithAI();
+		let preprocessImagesWithAI = document.querySelector('#index-context-menu .context-menu-preprocess-images-with-ai');
+
+		preprocessImagesWithAI.setAttribute('onclick', 'dom.contextMenu.preprocessImagesWithAI();');
+		preprocessImagesWithAI.style.display = hasPreprocess ? 'block' : 'none';
+
+		dom.query('#index-context-menu .separator-preprocess-images-with-ai').css({display: hasPreprocess ? 'block' : 'none'});
 	}
+
+	console.log(contextMenu.hasPreprocessImagesWithAI())
 
 	// File info
 	let fileInfo = document.querySelector('#index-context-menu .context-menu-file-info');
@@ -2963,6 +2977,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	settings.purgeTemporaryFilesEveryTimes(10);
 	fileManager.revokeAllObjectURL();
+	reading.render.clean(true);
 	reading.render.revokeAllObjectURL();
 	workers.clean('convertImage');
 

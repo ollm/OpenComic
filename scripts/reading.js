@@ -3646,11 +3646,17 @@ function getConfig(path = false, mainPath = '', key = false, _copy = false, pare
 	return configData;
 }
 
-function loadReadingConfig(key = false)
+function loadReadingConfig(key = false, mainPath = false, _return = false)
 {
+	mainPath = mainPath || dom.history.mainPath;
 	currentReadingConfigKey = key;
 
-	_config = app.copy(getConfig(false, dom.history.mainPath, key, true));
+	const __config = getConfig(false, mainPath, key, true);
+
+	if(_return)
+		return __config;
+
+	_config = app.copy(__config);
 	handlebarsContext._config = _config;
 }
 
@@ -5885,6 +5891,7 @@ module.exports = {
 	newReadingShortcutPagesConfig: newReadingShortcutPagesConfig,
 	removeReadingShortcutPagesConfig: removeReadingShortcutPagesConfig,
 	currentReadingConfigKey: function(){return currentReadingConfigKey},
+	loadReadingConfig: loadReadingConfig,
 	purgeGlobalReadingPagesConfig: purgeGlobalReadingPagesConfig,
 	updateConfigLabels: updateConfigLabels,
 	onReading: function(){return onReading},

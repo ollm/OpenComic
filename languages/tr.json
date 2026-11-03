@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Görseller başarıyla kaydedildi",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Görseli panoya kopyala",
 			"copyImageMessage": "Görsel panoya kopyalandı",
 			"addBlankPageLeft": "",

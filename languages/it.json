@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Le immagini sono state salvate con successo",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "",
 			"copyImageMessage": "",
 			"addBlankPageLeft": "",

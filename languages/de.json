@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Bilder wurden erfolgreich gespeichert",
 			"saveImageMessage": "Bild wurde erfolgreich gespeichert",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Bild in die Zwischenablage kopieren",
 			"copyImageMessage": "Bild wurde in die Zwischenablage kopiert",
 			"addBlankPageLeft": "Leere Seite links hinzufügen",

@@ -75,6 +75,52 @@ var file = function(path, _config = false) {
 
 	}
 
+	this.readRecursive = async function(config = {}, path = false) {
+
+		const rootPath = path || this.path;
+		const readConfig = {
+			...this.config,
+			only: false,
+			...config,
+		};
+
+		const visited = new Set();
+		const result = [];
+
+		async function walk(currentPath, isRoot = false) {
+
+			if(visited.has(currentPath))
+				return;
+
+			visited.add(currentPath);
+
+			const currentFile = isRoot ? this : fileManager.file(currentPath, readConfig);
+
+			try
+			{
+				const entries = await currentFile.read(readConfig, currentPath);
+
+				for(let i = 0, len = entries.length; i < len; i++)
+				{
+					const entry = entries[i];
+					result.push(entry);
+
+					if(entry.folder || entry.compressed)
+						await walk(entry.path);
+				}
+			}
+			finally
+			{
+				if(!isRoot)
+					currentFile.destroy();
+			}
+		}
+
+		await walk.call(this, rootPath, true);
+
+		return result;
+	}
+
 	this._read = async function(config = {}, path = false) {
 
 		path = path || this.path;

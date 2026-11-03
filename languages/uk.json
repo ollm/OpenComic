@@ -76,6 +76,8 @@
 			"saveImagesMessage": "Зображення успішно збережені",
 			"saveImageMessage": "Зображення успішно збережено",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "Копіювати зображення в буфер обміну",
 			"copyImageMessage": "Зображення скопійовано в буфер обміну",
 			"addBlankPageLeft": "Додати порожню сторінку ліворуч",

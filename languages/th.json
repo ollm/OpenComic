@@ -76,6 +76,8 @@
 			"saveImagesMessage": "จัดเก็บรูปทั้งหมดเสร็จสิ้น",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "คัดลอกรูปไปยังคลิปบอร์ด",
 			"copyImageMessage": "คัดลอกรูปไปยังคลิปบอร์ดแล้ว",
 			"addBlankPageLeft": "",

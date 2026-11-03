@@ -76,6 +76,8 @@
 			"saveImagesMessage": "تم حفظ الصورة بنجاح",
 			"saveImageMessage": "",
 			"saveImagesProgress": "",
+			"preprocessImagesWithAI": "",
+			"preprocessImagesWithAIProgress": "",
 			"copyImage": "نسخ الصورة إلى الحافظة",
 			"copyImageMessage": "تم نسخ الصورة إلى الحافظة",
 			"addBlankPageLeft": "",
