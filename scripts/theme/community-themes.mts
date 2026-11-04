@@ -152,7 +152,7 @@ async function install(id: string, update = false)
 		{
 			await archive.extractToFolder(extractPath, {overwrite: true});
 		}
-		catch(error)
+		catch (error)
 		{
 			console.error(error);
 		}

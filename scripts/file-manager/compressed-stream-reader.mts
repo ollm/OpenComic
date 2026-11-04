@@ -93,16 +93,30 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 
 				});
 
-				return Promise.all(files.map(async function(file) {
+				const buffers: BufferWithIndex[] = [];
 
+				for(const file of files)
+				{
 					const entryId = entryIds.get(file.originalName);
 					if(entryId === undefined)
 						throw new Error(`Archive entry not found: ${file.originalName}`);
 
 					const buffer = await archive.read(entryId, {offset: 0, length: file.size});
-					return {index: file.index!, buffer};
+					buffers.push({index: file.index!, buffer});
+				}
 
-				}));
+				return buffers;
+
+				// return Promise.all(files.map(async function(file) {
+
+				// 	const entryId = entryIds.get(file.originalName);
+				// 	if(entryId === undefined)
+				// 		throw new Error(`Archive entry not found: ${file.originalName}`);
+
+				// 	const buffer = await archive.read(entryId, {offset: 0, length: file.size});
+				// 	return {index: file.index!, buffer};
+
+				// }));
 
 			}));
 		}
