@@ -2056,6 +2056,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
+	this.progressIndex = 0;
 	this.progressPrev = false;
 
 	this.progress = {};
@@ -2095,6 +2096,41 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		{
 			return [only];
 		}
+
+	}
+
+	this.stackBySize = function(only, optimalFileSize = 30, maxItems = 100, noStack = false) {
+
+		if(!only)
+			return [only];
+
+		if(noStack)
+			return [only];
+
+		optimalFileSize *= 1024 * 1024; // In bytes
+
+		const numThreads = 4; // threads.num();
+		const tasks = [];
+
+		const status = {
+			tasks: {},
+			current: 0,
+			fullSize: false,
+			full: false,
+		};
+
+		for(let i = 0, len = only.length; i < len; i++)
+		{
+			const name = only[i];
+			const fileSize = fileSizes.get(p.join(this.path, name)) ?? (1024 * 100); // If the size is not known, it is considered to be 100KB.
+
+			const task = getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads);
+
+			if(!tasks[task]) tasks[task] = [];
+			tasks[task].push(name); 
+		}
+
+		return tasks;
 
 	}
 
@@ -2203,51 +2239,71 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 		}
 
+		this.progressIndex = 1;
+
+		const tasks = this.stackBySize(only || false, 30, 100, optimalThreads.extract === threads.SINGLE);
+		const promises = [];
+
+		console.log(tasks);
+
 		let extractedSome = false;
 		let error = false;
-		let archive = false;
 
-		try
+		for(let i = 0, len = tasks.length; i < len; i++)
 		{
-			archive = await this.open7z();
+			const onlyStack = tasks[i];
 
-			await archive.extractToFolder(self.tmp, {
-				...(self.config._only ? {paths: only.map(name => name.replace(/\\/g, '/'))} : {}),
-				concurrency: diskConcurrency,
-				overwrite: true,
-				maxBytes: null,
-				onProgress: function(progress) {
+			promises.push(threads.job(optimalThreads.extractKey, {useThreads: optimalThreads.extract}, async function() {
 
-					if(onlyLen)
-						self.setProgress(progress.filesExtracted / onlyLen);
-					else
-						self.setProgress(progress.percent / 100);
+				let archive = false;
 
-				},
-				onExtract: function({entry, outputPath}) {
+				try
+				{
+					archive = await self.open7z();
 
-					const originalName = self.removeTmp(p.normalize(entry.path));
-					const name = extractName[originalName] || p.relative(self.tmp, outputPath);
+					console.log('Extracting only stack:', (onlyStack ? {paths: onlyStack.map(name => name.replace(/\\/g, '/'))} : {}));
 
-					const path = p.join(self.path, name);
+					await archive.extractToFolder(self.tmp, {
+						/// ...(self.config._only ? {paths: only.map(name => name.replace(/\\/g, '/'))} : {}),
+						...(onlyStack ? {paths: onlyStack.map(name => name.replace(/\\/g, '/'))} : {}),
+						concurrency: diskConcurrency,
+						overwrite: true,
+						maxBytes: null,
+						onProgress: function(progress) {
 
-					self.setFileStatus(name, {extracted: true});
-					self.whenExtractFile(path);
+							if(onlyLen)
+								self.setProgress(self.progressIndex++ / onlyLen);
+							else
+								self.setProgress(progress.percent / 100);
 
-					extractedSome = true;
+						},
+						onExtract: function({entry, outputPath}) {
 
-				},
-			});
-		}
-		catch(_error)
-		{
-			console.error(_error);
-			error = _error;
-		}
-		finally
-		{
-			if(archive)
-				await archive.close();
+							const originalName = self.removeTmp(p.normalize(entry.path));
+							const name = extractName[originalName] || p.relative(self.tmp, outputPath);
+
+							const path = p.join(self.path, name);
+
+							self.setFileStatus(name, {extracted: true});
+							self.whenExtractFile(path);
+
+							extractedSome = true;
+
+						},
+					});
+				}
+				catch(_error)
+				{
+					console.error(_error);
+					error = _error;
+				}
+				finally
+				{
+					if(archive)
+						await archive.close();
+				}
+
+			}));
 		}
 
 		if(error)
@@ -2284,6 +2340,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				throw error;
 			}
 		}
+
+		await Promise.all(promises);
 
 		this.setProgress(1);
 
