@@ -67,74 +67,63 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 		tasks[task].push(items[i]);
 	}
 
-	const archive = await Archive.open(realPath, {
-		password: fileManager.filePassword.get(compressed),
-	});
+	const promises: Promise<BufferWithIndex[]>[] = [];
 
-	try
+	for(const task of tasks)
 	{
-		const entries = await archive.entries();
-		const entryIds = new Map(entries.map(entry => [entry.path, entry.id]));
-		const promises: Promise<BufferWithIndex[]>[] = [];
+		promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
 
-		for(const task of tasks)
-		{
-			promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
+			const archive = await Archive.open(realPath, {
+				password: fileManager.filePassword.get(compressed),
+			});
 
-				const files = task.map(function(file) {
-
+			try
+			{
+				const files = task.map(file => {
 					const name = fileManager.removePathPart(file.path, compressed);
 					const originalName = fileManager.originalName(name).replace(/\\/g, '/');
 
-					return {
-						...file,
-						originalName,
-					};
-
+					return {...file, originalName};
 				});
 
-				const requests = files.map((file) => {
-					const entryId = entryIds.get(file.originalName);
-					if(entryId === undefined)
-						throw new Error(`Archive entry not found: ${file.originalName}`);
-
-					return {
-						entry: entryId,
-						offset: 0,
-						length: file.size,
-					};
-				});
+				const requests = files.map(file => ({
+					entry: file.originalName,
+					offset: 0,
+					length: file.size,
+				}));
 
 				const extracted = await archive.read(requests);
+
 				return files.map((file, index) => ({
 					index: file.index!,
 					buffer: extracted[index]!,
 				}));
+			}
+			catch(error)
+			{
+				await archive.close();
+				throw error;
+			}
+			finally
+			{
+				await archive.close();
+			}
 
-			}));
-		}
-
-		const buffers = await Promise.all(promises);
-		const flat = buffers.flat();
-
-		const map: Map<number, Buffer> = new Map();
-
-		for(const item of flat)
-		{
-			map.set(item.index, item.buffer);
-		}
-
-		return items.map(item => map.get(item.index!)!);
+		}));
 	}
-	catch (error)
+
+	const buffers = await Promise.all(promises);
+	const flat = buffers.flat();
+
+	const map: Map<number, Buffer> = new Map();
+
+	for(const item of flat)
 	{
-		console.error(error);
-		throw error;
+		map.set(item.index, item.buffer);
 	}
-	finally
-	{
-		await archive.close();
-	}
+
+	return items.map(item => map.get(item.index!)!);
+
 }
 
 async function getBuffers(items: GetBuffers[]): Promise<Buffer[]>
