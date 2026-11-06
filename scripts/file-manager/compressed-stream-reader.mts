@@ -41,6 +41,8 @@ interface Group {
 
 async function _getBuffers({compressed, realPath, items, optimalThreads}: Group): Promise<Buffer[]>
 {
+	const singleDiskConcurrency = optimalThreads.extract === threads.SINGLE ? true : false;
+
 	const numThreads: number = threads.num();
 	const len = items.length;
 
@@ -53,7 +55,7 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 	const is7z = ext === '7z' || ext === 'cb7';
 
 	const MAX_FILES = 1000000;
-	const OPTIMAL_FILES = is7z ? MAX_FILES : 50;
+	const OPTIMAL_FILES = is7z || singleDiskConcurrency ? MAX_FILES : 50;
 	const FILE = 1;
 
 	let tasks: GetBuffers[][] = [];
