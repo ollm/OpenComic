@@ -83,7 +83,7 @@ async function getComicData(siteId)
 
 		if(response.status == 400 || response.status == 401)
 		{
-			tracking.invalidateSession(site.key, true);
+			await tracking.invalidateSession(site.key, true);
 			return null;
 		}
 		else if(response.status == 200)
@@ -204,7 +204,7 @@ async function track(toTrack)
 
 		if(response.status == 400 || response.status == 401)
 		{
-			tracking.invalidateSession(site.key, true);
+			await tracking.invalidateSession(site.key, true);
 		}
 		else if(response.status == 200)
 		{

@@ -74,7 +74,8 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 		promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
 
 			const archive = await Archive.open(realPath, {
-				password: fileManager.filePassword.get(compressed),
+				password: await fileManager.filePassword.get(compressed),
+				deflateBufferSize: 1024 * 128,
 			});
 
 			try

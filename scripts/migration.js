@@ -225,7 +225,7 @@ function migrateIgnoreFilesRegex(data)
 	return data;
 }
 
-function migratePasswordsAndTokensToSafeStorage(data)
+async function migratePasswordsAndTokensToSafeStorage(data)
 {
 	console.time('Migration: passwordsAndTokensToSafeStorag');
 
@@ -235,9 +235,9 @@ function migratePasswordsAndTokensToSafeStorage(data)
 		{
 			const site = data.config.trackingSites[key];
 
-			site.access.pass = storage.safe.encrypt(site.access.pass);
-			site.access.token = storage.safe.encrypt(site.access.token);
-			site.session.token = storage.safe.encrypt(site.session.token);
+			site.access.pass = await storage.safe.encrypt(site.access.pass);
+			site.access.token = await storage.safe.encrypt(site.access.token);
+			site.session.token = await storage.safe.encrypt(site.session.token);
 		}
 	}
 
@@ -245,7 +245,7 @@ function migratePasswordsAndTokensToSafeStorage(data)
 	{
 		for(const server of data.servers)
 		{
-			server.pass = storage.safe.encrypt(server.pass);
+			server.pass = await storage.safe.encrypt(server.pass);
 		}
 	}
 
@@ -253,7 +253,7 @@ function migratePasswordsAndTokensToSafeStorage(data)
 	{
 		for(const catalog of data.opdsCatalogs)
 		{
-			catalog.pass = storage.safe.encrypt(catalog.pass);
+			catalog.pass = await storage.safe.encrypt(catalog.pass);
 		}
 	}
 
@@ -496,7 +496,7 @@ function removeEpubRenderCache()
 	console.timeEnd('Migration: removeEpubRenderCache');
 }
 
-function start(data)
+async function start(data)
 {
 	let changes = data.config.changes;
 
@@ -524,7 +524,7 @@ function start(data)
 		data = migrateIgnoreFilesRegex(data);
 
 	if(changes < 110) // Use safeStorage for passwords and tokens
-		data = migratePasswordsAndTokensToSafeStorage(data);
+		data = await migratePasswordsAndTokensToSafeStorage(data);
 
 	if(changes < 113) // Fix compressed files with unsupported characters in Windows
 		data = migrateCompressedFilesWithUnsupportedCharsInWindows(data);

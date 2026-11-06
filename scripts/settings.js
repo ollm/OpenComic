@@ -312,7 +312,7 @@ function updateMasterFolders()
 	list.innerHTML = template.load('settings.content.right.master.folders.list.html');
 }
 
-function getServerInputValues()
+async function getServerInputValues()
 {
 	let name = document.querySelector('.input-name').value;
 	let path = document.querySelector('.input-path').value;
@@ -326,7 +326,7 @@ function getServerInputValues()
 		name: name,
 		path: path,
 		user: user,
-		pass: storage.safe.encrypt(pass),
+		pass: await storage.safe.encrypt(pass),
 		domain: domain,
 		showOnLibrary: showOnLibrary,
 		filesInSubfolders: filesInSubfolders,
@@ -344,11 +344,11 @@ function serverValidateData(server)
 	return (name && path) ? true : false;
 }
 
-function addServer(save = false)
+async function addServer(save = false)
 {
 	if(save)
 	{		
-		let server = getServerInputValues();
+		let server = await getServerInputValues();
 		if(!serverValidateData(server)) return;
 
 		let servers = storage.get('servers');
@@ -416,11 +416,11 @@ function addServer(save = false)
 	}
 }
 
-function editServer(key, save = false)
+async function editServer(key, save = false)
 {
 	if(save)
 	{
-		let server = getServerInputValues();
+		let server = await getServerInputValues();
 		if(!serverValidateData(server)) return;
 
 		let servers = storage.get('servers');
@@ -467,7 +467,7 @@ function editServer(key, save = false)
 	{
 		let servers = storage.get('servers');
 		handlebarsContext.server = servers[key];
-		handlebarsContext.server.pass = storage.safe.decrypt(servers[key].pass);
+		handlebarsContext.server.pass = await storage.safe.decrypt(servers[key].pass);
 
 		events.dialog({
 			header: language.settings.servers.main,

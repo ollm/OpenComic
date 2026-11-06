@@ -2165,7 +2165,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
-		return native7z.open(this.realPath, {password: filePassword.get(this.realPath)});
+		return native7z.open(this.realPath, {password: await filePassword.get(this.realPath), deflateBufferSize: 1024 * 128});
 
 	}
 

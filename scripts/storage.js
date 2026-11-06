@@ -979,7 +979,7 @@ async function start(callback)
 	if(!setup && _changes != changes)
 	{
 		const migration = require(p.join(appDir, '.dist/migration.js'));
-		data = migration.start(data);
+		data = await migration.start(data);
 	}
 
 	for(const key of storageKeys)

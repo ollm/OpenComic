@@ -1,6 +1,6 @@
 var passwordsInMemory = {};
 
-function get(path)
+async function get(path)
 {
 	const parentPath = p.dirname(path);
 	const passwords = storage.get('compressedPasswords') || {};
@@ -8,7 +8,7 @@ function get(path)
 	const pass = passwords[path] || passwordsInMemory[path] || passwords[parentPath] || passwordsInMemory[parentPath];
 
 	if(pass)
-		return storage.safe.decrypt(pass) || 'password';
+		return (await storage.safe.decrypt(pass)) || 'password';
 
 	return 'password';
 }
@@ -49,7 +49,7 @@ async function request(path)
 
 var remember = true;
 
-function requestDialog(save = null)
+async function requestDialog(save = null)
 {
 	if(save !== null)
 	{
@@ -60,7 +60,19 @@ function requestDialog(save = null)
 			const pass = document.querySelector('.input-pass').value;
 			remember = document.querySelector('.input-remember').classList.contains('a');
 
-			const safePass = storage.safe.encrypt(pass);
+			let safePass;
+
+			try
+			{
+				safePass = await storage.safe.encrypt(pass);
+			}
+			catch(error)
+			{
+				const rejectRequest = reject;
+				promise = false;
+				rejectRequest(error);
+				return;
+			}
 
 			if(remember)
 			{
