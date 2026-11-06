@@ -2109,7 +2109,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		optimalFileSize *= 1024 * 1024; // In bytes
 
-		const numThreads = 4; // threads.num();
+		const numThreads = threads.num();
 		const tasks = [];
 
 		const status = {
@@ -2165,7 +2165,9 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
-		return native7z.open(this.realPath, {password: await filePassword.get(this.realPath), deflateBufferSize: 1024 * 128});
+		// native7z.concurrency(16);
+
+		return native7z.open(this.realPath, {password: await filePassword.get(this.realPath), deflateBufferSize: 1024 * 256});
 
 	}
 
@@ -2239,12 +2241,17 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 			}
 		}
 
-		this.progressIndex = 1;
+		const ext = app.extname(this.realPath);
+		const is7z = ext === '7z' || ext === 'cb7';
 
-		const tasks = this.stackBySize(only || false, 30, 100, optimalThreads.extract === threads.SINGLE);
+		const MAX_FILES = 1000000;
+		const OPTIMAL_FILE_SIZE = is7z ? 1000000 : 30;
+
+		let tasks = this.stackBySize(only || false, OPTIMAL_FILE_SIZE, MAX_FILES, optimalThreads.extract === threads.SINGLE);
+		tasks = rebalanceTasks(tasks);
 		const promises = [];
 
-		console.log(tasks);
+		this.progressIndex = 1;
 
 		let extractedSome = false;
 		let error = false;
@@ -2261,23 +2268,17 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				{
 					archive = await self.open7z();
 
-					console.log('Extracting only stack:', (onlyStack ? {paths: onlyStack.map(name => name.replace(/\\/g, '/'))} : {}));
-
 					await archive.extractToFolder(self.tmp, {
-						/// ...(self.config._only ? {paths: only.map(name => name.replace(/\\/g, '/'))} : {}),
 						...(onlyStack ? {paths: onlyStack.map(name => name.replace(/\\/g, '/'))} : {}),
-						concurrency: diskConcurrency,
+						concurrency: 1,
 						overwrite: true,
 						maxBytes: null,
-						onProgress: function(progress) {
+						onExtract: function({entry, outputPath, percent}) {
 
 							if(onlyLen)
 								self.setProgress(self.progressIndex++ / onlyLen);
 							else
-								self.setProgress(progress.percent / 100);
-
-						},
-						onExtract: function({entry, outputPath}) {
+								self.setProgress(percent / 100);
 
 							const originalName = self.removeTmp(p.normalize(entry.path));
 							const name = extractName[originalName] || p.relative(self.tmp, outputPath);
@@ -2305,6 +2306,8 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 			}));
 		}
+
+		await Promise.all(promises);
 
 		if(error)
 		{
@@ -2340,8 +2343,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 				throw error;
 			}
 		}
-
-		await Promise.all(promises);
 
 		this.setProgress(1);
 
@@ -3954,7 +3955,6 @@ function getOptimalThreads(path = false)
 		return {readKey: 'readUsingThreads', extractKey: 'extractUsingThreads', read: threads.ALL, extract: threads.ALL};
 }
 
-// Max length (In characters/bytes) supported for a single command line, with a safety margin
 function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads, argLength = 0, maxArgLength = Infinity)
 {
 	if(!status.tasks[status.current])
@@ -4029,7 +4029,26 @@ function getOptimalTask(fileSize, status, optimalFileSize, maxItems, numThreads,
 	}
 
 	return current;
+}
 
+function rebalanceTasks(tasks)
+{
+    const numTasks = tasks.length;
+    if(!numTasks) return [];
+
+	const flat = tasks.flat();
+	const len = flat.length;
+
+	const avg = Math.ceil(len / numTasks);
+	const rebalance = Array.from({length: numTasks}, () => []);
+
+	for(let i = 0; i < len; i++)
+	{
+		const group = Math.min(Math.floor(i / avg), numTasks - 1);
+		rebalance[group].push(flat[i]);
+	}
+
+	return rebalance;
 }
 
 async function readChunk(filePath, {start, size})
@@ -4221,6 +4240,7 @@ module.exports = {
 	macosStartAccessingSecurityScopedResource: macosStartAccessingSecurityScopedResource,
 	getOptimalThreads: getOptimalThreads,
 	getOptimalTask: getOptimalTask,
+	rebalanceTasks: rebalanceTasks,
 	readChunk: readChunk,
 	dirSize: dirSize,
 	dirSizeSync: dirSizeSync,

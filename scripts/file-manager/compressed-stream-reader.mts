@@ -2,7 +2,10 @@ import {Archive} from '7zip-native';
 
 import {OptimalThreads} from '@types';
 
+// Archive.concurrency(16);
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+declare const app: any;
 declare const threads: any;
 declare const fileManager: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -46,11 +49,14 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 
 	items = items.map((item, index) => ({...item, index}));
 
-	const MAX_FILES = 100;
-	const OPTIMAL_FILES = 50;
+	const ext = app.extname(realPath);
+	const is7z = ext === '7z' || ext === 'cb7';
+
+	const MAX_FILES = 1000000;
+	const OPTIMAL_FILES = is7z ? MAX_FILES : 50;
 	const FILE = 1;
 
-	const tasks: GetBuffers[][] = [];
+	let tasks: GetBuffers[][] = [];
 
 	const status: TasksStatus = {
 		tasks: [],
@@ -67,6 +73,8 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 		tasks[task].push(items[i]);
 	}
 
+	tasks = fileManager.rebalanceTasks(tasks);
+
 	const promises: Promise<BufferWithIndex[]>[] = [];
 
 	for(const task of tasks)
@@ -75,7 +83,7 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 
 			const archive = await Archive.open(realPath, {
 				password: await fileManager.filePassword.get(compressed),
-				deflateBufferSize: 1024 * 128,
+				deflateBufferSize: 1024 * 32,
 			});
 
 			try
