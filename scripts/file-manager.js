@@ -2221,7 +2221,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		const self = this;
 		const optimalThreads = getOptimalThreads(this.realPath);
-		const diskConcurrency = optimalThreads.extract === threads.SINGLE ? 1 : Math.min(threads.num(), 8);
+		const singleDiskConcurrency = optimalThreads.extract === threads.SINGLE ? true : false;
 
 		const only = [];
 		const extractName = {};
@@ -2245,7 +2245,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		const is7z = ext === '7z' || ext === 'cb7';
 
 		const MAX_FILES = 1000000;
-		const OPTIMAL_FILE_SIZE = is7z ? 1000000 : 30;
+		const OPTIMAL_FILE_SIZE = is7z || singleDiskConcurrency ? 1000000 : 30;
 
 		let tasks = this.stackBySize(only || false, OPTIMAL_FILE_SIZE, MAX_FILES, optimalThreads.extract === threads.SINGLE);
 		tasks = rebalanceTasks(tasks);
