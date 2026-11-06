@@ -622,7 +622,7 @@ var client = function(path) {
 		}}
 	}
 
-	this.getServerInfo = function() {
+	this.getServerInfo = async function() {
 
 		const self = this;
 		const servers = storage.get('servers');
@@ -640,7 +640,7 @@ var client = function(path) {
 			port: getPort(server.path),
 			domain: server.domain,
 			user: server.user,
-			pass: storage.safe.decrypt(server.pass),
+			pass: await storage.safe.decrypt(server.pass),
 			auth: server.auth,
 			share: getShare(server.path),
 			path: server.path,
@@ -667,7 +667,7 @@ var client = function(path) {
 
 		try
 		{
-			serverInfo = this.getServerInfo();
+			serverInfo = await this.getServerInfo();
 		}
 		catch(error)
 		{
@@ -824,7 +824,7 @@ var client = function(path) {
 
 		try
 		{
-			serverInfo = this.getServerInfo();
+			serverInfo = await this.getServerInfo();
 		}
 		catch(error)
 		{
@@ -969,7 +969,7 @@ var client = function(path) {
 
 		try
 		{
-			serverInfo = this.getServerInfo();
+			serverInfo = await this.getServerInfo();
 		}
 		catch(error)
 		{
@@ -1134,7 +1134,7 @@ var client = function(path) {
 
 		try
 		{
-			serverInfo = this.getServerInfo();
+			serverInfo = await this.getServerInfo();
 		}
 		catch(error)
 		{
@@ -1350,7 +1350,7 @@ var client = function(path) {
 
 		try
 		{
-			serverInfo = this.getServerInfo();
+			serverInfo = await this.getServerInfo();
 		}
 		catch(error)
 		{
@@ -1488,7 +1488,7 @@ var client = function(path) {
 
 		try
 		{
-			serverInfo = this.getServerInfo();
+			serverInfo = await this.getServerInfo();
 		}
 		catch(error)
 		{

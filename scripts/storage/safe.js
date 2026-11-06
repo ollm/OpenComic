@@ -1,35 +1,42 @@
 
 var _isEncryptionAvailable = null;
 
-function isEncryptionAvailable()
+async function isEncryptionAvailable()
 {
-	if(_isEncryptionAvailable !== null) return _isEncryptionAvailable;
-	
-	_isEncryptionAvailable = electronRemote.safeStorage.isEncryptionAvailable();
+	if(_isEncryptionAvailable === null)
+	{
+		const safeStorage = electronRemote.safeStorage;
+		_isEncryptionAvailable = safeStorage.isAsyncEncryptionAvailable ? await safeStorage.isAsyncEncryptionAvailable() : safeStorage.isEncryptionAvailable();
+	}
+
 	return _isEncryptionAvailable;
 }
 
-function encrypt(string)
+async function encrypt(string)
 {
-	if(!string || /^\$safeStorage:/.test(string) || !isEncryptionAvailable())
+	if(!string || /^\$safeStorage:/.test(string) || !await isEncryptionAvailable())
 		return string;
 
-	return '$safeStorage:'+electronRemote.safeStorage.encryptString(string).toString('base64');
+	const safeStorage = electronRemote.safeStorage;
+	const encrypted = safeStorage.encryptStringAsync ? await safeStorage.encryptStringAsync(string) : safeStorage.encryptString(string);
+
+	return '$safeStorage:'+encrypted.toString('base64');
 }
 
 var decryptCache = {};
 
-function decrypt(string)
+async function decrypt(string)
 {
 	if(/^\$safeStorage:/.test(string))
 	{
-		if(!decryptCache[string])
+		if(!Object.prototype.hasOwnProperty.call(decryptCache, string))
 		{
 			const buffer = Buffer.from(string.slice(13), 'base64');
-			decryptCache[string] = electronRemote.safeStorage.decryptString(buffer);
+			const safeStorage = electronRemote.safeStorage;
+			decryptCache[string] = safeStorage.decryptStringAsync ? safeStorage.decryptStringAsync(buffer).then(result => result.result) : safeStorage.decryptString(buffer);
 		}
 
-		return decryptCache[string];
+		return await decryptCache[string];
 	}
 
 	return string;

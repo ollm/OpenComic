@@ -1,36 +1,63 @@
-var sitesScripts = {};
+var sitesScripts = {}, sitesScriptsLoading = {};
 
-function loadSiteScript(site)
+async function loadSiteScript(site)
 {
-	if(!sitesScripts[site])
-	{
+	if(sitesScripts[site]) return;
+	if(sitesScriptsLoading[site]) return sitesScriptsLoading[site];
+
+	sitesScriptsLoading[site] = (async function() {
+
 		const siteData = app.copy(trackingSites.site(site));
 
 		if(siteData)
 		{
-			siteData.config.access.pass = storage.safe.decrypt(siteData.config.access.pass);
-			siteData.config.access.token = storage.safe.decrypt(siteData.config.access.token);
-			siteData.config.session.token = storage.safe.decrypt(siteData.config.session.token);
-			siteData.config.session.refreshToken = storage.safe.decrypt(siteData.config.session.refreshToken);
+			[
+				siteData.config.access.pass,
+				siteData.config.access.token,
+				siteData.config.session.token,
+				siteData.config.session.refreshToken,
+			] = await Promise.all([
+				storage.safe.decrypt(siteData.config.access.pass),
+				storage.safe.decrypt(siteData.config.access.token),
+				storage.safe.decrypt(siteData.config.session.token),
+				storage.safe.decrypt(siteData.config.session.refreshToken),
+			]);
 
 			sitesScripts[site] = require(siteData.script);
 			sitesScripts[site].setSiteData(siteData);
 		}
+
+	})();
+
+	try
+	{
+		await sitesScriptsLoading[site];
+	}
+	finally
+	{
+		delete sitesScriptsLoading[site];
 	}
 }
 
-function setSiteData(site)
+async function setSiteData(site)
 {
 	const siteData = app.copy(trackingSites.site(site));
 
 	if(siteData)
 	{
-		siteData.config.access.pass = storage.safe.decrypt(siteData.config.access.pass);
-		siteData.config.access.token = storage.safe.decrypt(siteData.config.access.token);
-		siteData.config.session.token = storage.safe.decrypt(siteData.config.session.token);
-		siteData.config.session.refreshToken = storage.safe.decrypt(siteData.config.session.refreshToken);
+		[
+			siteData.config.access.pass,
+			siteData.config.access.token,
+			siteData.config.session.token,
+			siteData.config.session.refreshToken,
+		] = await Promise.all([
+			storage.safe.decrypt(siteData.config.access.pass),
+			storage.safe.decrypt(siteData.config.access.token),
+			storage.safe.decrypt(siteData.config.session.token),
+			storage.safe.decrypt(siteData.config.session.refreshToken),
+		]);
 
-		loadSiteScript(site);
+		await loadSiteScript(site);
 		sitesScripts[site].setSiteData(siteData);
 	}
 }
@@ -103,7 +130,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 
 					if(Date.now() - lastUpdatedChapters > 604800000) // One week
 					{
-						loadSiteScript(site);
+						await loadSiteScript(site);
 						if(!sitesScripts[site]) continue;
 						const comicData = (await sitesScripts[site].getComicData(data.id)) || {};
 						setTrackingChapters(site, comicData, mainPath);
@@ -126,7 +153,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 
 			if(!allTracked)
 			{
-				trackST[trackIndex] = setTimeout(function(vars) {
+				trackST[trackIndex] = setTimeout(async function(vars) {
 
 					for(const site of _trackingSites)
 					{
@@ -138,7 +165,7 @@ async function track(chapter = false, volume = false, onlySite = false, reduceIf
 							if(!tracked[mainPath][site.key]) tracked[mainPath][site.key] = [];
 							tracked[mainPath][site.key].push({chapter: vars.chapter, volume: vars.volume});
 
-							loadSiteScript(site.key);
+							await loadSiteScript(site.key);
 
 							sitesScripts[site.key].track({
 								id: site.tracking.id,
@@ -315,7 +342,7 @@ function setAutoPrompt(status = false)
 		currentAutoPrompt.resolve();
 }
 
-function saveSiteConfig(site, key, value)
+async function saveSiteConfig(site, key, value)
 {
 	const siteData = trackingSites.site(site);
 	const configSites = storage.getKey('config', 'trackingSites');
@@ -325,10 +352,10 @@ function saveSiteConfig(site, key, value)
 	configSites[site] = siteData.config;
 	storage.setKey('config', 'trackingSites', configSites);
 
-	setSiteData(site);
+	await setSiteData(site);
 }
 
-function configTracking(site = '', force = false)
+async function configTracking(site = '', force = false)
 {
 	const siteData = trackingSites.site(site, true);
 	if(!siteData) return;
@@ -339,19 +366,19 @@ function configTracking(site = '', force = false)
 		events.desactiveMenu('#tracking-sites', '.bar-right-buttons .button-tracking-sites');
 	}
 
-	loadSiteScript(site);
+	await loadSiteScript(site);
 
 	if(siteData.config.session.valid && siteData.tracking.id)
 	{
-		currentTrackingDialog(site);
+		await currentTrackingDialog(site);
 	}
 	else if(siteData.config.session.valid)
 	{
-		searchDialog(site);
+		await searchDialog(site);
 	}
 	else
 	{
-		login(site, true);
+		await login(site, true);
 	}
 }
 
@@ -361,22 +388,22 @@ async function login(site, fromConfig = false)
 	const siteData = trackingSites.site(site);
 	if(!siteData) return;
 
-	loadSiteScript(site);
+	await loadSiteScript(site);
 
 	const session = await sitesScripts[site].login();
 
 	if(session.valid)
 	{
-		setSessionToken(site, session);
+		await setSessionToken(site, session);
 		
 		if(fromConfig)
-			configTracking(site, true);
+			await configTracking(site, true);
 		else
-			tracking.track(false, false, false, true);
+			await tracking.track(false, false, false, true);
 	}
 	else
 	{
-		invalidateSession(site, true, true);
+		await invalidateSession(site, true, true);
 	}
 }
 
@@ -395,39 +422,42 @@ async function refreshTokens(force = false)
 		// Check if session is valid and refresh token if needed
 		if(currentSession.valid && currentSession.refreshToken && (force || !currentSession.expires || (currentSession.expires - currentSession.expiresIn / 2) < time))
 		{
-			loadSiteScript(site);
+			await loadSiteScript(site);
 
-			sitesScripts[site].refreshToken().then(function(session) {
+			const session = await sitesScripts[site].refreshToken();
 
-				if(session.valid)
-					setSessionToken(site, session);
-				else
-					invalidateSession(site, true);
-
-			});	
+			if(session.valid)
+				await setSessionToken(site, session);
+			else
+				await invalidateSession(site, true);
 		}
 	}
 }
 
 // Save session token
-function setSessionToken(site = '', session = {})
+async function setSessionToken(site = '', session = {})
 {
 	session.expiresIn = (session.expiresIn || !session.refreshToken) ? session.expiresIn : 3600;
 	const expires = (session.expiresIn ? app.time() + session.expiresIn : 0);
 
-	saveSiteConfig(site, 'session', {
+	const [token, refreshToken] = await Promise.all([
+		storage.safe.encrypt(session.token),
+		storage.safe.encrypt(session.refreshToken),
+	]);
+
+	await saveSiteConfig(site, 'session', {
 		valid: true,
-		token: storage.safe.encrypt(session.token),
-		refreshToken: storage.safe.encrypt(session.refreshToken),
+		token: token,
+		refreshToken: refreshToken,
 		expires: expires,
 		expiresIn: session.expiresIn,
 	});
 }
 
 // Remove session token
-function invalidateSession(site = '', loginDialog = false, fromConfig = false)
+async function invalidateSession(site = '', loginDialog = false, fromConfig = false)
 {
-	saveSiteConfig(site, 'session', {valid: false, token: '', refreshToken: '', expires: 0, expiresIn: 0});
+	await saveSiteConfig(site, 'session', {valid: false, token: '', refreshToken: '', expires: 0, expiresIn: 0});
 
 	if(loginDialog)
 		invalidTokenDialog(site, fromConfig);
@@ -450,7 +480,7 @@ async function currentTrackingDialog(site)
 	const siteData = trackingSites.site(site, true);
 	if(!siteData) return;
 
-	loadSiteScript(site);
+	await loadSiteScript(site);
 
 	events.dialog({
 		header: false,
@@ -582,7 +612,7 @@ function invalidTokenDialog(site, fromConfig = false)
 }
 
 // Search functions
-function searchDialog(site)
+async function searchDialog(site)
 {
 	const siteData = trackingSites.site(site);
 
@@ -605,7 +635,7 @@ function searchDialog(site)
 	events.focus('.input-search');
 	events.eventInput();
 
-	searchComic(site, title);
+	await searchComic(site, title);
 }
 
 async function searchComic(site, title = false, _return = false)
@@ -613,7 +643,7 @@ async function searchComic(site, title = false, _return = false)
 	if(!title)
 		title = getTitle();
 
-	loadSiteScript(site);
+	await loadSiteScript(site);
 
 	handlebarsContext.trackingSiteKey = site;
 

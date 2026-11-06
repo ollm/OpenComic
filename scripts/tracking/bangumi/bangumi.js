@@ -91,7 +91,7 @@ async function getComicData(siteId)
 
 		if(subjectResponse.status == 401)
 		{
-			tracking.invalidateSession(site.key, true);
+			await tracking.invalidateSession(site.key, true);
 			return null;
 		}
 
@@ -102,7 +102,7 @@ async function getComicData(siteId)
 
 			if(collection.status == 401)
 			{
-				tracking.invalidateSession(site.key, true);
+				await tracking.invalidateSession(site.key, true);
 				return null;
 			}
 
@@ -167,7 +167,7 @@ async function track(toTrack)
 		const subjectResponse = await request('/subjects/'+toTrack.id);
 		if(subjectResponse.status == 401)
 		{
-			tracking.invalidateSession(site.key, true);
+			await tracking.invalidateSession(site.key, true);
 			return;
 		}
 
@@ -179,7 +179,7 @@ async function track(toTrack)
 
 		if(collection.status == 401)
 		{
-			tracking.invalidateSession(site.key, true);
+			await tracking.invalidateSession(site.key, true);
 			return;
 		}
 

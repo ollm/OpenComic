@@ -5,7 +5,7 @@ async function read(url, path, mainPath, unparsed = false, forceCredentials = fa
 	if(controller) controller.abort('abortController');
 	controller = new AbortController();
 
-	const response = await fetch(url, {signal: controller.signal, headers: opds.auth.headers(url)});
+	const response = await fetch(url, {signal: controller.signal, headers: await opds.auth.headers(url)});
 	const body = await response.text();
 
 	if(!response.ok)

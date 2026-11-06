@@ -43,20 +43,20 @@ class OpdsAuth
 
 	async fetch(url: string, options: RequestInit = {}): Promise<Response>
 	{
-		const response = await fetch(url, {...options, headers: this.headers(url)});
+		const response = await fetch(url, {...options, headers: await this.headers(url)});
 
 		if(!response.ok)
 		{
 			const valid = this.valid(response);
 
 			if(valid)
-				return fetch(url, {...options, headers: this.headers(url)});
+				return fetch(url, {...options, headers: await this.headers(url)});
 		}
 
 		return response;
 	}
 
-	headers(url: string): HeadersInit
+	async headers(url: string): Promise<HeadersInit>
 	{
 		const auth = this.auth || opds.currentCatalog() as Auth;
 
@@ -64,7 +64,7 @@ class OpdsAuth
 		{
 			const data = parseAuth(auth.auth || '');
 			data.user = auth.user || '';
-			data.pass = storage.safe.decrypt(auth.pass || '');
+			data.pass = await storage.safe.decrypt(auth.pass || '');
 			data.uri = new URL(url).pathname;
 
 			let authorization: string | boolean = false;
@@ -189,7 +189,7 @@ async function requestCredentials(response: Response, forceCredentials: boolean 
 	return true;
 }
 
-function requestCredentialsDialog(siteName: string | boolean = false, save: boolean | null = null): void
+async function requestCredentialsDialog(siteName: string | boolean = false, save: boolean | null = null): Promise<void>
 {
 	if(save !== null)
 	{
@@ -202,7 +202,7 @@ function requestCredentialsDialog(siteName: string | boolean = false, save: bool
 
 			opds.updateCatalog(currentCatalog.index, {
 				user: user,
-				pass: storage.safe.encrypt(pass),
+				pass: await storage.safe.encrypt(pass),
 			});
 
 			credentialsResolve();

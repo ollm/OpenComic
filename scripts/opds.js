@@ -863,7 +863,7 @@ function add(save = false)
 	}
 }
 
-function edit(key, save = false)
+async function edit(key, save = false)
 {
 	const opdsCatalogs = storage.get('opdsCatalogs');
 
@@ -875,7 +875,7 @@ function edit(key, save = false)
 		opdsCatalog.title = values.title;
 		opdsCatalog.url = values.url;
 		opdsCatalog.user = values.user;
-		opdsCatalog.pass = storage.safe.encrypt(values.pass);
+		opdsCatalog.pass = await storage.safe.encrypt(values.pass);
 		opdsCatalog.downloadAuto = values.downloadAuto;
 		opdsCatalog.showOnLeft = values.showOnLeft;
 
@@ -887,7 +887,7 @@ function edit(key, save = false)
 	else
 	{
 		handlebarsContext.opdsCatalog = opdsCatalogs[key];
-		handlebarsContext.opdsCatalog.pass = storage.safe.decrypt(opdsCatalogs[key].pass);
+		handlebarsContext.opdsCatalog.pass = await storage.safe.decrypt(opdsCatalogs[key].pass);
 
 		events.dialog({
 			header: language.global.catalogs,
