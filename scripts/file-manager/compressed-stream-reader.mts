@@ -88,7 +88,7 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 
 			try
 			{
-				const files = task.map(file => {
+				const files = task.map((file) => {
 					const name = fileManager.removePathPart(file.path, compressed);
 					const originalName = fileManager.originalName(name).replace(/\\/g, '/');
 
@@ -108,7 +108,7 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 					buffer: extracted[index]!,
 				}));
 			}
-			catch(error)
+			catch (error)
 			{
 				await archive.close();
 				throw error;
