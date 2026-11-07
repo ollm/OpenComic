@@ -113,17 +113,17 @@ var epub = function(path, config = {}) {
 			if(this.format === 'fb2')
 			{
 				if(foliateFb2 === false)
-					foliateFb2 = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/fb2.js')));
+					foliateFb2 = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/fb2.js'))).href);
 
 				this.epub = await foliateFb2.makeFB2(file);
 			}
 			else
 			{
 				if(foliateMobi === false)
-					foliateMobi = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/mobi.js')));
+					foliateMobi = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/mobi.js'))).href);
 
 				if(foliateFflate === false)
-					foliateFflate = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/vendor/fflate.js')));
+					foliateFflate = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/vendor/fflate.js'))).href);
 
 				this.epub = await new foliateMobi.MOBI({unzlib: foliateFflate.unzlibSync}).open(file);
 			}
@@ -133,7 +133,7 @@ var epub = function(path, config = {}) {
 		}
 
 		if(foliate === false)
-			foliate = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/epub.js')));
+			foliate = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/foliate-js/epub.js'))).href);
 
 		await this.findContentOpf();
 

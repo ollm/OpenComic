@@ -109,6 +109,7 @@ const electron = require('electron'),
 	os = require('os'),
 	crypto = require('crypto'),
 	p = require('path'),
+	nodeUrl = require('node:url'),
 	isEqual = require('node:util').isDeepStrictEqual,
 	shortWindowsPath = require('short-windows-path'),
 	$ = require('jquery');
@@ -708,7 +709,7 @@ async function loadShoSho()
 
 	importPromises.ShoSho = new Promise(async function(resolve){
 
-		ShoSho = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/shosho/dist/index.js')));
+		ShoSho = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/shosho/dist/index.js'))).href);
 		ShoSho = ShoSho.default;
 
 		resolve();
@@ -729,7 +730,7 @@ async function loadPdfjs()
 
 	importPromises.unpdf = new Promise(async function(resolve){
 
-		unpdf = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs')));
+		unpdf = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.mjs'))).href);
 		unpdf.GlobalWorkerOptions.workerSrc = asarToAsarUnpacked(p.join(appDir, 'node_modules/pdfjs-dist/build/pdf.worker.mjs'));
 
 		resolve();
@@ -751,7 +752,7 @@ async function loadPdfjsDecoders()
 
 	importPromises.pdfjsDecoders = new Promise(async function(resolve){
 
-		pdfjsDecoders = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs')));
+		pdfjsDecoders = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/pdfjs-dist/image_decoders/pdf.image_decoders.mjs'))).href);
 
 		pdfjsDecoders.JpxImage.setOptions({
 			useWasm: true,
@@ -778,7 +779,7 @@ async function loadFoliateJs()
 
 	importPromises.foliateJs = new Promise(async function(resolve){
 
-		foliateJs.opds = await import(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/foliate-js/opds.js')));
+		foliateJs.opds = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(__dirname, '..', 'node_modules/foliate-js/opds.js'))).href);
 
 		resolve();
 
@@ -791,7 +792,7 @@ async function loadFoliateJs()
 
 async function loadWebdav()
 {
-	let webdav = await import(asarToAsarUnpacked(p.join(appDir, 'node_modules/webdav/dist/web/index.js')));
+	let webdav = await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/webdav/dist/web/index.js'))).href);
 	return webdav;
 }
 
