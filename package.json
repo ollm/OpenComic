@@ -211,7 +211,7 @@
 			"!node_modules/onnxruntime-node/bin/napi-v6/+(linux|win32|darwin)/**",
 			"node_modules/onnxruntime-node/bin/napi-v6/${platform}/${arch}",
 			"!node_modules/7zip-native/prebuilds/**",
-			"node_modules/7zip-native/prebuilds/${os}-${arch}/**",
+			"node_modules/7zip-native/prebuilds/${platform}-${arch}/**",
 			"!node_modules/pdfjs-dist/",
 			"node_modules/pdfjs-dist/build/pdf.mjs",
 			"node_modules/pdfjs-dist/build/pdf.worker.mjs",
