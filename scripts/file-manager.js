@@ -170,40 +170,57 @@ var file = function(path, _config = false) {
 		return this.config.filtered ? filtered(files, this.config.specialFiles) : files;
 	}
 
-	this.readDir = function(path = false, _realPath = false) {
+	this.readDir = async function(path = false, _realPath = false) {
 
 		path = path || this.path;
 		_realPath = _realPath || realPath(path, -1);
 
-		let _this = this;
-
 		this.macosStartAccessingSecurityScopedResource(_realPath);
 
-		return fsp.readdir(_realPath, {withFileTypes: !_this.config.fastRead}).then(function(_files){
+		const _files = await fsp.readdir(_realPath, {withFileTypes: !this.config.fastRead});
+		let files = [];
 
-			let files = [];
-
-			if(_files)
+		if(_files)
+		{
+			for(const file of _files)
 			{
-				for(let i = 0, len = _files.length; i < len; i++)
+				const name = this.config.fastRead ? file : file.name;
+
+				const filePath = fastJoin(path, name);
+				const retrunPath = filePath;
+
+				let isDirectory = false;
+
+				if(!this.config.fastRead)
 				{
-					let name = _this.config.fastRead ? _files[i] : _files[i].name;
+					if(file.isDirectory())
+					{
+						isDirectory = true;
+					}
+					else if(file.isSymbolicLink())
+					{
+						try
+						{
+							isDirectory = (await fsp.stat(fastJoin(_realPath, name))).isDirectory();
+						}
+						catch(error)
+						{
+							console.error(error);
+						}
+					}
 
-					let filePath = fastJoin(path, name);
-					let retrunPath = filePath;
-
-					if(!_this.config.fastRead && _files[i].isDirectory())
-						files.push({name: name, path: retrunPath, folder: true, compressed: false});
-					else if(compatible.compressed(filePath))
-						files.push({name: name, path: retrunPath, folder: false, compressed: true});
-					else
-						files.push({name: name, path: retrunPath, folder: false, compressed: false});
 				}
+
+				if(isDirectory)
+					files.push({name: name, path: retrunPath, folder: true, compressed: false});
+				else if(compatible.compressed(filePath))
+					files.push({name: name, path: retrunPath, folder: false, compressed: true});
+				else
+					files.push({name: name, path: retrunPath, folder: false, compressed: false});
 			}
+		}
 
-			return files;
-
-		});
+		return files;
 
 	}
 
