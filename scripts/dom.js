@@ -247,7 +247,8 @@ async function readFilesIndexPage(path, mainPath, fromGoBack, notAutomaticBrowsi
 		return {
 			path: path,
 			mainPath: mainPath,
-			files: []
+			error: error,
+			files: [],
 		};
 	}
 
@@ -1164,16 +1165,20 @@ async function loadIndexPage(animation = true, path = false, content = false, ke
 
 		if(ST === false)
 		{
-			contentRightScroll.html(indexData.html);
+			if(!files.error)
+				contentRightScroll.html(indexData.html);
 		}
 		else
 		{
 			clearTimeout(ST);
 
-			if(!template._contentLeft().querySelector('.menu-list'))
-				dom.loadIndexContentLeft(animation);
-			
-			template.changeContentRight(indexData.html, animation, keepScroll);
+			if(!files.error)
+			{
+				if(!template._contentLeft().querySelector('.menu-list'))
+					dom.loadIndexContentLeft(animation);
+				
+				template.changeContentRight(indexData.html, animation, keepScroll);
+			}
 		}
 
 		if(keepScroll > 1)

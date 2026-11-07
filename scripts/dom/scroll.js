@@ -114,7 +114,7 @@ function addToQueue(sha)
 				}
 				catch(error)
 				{
-					console.error(error);
+					console.error(error, path);
 
 					dom.compressedError(error, false);
 					fileManager.requestFileAccess.check(path, error);
