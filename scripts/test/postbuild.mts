@@ -14,11 +14,10 @@ let checkSome = false;
 
 function native7zip(base: string, platform: string, arch: string)
 {
-	const path = `7zip-native/prebuilds/${platform}-${arch}/`;
 	const engine = platform === 'win32' ? '7z.dll' : platform === 'darwin' ? 'lib7z.dylib' : '7z.so';
 
-	exists(base, `${path}7zip_native.node`, fs.constants.R_OK);
-	exists(base, `${path}${engine}`, fs.constants.R_OK);
+	exists(base, '7zip-native/build/Release/7zip_native.node', fs.constants.R_OK);
+	exists(base, `7zip-native/prebuilds/${platform}-${arch}/${engine}`, fs.constants.R_OK);
 }
 
 if(process.platform == 'darwin')
