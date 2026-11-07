@@ -143,7 +143,7 @@ const readingPagesConfig = {
 		upscale: {
 			active: false,
 			model: 'opencomic-ai-upscale-fast-v3',
-			maxMegapixels: 1.5,
+			maxMegapixels: 2,
 			scale: 4,
 			noise: 0,
 			autoScale: true,

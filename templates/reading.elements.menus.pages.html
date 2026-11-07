@@ -870,7 +870,7 @@
 				</div>
 
 				<div class="simple-slider reading-ai-upscale-max-megapixels gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 8px;">
-					<div class="simple-slider-text">{{language.reading.pages.maxMegapixels}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="1" style="right: 80px;">undo</i><span>{{normalizeNumber _config.readingAi.upscale.maxMegapixels "0.1"}}</span>mpx</div></div>
+					<div class="simple-slider-text">{{language.reading.pages.maxMegapixels}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="2" style="right: 80px;">undo</i><span>{{normalizeNumber _config.readingAi.upscale.maxMegapixels "0.1"}}</span>mpx</div></div>
 					<div class="range">
 						<div class="range-position">
 							<span class="range-line" style="width: 100%"></span>
@@ -879,7 +879,7 @@
 								<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
 							</div>
 						</div>
-						<input type="range" max="6" min="0.2" step="0.1" value="{{_config.readingAi.upscale.maxMegapixels}}" onrange="reading.ai.change('upscale', 'maxMegapixels', \{{value}}, \{{toEnd}})">
+						<input type="range" max="50" min="0.2" step="0.1" value="{{_config.readingAi.upscale.maxMegapixels}}" onrange="reading.ai.change('upscale', 'maxMegapixels', \{{value}}, \{{toEnd}})">
 					</div>
 				</div>
 
