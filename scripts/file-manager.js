@@ -2134,25 +2134,6 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 	}
 
-	this.fixUnsupportedCharsInWindows = function(path) {
-
-		if(process.platform !== 'win32')
-			return path;
-
-		// Replace dots and spaces at the end of the filename
-		path = path.replace(/([\. ]+)([\\\/]|$)/g, function(match, unsupported, separator) {
-
-			return '_'.repeat(unsupported.length)+separator;
-
-		});
-
-		// Replace unsupported characters
-		path = path.replace(/[<>:|?*"]/g, '_');
-
-		return path;
-
-	}
-
 	// 7z
 	this._7z = false;
 
@@ -2193,7 +2174,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 						continue;
 
 					const originalName = self.removeTmp(p.normalize(entry.path));
-					const name = self.fixUnsupportedCharsInWindows(originalName);
+					const name = self.removeTmp(p.normalize(entry.extractedPath));
 					const same = originalName === name ? true : false;
 
 					files.push({name: name, fixedName: (!same ? name : ''), originalName: (!same ? originalName : ''), path: p.join(self.path, name), fileSize: Number(entry.size)});
@@ -2228,7 +2209,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		const onlyLen = this.config._only ? this.config._only.length : false;
 
-		// Use the original file name and not the extracted one, which may be different on Windows due to incompatibility with certain characters (fixUnsupportedCharsInWindows)
+		// Use original archive paths for selection; extractedPath is the platform-adjusted output name.
 		for(let i = 0; i < onlyLen; i++)
 		{
 			const file = this.config._only[i];

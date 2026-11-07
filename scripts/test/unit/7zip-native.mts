@@ -74,6 +74,7 @@ describe('7zip-native', function() {
 
 				assert.ok(entries.length > 0);
 				assert.ok(entry);
+				assert.strictEqual(entry.extractedPath, p.normalize(entry.path));
 				assert.strictEqual((await archive.getEntry(entry.id))?.path, entry.path);
 
 				const buffer = await archive.extract(entry.id);

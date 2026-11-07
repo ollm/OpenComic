@@ -95,7 +95,7 @@
 		"@aws-sdk/client-s3": "^3.1161.0",
 		"@electron/remote": "^2.1.4",
 		"@toondepauw/node-zstd": "^2.0.0",
-		"7zip-native": "^0.0.10",
+		"7zip-native": "^0.0.14",
 		"atomically": "^2.1.1",
 		"basic-ftp": "^6.2.5",
 		"bezier-js": "^6.1.4",
