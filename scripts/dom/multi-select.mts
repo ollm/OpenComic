@@ -248,6 +248,9 @@ function selectItem(item: SelectedItem): void {
 	if(selectedItems.type !== null && selectedItems.type !== item.type)
 		return;
 
+	if(item.element.closest('.box-content'))
+		return;
+
 	item.element.classList.add('multi-select');
 
 	if(!selectedItems.items.some(selectedItem => selectedItem.element === item.element))

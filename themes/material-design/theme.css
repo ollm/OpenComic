@@ -2762,6 +2762,7 @@ a:hover
 {
 	stroke: var(--md-sys-color-on-primary-light);
 	stroke: var(--md-sys-color-primary-container-light);
+	stroke: var(--md-sys-color-inverse-primary);
 }
 
 .loading > svg > circle:nth-child(2)

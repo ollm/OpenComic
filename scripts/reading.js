@@ -3613,7 +3613,7 @@ function getConfig(path = false, mainPath = '', key = false, _copy = false, pare
 			else
 				configData = {...configData, ...readingPagesConfig, key: readingPagesConfig.configKey};
 		}
-		else
+		else if(path)
 		{
 			key = getLabelConfigKey(path);
 			configData.key = key;

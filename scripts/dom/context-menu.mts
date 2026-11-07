@@ -372,7 +372,8 @@ async function preprocessImagesWithAI(): Promise<void> {
 
 	const updateProgress = function(i: number) {
 
-		events.buttonLoading(button, i / len);
+		const button = document.querySelector('.snackbar .preprocess-images-with-ai-progress-button');
+		if(button) events.buttonLoading(button, i / len);
 		snackbar(i);
 
 	};
