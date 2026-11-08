@@ -46,7 +46,11 @@ describe('packaged 7zip-native', function() {
 					global.document = {baseURI: pathToFileURL(process.argv[1] + '/index.html').href};
 					global.asarToAsarUnpacked = path => path.replace(/(^|[\\\\/])app(-(?:arm64|x64))?\\.asar(?=[\\\\/])/, '$1app$2.asar.unpacked');
 					(async () => {
-						const {default: native7z} = await import(pathToFileURL(process.argv[1] + '/.dist/7zip-native.mjs').href);
+						const moduleUrl = pathToFileURL(process.argv[1] + '/.dist/7zip-native.mjs').href;
+						const {default: importedNative7z} = await import(moduleUrl);
+						const requiredNative7z = require(process.argv[1] + '/.dist/7zip-native.mjs').default;
+						if (requiredNative7z !== importedNative7z) throw new Error('7zip-native loader was initialized more than once');
+						const native7z = importedNative7z;
 						const {Archive} = await native7z;
 						await Archive.create(process.argv[2], [{sourcePath: process.argv[3], path: 'input.txt'}]);
 						const archive = await Archive.open(process.argv[2]);
