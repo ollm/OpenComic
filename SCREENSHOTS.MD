@@ -6,6 +6,7 @@
 
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize.png "Colorize")
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize-menu.png "Colorize menu")
+![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/colorize-menu-2.png "Colorize menu 2")
 
 ### eBook (Epub)
 
@@ -21,3 +22,8 @@
 #### Shortcuts (Keyboard and Gamepad)
 
 ![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/shortcuts.png "Shortcuts (Keyboard and Gamepad)")
+![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/shortcuts-2.png "Shortcuts 2 (Keyboard and Gamepad)")
+
+#### AI tools
+
+![Screenshot](https://raw.githubusercontent.com/ollm/OpenComic/master/images/screenshots/ai-tools.png "AI tools")
