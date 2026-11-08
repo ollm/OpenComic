@@ -70,7 +70,7 @@ function save(path = false, mainPath = false, hasKnownChildren = false)
 
 	storage.setKey('readingProgress', relative.path(mainPath), {
 		index: currentPage,
-		path: relative.path(path.replace(/\?page=[0-9]+$/, '')),
+		path: relative.path(dom.removePageParam(path)),
 		lastReading: Date.now(),
 		ebook: reading.isEbook(),
 		progress: progress,

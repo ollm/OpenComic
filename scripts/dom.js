@@ -1854,6 +1854,11 @@ function goStartPath()
 		loadIndexPage(true, false);
 }
 
+function removePageParam(path)
+{
+	return path.replace(/\?page=[0-9]+$/, '');
+}
+
 var barBackStatus = false;
 
 // This needs to be improved more, if is from fromNextAndPrev, consider changing the previous route/path
@@ -1883,7 +1888,7 @@ function indexPathControl(path = false, mainPath = false, isComic = false, fromN
 			{
 				history.update(page);
 			}
-			else if(!current || current.path !== path || current.mainPath !== mainPath || current.isComic !== isComic)
+			else if(!current || removePageParam(current.path || '') !== removePageParam(path) || current.mainPath !== mainPath || current.isComic !== isComic)
 			{
 				if(!history.fromGoForwards())
 					history.cleanForwards();
@@ -2999,7 +3004,7 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 	onReading = _onReading = true;
 
 	// Remove page param in epub files
-	path = path.replace(/\?page=\d+/, '');
+	path = removePageParam(path);
 
 	setCurrentPathScrollTop(path);
 
@@ -3102,6 +3107,15 @@ async function openComic(animation = true, path = true, mainPath = true, end = f
 
 	if(!fromGoBack)
 		indexPathControl(imagePath, mainPath, true, fromNextAndPrev);
+
+	if(isEbook && readingProgress?.ebook)
+	{
+		const readingProgressBookPath = fileManager.lastCompressedFile(readingProgress.path);
+		const imageBookPath = fileManager.lastCompressedFile(imagePath);
+
+		if(readingProgressBookPath && imageBookPath && p.normalize(readingProgressBookPath) === p.normalize(imageBookPath))
+			reading.setNextOpenChapterProgress(readingProgress.chapterIndex, readingProgress.chapterProgress);
+	}
 
 	readingActive = true;
 
@@ -3303,6 +3317,7 @@ module.exports = {
 	_getFolderThumbnails: _getFolderThumbnails,
 	translatePageName: translatePageName,
 	metadataPathName: metadataPathName,
+	removePageParam: removePageParam,
 	setWindowTitle: setWindowTitle,
 	fromLibrary: fromLibrary,
 	continueReadingError: continueReadingError,
