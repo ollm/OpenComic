@@ -1295,18 +1295,19 @@ async function restartRender(index)
 
 } 
 
-async function jobEndedRenderedEbook(event, index, pages)
+async function jobEndedRenderedEbook(event, index, pagesJson)
 {
 	averageJobTimes.push(performance.now() - averageJobTimesStatus[index]);
 
 	renderHasResponded(index);
 
+	const pages = JSON.parse(pagesJson);
 	await renders[index].job.callback(pages);
 	renders[index].job = false;
 	nextJobToRender(index);
 }
 
-async function jobEndedRenderedPage(event, index, pages)
+async function jobEndedRenderedPage(event, index)
 {
 	averageJobTimes.push(performance.now() - averageJobTimesStatus[index]);
 

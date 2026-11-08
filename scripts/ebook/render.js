@@ -37,7 +37,7 @@ async function process(data)
 
 		const pages = await book.splitInPages(data.html.documentElement, data.basePath, data.path, data.chapter);
 
-		ipcRenderer.send('rendered-ebook', data.index, pages);
+		ipcRenderer.send('rendered-ebook', data.index, JSON.stringify(pages));
 		removeDocumentIframes();
 	}
 	else if(data.type == 'render-page')
@@ -56,7 +56,7 @@ async function process(data)
 
 				window.requestAnimationFrame(function(){
 
-					ipcRenderer.send('rendered-page', data.index, pages);
+					ipcRenderer.send('rendered-page', data.index);
 
 				});
 
