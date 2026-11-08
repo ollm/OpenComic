@@ -1,7 +1,7 @@
 import p from 'path';
 import fs from 'fs';
 import download from '../download.mjs';
-import {Archive} from '7zip-native';
+import native7z from '../7zip-native.mjs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const app: any;
@@ -146,6 +146,7 @@ async function install(id: string, update = false)
 
 		await download(`https://opencomic.app/themes/${id}.zip`, zipPath, 'Downloading theme...');
 
+		const {Archive} = await native7z;
 		const archive = await Archive.open(zipPath);
 
 		try

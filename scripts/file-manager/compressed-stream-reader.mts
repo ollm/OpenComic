@@ -1,4 +1,4 @@
-import {Archive} from '7zip-native';
+import native7z from '../7zip-native.mjs';
 
 import {OptimalThreads} from '@types';
 
@@ -83,6 +83,7 @@ async function _getBuffers({compressed, realPath, items, optimalThreads}: Group)
 	{
 		promises.push(threads.job('7zStreamReader', {useThreads: optimalThreads.extract}, async function(): Promise<BufferWithIndex[]> {
 
+			const {Archive} = await native7z;
 			const archive = await Archive.open(realPath, {
 				password: await fileManager.filePassword.get(compressed),
 				deflateBufferSize: 1024 * 32,

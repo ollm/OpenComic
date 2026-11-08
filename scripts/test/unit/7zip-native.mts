@@ -4,7 +4,10 @@ import {mkdtemp, readFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {Writable} from 'node:stream';
 import p from 'node:path';
-import {Archive, ArchiveError} from '7zip-native';
+
+Object.assign(globalThis, {asarToAsarUnpacked: (path: string) => path});
+const {default: native7z} = await import('../../7zip-native.mjs');
+const {Archive, ArchiveError} = await native7z;
 
 const ___dirname = typeof __dirname !== 'undefined' ? __dirname : import.meta.dirname;
 const filesDir = p.join(___dirname, '../../../scripts/test/files');

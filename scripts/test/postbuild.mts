@@ -16,7 +16,9 @@ function native7zip(base: string, platform: string, arch: string)
 {
 	const engine = platform === 'win32' ? '7z.dll' : platform === 'darwin' ? 'lib7z.dylib' : '7z.so';
 
-	exists(base, '7zip-native/build/Release/7zip_native.node', fs.constants.R_OK);
+	exists(base, '7zip-native/package.json', fs.constants.R_OK);
+	exists(base, '7zip-native/dist/index.mjs', fs.constants.R_OK);
+	exists(base, `7zip-native/prebuilds/${platform}-${arch}/7zip_native.node`, fs.constants.R_OK);
 	exists(base, `7zip-native/prebuilds/${platform}-${arch}/${engine}`, fs.constants.R_OK);
 }
 

@@ -19,6 +19,8 @@ if(process.platform == 'darwin')
 	existsRegex(darwin, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
 	// 7zip
+	exists(darwin, '7zip-native/package.json', fs.constants.R_OK);
+	exists(darwin, '7zip-native/dist/index.mjs', fs.constants.R_OK);
 	exists(darwin, '7zip-native/prebuilds/darwin-arm64/7zip_native.node', fs.constants.R_OK);
 	exists(darwin, '7zip-native/prebuilds/darwin-arm64/lib7z.dylib', fs.constants.R_OK);
 	exists(darwin, '7zip-native/prebuilds/darwin-x64/7zip_native.node', fs.constants.R_OK);

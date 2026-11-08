@@ -1,7 +1,7 @@
 import p from 'path';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import {Archive} from '7zip-native';
+import native7z from '../7zip-native.mjs';
 
 import driver from './driver.mjs';
 
@@ -46,6 +46,7 @@ async function save() {
 
 	try
 	{
+		const {Archive} = await native7z;
 		await Archive.create(p.join(path, name), files.map(file => ({
 			sourcePath: file,
 			path: p.basename(file),
