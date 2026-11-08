@@ -179,6 +179,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 		return;
 	}
 
+	// Get path from command line arguments
 	for(let i = 1; i < len; i++)
 	{
 		const arg = argv[i];
@@ -186,19 +187,31 @@ electronRemote.app.on('second-instance', function(event, argv) {
 		if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 		{
 			if(config.openFilesInNewTab)
-			{
 				openPathInNewTab(arg, arg);
-				return;
-			}
 			else if(config.openFilesInNewWindow)
-			{
 				openPathInNewWindow(arg);
-				return;
-			}
+			else
+				openComic(arg, true);
 
-			openComic(arg, true);
 			return;
 		}
+	}
+
+	// Get path from --path argument
+	const path = getArgValue(argv, '--path', false);
+
+	if(path && fs.existsSync(path))
+	{
+		const mainPath = getArgValue(argv, '--main-path', false);
+
+		if(config.openFilesInNewTab)
+			openPathInNewTab(path, mainPath || path);
+		else if(config.openFilesInNewWindow)
+			openPathInNewWindow(path, mainPath || '');
+		else
+			openComic(path, true, mainPath);
+
+		return;
 	}
 
 	openEmptyNewWindow();
@@ -377,7 +390,7 @@ function getArgValue(argv, flag, defaultValue = null)
 {
 	const arg = argv.find(a => a.startsWith(flag+'='));
 	if(!arg) return defaultValue;
-	return arg.split('=')[1];
+	return arg.slice(flag.length + 1);
 }
 
 let initHistory = false;
