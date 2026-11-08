@@ -2159,7 +2159,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 		// Not support this cache
 		// if(this._7z) return this._7z;
 
-		if(native7z === false) native7z = require('7zip-native').Archive;
+		if(native7z === false) native7z = require(asarToAsarUnpacked(p.join(appDir, 'node_modules/7zip-native'))).Archive;
 
 		this.macosStartAccessingSecurityScopedResource(this.realPath);
 
