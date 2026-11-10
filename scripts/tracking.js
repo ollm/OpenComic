@@ -812,8 +812,9 @@ function getTitle(full = false)
 			title = dom.history.mainPath ? p.basename(dom.history.mainPath) : '';
 	}
 
-	// Try detect end of name
-	title = title.replace(/(?:[\.\-_:;]|\sv[0-9]+).*/, '', title).trim();
+	// Treat only spaced dashes as separators in full titles.
+	const endOfTitle = full ? /(?:[._:;]|\s-\s|\sv[0-9]+).*/ : /(?:[\.\-_:;]|\sv[0-9]+).*/;
+	title = title.replace(endOfTitle, '').trim();
 
 	// return only first 4 words to avoid incorrect words from the end of the filename
 	if(!full)
