@@ -840,12 +840,12 @@ function getTitle(full = false)
 
 	for(const regex of regexs.chapter.reliablePatterns)
 	{
-		title = title.replace(new RegExp('[\(\[\{\.\-_:;]?' + regex.source + '.*$', 'iu'), '').trim();
+		title = title.replace(new RegExp(regex.source + '.*$', 'iu'), '').trim();
 	}
 	
 	title = title.replace(/(\(\)|\[\]).*$/iug, '');
 	title = title.replace(/(\[\]).*$/iug, '');
-	title = title.replace(/([ _,.-])$/iu, '').trim();
+	title = title.replace(/([ _,.:;()[\]<>-])+$/u, '').trim();
 
 	// return only first 4 words to avoid incorrect words from the end of the filename
 	if(!full)
