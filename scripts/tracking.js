@@ -825,12 +825,11 @@ function getTitle(full = false)
 		}
 
 		// See: https://github.com/ollm/OpenComic/issues/638 and https://github.com/ollm/OpenComic/issues/663
+		// TODO: Consider whether to use fileTitle only when compatible.compressed(path) is true, as was done before: https://github.com/ollm/OpenComic/commit/976778b76b0cf24eb2f8ff4fd299723528465dca
 		if(fileTitlePurning.length > 10)
 			title = fileTitle;
 		else
 			title = parentTitle;
-
-		console.log('fileTitle:', fileTitle, 'fileTitlePurning:', fileTitlePurning, fileTitlePurning.length);
 	}
 
 	// Remove volume and chapter indicators to the end of the title
