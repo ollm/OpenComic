@@ -304,15 +304,14 @@ function getCustomModels(key, cache = true)
 	const parameters = [
 		'scale',
 		'tileSize',
-		'tileSizeFromMem128',
+		'tileSizeFromMem',
 		'tileAlignment',
 		'fp32'
 	];
 
 	const getParameterValue = function(name, content) {
 
-		const match = content.match(new RegExp(`${name}=([a-zA-Z0-9.]+)`, 'iu'));
-		console.log(match);
+		const match = content.match(new RegExp(`${name}=([a-zA-Z0-9.,_+]+)`, 'iu'));
 		let value = match ? match[1] : null;
 
 		if(!isNaN(value))
@@ -326,7 +325,7 @@ function getCustomModels(key, cache = true)
 
 		for(const name of parameters)
 		{
-			content = content.replace(new RegExp(`${name}=([a-zA-Z0-9]+)`, 'iu'), '');
+			content = content.replace(new RegExp(`${name}=([a-zA-Z0-9.,_+]+)`, 'iu'), '');
 		}
 
 		return content.replace(/([ _,.-])\1+/g, '$1').replace(/([ _,.-])$/g, '');
@@ -360,7 +359,7 @@ function getCustomModels(key, cache = true)
 			}
 
 			const tileSize = getParameterValue('tileSize', name);
-			const tileSizeFromMem128 = getParameterValue('tileSizeFromMem128', name);
+			const tileSizeFromMem = getParameterValue('tileSizeFromMem', name);
 			const tileAlignment = getParameterValue('tileAlignment', name);
 			let fp32 = getParameterValue('fp32', name);
 			fp32 = fp32 && fp32 !== 'false';
@@ -368,7 +367,7 @@ function getCustomModels(key, cache = true)
 			baseName = removeParameters(baseName);
 
 			if(!grouped[baseName])
-				grouped[baseName] = {scales: [], tileSize: false, tileSizeFromMem128: false, tileAlignment: false, fp32: false, files: {}};
+				grouped[baseName] = {scales: [], tileSize: false, tileSizeFromMem: false, tileAlignment: false, fp32: false, files: {}};
 
 			const group = grouped[baseName];
 
@@ -380,7 +379,7 @@ function getCustomModels(key, cache = true)
 
 			group.files[name][type] = file;
 			group.tileSize = group.tileSize || tileSize;
-			group.tileSizeFromMem128 = group.tileSizeFromMem128 || tileSizeFromMem128;
+			group.tileSizeFromMem = group.tileSizeFromMem || (tileSizeFromMem ? OpenComicAI.tileMemoryProfiles[tileSizeFromMem] || tileSizeFromMem.replace(/[_+]/g, ':') : false);
 			group.tileAlignment = group.tileAlignment || tileAlignment;
 			group.fp32 = group.fp32 || fp32;
 		}
@@ -412,7 +411,7 @@ function getCustomModels(key, cache = true)
 			if(files.length === 0)
 				continue;
 
-			const {tileSize, tileSizeFromMem128, tileAlignment, fp32} = group;
+			const {tileSize, tileSizeFromMem, tileAlignment, fp32} = group;
 
 			const model = {
 				key: baseName,
@@ -420,7 +419,7 @@ function getCustomModels(key, cache = true)
 				type: type,
 				upscaler: 'upscayl',
 				tileSize: tileSize || 0,
-				tileSizeFromMem128: tileSizeFromMem128 || 645,
+				tileSizeFromMem: tileSizeFromMem || OpenComicAI.tileMemoryProfiles.ESRGAN_Upscale,
 				tileAlignment: tileAlignment || 4,
 				fp32: fp32 || false,
 				scales: group.scales,
@@ -432,7 +431,7 @@ function getCustomModels(key, cache = true)
 				scaleFiles: scaleFiles,
 			};
 
-			console.log(model);
+			// console.log(model);
 
 			OpenComicAI.setCustomModel(model);
 			result.push(modelKey);

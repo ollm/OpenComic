@@ -813,6 +813,7 @@ function getTitle(full = false)
 	}
 
 	// Treat only spaced dashes as separators in full titles.
+	// TODO: Consider applying this always to titles.
 	const endOfTitle = full ? /(?:[._:;]|\s-\s|\sv[0-9]+).*/ : /(?:[\.\-_:;]|\sv[0-9]+).*/;
 	title = title.replace(endOfTitle, '').trim();
 

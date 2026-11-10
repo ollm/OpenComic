@@ -108,7 +108,8 @@ function pipeline(src, imageSize)
 	if(descreen.active)
 	{
 		const descreenMaskModel = 'opencomic-ai-descreen-mask-fast-v3-256';
-		const artifactRemovalModel = 'opencomic-ai-artifact-removal-compact-v2'; // TODO: 'opencomic-ai-artifact-removal-balanced-v3-ps' produces artifacts in some images
+		// const artifactRemovalModel = 'opencomic-ai-artifact-removal-compact-v2'; // TODO: 'opencomic-ai-artifact-removal-balanced-v3-ps' produces artifacts in some images
+		const artifactRemovalModel = 'opencomic-ai-artifact-removal-balanced-v3-ps'; // TODO: With tileAlignment the artifacts might be fixed
 
 		_pipeline.push({
 			model: reading.ai.removeCustomKey(descreen.model),
