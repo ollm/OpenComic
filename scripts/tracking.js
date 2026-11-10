@@ -803,19 +803,50 @@ function getTitle(full = false)
 
 	if(!title)
 	{
-		// Disabled because archive filenames usually contain the volume/chapter
+		const fileTitle = p.basename(path).replace(/\.[^/.]+$/, '');
+		const parentTitle = dom.history.mainPath ? p.basename(dom.history.mainPath) : '';
+
+		// Archive filenames usually contain the volume/chapter
 		// name rather than the series name, resulting in an incorrect title.
 		// See: https://github.com/ollm/OpenComic/issues/638
-		// if(compatible.compressed(path))
-		// 	title = p.basename(path).replace(/\.[^/.]+$/, '');
-		// else
-			title = dom.history.mainPath ? p.basename(dom.history.mainPath) : '';
+
+		// Remove volume and chapter indicators from the file title to detect if ends empty
+		// See: https://github.com/ollm/OpenComic/issues/638 and https://github.com/ollm/OpenComic/issues/663
+		let fileTitlePurning = fileTitle;
+
+		for(const regex of regexs.volume.reliablePatterns)
+		{
+			fileTitlePurning = fileTitlePurning.replace(regex, '').trim();
+		}
+
+		for(const regex of regexs.chapter.reliablePatterns)
+		{
+			fileTitlePurning = fileTitlePurning.replace(regex, '').trim();
+		}
+
+		// See: https://github.com/ollm/OpenComic/issues/638 and https://github.com/ollm/OpenComic/issues/663
+		if(fileTitlePurning.length > 10)
+			title = fileTitle;
+		else
+			title = parentTitle;
+
+		console.log('fileTitle:', fileTitle, 'fileTitlePurning:', fileTitlePurning, fileTitlePurning.length);
 	}
 
-	// Treat only spaced dashes as separators in full titles.
-	// TODO: Consider applying this always to titles.
-	const endOfTitle = full ? /(?:[._:;]|\s-\s|\sv[0-9]+).*/ : /(?:[\.\-_:;]|\sv[0-9]+).*/;
-	title = title.replace(endOfTitle, '').trim();
+	// Remove volume and chapter indicators to the end of the title
+	for(const regex of regexs.volume.reliablePatterns)
+	{
+		title = title.replace(new RegExp(regex.source + '.*$', 'iu'), '').trim();
+	}
+
+	for(const regex of regexs.chapter.reliablePatterns)
+	{
+		title = title.replace(new RegExp('[\(\[\{\.\-_:;]?' + regex.source + '.*$', 'iu'), '').trim();
+	}
+	
+	title = title.replace(/(\(\)|\[\]).*$/iug, '');
+	title = title.replace(/(\[\]).*$/iug, '');
+	title = title.replace(/([ _,.-])$/iu, '').trim();
 
 	// return only first 4 words to avoid incorrect words from the end of the filename
 	if(!full)
@@ -1031,6 +1062,7 @@ function regexVolume()
 
 	const regexsEnd = [
 		/巻/, // Japanese
+		/卷/, // Chinese
 	];
 
 	const regexsMin = [
