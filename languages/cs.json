@@ -599,12 +599,12 @@
 			"originalSize": "",
 			"zoomIn": "Přiblížit",
 			"zoomOut": "Oddálit",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Posunout nahoru",
+			"zoomDown": "Posunout dolů",
+			"zoomLeft": "Posunout doleva",
+			"zoomRight": "Posunout doprava",
+			"zoomToTop": "Posunout na začátek stránky",
+			"zoomToBottom": "Posunout na konec stránky",
 			"toggleFullScreen": "Na celou obrazovku"
 		},
 		"goto": {

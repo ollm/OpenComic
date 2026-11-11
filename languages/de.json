@@ -599,12 +599,12 @@
 			"originalSize": "Originalgröße",
 			"zoomIn": "Reinzoomen",
 			"zoomOut": "Rauszoomen",
-			"zoomUp": "Nach oben zoomen",
-			"zoomDown": "Nach unten zoomen",
-			"zoomLeft": "Nach links zoomen",
-			"zoomRight": "Nach rechts zoomen",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Ansicht nach oben verschieben",
+			"zoomDown": "Ansicht nach unten verschieben",
+			"zoomLeft": "Ansicht nach links verschieben",
+			"zoomRight": "Ansicht nach rechts verschieben",
+			"zoomToTop": "Ansicht zum Seitenanfang verschieben",
+			"zoomToBottom": "Ansicht zum Seitenende verschieben",
 			"toggleFullScreen": "Vollbildschirm"
 		},
 		"goto": {

@@ -599,12 +599,12 @@
 			"originalSize": "اندازه اصلی",
 			"zoomIn": "بزرگ کردن",
 			"zoomOut": "کوچک کردن",
-			"zoomUp": "جابجایی به بالا",
-			"zoomDown": "جابجایی به پایین",
-			"zoomLeft": "جابجایی به چپ",
-			"zoomRight": "جابجایی به راست",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "جابجایی نما به بالا",
+			"zoomDown": "جابجایی نما به پایین",
+			"zoomLeft": "جابجایی نما به چپ",
+			"zoomRight": "جابجایی نما به راست",
+			"zoomToTop": "جابجایی نما به بالای صفحه",
+			"zoomToBottom": "جابجایی نما به پایین صفحه",
 			"toggleFullScreen": "تمام‌صفحه"
 		},
 		"goto": {

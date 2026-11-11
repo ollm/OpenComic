@@ -599,12 +599,12 @@
 			"originalSize": "원본 크기",
 			"zoomIn": "확대",
 			"zoomOut": "축소",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "화면 위로 이동",
+			"zoomDown": "화면 아래로 이동",
+			"zoomLeft": "화면 왼쪽으로 이동",
+			"zoomRight": "화면 오른쪽으로 이동",
+			"zoomToTop": "페이지 맨 위로 이동",
+			"zoomToBottom": "페이지 맨 아래로 이동",
 			"toggleFullScreen": "전체 화면/원래 화면 전환"
 		},
 		"goto": {

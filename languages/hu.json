@@ -599,12 +599,12 @@
 			"originalSize": "",
 			"zoomIn": "Nagyítás",
 			"zoomOut": "Kicsinyítés",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Nézet mozgatása felfelé",
+			"zoomDown": "Nézet mozgatása lefelé",
+			"zoomLeft": "Nézet mozgatása balra",
+			"zoomRight": "Nézet mozgatása jobbra",
+			"zoomToTop": "Ugrás az oldal tetejére",
+			"zoomToBottom": "Ugrás az oldal aljára",
 			"toggleFullScreen": "Teljes képernyő"
 		},
 		"goto": {

@@ -599,12 +599,12 @@
 			"originalSize": "Mida original",
 			"zoomIn": "Ampliar zoom",
 			"zoomOut": "Reduir zoom",
-			"zoomUp": "Zoom cap amunt",
-			"zoomDown": "Zoom cap avall",
-			"zoomLeft": "Zoom cap a l'esquerra",
-			"zoomRight": "Zoom cap a la dreta",
-			"zoomToTop": "Zoom fins a dalt",
-			"zoomToBottom": "Zoom fins a baix",
+			"zoomUp": "Desplaça cap amunt",
+			"zoomDown": "Desplaça cap avall",
+			"zoomLeft": "Desplaça cap a l'esquerra",
+			"zoomRight": "Desplaça cap a la dreta",
+			"zoomToTop": "Desplaça fins a dalt de la pàgina",
+			"zoomToBottom": "Desplaça fins a baix de la pàgina",
 			"toggleFullScreen": "Pantalla completa"
 		},
 		"goto": {

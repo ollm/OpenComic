@@ -599,12 +599,12 @@
 			"originalSize": "Orijinal boyut",
 			"zoomIn": "Yakınlaştır",
 			"zoomOut": "Uzaklaştır",
-			"zoomUp": "Yukarı yakınlaştır",
-			"zoomDown": "Aşağı yakınlaştır",
-			"zoomLeft": "Sola yakınlaştır",
-			"zoomRight": "Sağa yakınlaştır",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Görünümü yukarı kaydır",
+			"zoomDown": "Görünümü aşağı kaydır",
+			"zoomLeft": "Görünümü sola kaydır",
+			"zoomRight": "Görünümü sağa kaydır",
+			"zoomToTop": "Sayfanın en üstüne kaydır",
+			"zoomToBottom": "Sayfanın en altına kaydır",
 			"toggleFullScreen": "Tam ekran"
 		},
 		"goto": {

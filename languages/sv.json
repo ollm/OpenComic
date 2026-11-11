@@ -599,12 +599,12 @@
 			"originalSize": "Standardstorlek",
 			"zoomIn": "Zooma in",
 			"zoomOut": "Zooma ut",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Panorera uppåt",
+			"zoomDown": "Panorera nedåt",
+			"zoomLeft": "Panorera åt vänster",
+			"zoomRight": "Panorera åt höger",
+			"zoomToTop": "Panorera till sidans början",
+			"zoomToBottom": "Panorera till sidans slut",
 			"toggleFullScreen": "Helskärmsläge"
 		},
 		"goto": {

@@ -599,12 +599,12 @@
 			"originalSize": "原始尺寸",
 			"zoomIn": "放大",
 			"zoomOut": "縮小",
-			"zoomUp": "向上縮放",
-			"zoomDown": "向下縮放",
-			"zoomLeft": "向左縮放",
-			"zoomRight": "向右縮放",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "向上平移",
+			"zoomDown": "向下平移",
+			"zoomLeft": "向左平移",
+			"zoomRight": "向右平移",
+			"zoomToTop": "平移到頁面頂部",
+			"zoomToBottom": "平移到頁面底部",
 			"toggleFullScreen": "全螢幕"
 		},
 		"goto": {

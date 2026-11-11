@@ -599,12 +599,12 @@
 			"originalSize": "Original size",
 			"zoomIn": "Zoom in",
 			"zoomOut": "Zoom out",
-			"zoomUp": "Zoom up",
-			"zoomDown": "Zoom down",
-			"zoomLeft": "Zoom left",
-			"zoomRight": "Zoom right",
-			"zoomToTop": "Zoom to top",
-			"zoomToBottom": "Zoom to bottom",
+			"zoomUp": "Pan up",
+			"zoomDown": "Pan down",
+			"zoomLeft": "Pan left",
+			"zoomRight": "Pan right",
+			"zoomToTop": "Pan to the top of the page",
+			"zoomToBottom": "Pan to the bottom of the page",
 			"toggleFullScreen": "Full screen"
 		},
 		"goto": {

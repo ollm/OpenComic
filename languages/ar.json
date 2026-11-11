@@ -599,12 +599,12 @@
 			"originalSize": "الحجم الأصلي",
 			"zoomIn": "تكبير",
 			"zoomOut": "تصغير",
-			"zoomUp": "تكبير لأعلى",
-			"zoomDown": "تكبير لأسفل",
-			"zoomLeft": "تكبير لليسار",
-			"zoomRight": "تكبير لليمين",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "تحريك العرض إلى أعلى",
+			"zoomDown": "تحريك العرض إلى أسفل",
+			"zoomLeft": "تحريك العرض إلى اليسار",
+			"zoomRight": "تحريك العرض إلى اليمين",
+			"zoomToTop": "تحريك العرض إلى أعلى الصفحة",
+			"zoomToBottom": "تحريك العرض إلى أسفل الصفحة",
 			"toggleFullScreen": "التبديل إلى وضع كامل الشاشة"
 		},
 		"goto": {

@@ -599,12 +599,12 @@
 			"originalSize": "Độ lớn mặc định",
 			"zoomIn": "Phóng to",
 			"zoomOut": "Thu nhỏ",
-			"zoomUp": "",
-			"zoomDown": "",
-			"zoomLeft": "",
-			"zoomRight": "",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Cuộn lên",
+			"zoomDown": "Cuộn xuống",
+			"zoomLeft": "Cuộn sang trái",
+			"zoomRight": "Cuộn sang phải",
+			"zoomToTop": "Cuộn đến đầu trang",
+			"zoomToBottom": "Cuộn đến cuối trang",
 			"toggleFullScreen": "Toàn màn hình"
 		},
 		"goto": {

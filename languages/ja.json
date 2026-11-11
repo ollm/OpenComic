@@ -599,12 +599,12 @@
 			"originalSize": "元のサイズ",
 			"zoomIn": "ズーム イン",
 			"zoomOut": "ズーム アウト",
-			"zoomUp": "上にズーム",
-			"zoomDown": "下にズーム",
-			"zoomLeft": "左にズーム",
-			"zoomRight": "右にズーム",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "表示を上に移動",
+			"zoomDown": "表示を下に移動",
+			"zoomLeft": "表示を左に移動",
+			"zoomRight": "表示を右に移動",
+			"zoomToTop": "ページの先頭に移動",
+			"zoomToBottom": "ページの末尾に移動",
 			"toggleFullScreen": "全画面"
 		},
 		"goto": {

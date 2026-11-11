@@ -599,12 +599,12 @@
 			"originalSize": "Оригінальний розмір",
 			"zoomIn": "Збільшити",
 			"zoomOut": "Зменшити",
-			"zoomUp": "Зсунути вгору",
-			"zoomDown": "Зсунути вниз",
-			"zoomLeft": "Зсунути ліворуч",
-			"zoomRight": "Зсунути праворуч",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "Прокрутити вгору",
+			"zoomDown": "Прокрутити вниз",
+			"zoomLeft": "Перемістити вліво",
+			"zoomRight": "Перемістити вправо",
+			"zoomToTop": "Перейти до початку сторінки",
+			"zoomToBottom": "Перейти до кінця сторінки",
 			"toggleFullScreen": "Повний екран"
 		},
 		"goto": {

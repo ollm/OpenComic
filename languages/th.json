@@ -599,12 +599,12 @@
 			"originalSize": "ขนาดเดิม",
 			"zoomIn": "ซูมเข้า",
 			"zoomOut": "ซูมออก",
-			"zoomUp": "ซูมขึ้น",
-			"zoomDown": "ซูมลง",
-			"zoomLeft": "ซูมซ้าย",
-			"zoomRight": "ซูมขวา",
-			"zoomToTop": "",
-			"zoomToBottom": "",
+			"zoomUp": "เลื่อนมุมมองขึ้น",
+			"zoomDown": "เลื่อนมุมมองลง",
+			"zoomLeft": "เลื่อนมุมมองไปทางซ้าย",
+			"zoomRight": "เลื่อนมุมมองไปทางขวา",
+			"zoomToTop": "เลื่อนไปด้านบนสุดของหน้า",
+			"zoomToBottom": "เลื่อนไปด้านล่างสุดของหน้า",
 			"toggleFullScreen": "เต็มจอ"
 		},
 		"goto": {
