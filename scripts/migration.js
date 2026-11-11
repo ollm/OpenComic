@@ -421,7 +421,7 @@ function migrateDefaultModelsToOpenComicAiModels(data)
 
 	const models = {
 		artifactRemoval: 'opencomic-ai-artifact-removal-balanced-v3-ps',
-		descreen: 'opencomic-ai-descreen-hard-fast-v3-256',
+		descreen: 'opencomic-ai-descreen-hard-fast-v4-preview',
 		upscale: 'opencomic-ai-upscale-fast-v3'
 	};
 
@@ -457,7 +457,7 @@ function migrateOldOpenComicAiModelsToLastOpenComicAiModels(data)
 
     const models = {
         artifactRemoval: 'opencomic-ai-artifact-removal-balanced-v3-ps',
-        descreen: 'opencomic-ai-descreen-hard-fast-v3-256',
+        descreen: 'opencomic-ai-descreen-hard-fast-v4-preview',
         upscale: 'opencomic-ai-upscale-fast-v3'
     };
 
@@ -550,7 +550,7 @@ async function start(data)
 	if(changes < 155) // Change default models to OpenComic AI models
 		data = migrateDefaultModelsToOpenComicAiModels(data);
 
-	if(changes < 172) // Change old OpenComic AI models to last OpenComic AI models
+	if(changes < 178) // Change old OpenComic AI models to last OpenComic AI models
 		data = migrateOldOpenComicAiModelsToLastOpenComicAiModels(data);
 
 	data = opds.addNewDefaultCatalogs(data, changes);

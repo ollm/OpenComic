@@ -458,8 +458,9 @@ function loadModels(key)
 	const current = _config.readingAi[key].model;
 	const items = [];
 
+	const opencomicPreview = models.filter(model => model.startsWith('opencomic-') && /-v4/.test(model));
 	const opencomicLast = models.filter(model => model.startsWith('opencomic-') && /-v3/.test(model));
-	const opencomic = models.filter(model => model.startsWith('opencomic-') && !/-v3/.test(model));
+	const opencomic = models.filter(model => model.startsWith('opencomic-') && !/-v3/.test(model) && !/-v4/.test(model));
 	const others = models.filter(model => !model.startsWith('opencomic-'));
 	const custom = getCustomModels(queryKey, false);
 
@@ -488,6 +489,15 @@ function loadModels(key)
 				disabled: true,
 			});
 		}
+	}
+
+	if(opencomicPreview.length > 0)
+	{
+		items.push({
+			text: `${language.reading.pages.openComicModels} v4 Preview`,
+		});
+
+		process(opencomicPreview);
 	}
 
 	items.push({

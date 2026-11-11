@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 177; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 178; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -136,7 +136,7 @@ const readingPagesConfig = {
 		},
 		descreen: {
 			active: false,
-			model: 'opencomic-ai-descreen-hard-fast-v3-256',
+			model: 'opencomic-ai-descreen-hard-fast-v4-preview',
 			keepBigHalftone: true,
 			minSize: 3,
 		},
