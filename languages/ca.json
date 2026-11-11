@@ -351,8 +351,9 @@
 			"turnPagesWithMouseWheel": "Passar pàgines amb la roda del ratolí (Zoom només amb la tecla Ctrl pressionada)",
 			"autodetectWebtoon": "Autodetectar webtoon",
 			"disableThumbnails": "Desactivar miniaturés (Mostrar els noms dels arxius)",
+			"sensitivityInZoom": "Sensibilitat en fer zoom",
 			"mouseWheelSensitivityInZoom": "Sensibilitat de la roda del ratolí en fer zoom",
-			"zoomMoveStep": "Velocitat de desplaçament amb zoom",
+			"zoomMoveStep": "Distància de desplaçament amb zoom",
 			"scrollMovePercent": "Percentatge de desplaçament (Mode Webtoon)",
 			"scrollMovePercentInVerticalMode": "Usar desplaçament basat en percentatge en el mode de lectura vertical",
 			"rotateHorizontalsAnticlockwise": "Al rotar imatges horitzontals fer-ho en sentit antihorari",
@@ -602,6 +603,8 @@
 			"zoomDown": "Zoom cap avall",
 			"zoomLeft": "Zoom cap a l'esquerra",
 			"zoomRight": "Zoom cap a la dreta",
+			"zoomToTop": "Zoom fins a dalt",
+			"zoomToBottom": "Zoom fins a baix",
 			"toggleFullScreen": "Pantalla completa"
 		},
 		"goto": {

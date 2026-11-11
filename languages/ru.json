@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "Перелистывание колесом мыши (масштабирование — только при нажатой клавише Ctrl)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "Чувствительность колеса мыши при масштабировании",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "Масштаб вниз",
 			"zoomLeft": "Масштаб влево",
 			"zoomRight": "Масштаб вправо",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "Полноэкранный режим"
 		},
 		"goto": {

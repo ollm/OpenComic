@@ -351,8 +351,9 @@
 			"turnPagesWithMouseWheel": "以滑鼠滾輪翻頁（僅在按住 Ctrl 鍵時縮放）",
 			"autodetectWebtoon": "自動檢測網路漫畫（條漫）",
 			"disableThumbnails": "停用縮圖 (顯示檔名)",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "縮放時滑鼠滾輪的靈敏度",
-			"zoomMoveStep": "縮放移動速度",
+			"zoomMoveStep": "縮放平移距離",
 			"scrollMovePercent": "",
 			"scrollMovePercentInVerticalMode": "",
 			"rotateHorizontalsAnticlockwise": "以逆時針方向旋轉水平圖片",
@@ -602,6 +603,8 @@
 			"zoomDown": "向下縮放",
 			"zoomLeft": "向左縮放",
 			"zoomRight": "向右縮放",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "全螢幕"
 		},
 		"goto": {

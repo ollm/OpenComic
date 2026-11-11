@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "마우스 휠로 페이지 넘기기 (Ctrl 누른 상태에서만 줌)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "줌 상태에서의 마우스 휠 감도",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "",
 			"zoomLeft": "",
 			"zoomRight": "",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "전체 화면/원래 화면 전환"
 		},
 		"goto": {

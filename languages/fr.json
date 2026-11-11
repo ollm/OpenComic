@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "Tourner les pages avec la molette (Zoom uniquement avec la touche Ctrl enfoncée)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "Sensibilité de la molette lors du zoom",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "Zoom vers le bas",
 			"zoomLeft": "Zoom vers la gauche",
 			"zoomRight": "Zoom vers la droite",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "Plein écran"
 		},
 		"goto": {

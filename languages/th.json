@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "พลิกหน้าด้วยล้อเลื่อนเม้าส์ (ซูมเมื่อกด Ctrl ค้างไว้เท่านั้น)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "ความไวของล้อเม้าส์ขณะซูม",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "ซูมลง",
 			"zoomLeft": "ซูมซ้าย",
 			"zoomRight": "ซูมขวา",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "เต็มจอ"
 		},
 		"goto": {

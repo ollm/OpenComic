@@ -351,8 +351,9 @@
 			"turnPagesWithMouseWheel": "Pasar páginas con la rueda del ratón (Zoom solo con la tecla Ctrl presionada)",
 			"autodetectWebtoon": "Autodetectar webtoon",
 			"disableThumbnails": "Desactivar miniaturas (Mostrar nombres de los archivos)",
+			"sensitivityInZoom": "Sensibilidad al hacer zoom",
 			"mouseWheelSensitivityInZoom": "Sensibilidad de la rueda del ratón al hacer zoom",
-			"zoomMoveStep": "Velocidad de desplazamiento con zoom",
+			"zoomMoveStep": "Distancia de desplazamiento con zoom",
 			"scrollMovePercent": "Porcentaje de desplazamiento (Modo Webtoon)",
 			"scrollMovePercentInVerticalMode": "Usar desplazamiento basado en porcentaje en el modo de lectura vertical",
 			"rotateHorizontalsAnticlockwise": "Al rotar imágenes horizontales hacerlo en sentido antihorario",
@@ -602,6 +603,8 @@
 			"zoomDown": "Zoom hacia abajo",
 			"zoomLeft": "Zoom hacia la izquierda",
 			"zoomRight": "Zoom hacia la derecha",
+			"zoomToTop": "Zoom hasta arriba",
+			"zoomToBottom": "Zoom hasta abajo",
 			"toggleFullScreen": "Pantalla completa"
 		},
 		"goto": {

@@ -37,6 +37,20 @@
 </div>
 
 <div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
+	<div class="simple-slider-text">{{language.settings.reading.sensitivityInZoom}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="10" style="right: 70px;">undo</i><span>{{config.sensitivityInZoom}}</span></div></div>
+	<div class="range">
+		<div class="range-position">
+			<span class="range-line" style="width: 100%"></span>
+			<span class="range-steps"></span>
+			<div>
+				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
+			</div>
+		</div>
+		<input type="range" max="50" min="1" step="1" value="{{config.sensitivityInZoom}}" onrange="settings.set('sensitivityInZoom', \{{value}})">
+	</div>
+</div>
+
+<div class="simple-slider gamepad-item" data-gamepad-left="events.rangeMoveStep(this, -1)" data-gamepad-right="events.rangeMoveStep(this, 1)" style="margin-top: 10px;">
 	<div class="simple-slider-text">{{language.settings.reading.mouseWheelSensitivityInZoom}}<div><i class="material-icon slider-reset" onclick="events.resetRange(this)" data-default="10" style="right: 70px;">undo</i><span>{{config.mouseWheelSensitivityInZoom}}</span></div></div>
 	<div class="range">
 		<div class="range-position">
@@ -46,7 +60,7 @@
 				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
 			</div>
 		</div>
-		<input type="range" max="20" min="1" step="1" value="{{config.mouseWheelSensitivityInZoom}}" onrange="settings.set('mouseWheelSensitivityInZoom', \{{value}})">
+		<input type="range" max="50" min="1" step="1" value="{{config.mouseWheelSensitivityInZoom}}" onrange="settings.set('mouseWheelSensitivityInZoom', \{{value}})">
 	</div>
 </div>
 
@@ -60,7 +74,7 @@
 				<div class="range-point" position="100" style="left: 100%;"><div class="elevation-1"></div></div>
 			</div>
 		</div>
-		<input type="range" max="500" min="10" step="1" value="{{config.zoomMoveStep}}" onrange="settings.set('zoomMoveStep', \{{value}})">
+		<input type="range" max="1000" min="10" step="1" value="{{config.zoomMoveStep}}" onrange="settings.set('zoomMoveStep', \{{value}})">
 	</div>
 </div>
 

@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "Fare tekerleği ile sayfaları çevir (Yalnızca Ctrl tuşu basılıyken yakınlaştırır)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "Yakınlaştırma sırasında fare tekerleği hassasiyeti",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "Aşağı yakınlaştır",
 			"zoomLeft": "Sola yakınlaştır",
 			"zoomRight": "Sağa yakınlaştır",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "Tam ekran"
 		},
 		"goto": {

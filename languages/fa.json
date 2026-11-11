@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "ورق‌زدن با چرخ ماوس (بزرگ‌نمایی فقط با Ctrl)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "حساسیت چرخ ماوس در بزرگ‌نمایی",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "جابجایی به پایین",
 			"zoomLeft": "جابجایی به چپ",
 			"zoomRight": "جابجایی به راست",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "تمام‌صفحه"
 		},
 		"goto": {

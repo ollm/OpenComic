@@ -351,8 +351,9 @@
 			"turnPagesWithMouseWheel": "Turn pages with mouse wheel (Zoom only with Ctrl key pressed)",
 			"autodetectWebtoon": "Auto-detect webtoon",
 			"disableThumbnails": "Disable thumbnails (Show filenames)",
+			"sensitivityInZoom": "Sensitivity when zooming",
 			"mouseWheelSensitivityInZoom": "Mouse wheel sensitivity when zooming",
-			"zoomMoveStep": "Zoom move speed",
+			"zoomMoveStep": "Zoom panning distance",
 			"scrollMovePercent": "Scroll movement percentage (Webtoon mode)",
 			"scrollMovePercentInVerticalMode": "Use percentage-based scrolling in vertical reading mode",
 			"rotateHorizontalsAnticlockwise": "When rotating horizontal images, do so counterclockwise",
@@ -602,6 +603,8 @@
 			"zoomDown": "Zoom down",
 			"zoomLeft": "Zoom left",
 			"zoomRight": "Zoom right",
+			"zoomToTop": "Zoom to top",
+			"zoomToBottom": "Zoom to bottom",
 			"toggleFullScreen": "Full screen"
 		},
 		"goto": {

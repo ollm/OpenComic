@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "Przewracaj strony kółkiem myszy (powiększanie tylko z wciśniętym klawiszem Ctrl)",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "Czułość kółka myszy podczas powiększania",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "Powiększ w dół",
 			"zoomLeft": "Powiększ w lewo",
 			"zoomRight": "Powiększ w prawo",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "Tryb pełnoekranowy"
 		},
 		"goto": {

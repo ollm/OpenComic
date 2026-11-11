@@ -487,6 +487,8 @@ function loadShortcuts()
 				'zoomDown',
 				'zoomLeft',
 				'zoomRight',
+				'zoomToTop',
+				'zoomToBottom',
 				'saveImage',
 				'saveAllImages',
 				'copyImage',
@@ -600,6 +602,8 @@ function loadShortcuts()
 						'zoomDown',
 						'zoomLeft',
 						'zoomRight',
+						'zoomToTop',
+						'zoomToBottom',
 						'resetZoom',
 						'resetZoomOrPrevZoom',
 					],
@@ -907,6 +911,20 @@ function loadShortcuts()
 					function: function(event){
 						const delta = Math.abs(event.deltaX);
 						reading.zoomRight(delta || undefined, true);
+						return true;
+					},
+				},
+				zoomToTop: {
+					name: language.menu.view.zoomToTop,
+					function: function(event){
+						reading.zoomUp(99999, true);
+						return true;
+					},
+				},
+				zoomToBottom: {
+					name: language.menu.view.zoomToBottom,
+					function: function(event){
+						reading.zoomDown(99999, true);
 						return true;
 					},
 				},
@@ -1468,8 +1486,10 @@ function loadShortcuts()
 				'S': 'zoomDown',
 				'Shift+A': 'zoomRight',
 				'Shift+D': 'zoomLeft',
-				'Shift+W': 'zoomUp',
-				'Shift+S': 'zoomDown',
+				'Shift+W': 'zoomToTop',
+				'Shift+S': 'zoomToBottom',
+				'Ctrl+Shift+W': 'zoomToTop',
+				'Ctrl+Shift+S': 'zoomToBottom',
 				'Z': 'resetZoom',
 				'X': 'resetZoomOrPrevZoom',
 				'Esc': 'goBack',

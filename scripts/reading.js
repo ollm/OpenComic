@@ -1710,7 +1710,7 @@ function zoomIn(animation = true, center = false, delta = false)
 	if(delta) // From MouseWheel event
 		delta = delta * (config.mouseWheelSensitivityInZoom / 10);
 	else
-		delta = 120;
+		delta = 120 * (config.sensitivityInZoom / 10);
 
 	const multipler = 0.25 * (delta / 120);
 
@@ -1731,7 +1731,7 @@ function zoomOut(animation = true, center = false, delta = false)
 	if(delta) // From MouseWheel event
 		delta = delta * (config.mouseWheelSensitivityInZoom / 10);
 	else
-		delta = 120;
+		delta = 120 * (config.sensitivityInZoom / 10);
 
 	const multipler = 0.25 * (delta / 120);
 

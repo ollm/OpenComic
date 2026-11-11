@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "マウスホイールでページめくり（Ctrlキーを押しながらでズーム）",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "サムネイルを無効化（ファイル名を表示）",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "ズーム時のマウスホイール感度",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "下にズーム",
 			"zoomLeft": "左にズーム",
 			"zoomRight": "右にズーム",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "全画面"
 		},
 		"goto": {

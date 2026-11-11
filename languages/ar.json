@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "حساسية عجلة الماوس عند التكبير",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "تكبير لأسفل",
 			"zoomLeft": "تكبير لليسار",
 			"zoomRight": "تكبير لليمين",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "التبديل إلى وضع كامل الشاشة"
 		},
 		"goto": {

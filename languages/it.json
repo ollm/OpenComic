@@ -351,6 +351,7 @@
 			"turnPagesWithMouseWheel": "Gira pagina con la rotella del mouse",
 			"autodetectWebtoon": "",
 			"disableThumbnails": "",
+			"sensitivityInZoom": "",
 			"mouseWheelSensitivityInZoom": "",
 			"zoomMoveStep": "",
 			"scrollMovePercent": "",
@@ -602,6 +603,8 @@
 			"zoomDown": "Zoom sotto",
 			"zoomLeft": "Zoom a sinistra",
 			"zoomRight": "Zoom a destra",
+			"zoomToTop": "",
+			"zoomToBottom": "",
 			"toggleFullScreen": "A schermo intero"
 		},
 		"goto": {
