@@ -322,7 +322,8 @@ const app = require(p.join(appDir, '.dist/app.js')),
 	checkReleases = require(p.join(appDir, '.dist/check-releases.js')),
 	shortcuts = require(p.join(appDir, '.dist/shortcuts.js')),
 	tracking = require(p.join(appDir, '.dist/tracking.js')),
-	trackingSites = require(p.join(appDir, '.dist/tracking/tracking-sites.js'));
+	trackingSites = require(p.join(appDir, '.dist/tracking/tracking-sites.js')),
+	languageTerms = require(p.join(appDir, '.dist/language-terms.mjs')).default;
 
 var tempFolder = settings.getTmpFolder();
 var macosMAS = false;
@@ -922,6 +923,8 @@ function sha1(string)
 function loadLanguage(lan = false)
 {
 	language = JSON.parse(readFileApp('./languages/es.json'));
+	language.terms = languageTerms;
+
 	loadLanguageMD(language, JSON.parse(readFileApp('./languages/en.json')));
 
 	handlebarsContext.language = language;

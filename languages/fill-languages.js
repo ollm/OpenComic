@@ -34,6 +34,17 @@ function loadLanguageMD(hbc, obj, onlyStructure = false)
 
 function fillLanguages()
 {
+	const languageTerms = {
+		list: {
+			chapter: [],
+			volume: [],
+		},
+		byLanguage: {
+			chapter: {},
+			volume: {},
+		}
+	};
+
 	const base = {};
 	loadLanguageMD(base, JSON.parse(fs.readFileSync('./languages/en.json', 'utf8')), true);
 	loadLanguageMD(base, JSON.parse(fs.readFileSync('./languages/es.json', 'utf8')), true);
@@ -46,6 +57,8 @@ function fillLanguages()
 
 		if(/\.json$/u.test(file) && !/languagesList/iu.test(file))
 		{
+			const lan = file.replace(/\.json$/u, '');
+
 			const _base = structuredClone(base);
 			const path = p.join('./languages', file);
 
@@ -67,8 +80,25 @@ function fillLanguages()
 
 			if(json !== newJson)
 				fs.writeFileSync(path, newJson);
+
+			// Languages terms
+			if(_json.reading?.tracking?.chapter)
+			{
+				const value = _json.reading?.tracking?.chapter;
+				languageTerms.list.chapter.push(value);
+				languageTerms.byLanguage.chapter[lan] = value;
+			}
+
+			if(_json.reading?.tracking?.volume)
+			{
+				const value = _json.reading?.tracking?.volume;
+				languageTerms.list.volume.push(value);
+				languageTerms.byLanguage.volume[lan] = value;
+			}
 		}
 	}
+
+	fs.writeFileSync('./scripts/language-terms.mjs', `export default ${JSON.stringify(languageTerms, null, "\t")}`);
 }
 
 var colors = {

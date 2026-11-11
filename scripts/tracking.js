@@ -1,3 +1,5 @@
+const languageTerms = require(p.join(appDir, '.dist/language-terms.mjs')).default;
+
 var sitesScripts = {}, sitesScriptsLoading = {};
 
 async function loadSiteScript(site)
@@ -938,6 +940,16 @@ function regexChapter()
 		/ch?|ep?/, // English
 	];
 
+	for(const chapter of languageTerms.list.chapter)
+	{
+		const regex = new RegExp(chapter, 'iu');
+
+		if(chapter.length > 2)
+			regexs.push(regex);
+		else
+			regexsEnd.push(regex);
+	}
+
 	const reliablePatterns = [
 		// Match common patterns like Chapter 5, Capítulo-5, etc.
 		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
@@ -948,6 +960,8 @@ function regexChapter()
 		// Match Ch. 5, Ep 3, etc.
 		new RegExp(/(?:^|[\.\-_:;\(\)\[\]\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 	];
+
+	console.log(reliablePatterns);
 
 	const patterns = [
 		...reliablePatterns,
@@ -1068,6 +1082,16 @@ function regexVolume()
 		/vo?|vol/, // English
 	];
 
+	for(const volume of languageTerms.list.volume)
+	{
+		const regex = new RegExp(volume, 'iu');
+
+		if(volume.length > 2)
+			regexs.push(regex);
+		else
+			regexsEnd.push(regex);
+	}
+
 	const reliablePatterns = [
 		// Match common patterns like volume 5, Tom-5, etc.
 		new RegExp('(?:'+joinRegexs(regexs).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
@@ -1078,6 +1102,8 @@ function regexVolume()
 		// Match Vo. 5, Vol 3, etc.
 		new RegExp(/(?:^|[\.\-_:;\(\)\[\]\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 	];
+
+	console.log(reliablePatterns);
 
 	const patterns = [
 		...reliablePatterns,
