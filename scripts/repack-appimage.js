@@ -34,14 +34,25 @@ try
 		throw new Error(`AppImage not found: ${appImagePath}`);
 	}
 
-	childProcess.execFileSync(appImagePath, ['--appimage-extract'], {
-		cwd: temporaryDirectory,
-		stdio: 'inherit'
-	});
-
 	const appDir = path.join(temporaryDirectory, 'squashfs-root');
 	const temporaryAppImagePath = path.join(temporaryDirectory, appImageName);
 	const appimagetool = process.env.APPIMAGETOOL || 'appimagetool';
+
+	const offset = Number(
+		childProcess.execFileSync(appImagePath, ['--appimage-offset'], {
+			encoding: 'utf8'
+		}).trim()
+	);
+
+	if(!Number.isSafeInteger(offset) || offset < 0)
+	{
+		throw new Error(`Invalid AppImage SquashFS offset: ${offset}`);
+	}
+
+	childProcess.execFileSync('unsquashfs', ['-d', appDir, '-o', String(offset), appImagePath], {
+		cwd: temporaryDirectory,
+		stdio: 'inherit'
+	});
 
 	childProcess.execFileSync(appimagetool, ['-u', updateInformation, appDir, temporaryAppImagePath], {
 		cwd: temporaryDirectory,
@@ -54,6 +65,7 @@ try
 	});
 
 	const temporaryZsyncPath = `${temporaryAppImagePath}.zsync`;
+
 	if(!fs.existsSync(temporaryZsyncPath))
 	{
 		throw new Error('No .zsync file was generated; make sure zsyncmake is installed and available on PATH.');
