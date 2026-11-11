@@ -961,8 +961,6 @@ function regexChapter()
 		new RegExp(/(?:^|[\.\-_:;\(\)\[\]\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 	];
 
-	console.log(reliablePatterns);
-
 	const patterns = [
 		...reliablePatterns,
 
@@ -1102,8 +1100,6 @@ function regexVolume()
 		// Match Vo. 5, Vol 3, etc.
 		new RegExp(/(?:^|[\.\-_:;\(\)\[\]\s])/.source+'(?:'+joinRegexs(regexsMin).source+')'+/[\.\-_:;\(\)\[\]\s]*((?:\d+\.)?\d+)/.source, 'iu'),
 	];
-
-	console.log(reliablePatterns);
 
 	const patterns = [
 		...reliablePatterns,

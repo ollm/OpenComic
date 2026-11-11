@@ -192,6 +192,8 @@
 			"!**/node_modules/.bin",
 			"!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
 			"!.editorconfig",
+			"!.github",
+			"!.vscode",
 			"!**/._*",
 			"!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
 			"!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
@@ -208,8 +210,6 @@
 			"!node_modules/@img/*linuxmusl*/**/*",
 			"!node_modules/opencomic-ai-bin/+(linux|win|mac)/**",
 			"node_modules/opencomic-ai-bin/${os}/${arch}",
-			"!node_modules/onnxruntime-node/bin/napi-v6/+(linux|win32|darwin)/**",
-			"node_modules/onnxruntime-node/bin/napi-v6/${platform}/${arch}",
 			"!node_modules/7zip-native/prebuilds/**",
 			"node_modules/7zip-native/prebuilds/${platform}-${arch}/**",
 			"!node_modules/pdfjs-dist/",
@@ -230,7 +230,8 @@
 			"templates/index.html",
 			"templates/about.html",
 			"templates/ebook.render.html",
-			"build/flatpak"
+			"build/flatpak",
+			"!build/node-zstd-native-dependencies/**"
 		],
 		"asarUnpack": [
 			"node_modules/sharp",

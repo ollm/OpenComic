@@ -8,6 +8,7 @@ let metadata: {title?: string} = {};
 
 Object.assign(globalThis, {
 	p,
+	appDir: p.resolve(import.meta.dirname, '../../..'),
 	joinRegexs: (regexs: RegExp[]) => new RegExp(regexs.map(regex => regex.source).join('|')),
 	reading: {readingCurrentPath: () => comicPath},
 	fileManager: {
