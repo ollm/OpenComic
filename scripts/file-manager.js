@@ -980,7 +980,7 @@ var file = function(path, _config = false) {
 
 		if(macosMAS)
 		{
-			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
+			let securityScopedBookmarks = storage.get('securityScopedBookmarks') || {};
 			let segments = splitPath(path);
 
 			if(!segments[0])
@@ -2993,7 +2993,7 @@ var fileCompressed = function(path, _realPath = false, forceType = false, prefix
 
 		if(macosMAS)
 		{
-			let securityScopedBookmarks = storage.get('securityScopedBookmarks');
+			let securityScopedBookmarks = storage.get('securityScopedBookmarks') || {};
 			let segments = splitPath(path);
 
 			if(!segments[0])
@@ -3845,7 +3845,7 @@ function macosSecurityScopedBookmarks(files)
 {
 	if(macosMAS && files.bookmarks && files.bookmarks[0])
 	{
-		let securityScopedBookmarks = storage.get('securityScopedBookmarks');
+		let securityScopedBookmarks = storage.get('securityScopedBookmarks') || {};
 
 		for(let i = 0, len = files.bookmarks.length; i < len; i++)
 		{
@@ -3864,7 +3864,7 @@ function macosStartAccessingSecurityScopedResource(path) {
 
 	if(macosMAS)
 	{
-		const securityScopedBookmarks = storage.get('securityScopedBookmarks');
+		const securityScopedBookmarks = storage.get('securityScopedBookmarks') || {};
 		const segments = splitPath(path);
 
 		if(!segments[0])
