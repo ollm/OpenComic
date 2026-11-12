@@ -13,24 +13,28 @@
         <p>Comic and manga reader.</p>
         <p><em>Features</em></p>
         <ul>
-            <li>🌄 Support this image formats: <code>JPG</code>, <code>JP2</code>, <code>JXR</code>, <code>JXL</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
-            <li>📦 Support this compressed formats: <code>RAR</code>, <code>ZIP</code>, <code>7Z</code>, <code>TAR</code>, <code>LZH</code>, <code>ACE</code>, <code>CBR</code>, <code>CBZ</code>, <code>CBA</code>, <code>CB7</code>, <code>CBT</code></li>
-            <li>📄 Support this documents/ebook formats: <code>PDF</code>, <code>EPUB</code> (Alpha)</li>
-            <li>🎵 Support background music from folder: <code>MP3</code>, <code>M4A</code>, <code>WEBM</code>, <code>WEBA</code>, <code>OGG</code>, <code>OPUS</code>, <code>WAV</code>, <code>FLAC</code></li>
+            <li>🌄 Support these image formats: <code>JPG</code>, <code>JP2</code>, <code>JXR</code>, <code>JXL</code>, <code>PNG</code>, <code>APNG</code>, <code>AVIF</code>, <code>WEBP</code>, <code>GIF</code>, <code>SVG</code>, <code>BMP</code>, <code>ICO</code></li>
+            <li>📦 Support these compressed formats: <code>RAR</code>, <code>ZIP</code>, <code>7Z</code>, <code>TAR</code>, <code>TAR.GZ</code>, <code>TAR.XZ</code>, <code>TAR.BZIP2</code>, <code>TAR.ZSTD</code>, <code>LZH</code>, <code>ACE</code>, <code>CBR</code>, <code>CBZ</code>, <code>CBA</code>, <code>CB7</code>, <code>CBT</code></li>
+            <li>📄 Support these document and ebook formats: <code>PDF</code>, <code>EPUB</code>, <code>MOBI</code>, <code>AZW</code>, <code>AZW3</code>, <code>FB2</code></li>
+            <li>🎵 Support background music from folders and specific page ranges, plus AudioManga sound effects: <code>MP3</code>, <code>M4A</code>, <code>WEBM</code>, <code>WEBA</code>, <code>OGG</code>, <code>OPUS</code>, <code>WAV</code>, <code>FLAC</code></li>
             <li>☁️ Server connection support: <code>smb://</code>, <code>ftp://</code>, <code>ftps://</code>, <code>scp://</code>, <code>sftp://</code>, <code>ssh://</code>, <code>s3://</code>, <code>webdav://</code>, <code>webdavs://</code></li>
+            <li>🗂️ Tab support</li>
+            <li>🪟 Multi-window support</li>
             <li>📁 Master folders support</li>
             <li>📚 OPDS support</li>
+            <li>🤖 AI tools for upscaling, descreening, and artifact removal</li>
             <li>❤️ Favorite labels</li>
             <li>🏷️ Custom labels</li>
             <li>🇯🇵 Manga read mode</li>
             <li>🇰🇷 Webtoon read mode</li>
             <li>📖 Double page view</li>
+            <li>🧭 Guided View</li>
             <li>🔖 Bookmarks and continue reading</li>
             <li>🔍 Floating magnifying glass</li>
             <li>🖱️ Reading in scroll or slide</li>
             <li>⚪ Adjust the brightness, saturation, contrast, sepia, negative and invert colors</li>
             <li>🎨 Colorize black and white images</li>
-            <li>🔄 Tracking with sites (AniList and MyAnimeList)</li>
+            <li>🔄 Tracking with sites (AniList, MyAnimeList, Mangabaka and Bangumi)</li>
             <li>🎮 Gamepad navigation</li>
             <li>⌨️ Custom shortcuts and tap zones</li>
             <li>🔢 Multiple interpolation methods: <code>lanczos3</code>, <code>lanczos2</code>, <code>mitchell</code>, <code>cubic</code>, <code>linear</code>, <code>nearest</code> and others</li>
@@ -42,35 +46,35 @@
     <url type="translate">https://github.com/ollm/OpenComic/blob/master/TRANSLATE.md</url>
     <url type="donation">https://opencomic.app/docs/donate</url>
     <url type="vcs-browser">https://github.com/ollm/OpenComic</url>
-    <icon type="remote">https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/icon-border-transparent.png</icon>
+    <icon type="remote">https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/icon-border-transparent.png</icon>
     <screenshots>
         <screenshot type="default">
             <caption>OpenComic</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/main.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/main.png</image>
         </screenshot>
         <screenshot>
             <caption>Colorize</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/colorize.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/colorize.png</image>
         </screenshot>
         <screenshot>
             <caption>Colorize menu</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/colorize-menu.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/colorize-menu.png</image>
         </screenshot>
         <screenshot>
             <caption>eBook</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/ebook.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/ebook.png</image>
         </screenshot>
         <screenshot>
             <caption>eBook menu</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/ebook-menu.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/ebook-menu.png</image>
         </screenshot>
         <screenshot>
             <caption>Master folders</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/master-folders.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/master-folders.png</image>
         </screenshot>
         <screenshot>
             <caption>Shortcuts (Keyboard and Gamepad)</caption>
-            <image>https://raw.githubusercontent.com/ollm/OpenComic/640a9f582ba5f2ee7f957155c698a6c3b24503ac/images/screenshots/shortcuts.png</image>
+            <image>https://raw.githubusercontent.com/ollm/OpenComic/02a83882e0ce0390b6cbbffab8f5b4f70444c3c5/images/screenshots/shortcuts.png</image>
         </screenshot>
     </screenshots>
     <content_rating type="oars-1.1"/>
@@ -87,6 +91,87 @@
         <control>gamepad</control>
     </supports>
     <releases>
+        <release version="2.0.0" date="2026-11-12">
+            <description>
+                <p><em>🚀 New Features</em></p>
+                <ul>
+                    <li>Support for multiple instances (Open multiple OpenComic windows)</li>
+                    <li>Add option to open files from outside OpenComic in a new window</li>
+                    <li>Add setting to use a custom folder for cache and temporary files</li>
+                    <li>AI image upscaling tool</li>
+                    <li>AI image descreen tool</li>
+                    <li>AI image artifact removal tool</li>
+                    <li>Cache the folder's thumbnails/poster file lists to reduce disk I/O</li>
+                    <li>Hide file extension by default</li>
+                    <li>Support playing background music on a specific page</li>
+                    <li>Options in OPDS to auto-download files from the catalog</li>
+                    <li>Support for tabs</li>
+                    <li>Option to extract document images (PDF and EPUB)</li>
+                    <li>Support for fixed-layout EPUBs</li>
+                    <li>Support for right-to-left and vertical EPUBs</li>
+                    <li>Option to force left-to-right reading direction in EPUBs</li>
+                    <li>Cache rendered EPUB files</li>
+                    <li>Support for text selection and clickable links in EPUBs</li>
+                    <li>Option to disable thumbnails while reading and show filenames instead</li>
+                    <li>Show tooltip for filenames that are not fully displayed</li>
+                    <li>Drag tabs to open them in a new window or move them between windows</li>
+                    <li>Add support for <code>MetronInfo.xml</code></li>
+                    <li>Add and remove blank pages in double page view</li>
+                    <li>Retrieve image dimensions from compressed files when possible for better performance</li>
+                    <li>Add option to sort files by modification date</li>
+                    <li>Add option to shuffle sort files</li>
+                    <li>Setting to configure number of preloaded images</li>
+                    <li>Tab bar now uses traffic light area spacing</li>
+                    <li>Use custom <code>sharp</code> prebuilt binaries for native support of <code>JXL</code>, <code>JP2</code> and <code>HEIC</code></li>
+                    <li>Removed support for <code>HEIC</code> image format</li>
+                    <li>Joined the title/menu bar with the tab bar</li>
+                    <li>Remove need to load all image sizes before rendering the page for better performance</li>
+                    <li>Moved <code>Delay in changing comics</code> to settings page</li>
+                    <li>Middle click auto-scroll in center tap zone (Windows only)</li>
+                    <li>Implement <code>Guided View</code> support</li>
+                    <li>Open folder shortcut</li>
+                    <li>Support for shortcuts macros</li>
+                    <li>Improved loading of high resolution images</li>
+                    <li>Option to automatically detect Webtoons</li>
+                    <li>Support AudioManga SFX and OST effects</li>
+                    <li>Add support for MangaBaka tracking site integration</li>
+                    <li>Add support for Bangumi tracking site integration</li>
+                    <li>Option to keep big halftones</li>
+                    <li>Setting to use the first image as the poster for parent folders</li>
+                    <li>Migrate from <code>epubjs</code> to <code>foliatejs</code> and update related functionalities</li>
+                    <li>Support for <code>MOBI</code>, <code>AZW</code>, <code>AZW3</code> and <code>FB2</code> formats</li>
+                    <li>Added support for custom themes</li>
+                    <li>Option to set the delay and show bars on click</li>
+                    <li>Multi-select support for context menu actions</li>
+                    <li>Support custom user AI models</li>
+                    <li>Save and restore recent windows</li>
+                    <li>Added settings for starting with the previous zoom level and configuring the reset zoom button to restore the previous zoom level</li>
+                    <li>Setting to use and configure percentage-based scrolling in vertical reading mode</li>
+                    <li>Support community themes</li>
+                    <li>Context menu option to save all AI-processed images</li>
+                    <li>Option in context menu to preprocess images with AI</li>
+                </ul>
+                <p><em>🐛 Bug Fixes</em></p>
+                <ul>
+                    <li>Adding or changing poster not working when the drive is different from the system drive</li>
+                    <li>Hiding cursor in fullscreen mode fails in some cases</li>
+                    <li>Save/Copy uses the image under the mouse cursor instead of the active page</li>
+                    <li>Error saving the progress of the final page in epub files</li>
+                    <li>Prevent crash when retrieving metadata with Sharp for many large images (Linux only)</li>
+                    <li>Extract files when the file in it starts with the '-' character</li>
+                    <li>Use reading sort for thumbnail/poster generation</li>
+                    <li>Improve drag scrolling (Ignore right-click and add activation dead zone)</li>
+                    <li>Thumbnails are still generated in list view</li>
+                    <li>Replace <code>electron-json-storage</code> with custom implementation to fix write hang issue</li>
+                    <li><code>Align with next horizontal</code> conflicts with <code>Blank page at the beginning</code></li>
+                    <li>Support searching for NSFW manga on MyAnimeList</li>
+                    <li>Some errors saving progress</li>
+                    <li>Zoom calculation on window resize</li>
+                    <li>Correctly detect symlinked directories in readDir</li>
+                </ul>
+            </description>
+        </release>
+
         <release version="1.6.5" date="2025-10-31">
             <description>
                 <p><em>🚀 New Features</em></p>

@@ -17,6 +17,12 @@ const archives = {
 	'rar': p.join(filesDir, 'sample.rar'),
 	'tar': p.join(filesDir, 'sample.tar'),
 	'zip': p.join(filesDir, 'sample.zip'),
+	'ace': p.join(filesDir, 'sample.ace'),
+	'tar.bzip2': p.join(filesDir, 'sample.tar.bzip2'),
+	'tar.gz': p.join(filesDir, 'sample.tar.gz'),
+	'tar.xz': p.join(filesDir, 'sample.tar.xz'),
+	'tar.zstd': p.join(filesDir, 'sample.tar.zstd'),
+	'wim': p.join(filesDir, 'sample.wim')
 };
 
 describe('7zip-native', function() {
