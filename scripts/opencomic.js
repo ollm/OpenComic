@@ -601,6 +601,7 @@ async function startApp()
 	});
 
 	windowHasLoaded = true;
+	fileManager.onAppInitialized();
 
 }
 

@@ -3140,8 +3140,27 @@ function globalWhenExtractFileReject(path)
 }
 
 // Use this to remove generated vector images if window.devicePixelRatio is changed
+let fileManagerInitialized = false, removeTmpVectorPending = false;
+
+function onAppInitialized()
+{
+	fileManagerInitialized = true;
+
+	if(removeTmpVectorPending)
+	{
+		removeTmpVectorPending = false;
+		removeTmpVector();
+	}
+}
+
 async function removeTmpVector()
 {
+	if(!fileManagerInitialized)
+	{
+		removeTmpVectorPending = true;
+		return;
+	}
+
 	let file = fileManager.file(tempFolder);
 	let folders = await file.read();
 
@@ -4244,6 +4263,7 @@ module.exports = {
 	dirSizeSync: dirSizeSync,
 	copyToTmp: copyToTmp,
 	fileToBlob: fileToBlob,
+	onAppInitialized: onAppInitialized,
 	bufferToBlob: bufferToBlob,
 	getBlob: getBlob,
 	revokeObjectURL: revokeObjectURL,
