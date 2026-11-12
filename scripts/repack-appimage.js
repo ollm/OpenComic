@@ -3,6 +3,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const packageJson = require('../package.json');
+const appImageOffset = require('./appimage-offset.js');
 
 const architecture = process.argv[2] || 'x64';
 const architectureSettings = {
@@ -38,16 +39,7 @@ try
 	const temporaryAppImagePath = path.join(temporaryDirectory, appImageName);
 	const appimagetool = process.env.APPIMAGETOOL || 'appimagetool';
 
-	const offset = Number(
-		childProcess.execFileSync(appImagePath, ['--appimage-offset'], {
-			encoding: 'utf8'
-		}).trim()
-	);
-
-	if(!Number.isSafeInteger(offset) || offset < 0)
-	{
-		throw new Error(`Invalid AppImage SquashFS offset: ${offset}`);
-	}
+	const offset = appImageOffset(appImagePath);
 
 	childProcess.execFileSync('unsquashfs', ['-d', appDir, '-o', String(offset), appImagePath], {
 		cwd: temporaryDirectory,
