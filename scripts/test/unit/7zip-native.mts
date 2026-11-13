@@ -22,7 +22,7 @@ const archives = {
 	'tar.gz': p.join(filesDir, 'sample.tar.gz'),
 	'tar.xz': p.join(filesDir, 'sample.tar.xz'),
 	'tar.zstd': p.join(filesDir, 'sample.tar.zstd'),
-	'wim': p.join(filesDir, 'sample.wim')
+	'wim': p.join(filesDir, 'sample.wim'),
 };
 
 describe('7zip-native', function() {
