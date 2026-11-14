@@ -82,9 +82,23 @@ function openLink(link: string, linkElement: Element): void
 }
 
 const list = [
-	'click', 'mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout',
-	'touchstart', 'touchmove', 'touchend', 'touchcancel',
-	'pointerdown', 'pointermove', 'pointerup', 'pointercancel',
+	// Click
+	'click',
+	'mousedown',
+	'mouseup',
+	'mousemove',
+	'mouseover',
+	'mouseout',
+	// Touch
+	'touchstart',
+	'touchmove',
+	'touchend',
+	'touchcancel',
+	// Pointer
+	'pointerdown',
+	'pointermove',
+	'pointerup',
+	'pointercancel',
 ];
 
 function listen(iframe: HTMLIFrameElement): void

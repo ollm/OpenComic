@@ -1,4 +1,4 @@
-import {change, fix, versions} from './build/exists.mjs';
+import {change, fix, versions, printErrors} from './build/exists.mjs';
 
 const store = process.argv.includes('--store');
 
@@ -21,5 +21,7 @@ else
 	// Sharp arm64
 	change(BASE, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, 'DCTFontCopyDefaultCascadeList', '_CTFontCopyDefaultCascadeList', fix.sharp.MACOSS_ARM64);
 }
+
+printErrors();
 
 console.log('Runed tests: Ok');

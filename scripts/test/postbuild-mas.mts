@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import {exists, existsRegex, fix, versions} from './build/exists.mjs';
+import {exists, existsRegex, fix, versions, printErrors} from './build/exists.mjs';
 
 const darwin = '/Applications/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
 
@@ -26,12 +26,10 @@ if(process.platform == 'darwin')
 	exists(darwin, '7zip-native/prebuilds/darwin-x64/7zip_native.node', fs.constants.R_OK);
 	exists(darwin, '7zip-native/prebuilds/darwin-x64/lib7z.dylib', fs.constants.R_OK);
 	// OpenComicAI
-	exists(darwin, 'opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
-	exists(darwin, 'opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 	exists(darwin, 'opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
-	exists(darwin, 'opencomic-ai-bin/mac/x64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
-	exists(darwin, 'opencomic-ai-bin/mac/x64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 	exists(darwin, 'opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
 	console.log('Runed postbuild mas tests: Ok');
 }
+
+printErrors();

@@ -1,12 +1,18 @@
 import fs from 'fs';
 import p from 'path';
 
+const errors: {message: string; error: unknown}[] = [];
+
 export function exists(base: string, path: string, permissions: number | null = null, fix: string | undefined = undefined)
 {
 	path = p.join(base, path);
 
 	if(!fs.existsSync(path))
-		throw new Error('Not exists! ' + path + (fix ? '\n\nTry: ' + fix : '') + '\n');
+	{
+		// throw new Error('Not exists! ' + path + (fix ? '\n\nTry: ' + fix : '') + '\n');
+		errors.push({message: '\nNot exists! ' + path + (fix ? '\nTry: ' + fix : '') + '\n', error: new Error('Not exists! ' + path)});
+		return;
+	}
 
 	if(permissions !== null)
 	{
@@ -17,7 +23,8 @@ export function exists(base: string, path: string, permissions: number | null = 
 		catch (error)
 		{
 			const errorMessage = error instanceof Error ? error.message : String(error);
-			throw new Error('No access! ' + path + ', ' + errorMessage, {cause: error});
+			// throw new Error('No access! ' + path + ', ' + errorMessage, {cause: error});
+			errors.push({message: 'No access! ' + path + ', ' + errorMessage, error: error});
 		}
 	}
 }
@@ -27,12 +34,20 @@ export function existsRegex(base: string, path: string, regex, permissions: numb
 	path = p.join(base, path);
 
 	if(!fs.existsSync(path))
-		throw new Error('Not exists! ' + path + (fix ? '\n\nTry: ' + fix : '') + '\n');
+	{
+		// throw new Error('Not exists! ' + path + (fix ? '\n\nTry: ' + fix : '') + '\n');
+		errors.push({message: '\nNot exists! ' + path + (fix ? '\nTry: ' + fix : '') + '\n', error: new Error('Not exists! ' + path)});
+		return;
+	}
 
 	const exists = fs.readdirSync(path).find(file => regex.test(file));
 
 	if(!exists)
-		throw new Error('Not exists! ' + path + regex + (fix ? '\n\nTry: ' + fix : '') + '\n');
+	{
+		// throw new Error('Not exists! ' + path + regex + (fix ? '\n\nTry: ' + fix : '') + '\n');
+		errors.push({message: '\nNot exists! ' + path + regex + (fix ? '\nTry: ' + fix : '') + '\n', error: new Error('Not exists! ' + path)});
+		return;
+	}
 
 	path = p.join(path, exists);
 
@@ -45,7 +60,8 @@ export function existsRegex(base: string, path: string, regex, permissions: numb
 		catch (error)
 		{
 			const errorMessage = error instanceof Error ? error.message : String(error);
-			throw new Error('No access! ' + path + ', ' + errorMessage, {cause: error});
+			// throw new Error('No access! ' + path + ', ' + errorMessage, {cause: error});
+			errors.push({message: 'No access! ' + path + ', ' + errorMessage, error: error});
 		}
 	}
 }
@@ -55,7 +71,11 @@ export function change(base: string, path: string, search: string, replacement: 
 	path = p.join(base, path);
 
 	if(!fs.existsSync(path))
-		throw new Error('Not exists! ' + path + (fix ? '\n\nTry: ' + fix : '') + '\n');
+	{
+		// throw new Error('Not exists! ' + path + (fix ? '\n\nTry: ' + fix : '') + '\n');
+		errors.push({message: '\nNot exists! ' + path + (fix ? '\nTry: ' + fix : '') + '\n', error: new Error('Not exists! ' + path)});
+		return;
+	}
 
 	const buffer = fs.readFileSync(path);
 
@@ -71,6 +91,21 @@ export function change(base: string, path: string, search: string, replacement: 
 	}
 
 	fs.writeFileSync(path, buffer);
+}
+
+export function printErrors()
+{
+	if(errors.length > 0)
+	{
+		console.error('Build tests encountered errors:');
+
+		for(const error of errors)
+		{
+			console.error(error.message);
+		}
+
+		throw new Error('Build tests failed');
+	}
 }
 
 export const fix = {

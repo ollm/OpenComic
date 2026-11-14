@@ -32,10 +32,10 @@ export default defineConfig([
 		plugins: customized.plugins,
 		rules: {
 			...customized.rules,
+			'@stylistic/list-style': ['error', {overrides: {'{}': {singleLine: {spacing: 'never', maxItems: 100}, multiLine: {minItems: 0}}}}],
 			'@stylistic/brace-style': ['off', 'allman', {allowSingleLine: true}],
 			'@stylistic/padded-blocks': ['off', {blocks: 'never', classes: 'never', switches: 'never'}],
 			'@stylistic/keyword-spacing': ['off', {after: false, before: true}],
-			'@stylistic/object-curly-spacing': ['error', 'never'],
 			'@stylistic/space-before-function-paren': ['error', {anonymous: 'never', asyncArrow: 'never', named: 'never'}],
 			'@stylistic/semi': ['error', 'always', {'omitLastInOneLineBlock': true, 'omitLastInOneLineClassBody': true}],
 			'@stylistic/block-spacing': ['error', 'never'],

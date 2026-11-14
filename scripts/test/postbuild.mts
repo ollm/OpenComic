@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import {exists, existsRegex, fix, versions} from './build/exists.mjs';
+import {exists, existsRegex, fix, versions, printErrors} from './build/exists.mjs';
 
 const darwin = './dist/mac/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
 const darwinArm = './dist/mac-arm64/OpenComic.app/Contents/Resources/app.asar.unpacked/node_modules';
@@ -38,8 +38,6 @@ if(process.platform == 'darwin')
 		native7zip(darwin, 'darwin', 'x64');
 
 		// OpenComicAI
-		exists(darwin, 'opencomic-ai-bin/mac/x64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
-		exists(darwin, 'opencomic-ai-bin/mac/x64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwin, 'opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
@@ -59,8 +57,6 @@ if(process.platform == 'darwin')
 		native7zip(darwinArm, 'darwin', 'arm64');
 
 		// OpenComicAI
-		exists(darwinArm, 'opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
-		exists(darwinArm, 'opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinArm, 'opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
@@ -86,11 +82,7 @@ if(process.platform == 'darwin')
 		native7zip(darwinMas, 'darwin', 'x64');
 
 		// OpenComicAI
-		exists(darwinMas, 'opencomic-ai-bin/mac/arm64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
-		exists(darwinMas, 'opencomic-ai-bin/mac/arm64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinMas, 'opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
-		exists(darwinMas, 'opencomic-ai-bin/mac/x64/realcugan/realcugan-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
-		exists(darwinMas, 'opencomic-ai-bin/mac/x64/waifu2x/waifu2x-ncnn-vulkan.app', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinMas, 'opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
@@ -112,8 +104,6 @@ else if(process.platform == 'linux')
 		native7zip(linux, 'linux', 'x64');
 
 		// OpenComicAI
-		exists(linux, 'opencomic-ai-bin/linux/x64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
-		exists(linux, 'opencomic-ai-bin/linux/x64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 		exists(linux, 'opencomic-ai-bin/linux/x64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
@@ -133,8 +123,6 @@ else if(process.platform == 'linux')
 		native7zip(linuxArm, 'linux', 'arm64');
 
 		// OpenComicAI
-		exists(linuxArm, 'opencomic-ai-bin/linux/arm64/realcugan/realcugan-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
-		exists(linuxArm, 'opencomic-ai-bin/linux/arm64/waifu2x/waifu2x-ncnn-vulkan', fs.constants.X_OK | fs.constants.R_OK);
 		exists(linuxArm, 'opencomic-ai-bin/linux/arm64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
@@ -156,8 +144,6 @@ else if(process.platform == 'win32')
 		native7zip(windows, 'win32', 'x64');
 
 		// OpenComicAI
-		exists(windows, 'opencomic-ai-bin/win/x64/realcugan/realcugan-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
-		exists(windows, 'opencomic-ai-bin/win/x64/waifu2x/waifu2x-ncnn-vulkan.exe', fs.constants.X_OK | fs.constants.R_OK);
 		exists(windows, 'opencomic-ai-bin/win/x64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
 
 		checkSome = true;
@@ -185,5 +171,7 @@ else if(process.platform == 'win32')
 
 if(!checkSome)
 	throw new Error('No folders have been checked');
+
+printErrors();
 
 console.log('Runed postbuild tests: Ok');
