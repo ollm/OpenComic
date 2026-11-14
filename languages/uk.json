@@ -70,15 +70,15 @@
 			"saveImage": "Зберегти зображення",
 			"saveAiImage": "Зберегти зображення, оброблене ШІ",
 			"saveAllImages": "Зберегти всі зображення",
-			"saveAllAiImages": "",
+			"saveAllAiImages": "Зберегти всі зображення, оброблені ШІ",
 			"saveBookmarksImages": "Зберегти зображення з поточних закладок",
 			"saveAllBookmarksImages": "Зберегти зображення з усіх закладок",
 			"saveImagesMessage": "Зображення успішно збережені",
 			"saveImageMessage": "Зображення успішно збережено",
-			"saveImagesProgress": "",
-			"preprocessImagesWithAI": "",
-			"preprocessImagesWithAINotConfigured": "",
-			"preprocessImagesWithAIProgress": "",
+			"saveImagesProgress": "Триває збереження зображень",
+			"preprocessImagesWithAI": "Попередньо обробити зображення за допомогою ШІ",
+			"preprocessImagesWithAINotConfigured": "ШІ не налаштовано для вибраних файлів",
+			"preprocessImagesWithAIProgress": "Попередня обробка зображень за допомогою ШІ",
 			"copyImage": "Копіювати зображення в буфер обміну",
 			"copyImageMessage": "Зображення скопійовано в буфер обміну",
 			"addBlankPageLeft": "Додати порожню сторінку ліворуч",
@@ -343,19 +343,19 @@
 			"maxMargin": "Максимальний горизонтальний та вертикальний відступ",
 			"globalZoom": "Глобальне збільшення замість зображення за зображенням (вертикальне читання)",
 			"globalZoomSlide": "Глобальне збільшення замість зображення за зображенням (горизонтальне читання)",
-			"startWithPrevZoom": "",
-			"resetZoomButtonToPrevZoom": "",
+			"startWithPrevZoom": "Починати читання з попереднім рівнем збільшення",
+			"resetZoomButtonToPrevZoom": "Кнопка скидання збільшення повертає попередній рівень збільшення замість оригінального розміру",
 			"moveZoomWithMouse": "Переміщувати збільшене зображення курсором (вимикає переміщення методом перетягування)",
 			"scrollWithMouse": "Прокручування за допомогою руху курсору по центру екрана (вимикає прокрутку за допомогою перетягування)",
 			"goNextPrevChapterWithScroll": "Переходити до наступного/попереднього розділу коліщатком миші (вертикальне читання)",
 			"turnPagesWithMouseWheel": "Перегортати сторінки за допомогою коліщатка миші (збільшення лише при натиснутій клавіші Ctrl)",
 			"autodetectWebtoon": "Автоматичне виявлення веб-коміксів",
 			"disableThumbnails": "Вимкнути мініатюри (показувати імена файлів)",
-			"sensitivityInZoom": "",
+			"sensitivityInZoom": "Чутливість під час збільшення",
 			"mouseWheelSensitivityInZoom": "Чутливість коліщатка миші під час збільшення",
-			"zoomMoveStep": "Відстань переміщення при масштабуванні",
-			"scrollMovePercent": "",
-			"scrollMovePercentInVerticalMode": "",
+			"zoomMoveStep": "Відстань переміщення збільшеного зображення",
+			"scrollMovePercent": "Відсоток зсуву прокручування (режим веб-коміксів)",
+			"scrollMovePercentInVerticalMode": "Використовувати прокручування у відсотках у режимі вертикального читання",
 			"rotateHorizontalsAnticlockwise": "Повертати горизонтальні зображення проти годинникової стрілки",
 			"startReadingInFullScreen": "Почати читання в повноекранному режимі",
 			"trackingAtTheEnd": "Відстеження в кінці розділу/тому",
@@ -467,8 +467,8 @@
 				"confirmDelete": "Ви впевнені, що хочете видалити цю користувацьку тему?"
 			},
 			"communityThemes": {
-				"main": "",
-				"contribute": ""
+				"main": "Теми спільноти",
+				"contribute": "Запропонувати тему"
 			}
 		},
 		"releases": {
@@ -595,7 +595,7 @@
 		"view": {
 			"main": "Вид",
 			"resetZoom": "Скинути збільшення",
-			"prevZoom": "",
+			"prevZoom": "Попереднє збільшення",
 			"originalSize": "Оригінальний розмір",
 			"zoomIn": "Збільшити",
 			"zoomOut": "Зменшити",
@@ -788,7 +788,7 @@
 	},
 	"about": {
 		"version": "Версія",
-		"translatedBy": "Переклад українською:",
+		"translatedBy": "Переклад українською (з використанням ШІ):",
 		"contributedBy": "За участі",
 		"translators": [
 			{
