@@ -125,6 +125,7 @@
 	line-height: calc(var(--const-tabs-bar-height-without-border) - 18px);
 	padding: 0px 8px;
 	border-radius: 4px;
+	white-space: nowrap;
 }
 
 .title-bar-menu > div:hover
