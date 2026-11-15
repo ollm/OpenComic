@@ -3725,7 +3725,9 @@ function ignoreFilesRegex(ignoreFilesRegex = false, force = false)
 				optimizationLevel: 2,
 			});
 
-			regex = mm.makeRe();
+			regex = {
+				test: (string) => mm.match(string),
+			};
 		}
 
 		list.push(regex);

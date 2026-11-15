@@ -535,6 +535,8 @@ function validRegex(pattern)
 	}
 	catch(error)
 	{
+		console.error(error);
+
 		events.snackbar({
 			key: 'invalidRegex',
 			text: language.settings.navigation.ignoreFilesRegex.invalidRegex,
