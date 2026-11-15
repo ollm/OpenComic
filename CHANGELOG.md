@@ -8,8 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🐛 Bug Fixes
 
-- UI layout breaks and overflows with long localized labels
-- Handle unexpected child process exits (Linux only)
+- UI layout breaks and overflows with long localized labels [`c6a57cf`](https://github.com/ollm/OpenComic/commit/c6a57cf03eceded7ad9de9425e9fe51905383a5f)
+- Handle unexpected child process exits (Linux only) [`28e0948`](https://github.com/ollm/OpenComic/commit/28e0948da7c25d661b695b4355fb6f258b332268)
+- Compatibility with minimatch 11 [`499ae49`](https://github.com/ollm/OpenComic/commit/499ae49d4a34d6dcc6097043e8a7f65f5caf7510)
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 
