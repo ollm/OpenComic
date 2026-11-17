@@ -1,4 +1,4 @@
-const {app, ipcMain, BrowserWindow, screen, Menu, nativeImage, shell} = require('electron');
+const {app, ipcMain, BrowserWindow, screen, Menu, MenuItem, nativeImage, shell} = require('electron');
 const fs = require('fs');
 const p = require('path');
 const url = require('url');
@@ -13,6 +13,11 @@ require('@electron/remote/main').initialize();
 // be closed automatically when the JavaScript object is garbage collected.
 const windows = new Map();
 let firstWindowCreated = false;
+let applicationMenuTemplate = [{role: 'windowMenu'}];
+let windowMenuLabels = {
+	newTab: 'New tab',
+	newWindow: 'New window',
+};
 
 process.traceProcessWarnings = true;
 
@@ -21,6 +26,80 @@ function getArgValue(args, flag, defaultValue = null)
 	const arg = args.find(a => a.startsWith(flag+'='));
 	if(!arg) return defaultValue;
 	return arg.split('=')[1];
+}
+
+function setWindowMenuWithoutWindows()
+{
+	const menuTemplate = applicationMenuTemplate.map(item => {
+
+		if(item.role === 'windowMenu')
+			return {role: 'windowMenu'};
+
+		const disabledItem = {...item};
+
+		if(item.submenu)
+			disabledItem.submenu = item.submenu.map(disableMenuItem);
+		else if(item.role === 'quit')
+			disabledItem.enabled = true;
+		else if(item.type !== 'separator')
+			disabledItem.enabled = false;
+
+		return disabledItem;
+
+	});
+
+	const menu = Menu.buildFromTemplate(menuTemplate);
+	const windowMenu = menu.items.find(item => item.role === 'window' || item.role === 'windowmenu');
+	const index = windowMenu?.submenu?.items.findIndex(item => item.role === 'front') ?? -1;
+
+	if(index !== -1)
+	{
+		windowMenu.submenu.insert(index, new MenuItem({
+			id: 'new-tab',
+			label: windowMenuLabels.newTab,
+			click: function() {
+				createWindow();
+			},
+		}));
+
+		windowMenu.submenu.insert(index + 1, new MenuItem({
+			id: 'new-window',
+			label: windowMenuLabels.newWindow,
+			click: function() {
+				createWindow();
+			},
+		}));
+
+		windowMenu.submenu.insert(index + 2, new MenuItem({type: 'separator'}));
+	}
+
+	if(windowMenu?.submenu)
+	{
+		for(const item of windowMenu.submenu.items)
+		{
+			if(!['new-tab', 'new-window'].includes(item.id) && item.type !== 'separator')
+				item.enabled = false;
+		}
+	}
+
+	Menu.setApplicationMenu(menu);
+}
+
+function disableMenuItem(item)
+{
+	if(item.type === 'separator')
+		return {type: 'separator'};
+
+	const disabledItem = {...item};
+
+	if(item.submenu)
+		disabledItem.submenu = item.submenu.map(disableMenuItem);
+	else if(item.role === 'quit')
+		disabledItem.enabled = true;
+	else
+		disabledItem.enabled = false;
+
+	return disabledItem;
 }
 
 function createWindow(options = {}) {
@@ -348,7 +427,9 @@ app.on('window-all-closed', () => {
 
 	// On macOS it is common for applications and their menu bar
 	// to stay active until the user quits explicitly with Cmd + Q
-	if(process.platform !== 'darwin')
+	if(process.platform === 'darwin')
+		setWindowMenuWithoutWindows();
+	else
 		app.quit()
 
 })
@@ -367,6 +448,23 @@ ipcMain.on('open-at-login', function(event, active = false) {
 	app.setLoginItemSettings({
 		openAtLogin: active,
 	})
+
+});
+
+ipcMain.on('set-application-menu-template', function(event, data = {}) {
+
+	const menuTemplate = JSON.parse(data.menuTemplate);
+
+	if(!Array.isArray(menuTemplate))
+		throw new TypeError('Application menu template must be an array');
+
+	applicationMenuTemplate = menuTemplate;
+
+	if(typeof data.windowMenuLabels?.newTab === 'string')
+		windowMenuLabels.newTab = data.windowMenuLabels.newTab;
+
+	if(typeof data.windowMenuLabels?.newWindow === 'string')
+		windowMenuLabels.newWindow = data.windowMenuLabels.newWindow;
 
 });
 

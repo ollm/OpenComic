@@ -1137,6 +1137,14 @@ function generateAppMenu(force = false)
 
 		if(process.platform == 'darwin')
 		{
+			electron.ipcRenderer.send('set-application-menu-template', {
+				menuTemplate: JSON.stringify(menuTemplate),
+				windowMenuLabels: {
+					newTab: language.menu.window.newTab,
+					newWindow: language.menu.window.newWindow,
+				},
+			});
+
 			const windowMenu = menu.items.find(item => item.role === 'window' || item.role === 'windowmenu');
 
 			if(windowMenu?.submenu)
