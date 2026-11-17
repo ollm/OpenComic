@@ -305,6 +305,11 @@
 			"minimumSystemVersion": "10.15.0"
 		},
 		"mas": {
+			"files": [
+				"node_modules/@img/*darwin*/**/*",
+				"node_modules/opencomic-ai-bin/mac/**/*",
+				"node_modules/7zip-native/prebuilds/darwin-*/**/*"
+			],
 			"notarize": false,
 			"type": "distribution",
 			"entitlements": "build/entitlements.mas.plist",
