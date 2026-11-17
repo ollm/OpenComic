@@ -76,7 +76,7 @@ async function processTheImageQueue(img = false)
 
 async function addImageToQueue(file, size, sha, callback, vars, type, forceSize)
 {
-	threads.job('cache', {useThreads: threads.ALL, afterThreads: ['readingRender']}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
+	threads.job('cache', {useThreads: threads.ALL, /*afterThreads: ['readingRender'],*/ waitTo: reading.renderedFirstPage}, processTheImageQueue, {file: file, size: size, sha: sha, callback: callback, vars: vars, type: type, forceSize: forceSize});
 }
 
 function stopQueue()

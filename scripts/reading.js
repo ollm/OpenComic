@@ -5046,6 +5046,8 @@ function init()
 
 var touchTimeout, mouseleave = {lens: false, body: false, window: false}, isMouseenter = {document: true}, touchStart = false, magnifyingGlassOffset = false, readingCurrentPath = false, zoomMoveData = {}, magnifyingGlassScroll = {scrollTop: false, time: 0}, readingDragScroll = false, gamepadScroll = false, readingIsPdf = false, readingIsEbook = false, readingFile = false, readingFileC = false, gamepadAxesNow = 0, scrollInStart = false, scrollInEnd = false, trackingCurrent = false;
 
+let renderedFirstPage = false;
+
 //It starts with the reading of a comic, events, argar images, counting images ...
 async function read(path, index = 1, end = false, isPdf = false, isEbook = false, imagePath = false)
 {
@@ -5634,7 +5636,12 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 	readingFile = fileManager.file();
 	readingFileC = false;
 
+	const {promise: renderedFirstPagePromise, resolve: renderedFirstPageResolve} = Promise.withResolvers();
+	renderedFirstPage = renderedFirstPagePromise;
+
 	render.setOnRender((doublePage.active() && imagesNum > 1 ? 2 : 1), function() {
+
+		renderedFirstPageResolve();
 
 		const contentRight = template._contentRight();
 
@@ -5931,6 +5938,7 @@ module.exports = {
 	rotateImage: rotateImage,
 	setIsLoaded: function(value){isLoaded=value},
 	isLoaded: function(value){return isLoaded},
+	renderedFirstPage(){return renderedFirstPage},
 	manga: readingManga,
 	margin: readingMargin,
 	globalZoom: readingGlobalZoom,

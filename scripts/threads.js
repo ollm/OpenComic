@@ -159,6 +159,9 @@ async function startJob(thread)
 	if(currentJob.options.afterThreads)
 		await afterThreads(currentJob.options.afterThreads);
 
+	if(currentJob.options.waitTo)
+		await currentJob.options.waitTo();
+
 	if(!currentJob.options.blocking)
 		await hasBlockingJob(thread.key);
 
