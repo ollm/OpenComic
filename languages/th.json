@@ -616,6 +616,11 @@
 			"forceReload": "บังคับรีโหลด",
 			"toggleDevTools": "เครื่องมือนักพัฒนา"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "ช่วยเหลือ",
 			"about": "เกี่ยวกับ OpenComic",

@@ -616,6 +616,11 @@
 			"forceReload": "Принудительная перезагрузка",
 			"toggleDevTools": "Показать/скрыть инструменты разработчика"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Справка",
 			"about": "О программе OpenComic",

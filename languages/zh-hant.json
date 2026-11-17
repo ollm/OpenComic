@@ -616,6 +616,11 @@
 			"forceReload": "強制重新啟動",
 			"toggleDevTools": "切換開發者工具"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "支援",
 			"about": "關於 OpenComic",

@@ -616,6 +616,11 @@
 			"forceReload": "Примусове перезавантаження",
 			"toggleDevTools": "Інструменти для розробників"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Довідка",
 			"about": "Про OpenComic",

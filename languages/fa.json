@@ -616,6 +616,11 @@
 			"forceReload": "بارگذاری اجباری",
 			"toggleDevTools": "نمایش ابزار توسعه"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Help",
 			"about": "درباره برنامه",

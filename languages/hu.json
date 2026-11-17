@@ -616,6 +616,11 @@
 			"forceReload": "Kényszerített frissítés",
 			"toggleDevTools": "Fejlesztői eszközök megnyitása"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Súgó",
 			"about": "Névjegy",

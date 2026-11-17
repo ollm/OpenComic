@@ -616,6 +616,11 @@
 			"forceReload": "Forcer le rechargement",
 			"toggleDevTools": "Basculer les DevTools"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Aide",
 			"about": "À propos d’OpenComic",

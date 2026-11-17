@@ -616,6 +616,11 @@
 			"forceReload": "Framtvinga omladdning",
 			"toggleDevTools": "Aktivera utvecklarverktyg"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Hjälp",
 			"about": "Om OpenComic",

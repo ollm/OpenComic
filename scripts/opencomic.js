@@ -1119,6 +1119,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.debug.toggleDevTools, click: function(){electronRemote.getCurrentWindow().webContents.toggleDevTools();}, accelerator: 'CmdOrCtrl+Shift+I'},
 				]
 			},
+			...(process.platform === 'darwin' ? [{role: 'windowMenu'}] : []),
 			{
 				label: language.menu.help.main,
 				submenu: [
@@ -1136,6 +1137,37 @@ function generateAppMenu(force = false)
 
 		if(process.platform == 'darwin')
 		{
+			const windowMenu = menu.items.find(item => item.role === 'window');
+
+			if(windowMenu?.submenu)
+			{
+				const index = windowMenu.submenu.items.findIndex(item => item.role === 'front');
+
+				if(index !== -1)
+				{
+					const numWindows = electronRemote.BrowserWindow.getAllWindows().length;
+
+					windowMenu.submenu.insert(index, new electronRemote.MenuItem({
+						label: language.menu.window.newTab,
+						enabled: numWindows > 0 ? true : false,
+						click: function() {
+							tabs.new()
+						}
+					}));
+
+					windowMenu.submenu.insert(index + 1, new electronRemote.MenuItem({
+						label: language.menu.window.newWindow,
+						click: function() {
+							openEmptyNewWindow();
+						}
+					}));
+
+					windowMenu.submenu.insert(index, new electronRemote.MenuItem({
+						type: 'separator'
+					}));
+				}
+			}
+
 			electronRemote.Menu.setApplicationMenu(menu);
 		}
 		else

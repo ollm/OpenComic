@@ -616,6 +616,11 @@
 			"forceReload": "Buộc tải lại",
 			"toggleDevTools": "Bật DevTools"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Trợ giúp",
 			"about": "Về OpenComic",

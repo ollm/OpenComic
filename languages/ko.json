@@ -616,6 +616,11 @@
 			"forceReload": "강력 새로고침",
 			"toggleDevTools": "개발자 도구 열기"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "도움말",
 			"about": "OpenComic에 대해",

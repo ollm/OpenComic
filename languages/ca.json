@@ -616,6 +616,11 @@
 			"forceReload": "Recarregar de manera forçada",
 			"toggleDevTools": "Eines per a desenvolupadors"
 		},
+		"window": {
+			"main": "Finestra",
+			"newTab": "Nova pestanya",
+			"newWindow": "Nova finestra"
+		},
 		"help": {
 			"main": "Ajuda",
 			"about": "Sobre OpenComic",

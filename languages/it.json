@@ -616,6 +616,11 @@
 			"forceReload": "Forza ricarica",
 			"toggleDevTools": "Strumenti per gli sviluppatori"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Aiuto",
 			"about": "Informazioni su OpenComic",

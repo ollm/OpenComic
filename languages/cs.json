@@ -616,6 +616,11 @@
 			"forceReload": "Přinutit znovu načíst",
 			"toggleDevTools": "Vyp/Zapnout vývojářské nástroje"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "Pomoc",
 			"about": "O Aplikaci OpenComic",

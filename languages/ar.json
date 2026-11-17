@@ -616,6 +616,11 @@
 			"forceReload": "إعادة التحميل الإجباري",
 			"toggleDevTools": "التبديل إلى أدوات المطور"
 		},
+		"window": {
+			"main": "",
+			"newTab": "",
+			"newWindow": ""
+		},
 		"help": {
 			"main": "المساعدة",
 			"about": "حول البرنامج",

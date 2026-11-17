@@ -616,6 +616,11 @@
 			"forceReload": "Force reload",
 			"toggleDevTools": "Toggle DevTools"
 		},
+		"window": {
+			"main": "Window",
+			"newTab": "New tab",
+			"newWindow": "New window"
+		},
 		"help": {
 			"main": "Help",
 			"about": "About OpenComic",
