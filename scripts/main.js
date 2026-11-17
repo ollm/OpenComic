@@ -1,4 +1,8 @@
 const {app, ipcMain, BrowserWindow, screen, Menu, MenuItem, nativeImage, shell} = require('electron');
+
+if(process.platform === 'linux')
+	app.commandLine.appendSwitch('enable-features', 'WebAssemblyUnlimitedSyncCompilation');
+
 const fs = require('fs');
 const p = require('path');
 const url = require('url');

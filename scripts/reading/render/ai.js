@@ -1,6 +1,7 @@
 const OpenComicAI = require('opencomic-ai-bin');
-const sharp = require('sharp');
 const fsp = require('fs/promises');
+
+let sharp = false;
 
 OpenComicAI.setDirname(asarToAsarUnpacked(OpenComicAI.__dirname));
 
@@ -229,6 +230,9 @@ function aiErrorSnackbar(message = '')
 
 function _image(src, imageSize, options = {})
 {
+	if(sharp === false)
+		sharp = sharpLoader();
+	
 	setModelsPath();
 	OpenComicAI.setSharp(sharp);
 

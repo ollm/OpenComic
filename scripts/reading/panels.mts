@@ -1,7 +1,6 @@
 import p from 'path';
 import fs from 'fs';
 import fsp from 'fs/promises';
-import sharp from 'sharp';
 import {setProperty} from 'dot-prop';
 import OpenComicAI, {Downloading, Detection, Box, OpenComicAIPanels} from 'opencomic-ai-bin';
 
@@ -29,6 +28,7 @@ declare const template: any;
 declare const tempFolder: any;
 declare const compatible: any;
 declare const fileManager: any;
+declare const sharpLoader: any;
 declare const handlebarsContext: any;
 declare const asarToAsarUnpacked: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -78,6 +78,7 @@ function focusPage(page: number, fromScroll = false)
 async function _getPanels(src: string): Promise<Detection>
 {
 	setModelsPath();
+	const sharp = sharpLoader();
 	OpenComicAI.setSharp(sharp);
 
 	const model = 'opencomic-ai-panels-fast-1024-channels-inverted-v4';

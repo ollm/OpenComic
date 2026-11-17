@@ -3,6 +3,7 @@ const p = require('path'),
 
 global.inChildFork = true;
 global.app = require(p.join(__dirname, '../.dist/app.js'));
+global.sharpLoader = require(p.join(__dirname, '../.dist/sharp-loader.mjs')).default;
 
 const image = require(p.join(__dirname, '../.dist/image.js'));
 

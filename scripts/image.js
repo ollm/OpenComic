@@ -6,7 +6,8 @@ const useChildFork = (process.platform === 'linux' && !inChildFork) ? true : fal
 async function loadSharp()
 {
 	if(sharp !== false) return;
-	sharp = require('sharp');
+
+	sharp = sharpLoader();
 }
 
 async function resize(fromImage, toImage, config = {})

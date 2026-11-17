@@ -323,7 +323,8 @@ const app = require(p.join(appDir, '.dist/app.js')),
 	shortcuts = require(p.join(appDir, '.dist/shortcuts.js')),
 	tracking = require(p.join(appDir, '.dist/tracking.js')),
 	trackingSites = require(p.join(appDir, '.dist/tracking/tracking-sites.js')),
-	languageTerms = require(p.join(appDir, '.dist/language-terms.mjs')).default;
+	languageTerms = require(p.join(appDir, '.dist/language-terms.mjs')).default,
+	sharpLoader = require(p.join(appDir, '.dist/sharp-loader.mjs')).default;
 
 
 var tempFolder = settings.getTmpFolder();

@@ -1,7 +1,10 @@
 import {describe, it} from 'node:test';
 import assert from 'node:assert';
-import sharp, {Sharp, Metadata as SharpMetadata} from 'sharp';
+import loadSharpModule from '../../sharp-loader.mjs';
+import type {Sharp, Metadata as SharpMetadata} from 'sharp';
 import p from 'node:path';
+
+const sharp = loadSharpModule();
 
 const ___dirname = typeof __dirname !== 'undefined' ? __dirname : import.meta.dirname;
 const imagesDir = p.join(___dirname, '../../../scripts/test/images');

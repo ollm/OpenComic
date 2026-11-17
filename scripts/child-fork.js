@@ -117,8 +117,8 @@ class ChildFork
 	}
 }
 
-let IDLE_TIMEOUT = 5000;
-let JOBS_PER_CYCLE = 30;
+let IDLE_TIMEOUT = 9999999999; // 5000; // TODO: Disabled in WASM
+let JOBS_PER_CYCLE = 9999999999; // 30; // TODO: Disabled in WASM
 
 function config(options)
 {
@@ -166,7 +166,7 @@ function createForks()
 		closeFork(fork.index);
 
 	if(!forks[0]) pushFork();
-	if(!forks[1]) pushFork();
+	// if(!forks[1]) pushFork(); // TODO: Disabled in WASM
 }
 
 function getFork(count = true)

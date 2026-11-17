@@ -88,12 +88,14 @@
 		"build-7z-arm": "npm run prebuild && electron-builder --arm64 --linux 7z && npm run postbuild",
 		"snapcraft": "npm run prebuild && cd dist/__snap-amd64/ && snapcraft && npm run postbuild",
 		"snapcraft-arm": "npm run prebuild && cd dist/__snap-arm64/ && snapcraft --target-arch=arm64 && npm run postbuild",
-		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js"
+		"postinstall": "electron-builder install-app-deps && node scripts/zstd-copy-native.js && node scripts/patch-sharp-wasm.js"
 	},
 	"dependencies": {
 		"@awo00/smb2": "^1.1.1",
 		"@aws-sdk/client-s3": "^3.1169.0",
 		"@electron/remote": "^2.1.4",
+		"@img/sharp-libvips-dev-wasm32": "^1.3.4",
+		"@img/sharp-wasm32": "^0.35.5",
 		"@toondepauw/node-zstd": "^2.0.0",
 		"7zip-native": "^26.6.1",
 		"atomically": "^2.1.1",
@@ -144,31 +146,34 @@
 	"overrides": {
 		"electron": "$electron",
 		"@napi-rs/canvas": "0.0.0",
-		"@img/sharp-wasm32": "0.0.0",
+		"@img/sharp-linux-arm": "0.0.0",
+		"@img/sharp-linux-arm64": "0.0.0",
+		"@img/sharp-linux-ppc64": "0.0.0",
+		"@img/sharp-linux-riscv64": "0.0.0",
+		"@img/sharp-linux-s390x": "0.0.0",
+		"@img/sharp-linux-x64": "0.0.0",
+		"@img/sharp-linuxmusl-arm64": "0.0.0",
+		"@img/sharp-linuxmusl-x64": "0.0.0",
+		"@img/sharp-libvips-linux-arm": "0.0.0",
+		"@img/sharp-libvips-linux-arm64": "0.0.0",
+		"@img/sharp-libvips-linux-ppc64": "0.0.0",
+		"@img/sharp-libvips-linux-riscv64": "0.0.0",
+		"@img/sharp-libvips-linux-s390x": "0.0.0",
+		"@img/sharp-libvips-linux-x64": "0.0.0",
+		"@img/sharp-libvips-linuxmusl-arm64": "0.0.0",
+		"@img/sharp-libvips-linuxmusl-x64": "0.0.0",
 		"cpu-features": "0.0.0",
 		"onnxruntime-node": "0.0.0",
 		"sharp": {
+			"@img/sharp-wasm32": "npm:@img-custom/sharp-wasm32@0.35.5-wasm.2",
 			"@img/sharp-darwin-arm64": "npm:@img-custom/sharp-darwin-arm64@0.35.5",
 			"@img/sharp-darwin-x64": "npm:@img-custom/sharp-darwin-x64@0.35.5",
-			"@img/sharp-linux-arm": "npm:@img-custom/sharp-linux-arm@0.35.5",
-			"@img/sharp-linux-arm64": "npm:@img-custom/sharp-linux-arm64@0.35.5",
-			"@img/sharp-linux-ppc64": "npm:@img-custom/sharp-linux-ppc64@0.35.5",
-			"@img/sharp-linux-riscv64": "npm:@img-custom/sharp-linux-riscv64@0.35.5",
-			"@img/sharp-linux-s390x": "npm:@img-custom/sharp-linux-s390x@0.35.5",
-			"@img/sharp-linux-x64": "npm:@img-custom/sharp-linux-x64@0.35.5",
-			"@img/sharp-linuxmusl-arm64": "npm:@img-custom/sharp-linuxmusl-arm64@0.35.5",
-			"@img/sharp-linuxmusl-x64": "npm:@img-custom/sharp-linuxmusl-x64@0.35.5",
 			"@img/sharp-win32-arm64": "npm:@img-custom/sharp-win32-arm64@0.35.5",
 			"@img/sharp-win32-ia32": "npm:@img-custom/sharp-win32-ia32@0.35.5",
 			"@img/sharp-win32-x64": "npm:@img-custom/sharp-win32-x64@0.35.5",
+			"@img/sharp-libvips-dev-wasm32": "npm:@img-custom/sharp-libvips-dev-wasm32@1.3.4",
 			"@img/sharp-libvips-darwin-arm64": "npm:@img-custom/sharp-libvips-darwin-arm64@1.3.4",
 			"@img/sharp-libvips-darwin-x64": "npm:@img-custom/sharp-libvips-darwin-x64@1.3.4",
-			"@img/sharp-libvips-linux-arm": "npm:@img-custom/sharp-libvips-linux-arm@1.3.4",
-			"@img/sharp-libvips-linux-arm64": "npm:@img-custom/sharp-libvips-linux-arm64@1.3.4",
-			"@img/sharp-libvips-linux-ppc64": "npm:@img-custom/sharp-libvips-linux-ppc64@1.3.4",
-			"@img/sharp-libvips-linux-riscv64": "npm:@img-custom/sharp-libvips-linux-riscv64@1.3.4",
-			"@img/sharp-libvips-linux-s390x": "npm:@img-custom/sharp-libvips-linux-s390x@1.3.4",
-			"@img/sharp-libvips-linux-x64": "npm:@img-custom/sharp-libvips-linux-x64@1.3.4",
 			"@img/sharp-libvips-linuxmusl-arm64": "npm:@img-custom/sharp-libvips-linuxmusl-arm64@1.3.4",
 			"@img/sharp-libvips-linuxmusl-x64": "npm:@img-custom/sharp-libvips-linuxmusl-x64@1.3.4"
 		}
@@ -305,11 +310,6 @@
 			"minimumSystemVersion": "10.15.0"
 		},
 		"mas": {
-			"files": [
-				"node_modules/@img/*darwin*/**/*",
-				"node_modules/opencomic-ai-bin/mac/**/*",
-				"node_modules/7zip-native/prebuilds/darwin-*/**/*"
-			],
 			"notarize": false,
 			"type": "distribution",
 			"entitlements": "build/entitlements.mas.plist",
@@ -323,6 +323,12 @@
 			}
 		},
 		"linux": {
+			"files": [
+				"!node_modules/@img/sharp-linux-${arch}/**/*",
+				"!node_modules/@img/sharp-libvips-linux-${arch}/**/*",
+				"node_modules/@img/sharp-wasm32/**/*",
+				"node_modules/@img/sharp-libvips-dev-wasm32/**/*"
+			],
 			"syncDesktopName": true,
 			"target": [
 				"AppImage",
