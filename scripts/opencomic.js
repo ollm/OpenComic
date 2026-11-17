@@ -1137,7 +1137,7 @@ function generateAppMenu(force = false)
 
 		if(process.platform == 'darwin')
 		{
-			const windowMenu = menu.items.find(item => item.role === 'window');
+			const windowMenu = menu.items.find(item => item.role === 'window' || item.role === 'windowmenu');
 
 			if(windowMenu?.submenu)
 			{
@@ -1145,24 +1145,33 @@ function generateAppMenu(force = false)
 
 				if(index !== -1)
 				{
-					const numWindows = electronRemote.BrowserWindow.getAllWindows().length;
-
 					windowMenu.submenu.insert(index, new electronRemote.MenuItem({
 						label: language.menu.window.newTab,
-						enabled: numWindows > 0 ? true : false,
 						click: function() {
-							tabs.new()
+
+							const numWindows = electronRemote.BrowserWindow.getAllWindows().length;
+
+							if(numWindows === 0)
+								openNewWindow();
+							else
+								tabs.new()
 						}
 					}));
 
 					windowMenu.submenu.insert(index + 1, new electronRemote.MenuItem({
 						label: language.menu.window.newWindow,
 						click: function() {
-							openEmptyNewWindow();
+
+							const numWindows = electronRemote.BrowserWindow.getAllWindows().length;
+
+							if(numWindows === 0)
+								openNewWindow();
+							else
+								openEmptyNewWindow();
 						}
 					}));
 
-					windowMenu.submenu.insert(index, new electronRemote.MenuItem({
+					windowMenu.submenu.insert(index + 2, new electronRemote.MenuItem({
 						type: 'separator'
 					}));
 				}
