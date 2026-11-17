@@ -15,6 +15,7 @@ const windows = new Map();
 let firstWindowCreated = false;
 let applicationMenuTemplate = [{role: 'windowMenu'}];
 let windowMenuLabels = {
+	recentWindows: 'Recent Windows',
 	newTab: 'New tab',
 	newWindow: 'New window',
 };
@@ -71,6 +72,14 @@ function setWindowMenuWithoutWindows()
 		}));
 
 		windowMenu.submenu.insert(index + 2, new MenuItem({type: 'separator'}));
+
+		windowMenu.submenu.insert(index + 3, new MenuItem({
+			label: windowMenuLabels.recentWindows,
+			submenu: [],
+			enabled: false,
+		}));
+
+		windowMenu.submenu.insert(index + 4, new MenuItem({type: 'separator'}));
 	}
 
 	if(windowMenu?.submenu)
@@ -459,6 +468,9 @@ ipcMain.on('set-application-menu-template', function(event, data = {}) {
 		throw new TypeError('Application menu template must be an array');
 
 	applicationMenuTemplate = menuTemplate;
+
+	if(typeof data.windowMenuLabels?.recentWindows === 'string')
+		windowMenuLabels.recentWindows = data.windowMenuLabels.recentWindows;
 
 	if(typeof data.windowMenuLabels?.newTab === 'string')
 		windowMenuLabels.newTab = data.windowMenuLabels.newTab;

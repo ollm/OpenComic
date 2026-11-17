@@ -1153,6 +1153,7 @@ function generateAppMenu(force = false)
 			electron.ipcRenderer.send('set-application-menu-template', {
 				menuTemplate: JSON.stringify(menuTemplate),
 				windowMenuLabels: {
+					recentWindows: language.menu.file.recentWindows,
 					newTab: language.menu.window.newTab,
 					newWindow: language.menu.window.newWindow,
 				},
