@@ -325,6 +325,7 @@ const app = require(p.join(appDir, '.dist/app.js')),
 	trackingSites = require(p.join(appDir, '.dist/tracking/tracking-sites.js')),
 	languageTerms = require(p.join(appDir, '.dist/language-terms.mjs')).default;
 
+
 var tempFolder = settings.getTmpFolder();
 var macosMAS = false;
 
@@ -1037,6 +1038,45 @@ function generateAppMenu(force = false)
 
 		const recentWindows = storage.get('recentWindows') || [];
 
+		const createRecentWindowsMenu = function() {
+			return {
+				label: language.menu.file.recentWindows,
+				submenu: recentWindows.map(function(window) {
+
+					const activeTab = window.list.find(tab => tab.active);
+					const title = activeTab ? activeTab.title : 'Untitled';
+					const maxLength = 50;
+
+					const segments = [...new Intl.Segmenter(undefined, {
+						granularity: 'grapheme',
+					}).segment(title)];
+
+					const label = segments.length > maxLength ? segments.slice(0, maxLength - 1).map(segment => segment.segment).join('') + '...' : title;
+
+					const date = new Date(window.date).toLocaleString(undefined, {
+						day: '2-digit',
+						month: '2-digit',
+						year: '2-digit',
+						hour: '2-digit',
+						minute: '2-digit',
+					});
+
+					const sublabel = `${hb.compile(language.menu.file.tabsNum)({num: window.list.length})} · ${date}`;
+
+					return {
+						label: label,
+						sublabel: sublabel,
+						click: function() {
+							restoreWindow(window.id);
+						},
+						enabled: true,
+					};
+
+				}),
+				enabled: recentWindows.length > 0
+			};
+		};
+	
 		var menuTemplate = [
 			{
 				label: language.menu.file.main,
@@ -1046,42 +1086,7 @@ function generateAppMenu(force = false)
 					{label: language.menu.file.addFile, click: function(){addComic()}},
 					{label: language.menu.file.addFolder, click: function(){addComic(true)}},
 					{type: 'separator'},
-					{
-						label: language.menu.file.recentWindows,
-						submenu: recentWindows.map(function(window) {
-
-							const activeTab = window.list.find(tab => tab.active);
-							const title = activeTab ? activeTab.title : 'Untitled';
-							const maxLength = 50;
-
-							const segments = [...new Intl.Segmenter(undefined, {
-								granularity: 'grapheme',
-							}).segment(title)];
-
-							const label = segments.length > maxLength ? segments.slice(0, maxLength - 1).map(segment => segment.segment).join('') + '...' : title;
-
-							const date = new Date(window.date).toLocaleString(undefined, {
-								day: '2-digit',
-								month: '2-digit',
-								year: '2-digit',
-								hour: '2-digit',
-								minute: '2-digit',
-							});
-
-							const sublabel = `${hb.compile(language.menu.file.tabsNum)({num: window.list.length})} · ${date}`;
-
-							return {
-								label: label,
-								sublabel: sublabel,
-								click: function() {
-									restoreWindow(window.id);
-								},
-								enabled: true,
-							};
-
-						}),
-						enabled: recentWindows.length > 0
-					},
+					createRecentWindowsMenu(),
 					{type: 'separator'},
 					{label: language.global.labels, enabled: currentPath, click: function(){reading.contextMenu.labels()}},
 					{label: pathIsFolder ? language.global.contextMenu.openFolderLocation : language.global.contextMenu.openFileLocation, enabled: currentPath, click: function(){reading.contextMenu.openFileLocation()}},
@@ -1119,7 +1124,15 @@ function generateAppMenu(force = false)
 					{label: language.menu.debug.toggleDevTools, click: function(){electronRemote.getCurrentWindow().webContents.toggleDevTools();}, accelerator: 'CmdOrCtrl+Shift+I'},
 				]
 			},
-			...(process.platform === 'darwin' ? [{role: 'windowMenu'}] : []),
+			...(process.platform === 'darwin' ? [{role: 'windowMenu'}] :[{
+				label: language.menu.window.main,
+				submenu: [
+					{label: language.menu.window.newTab, click: function(){tabs.new()}},
+					{label: language.menu.window.newWindow, click: function(){openNewWindow();}},
+					{type: 'separator'},
+					createRecentWindowsMenu(),
+				]
+			}]),
 			{
 				label: language.menu.help.main,
 				submenu: [
@@ -1180,6 +1193,12 @@ function generateAppMenu(force = false)
 					}));
 
 					windowMenu.submenu.insert(index + 2, new electronRemote.MenuItem({
+						type: 'separator'
+					}));
+
+					windowMenu.submenu.insert(index + 3, new electronRemote.MenuItem(createRecentWindowsMenu()));
+
+					windowMenu.submenu.insert(index + 4, new electronRemote.MenuItem({
 						type: 'separator'
 					}));
 				}
