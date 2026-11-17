@@ -12,11 +12,11 @@ if(process.platform == 'darwin')
 
 	// Sharp x64
 	exists(darwin, `@img/sharp-libvips-darwin-x64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_X64);
-	existsRegex(darwin, '@img/sharp-darwin-x64/lib', /^sharp-darwin-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
+	existsRegex(darwin, '@img/sharp-darwin-x64/lib', /^sharp-darwin-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
 
 	// Sharp arm64
 	exists(darwin, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
-	existsRegex(darwin, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
+	existsRegex(darwin, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
 	// 7zip
 	exists(darwin, '7zip-native/package.json', fs.constants.R_OK);

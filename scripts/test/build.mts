@@ -21,11 +21,11 @@ if(process.platform == 'darwin')
 
 	// Sharp x64
 	exists(BASE, `@img/sharp-libvips-darwin-x64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_X64);
-	existsRegex(BASE, '@img/sharp-darwin-x64/lib/', /^sharp-darwin-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
+	existsRegex(BASE, '@img/sharp-darwin-x64/lib/', /^sharp-darwin-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
 
 	// Sharp arm64
 	exists(BASE, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
-	existsRegex(BASE, '@img/sharp-darwin-arm64/lib/', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
+	existsRegex(BASE, '@img/sharp-darwin-arm64/lib/', /^sharp-darwin-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
 	// 7zip-native
 	native7zip('arm64');
@@ -43,12 +43,17 @@ else if(process.platform == 'linux')
 	exists(BASE, '@toondepauw/node-zstd-linux-arm64-gnu/node-zstd.linux-arm64-gnu.node', fs.constants.R_OK, fix.ZSTD);
 
 	// Sharp x64
-	exists(BASE, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_X64);
-	existsRegex(BASE, '@img/sharp-linux-x64/lib/', /^sharp-linux-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_X64);
+	// exists(BASE, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_X64);
+	// existsRegex(BASE, '@img/sharp-linux-x64/lib/', /^sharp-linux-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_X64);
 
 	// Sharp arm64
-	exists(BASE, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
-	existsRegex(BASE, '@img/sharp-linux-arm64/lib/', /^sharp-linux-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
+	// exists(BASE, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
+	// existsRegex(BASE, '@img/sharp-linux-arm64/lib/', /^sharp-linux-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
+
+	// Sharp WASM
+	exists(BASE, '@img/sharp-wasm32/index.cjs', fs.constants.R_OK, fix.sharp.LINUX_WASM);
+	existsRegex(BASE, '@img/sharp-wasm32/lib/', /\.node\.js$/, fs.constants.R_OK, fix.sharp.LINUX_WASM);
+	existsRegex(BASE, '@img/sharp-wasm32/lib/', /\.node\.wasm$/, fs.constants.R_OK, fix.sharp.LINUX_WASM);
 
 	// 7zip-native
 	native7zip('arm');
@@ -68,12 +73,12 @@ else if(process.platform == 'win32')
 	// Sharp x64
 	exists(BASE, '@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
 	exists(BASE, `@img/sharp-win32-x64/lib/libvips-cpp-${versions.libvips}.dll`, fs.constants.R_OK);
-	existsRegex(BASE, '@img/sharp-win32-x64/lib/', /^sharp-win32-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK);
+	existsRegex(BASE, '@img/sharp-win32-x64/lib/', /^sharp-win32-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK);
 
 	// Sharp arm64
 	exists(BASE, '@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK, fix.sharp.WIN32_ARM64);
 	exists(BASE, `@img/sharp-win32-arm64/lib/libvips-cpp-${versions.libvips}.dll`, fs.constants.R_OK, fix.sharp.WIN32_ARM64);
-	existsRegex(BASE, '@img/sharp-win32-arm64/lib/', /^sharp-win32-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.WIN32_ARM64);
+	existsRegex(BASE, '@img/sharp-win32-arm64/lib/', /^sharp-win32-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.WIN32_ARM64);
 
 	// 7zip-native
 	native7zip('x64');

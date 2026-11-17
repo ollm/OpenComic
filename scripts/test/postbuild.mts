@@ -32,7 +32,7 @@ if(process.platform == 'darwin')
 
 		// Sharp x64
 		exists(darwin, `@img/sharp-libvips-darwin-x64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_X64);
-		existsRegex(darwin, '@img/sharp-darwin-x64/lib', /^sharp-darwin-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
+		existsRegex(darwin, '@img/sharp-darwin-x64/lib', /^sharp-darwin-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
 
 		// 7zip-native
 		native7zip(darwin, 'darwin', 'x64');
@@ -51,7 +51,7 @@ if(process.platform == 'darwin')
 
 		// Sharp arm64
 		exists(darwinArm, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
-		existsRegex(darwinArm, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
+		existsRegex(darwinArm, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
 		// 7zip-native
 		native7zip(darwinArm, 'darwin', 'arm64');
@@ -71,11 +71,11 @@ if(process.platform == 'darwin')
 
 		// Sharp x64
 		exists(darwinMas, `@img/sharp-libvips-darwin-x64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_X64);
-		existsRegex(darwinMas, '@img/sharp-darwin-x64/lib', /^sharp-darwin-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
+		existsRegex(darwinMas, '@img/sharp-darwin-x64/lib', /^sharp-darwin-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_X64);
 
 		// Sharp arm64
 		exists(darwinMas, `@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.${versions.libvips}.dylib`, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
-		existsRegex(darwinMas, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
+		existsRegex(darwinMas, '@img/sharp-darwin-arm64/lib', /^sharp-darwin-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.MACOSS_ARM64);
 
 		// 7zip-native
 		native7zip(darwinMas, 'darwin', 'arm64');
@@ -98,7 +98,7 @@ else if(process.platform == 'linux')
 
 		// Sharp x64
 		exists(linux, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK);
-		existsRegex(linux, '@img/sharp-linux-x64/lib', /^sharp-linux-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK);
+		existsRegex(linux, '@img/sharp-linux-x64/lib', /^sharp-linux-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK);
 
 		// 7zip-native
 		native7zip(linux, 'linux', 'x64');
@@ -117,7 +117,7 @@ else if(process.platform == 'linux')
 
 		// Sharp arm64
 		exists(linuxArm, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK);
-		existsRegex(linuxArm, '@img/sharp-linux-arm64/lib', /^sharp-linux-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK);
+		existsRegex(linuxArm, '@img/sharp-linux-arm64/lib', /^sharp-linux-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK);
 
 		// 7zip-native
 		native7zip(linuxArm, 'linux', 'arm64');
@@ -138,7 +138,7 @@ else if(process.platform == 'win32')
 		// Sharp x64
 		exists(windows, '@img/sharp-win32-x64/lib/libvips-42.dll', fs.constants.R_OK);
 		exists(windows, `@img/sharp-win32-x64/lib/libvips-cpp-${versions.libvips}.dll`, fs.constants.R_OK);
-		existsRegex(windows, '@img/sharp-win32-x64/lib', /^sharp-win32-x64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK);
+		existsRegex(windows, '@img/sharp-win32-x64/lib', /^sharp-win32-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK);
 
 		// 7zip-native
 		native7zip(windows, 'win32', 'x64');
@@ -157,7 +157,7 @@ else if(process.platform == 'win32')
 		// Sharp arm64
 		exists(windowsArm, '@img/sharp-win32-arm64/lib/libvips-42.dll', fs.constants.R_OK);
 		exists(windowsArm, `@img/sharp-win32-arm64/lib/libvips-cpp-${versions.libvips}.dll`, fs.constants.R_OK);
-		existsRegex(windowsArm, '@img/sharp-win32-arm64/lib', /^sharp-win32-arm64(?:-[0-9.]+)?\.node$/, fs.constants.R_OK);
+		existsRegex(windowsArm, '@img/sharp-win32-arm64/lib', /^sharp-win32-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK);
 
 		// 7zip-native
 		native7zip(windowsArm, 'win32', 'arm64');
