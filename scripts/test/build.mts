@@ -9,8 +9,18 @@ function native7zip(arch: string)
 	const path = `7zip-native/prebuilds/${process.platform}-${arch}/`;
 	const engine = process.platform === 'win32' ? '7z.dll' : process.platform === 'darwin' ? 'lib7z.dylib' : '7z.so';
 
-	exists(BASE, `${path}7zip_native.node`, fs.constants.R_OK);
-	exists(BASE, `${path}${engine}`, fs.constants.R_OK);
+	exists(BASE, `${path}7zip_native.node`, fs.constants.R_OK, fix.NATIVE_7ZIP);
+	exists(BASE, `${path}${engine}`, fs.constants.R_OK, fix.NATIVE_7ZIP);
+}
+
+function nativeKoffi(arch: 'x64' | 'arm64')
+{
+	const path = `@koromix/koffi-linux-${arch}/`;
+
+	exists(BASE, 'koffi/package.json', fs.constants.R_OK, fix.KOFFI);
+	exists(BASE, `${path}package.json`, fs.constants.R_OK, fix.KOFFI);
+	exists(BASE, `${path}linux_${arch}/koffi.node`, fs.constants.R_OK, fix.KOFFI);
+	exists(BASE, `${path}musl_${arch}/koffi.node`, fs.constants.R_OK, fix.KOFFI);
 }
 
 if(process.platform == 'darwin')
@@ -41,6 +51,10 @@ else if(process.platform == 'linux')
 	// Node ZSTD All
 	exists(BASE, '@toondepauw/node-zstd-linux-x64-gnu/node-zstd.linux-x64-gnu.node', fs.constants.R_OK, fix.ZSTD);
 	exists(BASE, '@toondepauw/node-zstd-linux-arm64-gnu/node-zstd.linux-arm64-gnu.node', fs.constants.R_OK, fix.ZSTD);
+
+	// Koffi
+	nativeKoffi('x64');
+	nativeKoffi('arm64');
 
 	// Sharp x64
 	// exists(BASE, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_X64);

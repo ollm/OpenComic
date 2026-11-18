@@ -1,4 +1,5 @@
 import fs from 'fs';
+import p from 'path';
 
 import {exists, existsRegex, fix, versions, printErrors} from './build/exists.mjs';
 
@@ -16,10 +17,31 @@ function native7zip(base: string, platform: string, arch: string)
 {
 	const engine = platform === 'win32' ? '7z.dll' : platform === 'darwin' ? 'lib7z.dylib' : '7z.so';
 
-	exists(base, '7zip-native/package.json', fs.constants.R_OK);
-	exists(base, '7zip-native/dist/index.mjs', fs.constants.R_OK);
-	exists(base, `7zip-native/prebuilds/${platform}-${arch}/7zip_native.node`, fs.constants.R_OK);
-	exists(base, `7zip-native/prebuilds/${platform}-${arch}/${engine}`, fs.constants.R_OK);
+	exists(base, '7zip-native/package.json', fs.constants.R_OK, fix.NATIVE_7ZIP);
+	exists(base, '7zip-native/dist/index.mjs', fs.constants.R_OK, fix.NATIVE_7ZIP);
+	exists(base, `7zip-native/prebuilds/${platform}-${arch}/7zip_native.node`, fs.constants.R_OK, fix.NATIVE_7ZIP);
+	exists(base, `7zip-native/prebuilds/${platform}-${arch}/${engine}`, fs.constants.R_OK, fix.NATIVE_7ZIP);
+}
+
+function nativeKoffi(base: string, arch: 'x64' | 'arm64')
+{
+	const koffiPackage = `@koromix/koffi-linux-${arch}/`;
+
+	exists(base, 'koffi/package.json', fs.constants.R_OK, fix.KOFFI);
+	exists(base, 'koffi/index.cjs', fs.constants.R_OK, fix.KOFFI);
+	exists(base, `${koffiPackage}package.json`, fs.constants.R_OK, fix.KOFFI);
+	exists(base, `${koffiPackage}linux_${arch}/koffi.node`, fs.constants.R_OK, fix.KOFFI);
+	exists(base, `${koffiPackage}musl_${arch}/koffi.node`, fs.constants.R_OK, fix.KOFFI);
+}
+
+function noKoffi(base: string)
+{
+	const koffiScope = p.join(base, '@koromix');
+	const hasKoffiPackage = fs.existsSync(p.join(base, 'koffi'))
+		|| (fs.existsSync(koffiScope) && fs.readdirSync(koffiScope).some(packageName => packageName.startsWith('koffi-')));
+
+	if(hasKoffiPackage)
+		throw new Error(`Koffi should not be packaged for this platform: ${base}`);
 }
 
 if(process.platform == 'darwin')
@@ -40,6 +62,7 @@ if(process.platform == 'darwin')
 		// OpenComicAI
 		exists(darwin, 'opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
+		noKoffi(darwin);
 		checkSome = true;
 	}
 
@@ -59,6 +82,7 @@ if(process.platform == 'darwin')
 		// OpenComicAI
 		exists(darwinArm, 'opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
+		noKoffi(darwinArm);
 		checkSome = true;
 	}
 
@@ -85,6 +109,7 @@ if(process.platform == 'darwin')
 		exists(darwinMas, 'opencomic-ai-bin/mac/arm64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 		exists(darwinMas, 'opencomic-ai-bin/mac/x64/upscayl/upscayl-bin.app', fs.constants.X_OK | fs.constants.R_OK);
 
+		noKoffi(darwinMas);
 		checkSome = true;
 	}
 }
@@ -102,6 +127,9 @@ else if(process.platform == 'linux')
 
 		// 7zip-native
 		native7zip(linux, 'linux', 'x64');
+
+		// Koffi
+		nativeKoffi(linux, 'x64');
 
 		// OpenComicAI
 		exists(linux, 'opencomic-ai-bin/linux/x64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
@@ -121,6 +149,9 @@ else if(process.platform == 'linux')
 
 		// 7zip-native
 		native7zip(linuxArm, 'linux', 'arm64');
+
+		// Koffi
+		nativeKoffi(linuxArm, 'arm64');
 
 		// OpenComicAI
 		exists(linuxArm, 'opencomic-ai-bin/linux/arm64/upscayl/upscayl-bin', fs.constants.X_OK | fs.constants.R_OK);
@@ -146,6 +177,7 @@ else if(process.platform == 'win32')
 		// OpenComicAI
 		exists(windows, 'opencomic-ai-bin/win/x64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
 
+		noKoffi(windows);
 		checkSome = true;
 	}
 
@@ -165,6 +197,7 @@ else if(process.platform == 'win32')
 		// OpenComicAI
 		exists(windowsArm, 'opencomic-ai-bin/win/arm64/upscayl/upscayl-bin.exe', fs.constants.X_OK | fs.constants.R_OK);
 
+		noKoffi(windowsArm);
 		checkSome = true;
 	}
 }

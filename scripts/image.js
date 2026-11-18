@@ -1,11 +1,37 @@
 let sharp = false, imageSize = false, imageSizeFromFile = false;
 
 inChildFork = typeof inChildFork !== 'undefined' ? inChildFork : false;
-const useChildFork = (process.platform === 'linux' && !inChildFork) ? true : false;
+let useChildFork = false; // Not needed with custom Sharp builds that dynamically link to the system GLib.
 
 async function loadSharp()
 {
 	if(sharp !== false) return;
+
+	if(process.platform === 'linux' && !inChildFork)
+	{
+		try
+		{
+			const koffi = (await import(nodeUrl.pathToFileURL(asarToAsarUnpacked(p.join(appDir, 'node_modules/koffi/index.cjs'))).href)).default;
+
+			console.log(koffi);
+
+			const glib = koffi.load('libglib-2.0.so.0');
+			const checkVersion = glib.func('const char *glib_check_version(unsigned int, unsigned int, unsigned int)');
+
+			const supported = checkVersion(2, 72, 0);
+
+			console.log('Glib check result, supported:', !(supported !== null));
+
+			if(supported !== null) // Glib 2.72 or less
+				useChildFork = true;
+		}
+		catch(error)
+		{
+			useChildFork = true;
+			console.error('Failed to get GLib version:', error);
+		}
+	}
+
 	sharp = require('sharp');
 }
 
@@ -117,6 +143,7 @@ async function resizeToBlob(fromImage, config = {})
 	}
 
 	let _sharp = sharp(fromImage).rotate().keepIccProfile();
+	let affineResize = false;
 
 	if(config.width && config.height)
 	{
@@ -139,7 +166,18 @@ async function resizeToBlob(fromImage, config = {})
 			if(imageWidth != config.imageWidth)
 				_sharp = _sharp.resize({kernel: 'cubic', width: imageWidth});
 
-			_sharp = _sharp.affine([config.width / imageWidth, 0, 0, config.height / imageHeight], {interpolator: config.interpolator});
+			const scaleX = config.width / imageWidth;
+			const scaleY = config.height / imageHeight;
+			const offsetX = scaleX <= 1 ? (scaleX - 1) / 2 : scaleX / 2;
+			const offsetY = scaleY <= 1 ? (scaleY - 1) / 2 : scaleY / 2;
+
+			_sharp = _sharp.extend({top: 1, bottom: 1, left: 1, right: 1, extendWith: 'copy'});
+			_sharp = _sharp.affine(
+				[scaleX, 0, 0, scaleY],
+				{interpolator: config.interpolator, idx: -1, idy: -1, odx: offsetX, ody: offsetY},
+			);
+
+			affineResize = true;
 		}
 		else
 		{
@@ -151,11 +189,30 @@ async function resizeToBlob(fromImage, config = {})
 	{
 		if(config.toFile)
 		{
+			if(affineResize)
+			{
+				const {data, info} = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer({resolveWithObject: true});
+
+				if(info.width !== config.width || info.height !== config.height)
+				{
+					const croppedInfo = await sharp(data).extract({left: 0, top: 0, width: config.width, height: config.height}).png({compressionLevel: config.compressionLevel, force: true}).toFile(config.toFile);
+					return {data: [], info: croppedInfo, size: 0};
+				}
+
+				await fsp.writeFile(config.toFile, data);
+				return {data: [], info, size: 0};
+			}
+
 			const info = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toFile(config.toFile);
 			return {data: [], info, size: 0};
 		}
 
-		const {data, info} = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer({resolveWithObject: true});
+		let {data, info} = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer({resolveWithObject: true});
+
+		if(affineResize && (info.width !== config.width || info.height !== config.height))
+		{
+			({data, info} = await sharp(data).extract({left: 0, top: 0, width: config.width, height: config.height}).png({compressionLevel: config.compressionLevel, force: true}).toBuffer({resolveWithObject: true}));
+		}
 
 		if(config.returnData)
 			return {data, info};

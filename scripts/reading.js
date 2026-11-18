@@ -1911,12 +1911,8 @@ function resetZoomOrButtonConfig(animation = true, apply = true, center = true)
 
 function startWithPrevZoom(animation = true, apply = true, center = true)
 {
-	console.log('startWithPrevZoom called', config.readingStartPrevZoom, config.readingStartWithPrevZoom, restoringTabState);
-
 	if(!config.readingStartWithPrevZoom || restoringTabState || config.readingStartPrevZoom === 1)
 		return;
-
-	console.log('readingStartPrevZoom:', config.readingStartPrevZoom);
 
 	const scale = config.readingStartPrevZoom;
 
@@ -2249,8 +2245,6 @@ function stateScrollTop(data)
 	const hasScrollTop = Number.isFinite(scrollTop);
 	const restoreScrollTop = hasScrollTop && readingViewIs('scroll') && !windowChangedSize ? scrollTop : false;
 
-	console.log(data);
-
 	return {
 		restoreScrollTop,
 		hasScrollTop,
@@ -2281,10 +2275,7 @@ async function setTabState(data)
 		}
 
 		if(restoreScrollTop !== false)
-		{
-			console.log('restoreScrollTop', restoreScrollTop);
 			template._contentRight().firstElementChild.scrollTop = restoreScrollTop;
-		}
 	}
 
 	restoringTabState = false;
@@ -2354,8 +2345,6 @@ function scrollWithMouse()
 			offset = pageY - (height - zone);
 
 		offset = offset / zone * 15;
-
-		console.log(offset);
 
 		if(offset != 0 && pageY > scrollWithMouseStatus.headerHeight && pageX > zoneWidth && pageX < width - zoneWidth && isMouseenter.document)
 		{

@@ -1,0 +1,9 @@
+{
+	"name": "koffi-native-dependencies",
+	"version": "1.0.0",
+	"private": true,
+	"dependencies": {
+		"@koromix/koffi-linux-arm64": "3.3.8",
+		"@koromix/koffi-linux-x64": "3.3.8"
+	}
+}

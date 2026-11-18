@@ -110,6 +110,8 @@ export function printErrors()
 
 export const fix = {
 	ZSTD: 'npm install --no-save --force --prefix ./build/node-zstd-native-dependencies && node scripts/zstd-copy-native.js',
+	NATIVE_7ZIP: 'npm install --no-save --force 7zip-native && npm run postinstall',
+	KOFFI: 'npm install --no-save --force --package-lock=false koffi && npm install --force --prefix ./build/koffi-native-dependencies && node scripts/koffi-copy-native.js',
 	sharp: {
 		LINUX_X64: 'npm install --no-save @img-custom/sharp-libvips-linuxmusl-x64 @img-custom/sharp-libvips-linux-x64 @img-custom/sharp-linuxmusl-x64 @img-custom/sharp-linux-x64 --force && node scripts/sharp-copy-custom.js',
 		LINUX_ARM64: 'npm install --no-save @img-custom/sharp-libvips-linux-arm64 @img-custom/sharp-libvips-linuxmusl-arm64 @img-custom/sharp-linux-arm64 @img-custom/sharp-linuxmusl-arm64 --force && node scripts/sharp-copy-custom.js',
