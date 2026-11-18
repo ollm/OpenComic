@@ -57,17 +57,17 @@ else if(process.platform == 'linux')
 	nativeKoffi('arm64');
 
 	// Sharp x64
-	// exists(BASE, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_X64);
-	// existsRegex(BASE, '@img/sharp-linux-x64/lib/', /^sharp-linux-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_X64);
+	exists(BASE, `@img/sharp-libvips-linux-x64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_X64);
+	existsRegex(BASE, '@img/sharp-linux-x64/lib/', /^sharp-linux-x64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_X64);
 
 	// Sharp arm64
-	// exists(BASE, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
-	// existsRegex(BASE, '@img/sharp-linux-arm64/lib/', /^sharp-linux-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
+	exists(BASE, `@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.${versions.libvips}`, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
+	existsRegex(BASE, '@img/sharp-linux-arm64/lib/', /^sharp-linux-arm64(?:-[0-9.a-z-]+)?\.node$/, fs.constants.R_OK, fix.sharp.LINUX_ARM64);
 
 	// Sharp WASM
-	exists(BASE, '@img/sharp-wasm32/index.cjs', fs.constants.R_OK, fix.sharp.LINUX_WASM);
-	existsRegex(BASE, '@img/sharp-wasm32/lib/', /\.node\.js$/, fs.constants.R_OK, fix.sharp.LINUX_WASM);
-	existsRegex(BASE, '@img/sharp-wasm32/lib/', /\.node\.wasm$/, fs.constants.R_OK, fix.sharp.LINUX_WASM);
+	// exists(BASE, '@img/sharp-wasm32/index.cjs', fs.constants.R_OK, fix.sharp.LINUX_WASM);
+	// existsRegex(BASE, '@img/sharp-wasm32/lib/', /\.node\.js$/, fs.constants.R_OK, fix.sharp.LINUX_WASM);
+	// existsRegex(BASE, '@img/sharp-wasm32/lib/', /\.node\.wasm$/, fs.constants.R_OK, fix.sharp.LINUX_WASM);
 
 	// 7zip-native
 	native7zip('arm');
