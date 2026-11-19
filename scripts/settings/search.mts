@@ -14,52 +14,6 @@ let matchedElements: HTMLElement[] = [];
 
 let currentHighlight = 0;
 
-/*
-function index()
-{
-	const tab = document.querySelector('.settings-body .tabs-content > div.active');
-	if(!tab) return;
-
-	items = [];
-
-	const textElements = tab.querySelectorAll('.headline-small, .menu-simple-text > span, .simple-slider-text, table tbody td:first-child');
-
-	const getFirstTextChild = function(element: Element): ChildNode | null {
-
-		for(const child of element.childNodes)
-		{
-			if(child.nodeType === Node.TEXT_NODE)
-			{
-				const text = (child.textContent || '').replace(/\n[\s\S]* /g, '').trim();
-				if(text) return child;
-			}
-			else
-			{
-				const _child = getFirstTextChild(child as Element);
-				if(_child) return _child;
-			}
-		}
-
-		return null;
-	};
-
-	for(const element of textElements)
-	{
-		const child = getFirstTextChild(element);
-		const text = (child?.textContent || '').replace(/\n[\s\S]* /g, '').trim();
-
-		if(!text || !child) continue;
-
-		items.push({
-			text,
-			normalizedText: dom.search.removeDiacritics(text),
-			element,
-			child,
-		});
-	}
-}
-*/
-
 function index(element: Element | null = null)
 {
 	if(!element)

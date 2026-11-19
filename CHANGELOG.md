@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ##### 🚀 New Features
 
-- Added search functionality in the settings page
+- Added search functionality in the settings page [`244e25f`](https://github.com/ollm/OpenComic/commit/244e25f8c8d7c44037bf343ad19b9424d7efb58e)
 
 ##### 🐛 Bug Fixes
 
