@@ -92,7 +92,7 @@
 	},
 	"dependencies": {
 		"@awo00/smb2": "^1.1.1",
-		"@aws-sdk/client-s3": "^3.1169.0",
+		"@aws-sdk/client-s3": "^3.1172.0",
 		"@electron/remote": "^2.1.4",
 		"@toondepauw/node-zstd": "^2.0.0",
 		"7zip-native": "^26.6.1",
@@ -111,11 +111,11 @@
 		"image-size-next": "^2.1.1",
 		"install": "^0.13.0",
 		"jpegxr": "^0.3.0",
-		"jquery": "^4.0.0",
+		"jquery": "^4.1.0",
 		"jquery-bez": "^1.0.11",
 		"koffi": "^3.3.8",
-		"marked": "^18.2.0",
-		"minimatch": "^11.0.8",
+		"marked": "^18.2.1",
+		"minimatch": "^11.0.9",
 		"opencomic-ai-bin": "^1.6.1",
 		"pdfjs-dist": "^6.5.438",
 		"sanitize-html": "^2.18.2",
@@ -123,14 +123,14 @@
 		"short-windows-path": "^1.0.5",
 		"shosho": "^1.4.3",
 		"ssh2-sftp-client": "^12.1.1",
-		"systeminformation": "^5.33.22",
+		"systeminformation": "^5.33.23",
 		"webdav": "^5.11.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
-		"@stylistic/eslint-plugin": "^6.0.0",
+		"@stylistic/eslint-plugin": "^6.0.1",
 		"@types/electron": "^1.6.12",
-		"electron": "^45.3.2",
+		"electron": "^45.4.1",
 		"electron-builder": "^26.18.0",
 		"env-cmd": "^11.0.0",
 		"eslint": "^10.15.0",
@@ -140,7 +140,7 @@
 		"node-addon-api": "^8.9.2",
 		"nodemon": "^3.1.14",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.72.2"
+		"typescript-eslint": "^8.73.0"
 	},
 	"overrides": {
 		"electron": "$electron",
