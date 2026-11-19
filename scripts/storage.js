@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 179; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 180; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -263,7 +263,11 @@ const storageDefault = {
 		readingGlobalZoom: true,
 		readingGlobalZoomSlide: true,
 		readingMoveZoomWithMouse: false,
-		readingPrevZoom: 2,
+		readingPrevZoom: {
+			scale: 2,
+			tranX: 0,
+			tranY: 0,
+		},
 		readingStartPrevZoom: 1,
 		readingStartWithPrevZoom: false,
 		readingResetZoomButtonToPrevZoom: false,

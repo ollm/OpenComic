@@ -1326,7 +1326,7 @@ function applyScale(animation = true, scale = 1, center = false, zoomOut = false
 		return;
 
 	if(scale !== 1)
-		settings.set('readingPrevZoom', scale);
+		settings.set('readingPrevZoom', {scale: scale, tranX: 0, tranY: 0});
 
 	settings.set('readingStartPrevZoom', scale);
 
@@ -1812,6 +1812,9 @@ function resetZoom(animation = true, apply = true, center = true, delayed = fals
 {
 	panels.removeAllMasks(true);
 
+	if(currentScale !== 1)
+		settings.set('readingPrevZoom', {scale: currentScale, tranX: scalePrevData.tranX, tranY: scalePrevData.tranY});
+
 	currentScale = 1;
 
 	if(!apply)
@@ -1865,10 +1868,18 @@ function zoomToOriginalSize(animation = true, apply = true, center = true)
 			currentScale = ((image.width / width + image.height / height) / 2) / devicePixelRatio;
 
 			if(apply)
-				applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
-			else
-				setOriginalSize(currentScale);
+			{
+				const {scale, tranX, tranY} = config.readingPrevZoom;
 
+				applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
+
+				if(center && scale === currentScale && tranX !== undefined && tranY !== undefined)
+					goToZoom(tranX, tranY, null);
+			}
+			else
+			{
+				setOriginalSize(currentScale);
+			}
 			return;
 		}
 	}
@@ -1878,12 +1889,20 @@ function zoomToPrevZoom(animation = true, apply = true, center = true)
 {
 	panels.removeAllMasks(true);
 
-	currentScale = config.readingPrevZoom;
+	const {scale, tranX, tranY} = config.readingPrevZoom;
+	currentScale = scale;
 
 	if(apply)
+	{
 		applyScale(animation, currentScale, center, (currentScale < 1) ? true : false);
+		
+		if(center && tranX !== undefined && tranY !== undefined)
+			goToZoom(tranX, tranY, null);
+	}
 	else
+	{
 		setOriginalSize(currentScale);
+	}
 }
 
 function resetZoomOrOriginalSize(animation = true, apply = true, center = true)
@@ -2159,7 +2178,14 @@ function dragZoom(dx, dy, animation = false)
 	return applyZoom(scalePrevData.tranX2 + dx, scalePrevData.tranY2 + dy, animation);
 }
 
-function applyZoom(x, y, animation, crossZoomLimits = false)
+// Go to zoom position
+function goToZoom(x, y, animation = false, crossZoomLimits = false)
+{
+	applyZoom(x, y, animation, crossZoomLimits);
+	dragZoomEnd(true);
+}
+
+function applyZoom(x, y, animation = false, crossZoomLimits = false)
 {
 	const transition = app.scrollTransition('dragZoom', animation ? _config.readingViewSpeed : 0);
 	const withLimits = notCrossZoomLimits(x, y, crossZoomLimits);
@@ -2180,7 +2206,7 @@ function applyZoom(x, y, animation, crossZoomLimits = false)
 		zoomMoveData.tranY = scalePrevData.tranY;
 
 		dom.this(contentRight).find('.reading-body > div').css({
-			transition: `transform ${transition.speed}s ${transition.function}, z-index 0s`,
+			...(animation !== null ? {transition: `transform ${transition.speed}s ${transition.function}, z-index 0s`} : {}),
 			transform: `translateX(${app.roundDPR(x)}px) translateY(${app.roundDPR(scalePrevData.tranY)}px) scale(${scalePrevData.scale})`,
 			transformOrigin: 'top center',
 		});
@@ -2191,7 +2217,7 @@ function applyZoom(x, y, animation, crossZoomLimits = false)
 		zoomMoveData.tranY = y;
 
 		dom.this(contentRight).find('.image-position'+currentZoomIndex, true).css({
-			transition: `transform ${transition.speed}s ${transition.function}, z-index 0s`,
+			...(animation !== null ? {transition: `transform ${transition.speed}s ${transition.function}, z-index 0s`} : {}),
 			transform: `translateX(${app.roundDPR(x)}px) translateY(${app.roundDPR(y)}px) scale(${scalePrevData.scale})`,
 			transformOrigin: 'center center',
 		});
@@ -2265,6 +2291,7 @@ async function setTabState(data)
 		{
 			applyScale(false, scaleData.scale, true, (scaleData.scale < 1) ? true : false, false, {restoreScrollTop});
 			applyZoom(scaleData.tranX, scaleData.tranY, false);
+			// dragZoomEnd(true);
 
 			scalePrevData.tranX = scalePrevData.tranX2 = zoomMoveData.tranX;
 
@@ -5844,6 +5871,7 @@ module.exports = {
 	dragZoom: dragZoom,
 	fixBlurOnZoom: fixBlurOnZoom,
 	applyScale: applyScale,
+	goToZoom: goToZoom,
 	applyZoom: applyZoom,
 	activeMagnifyingGlass: activeMagnifyingGlass,
 	changeMagnifyingGlass: changeMagnifyingGlass,
