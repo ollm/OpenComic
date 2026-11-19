@@ -1,4 +1,5 @@
-const macros = require(p.join(appDir, '.dist/settings/macros.mjs')).default;
+const macros = require(p.join(appDir, '.dist/settings/macros.mjs')).default,
+	search = require(p.join(appDir, '.dist/settings/search.mjs')).default;
 
 function start()
 {
@@ -1783,4 +1784,5 @@ module.exports = {
 	getTmpFolder,
 	getCacheFolder,
 	macros,
+	search,
 };

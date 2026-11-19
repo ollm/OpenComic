@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## v2.0.1 (dd-mm-yyyy)
 
+##### 🚀 New Features
+
+- Added search functionality in the settings page
+
 ##### 🐛 Bug Fixes
 
 - UI layout breaks and overflows with long localized labels [`c6a57cf`](https://github.com/ollm/OpenComic/commit/c6a57cf03eceded7ad9de9425e9fe51905383a5f)

@@ -36,9 +36,15 @@ function isAborted(index)
 
 async function search(text)
 {
+	const isSettings = dom.currentPageIs('settings');
+
 	if(!text)
 	{
-		if(filterCurrentPage)
+		if(isSettings)
+		{
+			settings.search.clean(false);
+		}
+		else if(filterCurrentPage)
 		{			
 			dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 
@@ -54,6 +60,16 @@ async function search(text)
 	if(fileManager.isOpds(dom.history.path))
 	{
 		setResults([]);
+
+		return;
+	}
+
+	if(isSettings)
+	{
+		if(filterCurrentPage)
+			settings.search.filter(text);
+		else
+			settings.search.search(text);
 
 		return;
 	}
@@ -269,8 +285,13 @@ var fromFillInput = false;
 function keyup(event)
 {
 	const text = this.value;
+	const isSettings = dom.currentPageIs('settings');
 
-	if(event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40 && event.keyCode != 13)
+	if(isSettings && event.keyCode == 13)
+	{
+		settings.search.next();
+	}
+	else if(event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40 && event.keyCode != 13)
 	{
 		search(text);
 	}
@@ -290,16 +311,26 @@ function keyup(event)
 
 function showRecentlySearched()
 {
-	let recentlySearched = storage.get('recentlySearched');
+	const isSettings = dom.currentPageIs('settings');
+	const recentlySearchedKey = isSettings ? 'settings' : 'browse';
 
-	let results = [];
+	if(isSettings)
+	{
+		setResults([]);
+		return;
+	}
 
-	for(let key in recentlySearched)
+	const recentlySearched = storage.get('recentlySearched');
+	const list = recentlySearched[recentlySearchedKey] || [];
+
+	const results = [];
+
+	for(const text of list)
 	{
 		results.push({
 			icon: 'history',
-			text: recentlySearched[key],
-			click: 'dom.search.fillInput(\''+escapeQuotes(escapeBackSlash(recentlySearched[key]), 'simples')+'\')',
+			text: text,
+			click: 'dom.search.fillInput(\''+escapeQuotes(escapeBackSlash(text), 'simples')+'\')',
 		});
 	}
 
@@ -328,11 +359,17 @@ function saveRecentlySearched()
 
 	if(!text.trim()) return;
 
-	let recentlySearched = storage.get('recentlySearched');
-	recentlySearched.unshift(text);
+	const isSettings = dom.currentPageIs('settings');
+	const recentlySearchedKey = isSettings ? 'settings' : 'browse';
 
-	recentlySearched = recentlySearched.slice(0, 30);
+	const recentlySearched = storage.get('recentlySearched');
+	let list = recentlySearched[recentlySearchedKey] || [];
 
+	list = list.filter((_text) => _text !== text);
+	list.unshift(text);
+	list = list.slice(0, 30);
+
+	recentlySearched[recentlySearchedKey] = list; 
 	storage.set('recentlySearched', recentlySearched);
 }
 
@@ -527,6 +564,12 @@ var showed = false, filterCurrentPage = false;
 
 function showHide(_filterCurrentPage = false)
 {
+	const inBrowse = dom.currentPageIs('browse');
+	const inSettings = dom.currentPageIs('settings');
+
+	if(!inBrowse && !inSettings)
+		return;
+
 	if(showed) return hide();
 
 	clearTimeout(updateBrowsableItemsST);
@@ -557,15 +600,20 @@ function showHide(_filterCurrentPage = false)
 
 	}, 300);
 
-	if(filterCurrentPage)
+	if(filterCurrentPage || inSettings)
 	{
-		indexFilesDom();
+		if(!inSettings) indexFilesDom();
 		document.querySelector('.search-bar > span').style.display = 'none';
 	}
 	else
 	{
-		indexFiles();
+		if(!inSettings) indexFiles();
 		document.querySelector('.search-bar > span').style.display = '';
+	}
+
+	if(inSettings)
+	{
+		settings.search.index();
 	}
 
 	app.event(window, 'click', searchClick, {capture: true});
@@ -577,6 +625,9 @@ let hideST = false;
 
 async function hide(fromSearchClick = false)
 {
+	const inBrowse = dom.currentPageIs('browse');
+	const inSettings = dom.currentPageIs('settings');
+
 	if(!showed) return;
 
 	abortAll();
@@ -593,7 +644,7 @@ async function hide(fromSearchClick = false)
 
 	app.eventOff(window, 'click', searchClick, {capture: true});
 
-	if(filterCurrentPage && !fromSearchClick)
+	if(filterCurrentPage && !fromSearchClick && !inSettings)
 	{
 		dom.queryAll('.content-view-module > div, .content-view-list > div, .boxes').css({display: ''});
 
@@ -606,6 +657,12 @@ async function hide(fromSearchClick = false)
 	showed = false;
 	files = [];
 	filesHas = {};
+
+	if(inSettings)
+	{
+		saveRecentlySearched();
+		settings.search.clean();
+	}
 }
 
 function fillInput(text)
@@ -634,6 +691,8 @@ module.exports = {
 	hide: hide,
 	fillInput: fillInput,
 	saveRecentlySearched: saveRecentlySearched,
+	removeDiacritics: removeDiacritics,
+	searchText: searchText,
 	files: function(){return files},
 	start: function(){
 

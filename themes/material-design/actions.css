@@ -3598,3 +3598,19 @@ a > code
 	border-radius: 8px;
 	z-index: 1000;
 }
+
+mark
+{
+	background-color: #ffff00;
+	background-color: var(--md-sys-color-primary);
+	color: var(--md-sys-color-on-primary);
+	border-radius: 2px;
+}
+
+mark.focus
+{
+	background-color: #ff9632;
+	background-color: var(--md-sys-color-tertiary);
+	color: var(--md-sys-color-on-tertiary);
+	border-radius: 2px;
+}

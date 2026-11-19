@@ -2106,6 +2106,19 @@ function selectMenuItem(page)
 	if(page) page.classList.add('active');
 }
 
+const nonReadingAndBrowsePages = new Set(['language', 'themes', 'settings']);
+
+function currentPageIs(page)
+{
+	if(page === 'reading')
+		return onReading;
+
+	if(page === 'browse')
+		return !onReading && !nonReadingAndBrowsePages.has(currentSelectMenuItem);
+
+	return currentSelectMenuItem === page;
+}
+
 var addComicButtonsST = false, addComicButtonsActive = false;
 
 function addComicButtons(show = true, first = true)
@@ -3284,6 +3297,8 @@ module.exports = {
 	loadThemePage: loadThemePage,
 	changeLanguage: changeLanguage,
 	selectMenuItem: selectMenuItem,
+	get currentSelectMenuItem() {return currentSelectMenuItem},
+	currentPageIs: currentPageIs,
 	floatingActionButton: floatingActionButton,
 	setCurrentPageVars: setCurrentPageVars,
 	changeView: changeView,
