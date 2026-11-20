@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Compatibility with minimatch 11 [`499ae49`](https://github.com/ollm/OpenComic/commit/499ae49d4a34d6dcc6097043e8a7f65f5caf7510)
 - Menu bar labels wrap onto multiple lines in Chinese, Japanese, and Korean [`600d49a`](https://github.com/ollm/OpenComic/commit/600d49ae2b3728645b75ef92e82012267daedc43)
 - Use custom Sharp build without static GLib on Linux [`e81080d`](https://github.com/ollm/OpenComic/commit/e81080d2f79152e33a9a124696599b88ffef2a0d)
+- Artifact using v4 preview models
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 
