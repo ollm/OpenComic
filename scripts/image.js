@@ -168,8 +168,8 @@ async function resizeToBlob(fromImage, config = {})
 
 			const scaleX = config.width / imageWidth;
 			const scaleY = config.height / imageHeight;
-			const offsetX = (scaleX - 1) / 2;
-			const offsetY = (scaleY - 1) / 2;
+			const offsetX = scaleX <= 1 ? (scaleX - 1) / 2 : scaleX / 2;
+			const offsetY = scaleY <= 1 ? (scaleY - 1) / 2 : scaleY / 2;
 
 			const resized = await _sharp.png({compressionLevel: config.compressionLevel, force: true}).toBuffer();
 			const padded = await sharp(resized).extend({top: 1, bottom: 1, left: 1, right: 1, extendWith: 'copy'}).png({compressionLevel: config.compressionLevel, force: true}).toBuffer();
