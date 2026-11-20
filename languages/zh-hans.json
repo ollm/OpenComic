@@ -68,17 +68,17 @@
 			"setAsPosterFolders": "将图片设置为另一个文件夹的海报",
 			"posterSetSuccessfully": "该图片已设置为海报",
 			"saveImage": "保存图片",
-			"saveAiImage": "保存 AI 图片",
+			"saveAiImage": "保存经 AI 处理后的图像",
 			"saveAllImages": "保存所有图片",
-			"saveAllAiImages": "",
+			"saveAllAiImages": "保存所有经 AI 处理后的图像",
 			"saveBookmarksImages": "保存当前已加书签的图片",
 			"saveAllBookmarksImages": "保存所有已加书签的图片",
 			"saveImagesMessage": "图片已成功保存",
 			"saveImageMessage": "图片已成功保存",
-			"saveImagesProgress": "",
-			"preprocessImagesWithAI": "",
-			"preprocessImagesWithAINotConfigured": "",
-			"preprocessImagesWithAIProgress": "",
+			"saveImagesProgress": "正在保存图像",
+			"preprocessImagesWithAI": "使用 AI 预处理图像",
+			"preprocessImagesWithAINotConfigured": "所选文件未配置 AI",
+			"preprocessImagesWithAIProgress": "使用 AI 进行图像预处理",
 			"copyImage": "将图像复制到剪贴板",
 			"copyImageMessage": "图像已复制到剪贴板",
 			"addBlankPageLeft": "在左侧添加空白页",
@@ -245,8 +245,8 @@
 			"downloadingAiModel": "下载 AI 模型",
 			"maxMegapixels": "最大输入图像分辨率（百万像素）",
 			"openComicModels": "OpenComic AI 模型",
-			"customModels": "",
-			"emptyCustomModels": "",
+			"customModels": "自定义模型",
+			"emptyCustomModels": "无自定义模型",
 			"otherModels": "其他模型",
 			"autoScale": "自动比例",
 			"scale": "比例",
@@ -343,19 +343,19 @@
 			"maxMargin": "最大水平和垂直边距",
 			"globalZoom": "全局缩放而不是逐个图片（垂直阅读）",
 			"globalZoomSlide": "全局缩放而不是逐个图片（幻灯片阅读）",
-			"startWithPrevZoom": "",
-			"resetZoomButtonToPrevZoom": "",
+			"startWithPrevZoom": "从之前的缩放级别开始阅读",
+			"resetZoomButtonToPrevZoom": "将“重置缩放”按钮设置为恢复至之前的缩放级别，而非还原为原始尺寸。",
 			"moveZoomWithMouse": "使用鼠标移动缩放（禁用通过拖放移动）",
 			"scrollWithMouse": "通过沿着屏幕边缘移动鼠标来滚动（禁用拖放滚动）",
 			"goNextPrevChapterWithScroll": "使用鼠标滚动转到下一章/上一章（垂直阅读）",
 			"turnPagesWithMouseWheel": "使用鼠标滚轮翻页（按住 Ctrl 键才可缩放）",
 			"autodetectWebtoon": "自动检测网络漫画（条漫）",
 			"disableThumbnails": "禁用缩略图（显示文件名）",
-			"sensitivityInZoom": "",
+			"sensitivityInZoom": "缩放时的灵敏度",
 			"mouseWheelSensitivityInZoom": "缩放时鼠标滚轮灵敏度",
 			"zoomMoveStep": "缩放平移距离",
-			"scrollMovePercent": "",
-			"scrollMovePercentInVerticalMode": "",
+			"scrollMovePercent": "滚动移动百分比（网络漫画模式）",
+			"scrollMovePercentInVerticalMode": "在垂直阅读模式下使用基于百分比的滚动方式",
 			"rotateHorizontalsAnticlockwise": "旋转水平图像时，逆时针旋转",
 			"startReadingInFullScreen": "开始全屏阅读",
 			"trackingAtTheEnd": "在章节/卷末尾进行跟踪",
@@ -380,9 +380,9 @@
 			"imagesToPreloadDescription": "图像已预先渲染，因此在向前导航时即可使用（插值和AI）"
 		},
 		"ai": {
-			"main": "",
-			"customModelsFolder": "",
-			"customModelsFolderDescription": ""
+			"main": "AI",
+			"customModelsFolder": "自定义模型文件夹",
+			"customModelsFolderDescription": "存储自定义 AI 模型的文件夹。此文件夹中的模型可与 OpenComic 自带的模型配合使用。请参阅{{{linkStart}}}文档{{{linkEnd}}}。"
 		},
 		"colorProfile": {
 			"main": "颜色配置",
@@ -430,7 +430,7 @@
 			"openFilesInNewTab": "在新标签页中打开文件（仅适用于从 OpenComic 外部打开的文件）",
 			"openFilesInNewWindow": "在新窗口中打开文件（仅适用于从 OpenComic 外部打开的文件）",
 			"recentlyOpenedItems": "最近打开的要保存的项目数",
-			"recentWindows": ""
+			"recentWindows": "要保存的最近窗口的数量"
 		},
 		"saveImages": {
 			"main": "保存图片",
@@ -467,8 +467,8 @@
 				"confirmDelete": "您确定要删除此自定义主题吗？"
 			},
 			"communityThemes": {
-				"main": "",
-				"contribute": ""
+				"main": "社区主题",
+				"contribute": "贡献一个主题"
 			}
 		},
 		"releases": {
@@ -588,14 +588,14 @@
 			"openFolder": "打开文件夹",
 			"addFile": "添加文件",
 			"addFolder": "添加文件夹",
-			"recentWindows": "",
-			"tabsNum": "",
+			"recentWindows": "最近的窗口",
+			"tabsNum": "{{num}} 个标签页",
 			"quit": "退出"
 		},
 		"view": {
 			"main": "显示",
 			"resetZoom": "重置缩放",
-			"prevZoom": "",
+			"prevZoom": "上一次缩放",
 			"originalSize": "原始尺寸",
 			"zoomIn": "放大",
 			"zoomOut": "缩小",
@@ -617,9 +617,9 @@
 			"toggleDevTools": "开发者工具"
 		},
 		"window": {
-			"main": "",
-			"newTab": "",
-			"newWindow": ""
+			"main": "窗口",
+			"newTab": "新标签页",
+			"newWindow": "新窗口"
 		},
 		"help": {
 			"main": "帮助",
