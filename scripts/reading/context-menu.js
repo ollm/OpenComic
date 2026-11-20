@@ -542,9 +542,12 @@ async function copyImageToClipboard()
 		URL.revokeObjectURL(data.blob);
 	}
 
-	const nativeImage = electron.nativeImage.createFromDataURL(canvas.toDataURL());
+	// Electron 44 removed the clipboard module from the renderer, use the web Clipboard API instead
+	const blob = await new Promise(function(resolve) {
+		canvas.toBlob(resolve, 'image/png');
+	});
 
-	electron.clipboard.writeImage(nativeImage, 'clipboard');
+	await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
 
 	events.snackbar({
 		key: 'copyImageToClipboard',
