@@ -526,7 +526,10 @@
 				"goTo7": "Go to tab 7",
 				"goTo8": "Go to tab 8",
 				"goTo9": "Go to tab 9",
-				"goToLast": "Go to last tab"
+				"goToLast": "Go to last tab",
+				"newTab": "Open new tab",
+				"closeTab": "Close current tab",
+				"reopenClosedTab": "Reopen closed tab"
 			}
 		},
 		"tapZones": {

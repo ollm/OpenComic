@@ -526,7 +526,10 @@
 				"goTo7": "Ir a la pestaña 7",
 				"goTo8": "Ir a la pestaña 8",
 				"goTo9": "Ir a la pestaña 9",
-				"goToLast": "Ir a la última pestaña"
+				"goToLast": "Ir a la última pestaña",
+				"newTab": "Abrir nueva pestaña",
+				"closeTab": "Cerrar pestaña actual",
+				"reopenClosedTab": "Reabrir pestaña cerrada"
 			}
 		},
 		"tapZones": {

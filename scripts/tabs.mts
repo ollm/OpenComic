@@ -76,7 +76,7 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 	const icon = materialIcon && !isComic ? materialIcon.innerHTML : (isComic ? 'auto_stories' : 'book'/* 'indeterminate_question_box' */);
 
 	const activeTab = getActive();
-	const parents = getTabParentsIds(activeTab, true);
+	const parents = tab.parents ?? getTabParentsIds(activeTab, true);
 
 	const _tab: Partial<Tab> = {
 		id: id,
@@ -94,7 +94,7 @@ function add(tab: Partial<Tab>, isComic: boolean = false, animation: boolean = t
 		restored: !animation,
 	};
 
-	const insertAfterTab = activeTab ? lastChildTab(activeTab.id, true) : false;
+	const insertAfterTab = tab.parents?.length && tab.parents[0] !== -1 ? get(parents[0]) : (activeTab ? lastChildTab(activeTab.id, true) : false);
 
 	if(insertAfterTab && !newTab)
 	{
@@ -470,8 +470,17 @@ function findSiblingTab(currentTab: Tab, tabIndex: number): Tab | void
 	}
 }
 
-async function close(id: number, force: boolean = false, animation: boolean = true): Promise<void>
+const closedTabs: Tab[] = [];
+
+async function close(id: number | null = null, force: boolean = false, animation: boolean = true): Promise<void>
 {
+	if(id === null)
+	{
+		const activeTab = getActive();
+		if(!activeTab) return;
+		id = activeTab.id;
+	}
+
 	const tabIndex = tabs.findIndex(t => t.id === id);
 	if(tabIndex === -1) return;
 	const tab = tabs[tabIndex];
@@ -516,6 +525,18 @@ async function close(id: number, force: boolean = false, animation: boolean = tr
 	setTabPositions();
 	if(isLastTab) setTabWidth(true);
 
+	closedTabs.push(tab);
+
+}
+
+function reopenClosed(): void
+{
+	const tab = closedTabs.pop();
+	if(!tab) return;
+
+	const id = add(tab);
+	update();
+	_switch(id);
 }
 
 function middleClickOpen(event: MouseEvent, path: string, mainPath: string): void
@@ -799,6 +820,7 @@ export default {
 	middleClickOpen,
 	middleClickClose,
 	close,
+	reopenClosed,
 	mouseLeave,
 	get tabWidth() {return currentTabWidth},
 	get activeTab(): Tab | undefined {return getActive()},

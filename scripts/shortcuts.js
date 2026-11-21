@@ -279,6 +279,27 @@ function loadShortcuts()
 				return true;
 			},
 		},
+		tabsNew: {
+			name: language.settings.shortcuts.tabs.new,
+			function: function(){
+				tabs.new();
+				return true;
+			},
+		},
+		tabsClose: {
+			name: language.settings.shortcuts.tabs.close,
+			function: function(){
+				tabs.close();
+				return true;
+			},
+		},
+		tabsReopenClosed: {
+			name: language.settings.shortcuts.tabs.reopenClosed,
+			function: function(){
+				tabs.reopenClosed();
+				return true;
+			},
+		},
 	};
 
 	shortcuts = {
@@ -434,6 +455,10 @@ function loadShortcuts()
 				'Ctrl+8': 'tabsGoTo8',
 				'Ctrl+9': 'tabsGoTo9',
 				'Ctrl+0': 'tabsGoToLast',
+				'Ctrl+T': 'tabsNew',
+				'Ctrl+Shift+T': 'tabsReopenClosed',
+				'Ctrl+W': 'tabsClose',
+				'Ctrl+F4': 'tabsClose',
 			},
 			_shortcutsForce: {},
 			tapZones: {},
@@ -1523,6 +1548,10 @@ function loadShortcuts()
 				'Ctrl+8': 'tabsGoTo8',
 				'Ctrl+9': 'tabsGoTo9',
 				'Ctrl+0': 'tabsGoToLast',
+				'Ctrl+T': 'tabsNew',
+				'Ctrl+Shift+T': 'tabsReopenClosed',
+				'Ctrl+W': 'tabsClose',
+				'Ctrl+F4': 'tabsClose',
 			},
 			_shortcutsForce: {
 				'LeftClick': 'leftClick',

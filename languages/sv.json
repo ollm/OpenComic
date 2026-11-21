@@ -526,7 +526,10 @@
 				"goTo7": "",
 				"goTo8": "",
 				"goTo9": "",
-				"goToLast": ""
+				"goToLast": "",
+				"newTab": "",
+				"closeTab": "",
+				"reopenClosedTab": ""
 			}
 		},
 		"tapZones": {

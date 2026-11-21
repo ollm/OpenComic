@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ##### 🚀 New Features
 
 - Added search functionality in the settings page [`244e25f`](https://github.com/ollm/OpenComic/commit/244e25f8c8d7c44037bf343ad19b9424d7efb58e)
+- Added shortcut for new/close/reopen tabs
 
 ##### 🐛 Bug Fixes
 
@@ -18,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Menu bar labels wrap onto multiple lines in Chinese, Japanese, and Korean [`600d49a`](https://github.com/ollm/OpenComic/commit/600d49ae2b3728645b75ef92e82012267daedc43)
 - Use custom Sharp build without static GLib on Linux [`e81080d`](https://github.com/ollm/OpenComic/commit/e81080d2f79152e33a9a124696599b88ffef2a0d)
 - Artifacts with v4 preview models [`adfb7a3`](https://github.com/ollm/OpenComic/commit/adfb7a3c475fd0e399692af3b0c54b27eaf1434b)
+- Copy image to clipboard not working on Electron 44 and later [`f997cb5`](https://github.com/ollm/OpenComic/commit/f997cb5a4df366813e2ea75ed7f8d55bfd1bc966)
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 

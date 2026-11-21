@@ -526,7 +526,10 @@
 				"goTo7": "Anar a la pestanya 7",
 				"goTo8": "Anar a la pestanya 8",
 				"goTo9": "Anar a la pestanya 9",
-				"goToLast": "Anar a l'última pestanya"
+				"goToLast": "Anar a l'última pestanya",
+				"newTab": "Obrir nova pestanya",
+				"closeTab": "Tancar la pestanya actual",
+				"reopenClosedTab": "Reobrir la pestanya tancada"
 			}
 		},
 		"tapZones": {

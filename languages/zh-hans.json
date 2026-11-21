@@ -526,7 +526,10 @@
 				"goTo7": "转到标签页 7",
 				"goTo8": "转到标签页 8",
 				"goTo9": "转到标签页 9",
-				"goToLast": "转到最后一个标签页"
+				"goToLast": "转到最后一个标签页",
+				"newTab": "",
+				"closeTab": "",
+				"reopenClosedTab": ""
 			}
 		},
 		"tapZones": {
