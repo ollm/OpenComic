@@ -527,9 +527,9 @@
 				"goTo8": "Anar a la pestanya 8",
 				"goTo9": "Anar a la pestanya 9",
 				"goToLast": "Anar a l'última pestanya",
-				"newTab": "Obrir nova pestanya",
-				"closeTab": "Tancar la pestanya actual",
-				"reopenClosedTab": "Reobrir la pestanya tancada"
+				"new": "Obrir nova pestanya",
+				"close": "Tancar la pestanya actual",
+				"reopenClosed": "Reobrir la pestanya tancada"
 			}
 		},
 		"tapZones": {

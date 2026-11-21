@@ -527,9 +527,9 @@
 				"goTo8": "",
 				"goTo9": "",
 				"goToLast": "",
-				"newTab": "",
-				"closeTab": "",
-				"reopenClosedTab": ""
+				"new": "",
+				"close": "",
+				"reopenClosed": ""
 			}
 		},
 		"tapZones": {

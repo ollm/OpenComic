@@ -527,9 +527,9 @@
 				"goTo8": "Перейти до вкладки 8",
 				"goTo9": "Перейти до вкладки 9",
 				"goToLast": "Остання вкладка",
-				"newTab": "",
-				"closeTab": "",
-				"reopenClosedTab": ""
+				"new": "",
+				"close": "",
+				"reopenClosed": ""
 			}
 		},
 		"tapZones": {

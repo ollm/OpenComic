@@ -527,9 +527,9 @@
 				"goTo8": "Go to tab 8",
 				"goTo9": "Go to tab 9",
 				"goToLast": "Go to last tab",
-				"newTab": "Open new tab",
-				"closeTab": "Close current tab",
-				"reopenClosedTab": "Reopen closed tab"
+				"new": "Open new tab",
+				"close": "Close current tab",
+				"reopenClosed": "Reopen closed tab"
 			}
 		},
 		"tapZones": {

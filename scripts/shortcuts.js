@@ -195,6 +195,27 @@ function loadShortcuts()
 	}
 
 	const tabsShortcuts = {
+		tabsNew: {
+			name: language.settings.shortcuts.tabs.new,
+			function: function(){
+				tabs.new();
+				return true;
+			},
+		},
+		tabsClose: {
+			name: language.settings.shortcuts.tabs.close,
+			function: function(){
+				tabs.close();
+				return true;
+			},
+		},
+		tabsReopenClosed: {
+			name: language.settings.shortcuts.tabs.reopenClosed,
+			function: function(){
+				tabs.reopenClosed();
+				return true;
+			},
+		},
 		tabsGoNext: {
 			name: language.settings.shortcuts.tabs.goNext,
 			function: function(){
@@ -279,27 +300,6 @@ function loadShortcuts()
 				return true;
 			},
 		},
-		tabsNew: {
-			name: language.settings.shortcuts.tabs.new,
-			function: function(){
-				tabs.new();
-				return true;
-			},
-		},
-		tabsClose: {
-			name: language.settings.shortcuts.tabs.close,
-			function: function(){
-				tabs.close();
-				return true;
-			},
-		},
-		tabsReopenClosed: {
-			name: language.settings.shortcuts.tabs.reopenClosed,
-			function: function(){
-				tabs.reopenClosed();
-				return true;
-			},
-		},
 	};
 
 	shortcuts = {
@@ -374,6 +374,10 @@ function loadShortcuts()
 				'Mouse3': 'goBack',
 				'Mouse4': 'goForwards',
 				// Tabs
+				'Ctrl+T': 'tabsNew',
+				'Ctrl+Shift+T': 'tabsReopenClosed',
+				'Ctrl+W': 'tabsClose',
+				'Ctrl+F4': 'tabsClose',
 				'Ctrl+Tab': 'tabsGoNext',
 				'Ctrl+Shift+Tab': 'tabsGoPrev',
 				'Ctrl+1': 'tabsGoTo1',
@@ -443,6 +447,10 @@ function loadShortcuts()
 				'Mouse3': 'goBack',
 				'Mouse4': 'goForwards',
 				// Tabs
+				'Ctrl+T': 'tabsNew',
+				'Ctrl+Shift+T': 'tabsReopenClosed',
+				'Ctrl+W': 'tabsClose',
+				'Ctrl+F4': 'tabsClose',
 				'Ctrl+Tab': 'tabsGoNext',
 				'Ctrl+Shift+Tab': 'tabsGoPrev',
 				'Ctrl+1': 'tabsGoTo1',
@@ -455,10 +463,6 @@ function loadShortcuts()
 				'Ctrl+8': 'tabsGoTo8',
 				'Ctrl+9': 'tabsGoTo9',
 				'Ctrl+0': 'tabsGoToLast',
-				'Ctrl+T': 'tabsNew',
-				'Ctrl+Shift+T': 'tabsReopenClosed',
-				'Ctrl+W': 'tabsClose',
-				'Ctrl+F4': 'tabsClose',
 			},
 			_shortcutsForce: {},
 			tapZones: {},
@@ -527,6 +531,9 @@ function loadShortcuts()
 				'gamepadMenu',
 
 				// Tabs
+				'tabsNew',
+				'tabsReopenClosed',
+				'tabsClose',
 				'tabsGoNext',
 				'tabsGoPrev',
 				'tabsGoTo1',
@@ -660,6 +667,9 @@ function loadShortcuts()
 				{
 					name: language.settings.shortcuts.tabs.main,
 					items: [
+						'tabsNew',
+						'tabsClose',
+						'tabsReopenClosed',
 						'tabsGoNext',
 						'tabsGoPrev',
 						'tabsGoTo1',
@@ -1536,6 +1546,10 @@ function loadShortcuts()
 				'Ctrl+RightClick': 'contextMenu',
 				'Alt+1': 'preset-0',
 				// Tabs
+				'Ctrl+T': 'tabsNew',
+				'Ctrl+Shift+T': 'tabsReopenClosed',
+				'Ctrl+W': 'tabsClose',
+				'Ctrl+F4': 'tabsClose',
 				'Ctrl+Tab': 'tabsGoNext',
 				'Ctrl+Shift+Tab': 'tabsGoPrev',
 				'Ctrl+1': 'tabsGoTo1',
@@ -1548,10 +1562,6 @@ function loadShortcuts()
 				'Ctrl+8': 'tabsGoTo8',
 				'Ctrl+9': 'tabsGoTo9',
 				'Ctrl+0': 'tabsGoToLast',
-				'Ctrl+T': 'tabsNew',
-				'Ctrl+Shift+T': 'tabsReopenClosed',
-				'Ctrl+W': 'tabsClose',
-				'Ctrl+F4': 'tabsClose',
 			},
 			_shortcutsForce: {
 				'LeftClick': 'leftClick',
