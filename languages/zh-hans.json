@@ -528,9 +528,9 @@
 				"goTo8": "转到标签页 8",
 				"goTo9": "转到标签页 9",
 				"goToLast": "转到最后一个标签页",
-				"new": "",
-				"close": "",
-				"reopenClosed": ""
+				"new": "在新标签页中打开",
+				"close": "关闭当前标签页",
+				"reopenClosed": "重新打开已关闭的标签页"
 			}
 		},
 		"tapZones": {
