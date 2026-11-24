@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Hiển thị đường dẫn đầy đủ khi mở tệp tin hoặc thư mục",
 			"showLibraryPath": "",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "",

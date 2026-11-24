@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Показывать полный путь при открытии файла или папки",
 			"showLibraryPath": "Показывать библиотеку, избранное, метки и т.д. в пути заголовка",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Количество элементов в списке недавно открытых",

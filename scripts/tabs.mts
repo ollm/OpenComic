@@ -255,10 +255,15 @@ function openPath(path: string, mainPath: string)
 
 	const compressed = fileManager.isCompressed(path);
 
-	return add({
+	const id = add({
 		title: dom.metadataPathName({path: path, name: file, compressed}),
 		data: {history, scrollTop: 0},
 	});
+
+	if(config.switchToNewTab)
+		_switch(id);
+
+	return id;
 }
 
 function openTab(title: string, icon: string, historyList: HistoryItem[], newTab: boolean = false)
@@ -273,11 +278,16 @@ function openTab(title: string, icon: string, historyList: HistoryItem[], newTab
 	history.forwardHistory = [];
 	history.history = [...history.history, ...historyList];
 
-	return add({
+	const id = add({
 		title,
 		icon,
 		data: {history, scrollTop: 0},
 	}, false, true, newTab);
+
+	if(config.switchToNewTab)
+		_switch(id);
+
+	return id;
 }
 
 function updateData(id: number, tab: Partial<Tab>, retrieveData: boolean = true): void
@@ -347,11 +357,11 @@ async function _switch(id: number): Promise<void>
 	if(tab.element.classList.contains('dragging'))
 		return;
 
-	lastUsedTabs.push(id);
-	lastUsedTabs = lastUsedTabs.slice(-20);
-
 	const activeTab = getActive();
 	if(activeTab && activeTab.id === id) return;
+
+	lastUsedTabs.push(id);
+	lastUsedTabs = lastUsedTabs.slice(-20);
 
 	if(activeTab)
 		updateData(activeTab.id, {active: false});

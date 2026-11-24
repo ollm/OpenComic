@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Mostra percorso intero quando apri un file o una cartella",
 			"showLibraryPath": "Mostra percorso libreria nella barra superiore",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Numero di elementi da salvare negli Aggiunti di recente",

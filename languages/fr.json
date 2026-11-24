@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Afficher le chemin complet lors de l’ouverture d’un fichier ou dossier",
 			"showLibraryPath": "Afficher bibliothèque, favoris, étiquettes, etc. dans le chemin de l’en-tête",
 			"showFileExtension": "Afficher l’extension dans la liste de fichiers",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "Ouvrir les fichiers dans une nouvelle fenêtre (s’applique uniquement aux fichiers ouverts en dehors d’OpenComic)",
 			"recentlyOpenedItems": "Nombre d’éléments à conserver dans « Récemment ouverts »",

@@ -427,6 +427,7 @@
 			"showFullPathOpened": "عرض المسار كاملاً عند فتح ملف أو مجلد",
 			"showLibraryPath": "أظهر المكتبة، المفضلة، التصنيفات، إلخ في المسار العلوي",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "عدد العناصر المحفوظة في قائمة (المفتوح مؤخراً)",

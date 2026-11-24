@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Mostra o caminho completo quando estiver abrindo um arquivo ou pasta",
 			"showLibraryPath": "Mostra biblioteca, etiquetas, etc no caminho do cabeçalho",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Número de itens para salvar em Abertos recentemente",

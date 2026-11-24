@@ -427,6 +427,7 @@
 			"showFullPathOpened": "파일/폴더 열 때 전체 경로 표시",
 			"showLibraryPath": "헤더에 책장/즐겨찾기/라벨 등 표시",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "최근 연 파일 보관 개수",

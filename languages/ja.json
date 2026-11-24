@@ -427,6 +427,7 @@
 			"showFullPathOpened": "ファイルやフォルダーを開く際、フルパスを表示",
 			"showLibraryPath": "ヘッダーのパスにライブラリ/お気に入り/ラベル等を表示",
 			"showFileExtension": "ファイル一覧に拡張子を表示",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "ファイルを新しいタブで開く（OpenComic 外から開いたファイルにのみ適用）",
 			"openFilesInNewWindow": "ファイルを新しいウィンドウで開く（OpenComic 外から開いたファイルにのみ適用）",
 			"recentlyOpenedItems": "最近開いたファイルの保存数",

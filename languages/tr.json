@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Bir dosya veya klasör açarken tam dizini göster",
 			"showLibraryPath": "Kütüphane, favoriler, etiketler vb.'yi başlık dizininde ek olarak göster",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "Son açılanlarda kaydedilecek öğe sayısı",

@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Show full path when opening a file or folder",
 			"showLibraryPath": "Show library, favorites, labels, etc in header path",
 			"showFileExtension": "Show file extension in file list",
+			"switchToNewTab": "When a new tab is opened, switch to it immediately",
 			"openFilesInNewTab": "Open files in a new tab (Applies only to files opened from outside OpenComic)",
 			"openFilesInNewWindow": "Open files in a new window (Applies only to files opened from outside OpenComic)",
 			"recentlyOpenedItems": "Number of items to save in Recently opened",

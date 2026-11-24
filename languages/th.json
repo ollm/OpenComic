@@ -427,6 +427,7 @@
 			"showFullPathOpened": "แสดงที่ตั้งแบบเต็มเมื่อเปิดไฟล์หรือโฟลเดอร์",
 			"showLibraryPath": "แสดงเส้นทางห้องสมุด เรื่องที่ชอบ ป้ายกำกับ และอื่น ๆ บนส่วนหัว",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "จำนวนรายการที่จัดเก็บในรายการที่เปิดล่าสุด",

@@ -427,6 +427,7 @@
 			"showFullPathOpened": "開啟檔案或資料夾時顯示完整路徑",
 			"showLibraryPath": "在標題路徑內顯示書庫、最愛、標籤等",
 			"showFileExtension": "在檔案清單中顯示副檔名",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "在新分頁開啟檔案 (僅適用於從 OpenComic 外部開啟的檔案)",
 			"openFilesInNewWindow": "在新視窗開啟檔案 (僅適用於從 OpenComic 外部開啟的檔案)",
 			"recentlyOpenedItems": "近期開啟過項目的儲存數量",

@@ -427,6 +427,7 @@
 			"showFullPathOpened": "Visa fullständig filväg när en fil eller mapp öppnas",
 			"showLibraryPath": "",
 			"showFileExtension": "",
+			"switchToNewTab": "",
 			"openFilesInNewTab": "",
 			"openFilesInNewWindow": "",
 			"recentlyOpenedItems": "",

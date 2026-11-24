@@ -312,6 +312,7 @@ const storageDefault = {
 		saveImageToFolder: false,
 		downloadOpdsFolder: relative.path(p.join(getDocumentsPath(), 'OPDS')),
 		downloadOpdsToFolder: false,
+		switchToNewTab: false,
 		openFilesInNewTab: true,
 		openFilesInNewWindow: false,
 		startInFullScreen: false,
