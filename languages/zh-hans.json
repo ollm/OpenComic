@@ -427,7 +427,7 @@
 			"showFullPathOpened": "打开文件或文件夹时显示完整路径",
 			"showLibraryPath": "在标题路径中显示库、收藏夹、标签等",
 			"showFileExtension": "在文件列表中显示文件扩展名",
-			"switchToNewTab": "",
+			"switchToNewTab": "打开新标签页时，立即切换至该标签页",
 			"openFilesInNewTab": "在新标签页中打开文件（仅适用于从 OpenComic 外部打开的文件）",
 			"openFilesInNewWindow": "在新窗口中打开文件（仅适用于从 OpenComic 外部打开的文件）",
 			"recentlyOpenedItems": "最近打开的要保存的项目数",
