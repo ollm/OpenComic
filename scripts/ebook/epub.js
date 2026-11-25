@@ -92,8 +92,79 @@ var epub = function(path, config = {}) {
 	this.epub = false;
 	this.epubFiles = false;
 	this.epubMetadata = false;
+	this.epubRegions = false;
 
 	this.toc = false;
+
+	this.readEpubRegions = async function() {
+
+		if(this.epubRegions !== false)
+			return this.epubRegions;
+
+		await this.openEpub();
+
+		const item = this.epub.resources?.manifest?.find(item => item.properties?.includes('data-nav'));
+
+		if(!item)
+			return this.epubRegions = {};
+
+		const doc = await this.epub.loadDocument(item);
+		const nav = Array.from(doc.querySelectorAll('nav')).find(nav => {
+			const type = nav.getAttributeNS('http://www.idpf.org/2007/ops', 'type') || nav.getAttribute('epub:type') || '';
+			return type.split(/\s+/).includes('region-based');
+		});
+
+		if(!nav)
+			return this.epubRegions = {};
+
+		const normalizeHref = href => p.posix.normalize(decodeURI(href).replace(/^\/+/, ''));
+		const sectionByHref = new Map(this.epub.sections.map((section, index) => [
+			normalizeHref(section.id),
+			index,
+		]));
+
+		const regions = {};
+
+		for(const panel of nav.querySelectorAll('li'))
+		{
+			const type = panel.getAttributeNS('http://www.idpf.org/2007/ops', 'type') || panel.getAttribute('epub:type') || '';
+
+			if(!type.split(/\s+/).includes('panel'))
+				continue;
+
+			const anchor = panel.querySelector('a[href]');
+			if(!anchor) continue;
+
+			const href = anchor.getAttribute('href') || '';
+			const [path, fragment] = href.split('#', 2);
+
+			if(/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(path))
+				continue;
+
+			const target = path ? (path.startsWith('/') ? path.slice(1) : p.posix.join(p.posix.dirname(item.href), path)) : item.href;
+			const sectionIndex = sectionByHref.get(normalizeHref(target));
+			const match = fragment && /^xywh=(percent|pixel):([^,]+),([^,]+),([^,]+),([^,]+)$/.exec(decodeURIComponent(fragment));
+
+			if(sectionIndex === undefined || !match)
+				continue;
+
+			const [x, y, width, height] = match.slice(2).map(Number);
+
+			if(![x, y, width, height].every(Number.isFinite) || width <= 0 || height <= 0)
+				continue;
+
+			(regions[sectionIndex] ||= []).push({
+				x,
+				y,
+				width,
+				height,
+				unit: match[1],
+			});
+		}
+
+		return this.epubRegions = regions;
+
+	}
 
 	this.resourcePath = function(uri) {
 
@@ -682,8 +753,9 @@ var epub = function(path, config = {}) {
 					href: String(chapter.section.id),
 				};
 
-				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') ?? false;
-				const chapterFixedLayout = fixedLayout || spineFixed;
+				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') || spine.properties?.includes('layout-pre-paginated') || false;
+				const spineReflowable = spine.properties?.includes('rendition:layout-reflowable') || spine.properties?.includes('layout-reflowable') || false;
+				const chapterFixedLayout = spineReflowable ? false : fixedLayout || spineFixed;
 
 				let pageSpread = '';
 
@@ -737,6 +809,7 @@ var epub = function(path, config = {}) {
 
 		await this.openEpub();
 		let files = await this.readEpubFiles();
+		const regions = await this.readEpubRegions();
 
 		const fixedLayout = this.epub.rendition?.layout === 'pre-paginated';
 		
@@ -755,7 +828,8 @@ var epub = function(path, config = {}) {
 				};
 
 				const spineFixed = spine.properties?.includes('rendition:layout-pre-paginated') || spine.properties?.includes('layout-pre-paginated') || false;
-				const chapterFixedLayout = fixedLayout || spineFixed;
+				const spineReflowable = spine.properties?.includes('rendition:layout-reflowable') || spine.properties?.includes('layout-reflowable') || false;
+				const chapterFixedLayout = spineReflowable ? false : fixedLayout || spineFixed;
 
 				let pageSpread = '';
 
@@ -770,6 +844,7 @@ var epub = function(path, config = {}) {
 					path: p.join(self.path, file),
 					basePath: dirname,
 					spine: spine,
+					regions: regions[index],
 					fixedLayout: chapterFixedLayout,
 					...(chapterFixedLayout ? self.fixedLayoutSize(chapter.html) : {width: 0, height: 0}),
 					pageSpread,

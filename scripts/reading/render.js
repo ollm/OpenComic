@@ -410,6 +410,8 @@ async function render(index, _scale = false, magnifyingGlass = false, threadsId 
 
 		if(renderEbook)
 		{
+			reading.panels.getPanels('', index, imageData.regions);
+
 			rendered[index] = 1;
 			renderedMagnifyingGlass[index] = 1;
 

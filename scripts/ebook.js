@@ -804,6 +804,7 @@ var ebook = function(book, config = {}) {
 				max-width: calc(100vw - `+(horizontalMargin * 2)+`px) !important;
 				max-height: calc(100vh - `+(verticalMargin * 2)+`px) !important;
 				width: initial !important;
+				object-fit: contain; /* Avoid stretching images beyond their aspect ratio */
 			}
 
 			body p img {
@@ -975,6 +976,7 @@ var ebook = function(book, config = {}) {
 				page.chapterProgressSize = 1 / len2 * 100;
 				page.chapterProgress = (i2 + 1) / len2 * 100;
 				page.chapterIndex = i;
+				page.regions = this.book.chapters[i].regions;
 				_pages.push(page);
 				index++;
 			}

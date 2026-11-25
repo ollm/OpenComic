@@ -15,6 +15,14 @@ type PanelBox = Box & {
 	corners: ReturnType<typeof corners>;
 };
 
+type EpubRegion = {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	unit: 'percent' | 'pixel';
+};
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const app: any;
 declare const dom: any;
@@ -57,6 +65,7 @@ interface HTMLDivElementMask extends HTMLDivElement {
 
 let panelsCache: Record<string, Detection> = {};
 let panelsSrc: Record<string, string> = {};
+let panelsRegions: Record<number, EpubRegion[]> = {};
 let currentPannel: number = 0;
 let currentPage: number = 0;
 
@@ -147,15 +156,70 @@ async function _getPanels(src: string): Promise<Detection>
 	return detection as Detection;
 }
 
-async function getPanels(src: string, page: number)
+async function getPanels(src: string, page: number, regions?: EpubRegion[])
 {
 	panelsSrc[page] = src;
+
+	if(regions?.length)
+		panelsRegions[page] = regions;
 
 	if(!reading.viewIs('panels'))
 		return;
 
 	if(panelsCache[page])
 		return;
+
+	const image = reading.getImage(page);
+
+	if(regions?.length || image?.ebook)
+	{
+		let boxes: Box[];
+
+		if(regions?.length)
+		{
+			boxes = regions.map(function(region) {
+
+				const scale = region.unit === 'percent' ? 0.01 : 1;
+				const x1 = region.x * scale * image.width;
+				const y1 = region.y * scale * image.height;
+				const x2 = (region.x + region.width) * scale * image.width;
+				const y2 = (region.y + region.height) * scale * image.height;
+
+				return {
+					box: [x1, y1, x2, y2],
+					mask: new Uint8Array(),
+					width: image.width,
+					height: image.height,
+					label: 'panel',
+					score: 1,
+					path: `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x1} ${y2} Z`,
+				} as unknown as Box;
+
+			});
+		}
+		else
+		{
+			boxes = [{
+				box: [0, 0, image.width, image.height],
+				mask: new Uint8Array(),
+				width: image.width,
+				height: image.height,
+				label: 'panel',
+				score: 1,
+				path: `M 0 0 L ${image.width} 0 L ${image.width} ${image.height} L 0 ${image.height} Z`,
+			} as unknown as Box];
+		}
+
+		if(boxes.length)
+		{
+			panelsCache[page] = {boxes} as Detection;
+
+			if(currentPannel === -1 && page === currentPage)
+				goToPanel();
+
+			return;
+		}
+	}
 
 	const threadsId = threads.id('panels');
 
@@ -918,6 +982,7 @@ function reset()
 	currentPannel = -1;
 	panelsCache = {};
 	panelsSrc = {};
+	panelsRegions = {};
 }
 
 async function reload()
@@ -926,9 +991,11 @@ async function reload()
 	panelsCache = {};
 
 	const src = panelsSrc[currentPage] ?? '';
-	if(!src) return;
+	const regions = panelsRegions[currentPage];
+	const image = reading.getImage(currentPage);
+	if(!src && !regions?.length && !image?.ebook) return;
 
-	await getPanels(src, currentPage);
+	await getPanels(src, currentPage, regions);
 	goCurrent();
 }
 

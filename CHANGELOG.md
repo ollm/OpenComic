@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added search functionality in the settings page [`244e25f`](https://github.com/ollm/OpenComic/commit/244e25f8c8d7c44037bf343ad19b9424d7efb58e)
 - Added shortcut for new/close/reopen tabs [`831d54e`](https://github.com/ollm/OpenComic/commit/831d54e5f1f90c8d8657e1c50649f27ca011ae2f)
 - Added option to switch to a new tab immediately when opened
+- Support region-based navigation in EPUB Guided View
 
 ##### 🐛 Bug Fixes
 
