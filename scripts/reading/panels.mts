@@ -317,12 +317,20 @@ function sortBoxes(boxes: PanelBox[]): Box[]
 		const [aBottom, bBottom] = closest([invertX(a.corners.bottomLeft), invertX(a.corners.bottomRight)], [invertX(b.corners.bottomLeft), invertX(b.corners.bottomRight)]);
 		const [aTop, bTop] = closest([invertX(a.corners.topLeft), invertX(a.corners.topRight)], [invertX(b.corners.topLeft), invertX(b.corners.topRight)]);
 
+		const aHeight = Math.abs(aBottom.y - aTop.y);
+		const bHeight = Math.abs(bBottom.y - bTop.y);
+
 		// Same row
 		if(
-			Math.abs(aBottom.y - bBottom.y) < threshold // Bottom
-			|| Math.abs(aTop.y - bTop.y) < threshold // Top
-			|| (aTop.y + threshold > bTop.y && aBottom.y < bBottom.y + threshold) // a is inside b (b is bigger)
-			|| (bTop.y + threshold > aTop.y && bBottom.y < aBottom.y + threshold) // b is inside a (a is bigger)
+			(
+				Math.abs(aBottom.y - bBottom.y) < threshold // Bottom
+				|| Math.abs(aTop.y - bTop.y) < threshold // Top
+				|| (aTop.y + threshold > bTop.y && aBottom.y < bBottom.y + threshold) // a is inside b (b is bigger)
+				|| (bTop.y + threshold > aTop.y && bBottom.y < aBottom.y + threshold) // b is inside a (a is bigger)
+				|| (aTop.y < bTop.y && aBottom.y > bTop.y && aBottom.y < bBottom.y && aHeight * 0.5 > bTop.y - aTop.y) // a overlaps b from above
+				|| (bTop.y < aTop.y && bBottom.y > aTop.y && bBottom.y < aBottom.y && bHeight * 0.5 > aTop.y - bTop.y) // b overlaps a from above
+			)
+			// && (a.corners.bottomRight.x - b.corners.bottomRight.x) * (a.corners.bottomLeft.x - b.corners.bottomLeft.x) > threshold
 		)
 			return invertX(a.corners.bottomRight).x > invertX(b.corners.bottomRight).x ? 1 : -1;
 
@@ -1095,5 +1103,6 @@ export default {
 	removeAllMasks,
 	change,
 	updateCurrent,
+	sortBoxes,
 	get panelsCache() {return panelsCache},
 };

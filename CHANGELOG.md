@@ -10,8 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Added search functionality in the settings page [`244e25f`](https://github.com/ollm/OpenComic/commit/244e25f8c8d7c44037bf343ad19b9424d7efb58e)
 - Added shortcut for new/close/reopen tabs [`831d54e`](https://github.com/ollm/OpenComic/commit/831d54e5f1f90c8d8657e1c50649f27ca011ae2f)
-- Added option to switch to a new tab immediately when opened
-- Support region-based navigation in EPUB Guided View
+- Added option to switch to a new tab immediately when opened [`a9f91c3`](https://github.com/ollm/OpenComic/commit/a9f91c37d970bddf671ad059e44901bd69ffba0d)
+- Support region-based navigation in EPUB Guided View [`bd37325`](https://github.com/ollm/OpenComic/commit/bd3732520487b882eede7d95e79bf5dc022f2ca9)
 
 ##### 🐛 Bug Fixes
 
@@ -22,7 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Use custom Sharp build without static GLib on Linux [`e81080d`](https://github.com/ollm/OpenComic/commit/e81080d2f79152e33a9a124696599b88ffef2a0d)
 - Artifacts with v4 preview models [`adfb7a3`](https://github.com/ollm/OpenComic/commit/adfb7a3c475fd0e399692af3b0c54b27eaf1434b)
 - Copy image to clipboard not working on Electron 44 and later [`f997cb5`](https://github.com/ollm/OpenComic/commit/f997cb5a4df366813e2ea75ed7f8d55bfd1bc966)
-- Handle apostrophes in context menu
+- Handle apostrophes in context menu [`e769eba`](https://github.com/ollm/OpenComic/commit/e769eba5b11084ad02b31dbf0d439ef73a65eed6)
+- Panels order in some cases
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 
