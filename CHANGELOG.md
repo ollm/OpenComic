@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Use custom Sharp build without static GLib on Linux [`e81080d`](https://github.com/ollm/OpenComic/commit/e81080d2f79152e33a9a124696599b88ffef2a0d)
 - Artifacts with v4 preview models [`adfb7a3`](https://github.com/ollm/OpenComic/commit/adfb7a3c475fd0e399692af3b0c54b27eaf1434b)
 - Copy image to clipboard not working on Electron 44 and later [`f997cb5`](https://github.com/ollm/OpenComic/commit/f997cb5a4df366813e2ea75ed7f8d55bfd1bc966)
+- Handle apostrophes in context menu
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 
