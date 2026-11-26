@@ -173,6 +173,8 @@
 			"marginHorizontal": "Margines poziomy",
 			"marginVertical": "Margines pionowy",
 			"differentMarginInHorizontals": "Inny dla obrazów poziomych",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "Podwójna strona",

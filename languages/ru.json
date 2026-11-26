@@ -173,6 +173,8 @@
 			"marginHorizontal": "Горизонтальные поля",
 			"marginVertical": "Вертикальные поля",
 			"differentMarginInHorizontals": "Разные для горизонтальных изображений",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "Увеличить горизонтальные поля",
 			"decreaseHorizontalMargin": "Уменьшить горизонтальные поля",
 			"doublePage": "Двойной разворот",

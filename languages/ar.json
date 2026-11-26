@@ -173,6 +173,8 @@
 			"marginHorizontal": "الحافة الأفقية",
 			"marginVertical": "الحافة العمودية",
 			"differentMarginInHorizontals": "حواف أفقية مختلفة",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "صحفات مزدوجة",

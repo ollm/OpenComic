@@ -173,6 +173,8 @@
 			"marginHorizontal": "حاشیه افقی",
 			"marginVertical": "حاشیه عمودی",
 			"differentMarginInHorizontals": "حاشیه متفاوت در افقی‌ها",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "افزایش حاشیه افقی",
 			"decreaseHorizontalMargin": "کاهش حاشیه افقی",
 			"doublePage": "دوصفحه‌ای",

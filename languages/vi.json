@@ -173,6 +173,8 @@
 			"marginHorizontal": "Lề ngang",
 			"marginVertical": "Lề dọc",
 			"differentMarginInHorizontals": "Khác cho trang dài",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "Hiển thị hai trang",

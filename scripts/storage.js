@@ -3,7 +3,7 @@ const safe = require(p.join(appDir, '.dist/storage/safe.js')),
 	backup = require(p.join(appDir, '.dist/storage/backup.mjs')).default,
 	syncWindows = require(p.join(appDir, '.dist/storage/sync-windows.mjs')).default;
 
-const changes = 181; // Update this if readingPagesConfig or storageDefault is updated
+const changes = 182; // Update this if readingPagesConfig or storageDefault is updated
 
 const readingPagesConfig = {
 	readingPresetName: '',
@@ -65,6 +65,8 @@ const readingPagesConfig = {
 		left: 16,
 		right: 16
 	},
+	readingDoublePageGapActive: false,
+	readingDoublePageGap: 16,
 	readingImageClip: {
 		top: 0,
 		bottom: 0,

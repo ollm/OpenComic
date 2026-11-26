@@ -173,6 +173,8 @@
 			"marginHorizontal": "Vízszintes margó",
 			"marginVertical": "Függőlges margó",
 			"differentMarginInHorizontals": "",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "Kétoldalas elrendezés",

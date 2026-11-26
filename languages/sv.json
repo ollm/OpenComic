@@ -173,6 +173,8 @@
 			"marginHorizontal": "Horisontell marginal",
 			"marginVertical": "Vertikal marginal",
 			"differentMarginInHorizontals": "Annan marginal på horisontella sidor",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "Dubbelsidig",

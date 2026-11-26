@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added shortcut for new/close/reopen tabs [`831d54e`](https://github.com/ollm/OpenComic/commit/831d54e5f1f90c8d8657e1c50649f27ca011ae2f)
 - Added option to switch to a new tab immediately when opened [`a9f91c3`](https://github.com/ollm/OpenComic/commit/a9f91c37d970bddf671ad059e44901bd69ffba0d)
 - Support region-based navigation in EPUB Guided View [`bd37325`](https://github.com/ollm/OpenComic/commit/bd3732520487b882eede7d95e79bf5dc022f2ca9)
+- Add separated double page gap option [`1d2fc5f`](https://github.com/ollm/OpenComic/commit/1d2fc5f3011fe636df2b921e2a874a67e1925cf6)
 
 ##### 🐛 Bug Fixes
 

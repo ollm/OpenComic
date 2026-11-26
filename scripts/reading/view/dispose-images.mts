@@ -16,6 +16,7 @@ interface Margin {
 	bottom: number;
 	horizontalsLeft: number;
 	horizontalsRight: number;
+	doublePageGap: number;
 };
 
 interface Clip {
@@ -33,12 +34,14 @@ interface CalcSizes {
 	aspectRatio: number;
 	horizontal: number;
 	vertical: number;
+	doublePageGap: number;
 	horizontals: {
 		width: number;
 		height: number;
 		aspectRatio: number;
 		horizontal: number;
 		vertical: number;
+		doublePageGap: number;
 	};
 }
 
@@ -111,7 +114,7 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 			const width = cSize.height * itemAspectRatio;
 			const restAspectRatio = (join.width - width) / cSize.height;
 
-			return (itemAspectRatio / (itemAspectRatio + restAspectRatio)) * (cSize.width - cSize.horizontal);
+			return (itemAspectRatio / (itemAspectRatio + restAspectRatio)) * (cSize.width - cSize.doublePageGap);
 		}
 
 		return cSize.width;
@@ -133,11 +136,14 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 				if(index === 0)
 					return cSize.horizontal + (cSize.width / 2 - join.sum / 2);
 				else
-					return cSize.horizontal;
+					return cSize.doublePageGap;
 			}
 
 			return cSize.horizontal + (cSize.width / 2 - width / 2);
 		}
+
+		if(isDouble && index !== 0)
+			return cSize.doublePageGap;
 
 		return marginHorizontal;
 
@@ -337,12 +343,14 @@ export default function disposeImages(data: Margin | boolean = false)
 		aspectRatio: width / height,
 		horizontal: marginHorizontal,
 		vertical: marginVertical,
+		doublePageGap: _margin.doublePageGap,
 		horizontals: {
 			width: widthHorizontal,
 			height: height,
 			aspectRatio: widthHorizontal / height,
 			horizontal: marginHorizontalsHorizontal,
 			vertical: marginVertical,
+			doublePageGap: _margin.doublePageGap,
 		},
 	};
 
@@ -365,7 +373,7 @@ export default function disposeImages(data: Margin | boolean = false)
 
 		const joinLen = group.length;
 		const joinWidth = group.reduce((total, item) => total + (cSizes.height * item.aspectRatio), 0);
-		const joinMargin = (joinLen - 1) * cSizes.horizontal;
+		const joinMargin = (joinLen - 1) * cSizes.doublePageGap;
 
 		const join: Join = {
 			width: joinWidth,

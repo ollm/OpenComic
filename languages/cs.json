@@ -173,6 +173,8 @@
 			"marginHorizontal": "Vodorovné odsazení",
 			"marginVertical": "Svislé odsazení",
 			"differentMarginInHorizontals": "Jiné u širokých",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "Dvojtá stránka",

@@ -173,6 +173,8 @@
 			"marginHorizontal": "Horizontaler Rand",
 			"marginVertical": "Vertikale Rand",
 			"differentMarginInHorizontals": "Unterschiedlich bei Horizontalen",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "Horizontalen Rand vergrößern",
 			"decreaseHorizontalMargin": "Horizontalen Rand verkleinern",
 			"doublePage": "Doppelseite",

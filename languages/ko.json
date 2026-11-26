@@ -173,6 +173,8 @@
 			"marginHorizontal": "좌우 여백",
 			"marginVertical": "상하 여백",
 			"differentMarginInHorizontals": "가로 이미지 별도 여백",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "좌우 여백 늘리기",
 			"decreaseHorizontalMargin": "좌우 여백 줄이기",
 			"doublePage": "양면 보기",

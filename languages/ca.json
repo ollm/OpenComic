@@ -173,6 +173,8 @@
 			"marginHorizontal": "Marge horitzontal",
 			"marginVertical": "Marge vertical",
 			"differentMarginInHorizontals": "Diferent en les horitzontals",
+			"differentGapInDoublePages": "Diferent espai en pàgines dobles",
+			"doublePageGap": "Espai entre pàgines dobles",
 			"increaseHorizontalMargin": "Augmentar el marge horitzontal",
 			"decreaseHorizontalMargin": "Disminuir el marge horitzontal",
 			"doublePage": "Doble pàgina",

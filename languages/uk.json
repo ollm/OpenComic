@@ -173,6 +173,8 @@
 			"marginHorizontal": "Відступ по горизонталі",
 			"marginVertical": "Відступ по вертикалі",
 			"differentMarginInHorizontals": "Окремо для горизонтальних зображень",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "Збільшити горизонтальний відступ",
 			"decreaseHorizontalMargin": "Зменшити горизонтальний відступ",
 			"doublePage": "Двосторінкова розгортка",

@@ -173,6 +173,8 @@
 			"marginHorizontal": "Yatay kenar boşluğu",
 			"marginVertical": "Dikey kenar boşluğu",
 			"differentMarginInHorizontals": "Yataylarda farklı değer",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "Çift sayfa",

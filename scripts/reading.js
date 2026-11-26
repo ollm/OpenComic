@@ -3012,9 +3012,14 @@ function changePagesView(mode, value, save)
 	else if(mode == 6) // Set the reading to double page
 	{
 		if(value)
-			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').removeClass('disable-pointer');
+			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-double-page-gap-switch').removeClass('disable-pointer');
 		else
-			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal').addClass('disable-pointer');
+			$('.reading-double-page-shadow, .reading-do-not-apply-to-horizontals, .reading-blank-page, .reading-align-with-next-horizontal, .reading-double-page-gap-switch').addClass('disable-pointer');
+
+		if(value && _config.readingDoublePageGapActive)
+			template.globalElement('.reading-double-page-gap').removeClass('disable-pointer');
+		else
+			template.globalElement('.reading-double-page-gap').addClass('disable-pointer');
 
 		updateReadingPagesConfig('readingDoublePage', value);
 		reading.reloadAnimated(false, imageIndex);
@@ -3199,6 +3204,27 @@ function changePagesView(mode, value, save)
 			dom.queryAll('.reading-extract-document-images .switch').removeClass('a');
 
 		reading.reloadAnimated(true, imageIndex);
+	}
+	else if(mode == 24) // Set double page gap active
+	{
+		updateReadingPagesConfig('readingDoublePageGapActive', value);
+
+		if(value && doublePage.active())
+			template.globalElement('.reading-double-page-gap').removeClass('disable-pointer');
+		else
+			template.globalElement('.reading-double-page-gap').addClass('disable-pointer');
+
+		updateView();
+		updateEbook(true);
+	}
+	else if(mode == 25) // Set double page gap value
+	{
+		updateView({doublePageGap: value});
+
+		render.resized(doublePage.active());
+
+		if(save) updateReadingPagesConfig('readingDoublePageGap', value);
+		updateEbook(save);
 	}
 }
 
@@ -4178,6 +4204,7 @@ function readingMargin(data = false)
 			bottom: 0,
 			left: 0,
 			right: 0,
+			doublePageGap: 0,
 		};
 	}
 	else
@@ -4188,6 +4215,7 @@ function readingMargin(data = false)
 			bottom: _config.readingWebtoon ? 0 : (data && data.bottom !== undefined ? data.bottom : _config.readingMargin.bottom),
 			left: data && data.left !== undefined ? data.left : _config.readingMargin.left,
 			right: data && data.right !== undefined ? data.right : _config.readingMargin.right,
+			doublePageGap: data && data.doublePageGap !== undefined ? data.doublePageGap : (_config.readingDoublePageGapActive ? _config.readingDoublePageGap : _config.readingMargin.left),
 		};
 	}
 }
@@ -4202,6 +4230,7 @@ function readingHorizontalsMargin(data = false)
 			bottom: 0,
 			left: 0,
 			right: 0,
+			doublePageGap: 0,
 		};
 	}
 	else
@@ -4212,6 +4241,7 @@ function readingHorizontalsMargin(data = false)
 			bottom: _config.readingWebtoon ? 0 : (data && data.horizontalsBottom !== undefined ? data.horizontalsBottom : _config.readingHorizontalsMargin.bottom),
 			left: data && data.horizontalsLeft !== undefined ? data.horizontalsLeft : _config.readingHorizontalsMargin.left,
 			right: data && data.horizontalsRight !== undefined ? data.horizontalsRight : _config.readingHorizontalsMargin.right,
+			doublePageGap: data && data.horizontalsDoublePageGap !== undefined ? data.horizontalsDoublePageGap : (_config.readingDoublePageGapActive ? _config.readingDoublePageGap : _config.readingHorizontalsMargin.left),
 		};
 	}
 }

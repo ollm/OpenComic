@@ -173,6 +173,8 @@
 			"marginHorizontal": "水平邊距",
 			"marginVertical": "垂直邊距",
 			"differentMarginInHorizontals": "橫向圖片使用不同邊距",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "增加水平邊距",
 			"decreaseHorizontalMargin": "減少水平邊距",
 			"doublePage": "雙頁顯示",

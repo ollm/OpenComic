@@ -173,6 +173,8 @@
 			"marginHorizontal": "",
 			"marginVertical": "",
 			"differentMarginInHorizontals": "",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "",
 			"decreaseHorizontalMargin": "",
 			"doublePage": "",

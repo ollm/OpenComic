@@ -173,6 +173,8 @@
 			"marginHorizontal": "水平边距",
 			"marginVertical": "垂直边距",
 			"differentMarginInHorizontals": "横幅画面差异",
+			"differentGapInDoublePages": "",
+			"doublePageGap": "",
 			"increaseHorizontalMargin": "增加水平边距",
 			"decreaseHorizontalMargin": "减少水平边距",
 			"doublePage": "双页展示",
