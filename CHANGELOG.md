@@ -23,7 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Artifacts with v4 preview models [`adfb7a3`](https://github.com/ollm/OpenComic/commit/adfb7a3c475fd0e399692af3b0c54b27eaf1434b)
 - Copy image to clipboard not working on Electron 44 and later [`f997cb5`](https://github.com/ollm/OpenComic/commit/f997cb5a4df366813e2ea75ed7f8d55bfd1bc966)
 - Handle apostrophes in context menu [`e769eba`](https://github.com/ollm/OpenComic/commit/e769eba5b11084ad02b31dbf0d439ef73a65eed6)
-- Panels order in some cases
+- Panels order in some cases [`6932b12`](https://github.com/ollm/OpenComic/commit/6932b12a6933cfb76e2b3d75e0a4a1a1147cabb0)
+- Double spread pages move instead of resizing when changing different horizontal margins
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 

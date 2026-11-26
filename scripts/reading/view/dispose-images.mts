@@ -94,25 +94,27 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 	const isHorizontalMargin = !isDouble && _config.readingHorizontalsMarginActive && itemAspectRatio > 1;
 	const forceSinglePage = _config.readingForceSinglePage && !_config.readingWebtoon;
 
-	const aspectRatio = isHorizontalMargin ? cSizes.horizontals.aspectRatio : cSizes.aspectRatio;
-	const marginHorizontal = isHorizontalMargin ? cSizes.horizontals.horizontal : cSizes.horizontal;
+	const cSize = isHorizontalMargin ? cSizes.horizontals : cSizes;
 
-	const fitHeight = (((isDouble && join.sum < cSizes.width) || (!isDouble && aspectRatio > itemAspectRatio)) && !(isScroll && (_config.readingViewAdjustToWidth || _config.readingWebtoon)));
+	const aspectRatio = cSize.aspectRatio;
+	const marginHorizontal = cSize.horizontal;
+
+	const fitHeight = (((isDouble && join.sum < cSize.width) || (!isDouble && aspectRatio > itemAspectRatio)) && !(isScroll && (_config.readingViewAdjustToWidth || _config.readingWebtoon)));
 
 	const calcWidth = () => {
 
 		if(fitHeight)
-			return cSizes.height * itemAspectRatio;
+			return cSize.height * itemAspectRatio;
 
 		if(isDouble)
 		{
-			const width = cSizes.height * itemAspectRatio;
-			const restAspectRatio = (join.width - width) / cSizes.height;
+			const width = cSize.height * itemAspectRatio;
+			const restAspectRatio = (join.width - width) / cSize.height;
 
-			return (itemAspectRatio / (itemAspectRatio + restAspectRatio)) * (cSizes.width - cSizes.horizontal);
+			return (itemAspectRatio / (itemAspectRatio + restAspectRatio)) * (cSize.width - cSize.horizontal);
 		}
 
-		return cSizes.width;
+		return cSize.width;
 
 	};
 
@@ -129,12 +131,12 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 			if(isDouble)
 			{
 				if(index === 0)
-					return cSizes.horizontal + (cSizes.width / 2 - join.sum / 2);
+					return cSize.horizontal + (cSize.width / 2 - join.sum / 2);
 				else
-					return cSizes.horizontal;
+					return cSize.horizontal;
 			}
 
-			return cSizes.horizontal + (cSizes.width / 2 - width / 2);
+			return cSize.horizontal + (cSize.width / 2 - width / 2);
 		}
 
 		return marginHorizontal;
@@ -144,9 +146,9 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 	const calcTop = () => {
 
 		if(fitHeight)
-			return cSizes.vertical;
+			return cSize.vertical;
 
-		return cSizes.vertical + (cSizes.height / 2 - height / 2);
+		return cSize.vertical + (cSize.height / 2 - height / 2);
 
 	};
 
@@ -156,7 +158,7 @@ function calcSizes(item: Item, cSizes: CalcSizes, clip: Clip, join: Join, isScro
 	let top = calcTop();
 
 	if(isScroll && !forceSinglePage)
-		top = cSizes.vertical;
+		top = cSize.vertical;
 
 	const img = {
 		height: clip.vertical > 0 ? (height / (1 - clip.vertical)) : height,
