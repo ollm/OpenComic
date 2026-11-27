@@ -20,7 +20,7 @@ describe('EPUB resource paths', function() {
 
 	it('resolves resources inside the extraction directory', function() {
 
-		assert.strictEqual(book.resourcePath('OEBPS/chapter.xhtml'), p.join('/tmp/opencomic-epub', 'OEBPS', 'chapter.xhtml'));
+		assert.strictEqual(book.resourcePath('OEBPS/chapter.xhtml'), p.resolve('/tmp/opencomic-epub', 'OEBPS', 'chapter.xhtml'));
 
 	});
 
