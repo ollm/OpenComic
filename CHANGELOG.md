@@ -26,7 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Handle apostrophes in context menu [`e769eba`](https://github.com/ollm/OpenComic/commit/e769eba5b11084ad02b31dbf0d439ef73a65eed6)
 - Panels order in some cases [`6932b12`](https://github.com/ollm/OpenComic/commit/6932b12a6933cfb76e2b3d75e0a4a1a1147cabb0)
 - Double spread pages move instead of resizing when changing different horizontal margins [`1d2fc5f`](https://github.com/ollm/OpenComic/commit/1d2fc5f3011fe636df2b921e2a874a67e1925cf6)
-- Periods in folder names cause TBN filename truncation and poster collisions
+- Periods in folder names cause TBN filename truncation and poster collisions [`b1ac5a2`](https://github.com/ollm/OpenComic/commit/b1ac5a246c9700afd1705ee22f2471d16570ae21)
 
 ## [v2.0.0](https://github.com/ollm/OpenComic/releases/tag/v2.0.0) (14-11-2026)
 

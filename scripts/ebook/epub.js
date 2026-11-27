@@ -19,6 +19,19 @@ var epub = function(path, config = {}) {
 	this.containerXml = false;
 	this.opf = false;
 
+	this.resolvePath = function(uri) {
+
+		const root = p.resolve(this.realPathZip);
+		const path = p.resolve(root, ...String(uri).split('/'));
+		const relativePath = p.relative(root, path);
+
+		if(relativePath === '..' || relativePath.startsWith(`..${p.sep}`) || p.isAbsolute(relativePath))
+			throw new Error('Epub resource path escapes the extraction directory');
+
+		return path;
+
+	}
+
 	/* Manage Zip epub */
 
 	this.openEpubZip = async function() {
@@ -67,7 +80,7 @@ var epub = function(path, config = {}) {
 
 			if(this.opf)
 			{
-				this.opf = p.join(this.realPathZip, this.opf)
+				this.opf = this.resolvePath(this.opf);
 
 				if(!fs.existsSync(this.opf))
 					throw new Error('Epub opf file not exists');
@@ -169,7 +182,7 @@ var epub = function(path, config = {}) {
 	this.resourcePath = function(uri) {
 
 		uri = decodeURIComponent(String(uri).split('#')[0].split('?')[0]);
-		return p.join(this.realPathZip, ...uri.split('/'));
+		return this.resolvePath(uri);
 
 	}
 

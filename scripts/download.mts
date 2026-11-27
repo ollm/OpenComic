@@ -1,4 +1,6 @@
 import fs from 'fs';
+import {Readable, Transform} from 'node:stream';
+import {pipeline} from 'node:stream/promises';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const events: any;
@@ -27,53 +29,55 @@ export default async function download(url: string, downloadPath: string, messag
 		method: 'GET',
 	};
 
-	const response = await fetch(url, options);
+	let downloadStarted = false;
 
-	if(response.ok && response.body)
+	try
 	{
-		const len = parseInt(response.headers.get('content-length') ?? '0', 10);
+		const response = await fetch(url, options);
 
-		const reader = response.body.getReader();
-		const fileStream = fs.createWriteStream(downloadPath);
-
-		let downloaded = 0;
-
-		while(true)
+		if(!response.ok || !response.body)
 		{
-			const {done, value} = await reader.read();
-
-			if(done)
-				break;
-
-			fileStream.write(value);
-			downloaded += value.byteLength;
-
-			events.buttonLoading(button, downloaded / len);
+			throw new Error(`Invalid response: ${response.status} ${response.statusText}`);
 		}
 
-		events.buttonLoading(button, 1);
+		const contentLength = parseInt(response.headers.get('content-length') ?? '', 10);
+		const len = Number.isFinite(contentLength) && contentLength > 0 ? contentLength : 0;
+		let downloaded = 0;
 
-		let resolve;
+		const progress = new Transform({
+			transform(chunk, _encoding, callback) {
 
-		const promise = new Promise(function(_resolve) {
+				downloaded += chunk.length;
+				events.buttonLoading(button, len > 0 ? Math.min(downloaded / len, 1) : true);
+				callback(null, chunk);
 
-			resolve = _resolve;
-
+			},
 		});
 
-		fileStream.end(resolve);
-
-		await promise;
+		downloadStarted = true;
+		await pipeline(Readable.from(response.body), progress, fs.createWriteStream(downloadPath));
+		downloadStarted = false;
 
 		events.buttonLoading(button, 1);
 		events.closeSnackbar();
 	}
-	else
+	catch (error)
 	{
-		events.buttonLoading(button, 1);
+		if(downloadStarted)
+		{
+			try
+			{
+				await fs.promises.rm(downloadPath, {force: true});
+			}
+			catch (cleanupError)
+			{
+				console.error('Failed to remove incomplete download:', cleanupError);
+			}
+		}
+
 		events.closeSnackbar();
 
-		const message = `Invalid response: ${response.status} ${response.statusText}`;
+		const message = error instanceof Error ? error.message : String(error);
 
 		events.snackbar({
 			key: 'downloadError',
@@ -89,6 +93,6 @@ export default async function download(url: string, downloadPath: string, messag
 
 		events.buttonLoading(button, false);
 
-		throw new Error(message);
+		throw error;
 	}
 }
