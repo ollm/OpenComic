@@ -5847,6 +5847,8 @@ async function read(path, index = 1, end = false, isPdf = false, isEbook = false
 	progress.setInterval();
 
 	startWithPrevZoom();
+
+	tabs.update(true); // Ensure activeTab are up-to-date
 }
 
 module.exports = {
