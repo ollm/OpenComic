@@ -113,7 +113,6 @@
 {
 	position: absolute;
 	width: var(--tabs-bar-tab-width);
-	flex: 0 0 var(--tabs-bar-tab-width);
 	margin: 0px 0px 6px 0px;
 	padding-top: 6px;
 	padding-left: 6px;
@@ -122,7 +121,6 @@
 	height: 28px;
 	height: calc(var(--const-tabs-bar-height-without-border) - 12px);
 	-webkit-app-region: no-drag;
-	will-change: width;
 }
 
 .tabs-bar .tab .tab-content
@@ -132,14 +130,12 @@
 	justify-content: space-between;
 	align-content: center;
 	align-items: center;
-	width: var(--tabs-bar-tab-width);
-	flex: 0 0 var(--tabs-bar-tab-width);
-	transition: 0.2s background-color, 0.2s color, width 0.2s;
+	width: 100%;
+	transition: 0.2s background-color, 0.2s color;
 	border-radius: 8px;
 	overflow: hidden;
 	height: 28px;
 	height: calc(var(--const-tabs-bar-height-without-border) - 12px);
-	will-change: width;
 }
 
 .tabs-bar .tab.dragging .tab-content
@@ -153,22 +149,15 @@
 	animation: tab-open 0.2s forwards;
 }
 
-.tabs-bar .tab.opening .tab-content
-{
-	animation: tab-open-content 0.2s forwards;
-}
-
 @keyframes tab-open
 {
 	0%
 	{
 		width: 0px;
-		padding-left: 0px;
 	}
 	100%
 	{
 		width: var(--tabs-bar-tab-width);
-		padding-left: 6px;
 	}
 }
 
@@ -187,27 +176,13 @@
 .tabs-bar .tab.closing
 {
 	width: 0px;
-	margin: 0px -6px 6px 0px;
-	padding-left: 0px;
 	transition:
 		opacity 0.1s 0.1s,
-		margin 0.2s,
-		padding 0.2s,
 		transform 0.2s,
 		width 0.2s !important;
 	opacity: 0;
 }
 
-.tabs-bar .tab.closing .tab-content
-{
-	width: 0px;
-	transition:
-		opacity 0.1s 0.1s,
-		margin 0.2s,
-		transform 0.2s,
-		width 0.2s !important;
-	opacity: 0;
-}
 
 .tabs-bar .tab .tab-content:after
 {
@@ -318,7 +293,7 @@
 	transition: 0.2s opacity;
 	position: absolute;
 	top: 6px;
-	transform: translate(2px, 5px);
+	transform: translate(4px, 5px);
 }
 
 .tabs-bar .tab-separator svg
