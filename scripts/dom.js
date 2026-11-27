@@ -52,8 +52,8 @@ function orderBy(a, b, mode, key = false, key2 = false)
 		}
 		case 'numeric': {
 
-			const matchA = aValue.match(/([0-9]+)/g) || [];
-			const matchB = bValue.match(/([0-9]+)/g) || [];
+			const matchA = aValue.match(/(\d+)/g) || [];
+			const matchB = bValue.match(/(\d+)/g) || [];
 
 			const lenA = matchA.length;
 			const lenB = matchB.length;
