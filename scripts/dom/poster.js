@@ -68,7 +68,7 @@ function setNewPoster(path, reload = true, message = false)
 	let sha = sha1(path);
 	let tmp = p.join(tempFolder, sha+'.jpg');
 
-	let name = p.parse(currentPath).name;
+	let name = fileManager.isCompressed(currentPath) ? p.parse(currentPath).name : p.basename(currentPath);
 
 	let posterPath = p.join(addPosterInside ? currentPath : p.dirname(currentPath), name+'.tbn');
 

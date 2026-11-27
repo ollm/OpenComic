@@ -685,7 +685,7 @@ var file = function(path, _config = false) {
 
 		path = path || this.path;
 
-		const name = p.parse(path).name;
+		const name = isCompressed(path) ? p.parse(path).name : p.basename(path);
 		const regex = new RegExp('^(?:[\-\s0-9+])?(?:'+pregQuote(name)+'(?:[_-]?(?:cover|default|folder|series|poster|thumbnail))?'+(inside ? '|cover|default|folder|series|poster|thumbnail' : '')+')(?:[\-\s0-9+])?\.[a-z0-9]+$');
 
 		const len = files.length;
