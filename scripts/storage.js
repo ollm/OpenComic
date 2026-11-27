@@ -65,7 +65,7 @@ const readingPagesConfig = {
 		left: 16,
 		right: 16
 	},
-	readingDoublePageGapActive: false,
+	readingDoublePageGapActive: true,
 	readingDoublePageGap: 16,
 	readingImageClip: {
 		top: 0,

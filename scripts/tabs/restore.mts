@@ -120,6 +120,9 @@ function restore(openLastActiveTab: boolean = false, windowId?: string): void {
 	{
 		const id = idCounter++;
 
+		for(const tab of _tabs)
+			tab.active = false;
+
 		_tabs.unshift({
 			id: id,
 			title: 'Untitled',

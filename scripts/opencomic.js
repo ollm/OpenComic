@@ -121,29 +121,33 @@ require('jquery-bez');
 
 
 // Open file and open url logic
-var toOpenFile = toOpenFile || false, windowHasLoaded = false;
+var toOpenFile = toOpenFile || false, toOpenFileMainPath = toOpenFileMainPath || false, windowHasLoaded = false;
 
-function handleOpenFile(path) {
+function handleOpenFile(path, mainPath = '') {
 
 	if(!storage.syncWindows.firstWindow)
 		return;
 
 	if(config.openFilesInNewTab)
 	{
-		openPathInNewTab(path, path);
+		openPathInNewTab(path, mainPath || path);
 		return;
 	}
 	else if(config.openFilesInNewWindow)
 	{
-		openPathInNewWindow(path);
+		openPathInNewWindow(path, mainPath || '');
 		return;
 	}
 
 	if(windowHasLoaded)
-		openComic(path, true);
+	{
+		openComic(path, true, mainPath || false);
+	}
 	else
+	{
 		toOpenFile = path;
-
+		if(mainPath) toOpenFileMainPath = mainPath;
+	}
 }
 
 electronRemote.app.on('open-url', function(event, url) {
@@ -186,13 +190,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 
 		if(arg && !['--no-sandbox', 'scripts/main.js', '.dist/main.js', '.'].includes(arg) && !/^--/.test(arg) && !/app\.asar/i.test(arg) && fs.existsSync(arg))
 		{
-			if(config.openFilesInNewTab)
-				openPathInNewTab(arg, arg);
-			else if(config.openFilesInNewWindow)
-				openPathInNewWindow(arg);
-			else
-				openComic(arg, true);
-
+			handleOpenFile(arg);
 			return;
 		}
 	}
@@ -203,14 +201,7 @@ electronRemote.app.on('second-instance', function(event, argv) {
 	if(path && fs.existsSync(path))
 	{
 		const mainPath = getArgValue(argv, '--main-path', false);
-
-		if(config.openFilesInNewTab)
-			openPathInNewTab(path, mainPath || path);
-		else if(config.openFilesInNewWindow)
-			openPathInNewWindow(path, mainPath || '');
-		else
-			openComic(path, true, mainPath);
-
+		handleOpenFile(path, mainPath || '');
 		return;
 	}
 
@@ -455,7 +446,7 @@ async function startApp()
 	const args = [...process.argv, ...electronRemote.process.argv];
 
 	emptyNewWindow = args.includes('--empty-new-window');
-	let toOpenFileMainPath = getArgValue(args, '--main-path', false);
+	toOpenFileMainPath = toOpenFileMainPath || getArgValue(args, '--main-path', false);
 	toOpenFile = toOpenFile || getArgValue(args, '--path', false);
 
 	const initHistoryArg = getArgValue(args, '--init-history', false);
@@ -488,9 +479,8 @@ async function startApp()
 	}
 	else if(toOpenFile && fs.existsSync(toOpenFile))
 	{
-		tabs.start(false, !toOpenFileMainPath);
-
-		openComic(toOpenFile, false, toOpenFileMainPath);
+		tabs.start(false, config.openFilesInNewTab);
+		openComic(toOpenFile, false, toOpenFileMainPath || false);
 	}
 	else
 	{
